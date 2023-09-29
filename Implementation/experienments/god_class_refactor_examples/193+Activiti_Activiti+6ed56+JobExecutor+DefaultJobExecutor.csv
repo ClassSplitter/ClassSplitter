@@ -1,0 +1,162 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,log,log ,Field,,,,,74,1,10,,private static Logger log = Logger.getLogger(JobExecutor.class.getName());,False,False,,False,
+2,commandExecutor,command executor ,Field,setCommandExecutor(CommandExecutor),,,,42,1,4,,protected CommandExecutor commandExecutor;,False,False,,False,
+3,isAutoActivate,is auto activate ,Field,setAutoActivate(boolean),,,,41,1,4,,protected boolean isAutoActivate = false;,False,False,,False,
+4,maxJobsPerAcquisition,max jobs per acquisition ,Field,setMaxJobsPerAcquisition(int),,,,40,1,4,,protected int maxJobsPerAcquisition = 3;,False,False,,False,
+5,waitTimeInMillis,wait time in millis ,Field,setWaitTimeInMillis(int),,,,42,1,4,,protected int waitTimeInMillis = 5 * 1000;,False,False,,False,
+6,lockOwner,lock owner ,Field,setLockOwner(String),,,,58,1,4,,protected String lockOwner = UUID.randomUUID().toString();,False,False,,False,
+7,lockTimeInMillis,lock time in millis ,Field,setLockTimeInMillis(int),,,,47,1,4,,protected int lockTimeInMillis = 5 * 60 * 1000;,False,False,,False,
+8,queueSize,queue size ,Field,setQueueSize(int),,,,28,1,4,,protected int queueSize = 5;,True,True,,False,
+9,corePoolSize,core pool size ,Field,setCorePoolSize(int),,,,31,1,4,,protected int corePoolSize = 3;,True,True,,False,
+10,maxPoolSize,max pool size ,Field,setMaxPoolSize(int),,,,29,1,2,,private int maxPoolSize = 10;,True,True,,False,
+11,jobAcquisitionThread,job acquisition thread ,Field,setJobAcquisitionThread(JobAcquisitionThread),,,,52,1,4,,protected JobAcquisitionThread jobAcquisitionThread;,False,True,,False,
+12,threadPoolQueue,thread pool queue ,Field,setThreadPoolQueue(BlockingQueue<Runnable>),,,,50,1,4,,protected BlockingQueue<Runnable> threadPoolQueue;,True,True,,False,
+13,threadPoolExecutor,thread pool executor ,Field,setThreadPoolExecutor(ThreadPoolExecutor),,,,48,1,4,,protected ThreadPoolExecutor threadPoolExecutor;,True,True,,False,
+14,isActive,is active ,Field,,,,,35,1,4,,protected boolean isActive = false;,False,True,,False,
+15,start(),start ,Method,,"org.activiti.engine.impl.ProcessEngineImpl+ProcessEngineImpl(ProcessEngineConfigurationImpl) org.activiti.engine.impl.test.AbstractActivitiTestCase+waitForJobExecutorToProcessAllJobs(long,long) org.activiti.engine.impl.test.AbstractActivitiTestCase+waitForJobExecutorOnCondition(long,long,Callable<Boolean>) org.activiti.engine.impl.test.TestHelper+waitForJobExecutorToProcessAllJobs(ProcessEngineConfigurationImpl,long,long) org.activiti.engine.test.bpmn.event.timer.BoundaryTimerNonInterruptingEventTest+moveByHours(int)","java.util.logging.Logger+info(String) java.util.logging.Logger+info(String) org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+JobAcquisitionThread(JobExecutor) java.util.concurrent.ArrayBlockingQueue+ArrayBlockingQueue(int) java.util.concurrent.ThreadPoolExecutor+ThreadPoolExecutor(int,int,long,TimeUnit,BlockingQueue) java.util.concurrent.ThreadPoolExecutor+setRejectedExecutionHandler(RejectedExecutionHandler) java.util.concurrent.ThreadPoolExecutor+setRejectedExecutionHandler(RejectedExecutionHandler) java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy+CallerRunsPolicy() java.util.logging.Logger+fine(String) java.util.logging.Logger+fine(String) java.lang.Thread+start() java.lang.Thread+start()",org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+log org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue org.activiti.engine.impl.jobexecutor.JobExecutor+queueSize org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+corePoolSize org.activiti.engine.impl.jobexecutor.JobExecutor+maxPoolSize java.util.concurrent.TimeUnit+MILLISECONDS org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+log org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,873,24,33,,"public synchronized void start() {
+    if(isActive) {
+      // Already started, nothing to do
+      log.info(""Ignoring duplicate JobExecutor start invocation"");
+      return;
+    } else {
+      isActive = true;
+      
+      if (jobAcquisitionThread==null) {
+        jobAcquisitionThread = new JobAcquisitionThread(this);
+      }
+      if (threadPoolQueue==null) {
+        threadPoolQueue = new ArrayBlockingQueue<Runnable>(queueSize);
+      }
+      if (threadPoolExecutor==null) {
+        threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, 0L, TimeUnit.MILLISECONDS, threadPoolQueue);
+        threadPoolExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+      }
+      
+      // Create our pending jobs fetcher
+      log.fine(""JobExecutor is starting the JobAcquisitionThread"");
+      jobAcquisitionThread.start();
+    }
+  }",False,False,"The function of this method is to start the JobExecutor. It checks if the JobExecutor is already active, and if not, it initializes the necessary components (jobAcquisitionThread, threadPoolQueue, threadPoolExecutor) and starts the JobAcquisitionThread.",True,"The given code defines a synchronized method called ""start"" that initializes and starts a job acquisition thread and a thread pool executor if they are not already created. It also sets a flag to indicate that the job executor is active. If the method is called multiple times, it logs a message and returns without performing any further actions."
+16,shutdown(),shutdown ,Method,,"org.activiti.engine.impl.ProcessEngineImpl+close() org.activiti.engine.impl.test.AbstractActivitiTestCase+waitForJobExecutorToProcessAllJobs(long,long) org.activiti.engine.impl.test.AbstractActivitiTestCase+waitForJobExecutorOnCondition(long,long,Callable<Boolean>) org.activiti.engine.impl.test.TestHelper+waitForJobExecutorToProcessAllJobs(ProcessEngineConfigurationImpl,long,long) org.activiti.engine.test.bpmn.event.timer.BoundaryTimerNonInterruptingEventTest+moveByHours(int)","java.util.logging.Logger+info(String) java.util.logging.Logger+info(String) java.util.logging.Logger+info(String) java.util.logging.Logger+info(String) java.util.concurrent.ThreadPoolExecutor+shutdown() java.util.concurrent.ThreadPoolExecutor+shutdown() java.util.concurrent.ThreadPoolExecutor+awaitTermination(long,TimeUnit) java.util.concurrent.ThreadPoolExecutor+awaitTermination(long,TimeUnit) org.activiti.engine.ActivitiException+ActivitiException(String,Throwable) org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+shutdown() org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+shutdown()",org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+log org.activiti.engine.impl.jobexecutor.JobExecutor+log org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor java.util.concurrent.TimeUnit+SECONDS org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,829,28,1,,"public void shutdown() {
+    if(!isActive) {
+      log.info(""Ignoring request to shut down non-active JobExecutor"");
+      return;
+    }
+    
+    log.info(""Shutting down the JobExecutor"");
+    
+    // Ask the thread pool to finish and exit
+    threadPoolExecutor.shutdown();
+    
+    // Waits for 1 minute to finish all currently executing jobs
+    try {
+	  threadPoolExecutor.awaitTermination(60L, TimeUnit.SECONDS);
+	} catch (InterruptedException e) {
+      throw new ActivitiException(""Timeout during shutdown of job executor. "" +
+	    ""The current running jobs could not end withing 60 seconds after shutdown operation."", e);
+	}
+    
+    // Close the pending jobs task
+    jobAcquisitionThread.shutdown();
+    
+    isActive = false;
+
+    // Clear references
+    threadPoolExecutor = null;
+    jobAcquisitionThread = null;
+  }",False,False,"This method shuts down the JobExecutor by stopping the execution of new jobs, waiting for currently executing jobs to finish, closing the pending jobs task, and clearing references to the thread pool executor and job acquisition thread.",True,"The `shutdown()` method is responsible for gracefully shutting down the JobExecutor. It first checks if the executor is active, logs a message if it is not, and then proceeds to shut down the thread pool executor and wait for all currently executing jobs to finish within a specified time limit. Finally, it shuts down the job acquisition thread, sets the executor as inactive, and clears the references to the thread pool executor and job acquisition thread."
+17,jobWasAdded(),job was added used to hint that new work exists on the queue and that the link job acquisition thread should probably re check for jobs ,Method,,org.activiti.engine.impl.jobexecutor.MessageAddedNotification+execute(CommandContext),org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+isActive() org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+isActive() org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+jobWasAdded() org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+jobWasAdded(),org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,349,13,1,"/** 
+ * Used to hint that new work exists on the queue, and that the  {@link JobAcquisitionThread}should probably re-check for jobs.
+ */
+","/**
+   * Used to hint that new work exists on the
+   *  queue, and that the {@link JobAcquisitionThread}
+   *  should probably re-check for jobs.
+   */
+  public void jobWasAdded() {
+    if ( isActive 
+         && jobAcquisitionThread != null 
+         && jobAcquisitionThread.isActive()
+       ) {
+      jobAcquisitionThread.jobWasAdded();
+    }
+  }",False,False,"This method is used to notify the JobAcquisitionThread that new work has been added to the queue, prompting it to re-check for jobs if it is active.",True,"The `jobWasAdded()` method is used to notify the `JobAcquisitionThread` that new work has been added to the queue. It checks if the thread is active and if so, calls the `jobWasAdded()` method of the `JobAcquisitionThread`."
+18,executeJobs(List<String>),execute jobs job ids ,Method,,org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+run(),"java.util.concurrent.ThreadPoolExecutor+execute(Runnable) java.util.concurrent.ThreadPoolExecutor+execute(Runnable) org.activiti.engine.impl.jobexecutor.ExecuteJobsRunnable+ExecuteJobsRunnable(CommandExecutor,List<String>)",org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+commandExecutor,182,4,1,,"public void executeJobs(List<String> jobIds) {
+    // TODO: RejectedExecutionException handling!
+    threadPoolExecutor.execute(new ExecuteJobsRunnable(commandExecutor, jobIds));
+  }",True,True,This method executes a list of jobs using a thread pool executor. It creates a new runnable object and submits it to the executor for execution.,True,The given code defines a method called `executeJobs` that takes a list of job IDs as input. It creates a new `ExecuteJobsRunnable` object and executes it using a `ThreadPoolExecutor`. The code lacks exception handling for `RejectedExecutionException`.
+19,getCommandExecutor(),get command executor ,Method,,org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+run(),,org.activiti.engine.impl.jobexecutor.JobExecutor+commandExecutor,77,3,1,,"public CommandExecutor getCommandExecutor() {
+    return commandExecutor;
+  }",False,False,This method returns the command executor object.,False,"The code defines a method named ""getCommandExecutor"" that returns an object of type ""CommandExecutor"". This method is used to retrieve the command executor object, which can be used to execute commands in the program."
+20,getWaitTimeInMillis(),get wait time in millis ,Method,,org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+run() org.activiti.engine.impl.persistence.entity.JobManager+schedule(TimerEntity),,org.activiti.engine.impl.jobexecutor.JobExecutor+waitTimeInMillis,67,3,1,,"public int getWaitTimeInMillis() {
+    return waitTimeInMillis;
+  }",False,False,The function of the given method is to retrieve and return the value of the variable waitTimeInMillis as an integer.,False,"The code contains a method named ""getWaitTimeInMillis"" which returns an integer value representing the wait time in milliseconds. It does not take any parameters and simply returns the value of the ""waitTimeInMillis"" variable."
+21,setWaitTimeInMillis(int),set wait time in millis wait time in millis ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+waitTimeInMillis org.activiti.engine.impl.jobexecutor.JobExecutor+waitTimeInMillis,105,3,1,,"public void setWaitTimeInMillis(int waitTimeInMillis) {
+    this.waitTimeInMillis = waitTimeInMillis;
+  }",False,False,This method sets the wait time in milliseconds for a certain function or process.,False,"The code defines a method named ""setWaitTimeInMillis"" which takes an integer parameter ""waitTimeInMillis"" and assigns it to the instance variable ""waitTimeInMillis"" of the current object. This method allows for setting the wait time in milliseconds for a specific functionality or operation."
+22,getLockTimeInMillis(),get lock time in millis ,Method,,org.activiti.engine.impl.cmd.AcquireJobsCmd+execute(CommandContext),,org.activiti.engine.impl.jobexecutor.JobExecutor+lockTimeInMillis,67,3,1,,"public int getLockTimeInMillis() {
+    return lockTimeInMillis;
+  }",False,False,This method returns the value of the lock time in milliseconds.,False,"The code defines a method named ""getLockTimeInMillis"" which returns an integer value representing the lock time in milliseconds. It is a simple getter method that retrieves the value of the ""lockTimeInMillis"" variable."
+23,setLockTimeInMillis(int),set lock time in millis lock time in millis ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+lockTimeInMillis org.activiti.engine.impl.jobexecutor.JobExecutor+lockTimeInMillis,105,3,1,,"public void setLockTimeInMillis(int lockTimeInMillis) {
+    this.lockTimeInMillis = lockTimeInMillis;
+  }",False,False,This method sets the lock time in milliseconds for a certain object or variable.,False,"The code defines a method named ""setLockTimeInMillis"" which takes an integer parameter ""lockTimeInMillis"" and assigns it to the instance variable ""lockTimeInMillis"" of the current object. This method is used to set the lock time in milliseconds for a certain functionality or feature."
+24,getQueueSize(),get queue size ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+queueSize,53,3,1,,"public int getQueueSize() {
+    return queueSize;
+  }",True,True,"The function of the method is to return the value of the variable ""queueSize"".",False,"The code contains a method named ""getQueueSize"" which returns an integer value representing the size of a queue. It does not take any parameters and simply returns the value of the ""queueSize"" variable."
+25,setQueueSize(int),set queue size queue size ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+queueSize org.activiti.engine.impl.jobexecutor.JobExecutor+queueSize,77,3,1,,"public void setQueueSize(int queueSize) {
+    this.queueSize = queueSize;
+  }",True,True,This method sets the size of a queue.,False,"The code defines a method named ""setQueueSize"" that takes an integer parameter. It sets the value of the ""queueSize"" variable to the provided parameter value."
+26,getCorePoolSize(),get core pool size ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+corePoolSize,59,3,1,,"public int getCorePoolSize() {
+    return corePoolSize;
+  }",True,True,This method returns the value of the core pool size.,False,"The code snippet defines a method named ""getCorePoolSize"" that returns an integer value. This method is likely part of a class or interface and is used to retrieve the current value of the ""corePoolSize"" variable."
+27,setCorePoolSize(int),set core pool size core pool size ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+corePoolSize org.activiti.engine.impl.jobexecutor.JobExecutor+corePoolSize,89,3,1,,"public void setCorePoolSize(int corePoolSize) {
+    this.corePoolSize = corePoolSize;
+  }",True,True,This method sets the core pool size for a thread pool.,False,"The code defines a method named ""setCorePoolSize"" that takes an integer parameter. This method is used to set the value of the ""corePoolSize"" variable in the current object to the provided value."
+28,getMaxPoolSize(),get max pool size ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+maxPoolSize,57,3,1,,"public int getMaxPoolSize() {
+    return maxPoolSize;
+  }",True,True,"This method returns the value of the variable maxPoolSize, which represents the maximum size of a pool.",False,"The code snippet defines a method named `getMaxPoolSize()` that returns an integer value representing the maximum pool size. This method is likely part of a class or interface related to managing a pool of resources, such as database connections or threads."
+29,setMaxPoolSize(int),set max pool size max pool size ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+maxPoolSize org.activiti.engine.impl.jobexecutor.JobExecutor+maxPoolSize,85,3,1,,"public void setMaxPoolSize(int maxPoolSize) {
+    this.maxPoolSize = maxPoolSize;
+  }",False,True,This method sets the maximum pool size for a resource pool.,False,"The code defines a method named ""setMaxPoolSize"" that takes an integer parameter ""maxPoolSize"" and assigns it to the instance variable ""maxPoolSize"" of the current object. This method is used to set the maximum size of a pool."
+30,getJobAcquisitionThread(),get job acquisition thread ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,92,3,1,,"public JobAcquisitionThread getJobAcquisitionThread() {
+    return jobAcquisitionThread;
+  }",False,True,This method returns the JobAcquisitionThread object.,False,"The code defines a method named ""getJobAcquisitionThread"" that returns an object of type ""JobAcquisitionThread"". This method is used to retrieve the current instance of the ""JobAcquisitionThread"" object."
+31,setJobAcquisitionThread(JobAcquisitionThread),set job acquisition thread job acquisition thread ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,138,3,1,,"public void setJobAcquisitionThread(JobAcquisitionThread jobAcquisitionThread) {
+    this.jobAcquisitionThread = jobAcquisitionThread;
+  }",False,True,This method sets the value of the jobAcquisitionThread variable to the provided JobAcquisitionThread object.,False,"The code defines a method called ""setJobAcquisitionThread"" which is used to set the value of a variable called ""jobAcquisitionThread"". This method is used to assign a specific thread to the ""jobAcquisitionThread"" variable."
+32,getThreadPoolQueue(),get thread pool queue ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue,85,3,1,,"public BlockingQueue<Runnable> getThreadPoolQueue() {
+    return threadPoolQueue;
+  }",True,True,This method returns the BlockingQueue of Runnable objects used by the thread pool.,False,"The code defines a method named ""getThreadPoolQueue"" that returns a BlockingQueue of Runnable objects. This method is used to retrieve the queue associated with a thread pool, which can be used to manage and execute tasks in a concurrent manner."
+33,setThreadPoolQueue(BlockingQueue<Runnable>),set thread pool queue thread pool queue ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue,121,3,1,,"public void setThreadPoolQueue(BlockingQueue<Runnable> threadPoolQueue) {
+    this.threadPoolQueue = threadPoolQueue;
+  }",True,True,This method sets the thread pool queue for a given object.,False,"The code defines a method named ""setThreadPoolQueue"" that takes a parameter of type BlockingQueue<Runnable>. This method is used to set the value of the ""threadPoolQueue"" variable in the current object to the provided value."
+34,getThreadPoolExecutor(),get thread pool executor ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor,86,3,1,,"public ThreadPoolExecutor getThreadPoolExecutor() {
+    return threadPoolExecutor;
+  }",True,True,This method returns the ThreadPoolExecutor object.,False,"The code defines a method named ""getThreadPoolExecutor"" that returns an instance of the ThreadPoolExecutor class. This method can be used to retrieve the current ThreadPoolExecutor object being used in the program."
+35,setThreadPoolExecutor(ThreadPoolExecutor),set thread pool executor thread pool executor ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor,128,3,1,,"public void setThreadPoolExecutor(ThreadPoolExecutor threadPoolExecutor) {
+    this.threadPoolExecutor = threadPoolExecutor;
+  }",True,True,This method sets the thread pool executor for the current object.,False,"The code defines a method named ""setThreadPoolExecutor"" that takes a parameter of type ThreadPoolExecutor. This method is used to set the value of the ""threadPoolExecutor"" variable in the current object."
+36,isActive(),is active ,Method,,org.activiti.engine.impl.ProcessEngineImpl+close(),,org.activiti.engine.impl.jobexecutor.JobExecutor+isActive,52,3,1,,"public boolean isActive() {
+    return isActive;
+  }",False,False,"The function of the method is to check and return the value of the variable ""isActive"" as a boolean value.",False,"The code contains a method named ""isActive"" that returns a boolean value. It checks the status of a variable named ""isActive"" and returns true if it is active, and false otherwise."
+37,getMaxJobsPerAcquisition(),get max jobs per acquisition ,Method,,org.activiti.engine.impl.cmd.AcquireJobsCmd+execute(CommandContext) org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+run(),,org.activiti.engine.impl.jobexecutor.JobExecutor+maxJobsPerAcquisition,77,3,1,,"public int getMaxJobsPerAcquisition() {
+    return maxJobsPerAcquisition;
+  }",False,False,"This method returns the value of the variable ""maxJobsPerAcquisition"", which represents the maximum number of jobs that can be acquired.",False,The code snippet defines a method named `getMaxJobsPerAcquisition` that returns an integer value. This method is responsible for retrieving the maximum number of jobs that can be acquired per acquisition.
+38,setMaxJobsPerAcquisition(int),set max jobs per acquisition max jobs per acquisition ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+maxJobsPerAcquisition org.activiti.engine.impl.jobexecutor.JobExecutor+maxJobsPerAcquisition,125,3,1,,"public void setMaxJobsPerAcquisition(int maxJobsPerAcquisition) {
+    this.maxJobsPerAcquisition = maxJobsPerAcquisition;
+  }",False,False,This method sets the maximum number of jobs that can be acquired per acquisition.,False,"The code defines a method named ""setMaxJobsPerAcquisition"" that takes an integer parameter. This method sets the value of the ""maxJobsPerAcquisition"" variable to the provided parameter value."
+39,getLockOwner(),get lock owner ,Method,,org.activiti.engine.impl.cmd.AcquireJobsCmd+execute(CommandContext),,org.activiti.engine.impl.jobexecutor.JobExecutor+lockOwner,56,3,1,,"public String getLockOwner() {
+    return lockOwner;
+  }",False,False,This method returns the value of the lock owner as a string.,False,"The code contains a method named ""getLockOwner"" which returns a string value. It is used to retrieve the current lock owner."
+40,setLockOwner(String),set lock owner lock owner ,Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+lockOwner org.activiti.engine.impl.jobexecutor.JobExecutor+lockOwner,80,3,1,,"public void setLockOwner(String lockOwner) {
+    this.lockOwner = lockOwner;
+  }",False,False,This method sets the value of the lockOwner variable.,False,"The code defines a method named ""setLockOwner"" that takes a string parameter. It sets the value of the ""lockOwner"" variable to the provided string value."
+41,isAutoActivate(),is auto activate ,Method,,org.activiti.engine.impl.ProcessEngineImpl+ProcessEngineImpl(ProcessEngineConfigurationImpl),,org.activiti.engine.impl.jobexecutor.JobExecutor+isAutoActivate,64,3,1,,"public boolean isAutoActivate() {
+    return isAutoActivate;
+  }",False,False,This method serves to check whether the auto activation feature is enabled or not. It returns a boolean value indicating the status of the auto activation feature.,False,"The code contains a method named ""isAutoActivate"" which returns a boolean value. It is used to determine whether auto activation is enabled or not."
+42,setCommandExecutor(CommandExecutor),set command executor command executor ,Method,,org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl+initJobExecutor(),,org.activiti.engine.impl.jobexecutor.JobExecutor+commandExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+commandExecutor,113,3,1,,"public void setCommandExecutor(CommandExecutor commandExecutor) {
+    this.commandExecutor = commandExecutor;
+  }",False,False,This method sets the command executor for an object.,False,"The code defines a method called ""setCommandExecutor"" that takes a parameter of type ""CommandExecutor"". This method assigns the value of the parameter to the ""commandExecutor"" instance variable of the current object."
+43,setAutoActivate(boolean),set auto activate is auto activate ,Method,,org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl+initJobExecutor(),,org.activiti.engine.impl.jobexecutor.JobExecutor+isAutoActivate org.activiti.engine.impl.jobexecutor.JobExecutor+isAutoActivate,99,3,1,,"public void setAutoActivate(boolean isAutoActivate) {
+    this.isAutoActivate = isAutoActivate;
+  }",False,False,"This method sets the value of the ""isAutoActivate"" variable to the value passed as a parameter.",False,"The code defines a method named ""setAutoActivate"" that takes a boolean parameter. It sets the value of the ""isAutoActivate"" variable to the provided parameter value. This method is used to control the auto-activation feature of something."

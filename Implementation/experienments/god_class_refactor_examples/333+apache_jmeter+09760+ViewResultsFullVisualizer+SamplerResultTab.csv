@@ -1,0 +1,1005 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,serialVersionUID,serial version uid ,Field,,,,,48,1,26,,private static final long serialVersionUID = 1L;,False,False,,False,
+2,log,log ,Field,,,,,69,1,26,,private static final Logger log = LoggingManager.getLoggerForClass();,False,False,,False,
+3,MAX_DISPLAY_SIZE,max display size ,Field,,,,,121,2,26,,"private static final int MAX_DISPLAY_SIZE =
+        JMeterUtils.getPropDefault(""view.results.tree.max_size"", 200 * 1024);",False,True,,False,
+4,dateFormat,date format ,Field,,,,,84,1,18,,"private final DateFormat dateFormat = new SimpleDateFormat(""yyyy-MM-dd HH:mm:ss z"");",True,True,,False,
+5,NL,nl ,Field,,,,,38,1,26,,"private static final String NL = ""\n"";",True,True,,False,
+6,XML_PFX,xml pfx ,Field,,,,,58,1,26,,"private static final byte[] XML_PFX = ""<?xml "".getBytes();",True,True,,False,
+7,SERVER_ERROR_COLOR,server error color ,Field,,,,,57,1,25,,public static final Color SERVER_ERROR_COLOR = Color.red;,False,False,,False,
+8,CLIENT_ERROR_COLOR,client error color ,Field,,,,,58,1,25,,public static final Color CLIENT_ERROR_COLOR = Color.blue;,False,False,,False,
+9,REDIRECT_COLOR,redirect color ,Field,,,,,55,1,25,,public static final Color REDIRECT_COLOR = Color.green;,False,False,,False,
+10,TEXT_HTML,text html ,Field,,,,,52,1,26,,"private static final String TEXT_HTML = ""text/html"";",True,True,,False,
+11,HTML_COMMAND,html command ,Field,,,,,50,1,26,,"private static final String HTML_COMMAND = ""html"";",False,True,,False,
+12,JSON_COMMAND,json command ,Field,,,,,50,1,26,,"private static final String JSON_COMMAND = ""json"";",False,True,,False,
+13,XML_COMMAND,xml command ,Field,,,,,48,1,26,,"private static final String XML_COMMAND = ""xml"";",False,True,,False,
+14,TEXT_COMMAND,text command ,Field,,,,,50,1,26,,"private static final String TEXT_COMMAND = ""text"";",False,True,,False,
+15,STYLE_SERVER_ERROR,style server error ,Field,,,,,63,1,26,,"private static final String STYLE_SERVER_ERROR = ""ServerError"";",True,True,,False,
+16,STYLE_CLIENT_ERROR,style client error ,Field,,,,,63,1,26,,"private static final String STYLE_CLIENT_ERROR = ""ClientError"";",True,True,,False,
+17,STYLE_REDIRECT,style redirect ,Field,,,,,56,1,26,,"private static final String STYLE_REDIRECT = ""Redirect"";",True,True,,False,
+18,textMode,text mode ,Field,,,,,32,1,2,,private boolean textMode = true;,False,True,,False,
+19,ESC_CHAR_REGEX,esc char regex ,Field,,,,,86,1,26,,"private static final String ESC_CHAR_REGEX = ""\\\\[\""\\\\/bfnrt]|\\\\u[0-9A-Fa-f]{4}"";",True,True,,False,
+20,NORMAL_CHARACTER_REGEX,normal character regex ,Field,,,,,65,1,26,,"private static final String NORMAL_CHARACTER_REGEX = ""[^\""\\\\]"";",True,True,,False,
+21,STRING_REGEX,string regex ,Field,,,,,106,1,26,,"private static final String STRING_REGEX = ""\""("" + ESC_CHAR_REGEX + ""|"" + NORMAL_CHARACTER_REGEX + "")*\"""";",True,True,,False,
+22,OTHER_VALUE_REGEX,other value regex ,Field,,,,,70,1,26,,"private static final String OTHER_VALUE_REGEX = ""[^\\{\\[\\]\\}\\,]*"";",True,True,,False,
+23,VALUE_OR_PAIR_REGEX,value or pair regex ,Field,,,,,145,1,26,,"private static final String VALUE_OR_PAIR_REGEX = ""(("" + STRING_REGEX + ""\\s*:)?\\s*("" + STRING_REGEX + ""|"" + OTHER_VALUE_REGEX + "")\\s*,?\\s*)"";",True,True,,False,
+24,VALUE_OR_PAIR_PATTERN,value or pair pattern ,Field,,,,,90,1,26,,private static final Pattern VALUE_OR_PAIR_PATTERN = Pattern.compile(VALUE_OR_PAIR_REGEX);,True,True,,False,
+25,command,command ,Field,,,,,38,1,2,,private String command = TEXT_COMMAND;,False,True,,False,
+26,customisedEditor,customised editor ,Field,,,,,75,1,26,,private static final EditorKit customisedEditor = new LocalHTMLEditorKit();,True,True,,False,
+27,defaultHtmlEditor,default html editor ,Field,,,,,104,1,26,,private static final EditorKit defaultHtmlEditor = JEditorPane.createEditorKitForContentType(TEXT_HTML);,True,True,,False,
+28,root,root ,Field,,,,,36,1,2,,private DefaultMutableTreeNode root;,False,False,,False,
+29,treeModel,tree model ,Field,,,,,35,1,2,,private DefaultTreeModel treeModel;,False,False,,False,
+30,stats,stats ,Field,,,,,24,1,2,,private JTextPane stats;,True,True,,False,
+31,results,results ,Field,,,,,28,1,2,,private JEditorPane results;,True,True,,False,
+32,resultsScrollPane,results scroll pane ,Field,,,,,38,1,2,,private JScrollPane resultsScrollPane;,True,True,,False,
+33,resultsPane,results pane ,Field,,,,,27,1,2,,private JPanel resultsPane;,True,True,,False,
+34,imageLabel,image label ,Field,,,,,26,1,2,,private JLabel imageLabel;,True,True,,False,
+35,sampleDataField,sample data field ,Field,,,,,34,1,2,,private JTextArea sampleDataField;,True,True,,False,
+36,requestPane,request pane ,Field,,,,,27,1,2,,private JPanel requestPane;,True,True,,False,
+37,textButton,text button ,Field,,,,,32,1,2,,private JRadioButton textButton;,False,True,,False,
+38,htmlButton,html button ,Field,,,,,32,1,2,,private JRadioButton htmlButton;,False,True,,False,
+39,jsonButton,json button ,Field,,,,,32,1,2,,private JRadioButton jsonButton;,False,True,,False,
+40,xmlButton,xml button ,Field,,,,,31,1,2,,private JRadioButton xmlButton;,False,True,,False,
+41,downloadAll,download all ,Field,,,,,30,1,2,,private JCheckBox downloadAll;,False,True,,False,
+42,renderLabel,render label ,Field,,,,,27,1,2,,private JLabel renderLabel;,False,True,,False,
+43,jTree,j tree ,Field,,,,,20,1,2,,private JTree jTree;,False,True,,False,
+44,rightSide,right side ,Field,,,,,30,1,2,,private JTabbedPane rightSide;,False,True,,False,
+45,searchTextExtension,search text extension ,Field,,,,,48,1,2,,private SearchTextExtension searchTextExtension;,True,True,,False,
+46,searchPanel,search panel ,Field,,,,,34,1,2,,private JPanel searchPanel = null;,True,True,,False,
+47,imageSuccess,image success ,Field,,,,,194,3,26,,"private static final ImageIcon imageSuccess = JMeterUtils.getImage(
+            JMeterUtils.getPropDefault(""viewResultsTree.success"",  //$NON-NLS-1$
+                    ""icon_success_sml.gif""));",False,False,,False,
+48,imageFailure,image failure ,Field,,,,,194,3,26,,"private static final ImageIcon imageFailure = JMeterUtils.getImage(
+            JMeterUtils.getPropDefault(""viewResultsTree.failure"",  //$NON-NLS-1$
+                    ""icon_warning_sml.gif""));",False,False,,False,
+49,ViewResultsFullVisualizer(),view results full visualizer ,Method,,,org.apache.jmeter.visualizers.ViewResultsFullVisualizer+init() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+init(),org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log,187,6,1,,"public ViewResultsFullVisualizer() {
+        super();
+        log.debug(""Start : ViewResultsFullVisualizer1"");
+        init();
+        log.debug(""End : ViewResultsFullVisualizer1"");
+    }",False,False,"The function of the method is to initialize the ViewResultsFullVisualizer class by calling the superclass constructor, logging the start and end of the method, and calling the init() method.",False,The code snippet shows a constructor method for the class ViewResultsFullVisualizer. It calls the init() method and logs debug messages before and after the initialization process.
+50,add(SampleResult),add res ,Method,,,org.apache.jmeter.visualizers.ViewResultsFullVisualizer+updateGui(SampleResult) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+updateGui(SampleResult),,65,3,1,,"public void add(SampleResult res) {
+        updateGui(res);
+    }",False,False,The function of the method is to add a SampleResult object as a parameter and update the graphical user interface (GUI) with the provided SampleResult.,True,"The code defines a method named ""add"" that takes a parameter of type ""SampleResult"". This method calls another method named ""updateGui"" and passes the ""SampleResult"" object as an argument. The purpose of this code is to update the graphical user interface (GUI) with the provided ""SampleResult"" data."
+51,getLabelResource(),get label resource ,Method,,,,,97,3,1,,"public String getLabelResource() {
+        return ""view_results_tree_title""; // $NON-NLS-1$
+    }",False,False,"The function of the method is to return the string ""view_results_tree_title"" as the label resource.",False,"The code defines a method named ""getLabelResource"" that returns a string value. The returned string is ""view_results_tree_title""."
+52,updateGui(SampleResult),update gui res update the visualizer with new data ,Method,add(SampleResult),,"javax.swing.tree.DefaultMutableTreeNode+DefaultMutableTreeNode(Object) javax.swing.tree.DefaultTreeModel+insertNodeInto(MutableTreeNode,MutableTreeNode,int) javax.swing.tree.DefaultTreeModel+insertNodeInto(MutableTreeNode,MutableTreeNode,int) javax.swing.tree.DefaultMutableTreeNode+getChildCount() javax.swing.tree.DefaultMutableTreeNode+getChildCount() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+addSubResults(DefaultMutableTreeNode,SampleResult) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+addSubResults(DefaultMutableTreeNode,SampleResult) org.apache.jmeter.samplers.SampleResult+getAssertionResults() org.apache.jmeter.samplers.SampleResult+getAssertionResults() javax.swing.tree.DefaultMutableTreeNode+getChildCount() javax.swing.tree.DefaultMutableTreeNode+getChildCount() org.apache.jmeter.assertions.AssertionResult+isFailure() org.apache.jmeter.assertions.AssertionResult+isFailure() org.apache.jmeter.assertions.AssertionResult+isError() org.apache.jmeter.assertions.AssertionResult+isError() javax.swing.tree.DefaultMutableTreeNode+DefaultMutableTreeNode(Object) javax.swing.tree.DefaultTreeModel+insertNodeInto(MutableTreeNode,MutableTreeNode,int) javax.swing.tree.DefaultTreeModel+insertNodeInto(MutableTreeNode,MutableTreeNode,int) javax.swing.tree.DefaultMutableTreeNode+getChildCount() javax.swing.tree.DefaultMutableTreeNode+getChildCount() javax.swing.JTree+expandPath(TreePath) javax.swing.JTree+expandPath(TreePath) javax.swing.tree.TreePath+TreePath(Object)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+treeModel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+root org.apache.jmeter.visualizers.ViewResultsFullVisualizer+root org.apache.jmeter.visualizers.ViewResultsFullVisualizer+treeModel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+root org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer+root org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log,1186,29,34,"/** 
+ * Update the visualizer with new data.
+ */
+","/**
+     * Update the visualizer with new data.
+     */
+    private synchronized void updateGui(SampleResult res) {
+        log.debug(""Start : updateGui1"");
+        if (log.isDebugEnabled()) {
+            log.debug(""updateGui1 : sample result - "" + res);
+        }
+        // Add sample
+        DefaultMutableTreeNode currNode = new DefaultMutableTreeNode(res);
+        treeModel.insertNodeInto(currNode, root, root.getChildCount());
+        addSubResults(currNode, res);
+        // Add any assertion that failed as children of the sample node
+        AssertionResult assertionResults[] = res.getAssertionResults();
+        int assertionIndex = currNode.getChildCount();
+        for (int j = 0; j < assertionResults.length; j++) {
+            AssertionResult item = assertionResults[j];
+
+            if (item.isFailure() || item.isError()) {
+                DefaultMutableTreeNode assertionNode = new DefaultMutableTreeNode(item);
+                treeModel.insertNodeInto(assertionNode, currNode, assertionIndex++);
+            }
+        }
+
+        if (root.getChildCount() == 1) {
+            jTree.expandPath(new TreePath(root));
+        }
+        log.debug(""End : updateGui1"");
+    }",False,False,"The function updates the visualizer with new data by adding a sample node to the tree model, adding any failed assertions as children of the sample node, and expanding the root node if it has only one child.",True,"The `updateGui` method is responsible for updating the visualizer with new data. It adds a sample to the tree model, along with any failed assertions as children of the sample node. If the root node has only one child, it expands the tree path."
+53,"addSubResults(DefaultMutableTreeNode,SampleResult)",add sub results curr node res ,Method,"updateGui(SampleResult) addSubResults(DefaultMutableTreeNode,SampleResult)",,"org.apache.jmeter.samplers.SampleResult+getSubResults() org.apache.jmeter.samplers.SampleResult+getSubResults() javax.swing.tree.DefaultMutableTreeNode+DefaultMutableTreeNode(Object) javax.swing.tree.DefaultTreeModel+insertNodeInto(MutableTreeNode,MutableTreeNode,int) javax.swing.tree.DefaultTreeModel+insertNodeInto(MutableTreeNode,MutableTreeNode,int) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+addSubResults(DefaultMutableTreeNode,SampleResult) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+addSubResults(DefaultMutableTreeNode,SampleResult) org.apache.jmeter.samplers.SampleResult+getAssertionResults() org.apache.jmeter.samplers.SampleResult+getAssertionResults() javax.swing.tree.DefaultMutableTreeNode+getChildCount() javax.swing.tree.DefaultMutableTreeNode+getChildCount() org.apache.jmeter.assertions.AssertionResult+isFailure() org.apache.jmeter.assertions.AssertionResult+isFailure() org.apache.jmeter.assertions.AssertionResult+isError() org.apache.jmeter.assertions.AssertionResult+isError() javax.swing.tree.DefaultMutableTreeNode+DefaultMutableTreeNode(Object) javax.swing.tree.DefaultTreeModel+insertNodeInto(MutableTreeNode,MutableTreeNode,int) javax.swing.tree.DefaultTreeModel+insertNodeInto(MutableTreeNode,MutableTreeNode,int)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+treeModel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+treeModel,1219,28,2,,"private void addSubResults(DefaultMutableTreeNode currNode, SampleResult res) {
+        SampleResult[] subResults = res.getSubResults();
+
+        int leafIndex = 0;
+
+        for (int i = 0; i < subResults.length; i++) {
+            SampleResult child = subResults[i];
+
+            if (log.isDebugEnabled()) {
+                log.debug(""updateGui1 : child sample result - "" + child);
+            }
+            DefaultMutableTreeNode leafNode = new DefaultMutableTreeNode(child);
+
+            treeModel.insertNodeInto(leafNode, currNode, leafIndex++);
+            addSubResults(leafNode, child);
+            // Add any assertion that failed as children of the sample node
+            AssertionResult assertionResults[] = child.getAssertionResults();
+            int assertionIndex = leafNode.getChildCount();
+            for (int j = 0; j < assertionResults.length; j++) {
+                AssertionResult item = assertionResults[j];
+
+                if (item.isFailure() || item.isError()) {
+                    DefaultMutableTreeNode assertionNode = new DefaultMutableTreeNode(item);
+                    treeModel.insertNodeInto(assertionNode, leafNode, assertionIndex++);
+                }
+            }
+        }
+    }",False,False,"The function adds sub-results to a tree structure. It recursively adds child nodes to the current node, and adds any failed assertions as children of the sample node.",False,"The code defines a private method called ""addSubResults"" that takes a DefaultMutableTreeNode and a SampleResult as parameters. It recursively adds child nodes to the given tree node based on the sub-results of the sample result, and also adds any failed assertions as children of the sample node."
+54,clearData(),clear data clears the visualizer ,Method,,,javax.swing.tree.DefaultMutableTreeNode+getChildCount() javax.swing.tree.DefaultMutableTreeNode+getChildCount() javax.swing.tree.DefaultMutableTreeNode+getChildCount() javax.swing.tree.DefaultMutableTreeNode+getChildCount() javax.swing.tree.DefaultTreeModel+removeNodeFromParent(MutableTreeNode) javax.swing.tree.DefaultTreeModel+removeNodeFromParent(MutableTreeNode) javax.swing.tree.DefaultMutableTreeNode+getChildAt(int) javax.swing.tree.DefaultMutableTreeNode+getChildAt(int) javax.swing.JEditorPane+setText(String) javax.swing.JEditorPane+setText(String) javax.swing.text.JTextComponent+setText(String) javax.swing.text.JTextComponent+setText(String),org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+root org.apache.jmeter.visualizers.ViewResultsFullVisualizer+root org.apache.jmeter.visualizers.ViewResultsFullVisualizer+treeModel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+root org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+sampleDataField org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log,686,19,33,"/** 
+ * Clears the visualizer.
+ */
+","/**
+     * Clears the visualizer.
+     */
+    public synchronized void clearData() {
+        log.debug(""Start : clear1"");
+
+        if (log.isDebugEnabled()) {
+            log.debug(""clear1 : total child - "" + root.getChildCount());
+        }
+        while (root.getChildCount() > 0) {
+            // the child to be removed will always be 0 'cos as the nodes are
+            // removed the nth node will become (n-1)th
+            treeModel.removeNodeFromParent((DefaultMutableTreeNode) root.getChildAt(0));
+        }
+
+        results.setText("""");// Response Data // $NON-NLS-1$
+        sampleDataField.setText("""");// Request Data // $NON-NLS-1$
+        log.debug(""End : clear1"");
+    }",False,False,"The function of this method is to clear the visualizer by removing all child nodes from the root node, clearing the response and request data fields, and logging the start and end of the clearing process.",True,"The `clearData()` method is used to clear the visualizer. It removes all child nodes from the root node of a tree model, clears the text in the `results` and `sampleDataField` fields, and logs the start and end of the method execution."
+55,toString(),to string returns the description of this visualizer return description of this visualizer ,Method,,,org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String),org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log,387,14,1,"/** 
+ * Returns the description of this visualizer.
+ * @return description of this visualizer
+ */
+","/**
+     * Returns the description of this visualizer.
+     *
+     * @return description of this visualizer
+     */
+    @Override
+    public String toString() {
+        String desc = JMeterUtils.getResString(""view_results_desc""); //$NON-NLS-1$
+
+        if (log.isDebugEnabled()) {
+            log.debug(""toString1 : Returning description - "" + desc);
+        }
+        return desc;
+    }",True,False,"This method returns the description of a visualizer. It retrieves the description from a resource string and returns it as a string. If debug logging is enabled, it also logs a debug message.",True,This code overrides the `toString()` method to return the description of a visualizer. It retrieves the description from a resource string and logs a debug message if enabled. The method returns the description as a string.
+56,valueChanged(TreeSelectionEvent),value changed e sets the right pane to correspond to the selected node of the left tree ,Method,,,"javax.swing.JTree+getLastSelectedPathComponent() javax.swing.JTree+getLastSelectedPathComponent() javax.swing.JTextPane+getStyledDocument() javax.swing.JTextPane+getStyledDocument() javax.swing.text.Document+remove(int,int) javax.swing.text.Document+remove(int,int) javax.swing.text.Document+getLength() javax.swing.text.Document+getLength() javax.swing.text.JTextComponent+setText(String) javax.swing.text.JTextComponent+setText(String) javax.swing.JEditorPane+setText(String) javax.swing.JEditorPane+setText(String) javax.swing.tree.DefaultMutableTreeNode+getUserObject() javax.swing.tree.DefaultMutableTreeNode+getUserObject() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setupTabPaneForSampleResult() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setupTabPaneForSampleResult() org.apache.jmeter.samplers.SampleResult+getTime() org.apache.jmeter.samplers.SampleResult+getTime() org.apache.jmeter.samplers.SampleResult+getSamplerData() org.apache.jmeter.samplers.SampleResult+getSamplerData() org.apache.jmeter.samplers.SampleResult+getRequestHeaders() org.apache.jmeter.samplers.SampleResult+getRequestHeaders() java.lang.StringBuilder+StringBuilder(int) java.lang.String+length() java.lang.String+length() java.lang.String+length() java.lang.String+length() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() javax.swing.text.JTextComponent+setText(String) javax.swing.text.JTextComponent+setText(String) java.lang.StringBuilder+StringBuilder(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(String) org.apache.jmeter.samplers.SampleResult+getThreadName() org.apache.jmeter.samplers.SampleResult+getThreadName() java.lang.StringBuilder+append(String) java.text.DateFormat+format(Date) java.text.DateFormat+format(Date) java.util.Date+Date(long) org.apache.jmeter.samplers.SampleResult+getStartTime() org.apache.jmeter.samplers.SampleResult+getStartTime() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(long) org.apache.jmeter.samplers.SampleResult+getTime() org.apache.jmeter.samplers.SampleResult+getTime() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(long) org.apache.jmeter.samplers.SampleResult+getLatency() org.apache.jmeter.samplers.SampleResult+getLatency() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(int) org.apache.jmeter.samplers.SampleResult+getBytes() org.apache.jmeter.samplers.SampleResult+getBytes() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(int) org.apache.jmeter.samplers.SampleResult+getSampleCount() org.apache.jmeter.samplers.SampleResult+getSampleCount() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(int) org.apache.jmeter.samplers.SampleResult+getErrorCount() org.apache.jmeter.samplers.SampleResult+getErrorCount() java.lang.StringBuilder+append(String) javax.swing.text.Document+insertString(int,String,AttributeSet) javax.swing.text.Document+insertString(int,String,AttributeSet) javax.swing.text.Document+getLength() javax.swing.text.Document+getLength() java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() java.lang.StringBuilder+StringBuilder() org.apache.jmeter.samplers.SampleResult+getResponseCode() org.apache.jmeter.samplers.SampleResult+getResponseCode() java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) javax.swing.text.StyledDocument+getStyle(String) javax.swing.text.StyledDocument+getStyle(String) javax.swing.text.StyledDocument+getStyle(String) javax.swing.text.StyledDocument+getStyle(String) javax.swing.text.StyledDocument+getStyle(String) javax.swing.text.StyledDocument+getStyle(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) javax.swing.text.Document+insertString(int,String,AttributeSet) javax.swing.text.Document+insertString(int,String,AttributeSet) javax.swing.text.Document+getLength() javax.swing.text.Document+getLength() java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() java.lang.StringBuilder+StringBuilder(int) org.apache.jmeter.samplers.SampleResult+getResponseMessage() org.apache.jmeter.samplers.SampleResult+getResponseMessage() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.samplers.SampleResult+getResponseHeaders() org.apache.jmeter.samplers.SampleResult+getResponseHeaders() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+lastIndexOf(int) java.lang.String+lastIndexOf(int) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.samplers.SampleResult+getContentType() org.apache.jmeter.samplers.SampleResult+getContentType() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.samplers.SampleResult+getDataEncodingNoDefault() org.apache.jmeter.samplers.SampleResult+getDataEncodingNoDefault() java.lang.StringBuilder+append(String) javax.swing.text.Document+insertString(int,String,AttributeSet) javax.swing.text.Document+insertString(int,String,AttributeSet) javax.swing.text.Document+getLength() javax.swing.text.Document+getLength() java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() org.apache.jmeter.visualizers.SearchTextExtension+resetTextToFind() org.apache.jmeter.visualizers.SearchTextExtension+resetTextToFind() java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.samplers.SampleResult+getDataType() org.apache.jmeter.samplers.SampleResult+getDataType() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+getResponseAsString(SampleResult) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+getResponseAsString(SampleResult) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showTextResponse(String) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showTextResponse(String) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderedResponse(String,SampleResult) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderedResponse(String,SampleResult) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderJSONResponse(String) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderJSONResponse(String) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderXMLResponse(SampleResult) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderXMLResponse(SampleResult) org.apache.jmeter.visualizers.SearchTextExtension+isEnabled() org.apache.jmeter.visualizers.SearchTextExtension+isEnabled() org.apache.jmeter.visualizers.SearchTextExtension+setEnabled(boolean) org.apache.jmeter.visualizers.SearchTextExtension+setEnabled(boolean) org.apache.jmeter.samplers.SampleResult+getResponseData() org.apache.jmeter.samplers.SampleResult+getResponseData() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showImage(Icon) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showImage(Icon) javax.swing.ImageIcon+ImageIcon(byte[]) org.apache.jmeter.visualizers.SearchTextExtension+isEnabled() org.apache.jmeter.visualizers.SearchTextExtension+isEnabled() org.apache.jmeter.visualizers.SearchTextExtension+setEnabled(boolean) org.apache.jmeter.visualizers.SearchTextExtension+setEnabled(boolean) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setupTabPaneForAssertionResult() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setupTabPaneForAssertionResult() java.lang.StringBuilder+StringBuilder(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(boolean) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(boolean) org.apache.jmeter.assertions.AssertionResult+isError() org.apache.jmeter.assertions.AssertionResult+isError() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(boolean) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(boolean) org.apache.jmeter.assertions.AssertionResult+isFailure() org.apache.jmeter.assertions.AssertionResult+isFailure() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) java.lang.StringBuilder+append(String) org.apache.jmeter.assertions.AssertionResult+getFailureMessage() org.apache.jmeter.assertions.AssertionResult+getFailureMessage() java.lang.StringBuilder+append(String) javax.swing.text.Document+insertString(int,String,AttributeSet) javax.swing.text.Document+insertString(int,String,AttributeSet) javax.swing.text.Document+getLength() javax.swing.text.Document+getLength() java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() javax.swing.JEditorPane+setText(String) javax.swing.JEditorPane+setText(String)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+stats org.apache.jmeter.visualizers.ViewResultsFullVisualizer+sampleDataField org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+sampleDataField org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+dateFormat org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+STYLE_REDIRECT org.apache.jmeter.visualizers.ViewResultsFullVisualizer+STYLE_CLIENT_ERROR org.apache.jmeter.visualizers.ViewResultsFullVisualizer+STYLE_SERVER_ERROR org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.samplers.SampleResult+TEXT org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+TEXT_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+HTML_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+JSON_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+XML_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+NL org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.apache.jmeter.visualizers.ViewResultsFullVisualizer+stats org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log,8854,159,1,"/** 
+ * Sets the right pane to correspond to the selected node of the left tree.
+ */
+","/**
+     * Sets the right pane to correspond to the selected node of the left tree.
+     */
+    public void valueChanged(TreeSelectionEvent e) {
+        log.debug(""Start : valueChanged1"");
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
+
+        if (log.isDebugEnabled()) {
+            log.debug(""valueChanged : selected node - "" + node);
+        }
+
+        StyledDocument statsDoc = stats.getStyledDocument();
+        try {
+            statsDoc.remove(0, statsDoc.getLength());
+            sampleDataField.setText(""""); // $NON-NLS-1$
+            results.setText(""""); // $NON-NLS-1$
+            if (node != null) {
+                Object userObject = node.getUserObject();
+                if(userObject instanceof SampleResult) {
+                    SampleResult res = (SampleResult) userObject;
+
+                    // We are displaying a SampleResult
+                    setupTabPaneForSampleResult();
+
+                    if (log.isDebugEnabled()) {
+                        log.debug(""valueChanged1 : sample result - "" + res);
+                        log.debug(""valueChanged1 : load time - "" + res.getTime());
+                    }
+
+                    String sd = res.getSamplerData();
+                    if (sd != null) {
+                        String rh = res.getRequestHeaders();
+                        if (rh != null) {
+                            StringBuilder sb = new StringBuilder(sd.length() + rh.length()+20);
+                            sb.append(sd);
+                            sb.append(""\n""); //$NON-NLS-1$
+                            sb.append(JMeterUtils.getResString(""view_results_request_headers"")); //$NON-NLS-1$
+                            sb.append(""\n""); //$NON-NLS-1$
+                            sb.append(rh);
+                            sd = sb.toString();
+                        }
+                        sampleDataField.setText(sd);
+                    }
+
+                    StringBuilder statsBuff = new StringBuilder(200);
+                    statsBuff.append(JMeterUtils.getResString(""view_results_thread_name"")).append(res.getThreadName()).append(NL); //$NON-NLS-1$
+                    String startTime = dateFormat.format(new Date(res.getStartTime()));
+                    statsBuff.append(JMeterUtils.getResString(""view_results_sample_start"")).append(startTime).append(NL); //$NON-NLS-1$
+                    statsBuff.append(JMeterUtils.getResString(""view_results_load_time"")).append(res.getTime()).append(NL); //$NON-NLS-1$
+                    statsBuff.append(JMeterUtils.getResString(""view_results_latency"")).append(res.getLatency()).append(NL); //$NON-NLS-1$
+                    statsBuff.append(JMeterUtils.getResString(""view_results_size_in_bytes"")).append(res.getBytes()).append(NL); //$NON-NLS-1$
+                    statsBuff.append(JMeterUtils.getResString(""view_results_sample_count"")).append(res.getSampleCount()).append(NL); //$NON-NLS-1$
+                    statsBuff.append(JMeterUtils.getResString(""view_results_error_count"")).append(res.getErrorCount()).append(NL); //$NON-NLS-1$
+                    statsDoc.insertString(statsDoc.getLength(), statsBuff.toString(), null);
+                    statsBuff = new StringBuilder(); //reset for reuse
+
+                    String responseCode = res.getResponseCode();
+                    if (log.isDebugEnabled()) {
+                        log.debug(""valueChanged1 : response code - "" + responseCode);
+                    }
+                    int responseLevel = 0;
+                    if (responseCode != null) {
+                        try {
+                            responseLevel = Integer.parseInt(responseCode) / 100;
+                        } catch (NumberFormatException numberFormatException) {
+                            // no need to change the foreground color
+                        }
+                    }
+
+                    Style style = null;
+                    switch (responseLevel) {
+                    case 3:
+                        style = statsDoc.getStyle(STYLE_REDIRECT);
+                        break;
+                    case 4:
+                        style = statsDoc.getStyle(STYLE_CLIENT_ERROR);
+                        break;
+                    case 5:
+                        style = statsDoc.getStyle(STYLE_SERVER_ERROR);
+                        break;
+                    }
+
+                    statsBuff.append(JMeterUtils.getResString(""view_results_response_code"")).append(responseCode).append(NL); //$NON-NLS-1$
+                    statsDoc.insertString(statsDoc.getLength(), statsBuff.toString(), style);
+                    statsBuff = new StringBuilder(100); //reset for reuse
+
+                    // response message label
+                    String responseMsgStr = res.getResponseMessage();
+
+                    if (log.isDebugEnabled()) {
+                        log.debug(""valueChanged1 : response message - "" + responseMsgStr);
+                    }
+                    statsBuff.append(JMeterUtils.getResString(""view_results_response_message"")).append(responseMsgStr).append(NL); //$NON-NLS-1$
+
+                    statsBuff.append(NL);
+                    statsBuff.append(JMeterUtils.getResString(""view_results_response_headers"")).append(NL); //$NON-NLS-1$
+                    statsBuff.append(res.getResponseHeaders()).append(NL);
+                    statsBuff.append(NL);
+                    final String samplerClass = res.getClass().getName();
+                    statsBuff.append(samplerClass.substring(1+samplerClass.lastIndexOf('.'))).append("" "" + JMeterUtils.getResString(""view_results_fields"")).append(NL); //$NON-NLS-1$
+                    statsBuff.append(""ContentType: "").append(res.getContentType()).append(NL);
+                    statsBuff.append(""DataEncoding: "").append(res.getDataEncodingNoDefault()).append(NL);
+                    statsDoc.insertString(statsDoc.getLength(), statsBuff.toString(), null);
+                    statsBuff = null; // Done
+
+                    // Reset search
+                    searchTextExtension.resetTextToFind();
+                    
+                    // get the text response and image icon
+                    // to determine which is NOT null
+                    if ((SampleResult.TEXT).equals(res.getDataType())) // equals(null) is OK
+                    {
+                        String response = getResponseAsString(res);
+                        if (command.equals(TEXT_COMMAND)) {
+                            showTextResponse(response);
+                        } else if (command.equals(HTML_COMMAND)) {
+                            showRenderedResponse(response, res);
+                        } else if (command.equals(JSON_COMMAND)) {
+                            showRenderJSONResponse(response);
+                        } else if (command.equals(XML_COMMAND)) {
+                            showRenderXMLResponse(res);
+                        }
+                        if (!searchTextExtension.isEnabled()) {
+                            searchTextExtension.setEnabled(true);
+                        }
+                    } else {
+                        byte[] responseBytes = res.getResponseData();
+                        if (responseBytes != null) {
+                            showImage(new ImageIcon(responseBytes)); //TODO implement other non-text types
+                            if (searchTextExtension.isEnabled()) {
+                                searchTextExtension.setEnabled(false);
+                            }
+                        }
+                    }
+                }
+                else if(userObject instanceof AssertionResult) {
+                    AssertionResult res = (AssertionResult) userObject;
+
+                    // We are displaying an AssertionResult
+                    setupTabPaneForAssertionResult();
+
+                    if (log.isDebugEnabled()) {
+                        log.debug(""valueChanged1 : sample result - "" + res);
+                    }
+
+                    StringBuilder statsBuff = new StringBuilder(100);
+                    statsBuff.append(JMeterUtils.getResString(""view_results_assertion_error"")).append(res.isError()).append(NL); //$NON-NLS-1$
+                    statsBuff.append(JMeterUtils.getResString(""view_results_assertion_failure"")).append(res.isFailure()).append(NL); //$NON-NLS-1$
+                    statsBuff.append(JMeterUtils.getResString(""view_results_assertion_failure_message"")).append(res.getFailureMessage()).append(NL); //$NON-NLS-1$
+                    statsDoc.insertString(statsDoc.getLength(), statsBuff.toString(), null);
+                    statsBuff = null;
+                }
+            }
+        } catch (BadLocationException exc) {
+            log.error(""Error setting statistics text"", exc);
+            stats.setText("""");
+        }
+        log.debug(""End : valueChanged1"");
+    }",False,False,"The function of this method is to update the right pane based on the selected node in the left tree. It retrieves information from the selected node and displays it in the right pane, including sample results, response codes, response messages, response headers, and assertion results.",True,"This code is a method called ""valueChanged"" that is triggered when the selection in a tree component changes. It updates the right pane with information based on the selected node, such as displaying sample results or assertion results, setting up the tab pane accordingly, and updating the statistics text."
+57,showImage(Icon),show image image ,Method,valueChanged(TreeSelectionEvent),,javax.swing.JLabel+setIcon(Icon) javax.swing.JLabel+setIcon(Icon) javax.swing.JScrollPane+setViewportView(Component) javax.swing.JScrollPane+setViewportView(Component) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean),org.apache.jmeter.visualizers.ViewResultsFullVisualizer+imageLabel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsScrollPane org.apache.jmeter.visualizers.ViewResultsFullVisualizer+imageLabel,166,5,2,,"private void showImage(Icon image) {
+        imageLabel.setIcon(image);
+        resultsScrollPane.setViewportView(imageLabel);
+        setEnabledButtons(false);
+    }",True,True,"The function of the method is to display an image by setting the icon of a label, setting the view of a scroll pane to the label, and disabling certain buttons.",False,The `showImage` method takes an `Icon` object as a parameter and updates the `imageLabel` with the provided image. It then sets the `imageLabel` as the view component of the `resultsScrollPane` and disables certain buttons.
+58,showTextResponse(String),show text response response ,Method,valueChanged(TreeSelectionEvent) actionPerformed(ActionEvent),,javax.swing.JEditorPane+setContentType(String) javax.swing.JEditorPane+setContentType(String) javax.swing.JEditorPane+setText(String) javax.swing.JEditorPane+setText(String) javax.swing.text.JTextComponent+setCaretPosition(int) javax.swing.text.JTextComponent+setCaretPosition(int) javax.swing.JScrollPane+setViewportView(Component) javax.swing.JScrollPane+setViewportView(Component) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean),org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsScrollPane org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results,312,8,2,,"private void showTextResponse(String response) {
+        results.setContentType(""text/plain""); // $NON-NLS-1$
+        results.setText(response == null ? """" : response); // $NON-NLS-1$
+        results.setCaretPosition(0);
+        resultsScrollPane.setViewportView(results);
+
+        setEnabledButtons(true);
+    }",False,True,"This method is used to display a text response in a user interface. It sets the content type of the display area to plain text, sets the text to the provided response (or an empty string if the response is null), sets the caret position to the beginning, and enables certain buttons.",False,"The method ""showTextResponse"" sets the content type of a text area to plain text, sets the text of the area to the given response (or an empty string if the response is null), scrolls the view to the top, and enables certain buttons."
+59,prettyJSON(String),pretty json json ,Method,showRenderJSONResponse(String),,"java.lang.StringBuilder+StringBuilder(int) java.lang.String+length() java.lang.String+length() java.lang.StringBuilder+StringBuilder() java.util.regex.Pattern+matcher(CharSequence) java.util.regex.Pattern+matcher(CharSequence) java.lang.String+length() java.lang.String+length() java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(CharSequence) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(CharSequence) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.StringBuilder+delete(int,int) java.lang.StringBuilder+delete(int,int) java.lang.String+length() java.lang.String+length() java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(CharSequence) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(CharSequence) java.lang.StringBuilder+append(char) java.lang.String+length() java.lang.String+length() java.lang.Character+isWhitespace(char) java.lang.Character+isWhitespace(char) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+length() java.lang.String+length() java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.util.regex.Matcher+find(int) java.util.regex.Matcher+find(int) java.lang.String+length() java.util.regex.Matcher+group() java.util.regex.Matcher+group() java.lang.String+length() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(CharSequence) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(CharSequence) java.lang.StringBuilder+append(String) java.util.regex.Matcher+group() java.util.regex.Matcher+group() java.util.regex.Matcher+end() java.util.regex.Matcher+end() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString()",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+VALUE_OR_PAIR_PATTERN,1944,52,10,,"private static String prettyJSON(String json) {
+        StringBuilder pretty = new StringBuilder(json.length() * 2); // Educated guess
+
+        final String tab = "":   ""; // $NON-NLS-1$
+        StringBuilder index = new StringBuilder();
+        String nl = """"; // $NON-NLS-1$
+
+        Matcher valueOrPair = VALUE_OR_PAIR_PATTERN.matcher(json);
+
+        boolean misparse = false;
+
+        for (int i = 0; i < json.length(); ) {
+            final char currentChar = json.charAt(i);
+            if ((currentChar == '{') || (currentChar == '[')) {
+                pretty.append(nl).append(index).append(currentChar);
+                i++;
+                index.append(tab);
+                misparse = false;
+            }
+            else if ((currentChar == '}') || (currentChar == ']')) {
+                if (index.length() > 0) {
+                    index.delete(0, tab.length());
+                }
+                pretty.append(nl).append(index).append(currentChar);
+                i++;
+                int j = i;
+                while ((j < json.length()) && Character.isWhitespace(json.charAt(j))) {
+                    j++;
+                }
+                if ((j < json.length()) && (json.charAt(j) == ',')) {
+                    pretty.append("",""); // $NON-NLS-1$
+                    i=j+1;
+                }
+                misparse = false;
+            }
+            else if (valueOrPair.find(i) && valueOrPair.group().length() > 0) {
+                pretty.append(nl).append(index).append(valueOrPair.group());
+                i=valueOrPair.end();
+                misparse = false;
+            }
+            else {
+                if (!misparse) {
+                    pretty.append(nl).append(""- Parse failed from:"");
+                }
+                pretty.append(currentChar);
+                i++;
+                misparse = true;
+            }
+            nl = ""\n""; // $NON-NLS-1$
+        }
+        return pretty.toString();
+    }",True,True,"The function ""prettyJSON"" takes a JSON string as input and returns a formatted version of the JSON string with proper indentation and line breaks.",False,"The `prettyJSON` method takes a JSON string as input and returns a formatted version of the JSON with proper indentation and line breaks. It uses a StringBuilder to build the formatted JSON and handles different JSON elements such as objects, arrays, and values."
+60,showRenderJSONResponse(String),show render json response response ,Method,valueChanged(TreeSelectionEvent) actionPerformed(ActionEvent),,javax.swing.JEditorPane+setContentType(String) javax.swing.JEditorPane+setContentType(String) javax.swing.JEditorPane+setText(String) javax.swing.JEditorPane+setText(String) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+prettyJSON(String) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+prettyJSON(String) javax.swing.text.JTextComponent+setCaretPosition(int) javax.swing.text.JTextComponent+setCaretPosition(int) javax.swing.JScrollPane+setViewportView(Component) javax.swing.JScrollPane+setViewportView(Component) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean),org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsScrollPane org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results,315,8,2,,"private void showRenderJSONResponse(String response) {
+        results.setContentType(""text/plain""); // $NON-NLS-1$
+        results.setText(response == null ? """" : prettyJSON(response));
+        results.setCaretPosition(0);
+        resultsScrollPane.setViewportView(results);
+
+        setEnabledButtons(true);
+    }",True,True,"This method is used to display a JSON response in a text area. It sets the content type of the text area to ""text/plain"", sets the text of the text area to the response (after formatting it as pretty JSON), scrolls the text area to the top, and enables some buttons.",False,"The method ""showRenderJSONResponse"" sets the content type of a results object to ""text/plain"" and sets the text of the results object to a formatted JSON response. It also enables certain buttons and scrolls the results object to the top."
+61,showRenderXMLResponse(SampleResult),show render xml response res ,Method,valueChanged(TreeSelectionEvent) actionPerformed(ActionEvent),,"javax.swing.JEditorPane+setContentType(String) javax.swing.JEditorPane+setContentType(String) javax.swing.text.JTextComponent+setCaretPosition(int) javax.swing.text.JTextComponent+setCaretPosition(int) org.apache.jmeter.samplers.SampleResult+getResponseData() org.apache.jmeter.samplers.SampleResult+getResponseData() java.io.ByteArrayInputStream+ByteArrayInputStream(byte[]) org.apache.jorphan.util.JOrphanUtils+startsWith(byte[],byte[],int) org.apache.jorphan.util.JOrphanUtils+startsWith(byte[],byte[],int) java.io.ByteArrayInputStream+skip(long) java.io.ByteArrayInputStream+skip(long) java.io.StringWriter+StringWriter() org.apache.jmeter.util.XPathUtil+makeTidyParser(boolean,boolean,boolean,StringWriter) org.apache.jmeter.util.XPathUtil+makeTidyParser(boolean,boolean,boolean,StringWriter) org.w3c.dom.Node+normalize() org.w3c.dom.Node+normalize() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showErrorMessageDialog(String,String,int) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showErrorMessageDialog(String,String,int) java.io.StringWriter+toString() java.io.StringWriter+toString() org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+DOMTreePanel(Document) javax.swing.JScrollPane+setViewportView(Component) javax.swing.JScrollPane+setViewportView(Component) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+XML_PFX org.apache.jmeter.visualizers.ViewResultsFullVisualizer+XML_PFX org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results javax.swing.JOptionPane+WARNING_MESSAGE org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsScrollPane,1272,31,2,,"private void showRenderXMLResponse(SampleResult res) {
+        results.setContentType(""text/xml""); // $NON-NLS-1$
+        results.setCaretPosition(0);
+        byte[] source = res.getResponseData();
+        final ByteArrayInputStream baIS = new ByteArrayInputStream(source);
+        for(int i=0; i<source.length-XML_PFX.length; i++){
+            if (JOrphanUtils.startsWith(source, XML_PFX, i)){
+                baIS.skip(i);// Skip the leading bytes (if any)
+                break;
+            }
+        }
+        Component view = results;
+
+        // there is also a javax.swing.text.Document class.
+        org.w3c.dom.Document document = null;
+
+        StringWriter sw = new StringWriter();
+        Tidy tidy = XPathUtil.makeTidyParser(true, true, true, sw);
+        document = tidy.parseDOM(baIS, null);
+        document.normalize();
+        if (tidy.getParseErrors() > 0) {
+            showErrorMessageDialog(sw.toString(),
+                    ""Tidy: "" + tidy.getParseErrors() + "" errors, "" + tidy.getParseWarnings() + "" warnings"",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+
+        JPanel domTreePanel = new DOMTreePanel(document);
+        view = domTreePanel;
+        resultsScrollPane.setViewportView(view);
+        setEnabledButtons(true);
+    }",False,True,"The function of the method is to show the rendered XML response in a GUI component. It sets the content type, parses the XML response, normalizes it, and displays it in a DOM tree panel. It also handles any parse errors and enables buttons.",False,"The `showRenderXMLResponse` method takes a `SampleResult` object as input and displays the XML response in a Swing component. It uses Tidy to parse and normalize the XML document, and if there are any parse errors, it shows an error message dialog. Finally, it sets the view of the response in a scroll pane and enables certain buttons."
+62,getResponseAsString(SampleResult),get response as string res ,Method,valueChanged(TreeSelectionEvent) actionPerformed(ActionEvent),,java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.samplers.SampleResult+getDataType() org.apache.jmeter.samplers.SampleResult+getDataType() org.apache.jmeter.samplers.SampleResult+getResponseData() org.apache.jmeter.samplers.SampleResult+getResponseData() org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.samplers.SampleResult+getResponseDataAsString() org.apache.jmeter.samplers.SampleResult+getResponseDataAsString(),org.apache.jmeter.samplers.SampleResult+TEXT org.apache.jmeter.visualizers.ViewResultsFullVisualizer+MAX_DISPLAY_SIZE org.apache.jmeter.visualizers.ViewResultsFullVisualizer+MAX_DISPLAY_SIZE org.apache.jmeter.visualizers.ViewResultsFullVisualizer+MAX_DISPLAY_SIZE org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log,1055,23,10,,"private static String getResponseAsString(SampleResult res) {
+
+        String response = null;
+        if ((SampleResult.TEXT).equals(res.getDataType())) {
+            // Showing large strings can be VERY costly, so we will avoid
+            // doing so if the response
+            // data is larger than 200K. TODO: instead, we could delay doing
+            // the result.setText
+            // call until the user chooses the ""Response data"" tab. Plus we
+            // could warn the user
+            // if this happens and revert the choice if he doesn't confirm
+            // he's ready to wait.
+            int len = res.getResponseData().length;
+            if (MAX_DISPLAY_SIZE > 0 && len > MAX_DISPLAY_SIZE) {
+                response = JMeterUtils.getResString(""view_results_response_too_large_message"") //$NON-NLS-1$
+                    + len + "" > Max: ""+MAX_DISPLAY_SIZE;
+                log.warn(response);
+            } else {
+                response = res.getResponseDataAsString();
+            }
+        }
+        return response;
+    }",False,True,"The function of this method is to get the response data as a string from a SampleResult object. It checks if the data type is text and if the response data is larger than a specified size, it warns the user and returns a message indicating that the response is too large. Otherwise, it returns the response data as a string.",False,"This code defines a private static method called ""getResponseAsString"" that takes a SampleResult object as a parameter. It checks if the data type of the SampleResult is text and if the response data is larger than a specified maximum size. If the response data is within the size limit, it returns the response data as a string; otherwise, it returns a warning message."
+63,actionPerformed(ActionEvent),action performed e display the response as text or as rendered html change the text on the button appropriate to the current display param e the action event being processed ,Method,,,"java.awt.event.ActionEvent+getActionCommand() java.awt.event.ActionEvent+getActionCommand() java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) javax.swing.JTree+getLastSelectedPathComponent() javax.swing.JTree+getLastSelectedPathComponent() javax.swing.JEditorPane+setText(String) javax.swing.JEditorPane+setText(String) org.apache.jmeter.visualizers.SearchTextExtension+resetTextToFind() org.apache.jmeter.visualizers.SearchTextExtension+resetTextToFind() javax.swing.tree.DefaultMutableTreeNode+getUserObject() javax.swing.tree.DefaultMutableTreeNode+getUserObject() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+getResponseAsString(SampleResult) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+getResponseAsString(SampleResult) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showTextResponse(String) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showTextResponse(String) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderedResponse(String,SampleResult) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderedResponse(String,SampleResult) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderJSONResponse(String) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderJSONResponse(String) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderXMLResponse(SampleResult) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+showRenderXMLResponse(SampleResult)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+TEXT_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+HTML_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+JSON_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+XML_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textMode org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+TEXT_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+TEXT_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+HTML_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+JSON_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+XML_COMMAND,1387,38,1,"/** 
+ * Display the response as text or as rendered HTML. Change the text on the button appropriate to the current display.
+ * @param e the ActionEvent being processed
+ */
+","/**
+     * Display the response as text or as rendered HTML. Change the text on the
+     * button appropriate to the current display.
+     *
+     * @param e
+     *            the ActionEvent being processed
+     */
+    public void actionPerformed(ActionEvent e) {
+        command = e.getActionCommand();
+
+        if (command != null
+                && (command.equals(TEXT_COMMAND) || command.equals(HTML_COMMAND)
+                 || command.equals(JSON_COMMAND) || command.equals(XML_COMMAND))) {
+
+            textMode = command.equals(TEXT_COMMAND);
+
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
+
+            if (node == null) {
+                results.setText("""");
+                return;
+            }
+            searchTextExtension.resetTextToFind();
+            
+            SampleResult res = (SampleResult) node.getUserObject();
+            String response = getResponseAsString(res);
+
+            if (command.equals(TEXT_COMMAND)) {
+                showTextResponse(response);
+            } else if (command.equals(HTML_COMMAND)) {
+                showRenderedResponse(response, res);
+            } else if (command.equals(JSON_COMMAND)) {
+                showRenderJSONResponse(response);
+            } else if (command.equals(XML_COMMAND)) {
+                showRenderXMLResponse(res);
+            }
+        }
+    }",False,True,"This method is an event handler that is triggered when a button is clicked. It determines the type of response to display (text, HTML, JSON, or XML) based on the button's action command, and then calls the appropriate method to display the response.",True,"This code is an event handler for a button click. It determines the type of response to display (text, HTML, JSON, or XML) based on the button clicked and the selected tree node. It then calls different methods to display the response accordingly."
+64,"showRenderedResponse(String,SampleResult)",show rendered response response res ,Method,valueChanged(TreeSelectionEvent) actionPerformed(ActionEvent),,"javax.swing.JEditorPane+setText(String) javax.swing.JEditorPane+setText(String) java.lang.String+indexOf(String) java.lang.String+indexOf(String) java.lang.String+indexOf(String) java.lang.String+indexOf(String) java.lang.String+substring(int) java.lang.String+substring(int) javax.swing.JEditorPane+setEditorKitForContentType(String,EditorKit) javax.swing.JEditorPane+setEditorKitForContentType(String,EditorKit) javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.JEditorPane+setContentType(String) javax.swing.JEditorPane+setContentType(String) javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.text.Document+putProperty(Object,Object) javax.swing.text.JTextComponent+getDocument() javax.swing.text.JTextComponent+getDocument() javax.swing.text.Document+putProperty(Object,Object) org.apache.jmeter.samplers.SampleResult+getURL() org.apache.jmeter.samplers.SampleResult+getURL() javax.swing.text.Document+putProperty(Object,Object) javax.swing.text.JTextComponent+getDocument() javax.swing.text.JTextComponent+getDocument() javax.swing.text.Document+putProperty(Object,Object) javax.swing.JEditorPane+setText(String) javax.swing.JEditorPane+setText(String) javax.swing.text.JTextComponent+setCaretPosition(int) javax.swing.text.JTextComponent+setCaretPosition(int) javax.swing.JScrollPane+setViewportView(Component) javax.swing.JScrollPane+setViewportView(Component) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+setEnabledButtons(boolean)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+TEXT_HTML org.apache.jmeter.visualizers.ViewResultsFullVisualizer+downloadAll org.apache.jmeter.visualizers.ViewResultsFullVisualizer+defaultHtmlEditor org.apache.jmeter.visualizers.ViewResultsFullVisualizer+customisedEditor org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+TEXT_HTML org.apache.jmeter.visualizers.ViewResultsFullVisualizer+downloadAll org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results javax.swing.text.Document+StreamDescriptionProperty org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results java.lang.Boolean+TRUE org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsScrollPane org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results,1766,51,2,,"private void showRenderedResponse(String response, SampleResult res) {
+        if (response == null) {
+            results.setText("""");
+            return;
+        }
+
+        int htmlIndex = response.indexOf(""<HTML""); // could be <HTML lang=""""> // $NON-NLS-1$
+
+        // Look for a case variation
+        if (htmlIndex < 0) {
+            htmlIndex = response.indexOf(""<html""); // ditto // $NON-NLS-1$
+        }
+
+        // If we still can't find it, just try using all of the text
+        if (htmlIndex < 0) {
+            htmlIndex = 0;
+        }
+
+        String html = response.substring(htmlIndex);
+
+        /*
+         * To disable downloading and rendering of images and frames, enable the
+         * editor-kit. The Stream property can then be
+         */
+
+        // Must be done before setContentType
+        results.setEditorKitForContentType(TEXT_HTML, downloadAll.isSelected() ? defaultHtmlEditor : customisedEditor);
+
+        results.setContentType(TEXT_HTML);
+
+        if (downloadAll.isSelected()) {
+            // Allow JMeter to render frames (and relative images)
+            // Must be done after setContentType [Why?]
+            results.getDocument().putProperty(Document.StreamDescriptionProperty, res.getURL());
+        }
+
+        /*
+         * Get round problems parsing <META http-equiv='content-type'
+         * content='text/html; charset=utf-8'> See
+         * http://issues.apache.org/bugzilla/show_bug.cgi?id=23315
+         *
+         * Is this due to a bug in Java?
+         */
+        results.getDocument().putProperty(""IgnoreCharsetDirective"", Boolean.TRUE); // $NON-NLS-1$
+
+        results.setText(html);
+        results.setCaretPosition(0);
+        resultsScrollPane.setViewportView(results);
+
+        setEnabledButtons(true);
+    }",True,True,"The function of the method is to display a rendered response in a text editor. It checks if the response is null, sets the text to empty if it is, and then extracts the HTML content from the response. It sets the editor kit and content type for the text editor, and enables rendering of frames and images if specified. It also handles parsing issues related to the charset directive. Finally, it sets the text in the editor, sets the caret position to the beginning, and enables certain buttons.",False,"The `showRenderedResponse` method takes a response string and a sample result as input. It extracts the HTML content from the response, sets the content type of the results, and displays the HTML in a text area. It also handles the rendering of frames and images based on user preferences."
+65,createHtmlOrTextPane(),create html or text pane ,Method,createResponseDataPanel(),,"javax.swing.ButtonGroup+ButtonGroup() java.awt.Font+Font(String,int,int) java.awt.Font+Font(String,int,int) javax.swing.JLabel+JLabel(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JComponent+setFont(Font) javax.swing.JComponent+setFont(Font) javax.swing.JRadioButton+JRadioButton(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JComponent+setFont(Font) javax.swing.JComponent+setFont(Font) javax.swing.AbstractButton+setActionCommand(String) javax.swing.AbstractButton+setActionCommand(String) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+setSelected(boolean) javax.swing.AbstractButton+setSelected(boolean) javax.swing.ButtonGroup+add(AbstractButton) javax.swing.ButtonGroup+add(AbstractButton) javax.swing.JRadioButton+JRadioButton(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JComponent+setFont(Font) javax.swing.JComponent+setFont(Font) javax.swing.AbstractButton+setActionCommand(String) javax.swing.AbstractButton+setActionCommand(String) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+setSelected(boolean) javax.swing.AbstractButton+setSelected(boolean) javax.swing.ButtonGroup+add(AbstractButton) javax.swing.ButtonGroup+add(AbstractButton) javax.swing.JRadioButton+JRadioButton(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JComponent+setFont(Font) javax.swing.JComponent+setFont(Font) javax.swing.AbstractButton+setActionCommand(String) javax.swing.AbstractButton+setActionCommand(String) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+setSelected(boolean) javax.swing.AbstractButton+setSelected(boolean) javax.swing.ButtonGroup+add(AbstractButton) javax.swing.ButtonGroup+add(AbstractButton) javax.swing.JRadioButton+JRadioButton(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JComponent+setFont(Font) javax.swing.JComponent+setFont(Font) javax.swing.AbstractButton+setActionCommand(String) javax.swing.AbstractButton+setActionCommand(String) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+setSelected(boolean) javax.swing.AbstractButton+setSelected(boolean) javax.swing.ButtonGroup+add(AbstractButton) javax.swing.ButtonGroup+add(AbstractButton) javax.swing.JCheckBox+JCheckBox(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JComponent+setFont(Font) javax.swing.JComponent+setFont(Font) javax.swing.JPanel+JPanel() java.awt.Container+setLayout(LayoutManager) java.awt.Container+setLayout(LayoutManager) javax.swing.BoxLayout+BoxLayout(Container,int) javax.swing.JComponent+setBorder(Border) javax.swing.JComponent+setBorder(Border) javax.swing.BorderFactory+createEmptyBorder(int,int,int,int) javax.swing.BorderFactory+createEmptyBorder(int,int,int,int) java.awt.Container+add(Component) java.awt.Container+add(Component) org.apache.jmeter.visualizers.SearchTextExtension+createShowSearchPanel() org.apache.jmeter.visualizers.SearchTextExtension+createShowSearchPanel() java.awt.Container+add(Component) java.awt.Container+add(Component) javax.swing.Box+createRigidArea(Dimension) javax.swing.Box+createRigidArea(Dimension) java.awt.Dimension+Dimension(int,int) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component)",java.awt.Font+PLAIN java.awt.Font+BOLD org.apache.jmeter.visualizers.ViewResultsFullVisualizer+renderLabel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+renderLabel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+TEXT_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textMode org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+htmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+htmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+htmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+HTML_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+htmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+htmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textMode org.apache.jmeter.visualizers.ViewResultsFullVisualizer+htmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jsonButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jsonButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jsonButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+JSON_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jsonButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jsonButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textMode org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jsonButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+xmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+xmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+xmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+XML_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+xmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+xmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textMode org.apache.jmeter.visualizers.ViewResultsFullVisualizer+xmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+downloadAll org.apache.jmeter.visualizers.ViewResultsFullVisualizer+downloadAll javax.swing.BoxLayout+X_AXIS org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+renderLabel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+htmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+xmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jsonButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+downloadAll,2268,54,2,,"private Component createHtmlOrTextPane() {
+        ButtonGroup group = new ButtonGroup();
+        Font font = new Font(""SansSerif"", Font.PLAIN, 10);
+        Font fontBold = new Font(""SansSerif"", Font.BOLD, 10);
+
+        renderLabel = new JLabel(JMeterUtils
+                .getResString(""view_results_render"")); // $NON-NLS-1$
+        renderLabel.setFont(fontBold);
+
+        textButton = new JRadioButton(JMeterUtils.getResString(""view_results_render_text"")); // $NON-NLS-1$
+        textButton.setFont(font);
+        textButton.setActionCommand(TEXT_COMMAND);
+        textButton.addActionListener(this);
+        textButton.setSelected(textMode);
+        group.add(textButton);
+
+        htmlButton = new JRadioButton(JMeterUtils.getResString(""view_results_render_html"")); // $NON-NLS-1$
+        htmlButton.setFont(font);
+        htmlButton.setActionCommand(HTML_COMMAND);
+        htmlButton.addActionListener(this);
+        htmlButton.setSelected(!textMode);
+        group.add(htmlButton);
+
+        jsonButton = new JRadioButton(JMeterUtils.getResString(""view_results_render_json"")); // $NON-NLS-1$
+        jsonButton.setFont(font);
+        jsonButton.setActionCommand(JSON_COMMAND);
+        jsonButton.addActionListener(this);
+        jsonButton.setSelected(!textMode);
+        group.add(jsonButton);
+
+        xmlButton = new JRadioButton(JMeterUtils.getResString(""view_results_render_xml"")); // $NON-NLS-1$
+        xmlButton.setFont(font);
+        xmlButton.setActionCommand(XML_COMMAND);
+        xmlButton.addActionListener(this);
+        xmlButton.setSelected(!textMode);
+        group.add(xmlButton);
+
+        downloadAll = new JCheckBox(JMeterUtils.getResString(""view_results_render_embedded"")); // $NON-NLS-1$
+        downloadAll.setFont(font);
+        
+        JPanel pane = new JPanel();
+        pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
+        pane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        pane.add(searchTextExtension.createShowSearchPanel());
+        pane.add(Box.createRigidArea(new Dimension(30, 0)));
+        pane.add(renderLabel);
+        pane.add(textButton);
+        pane.add(htmlButton);
+        pane.add(xmlButton);
+        pane.add(jsonButton);
+        pane.add(downloadAll);
+        
+        return pane;
+    }",False,True,The function of the method is to create and return a JPanel component that contains various buttons and checkboxes for rendering different types of results.,False,"This code creates a JPanel with various components including radio buttons, checkboxes, and labels. It sets the fonts and action commands for the buttons, and adds them to a button group. The JPanel is then returned as the result of the method."
+66,init(),init initialize this visualizer ,Method,ViewResultsFullVisualizer(),,"java.awt.Container+setLayout(LayoutManager) java.awt.Container+setLayout(LayoutManager) java.awt.BorderLayout+BorderLayout(int,int) javax.swing.JComponent+setBorder(Border) javax.swing.JComponent+setBorder(Border) org.apache.jmeter.gui.AbstractJMeterGuiComponent+makeBorder() org.apache.jmeter.gui.AbstractJMeterGuiComponent+makeBorder() java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object) org.apache.jmeter.visualizers.gui.AbstractVisualizer+makeTitlePanel() org.apache.jmeter.visualizers.gui.AbstractVisualizer+makeTitlePanel() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createLeftPanel() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createLeftPanel() javax.swing.JTabbedPane+JTabbedPane() javax.swing.JTabbedPane+addTab(String,Component) javax.swing.JTabbedPane+addTab(String,Component) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createResponseMetadataPanel() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createResponseMetadataPanel() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createRequestPanel() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createRequestPanel() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createResponseDataPanel() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createResponseDataPanel() javax.swing.JSplitPane+JSplitPane(int,Component,Component) java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object) org.apache.jmeter.visualizers.SearchTextExtension+init(JPanel) org.apache.jmeter.visualizers.SearchTextExtension+init(JPanel)",java.awt.BorderLayout+NORTH org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+requestPane org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsPane javax.swing.JSplitPane+HORIZONTAL_SPLIT org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide java.awt.BorderLayout+CENTER org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsPane,789,22,2,"/** 
+ * Initialize this visualizer
+ */
+","/**
+     * Initialize this visualizer
+     */
+    private void init() {
+        setLayout(new BorderLayout(0, 5));
+        setBorder(makeBorder());
+
+        add(makeTitlePanel(), BorderLayout.NORTH);
+
+        Component leftSide = createLeftPanel();
+        rightSide = new JTabbedPane();
+        // Add the common tab
+        rightSide.addTab(JMeterUtils.getResString(""view_results_tab_sampler""), createResponseMetadataPanel()); // $NON-NLS-1$
+        // Create the panels for the other tabs
+        requestPane = createRequestPanel();
+        resultsPane = createResponseDataPanel();
+
+        JSplitPane mainSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftSide, rightSide);
+        add(mainSplit, BorderLayout.CENTER);
+        
+        searchTextExtension.init(resultsPane);
+    }",False,True,"The function initializes a visualizer by setting its layout, border, and adding components to it. It also creates and adds panels to a tabbed pane, creates a split pane, and initializes a search text extension.",True,"The `init()` method initializes a visualizer by setting its layout, adding a title panel, creating a left panel and a tabbed pane for the right side, and adding a split pane to the center. It also initializes a search text extension for the results pane."
+67,setupTabPaneForSampleResult(),setup tab pane for sample result ,Method,valueChanged(TreeSelectionEvent),,"javax.swing.JTabbedPane+setTitleAt(int,String) javax.swing.JTabbedPane+setTitleAt(int,String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JTabbedPane+addTab(String,Component) javax.swing.JTabbedPane+addTab(String,Component) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JTabbedPane+addTab(String,Component) javax.swing.JTabbedPane+addTab(String,Component) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+requestPane org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsPane,701,11,2,,"private void setupTabPaneForSampleResult() {
+        // Set the title for the first tab
+        rightSide.setTitleAt(0, JMeterUtils.getResString(""view_results_tab_sampler"")); //$NON-NLS-1$
+        // Add the other tabs if not present
+        if(rightSide.indexOfTab(JMeterUtils.getResString(""view_results_tab_request"")) < 0) { // $NON-NLS-1$
+            rightSide.addTab(JMeterUtils.getResString(""view_results_tab_request""), requestPane); // $NON-NLS-1$
+        }
+        if(rightSide.indexOfTab(JMeterUtils.getResString(""view_results_tab_response"")) < 0) { // $NON-NLS-1$
+            rightSide.addTab(JMeterUtils.getResString(""view_results_tab_response""), resultsPane); // $NON-NLS-1$
+        }
+    }",True,True,This method sets up the tab pane for displaying sample results. It sets the title for the first tab and adds additional tabs if they are not already present.,True,"The method ""setupTabPaneForSampleResult"" sets the title for the first tab in a tab pane. It also adds two additional tabs, ""view_results_tab_request"" and ""view_results_tab_response"", if they are not already present in the tab pane."
+68,setupTabPaneForAssertionResult(),setup tab pane for assertion result ,Method,valueChanged(TreeSelectionEvent),,"javax.swing.JTabbedPane+setTitleAt(int,String) javax.swing.JTabbedPane+setTitleAt(int,String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JTabbedPane+removeTabAt(int) javax.swing.JTabbedPane+removeTabAt(int) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) org.apache.jmeter.util.JMeterUtils+getResString(String) org.apache.jmeter.util.JMeterUtils+getResString(String) javax.swing.JTabbedPane+removeTabAt(int) javax.swing.JTabbedPane+removeTabAt(int)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide org.apache.jmeter.visualizers.ViewResultsFullVisualizer+rightSide,683,13,2,,"private void setupTabPaneForAssertionResult() {
+        // Set the title for the first tab
+        rightSide.setTitleAt(0, JMeterUtils.getResString(""view_results_tab_assertion"")); //$NON-NLS-1$
+        // Remove the other tabs if present
+        int requestTabIndex = rightSide.indexOfTab(JMeterUtils.getResString(""view_results_tab_request"")); // $NON-NLS-1$
+        if(requestTabIndex >= 0) {
+            rightSide.removeTabAt(requestTabIndex);
+        }
+        int responseTabIndex = rightSide.indexOfTab(JMeterUtils.getResString(""view_results_tab_response"")); // $NON-NLS-1$
+        if(responseTabIndex >= 0) {
+            rightSide.removeTabAt(responseTabIndex);
+        }
+    }",True,True,The function sets up the tab pane for displaying assertion results. It sets the title for the first tab and removes any other tabs related to request and response if present.,True,This code is a private method that sets up a tab pane for displaying assertion results. It sets the title for the first tab and removes any other tabs related to request and response if they are present.
+69,createLeftPanel(),create left panel ,Method,init(),,"org.apache.jmeter.samplers.SampleResult+SampleResult() org.apache.jmeter.samplers.SampleResult+setSampleLabel(String) org.apache.jmeter.samplers.SampleResult+setSampleLabel(String) org.apache.jmeter.samplers.SampleResult+setSuccessful(boolean) org.apache.jmeter.samplers.SampleResult+setSuccessful(boolean) javax.swing.tree.DefaultMutableTreeNode+DefaultMutableTreeNode(Object) javax.swing.tree.DefaultTreeModel+DefaultTreeModel(TreeNode) javax.swing.JTree+JTree(TreeModel) javax.swing.JTree+setCellRenderer(TreeCellRenderer) javax.swing.JTree+setCellRenderer(TreeCellRenderer) org.apache.jmeter.visualizers.ViewResultsFullVisualizer.ResultsNodeRenderer+ResultsNodeRenderer() javax.swing.tree.TreeSelectionModel+setSelectionMode(int) javax.swing.JTree+getSelectionModel() javax.swing.JTree+getSelectionModel() javax.swing.tree.TreeSelectionModel+setSelectionMode(int) javax.swing.JTree+addTreeSelectionListener(TreeSelectionListener) javax.swing.JTree+addTreeSelectionListener(TreeSelectionListener) javax.swing.JTree+setRootVisible(boolean) javax.swing.JTree+setRootVisible(boolean) javax.swing.JTree+setShowsRootHandles(boolean) javax.swing.JTree+setShowsRootHandles(boolean) javax.swing.JScrollPane+JScrollPane(Component) javax.swing.JComponent+setPreferredSize(Dimension) javax.swing.JComponent+setPreferredSize(Dimension) java.awt.Dimension+Dimension(int,int)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+root org.apache.jmeter.visualizers.ViewResultsFullVisualizer+treeModel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+root org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer+treeModel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree javax.swing.tree.TreeSelectionModel+SINGLE_TREE_SELECTION org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jTree,763,18,2,,"private Component createLeftPanel() {
+        SampleResult rootSampleResult = new SampleResult();
+        rootSampleResult.setSampleLabel(""Root"");
+        rootSampleResult.setSuccessful(true);
+        root = new DefaultMutableTreeNode(rootSampleResult);
+
+        treeModel = new DefaultTreeModel(root);
+        jTree = new JTree(treeModel);
+        jTree.setCellRenderer(new ResultsNodeRenderer());
+        jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        jTree.addTreeSelectionListener(this);
+        jTree.setRootVisible(false);
+        jTree.setShowsRootHandles(true);
+
+        JScrollPane treePane = new JScrollPane(jTree);
+        treePane.setPreferredSize(new Dimension(200, 300));
+        return treePane;
+    }",False,False,The function creates and returns a left panel containing a JTree component with a custom renderer and selection listener. The JTree is configured to display a tree structure with root node hidden and handles visible.,False,This code creates a left panel containing a JTree component with a custom cell renderer. The JTree is configured to allow single tree selection and has its root node hidden. The panel is then wrapped in a JScrollPane and returned as a Component.
+70,createResponseMetadataPanel(),create response metadata panel ,Method,init(),,"javax.swing.JTextPane+JTextPane() javax.swing.text.JTextComponent+setEditable(boolean) javax.swing.text.JTextComponent+setEditable(boolean) javax.swing.JComponent+setBackground(Color) javax.swing.JComponent+setBackground(Color) java.awt.Component+getBackground() java.awt.Component+getBackground() javax.swing.text.JTextComponent+getDocument() javax.swing.text.JTextComponent+getDocument() javax.swing.text.StyledDocument+addStyle(String,Style) javax.swing.text.StyledDocument+addStyle(String,Style) javax.swing.text.StyleConstants+setForeground(MutableAttributeSet,Color) javax.swing.text.StyleConstants+setForeground(MutableAttributeSet,Color) javax.swing.text.StyledDocument+addStyle(String,Style) javax.swing.text.StyledDocument+addStyle(String,Style) javax.swing.text.StyleConstants+setForeground(MutableAttributeSet,Color) javax.swing.text.StyleConstants+setForeground(MutableAttributeSet,Color) javax.swing.text.StyledDocument+addStyle(String,Style) javax.swing.text.StyledDocument+addStyle(String,Style) javax.swing.text.StyleConstants+setForeground(MutableAttributeSet,Color) javax.swing.text.StyleConstants+setForeground(MutableAttributeSet,Color) org.apache.jmeter.gui.AbstractJMeterGuiComponent+makeScrollPane(Component) org.apache.jmeter.gui.AbstractJMeterGuiComponent+makeScrollPane(Component) javax.swing.JComponent+setBorder(Border) javax.swing.JComponent+setBorder(Border) javax.swing.BorderFactory+createEmptyBorder(int,int,int,int) javax.swing.BorderFactory+createEmptyBorder(int,int,int,int)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+stats org.apache.jmeter.visualizers.ViewResultsFullVisualizer+stats org.apache.jmeter.visualizers.ViewResultsFullVisualizer+stats org.apache.jmeter.visualizers.ViewResultsFullVisualizer+stats org.apache.jmeter.visualizers.ViewResultsFullVisualizer+STYLE_REDIRECT org.apache.jmeter.visualizers.ViewResultsFullVisualizer+REDIRECT_COLOR org.apache.jmeter.visualizers.ViewResultsFullVisualizer+STYLE_CLIENT_ERROR org.apache.jmeter.visualizers.ViewResultsFullVisualizer+CLIENT_ERROR_COLOR org.apache.jmeter.visualizers.ViewResultsFullVisualizer+STYLE_SERVER_ERROR org.apache.jmeter.visualizers.ViewResultsFullVisualizer+SERVER_ERROR_COLOR org.apache.jmeter.visualizers.ViewResultsFullVisualizer+stats,809,21,2,,"private Component createResponseMetadataPanel() {
+        stats = new JTextPane();
+        stats.setEditable(false);
+        stats.setBackground(getBackground());
+
+        // Add styles to use for different types of status messages
+        StyledDocument doc = (StyledDocument) stats.getDocument();
+
+        Style style = doc.addStyle(STYLE_REDIRECT, null);
+        StyleConstants.setForeground(style, REDIRECT_COLOR);
+
+        style = doc.addStyle(STYLE_CLIENT_ERROR, null);
+        StyleConstants.setForeground(style, CLIENT_ERROR_COLOR);
+
+        style = doc.addStyle(STYLE_SERVER_ERROR, null);
+        StyleConstants.setForeground(style, SERVER_ERROR_COLOR);
+
+        JScrollPane pane = makeScrollPane(stats);
+        pane.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        return pane;
+    }",True,True,The function creates a panel with a JTextPane component that displays response metadata. It also adds different styles to the JTextPane for different types of status messages. The panel is then placed inside a JScrollPane and returned.,False,"The code creates a panel containing a JTextPane component for displaying response metadata. It adds different styles to the JTextPane for different types of status messages (redirect, client error, server error). The panel is then wrapped in a JScrollPane and returned."
+71,createRequestPanel(),create request panel ,Method,init(),,"javax.swing.JTextArea+JTextArea() javax.swing.text.JTextComponent+setEditable(boolean) javax.swing.text.JTextComponent+setEditable(boolean) javax.swing.JTextArea+setLineWrap(boolean) javax.swing.JTextArea+setLineWrap(boolean) javax.swing.JTextArea+setWrapStyleWord(boolean) javax.swing.JTextArea+setWrapStyleWord(boolean) javax.swing.JPanel+JPanel(LayoutManager) java.awt.BorderLayout+BorderLayout(int,int) java.awt.Container+add(Component) java.awt.Container+add(Component) org.apache.jmeter.gui.AbstractJMeterGuiComponent+makeScrollPane(Component) org.apache.jmeter.gui.AbstractJMeterGuiComponent+makeScrollPane(Component)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+sampleDataField org.apache.jmeter.visualizers.ViewResultsFullVisualizer+sampleDataField org.apache.jmeter.visualizers.ViewResultsFullVisualizer+sampleDataField org.apache.jmeter.visualizers.ViewResultsFullVisualizer+sampleDataField org.apache.jmeter.visualizers.ViewResultsFullVisualizer+sampleDataField,352,10,2,,"private JPanel createRequestPanel() {
+        sampleDataField = new JTextArea();
+        sampleDataField.setEditable(false);
+        sampleDataField.setLineWrap(true);
+        sampleDataField.setWrapStyleWord(true);
+
+        JPanel pane = new JPanel(new BorderLayout(0, 5));
+        pane.add(makeScrollPane(sampleDataField));
+        return pane;
+    }",True,True,"This method creates a JPanel that contains a JTextArea for displaying sample data. The JTextArea is set to be non-editable, with line wrapping and word wrapping enabled. The JPanel is then returned.",False,"The code defines a private method called `createRequestPanel()` that creates and returns a JPanel. The JPanel contains a JTextArea component with specific settings, and it is wrapped in a scroll pane before being added to the JPanel."
+72,createResponseDataPanel(),create response data panel ,Method,init(),,"javax.swing.JEditorPane+JEditorPane() javax.swing.text.JTextComponent+setEditable(boolean) javax.swing.text.JTextComponent+setEditable(boolean) org.apache.jmeter.gui.AbstractJMeterGuiComponent+makeScrollPane(Component) org.apache.jmeter.gui.AbstractJMeterGuiComponent+makeScrollPane(Component) javax.swing.JLabel+JLabel() org.apache.jmeter.visualizers.SearchTextExtension+SearchTextExtension() org.apache.jmeter.visualizers.SearchTextExtension+createSearchTextPanel() org.apache.jmeter.visualizers.SearchTextExtension+createSearchTextPanel() org.apache.jmeter.visualizers.SearchTextExtension+setResults(JEditorPane) org.apache.jmeter.visualizers.SearchTextExtension+setResults(JEditorPane) javax.swing.JComponent+setVisible(boolean) javax.swing.JComponent+setVisible(boolean) javax.swing.JPanel+JPanel(LayoutManager) java.awt.BorderLayout+BorderLayout() java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object) org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createHtmlOrTextPane() org.apache.jmeter.visualizers.ViewResultsFullVisualizer+createHtmlOrTextPane() java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object) javax.swing.JPanel+JPanel(LayoutManager) java.awt.BorderLayout+BorderLayout() java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object)",org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsScrollPane org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+imageLabel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchPanel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchTextExtension org.apache.jmeter.visualizers.ViewResultsFullVisualizer+results org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchPanel java.awt.BorderLayout+CENTER org.apache.jmeter.visualizers.ViewResultsFullVisualizer+searchPanel java.awt.BorderLayout+SOUTH org.apache.jmeter.visualizers.ViewResultsFullVisualizer+resultsScrollPane java.awt.BorderLayout+CENTER java.awt.BorderLayout+SOUTH,843,22,2,,"private JPanel createResponseDataPanel() {
+        results = new JEditorPane();
+        results.setEditable(false);
+
+        resultsScrollPane = makeScrollPane(results);
+        imageLabel = new JLabel();
+
+        // Add search text extension
+        searchTextExtension = new SearchTextExtension();
+        searchPanel = searchTextExtension.createSearchTextPanel();
+        searchTextExtension.setResults(results);
+        searchPanel.setVisible(false);
+        JPanel panelSouth = new JPanel(new BorderLayout());
+        panelSouth.add(createHtmlOrTextPane(), BorderLayout.CENTER);
+        panelSouth.add(searchPanel, BorderLayout.SOUTH);
+        
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(resultsScrollPane, BorderLayout.CENTER);
+        panel.add(panelSouth, BorderLayout.SOUTH);
+
+        return panel;
+    }",True,True,"The function of the method ""createResponseDataPanel"" is to create and return a JPanel that contains various components such as a JEditorPane, a JScrollPane, a JLabel, a SearchTextExtension, and other panels.",False,"The code defines a private method called `createResponseDataPanel()` that creates and returns a JPanel. The JPanel contains a JEditorPane for displaying results, a JScrollPane for scrolling through the results, a JLabel for displaying images, and a search panel. The method also sets up a search text extension and adds it to the panel."
+73,setEnabledButtons(boolean),set enabled buttons b ,Method,"showImage(Icon) showTextResponse(String) showRenderJSONResponse(String) showRenderXMLResponse(SampleResult) showRenderedResponse(String,SampleResult)",,javax.swing.JComponent+setEnabled(boolean) javax.swing.JComponent+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) java.lang.String+equals(Object) java.lang.String+equals(Object) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean) javax.swing.AbstractButton+setEnabled(boolean),org.apache.jmeter.visualizers.ViewResultsFullVisualizer+renderLabel org.apache.jmeter.visualizers.ViewResultsFullVisualizer+textButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+htmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+jsonButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+xmlButton org.apache.jmeter.visualizers.ViewResultsFullVisualizer+command org.apache.jmeter.visualizers.ViewResultsFullVisualizer+HTML_COMMAND org.apache.jmeter.visualizers.ViewResultsFullVisualizer+downloadAll org.apache.jmeter.visualizers.ViewResultsFullVisualizer+downloadAll,378,12,2,,"private void setEnabledButtons(boolean b) {
+        renderLabel.setEnabled(b); 
+        textButton.setEnabled(b);
+        htmlButton.setEnabled(b);
+        jsonButton.setEnabled(b);
+        xmlButton.setEnabled(b);
+        if (b && command.equals(HTML_COMMAND)) {
+            downloadAll.setEnabled(b);
+        } else {
+            downloadAll.setEnabled(false);
+        }
+    }",False,True,"This method sets the enabled state of several buttons based on a boolean parameter. If the parameter is true and a specific condition is met, it also sets the enabled state of another button.",True,"The method ""setEnabledButtons"" takes a boolean parameter and sets the enabled state of several buttons accordingly. If the boolean is true and a specific command is equal to ""HTML_COMMAND"", an additional button is enabled; otherwise, it is disabled."
+74,ResultsNodeRenderer,results node renderer ,MemberClass,,,"org.apache.jmeter.visualizers.ViewResultsFullVisualizer.ResultsNodeRenderer+getTreeCellRendererComponent(JTree,Object,boolean,boolean,boolean,int,boolean) javax.swing.tree.DefaultTreeCellRenderer+getTreeCellRendererComponent(JTree,Object,boolean,boolean,boolean,int,boolean) javax.swing.tree.DefaultMutableTreeNode+getUserObject() javax.swing.tree.DefaultMutableTreeNode+getUserObject() org.apache.jmeter.samplers.SampleResult+isSuccessful() org.apache.jmeter.samplers.SampleResult+isSuccessful() org.apache.jmeter.assertions.AssertionResult+isError() org.apache.jmeter.assertions.AssertionResult+isError() org.apache.jmeter.assertions.AssertionResult+isFailure() org.apache.jmeter.assertions.AssertionResult+isFailure() javax.swing.JComponent+setForeground(Color) javax.swing.JComponent+setForeground(Color) javax.swing.JLabel+setIcon(Icon) javax.swing.JLabel+setIcon(Icon) javax.swing.JLabel+setIcon(Icon) javax.swing.JLabel+setIcon(Icon)",java.awt.Color+red org.apache.jmeter.visualizers.ViewResultsFullVisualizer+imageFailure org.apache.jmeter.visualizers.ViewResultsFullVisualizer+imageSuccess,1115,25,10,,"private static class ResultsNodeRenderer extends DefaultTreeCellRenderer {
+        @Override
+        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
+                boolean leaf, int row, boolean focus) {
+            super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, focus);
+            boolean failure = true;
+            Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+            if(userObject instanceof SampleResult) {
+                failure = !(((SampleResult) userObject).isSuccessful());
+            }
+            else if(userObject instanceof AssertionResult) {
+                AssertionResult assertion = (AssertionResult) userObject;
+                failure =  assertion.isError() || assertion.isFailure();
+            }
+
+            // Set the status for the node
+            if (failure) {
+                this.setForeground(Color.red);
+                this.setIcon(imageFailure);
+            } else {
+                this.setIcon(imageSuccess);
+            }
+            return this;
+        }
+    }",False,True,,False,
+75,LocalHTMLEditorKit,local html editor kit ,MemberClass,,,org.apache.jmeter.visualizers.ViewResultsFullVisualizer.LocalHTMLEditorKit.LocalHTMLFactory+LocalHTMLFactory() org.apache.jmeter.visualizers.ViewResultsFullVisualizer.LocalHTMLEditorKit+getViewFactory(),org.apache.jmeter.visualizers.ViewResultsFullVisualizer.LocalHTMLEditorKit+defaultFactory org.apache.jmeter.visualizers.ViewResultsFullVisualizer.LocalHTMLEditorKit+defaultFactory,1187,30,10,,"private static class LocalHTMLEditorKit extends HTMLEditorKit {
+
+        private static final ViewFactory defaultFactory = new LocalHTMLFactory();
+
+        @Override
+        public ViewFactory getViewFactory() {
+            return defaultFactory;
+        }
+
+        private static class LocalHTMLFactory extends javax.swing.text.html.HTMLEditorKit.HTMLFactory {
+            /*
+             * Provide dummy implementations to suppress download and display of
+             * related resources: - FRAMEs - IMAGEs TODO create better dummy
+             * displays TODO suppress LINK somehow
+             */
+            @Override
+            public View create(Element elem) {
+                Object o = elem.getAttributes().getAttribute(StyleConstants.NameAttribute);
+                if (o instanceof HTML.Tag) {
+                    HTML.Tag kind = (HTML.Tag) o;
+                    if (kind == HTML.Tag.FRAME) {
+                        return new ComponentView(elem);
+                    } else if (kind == HTML.Tag.IMG) {
+                        return new ComponentView(elem);
+                    }
+                }
+                return super.create(elem);
+            }
+        }
+    }",False,True,,False,
+76,LocalHTMLFactory,local html factory ,MemberClass,,,org.apache.jmeter.visualizers.ViewResultsFullVisualizer.LocalHTMLEditorKit.LocalHTMLFactory+create(Element) javax.swing.text.AttributeSet+getAttribute(Object) javax.swing.text.Element+getAttributes() javax.swing.text.Element+getAttributes() javax.swing.text.AttributeSet+getAttribute(Object) javax.swing.text.ComponentView+ComponentView(Element) javax.swing.text.ComponentView+ComponentView(Element) javax.swing.text.html.HTMLEditorKit.HTMLFactory+create(Element),javax.swing.text.StyleConstants+NameAttribute javax.swing.text.html.HTML.Tag+FRAME javax.swing.text.html.HTML.Tag+IMG,915,20,10,,"private static class LocalHTMLFactory extends javax.swing.text.html.HTMLEditorKit.HTMLFactory {
+            /*
+             * Provide dummy implementations to suppress download and display of
+             * related resources: - FRAMEs - IMAGEs TODO create better dummy
+             * displays TODO suppress LINK somehow
+             */
+            @Override
+            public View create(Element elem) {
+                Object o = elem.getAttributes().getAttribute(StyleConstants.NameAttribute);
+                if (o instanceof HTML.Tag) {
+                    HTML.Tag kind = (HTML.Tag) o;
+                    if (kind == HTML.Tag.FRAME) {
+                        return new ComponentView(elem);
+                    } else if (kind == HTML.Tag.IMG) {
+                        return new ComponentView(elem);
+                    }
+                }
+                return super.create(elem);
+            }
+        }",False,True,,False,
+77,DOMTreePanel,dom tree panel a dom tree panel for to display response as tree view author a href mailto d maung mdl com dave maung todo implement to find any nodes in the tree using tree path ,MemberClass,,,"org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+DOMTreePanel(Document) java.awt.GridLayout+GridLayout(int,int) org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+getFirstElement(Node) org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+getFirstElement(Node) org.apache.jmeter.visualizers.XMLDefaultMutableTreeNode+XMLDefaultMutableTreeNode(Node) javax.swing.JTree+JTree(TreeNode) javax.swing.tree.TreeSelectionModel+setSelectionMode(int) javax.swing.JTree+getSelectionModel() javax.swing.JTree+getSelectionModel() javax.swing.tree.TreeSelectionModel+setSelectionMode(int) javax.swing.JTree+setShowsRootHandles(boolean) javax.swing.JTree+setShowsRootHandles(boolean) javax.swing.JScrollPane+JScrollPane(Component) javax.swing.JComponent+setAutoscrolls(boolean) javax.swing.JComponent+setAutoscrolls(boolean) java.awt.Container+add(Component) java.awt.Container+add(Component) javax.swing.ToolTipManager+registerComponent(JComponent) javax.swing.ToolTipManager+sharedInstance() javax.swing.ToolTipManager+sharedInstance() javax.swing.ToolTipManager+registerComponent(JComponent) javax.swing.JTree+setCellRenderer(TreeCellRenderer) javax.swing.JTree+setCellRenderer(TreeCellRenderer) org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel.DomTreeRenderer+DomTreeRenderer() org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+getFirstElement(Node) org.w3c.dom.Node+getChildNodes() org.w3c.dom.Node+getChildNodes() org.w3c.dom.NodeList+getLength() org.w3c.dom.NodeList+getLength() org.w3c.dom.NodeList+item(int) org.w3c.dom.NodeList+item(int) org.w3c.dom.Node+getNodeType() org.w3c.dom.Node+getNodeType()",org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+domJTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+domJTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+domJTree javax.swing.tree.TreeSelectionModel+SINGLE_TREE_SELECTION org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+domJTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+domJTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+domJTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+domJTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel+domJTree org.apache.jmeter.visualizers.ViewResultsFullVisualizer+log org.w3c.dom.Node+ELEMENT_NODE,4390,114,10,"/** 
+ * A Dom tree panel for to display response as tree view author <a href=""mailto:d.maung@mdl.com"">Dave Maung</a> TODO implement to find any nodes in the tree using TreePath.
+ */
+","/**
+     *
+     * A Dom tree panel for to display response as tree view author <a
+     * href=""mailto:d.maung@mdl.com"">Dave Maung</a> TODO implement to find any
+     * nodes in the tree using TreePath.
+     *
+     */
+    private static class DOMTreePanel extends JPanel {
+
+        private JTree domJTree;
+
+        public DOMTreePanel(org.w3c.dom.Document document) {
+            super(new GridLayout(1, 0));
+            try {
+                Node firstElement = getFirstElement(document);
+                DefaultMutableTreeNode top = new XMLDefaultMutableTreeNode(firstElement);
+                domJTree = new JTree(top);
+
+                domJTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+                domJTree.setShowsRootHandles(true);
+                JScrollPane domJScrollPane = new JScrollPane(domJTree);
+                domJTree.setAutoscrolls(true);
+                this.add(domJScrollPane);
+                ToolTipManager.sharedInstance().registerComponent(domJTree);
+                domJTree.setCellRenderer(new DomTreeRenderer());
+            } catch (SAXException e) {
+                log.warn("""", e);
+            }
+
+        }
+
+        /**
+         * Skip all DTD nodes, all prolog nodes. They dont support in tree view
+         * We let user to insert them however in DOMTreeView, we dont display it
+         *
+         * @param root
+         * @return
+         */
+        private Node getFirstElement(Node parent) {
+            NodeList childNodes = parent.getChildNodes();
+            Node toReturn = parent; // Must return a valid node, or may generate an NPE
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                Node childNode = childNodes.item(i);
+                toReturn = childNode;
+                if (childNode.getNodeType() == Node.ELEMENT_NODE){
+                    break;
+                }
+
+            }
+            return toReturn;
+        }
+
+        /**
+         * This class is to view as tooltext. This is very useful, when the
+         * contents has long string and does not fit in the view. it will also
+         * automatically wrap line for each 100 characters since tool tip
+         * support html. author <a href=""mailto:d.maung@mdl.com"">Dave Maung</a>
+         */
+        private static class DomTreeRenderer extends DefaultTreeCellRenderer {
+            @Override
+            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
+                    boolean leaf, int row, boolean phasFocus) {
+                super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, phasFocus);
+
+                DefaultMutableTreeNode valueTreeNode = (DefaultMutableTreeNode) value;
+                setToolTipText(getHTML(valueTreeNode.toString(), ""<br>"", 100)); // $NON-NLS-1$
+                return this;
+            }
+
+            /**
+             * get the html
+             *
+             * @param str
+             * @param separator
+             * @param maxChar
+             * @return
+             */
+            private String getHTML(String str, String separator, int maxChar) {
+                StringBuilder strBuf = new StringBuilder(""<html><body bgcolor=\""yellow\""><b>""); // $NON-NLS-1$
+                char[] chars = str.toCharArray();
+                for (int i = 0; i < chars.length; i++) {
+
+                    if (i % maxChar == 0 && i != 0) {
+                        strBuf.append(separator);
+                    }
+                    strBuf.append(encode(chars[i]));
+
+                }
+                strBuf.append(""</b></body></html>""); // $NON-NLS-1$
+                return strBuf.toString();
+
+            }
+
+            private String encode(char c) {
+                String toReturn = String.valueOf(c);
+                switch (c) {
+                case '<': // $NON-NLS-1$
+                    toReturn = ""&lt;""; // $NON-NLS-1$
+                    break;
+                case '>': // $NON-NLS-1$
+                    toReturn = ""&gt;""; // $NON-NLS-1$
+                    break;
+                case '\'': // $NON-NLS-1$
+                    toReturn = ""&apos;""; // $NON-NLS-1$
+                    break;
+                case '\""': // $NON-NLS-1$
+                    toReturn = ""&quot;""; // $NON-NLS-1$
+                    break;
+
+                }
+                return toReturn;
+            }
+        }
+    }",False,True,"/** 
+ * A Dom tree panel for to display response as tree view author <a href=""mailto:d.maung@mdl.com"">Dave Maung</a> TODO implement to find any nodes in the tree using TreePath.
+ */
+",False,"/** 
+ * A Dom tree panel for to display response as tree view author <a href=""mailto:d.maung@mdl.com"">Dave Maung</a> TODO implement to find any nodes in the tree using TreePath.
+ */
+"
+78,DomTreeRenderer,dom tree renderer this class is to view as tooltext this is very useful when the contents has long string and does not fit in the view it will also automatically wrap line for each 100 characters since tool tip support html author a href mailto d maung mdl com dave maung ,MemberClass,,,"org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel.DomTreeRenderer+getTreeCellRendererComponent(JTree,Object,boolean,boolean,boolean,int,boolean) javax.swing.tree.DefaultTreeCellRenderer+getTreeCellRendererComponent(JTree,Object,boolean,boolean,boolean,int,boolean) javax.swing.JComponent+setToolTipText(String) javax.swing.JComponent+setToolTipText(String) org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel.DomTreeRenderer+getHTML(String,String,int) org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel.DomTreeRenderer+getHTML(String,String,int) javax.swing.tree.DefaultMutableTreeNode+toString() javax.swing.tree.DefaultMutableTreeNode+toString() org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel.DomTreeRenderer+getHTML(String,String,int) java.lang.StringBuilder+StringBuilder(String) java.lang.String+toCharArray() java.lang.String+toCharArray() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel.DomTreeRenderer+encode(char) org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel.DomTreeRenderer+encode(char) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() org.apache.jmeter.visualizers.ViewResultsFullVisualizer.DOMTreePanel.DomTreeRenderer+encode(char) java.lang.String+valueOf(char) java.lang.String+valueOf(char)",,2438,61,10,"/** 
+ * This class is to view as tooltext. This is very useful, when the contents has long string and does not fit in the view. it will also automatically wrap line for each 100 characters since tool tip support html. author <a href=""mailto:d.maung@mdl.com"">Dave Maung</a>
+ */
+","/**
+         * This class is to view as tooltext. This is very useful, when the
+         * contents has long string and does not fit in the view. it will also
+         * automatically wrap line for each 100 characters since tool tip
+         * support html. author <a href=""mailto:d.maung@mdl.com"">Dave Maung</a>
+         */
+        private static class DomTreeRenderer extends DefaultTreeCellRenderer {
+            @Override
+            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
+                    boolean leaf, int row, boolean phasFocus) {
+                super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, phasFocus);
+
+                DefaultMutableTreeNode valueTreeNode = (DefaultMutableTreeNode) value;
+                setToolTipText(getHTML(valueTreeNode.toString(), ""<br>"", 100)); // $NON-NLS-1$
+                return this;
+            }
+
+            /**
+             * get the html
+             *
+             * @param str
+             * @param separator
+             * @param maxChar
+             * @return
+             */
+            private String getHTML(String str, String separator, int maxChar) {
+                StringBuilder strBuf = new StringBuilder(""<html><body bgcolor=\""yellow\""><b>""); // $NON-NLS-1$
+                char[] chars = str.toCharArray();
+                for (int i = 0; i < chars.length; i++) {
+
+                    if (i % maxChar == 0 && i != 0) {
+                        strBuf.append(separator);
+                    }
+                    strBuf.append(encode(chars[i]));
+
+                }
+                strBuf.append(""</b></body></html>""); // $NON-NLS-1$
+                return strBuf.toString();
+
+            }
+
+            private String encode(char c) {
+                String toReturn = String.valueOf(c);
+                switch (c) {
+                case '<': // $NON-NLS-1$
+                    toReturn = ""&lt;""; // $NON-NLS-1$
+                    break;
+                case '>': // $NON-NLS-1$
+                    toReturn = ""&gt;""; // $NON-NLS-1$
+                    break;
+                case '\'': // $NON-NLS-1$
+                    toReturn = ""&apos;""; // $NON-NLS-1$
+                    break;
+                case '\""': // $NON-NLS-1$
+                    toReturn = ""&quot;""; // $NON-NLS-1$
+                    break;
+
+                }
+                return toReturn;
+            }
+        }",False,True,"/** 
+ * This class is to view as tooltext. This is very useful, when the contents has long string and does not fit in the view. it will also automatically wrap line for each 100 characters since tool tip support html. author <a href=""mailto:d.maung@mdl.com"">Dave Maung</a>
+ */
+",False,"/** 
+ * This class is to view as tooltext. This is very useful, when the contents has long string and does not fit in the view. it will also automatically wrap line for each 100 characters since tool tip support html. author <a href=""mailto:d.maung@mdl.com"">Dave Maung</a>
+ */
+"
+79,"showErrorMessageDialog(String,String,int)",show error message dialog message title message type ,Method,showRenderXMLResponse(SampleResult),,"javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int)",,171,3,10,,"private static void showErrorMessageDialog(String message, String title, int messageType) {
+        JOptionPane.showMessageDialog(null, message, title, messageType);
+    }",True,True,"This method displays an error message dialog box with a specified message, title, and message type.",True,"The code defines a private static method called ""showErrorMessageDialog"" that displays a message dialog box with a given message, title, and message type. The method uses the JOptionPane class from the Java Swing library to show the dialog box."

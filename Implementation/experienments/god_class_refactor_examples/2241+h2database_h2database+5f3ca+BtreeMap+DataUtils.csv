@@ -1,0 +1,624 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,store,store ,Field,"BtreeMap(BtreeMapStore,String,Class<K>,Class<V>)",,,,34,1,18,,private final BtreeMapStore store;,False,False,,False,
+2,name,name ,Field,"BtreeMap(BtreeMapStore,String,Class<K>,Class<V>)",,,,26,1,18,,private final String name;,False,False,,False,
+3,keyType,key type ,Field,,,,,30,1,18,,private final KeyType keyType;,False,False,,False,
+4,valueType,value type ,Field,,,,,34,1,18,,private final ValueType valueType;,False,False,,False,
+5,root,root ,Field,,,,,18,1,2,,private Page root;,False,False,,False,
+6,"BtreeMap(BtreeMapStore,String,Class<K>,Class<V>)",btree map store name key class value class ,Method,,,org.h2.dev.store.btree.BtreeMap.IntegerType+IntegerType() org.h2.dev.store.btree.BtreeMap.StringType+StringType() java.lang.RuntimeException+RuntimeException(String) java.lang.Class+toString() java.lang.Class+toString() org.h2.dev.store.btree.BtreeMap.IntegerType+IntegerType() org.h2.dev.store.btree.BtreeMap.StringType+StringType() java.lang.RuntimeException+RuntimeException(String) java.lang.Class+toString() java.lang.Class+toString(),"org.h2.dev.store.btree.BtreeMap<K,V>+store org.h2.dev.store.btree.BtreeMap+store org.h2.dev.store.btree.BtreeMap<K,V>+name org.h2.dev.store.btree.BtreeMap+name org.h2.dev.store.btree.BtreeMap+keyType org.h2.dev.store.btree.BtreeMap+keyType org.h2.dev.store.btree.BtreeMap+valueType org.h2.dev.store.btree.BtreeMap+valueType",730,18,2,,"private BtreeMap(BtreeMapStore store, String name, Class<K> keyClass, Class<V> valueClass) {
+        this.store = store;
+        this.name = name;
+        if (keyClass == Integer.class) {
+            keyType = new IntegerType();
+        } else if (keyClass == String.class) {
+            keyType = new StringType();
+        } else {
+            throw new RuntimeException(""Unsupported key class "" + keyClass.toString());
+        }
+        if (valueClass == Integer.class) {
+            valueType = new IntegerType();
+        } else if (valueClass == String.class) {
+            valueType = new StringType();
+        } else {
+            throw new RuntimeException(""Unsupported value class "" + keyClass.toString());
+        }
+    }",False,False,"The function of this method is to initialize a BtreeMap object with the given parameters, including the store, name, key class, and value class. It also sets the keyType and valueType based on the keyClass and valueClass respectively.",True,"This code defines a private constructor for a BtreeMap class. It takes in a BtreeMapStore, a name, and key and value classes as parameters. It initializes the keyType and valueType based on the keyClass and valueClass provided, and throws an exception if the classes are not supported."
+7,getClass(String),get class name get the class with the given tag name param name the tag name return the class ,Method,,,java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.RuntimeException+RuntimeException(String),,385,14,8,"/** 
+ * Get the class with the given tag name.
+ * @param name the tag name
+ * @return the class
+ */
+","/**
+     * Get the class with the given tag name.
+     *
+     * @param name the tag name
+     * @return the class
+     */
+    static Class<?> getClass(String name) {
+        if (name.equals(""i"")) {
+            return Integer.class;
+        } else if (name.equals(""s"")) {
+            return String.class;
+        }
+        throw new RuntimeException(""Unknown class name "" + name);
+    }",False,False,"This method returns the class based on the given tag name. If the tag name is ""i"", it returns Integer.class. If the tag name is ""s"", it returns String.class. Otherwise, it throws a RuntimeException.",False,"This code defines a static method called ""getClass"" that takes a tag name as input and returns the corresponding class. It supports two tag names: ""i"" for Integer class and ""s"" for String class. If an unknown tag name is provided, it throws a RuntimeException."
+8,"open(BtreeMapStore,String,Class<K>,Class<V>)",open store name key class value class open a map param the key type param the value type param store the tree store param name the name of the map param key class the key class param value class the value class return the map ,Method,,"org.h2.dev.store.btree.BtreeMapStore+openMap(String,Class<K>,Class<V>) org.h2.dev.store.btree.BtreeMapStore+open()","org.h2.dev.store.btree.BtreeMap+BtreeMap(BtreeMapStore,String,Class<K>,Class<V>)",,466,14,8,"/** 
+ * Open a map.
+ * @param < K > the key type
+ * @param < V > the value type
+ * @param store the tree store
+ * @param name the name of the map
+ * @param keyClass the key class
+ * @param valueClass the value class
+ * @return the map
+ */
+","/**
+     * Open a map.
+     *
+     * @param <K> the key type
+     * @param <V> the value type
+     * @param store the tree store
+     * @param name the name of the map
+     * @param keyClass the key class
+     * @param valueClass the value class
+     * @return the map
+     */
+    static <K, V> BtreeMap<K, V> open(BtreeMapStore store, String name, Class<K> keyClass, Class<V> valueClass) {
+        return new BtreeMap<K, V>(store, name, keyClass, valueClass);
+    }",False,False,This method serves to open a map by creating a new instance of the BtreeMap class with the given parameters and returning it.,False,"This code defines a static method called ""open"" that creates and returns a new instance of the BtreeMap class. The method takes a tree store, a name, and key and value classes as parameters. The BtreeMap instance is initialized with these parameters and returned."
+9,"put(K,V)",put key data store a key value pair param key the key param data the value ,Method,,org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testDefragment() org.h2.test.unit.TestTreeMapStore+testReuseSpace() org.h2.test.unit.TestTreeMapStore+testRandom() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store(),"org.h2.dev.store.btree.BtreeMap+isChanged() org.h2.dev.store.btree.BtreeMap+isChanged() org.h2.dev.store.btree.BtreeMapStore+markChanged(String,BtreeMap<?,?>) org.h2.dev.store.btree.BtreeMapStore+markChanged(String,BtreeMap<?,?>) org.h2.dev.store.btree.Page+put(BtreeMap<?,?>,Page,Object,Object) org.h2.dev.store.btree.Page+put(BtreeMap<?,?>,Page,Object,Object)",org.h2.dev.store.btree.BtreeMap+store org.h2.dev.store.btree.BtreeMap+name org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,276,12,1,"/** 
+ * Store a key-value pair.
+ * @param key the key
+ * @param data the value
+ */
+","/**
+     * Store a key-value pair.
+     *
+     * @param key the key
+     * @param data the value
+     */
+    public void put(K key, V data) {
+        if (!isChanged()) {
+            store.markChanged(name, this);
+        }
+        root = Page.put(this, root, key, data);
+    }",False,False,"This method is used to store a key-value pair in a data structure. It checks if any changes have been made, and if not, marks the data structure as changed. Then, it calls the ""put"" method on the root page to store the key-value pair.",True,"The `put` method is used to store a key-value pair in a data structure. It checks if any changes have been made, and if not, it marks the data structure as changed. Then, it calls the `put` method of the `Page` class to store the key-value pair in the data structure."
+10,get(K),get key get a value param key the key return the value or null if not found ,Method,,"org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testRandom() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.dev.store.btree.BtreeMapStore+openMap(String,Class<K>,Class<V>) org.h2.dev.store.btree.BtreeMapStore+readMeta()",org.h2.dev.store.btree.Page+find(Object) org.h2.dev.store.btree.Page+find(Object),org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,276,13,1,"/** 
+ * Get a value.
+ * @param key the key
+ * @return the value, or null if not found
+ */
+","/**
+     * Get a value.
+     *
+     * @param key the key
+     * @return the value, or null if not found
+     */
+    @SuppressWarnings(""unchecked"")
+    public V get(K key) {
+        if (root == null) {
+            return null;
+        }
+        return (V) root.find(key);
+    }",False,False,"This method serves to retrieve a value associated with a given key from a data structure. It returns the value if found, or null if not found.",True,"This code defines a method called ""get"" that retrieves a value from a data structure. It takes a key as input and returns the corresponding value if found, otherwise it returns null. The method uses a root node to search for the key and returns the value associated with it."
+11,getPage(K),get page key get the page for the given value param key the key return the value or null if not found ,Method,,,org.h2.dev.store.btree.Page+findPage(Object) org.h2.dev.store.btree.Page+findPage(Object),org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,269,12,1,"/** 
+ * Get the page for the given value.
+ * @param key the key
+ * @return the value, or null if not found
+ */
+","/**
+     * Get the page for the given value.
+     *
+     * @param key the key
+     * @return the value, or null if not found
+     */
+    public Page getPage(K key) {
+        if (root == null) {
+            return null;
+        }
+        return root.findPage(key);
+    }",False,False,"This method serves to retrieve the page associated with a given key. It checks if the root is null and returns null if it is, otherwise it calls the findPage method on the root and returns the result.",True,"This code defines a method called `getPage` that takes a key as input and returns the corresponding value from a data structure. If the data structure is empty, it returns null. The method delegates the task of finding the value to another method called `findPage` in the `root` object."
+12,remove(K),remove key remove a key value pair param key the key ,Method,,org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testDefragment() org.h2.test.unit.TestTreeMapStore+testReuseSpace() org.h2.test.unit.TestTreeMapStore+testRandom() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store(),"org.h2.dev.store.btree.BtreeMap+isChanged() org.h2.dev.store.btree.BtreeMap+isChanged() org.h2.dev.store.btree.BtreeMapStore+markChanged(String,BtreeMap<?,?>) org.h2.dev.store.btree.BtreeMapStore+markChanged(String,BtreeMap<?,?>) org.h2.dev.store.btree.Page+remove(Page,Object) org.h2.dev.store.btree.Page+remove(Page,Object)",org.h2.dev.store.btree.BtreeMap+store org.h2.dev.store.btree.BtreeMap+name org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,276,13,1,"/** 
+ * Remove a key-value pair.
+ * @param key the key
+ */
+","/**
+     * Remove a key-value pair.
+     *
+     * @param key the key
+     */
+    public void remove(K key) {
+        if (!isChanged()) {
+            store.markChanged(name, this);
+        }
+        if (root != null) {
+            root = Page.remove(root, key);
+        }
+    }",False,False,"This method removes a key-value pair from a data structure. It checks if the data structure has been changed, and marks it as changed if not. Then, it removes the key-value pair from the data structure's root page.",True,"This code represents a method called ""remove"" that removes a key-value pair from a data structure. It first checks if any changes have been made, and if not, it marks the data structure as changed. Then, it removes the specified key from the data structure by calling the ""remove"" method on the root page."
+13,isChanged(),is changed was this map changed return true if yes ,Method,"put(K,V) remove(K)",org.h2.dev.store.btree.BtreeMapStore+store(),org.h2.dev.store.btree.Page+getId() org.h2.dev.store.btree.Page+getId(),org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,155,8,0,"/** 
+ * Was this map changed.
+ * @return true if yes
+ */
+","/**
+     * Was this map changed.
+     *
+     * @return true if yes
+     */
+    boolean isChanged() {
+        return root != null && root.getId() < 0;
+    }",False,False,The function of this method is to check if the map has been changed. It returns true if the root of the map is not null and the ID of the root is less than 0.,True,The `isChanged()` method checks if the map has been changed by returning true if the root object is not null and its ID is less than 0. This method can be used to determine if any modifications have been made to the map since it was last accessed or updated.
+14,ValueType,value type a value type ,MemberClass,,,"org.h2.dev.store.btree.BtreeMap.ValueType+length(Object) org.h2.dev.store.btree.BtreeMap.ValueType+write(ByteBuffer,Object) org.h2.dev.store.btree.BtreeMap.ValueType+read(ByteBuffer) org.h2.dev.store.btree.BtreeMap.ValueType+getName()",,730,37,8,"/** 
+ * A value type.
+ */
+","/**
+     * A value type.
+     */
+    static interface ValueType {
+
+        /**
+         * Get the length in bytes.
+         *
+         * @param obj the object
+         * @return the length
+         */
+        int length(Object obj);
+
+        /**
+         * Write the object.
+         *
+         * @param buff the target buffer
+         * @param x the value
+         */
+        void write(ByteBuffer buff, Object x);
+
+        /**
+         * Read an object.
+         *
+         * @param buff the source buffer
+         * @return the object
+         */
+        Object read(ByteBuffer buff);
+
+        /**
+         * Get the tag name of the class.
+         *
+         * @return the tag name
+         */
+        String getName();
+
+    }",False,False,"/** 
+ * A value type.
+ */
+",False,"/** 
+ * A value type.
+ */
+"
+15,KeyType,key type a key type ,MemberClass,,,"org.h2.dev.store.btree.BtreeMap.KeyType+compare(Object,Object)",,339,14,8,"/** 
+ * A key type.
+ */
+","/**
+     * A key type.
+     */
+    static interface KeyType extends ValueType {
+
+        /**
+         * Compare two keys.
+         *
+         * @param a the first key
+         * @param b the second key
+         * @return -1 if the first key is smaller, 1 if larger, and 0 if equal
+         */
+        int compare(Object a, Object b);
+    }",False,False,"/** 
+ * A key type.
+ */
+",False,"/** 
+ * A key type.
+ */
+"
+16,"compare(Object,Object)",compare a b compare two keys param a the first key param b the second key return 1 if the first key is smaller 1 if bigger 0 if equal ,Method,,org.h2.dev.store.btree.BtreeMapStore+findKey(Object),"org.h2.dev.store.btree.BtreeMap.KeyType+compare(Object,Object) org.h2.dev.store.btree.BtreeMap.KeyType+compare(Object,Object)",org.h2.dev.store.btree.BtreeMap+keyType,257,10,0,"/** 
+ * Compare two keys.
+ * @param a the first key
+ * @param b the second key
+ * @return -1 if the first key is smaller, 1 if bigger, 0 if equal
+ */
+","/**
+     * Compare two keys.
+     *
+     * @param a the first key
+     * @param b the second key
+     * @return -1 if the first key is smaller, 1 if bigger, 0 if equal
+     */
+    int compare(Object a, Object b) {
+        return keyType.compare(a, b);
+    }",False,False,"This method compares two keys and returns -1 if the first key is smaller, 1 if the first key is bigger, and 0 if the keys are equal.",False,"This code defines a method called ""compare"" that takes two objects as parameters and returns -1 if the first object is smaller, 1 if it is bigger, and 0 if they are equal. The comparison is done using a keyType object's compare method."
+17,IntegerType,integer type an integer type ,MemberClass,,,"org.h2.dev.store.btree.BtreeMap.IntegerType+compare(Object,Object) java.lang.Integer+compareTo(Integer) java.lang.Integer+compareTo(Integer) org.h2.dev.store.btree.BtreeMap.IntegerType+length(Object) org.h2.dev.store.btree.BtreeMap+getVarIntLen(int) org.h2.dev.store.btree.BtreeMap+getVarIntLen(int) org.h2.dev.store.btree.BtreeMap.IntegerType+read(ByteBuffer) org.h2.dev.store.btree.BtreeMap+readVarInt(ByteBuffer) org.h2.dev.store.btree.BtreeMap+readVarInt(ByteBuffer) org.h2.dev.store.btree.BtreeMap.IntegerType+write(ByteBuffer,Object) org.h2.dev.store.btree.BtreeMap+writeVarInt(ByteBuffer,int) org.h2.dev.store.btree.BtreeMap+writeVarInt(ByteBuffer,int) org.h2.dev.store.btree.BtreeMap.IntegerType+getName()",,582,26,8,"/** 
+ * An integer type.
+ */
+","/**
+     * An integer type.
+     */
+    static class IntegerType implements KeyType {
+
+        public int compare(Object a, Object b) {
+            return ((Integer) a).compareTo((Integer) b);
+        }
+
+        public int length(Object obj) {
+            return getVarIntLen((Integer) obj);
+        }
+
+        public Integer read(ByteBuffer buff) {
+            return readVarInt(buff);
+        }
+
+        public void write(ByteBuffer buff, Object x) {
+            writeVarInt(buff, (Integer) x);
+        }
+
+        public String getName() {
+            return ""i"";
+        }
+
+    }",False,False,"/** 
+ * An integer type.
+ */
+",False,"/** 
+ * An integer type.
+ */
+"
+18,StringType,string type a string type ,MemberClass,,,"org.h2.dev.store.btree.BtreeMap.StringType+compare(Object,Object) java.lang.String+compareTo(String) java.lang.Object+toString() java.lang.Object+toString() java.lang.String+compareTo(String) java.lang.Object+toString() java.lang.Object+toString() org.h2.dev.store.btree.BtreeMap.StringType+length(Object) java.lang.String+getBytes(String) java.lang.Object+toString() java.lang.Object+toString() java.lang.String+getBytes(String) org.h2.dev.store.btree.BtreeMap+getVarIntLen(int) org.h2.dev.store.btree.BtreeMap+getVarIntLen(int) java.lang.RuntimeException+RuntimeException(Throwable) org.h2.dev.store.btree.BtreeMap.StringType+read(ByteBuffer) org.h2.dev.store.btree.BtreeMap+readVarInt(ByteBuffer) org.h2.dev.store.btree.BtreeMap+readVarInt(ByteBuffer) java.nio.ByteBuffer+get(byte[]) java.nio.ByteBuffer+get(byte[]) java.lang.String+String(byte[],String) java.lang.RuntimeException+RuntimeException(Throwable) org.h2.dev.store.btree.BtreeMap.StringType+write(ByteBuffer,Object) java.lang.String+getBytes(String) java.lang.Object+toString() java.lang.Object+toString() java.lang.String+getBytes(String) org.h2.dev.store.btree.BtreeMap+writeVarInt(ByteBuffer,int) org.h2.dev.store.btree.BtreeMap+writeVarInt(ByteBuffer,int) java.nio.ByteBuffer+put(byte[]) java.nio.ByteBuffer+put(byte[]) java.lang.RuntimeException+RuntimeException(Throwable) org.h2.dev.store.btree.BtreeMap.StringType+getName()",,1232,44,8,"/** 
+ * A string type.
+ */
+","/**
+     * A string type.
+     */
+    static class StringType implements KeyType {
+
+        public int compare(Object a, Object b) {
+            return a.toString().compareTo(b.toString());
+        }
+
+        public int length(Object obj) {
+            try {
+                byte[] bytes = obj.toString().getBytes(""UTF-8"");
+                return getVarIntLen(bytes.length) + bytes.length;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public String read(ByteBuffer buff) {
+            int len = readVarInt(buff);
+            byte[] bytes = new byte[len];
+            buff.get(bytes);
+            try {
+                return new String(bytes, ""UTF-8"");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public void write(ByteBuffer buff, Object x) {
+            try {
+                byte[] bytes = x.toString().getBytes(""UTF-8"");
+                writeVarInt(buff, bytes.length);
+                buff.put(bytes);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public String getName() {
+            return ""s"";
+        }
+
+    }",False,False,"/** 
+ * A string type.
+ */
+",False,"/** 
+ * A string type.
+ */
+"
+19,getKeyType(),get key type get the key type return the key type ,Method,,org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+length() org.h2.dev.store.btree.BtreeMapStore+length(),,org.h2.dev.store.btree.BtreeMap+keyType,128,8,0,"/** 
+ * Get the key type.
+ * @return the key type
+ */
+","/**
+     * Get the key type.
+     *
+     * @return the key type
+     */
+    KeyType getKeyType() {
+        return keyType;
+    }",False,False,This method returns the key type.,True,This code defines a method called `getKeyType()` that returns the key type. It does not take any parameters and the return type is `KeyType`. The method is not accessible outside the class.
+20,getValueType(),get value type get the value type return the value type ,Method,,org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+length(),,org.h2.dev.store.btree.BtreeMap+valueType,138,8,0,"/** 
+ * Get the value type.
+ * @return the value type
+ */
+","/**
+     * Get the value type.
+     *
+     * @return the value type
+     */
+    ValueType getValueType() {
+        return valueType;
+    }",False,False,This method returns the value type.,True,This code defines a method called `getValueType()` that returns the value type. The method does not take any parameters and the return type is `ValueType`. The method is not accessible outside the class it is defined in.
+21,getTransaction(),get transaction ,Method,,"org.h2.dev.store.btree.BtreeMapStore+create(BtreeMap<?,?>,Object[],Object[],long[]) org.h2.dev.store.btree.BtreeMapStore+copyOnWrite()",org.h2.dev.store.btree.BtreeMapStore+getTransaction() org.h2.dev.store.btree.BtreeMapStore+getTransaction(),org.h2.dev.store.btree.BtreeMap+store,68,3,0,,"long getTransaction() {
+        return store.getTransaction();
+    }",False,False,The function of the given method is to retrieve the transaction from the store and return it as a long value.,True,"The code defines a method named ""getTransaction"" that returns a long value. It retrieves the transaction from a store and returns it."
+22,registerTempPage(Page),register temp page p register a page and get the next temporary page id param p the new page return the page id ,Method,,"org.h2.dev.store.btree.BtreeMapStore+create(BtreeMap<?,?>,Object[],Object[],long[])",org.h2.dev.store.btree.BtreeMapStore+registerTempPage(Page) org.h2.dev.store.btree.BtreeMapStore+registerTempPage(Page),org.h2.dev.store.btree.BtreeMap+store,217,9,0,"/** 
+ * Register a page and get the next temporary page id.
+ * @param p the new page
+ * @return the page id
+ */
+","/**
+     * Register a page and get the next temporary page id.
+     *
+     * @param p the new page
+     * @return the page id
+     */
+    long registerTempPage(Page p) {
+        return store.registerTempPage(p);
+    }",False,False,"This method registers a new page and returns the corresponding page id. It calls the ""registerTempPage"" method of the ""store"" object.",True,"The given code is a method named ""registerTempPage"" that takes a Page object as a parameter and returns the page id after registering the page. It is a part of a larger codebase and is responsible for registering temporary pages in a store."
+23,readPage(long),read page id read a node param id the node id return the node ,Method,setRoot(long),"org.h2.dev.store.btree.BtreeMapStore+find(Object) org.h2.dev.store.btree.BtreeMapStore+findPage(Object) org.h2.dev.store.btree.BtreeMapStore+min(Page,ArrayList<CursorPos>,Object) org.h2.dev.store.btree.BtreeMapStore+nextKey(ArrayList<CursorPos>) org.h2.dev.store.btree.BtreeMapStore+put(BtreeMap<?,?>,Page,Object,Object) org.h2.dev.store.btree.BtreeMapStore+remove(Page,Object) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+lengthIncludingTempChildren() org.h2.dev.store.btree.BtreeMapStore+updatePageIds(long) org.h2.dev.store.btree.BtreeMapStore+storeTemp(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+countTemp()","org.h2.dev.store.btree.BtreeMapStore+readPage(BtreeMap<?,?>,long) org.h2.dev.store.btree.BtreeMapStore+readPage(BtreeMap<?,?>,long)",org.h2.dev.store.btree.BtreeMap+store,167,9,0,"/** 
+ * Read a node.
+ * @param id the node id
+ * @return the node
+ */
+","/**
+     * Read a node.
+     *
+     * @param id the node id
+     * @return the node
+     */
+    Page readPage(long id) {
+        return store.readPage(this, id);
+    }",False,False,This method reads a node from the store using the given node id and returns the node.,True,This code defines a method called `readPage` that takes a `long` parameter `id` and returns a `Page` object. It reads the specified node from the store and returns it.
+24,removePage(long),remove page id remove a node param id the node id ,Method,,org.h2.dev.store.btree.BtreeMapStore+copyOnWrite(),org.h2.dev.store.btree.BtreeMapStore+removePage(long) org.h2.dev.store.btree.BtreeMapStore+removePage(long),org.h2.dev.store.btree.BtreeMap+store,136,8,0,"/** 
+ * Remove a node.
+ * @param id the node id
+ */
+","/**
+     * Remove a node.
+     *
+     * @param id the node id
+     */
+    void removePage(long id) {
+        store.removePage(id);
+    }",False,False,The function of the method is to remove a node from the store based on its id.,True,"This code defines a method called ""removePage"" that takes a node id as a parameter and removes the corresponding node from the store. It is used to delete a specific node from the data structure."
+25,setRoot(long),set root root pos set the position of the root page param root pos the position ,Method,,"org.h2.dev.store.btree.BtreeMapStore+openMap(String,Class<K>,Class<V>) org.h2.dev.store.btree.BtreeMapStore+readMeta()",org.h2.dev.store.btree.BtreeMap+readPage(long) org.h2.dev.store.btree.BtreeMap+readPage(long),org.h2.dev.store.btree.BtreeMap+root,168,8,0,"/** 
+ * Set the position of the root page.
+ * @param rootPos the position
+ */
+","/**
+     * Set the position of the root page.
+     *
+     * @param rootPos the position
+     */
+    void setRoot(long rootPos) {
+        root = readPage(rootPos);
+    }",False,False,This method sets the position of the root page by reading the page at the given position and assigning it to the root variable.,True,"The given code is a method named ""setRoot"" that takes a long value as input and sets the root page position to that value. It internally calls a ""readPage"" method to read the page at the given position and assigns it to the ""root"" variable."
+26,keyIterator(K),key iterator from iterate over all keys param from the first key to return return the iterator ,Method,,org.h2.test.unit.TestTreeMapStore+testRandom() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.dev.store.btree.BtreeMapStore+readMeta(),"org.h2.dev.store.btree.BtreeMap.Cursor+Cursor(Page,K)",org.h2.dev.store.btree.BtreeMap+root,209,9,1,"/** 
+ * Iterate over all keys.
+ * @param from the first key to return
+ * @return the iterator
+ */
+","/**
+     * Iterate over all keys.
+     *
+     * @param from the first key to return
+     * @return the iterator
+     */
+    public Iterator<K> keyIterator(K from) {
+        return new Cursor(root, from);
+    }",False,False,"The method ""keyIterator"" returns an iterator that iterates over all keys starting from a specified key.",True,"The code defines a method called ""keyIterator"" that takes a parameter ""from"" and returns an iterator. This iterator is used to iterate over all the keys starting from the specified key ""from""."
+27,Cursor,cursor a cursor to iterate over elements in ascending order ,MemberClass,,,"java.util.ArrayList+ArrayList() org.h2.dev.store.btree.BtreeMap.Cursor+Cursor(Page,K) org.h2.dev.store.btree.Page+min(Page,ArrayList<CursorPos>,Object) org.h2.dev.store.btree.Page+min(Page,ArrayList<CursorPos>,Object) org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.BtreeMap.Cursor+next() org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.Page+nextKey(ArrayList<CursorPos>) org.h2.dev.store.btree.Page+nextKey(ArrayList<CursorPos>) org.h2.dev.store.btree.BtreeMap.Cursor+hasNext() org.h2.dev.store.btree.BtreeMap.Cursor+remove() java.lang.UnsupportedOperationException+UnsupportedOperationException()",org.h2.dev.store.btree.BtreeMap.Cursor+parents org.h2.dev.store.btree.BtreeMap.Cursor+current org.h2.dev.store.btree.BtreeMap.Cursor+parents org.h2.dev.store.btree.BtreeMap.Cursor+current org.h2.dev.store.btree.BtreeMap.Cursor+current org.h2.dev.store.btree.BtreeMap.Cursor+parents org.h2.dev.store.btree.BtreeMap.Cursor+current,838,34,0,"/** 
+ * A cursor to iterate over elements in ascending order.
+ */
+","/**
+     * A cursor to iterate over elements in ascending order.
+     */
+    class Cursor implements Iterator<K> {
+        private ArrayList<Page.CursorPos> parents = new ArrayList<Page.CursorPos>();
+        private K current;
+
+        Cursor(Page root, K from) {
+            Page.min(root, parents, from);
+            fetchNext();
+        }
+
+        public K next() {
+            K c = current;
+            if (c != null) {
+                fetchNext();
+            }
+            return c == null ? null : c;
+        }
+
+        @SuppressWarnings(""unchecked"")
+        private void fetchNext() {
+            current = (K) Page.nextKey(parents);
+        }
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+    }",False,False,"/** 
+ * A cursor to iterate over elements in ascending order.
+ */
+",False,"/** 
+ * A cursor to iterate over elements in ascending order.
+ */
+"
+28,getRoot(),get root get the root node return the root node ,Method,,org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store(),,org.h2.dev.store.btree.BtreeMap+root,121,8,0,"/** 
+ * Get the root node.
+ * @return the root node
+ */
+","/**
+     * Get the root node.
+     *
+     * @return the root node
+     */
+    Page getRoot() {
+        return root;
+    }",False,False,This method returns the root node of a page.,True,"The code contains a method named ""getRoot"" that returns the root node of a page. The method does not take any parameters and the root node is of type ""Page""."
+29,getName(),get name get the map name return the name ,Method,,org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store(),,org.h2.dev.store.btree.BtreeMap+name,117,8,0,"/** 
+ * Get the map name.
+ * @return the name
+ */
+","/**
+     * Get the map name.
+     *
+     * @return the name
+     */
+    String getName() {
+        return name;
+    }",False,False,This method serves to retrieve the name of the map.,True,This code defines a method called `getName()` that returns the name of a map. The method does not take any parameters and the return type is a string. The method is not accessible outside of the class it is defined in.
+30,readVarLong(ByteBuffer),read var long buff read a variable size long param buff the source buffer return the value ,Method,,,java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get(),,447,20,8,"/** 
+ * Read a variable size long.
+ * @param buff the source buffer
+ * @return the value
+ */
+","/**
+     * Read a variable size long.
+     *
+     * @param buff the source buffer
+     * @return the value
+     */
+    static long readVarLong(ByteBuffer buff) {
+        long x = buff.get();
+        if (x >= 0) {
+            return x;
+        }
+        x &= 0x7f;
+        for (int s = 7;; s += 7) {
+            long b = buff.get();
+            x |= (b & 0x7f) << s;
+            if (b >= 0) {
+                return x;
+            }
+        }
+    }",True,True,"The function reads a variable size long value from a ByteBuffer. It starts by reading the first byte and if it is positive, returns it. Otherwise, it continues reading bytes and combining them to form the final long value.",False,"The given code is a method named `readVarLong` that reads a variable size long value from a ByteBuffer. It starts by reading the first byte and if it is positive, returns the value. Otherwise, it continues reading bytes and combining them to form the final long value until a positive byte is encountered."
+31,readVarInt(ByteBuffer),read var int buff read a variable size int param buff the source buffer return the value ,Method,IntegerType.read(ByteBuffer) StringType.read(ByteBuffer),org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer),"java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() org.h2.dev.store.btree.BtreeMap+readVarIntRest(ByteBuffer,int) org.h2.dev.store.btree.BtreeMap+readVarIntRest(ByteBuffer,int)",,349,14,8,"/** 
+ * Read a variable size int.
+ * @param buff the source buffer
+ * @return the value
+ */
+","/**
+     * Read a variable size int.
+     *
+     * @param buff the source buffer
+     * @return the value
+     */
+    static int readVarInt(ByteBuffer buff) {
+        int b = buff.get();
+        if (b >= 0) {
+            return b;
+        }
+        // a separate function so that this one can be inlined
+        return readVarIntRest(buff, b);
+    }",False,True,"This method reads a variable size integer from a given ByteBuffer. It first reads a byte from the buffer, and if the byte is non-negative, it returns the byte as the value. Otherwise, it calls another function to read the remaining bytes and calculate the final value.",False,"The given code is a method named ""readVarInt"" that reads a variable size integer from a ByteBuffer. It takes a ByteBuffer as input and returns the value of the integer. If the first byte of the buffer is non-negative, it is directly returned, otherwise, it calls another function ""readVarIntRest"" to read the remaining bytes and return the final value."
+32,"readVarIntRest(ByteBuffer,int)",read var int rest buff b ,Method,readVarInt(ByteBuffer),,java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get(),,491,19,10,,"private static int readVarIntRest(ByteBuffer buff, int b) {
+        int x = b & 0x7f;
+        b = buff.get();
+        if (b >= 0) {
+            return x | (b << 7);
+        }
+        x |= (b & 0x7f) << 7;
+        b = buff.get();
+        if (b >= 0) {
+            return x | (b << 14);
+        }
+        x |= (b & 0x7f) << 14;
+        b = buff.get();
+        if (b >= 0) {
+            return x | b << 21;
+        }
+        x |= ((b & 0x7f) << 21) | (buff.get() << 28);
+        return x;
+    }",True,True,"The function reads a variable-length integer from a ByteBuffer. It reads the integer in chunks of 7 bits, and combines them to form the final integer value.",False,The `readVarIntRest` method reads a variable-length integer from a `ByteBuffer`. It extracts the integer value by reading bytes from the buffer and combining them using bitwise operations. The method returns the final integer value.
+33,getVarIntLen(int),get var int len x get the length of the variable size int param x the value return the length in bytes ,Method,IntegerType.length(Object) StringType.length(Object),org.h2.dev.store.btree.BtreeMapStore+length() org.h2.dev.store.btree.BtreeMapStore+length(),,,454,18,8,"/** 
+ * Get the length of the variable size int.
+ * @param x the value
+ * @return the length in bytes
+ */
+","/**
+     * Get the length of the variable size int.
+     *
+     * @param x the value
+     * @return the length in bytes
+     */
+    static int getVarIntLen(int x) {
+        if ((x & (-1 << 7)) == 0) {
+            return 1;
+        } else if ((x & (-1 << 14)) == 0) {
+            return 2;
+        } else if ((x & (-1 << 21)) == 0) {
+            return 3;
+        } else if ((x & (-1 << 28)) == 0) {
+            return 4;
+        }
+        return 5;
+    }",True,True,This method determines the length in bytes of a variable size int by checking the value against different bit masks and returning the appropriate length.,False,This code defines a method called `getVarIntLen` that takes an integer value as input and returns the length of the variable size int in bytes. The method uses bitwise operations to determine the length based on the value of the input integer.
+34,getVarLongLen(long),get var long len x get the length of the variable size long param x the value return the length in bytes ,Method,,,,,330,16,8,"/** 
+ * Get the length of the variable size long.
+ * @param x the value
+ * @return the length in bytes
+ */
+","/**
+     * Get the length of the variable size long.
+     *
+     * @param x the value
+     * @return the length in bytes
+     */
+    static int getVarLongLen(long x) {
+        int i = 1;
+        while (true) {
+            x >>>= 7;
+            if (x == 0) {
+                return i;
+            }
+            i++;
+        }
+    }",True,True,"This method calculates the length in bytes of a variable size long by repeatedly shifting the value by 7 bits until it becomes zero, and counting the number of shifts.",False,"The given code is a method named ""getVarLongLen"" that calculates the length in bytes of a variable size long value. It uses a while loop to repeatedly shift the value by 7 bits until it becomes zero, incrementing a counter variable each time. The final value of the counter is returned as the length in bytes."
+35,"writeVarInt(ByteBuffer,int)",write var int buff x write a variable size int param buff the target buffer param x the value ,Method,"IntegerType.write(ByteBuffer,Object) StringType.write(ByteBuffer,Object)",org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer),java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte),,320,13,8,"/** 
+ * Write a variable size int.
+ * @param buff the target buffer
+ * @param x the value
+ */
+","/**
+     * Write a variable size int.
+     *
+     * @param buff the target buffer
+     * @param x the value
+     */
+    static void writeVarInt(ByteBuffer buff, int x) {
+        while ((x & ~0x7f) != 0) {
+            buff.put((byte) (0x80 | (x & 0x7f)));
+            x >>>= 7;
+        }
+        buff.put((byte) x);
+    }",False,True,"This method writes a variable size integer to a ByteBuffer. It takes a target buffer and a value as parameters. It uses bitwise operations to write the integer in a compact format, using 7 bits per byte.",False,"The `writeVarInt` method takes a target buffer and an integer value as parameters. It writes the variable size integer value to the buffer by repeatedly putting bytes with the 7 least significant bits of the value set and the most significant bit set to 1, until all bits of the value have been written. Finally, it puts the remaining bits of the value into the buffer."
+36,"writeVarLong(ByteBuffer,long)",write var long buff x write a variable size int param buff the target buffer param x the value ,Method,,,java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte),,322,13,8,"/** 
+ * Write a variable size int.
+ * @param buff the target buffer
+ * @param x the value
+ */
+","/**
+     * Write a variable size int.
+     *
+     * @param buff the target buffer
+     * @param x the value
+     */
+    static void writeVarLong(ByteBuffer buff, long x) {
+        while ((x & ~0x7f) != 0) {
+            buff.put((byte) (0x80 | (x & 0x7f)));
+            x >>>= 7;
+        }
+        buff.put((byte) x);
+    }",True,True,"This method writes a variable size integer to a ByteBuffer. It takes a ByteBuffer and a long value as parameters. It uses bitwise operations to write the integer in a compact format, using 1 byte per 7 bits of the value.",False,"The given code is a method named ""writeVarLong"" that writes a variable size integer value to a target buffer. It takes a ByteBuffer and a long value as parameters. The method uses bitwise operations to write the value in chunks of 7 bits, with the most significant bit set to indicate if there are more chunks to follow."

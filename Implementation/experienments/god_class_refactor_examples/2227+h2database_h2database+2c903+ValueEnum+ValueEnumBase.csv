@@ -1,0 +1,238 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,PRECISION,precision ,Field,,,,,39,1,25,,public static final int PRECISION = 10;,True,True,,False,
+2,DISPLAY_SIZE,display size ,Field,,,,,42,1,25,,public static final int DISPLAY_SIZE = 11;,True,True,,False,
+3,Validation,validation ,Field,,,,,30,1,10,,private static enum Validation,False,False,,False,
+4,enumerators,enumerators ,Field,"ValueEnum(String[],int)",,,,35,1,18,,private final String[] enumerators;,False,False,,False,
+5,label,label ,Field,"ValueEnum(String[],int)",,,,27,1,18,,private final String label;,True,True,,False,
+6,ordinal,ordinal ,Field,"ValueEnum(String[],int)",,,,26,1,18,,private final int ordinal;,True,True,,False,
+7,"ValueEnum(String[],int)",value enum enumerators ordinal ,Method,,,,org.h2.value.ValueEnum+label org.h2.value.ValueEnum+label org.h2.value.ValueEnum+enumerators org.h2.value.ValueEnum+enumerators org.h2.value.ValueEnum+ordinal org.h2.value.ValueEnum+ordinal,187,5,2,,"private ValueEnum(final String[] enumerators, final int ordinal) {
+        this.label = enumerators[ordinal];
+        this.enumerators = enumerators;
+        this.ordinal = ordinal;
+    }",False,False,"This method is a constructor for the ValueEnum class. It initializes the label, enumerators, and ordinal variables with the values passed as parameters.",False,"The code defines a private constructor for a ValueEnum class that takes an array of strings and an integer as parameters. It assigns the string at the given ordinal position to the label variable, assigns the array to the enumerators variable, and assigns the ordinal value to the ordinal variable."
+8,add(Value),add v ,Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+add(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+add(Value),org.h2.value.Value+INT org.h2.value.Value+INT,147,5,1,,"@Override
+    public Value add(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).add(iv);
+    }",True,True,"The function of this method is to add a given value to the current value. It first converts the given value to an integer, then adds it to the current value (also converted to an integer), and returns the result.",False,"The code is implementing an ""add"" method that takes a parameter of type ""Value"" and returns a value of type ""Value"". It first converts the parameter to an integer value, then calls the ""add"" method on the current object after converting it to an integer value as well."
+9,check(String[]),check enumerators ,Method,"check(String[],String) check(String[],int) check(String[],Value) validate(String[],String) validate(String[],int)",org.h2.command.Parser+parseColumnWithType(String),"org.h2.value.ValueEnum+validate(String[]) org.h2.value.ValueEnum+validate(String[]) org.h2.message.DbException+get(int) org.h2.message.DbException+get(int) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[]) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[])",org.h2.api.ErrorCode+ENUM_EMPTY org.h2.api.ErrorCode+ENUM_DUPLICATE org.h2.api.ErrorCode+INVALID_VALUE_2,524,14,25,,"public static final void check(final String[] enumerators) {
+        switch (validate(enumerators)) {
+            case VALID:
+                return;
+            case EMPTY:
+                throw DbException.get(ErrorCode.ENUM_EMPTY);
+            case DUPLICATE:
+                throw DbException.get(ErrorCode.ENUM_DUPLICATE,
+                        toString(enumerators));
+            default:
+                throw DbException.get(ErrorCode.INVALID_VALUE_2,
+                        toString(enumerators));
+        }
+    }",False,False,The function of this method is to check the validity of an array of strings (enumerators). It uses a switch statement to validate the array and throws exceptions based on the validation result.,True,"The given code is a method named ""check"" that takes an array of strings as input. It validates the input array and throws exceptions based on the validation result. If the array is empty, it throws an exception with error code ENUM_EMPTY. If there are duplicate values in the array, it throws an exception with error code ENUM_DUPLICATE. Otherwise, it throws an exception with error code INVALID_VALUE_2."
+10,"check(String[],String)",check enumerators label ,Method,"get(String[],String)",,"org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+validate(String[],String) org.h2.value.ValueEnum+validate(String[],String) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[])",org.h2.api.ErrorCode+ENUM_VALUE_NOT_PERMITTED_2,386,11,26,,"private static final void check(final String[] enumerators, final String label) {
+        check(enumerators);
+
+        switch (validate(enumerators, label)) {
+            case VALID:
+                return;
+            default:
+                throw DbException.get(ErrorCode.ENUM_VALUE_NOT_PERMITTED_2,
+                        toString(enumerators), ""'"" + label + ""'"");
+        }
+    }",False,False,"The function of this method is to check if a given label is valid based on a set of enumerators. If the label is not valid, it throws an exception with an error code and the invalid label.",True,"The given code is a private static method named ""check"" that takes an array of strings and a label as parameters. It first calls another method named ""check"" with the same array of strings, then performs a switch statement on the result of another method named ""validate"" with the array of strings and the label as parameters. If the result is not ""VALID"", it throws a database exception with an error code and a formatted error message."
+11,"check(String[],int)",check enumerators ordinal ,Method,"get(String[],int)",,"org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+validate(String[],int) org.h2.value.ValueEnum+validate(String[],int) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[]) java.lang.Integer+toString(int) java.lang.Integer+toString(int)",org.h2.api.ErrorCode+ENUM_VALUE_NOT_PERMITTED_2,395,11,26,,"private static final void check(final String[] enumerators, final int ordinal) {
+        check(enumerators);
+
+        switch (validate(enumerators, ordinal)) {
+            case VALID:
+                return;
+            default:
+                throw DbException.get(ErrorCode.ENUM_VALUE_NOT_PERMITTED_2,
+                        toString(enumerators), Integer.toString(ordinal));
+        }
+    }",False,False,"The function of this method is to check if the given ordinal value is valid for the given array of enumerators. If the ordinal value is not valid, it throws an exception with an error code and the string representation of the enumerators and ordinal value.",True,"The given code is a private static method that checks if a given ordinal value is valid for a given array of enumerators. It first calls another method to validate the enumerators, and then uses a switch statement to handle the validation result. If the result is not valid, it throws a database exception with an error code and the string representation of the enumerators and ordinal."
+12,"check(String[],Value)",check enumerators value ,Method,"get(String[],Value)",,"org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+validate(String[],Value) org.h2.value.ValueEnum+validate(String[],Value) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[]) org.h2.value.Value+toString() org.h2.value.Value+toString()",org.h2.api.ErrorCode+ENUM_VALUE_NOT_PERMITTED_2,384,11,26,,"private static final void check(final String[] enumerators, final Value value) {
+        check(enumerators);
+
+        switch (validate(enumerators, value)) {
+            case VALID:
+                return;
+            default:
+                throw DbException.get(ErrorCode.ENUM_VALUE_NOT_PERMITTED_2,
+                        toString(enumerators), value.toString());
+        }
+    }",False,False,"The function of this method is to check if a given value is valid based on a set of enumerators. If the value is not valid, it throws an exception with an error code and the string representation of the enumerators and value.",True,"The given code is a private static method named ""check"" that takes an array of strings and a ""Value"" object as parameters. It first calls another ""check"" method with only the array of strings as a parameter. Then, it performs a switch statement on the result of a ""validate"" method, and if the result is not ""VALID"", it throws a database exception with an error code and a message containing the string representation of the array and the ""Value"" object."
+13,"compareSecure(Value,CompareMode)",compare secure v mode ,Method,,,"org.h2.value.ValueEnum+get(String[],Value) org.h2.value.ValueEnum+get(String[],Value) org.h2.util.MathUtils+compareInt(int,int) org.h2.util.MathUtils+compareInt(int,int) org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal()",org.h2.value.ValueEnum+enumerators,210,5,4,,"@Override
+    protected int compareSecure(final Value v, final CompareMode mode) {
+        final ValueEnum ev = ValueEnum.get(enumerators, v);
+        return MathUtils.compareInt(ordinal(), ev.ordinal());
+    }",False,False,"This method compares the ordinal values of two values, one being passed as a parameter and the other being the ordinal value of the current object. It returns the result of the comparison.",False,This code snippet is a method called `compareSecure` that overrides a superclass method. It takes a `Value` object and a `CompareMode` object as parameters. It uses the `ValueEnum` class to compare the ordinal values of two enumerators and returns the result using the `MathUtils.compareInt` method.
+14,divide(Value),divide v ,Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+divide(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+divide(Value),org.h2.value.Value+INT org.h2.value.Value+INT,153,5,1,,"@Override
+    public Value divide(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).divide(iv);
+    }",True,True,"This method overrides the divide function and takes a Value object as input. It converts the input value to an integer, then divides the current object by the converted value and returns the result.",False,"The code defines a method called ""divide"" that takes a parameter ""v"" of type ""Value"" and returns a value. Inside the method, it converts the parameter ""v"" to an integer value, and then calls the ""divide"" method on the current object, passing the converted value as an argument."
+15,equals(Object),equals other ,Method,,,org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal(),,164,5,1,,"@Override
+    public boolean equals(final Object other) {
+        return other instanceof ValueEnum &&
+            ordinal() == ((ValueEnum) other).ordinal();
+    }",True,True,"This method overrides the equals() method and checks if the given object is an instance of ValueEnum and has the same ordinal value. It returns true if both conditions are met, otherwise false.",False,"The code defines an overridden equals() method that checks if the given object is an instance of ValueEnum and has the same ordinal value as the current object. It returns true if both conditions are met, indicating that the objects are equal."
+16,"get(String[],String)",get enumerators label ,Method,"get(String[],Value)",,"org.h2.value.ValueEnum+check(String[],String) org.h2.value.ValueEnum+check(String[],String) java.lang.String+equals(Object) java.lang.String+equals(Object) org.h2.value.ValueEnum+ValueEnum(String[],int) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String)",org.h2.api.ErrorCode+GENERAL_ERROR_1,363,10,9,,"public static ValueEnum get(final String[] enumerators, final String label) {
+        check(enumerators, label);
+
+        for (int i = 0; i < enumerators.length; i++) {
+            if (label.equals(enumerators[i]))
+                return new ValueEnum(enumerators, i);
+        }
+
+        throw DbException.get(ErrorCode.GENERAL_ERROR_1, ""Unexpected error"");
+    }",False,False,"This method returns a ValueEnum object based on the given label, by iterating through the enumerators array and checking if the label matches any of the elements. If a match is found, it returns a new ValueEnum object. If no match is found, it throws a DbException with an error message.",False,"The given code is a method named ""get"" that takes an array of strings and a label as input. It checks if the label exists in the array and returns a new instance of the ValueEnum class with the array and the index of the label. If the label is not found, it throws a DbException with an error message."
+17,"get(String[],int)",get enumerators ordinal ,Method,"get(String[],Value)",org.h2.value.Transfer+readValue(),"org.h2.value.ValueEnum+check(String[],int) org.h2.value.ValueEnum+check(String[],int) org.h2.value.ValueEnum+ValueEnum(String[],int)",,171,4,9,,"public static ValueEnum get(final String[] enumerators, final int ordinal) {
+        check(enumerators, ordinal);
+        return new ValueEnum(enumerators, ordinal);
+    }",False,False,"The function of this method is to create and return a new instance of the ValueEnum class, using the given array of enumerators and ordinal value. It also performs a check on the input parameters before creating the instance.",False,The given code is a static method that takes an array of strings and an integer as parameters. It performs a check on the parameters and then returns a new instance of the ValueEnum class with the given parameters.
+18,"get(String[],Value)",get enumerators value ,Method,"compareSecure(Value,CompareMode)","org.h2.expression.ExpressionColumn+getValue(Session) org.h2.table.Column+validateConvertUpdateSequence(Session,Value)","org.h2.value.ValueEnum+check(String[],Value) org.h2.value.ValueEnum+check(String[],Value) org.h2.value.DataType+isStringType(int) org.h2.value.DataType+isStringType(int) org.h2.value.Value+getType() org.h2.value.Value+getType() org.h2.value.ValueEnum+get(String[],String) org.h2.value.ValueEnum+get(String[],String) org.h2.value.Value+getString() org.h2.value.Value+getString() org.h2.value.ValueEnum+get(String[],int) org.h2.value.ValueEnum+get(String[],int) org.h2.value.Value+getInt() org.h2.value.Value+getInt()",,308,9,9,,"public static ValueEnum get(final String[] enumerators, final Value value) {
+        check(enumerators, value);
+
+        if (DataType.isStringType(value.getType())) {
+            return get(enumerators, value.getString());
+        } else {
+            return get(enumerators, value.getInt());
+        }
+    }",False,False,"This method returns a ValueEnum based on the given enumerators and value. It checks the enumerators and value, and then calls the appropriate overloaded get method based on the type of the value.",False,"This code defines a method named ""get"" that takes an array of strings and a value as input. It first checks if the value is valid, then based on the type of the value (string or integer), it calls another overloaded version of the ""get"" method to retrieve a corresponding ValueEnum object."
+19,getDisplaySize(),get display size ,Method,,,,org.h2.value.ValueEnum+DISPLAY_SIZE,78,4,1,,"@Override
+    public int getDisplaySize() {
+        return DISPLAY_SIZE;
+    }",True,True,"This method serves to return the display size, which is represented by the constant DISPLAY_SIZE, as an integer.",False,"The code snippet defines a method named ""getDisplaySize"" that returns an integer value. The method is overridden from a superclass or interface and simply returns the value of a constant variable named ""DISPLAY_SIZE""."
+20,getEnumerators(),get enumerators ,Method,,org.h2.value.Transfer+writeValue(Value),,org.h2.value.ValueEnum+enumerators,68,3,1,,"public String[] getEnumerators() {
+        return enumerators;
+    }",False,False,"This method returns an array of strings called ""enumerators"".",False,"The code contains a method named ""getEnumerators"" which returns an array of strings. It is used to retrieve the enumerators stored in the ""enumerators"" variable."
+21,getInt(),get int ,Method,,org.h2.value.Transfer+writeValue(Value),,org.h2.value.ValueEnum+ordinal,65,4,1,,"@Override
+    public int getInt() {
+        return ordinal;
+    }",True,True,"This method serves to return the value of the ""ordinal"" variable as an integer.",False,The code snippet is implementing a method called `getInt()` which returns the ordinal value of an object. It is likely part of an enumeration or an object that has a defined order.
+22,getLong(),get long ,Method,,,,org.h2.value.ValueEnum+ordinal,67,4,1,,"@Override
+    public long getLong() {
+        return ordinal;
+    }",True,True,This method serves to retrieve the ordinal value as a long data type.,False,The code snippet is implementing a method called `getLong()` which returns a `long` value. The value returned is the `ordinal` value of the object.
+23,getObject(),get object ,Method,,,,org.h2.value.ValueEnum+ordinal,71,4,1,,"@Override
+    public Object getObject() {
+        return ordinal;
+    }",True,True,"This method serves to return the value of the ""ordinal"" variable as an Object.",False,"The code snippet shows an overridden method named ""getObject"" that returns the value of the ""ordinal"" variable. It is not clear what type the method returns, as the return type is specified as ""Object"". The purpose and functionality of the method cannot be determined from this code alone."
+24,getPrecision(),get precision ,Method,,,,org.h2.value.ValueEnum+PRECISION,74,4,1,,"@Override
+    public long getPrecision() {
+        return PRECISION;
+    }",True,True,The function of the method is to return the value of the constant PRECISION as a long data type.,False,"The code snippet defines a method named ""getPrecision"" that returns a long value. The method is annotated with ""@Override"" indicating that it overrides a method from a superclass or interface. The method simply returns a constant value named ""PRECISION""."
+25,getSignum(),get signum ,Method,,,java.lang.Integer+signum(int) java.lang.Integer+signum(int),org.h2.value.ValueEnum+ordinal,84,4,1,,"@Override
+    public int getSignum() {
+        return Integer.signum(ordinal);
+    }",True,True,This method returns the signum of the ordinal value.,False,"The code defines a method named ""getSignum"" that returns the signum of the ""ordinal"" value. The signum is a mathematical function that returns -1 for negative numbers, 0 for zero, and 1 for positive numbers."
+26,getSQL(),get sql ,Method,,,org.h2.value.ValueEnum+getString() org.h2.value.ValueEnum+getString(),,72,4,1,,"@Override
+    public String getSQL() {
+        return getString();
+    }",False,True,"The method ""getSQL"" overrides a method from a superclass and returns the result of calling the method ""getString"".",False,"The code snippet is an implementation of the `getSQL()` method, which overrides a method from a superclass or interface. It returns the result of calling the `getString()` method, indicating that the SQL string is obtained from the `getString()` method."
+27,getString(),get string ,Method,getSQL(),,,org.h2.value.ValueEnum+label,69,4,1,,"@Override
+    public String getString() {
+        return label;
+    }",True,True,"This method serves to return the value of the variable ""label"" as a string.",False,"The code snippet defines a method named ""getString"" that returns a string value. The method is annotated with ""@Override"" indicating that it overrides a method from a superclass or interface. The method simply returns the value of the ""label"" variable."
+28,getType(),get type ,Method,,,,org.h2.value.Value+ENUM,69,4,1,,"@Override
+    public int getType() {
+        return Value.ENUM;
+    }",True,True,"The function of the method is to return the value of the constant ""ENUM"" from the class ""Value"" as an integer.",False,"The code snippet defines an overridden method called ""getType"" that returns an integer value representing an enumeration. This method is likely part of a class or interface implementation and provides information about the type of the object."
+29,hashCode(),hash code ,Method,,,java.lang.Object+hashCode() java.lang.Object+hashCode(),org.h2.value.ValueEnum+enumerators org.h2.value.ValueEnum+ordinal,92,4,1,,"@Override
+    public int hashCode() {
+        return enumerators.hashCode() + ordinal;
+    }",False,False,This method overrides the default hashCode() function. It calculates the hash code by combining the hash code of the enumerators and the ordinal value.,False,The code overrides the default hashCode() method and returns the sum of the hash code of the enumerators object and the ordinal value. This function is used to generate a unique hash code for an object based on its enumerators and ordinal value.
+30,"isValid(String,String)",is valid enumerators label ,Method,,,"org.h2.value.ValueEnum+validate(String[],String) org.h2.value.ValueEnum+validate(String[],String)",org.h2.value.ValueEnum+Validation,155,3,9,,"public static boolean isValid(final String enumerators[], final String label) {
+        return validate(enumerators, label).equals(Validation.VALID);
+    }",False,False,"The function checks if the given label is valid by comparing it with the validation result of the label against the given enumerators. It returns true if the label is valid, and false otherwise.",False,"The code defines a method named `isValid` that takes an array of strings `enumerators` and a string `label` as input. It calls another method `validate` with these inputs and checks if the returned value is equal to `Validation.VALID`. If it is, the method returns `true`, indicating that the input is valid; otherwise, it returns `false`."
+31,"isValid(String,int)",is valid enumerators ordinal ,Method,,,"org.h2.value.ValueEnum+validate(String[],int) org.h2.value.ValueEnum+validate(String[],int)",org.h2.value.ValueEnum+Validation,156,3,9,,"public static boolean isValid(final String enumerators[], final int ordinal) {
+        return validate(enumerators, ordinal).equals(Validation.VALID);
+    }",False,False,The function of the given method is to check if the value at the specified ordinal position in the given array of enumerators is valid or not. It returns a boolean value indicating the validity of the value.,False,"The code defines a method named ""isValid"" that takes an array of strings and an integer as input. It calls another method named ""validate"" with the input parameters and checks if the returned value is equal to a constant named ""VALID"" from an enum named ""Validation"". The method returns a boolean value indicating whether the validation is successful or not."
+32,"isValid(String,Value)",is valid enumerators value ,Method,,,"org.h2.value.ValueEnum+validate(String[],Value) org.h2.value.ValueEnum+validate(String[],Value)",org.h2.value.ValueEnum+Validation,154,3,9,,"public static boolean isValid(final String enumerators[], final Value value) {
+        return validate(enumerators, value).equals(Validation.VALID);
+    }",False,False,The function of the given method is to check if a given value is valid based on a set of enumerators. It returns a boolean value indicating whether the value is valid or not.,False,"The code defines a method named ""isValid"" that takes an array of strings and a value as input. It calls another method named ""validate"" with the input parameters and checks if the returned value is equal to ""VALID"" from an enum named ""Validation"". The method returns a boolean indicating whether the input is valid or not."
+33,ordinal(),ordinal ,Method,"compareSecure(Value,CompareMode) compareSecure(Value,CompareMode) equals(Object) equals(Object)",,,org.h2.value.ValueEnum+ordinal,55,3,4,,"protected int ordinal() {
+        return ordinal;
+    }",True,True,"The function of the method is to return the value of the variable ""ordinal"" as an integer.",False,"The code snippet defines a protected method named ""ordinal"" that returns an integer value. The method is likely used to retrieve the ordinal value of an object, which represents its position in an enumeration or ordered set."
+34,modulus(Value),modulus v ,Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+modulus(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+modulus(Value),org.h2.value.Value+INT org.h2.value.Value+INT,155,5,1,,"@Override
+    public Value modulus(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).modulus(iv);
+    }",True,True,This method calculates the modulus of the current value object with the given value object. It converts the given value to an integer and then calculates the modulus using the converted values.,False,"The given code is an overridden method that calculates the modulus of a value. It first converts the input value to an integer, then calls the modulus method of the current object with the converted value, and finally returns the result."
+35,multiply(Value),multiply v ,Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+multiply(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+multiply(Value),org.h2.value.Value+INT org.h2.value.Value+INT,157,5,1,,"@Override
+    public Value multiply(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).multiply(iv);
+    }",True,True,"The method multiplies the current value by the input value, after converting both values to integers if necessary.",False,"The code defines a method called ""multiply"" that takes a parameter of type ""Value"" and returns a value of type ""Value"". It first converts the input value to an integer, then calls the ""multiply"" method on the current object with the converted value as the argument, and finally returns the result."
+36,"set(PreparedStatement,int)",set prep parameter index ,Method,,,"java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int)",org.h2.value.ValueEnum+ordinal,172,5,1,,"@Override
+    public void set(final PreparedStatement prep, final int parameterIndex)
+            throws SQLException {
+         prep.setInt(parameterIndex, ordinal);
+    }",True,True,This method sets an integer value to a specific parameter index in a prepared statement.,False,"The given code is an implementation of the `set` method, which is used to set a parameter value in a `PreparedStatement` object. It takes an `ordinal` value and sets it as an integer parameter at the specified `parameterIndex` in the prepared statement."
+37,subtract(Value),subtract v ,Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+subtract(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+subtract(Value),org.h2.value.Value+INT org.h2.value.Value+INT,157,5,1,,"@Override
+    public Value subtract(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).subtract(iv);
+    }",False,False,"This method subtracts the given value from the current value. It first converts the given value to an integer, then subtracts it from the current value, and returns the result.",False,"The code defines a method named ""subtract"" that takes a parameter of type ""Value"" and returns a value of type ""Value"". It first converts the input value to an integer, then subtracts it from the current object's integer value and returns the result."
+38,toString(String[]),to string enumerators ,Method,"check(String[]) check(String[]) check(String[],String) check(String[],int) check(String[],Value)",,,,348,11,10,,"private static String toString(final String[] enumerators) {
+        String result = ""("";
+        for (int i = 0; i < enumerators.length; i++) {
+            result += ""'"" + enumerators[i] + ""'"";
+            if (i < enumerators.length - 1) {
+                result += "", "";
+            }
+        }
+        result += "")"";
+        return result;
+    }",False,False,"This method takes an array of strings and returns a string representation of the array, with each element enclosed in single quotes and separated by commas.",False,"The code defines a private static method named `toString` that takes in an array of strings as input. It iterates through the array and concatenates each string with single quotes, separated by commas. The resulting string is enclosed in parentheses and returned as the output."
+39,"validate(String[],String)",validate enumerators label ,Method,"check(String[],String) isValid(String,String) validate(String[],Value)",,org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]) java.lang.String+toLowerCase() java.lang.String+trim() java.lang.String+trim() java.lang.String+toLowerCase() java.lang.String+equals(Object) java.lang.String+equals(Object),org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation,391,13,10,,"private static Validation validate(final String[] enumerators, final String label) {
+        check(enumerators);
+
+        final String cleanLabel = label.trim().toLowerCase();
+
+        for (int i = 0; i < enumerators.length; i++) {
+            if (cleanLabel.equals(enumerators[i])) {
+                return Validation.VALID;
+            }
+        }
+
+        return Validation.INVALID;
+    }",False,False,The function of this method is to validate if a given label is present in a given array of enumerators. It returns a Validation enum value indicating whether the label is valid or invalid.,True,"The code defines a private static method named ""validate"" that takes an array of strings and a label as input. It checks if the label exists in the array of strings, ignoring case and leading/trailing whitespace. If a match is found, it returns a validation status of ""VALID"", otherwise it returns ""INVALID""."
+40,validate(String[]),validate enumerators ,Method,check(String[]),,java.lang.String+equals(Object) java.lang.String+trim() java.lang.String+trim() java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object),org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation,698,21,10,,"private static Validation validate(final String[] enumerators) {
+        if (enumerators == null || enumerators.length == 0) {
+            return Validation.EMPTY;
+        }
+
+        for (int i = 0; i < enumerators.length; i++) {
+            if (enumerators[i] == null || enumerators[i].trim().equals("""")) {
+                return Validation.EMPTY;
+            }
+
+            if (i < enumerators.length - 1) {
+                for (int j = i + 1; j < enumerators.length; j++) {
+                    if (enumerators[i].equals(enumerators[j])) {
+                        return Validation.DUPLICATE;
+                    }
+                }
+            }
+        }
+
+        return Validation.VALID;
+    }",False,False,"The function of this method is to validate an array of strings. It checks if the array is empty or contains any null or empty strings. It also checks for duplicate strings in the array. It returns a validation result indicating if the array is valid, empty, or contains duplicates.",True,"The code defines a private static method called ""validate"" that takes an array of strings as input. It checks if the array is empty or contains any null or empty strings, returning a validation result accordingly. It also checks for duplicate strings within the array and returns a validation result if any duplicates are found."
+41,"validate(String[],int)",validate enumerators ordinal ,Method,"check(String[],int) isValid(String,int) validate(String[],Value)",,org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]),org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation,261,9,10,,"private static Validation validate(final String[] enumerators, final int ordinal) {
+        check(enumerators);
+
+        if (ordinal < 0 || ordinal >= enumerators.length) {
+            return Validation.INVALID;
+        }
+
+        return Validation.VALID;
+    }",False,False,The function of this method is to validate an ordinal value against an array of enumerators. It returns a validation result indicating whether the ordinal is valid or not.,True,"The code is a private static method named ""validate"" that takes an array of strings and an integer as parameters. It checks if the ordinal value is within the range of the array length and returns a validation result accordingly."
+42,"validate(String[],Value)",validate enumerators value ,Method,"check(String[],Value) isValid(String,Value)",,"org.h2.value.DataType+isStringType(int) org.h2.value.DataType+isStringType(int) org.h2.value.Value+getType() org.h2.value.Value+getType() org.h2.value.ValueEnum+validate(String[],String) org.h2.value.ValueEnum+validate(String[],String) org.h2.value.Value+getString() org.h2.value.Value+getString() org.h2.value.ValueEnum+validate(String[],int) org.h2.value.ValueEnum+validate(String[],int) org.h2.value.Value+getInt() org.h2.value.Value+getInt()",,289,7,10,,"private static Validation validate(final String[] enumerators, final Value value) {
+        if (DataType.isStringType(value.getType())) {
+            return validate(enumerators, value.getString());
+        } else {
+            return validate(enumerators, value.getInt());
+        }
+    }",False,False,"The function of this method is to validate a given value against a set of enumerators. It first checks if the value is of string type, and if so, it calls the validate method with the string value. Otherwise, it calls the validate method with the integer value.",True,"The code defines a private static method called ""validate"" that takes an array of strings and a ""Value"" object as parameters. It checks the type of the ""Value"" object and calls another overloaded ""validate"" method accordingly, passing either the string or integer value of the ""Value"" object. The method returns a ""Validation"" object."

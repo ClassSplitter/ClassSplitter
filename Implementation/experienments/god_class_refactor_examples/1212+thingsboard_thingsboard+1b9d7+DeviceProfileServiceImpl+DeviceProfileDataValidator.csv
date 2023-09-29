@@ -1,0 +1,660 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,code summary
+1,INCORRECT_TENANT_ID,incorrect tenant id ,Field,,,,,72,1,26,,"private static final String INCORRECT_TENANT_ID = ""Incorrect tenantId "";",False,False,,
+2,INCORRECT_DEVICE_PROFILE_ID,incorrect device profile id ,Field,,,,,87,1,26,,"private static final String INCORRECT_DEVICE_PROFILE_ID = ""Incorrect deviceProfileId "";",False,False,,
+3,INCORRECT_DEVICE_PROFILE_NAME,incorrect device profile name ,Field,,,,,91,1,26,,"private static final String INCORRECT_DEVICE_PROFILE_NAME = ""Incorrect deviceProfileName "";",False,False,,
+4,LOCATION,location ,Field,,,,,70,1,26,,"private static final Location LOCATION = new Location("""", """", -1, -1);",True,True,,
+5,ATTRIBUTES_PROTO_SCHEMA,attributes proto schema ,Field,,,,,80,1,26,,"private static final String ATTRIBUTES_PROTO_SCHEMA = ""attributes proto schema"";",False,True,,
+6,TELEMETRY_PROTO_SCHEMA,telemetry proto schema ,Field,,,,,78,1,26,,"private static final String TELEMETRY_PROTO_SCHEMA = ""telemetry proto schema"";",True,True,,
+7,RPC_REQUEST_PROTO_SCHEMA,rpc request proto schema ,Field,,,,,82,1,26,,"private static final String RPC_REQUEST_PROTO_SCHEMA = ""rpc request proto schema"";",False,True,,
+8,RPC_RESPONSE_PROTO_SCHEMA,rpc response proto schema ,Field,,,,,84,1,26,,"private static final String RPC_RESPONSE_PROTO_SCHEMA = ""rpc response proto schema"";",True,True,,
+9,invalidSchemaProvidedMessage(String),invalid schema provided message schema name ,Method,,,,,158,3,10,,"private static String invalidSchemaProvidedMessage(String schemaName) {
+        return ""[Transport Configuration] invalid "" + schemaName + "" provided!"";
+    }",True,True,The function of the method is to generate an error message for an invalid schema name provided in the transport configuration.,"The code defines a private static method named ""invalidSchemaProvidedMessage"" that takes a schemaName as input and returns a string message. The message is a formatted string indicating that an invalid schema has been provided for transport configuration."
+10,queueService,queue service ,Field,,,,,67,2,2,,"@Autowired(required = false)
+    private QueueService queueService;",True,True,,
+11,deviceProfileDao,device profile dao ,Field,,,,,57,2,2,,"@Autowired
+    private DeviceProfileDao deviceProfileDao;",False,False,,
+12,deviceDao,device dao ,Field,,,,,43,2,2,,"@Autowired
+    private DeviceDao deviceDao;",False,False,,
+13,deviceService,device service ,Field,,,,,51,2,2,,"@Autowired
+    private DeviceService deviceService;",False,False,,
+14,tenantDao,tenant dao ,Field,,,,,43,2,2,,"@Autowired
+    private TenantDao tenantDao;",True,True,,
+15,cacheManager,cache manager ,Field,,,,,49,2,2,,"@Autowired
+    private CacheManager cacheManager;",False,False,,
+16,otaPackageService,ota package service ,Field,,,,,59,2,2,,"@Autowired
+    private OtaPackageService otaPackageService;",True,True,,
+17,ruleChainService,rule chain service ,Field,,,,,57,2,2,,"@Autowired
+    private RuleChainService ruleChainService;",True,True,,
+18,dashboardService,dashboard service ,Field,,,,,57,2,2,,"@Autowired
+    private DashboardService dashboardService;",True,True,,
+19,findOrCreateLock,find or create lock ,Field,,,,,58,1,18,,private final Lock findOrCreateLock = new ReentrantLock();,False,False,,
+20,"findDeviceProfileById(TenantId,DeviceProfileId)",find device profile by id tenant id device profile id ,Method,,,"org.thingsboard.server.dao.service.Validator+validateId(UUIDBased,String) org.thingsboard.server.dao.service.Validator+validateId(UUIDBased,String) org.thingsboard.server.dao.Dao+findById(TenantId,UUID) org.thingsboard.server.dao.Dao+findById(TenantId,UUID) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId()",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_DEVICE_PROFILE_ID org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao,444,7,1,,"@Cacheable(cacheNames = DEVICE_PROFILE_CACHE, key = ""{#deviceProfileId.id}"")
+    @Override
+    public DeviceProfile findDeviceProfileById(TenantId tenantId, DeviceProfileId deviceProfileId) {
+        log.trace(""Executing findDeviceProfileById [{}]"", deviceProfileId);
+        Validator.validateId(deviceProfileId, INCORRECT_DEVICE_PROFILE_ID + deviceProfileId);
+        return deviceProfileDao.findById(tenantId, deviceProfileId.getId());
+    }",False,False,"This method serves to find a device profile by its ID, using caching to improve performance. It logs the execution, validates the ID, and retrieves the device profile from the database.","This code is a method that retrieves a device profile from a cache using the provided device profile ID as the cache key. It first validates the ID, then calls the `findById` method of the `deviceProfileDao` to retrieve the device profile from the cache."
+21,"findDeviceProfileByName(TenantId,String)",find device profile by name tenant id profile name ,Method,,,"org.thingsboard.server.dao.service.Validator+validateString(String,String) org.thingsboard.server.dao.service.Validator+validateString(String,String) org.thingsboard.server.dao.device.DeviceProfileDao+findByName(TenantId,String) org.thingsboard.server.dao.device.DeviceProfileDao+findByName(TenantId,String)",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_DEVICE_PROFILE_NAME org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao,352,6,1,,"@Override
+    public DeviceProfile findDeviceProfileByName(TenantId tenantId, String profileName) {
+        log.trace(""Executing findDeviceProfileByName [{}][{}]"", tenantId, profileName);
+        Validator.validateString(profileName, INCORRECT_DEVICE_PROFILE_NAME + profileName);
+        return deviceProfileDao.findByName(tenantId, profileName);
+    }",False,False,"This method is used to find a device profile by its name. It takes a tenant ID and a profile name as parameters, logs the execution, validates the profile name, and then calls the deviceProfileDao to find the device profile.","This code is an implementation of a method called ""findDeviceProfileByName"" that takes a tenant ID and a profile name as parameters. It logs the execution, validates the profile name, and then calls a DAO method to find and return the device profile associated with the given tenant ID and profile name."
+22,"findDeviceProfileInfoById(TenantId,DeviceProfileId)",find device profile info by id tenant id device profile id ,Method,,,"org.thingsboard.server.dao.service.Validator+validateId(UUIDBased,String) org.thingsboard.server.dao.service.Validator+validateId(UUIDBased,String) org.thingsboard.server.dao.device.DeviceProfileDao+findDeviceProfileInfoById(TenantId,UUID) org.thingsboard.server.dao.device.DeviceProfileDao+findDeviceProfileInfoById(TenantId,UUID) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId()",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_DEVICE_PROFILE_ID org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao,477,7,1,,"@Cacheable(cacheNames = DEVICE_PROFILE_CACHE, key = ""{'info', #deviceProfileId.id}"")
+    @Override
+    public DeviceProfileInfo findDeviceProfileInfoById(TenantId tenantId, DeviceProfileId deviceProfileId) {
+        log.trace(""Executing findDeviceProfileById [{}]"", deviceProfileId);
+        Validator.validateId(deviceProfileId, INCORRECT_DEVICE_PROFILE_ID + deviceProfileId);
+        return deviceProfileDao.findDeviceProfileInfoById(tenantId, deviceProfileId.getId());
+    }",False,False,This method serves to find and return the device profile information by its ID. It uses caching to improve performance and logs the execution.,This code is a method that retrieves a device profile information by its ID. It uses caching to improve performance by storing the result in a cache and retrieving it from there if available. The method also performs validation on the device profile ID before executing the database query.
+23,saveDeviceProfile(DeviceProfile),save device profile device profile ,Method,,,"org.thingsboard.server.dao.service.DataValidator+validate(D,Function<D,TenantId>) org.thingsboard.server.dao.service.DataValidator+validate(D,Function<D,TenantId>) org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.dao.Dao+findById(TenantId,UUID) org.thingsboard.server.dao.Dao+findById(TenantId,UUID) org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.dao.device.DeviceProfileDao+saveAndFlush(TenantId,DeviceProfile) org.thingsboard.server.dao.device.DeviceProfileDao+saveAndFlush(TenantId,DeviceProfile) org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.dao.entity.AbstractEntityService+extractConstraintViolationException(Exception) org.thingsboard.server.dao.entity.AbstractEntityService+extractConstraintViolationException(Exception) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.common.data.DeviceProfile+isDefault() org.thingsboard.server.common.data.DeviceProfile+isDefault() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.lang.String+equals(Object) org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.common.data.HasName+getName() java.lang.String+equals(Object) org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.common.data.page.PageLink+PageLink(int) org.thingsboard.server.dao.device.DeviceDao+findDevicesByTenantIdAndProfileId(UUID,UUID,PageLink) org.thingsboard.server.dao.device.DeviceDao+findDevicesByTenantIdAndProfileId(UUID,UUID,PageLink) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.HasTenantId+getTenantId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.IdBased+getUuidId() org.thingsboard.server.common.data.id.IdBased+getUuidId() org.thingsboard.server.common.data.page.PageData+getData() org.thingsboard.server.common.data.page.PageData+getData() org.thingsboard.server.common.data.Device+setType(String) org.thingsboard.server.common.data.Device+setType(String) org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.dao.device.DeviceService+saveDevice(Device) org.thingsboard.server.dao.device.DeviceService+saveDevice(Device) org.thingsboard.server.common.data.page.PageLink+nextPageLink() org.thingsboard.server.common.data.page.PageLink+nextPageLink() org.thingsboard.server.common.data.page.PageData+hasNext() org.thingsboard.server.common.data.page.PageData+hasNext()",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileValidator org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao org.thingsboard.server.dao.device.DeviceProfileServiceImpl+cacheManager org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceDao org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceService,2587,43,1,,"@Override
+    public DeviceProfile saveDeviceProfile(DeviceProfile deviceProfile) {
+        log.trace(""Executing saveDeviceProfile [{}]"", deviceProfile);
+        deviceProfileValidator.validate(deviceProfile, DeviceProfile::getTenantId);
+        DeviceProfile oldDeviceProfile = null;
+        if (deviceProfile.getId() != null) {
+            oldDeviceProfile = deviceProfileDao.findById(deviceProfile.getTenantId(), deviceProfile.getId().getId());
+        }
+        DeviceProfile savedDeviceProfile;
+        try {
+            savedDeviceProfile = deviceProfileDao.saveAndFlush(deviceProfile.getTenantId(), deviceProfile);
+        } catch (Exception t) {
+            ConstraintViolationException e = extractConstraintViolationException(t).orElse(null);
+            if (e != null && e.getConstraintName() != null && e.getConstraintName().equalsIgnoreCase(""device_profile_name_unq_key"")) {
+                throw new DataValidationException(""Device profile with such name already exists!"");
+            } else if (e != null && e.getConstraintName() != null && e.getConstraintName().equalsIgnoreCase(""device_provision_key_unq_key"")) {
+                throw new DataValidationException(""Device profile with such provision device key already exists!"");
+            } else {
+                throw t;
+            }
+        }
+        Cache cache = cacheManager.getCache(DEVICE_PROFILE_CACHE);
+        cache.evict(Collections.singletonList(savedDeviceProfile.getId().getId()));
+        cache.evict(Arrays.asList(""info"", savedDeviceProfile.getId().getId()));
+        cache.evict(Arrays.asList(deviceProfile.getTenantId().getId(), deviceProfile.getName()));
+        if (savedDeviceProfile.isDefault()) {
+            cache.evict(Arrays.asList(""default"", savedDeviceProfile.getTenantId().getId()));
+            cache.evict(Arrays.asList(""default"", ""info"", savedDeviceProfile.getTenantId().getId()));
+        }
+        if (oldDeviceProfile != null && !oldDeviceProfile.getName().equals(deviceProfile.getName())) {
+            PageLink pageLink = new PageLink(100);
+            PageData<Device> pageData;
+            do {
+                pageData = deviceDao.findDevicesByTenantIdAndProfileId(deviceProfile.getTenantId().getId(), deviceProfile.getUuidId(), pageLink);
+                for (Device device : pageData.getData()) {
+                    device.setType(deviceProfile.getName());
+                    deviceService.saveDevice(device);
+                }
+                pageLink = pageLink.nextPageLink();
+            } while (pageData.hasNext());
+        }
+        return savedDeviceProfile;
+    }",False,False,"This method saves a device profile. It validates the device profile, checks if there is an existing profile with the same name or provision device key, and handles any exceptions that occur during the save process. It also evicts relevant entries from the cache and updates the device type for devices associated with the profile if the profile name has changed. Finally, it returns the saved device profile.","This code is a method that saves a device profile. It validates the device profile, checks if there is an existing profile with the same name or provision device key, and updates the cache accordingly. If the device profile's name is changed, it also updates the name of all devices associated with that profile."
+24,"deleteDeviceProfile(TenantId,DeviceProfileId)",delete device profile tenant id device profile id ,Method,,,"org.thingsboard.server.dao.service.Validator+validateId(UUIDBased,String) org.thingsboard.server.dao.service.Validator+validateId(UUIDBased,String) org.thingsboard.server.dao.Dao+findById(TenantId,UUID) org.thingsboard.server.dao.Dao+findById(TenantId,UUID) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.DeviceProfile+isDefault() org.thingsboard.server.common.data.DeviceProfile+isDefault() org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+removeDeviceProfile(TenantId,DeviceProfile) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+removeDeviceProfile(TenantId,DeviceProfile)",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_DEVICE_PROFILE_ID org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao,608,10,1,,"@Override
+    public void deleteDeviceProfile(TenantId tenantId, DeviceProfileId deviceProfileId) {
+        log.trace(""Executing deleteDeviceProfile [{}]"", deviceProfileId);
+        Validator.validateId(deviceProfileId, INCORRECT_DEVICE_PROFILE_ID + deviceProfileId);
+        DeviceProfile deviceProfile = deviceProfileDao.findById(tenantId, deviceProfileId.getId());
+        if (deviceProfile != null && deviceProfile.isDefault()) {
+            throw new DataValidationException(""Deletion of Default Device Profile is prohibited!"");
+        }
+        this.removeDeviceProfile(tenantId, deviceProfile);
+    }",False,False,"This method is used to delete a device profile. It first validates the device profile ID, then checks if the device profile exists and is not the default profile. If all conditions are met, it calls the removeDeviceProfile method to delete the profile.","This code defines a method called `deleteDeviceProfile` which is used to delete a device profile. It first validates the provided device profile ID, then checks if the device profile exists and is not the default profile. If all conditions are met, it calls the `removeDeviceProfile` method to delete the device profile."
+25,"removeDeviceProfile(TenantId,DeviceProfile)",remove device profile tenant id device profile ,Method,,,"org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.dao.Dao+removeById(TenantId,UUID) org.thingsboard.server.dao.Dao+removeById(TenantId,UUID) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.dao.entity.AbstractEntityService+extractConstraintViolationException(Exception) org.thingsboard.server.dao.entity.AbstractEntityService+extractConstraintViolationException(Exception) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.entity.AbstractEntityService+deleteEntityRelations(TenantId,EntityId) org.thingsboard.server.dao.entity.AbstractEntityService+deleteEntityRelations(TenantId,EntityId) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.common.data.HasName+getName()",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao org.thingsboard.server.dao.device.DeviceProfileServiceImpl+cacheManager,1032,18,2,,"private void removeDeviceProfile(TenantId tenantId, DeviceProfile deviceProfile) {
+        DeviceProfileId deviceProfileId = deviceProfile.getId();
+        try {
+            deviceProfileDao.removeById(tenantId, deviceProfileId.getId());
+        } catch (Exception t) {
+            ConstraintViolationException e = extractConstraintViolationException(t).orElse(null);
+            if (e != null && e.getConstraintName() != null && e.getConstraintName().equalsIgnoreCase(""fk_device_profile"")) {
+                throw new DataValidationException(""The device profile referenced by the devices cannot be deleted!"");
+            } else {
+                throw t;
+            }
+        }
+        deleteEntityRelations(tenantId, deviceProfileId);
+        Cache cache = cacheManager.getCache(DEVICE_PROFILE_CACHE);
+        cache.evict(Collections.singletonList(deviceProfileId.getId()));
+        cache.evict(Arrays.asList(""info"", deviceProfileId.getId()));
+        cache.evict(Arrays.asList(tenantId.getId(), deviceProfile.getName()));
+    }",False,False,"This method removes a device profile from the system. It first tries to remove the device profile from the database. If there is a constraint violation exception with the constraint name ""fk_device_profile"", it throws a data validation exception. Otherwise, it throws the original exception. It then deletes the entity relations associated with the device profile and evicts the device profile from the cache.","This code is a private method that removes a device profile from the database. It first tries to remove the device profile by its ID, and if it fails due to a constraint violation, it throws a DataValidationException. It then deletes the entity relations, evicts the device profile from the cache, and finally evicts related cache entries based on the tenant ID and device profile name."
+26,"findDeviceProfiles(TenantId,PageLink)",find device profiles tenant id page link ,Method,,,"org.thingsboard.server.dao.service.Validator+validatePageLink(PageLink) org.thingsboard.server.dao.service.Validator+validatePageLink(PageLink) org.thingsboard.server.dao.device.DeviceProfileDao+findDeviceProfiles(TenantId,PageLink) org.thingsboard.server.dao.device.DeviceProfileDao+findDeviceProfiles(TenantId,PageLink)",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_TENANT_ID org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao,389,7,1,,"@Override
+    public PageData<DeviceProfile> findDeviceProfiles(TenantId tenantId, PageLink pageLink) {
+        log.trace(""Executing findDeviceProfiles tenantId [{}], pageLink [{}]"", tenantId, pageLink);
+        validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
+        Validator.validatePageLink(pageLink);
+        return deviceProfileDao.findDeviceProfiles(tenantId, pageLink);
+    }",False,False,"This method is used to find device profiles based on the given tenant ID and page link. It logs the execution, validates the tenant ID and page link, and then calls the deviceProfileDao to retrieve the device profiles. The retrieved device profiles are returned as a PageData object.","This code is a method that finds device profiles based on the provided tenant ID and page link. It first validates the tenant ID and page link, then calls the `findDeviceProfiles` method from the `deviceProfileDao` to retrieve the device profiles."
+27,"findDeviceProfileInfos(TenantId,PageLink,String)",find device profile infos tenant id page link transport type ,Method,,,"org.thingsboard.server.dao.service.Validator+validatePageLink(PageLink) org.thingsboard.server.dao.service.Validator+validatePageLink(PageLink) org.thingsboard.server.dao.device.DeviceProfileDao+findDeviceProfileInfos(TenantId,PageLink,String) org.thingsboard.server.dao.device.DeviceProfileDao+findDeviceProfileInfos(TenantId,PageLink,String)",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_TENANT_ID org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao,442,7,1,,"@Override
+    public PageData<DeviceProfileInfo> findDeviceProfileInfos(TenantId tenantId, PageLink pageLink, String transportType) {
+        log.trace(""Executing findDeviceProfileInfos tenantId [{}], pageLink [{}]"", tenantId, pageLink);
+        validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
+        Validator.validatePageLink(pageLink);
+        return deviceProfileDao.findDeviceProfileInfos(tenantId, pageLink, transportType);
+    }",False,False,"This method is used to find device profile information based on the given tenant ID, page link, and transport type. It logs the execution, validates the inputs, and then calls the corresponding method in the device profile DAO to retrieve the information.","This code is a method that retrieves a page of device profile information based on the provided tenant ID, page link, and transport type. It first validates the tenant ID and page link, then calls the `findDeviceProfileInfos` method from the `deviceProfileDao` to retrieve the requested data."
+28,"findOrCreateDeviceProfile(TenantId,String)",find or create device profile tenant id name ,Method,,,"org.thingsboard.server.dao.device.DeviceProfileServiceImpl+findDeviceProfileByName(TenantId,String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+findDeviceProfileByName(TenantId,String) java.util.concurrent.locks.Lock+lock() java.util.concurrent.locks.Lock+lock() org.thingsboard.server.dao.device.DeviceProfileServiceImpl+findDeviceProfileByName(TenantId,String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+findDeviceProfileByName(TenantId,String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+doCreateDefaultDeviceProfile(TenantId,String,boolean) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+doCreateDefaultDeviceProfile(TenantId,String,boolean) java.lang.String+equals(Object) java.lang.String+equals(Object) java.util.concurrent.locks.Lock+unlock() java.util.concurrent.locks.Lock+unlock()",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+findOrCreateLock org.thingsboard.server.dao.device.DeviceProfileServiceImpl+findOrCreateLock,785,18,1,,"@Cacheable(cacheNames = DEVICE_PROFILE_CACHE, key = ""{#tenantId.id, #name}"")
+    @Override
+    public DeviceProfile findOrCreateDeviceProfile(TenantId tenantId, String name) {
+        log.trace(""Executing findOrCreateDefaultDeviceProfile"");
+        DeviceProfile deviceProfile = findDeviceProfileByName(tenantId, name);
+        if (deviceProfile == null) {
+            findOrCreateLock.lock();
+            try {
+                deviceProfile = findDeviceProfileByName(tenantId, name);
+                if (deviceProfile == null) {
+                    deviceProfile = this.doCreateDefaultDeviceProfile(tenantId, name, name.equals(""default""));
+                }
+            } finally {
+                findOrCreateLock.unlock();
+            }
+        }
+        return deviceProfile;
+    }",False,False,"This method serves to find or create a device profile based on the given tenant ID and name. It first checks if the device profile exists in the cache, and if not, it locks the findOrCreateLock to prevent multiple threads from creating the same device profile simultaneously. Finally, it returns the device profile.","This code is a method that finds or creates a device profile based on the provided tenant ID and name. It first checks if the device profile already exists in the cache, and if not, it locks the findOrCreateLock to prevent multiple threads from creating the same device profile simultaneously. Finally, it returns the found or newly created device profile."
+29,createDefaultDeviceProfile(TenantId),create default device profile tenant id ,Method,,,"org.thingsboard.server.dao.device.DeviceProfileServiceImpl+doCreateDefaultDeviceProfile(TenantId,String,boolean) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+doCreateDefaultDeviceProfile(TenantId,String,boolean)",,243,5,1,,"@Override
+    public DeviceProfile createDefaultDeviceProfile(TenantId tenantId) {
+        log.trace(""Executing createDefaultDeviceProfile tenantId [{}]"", tenantId);
+        return doCreateDefaultDeviceProfile(tenantId, ""default"", true);
+    }",False,False,"The method creates a default device profile for a given tenant ID. It logs the execution and calls another method to perform the actual creation, passing the tenant ID, a default name, and a flag indicating it is a default profile.","This code snippet is an overridden method that creates a default device profile for a given tenant. It logs a trace message and then calls another method, passing the tenant ID, a default profile name, and a boolean value indicating whether the profile is default or not. The method returns the created device profile."
+30,"doCreateDefaultDeviceProfile(TenantId,String,boolean)",do create default device profile tenant id profile name default profile ,Method,,,org.thingsboard.server.common.data.DeviceProfile+DeviceProfile() org.thingsboard.server.common.data.device.profile.DeviceProfileData+DeviceProfileData() org.thingsboard.server.common.data.device.profile.DefaultDeviceProfileConfiguration+DefaultDeviceProfileConfiguration() org.thingsboard.server.common.data.device.profile.DefaultDeviceProfileTransportConfiguration+DefaultDeviceProfileTransportConfiguration() org.thingsboard.server.common.data.device.profile.DisabledDeviceProfileProvisionConfiguration+DisabledDeviceProfileProvisionConfiguration() org.thingsboard.server.common.data.DeviceProfile+setProfileData(DeviceProfileData) org.thingsboard.server.common.data.DeviceProfile+setProfileData(DeviceProfileData) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+saveDeviceProfile(DeviceProfile) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+saveDeviceProfile(DeviceProfile),org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_TENANT_ID,1396,20,2,,"private DeviceProfile doCreateDefaultDeviceProfile(TenantId tenantId, String profileName, boolean defaultProfile) {
+        validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
+        DeviceProfile deviceProfile = new DeviceProfile();
+        deviceProfile.setTenantId(tenantId);
+        deviceProfile.setDefault(defaultProfile);
+        deviceProfile.setName(profileName);
+        deviceProfile.setType(DeviceProfileType.DEFAULT);
+        deviceProfile.setTransportType(DeviceTransportType.DEFAULT);
+        deviceProfile.setProvisionType(DeviceProfileProvisionType.DISABLED);
+        deviceProfile.setDescription(""Default device profile"");
+        DeviceProfileData deviceProfileData = new DeviceProfileData();
+        DefaultDeviceProfileConfiguration configuration = new DefaultDeviceProfileConfiguration();
+        DefaultDeviceProfileTransportConfiguration transportConfiguration = new DefaultDeviceProfileTransportConfiguration();
+        DisabledDeviceProfileProvisionConfiguration provisionConfiguration = new DisabledDeviceProfileProvisionConfiguration(null);
+        deviceProfileData.setConfiguration(configuration);
+        deviceProfileData.setTransportConfiguration(transportConfiguration);
+        deviceProfileData.setProvisionConfiguration(provisionConfiguration);
+        deviceProfile.setProfileData(deviceProfileData);
+        return saveDeviceProfile(deviceProfile);
+    }",False,False,"This method creates a default device profile with the given parameters. It sets the tenant ID, profile name, default profile flag, type, transport type, provision type, and description. It also sets the configuration, transport configuration, and provision configuration for the device profile. Finally, it saves and returns the device profile.","This code creates a default device profile with the given tenant ID, profile name, and default profile flag. It sets various properties of the device profile, including its type, transport type, provision type, and description. It also initializes and sets the configuration, transport configuration, and provision configuration of the device profile before saving and returning it."
+31,findDefaultDeviceProfile(TenantId),find default device profile tenant id ,Method,,,org.thingsboard.server.dao.device.DeviceProfileDao+findDefaultDeviceProfile(TenantId) org.thingsboard.server.dao.device.DeviceProfileDao+findDefaultDeviceProfile(TenantId),org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_TENANT_ID org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao,382,7,1,,"@Cacheable(cacheNames = DEVICE_PROFILE_CACHE, key = ""{'default', #tenantId.id}"")
+    @Override
+    public DeviceProfile findDefaultDeviceProfile(TenantId tenantId) {
+        log.trace(""Executing findDefaultDeviceProfile tenantId [{}]"", tenantId);
+        validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
+        return deviceProfileDao.findDefaultDeviceProfile(tenantId);
+    }",False,False,This method serves to find the default device profile for a given tenant ID. It uses caching to improve performance and logs the execution for debugging purposes.,"This code is a method that retrieves the default device profile from a cache based on the provided tenant ID. It first validates the tenant ID, then calls the `findDefaultDeviceProfile` method from the `deviceProfileDao` to retrieve the device profile. The retrieved device profile is then returned."
+32,findDefaultDeviceProfileInfo(TenantId),find default device profile info tenant id ,Method,,,org.thingsboard.server.dao.device.DeviceProfileDao+findDefaultDeviceProfileInfo(TenantId) org.thingsboard.server.dao.device.DeviceProfileDao+findDefaultDeviceProfileInfo(TenantId),org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_TENANT_ID org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao,406,7,1,,"@Cacheable(cacheNames = DEVICE_PROFILE_CACHE, key = ""{'default', 'info', #tenantId.id}"")
+    @Override
+    public DeviceProfileInfo findDefaultDeviceProfileInfo(TenantId tenantId) {
+        log.trace(""Executing findDefaultDeviceProfileInfo tenantId [{}]"", tenantId);
+        validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
+        return deviceProfileDao.findDefaultDeviceProfileInfo(tenantId);
+    }",False,False,This method serves to find the default device profile information for a given tenant ID. It uses caching to improve performance by storing the result in a cache and retrieving it from there if available.,"This code is a method that retrieves the default device profile information from a cache based on the provided tenant ID. It first validates the tenant ID, then calls the `findDefaultDeviceProfileInfo` method from the `deviceProfileDao` to retrieve the device profile information."
+33,"setDefaultDeviceProfile(TenantId,DeviceProfileId)",set default device profile tenant id device profile id ,Method,,,"org.thingsboard.server.dao.service.Validator+validateId(UUIDBased,String) org.thingsboard.server.dao.service.Validator+validateId(UUIDBased,String) org.thingsboard.server.dao.Dao+findById(TenantId,UUID) org.thingsboard.server.dao.Dao+findById(TenantId,UUID) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.DeviceProfile+isDefault() org.thingsboard.server.common.data.DeviceProfile+isDefault() org.thingsboard.server.dao.device.DeviceProfileServiceImpl+findDefaultDeviceProfile(TenantId) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+findDefaultDeviceProfile(TenantId) org.thingsboard.server.dao.device.DeviceProfileDao+save(TenantId,DeviceProfile) org.thingsboard.server.dao.device.DeviceProfileDao+save(TenantId,DeviceProfile) org.thingsboard.server.common.data.id.UUIDBased+equals(Object) org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.id.UUIDBased+equals(Object) org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.dao.device.DeviceProfileDao+save(TenantId,DeviceProfile) org.thingsboard.server.dao.device.DeviceProfileDao+save(TenantId,DeviceProfile) org.thingsboard.server.dao.device.DeviceProfileDao+save(TenantId,DeviceProfile) org.thingsboard.server.dao.device.DeviceProfileDao+save(TenantId,DeviceProfile) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.common.data.HasName+getName() java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.DeviceProfile+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.id.UUIDBased+getId() org.thingsboard.server.common.data.HasName+getName() org.thingsboard.server.common.data.HasName+getName()",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_DEVICE_PROFILE_ID org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao org.thingsboard.server.dao.device.DeviceProfileServiceImpl+cacheManager org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao org.thingsboard.server.dao.device.DeviceProfileServiceImpl+deviceProfileDao,1984,33,1,,"@Override
+    public boolean setDefaultDeviceProfile(TenantId tenantId, DeviceProfileId deviceProfileId) {
+        log.trace(""Executing setDefaultDeviceProfile [{}]"", deviceProfileId);
+        Validator.validateId(deviceProfileId, INCORRECT_DEVICE_PROFILE_ID + deviceProfileId);
+        DeviceProfile deviceProfile = deviceProfileDao.findById(tenantId, deviceProfileId.getId());
+        if (!deviceProfile.isDefault()) {
+            Cache cache = cacheManager.getCache(DEVICE_PROFILE_CACHE);
+            deviceProfile.setDefault(true);
+            DeviceProfile previousDefaultDeviceProfile = findDefaultDeviceProfile(tenantId);
+            boolean changed = false;
+            if (previousDefaultDeviceProfile == null) {
+                deviceProfileDao.save(tenantId, deviceProfile);
+                changed = true;
+            } else if (!previousDefaultDeviceProfile.getId().equals(deviceProfile.getId())) {
+                previousDefaultDeviceProfile.setDefault(false);
+                deviceProfileDao.save(tenantId, previousDefaultDeviceProfile);
+                deviceProfileDao.save(tenantId, deviceProfile);
+                cache.evict(Collections.singletonList(previousDefaultDeviceProfile.getId().getId()));
+                cache.evict(Arrays.asList(""info"", previousDefaultDeviceProfile.getId().getId()));
+                cache.evict(Arrays.asList(tenantId.getId(), previousDefaultDeviceProfile.getName()));
+                changed = true;
+            }
+            if (changed) {
+                cache.evict(Collections.singletonList(deviceProfile.getId().getId()));
+                cache.evict(Arrays.asList(""info"", deviceProfile.getId().getId()));
+                cache.evict(Arrays.asList(""default"", tenantId.getId()));
+                cache.evict(Arrays.asList(""default"", ""info"", tenantId.getId()));
+                cache.evict(Arrays.asList(tenantId.getId(), deviceProfile.getName()));
+            }
+            return changed;
+        }
+        return false;
+    }",False,False,"This method sets a device profile as the default for a given tenant. It first checks if the device profile is already the default. If not, it updates the device profile and clears the cache for the previous default and the new default. It returns true if the default device profile was changed, otherwise false.","This code is a method that sets a device profile as the default for a given tenant. It checks if the device profile is already the default, and if not, it updates the database and cache accordingly. The method returns a boolean indicating whether the default device profile was changed."
+34,deleteDeviceProfilesByTenantId(TenantId),delete device profiles by tenant id tenant id ,Method,,,"org.thingsboard.server.dao.service.PaginatedRemover+removeEntities(TenantId,I) org.thingsboard.server.dao.service.PaginatedRemover+removeEntities(TenantId,I)",org.thingsboard.server.dao.device.DeviceProfileServiceImpl+INCORRECT_TENANT_ID org.thingsboard.server.dao.device.DeviceProfileServiceImpl+tenantDeviceProfilesRemover,305,6,1,,"@Override
+    public void deleteDeviceProfilesByTenantId(TenantId tenantId) {
+        log.trace(""Executing deleteDeviceProfilesByTenantId, tenantId [{}]"", tenantId);
+        validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
+        tenantDeviceProfilesRemover.removeEntities(tenantId, tenantId);
+    }",False,False,"This method is used to delete device profiles based on the tenant ID. It logs the execution, validates the tenant ID, and then removes the corresponding entities using the tenant ID.","This code is a method that deletes device profiles based on a given tenant ID. It first logs the execution, then validates the tenant ID, and finally removes the device profiles associated with the tenant ID using a tenantDeviceProfilesRemover object."
+35,deviceProfileValidator,device profile validator ,Field,,,,,20317,281,2,,"private DataValidator<DeviceProfile> deviceProfileValidator =
+            new DataValidator<>() {
+                @Override
+                protected void validateDataImpl(TenantId tenantId, DeviceProfile deviceProfile) {
+                    if (StringUtils.isEmpty(deviceProfile.getName())) {
+                        throw new DataValidationException(""Device profile name should be specified!"");
+                    }
+                    if (deviceProfile.getType() == null) {
+                        throw new DataValidationException(""Device profile type should be specified!"");
+                    }
+                    if (deviceProfile.getTransportType() == null) {
+                        throw new DataValidationException(""Device profile transport type should be specified!"");
+                    }
+                    if (deviceProfile.getTenantId() == null) {
+                        throw new DataValidationException(""Device profile should be assigned to tenant!"");
+                    } else {
+                        Tenant tenant = tenantDao.findById(deviceProfile.getTenantId(), deviceProfile.getTenantId().getId());
+                        if (tenant == null) {
+                            throw new DataValidationException(""Device profile is referencing to non-existent tenant!"");
+                        }
+                    }
+                    if (deviceProfile.isDefault()) {
+                        DeviceProfile defaultDeviceProfile = findDefaultDeviceProfile(tenantId);
+                        if (defaultDeviceProfile != null && !defaultDeviceProfile.getId().equals(deviceProfile.getId())) {
+                            throw new DataValidationException(""Another default device profile is present in scope of current tenant!"");
+                        }
+                    }
+                    if (!StringUtils.isEmpty(deviceProfile.getDefaultQueueName()) && queueService != null){
+                        if(!queueService.getQueuesByServiceType(ServiceType.TB_RULE_ENGINE).contains(deviceProfile.getDefaultQueueName())){
+                            throw new DataValidationException(""Device profile is referencing to non-existent queue!"");
+                        }
+                    }
+                    if (deviceProfile.getProvisionType() == null) {
+                        deviceProfile.setProvisionType(DeviceProfileProvisionType.DISABLED);
+                    }
+                    DeviceProfileTransportConfiguration transportConfiguration = deviceProfile.getProfileData().getTransportConfiguration();
+                    transportConfiguration.validate();
+                    if (transportConfiguration instanceof MqttDeviceProfileTransportConfiguration) {
+                        MqttDeviceProfileTransportConfiguration mqttTransportConfiguration = (MqttDeviceProfileTransportConfiguration) transportConfiguration;
+                        if (mqttTransportConfiguration.getTransportPayloadTypeConfiguration() instanceof ProtoTransportPayloadConfiguration) {
+                            ProtoTransportPayloadConfiguration protoTransportPayloadConfiguration =
+                                    (ProtoTransportPayloadConfiguration) mqttTransportConfiguration.getTransportPayloadTypeConfiguration();
+                            validateProtoSchemas(protoTransportPayloadConfiguration);
+                            validateTelemetryDynamicMessageFields(protoTransportPayloadConfiguration);
+                            validateRpcRequestDynamicMessageFields(protoTransportPayloadConfiguration);
+                        }
+                    } else if (transportConfiguration instanceof CoapDeviceProfileTransportConfiguration) {
+                        CoapDeviceProfileTransportConfiguration coapDeviceProfileTransportConfiguration = (CoapDeviceProfileTransportConfiguration) transportConfiguration;
+                        CoapDeviceTypeConfiguration coapDeviceTypeConfiguration = coapDeviceProfileTransportConfiguration.getCoapDeviceTypeConfiguration();
+                        if (coapDeviceTypeConfiguration instanceof DefaultCoapDeviceTypeConfiguration) {
+                            DefaultCoapDeviceTypeConfiguration defaultCoapDeviceTypeConfiguration = (DefaultCoapDeviceTypeConfiguration) coapDeviceTypeConfiguration;
+                            TransportPayloadTypeConfiguration transportPayloadTypeConfiguration = defaultCoapDeviceTypeConfiguration.getTransportPayloadTypeConfiguration();
+                            if (transportPayloadTypeConfiguration instanceof ProtoTransportPayloadConfiguration) {
+                                ProtoTransportPayloadConfiguration protoTransportPayloadConfiguration = (ProtoTransportPayloadConfiguration) transportPayloadTypeConfiguration;
+                                validateProtoSchemas(protoTransportPayloadConfiguration);
+                                validateTelemetryDynamicMessageFields(protoTransportPayloadConfiguration);
+                                validateRpcRequestDynamicMessageFields(protoTransportPayloadConfiguration);
+                            }
+                        }
+                    } else if (transportConfiguration instanceof Lwm2mDeviceProfileTransportConfiguration) {
+                        List<LwM2MBootstrapServerCredential> lwM2MBootstrapServersConfigurations = ((Lwm2mDeviceProfileTransportConfiguration) transportConfiguration).getBootstrap();
+                        if (lwM2MBootstrapServersConfigurations != null) {
+                            validateLwm2mServersConfigOfBootstrapForClient(lwM2MBootstrapServersConfigurations,
+                                    ((Lwm2mDeviceProfileTransportConfiguration) transportConfiguration).isBootstrapServerUpdateEnable());
+                            for (LwM2MBootstrapServerCredential bootstrapServerCredential : lwM2MBootstrapServersConfigurations) {
+                                validateLwm2mServersCredentialOfBootstrapForClient(bootstrapServerCredential);
+                            }
+                        }
+                    }
+
+                    List<DeviceProfileAlarm> profileAlarms = deviceProfile.getProfileData().getAlarms();
+
+                    if (!CollectionUtils.isEmpty(profileAlarms)) {
+                        Set<String> alarmTypes = new HashSet<>();
+                        for (DeviceProfileAlarm alarm : profileAlarms) {
+                            String alarmType = alarm.getAlarmType();
+                            if (StringUtils.isEmpty(alarmType)) {
+                                throw new DataValidationException(""Alarm rule type should be specified!"");
+                            }
+                            if (!alarmTypes.add(alarmType)) {
+                                throw new DataValidationException(String.format(""Can't create device profile with the same alarm rule types: \""%s\""!"", alarmType));
+                            }
+                        }
+                    }
+
+                    if (deviceProfile.getDefaultRuleChainId() != null) {
+                        RuleChain ruleChain = ruleChainService.findRuleChainById(tenantId, deviceProfile.getDefaultRuleChainId());
+                        if (ruleChain == null) {
+                            throw new DataValidationException(""Can't assign non-existent rule chain!"");
+                        }
+                    }
+
+                    if (deviceProfile.getDefaultDashboardId() != null) {
+                        DashboardInfo dashboard = dashboardService.findDashboardInfoById(tenantId, deviceProfile.getDefaultDashboardId());
+                        if (dashboard == null) {
+                            throw new DataValidationException(""Can't assign non-existent dashboard!"");
+                        }
+                    }
+
+                    if (deviceProfile.getFirmwareId() != null) {
+                        OtaPackage firmware = otaPackageService.findOtaPackageById(tenantId, deviceProfile.getFirmwareId());
+                        if (firmware == null) {
+                            throw new DataValidationException(""Can't assign non-existent firmware!"");
+                        }
+                        if (!firmware.getType().equals(OtaPackageType.FIRMWARE)) {
+                            throw new DataValidationException(""Can't assign firmware with type: "" + firmware.getType());
+                        }
+                        if (firmware.getData() == null && !firmware.hasUrl()) {
+                            throw new DataValidationException(""Can't assign firmware with empty data!"");
+                        }
+                        if (!firmware.getDeviceProfileId().equals(deviceProfile.getId())) {
+                            throw new DataValidationException(""Can't assign firmware with different deviceProfile!"");
+                        }
+                    }
+
+                    if (deviceProfile.getSoftwareId() != null) {
+                        OtaPackage software = otaPackageService.findOtaPackageById(tenantId, deviceProfile.getSoftwareId());
+                        if (software == null) {
+                            throw new DataValidationException(""Can't assign non-existent software!"");
+                        }
+                        if (!software.getType().equals(OtaPackageType.SOFTWARE)) {
+                            throw new DataValidationException(""Can't assign software with type: "" + software.getType());
+                        }
+                        if (software.getData() == null && !software.hasUrl()) {
+                            throw new DataValidationException(""Can't assign software with empty data!"");
+                        }
+                        if (!software.getDeviceProfileId().equals(deviceProfile.getId())) {
+                            throw new DataValidationException(""Can't assign firmware with different deviceProfile!"");
+                        }
+                    }
+                }
+
+                @Override
+                protected void validateUpdate(TenantId tenantId, DeviceProfile deviceProfile) {
+                    DeviceProfile old = deviceProfileDao.findById(deviceProfile.getTenantId(), deviceProfile.getId().getId());
+                    if (old == null) {
+                        throw new DataValidationException(""Can't update non existing device profile!"");
+                    }
+                    boolean profileTypeChanged = !old.getType().equals(deviceProfile.getType());
+                    boolean transportTypeChanged = !old.getTransportType().equals(deviceProfile.getTransportType());
+                    if (profileTypeChanged || transportTypeChanged) {
+                        Long profileDeviceCount = deviceDao.countDevicesByDeviceProfileId(deviceProfile.getTenantId(), deviceProfile.getId().getId());
+                        if (profileDeviceCount > 0) {
+                            String message = null;
+                            if (profileTypeChanged) {
+                                message = ""Can't change device profile type because devices referenced it!"";
+                            } else if (transportTypeChanged) {
+                                message = ""Can't change device profile transport type because devices referenced it!"";
+                            }
+                            throw new DataValidationException(message);
+                        }
+                    }
+                }
+
+                private void validateProtoSchemas(ProtoTransportPayloadConfiguration protoTransportPayloadTypeConfiguration) {
+                    try {
+                        validateTransportProtoSchema(protoTransportPayloadTypeConfiguration.getDeviceAttributesProtoSchema(), ATTRIBUTES_PROTO_SCHEMA);
+                        validateTransportProtoSchema(protoTransportPayloadTypeConfiguration.getDeviceTelemetryProtoSchema(), TELEMETRY_PROTO_SCHEMA);
+                        validateTransportProtoSchema(protoTransportPayloadTypeConfiguration.getDeviceRpcRequestProtoSchema(), RPC_REQUEST_PROTO_SCHEMA);
+                        validateTransportProtoSchema(protoTransportPayloadTypeConfiguration.getDeviceRpcResponseProtoSchema(), RPC_RESPONSE_PROTO_SCHEMA);
+                    } catch (Exception exception) {
+                        throw new DataValidationException(exception.getMessage());
+                    }
+                }
+
+                private void validateTransportProtoSchema(String schema, String schemaName) throws IllegalArgumentException {
+                    ProtoParser schemaParser = new ProtoParser(LOCATION, schema.toCharArray());
+                    ProtoFileElement protoFileElement;
+                    try {
+                        protoFileElement = schemaParser.readProtoFile();
+                    } catch (Exception e) {
+                        throw new IllegalArgumentException(""[Transport Configuration] failed to parse "" + schemaName + "" due to: "" + e.getMessage());
+                    }
+                    checkProtoFileSyntax(schemaName, protoFileElement);
+                    checkProtoFileCommonSettings(schemaName, protoFileElement.getOptions().isEmpty(), "" Schema options don't support!"");
+                    checkProtoFileCommonSettings(schemaName, protoFileElement.getPublicImports().isEmpty(), "" Schema public imports don't support!"");
+                    checkProtoFileCommonSettings(schemaName, protoFileElement.getImports().isEmpty(), "" Schema imports don't support!"");
+                    checkProtoFileCommonSettings(schemaName, protoFileElement.getExtendDeclarations().isEmpty(), "" Schema extend declarations don't support!"");
+                    checkTypeElements(schemaName, protoFileElement);
+                }
+
+                private void checkProtoFileSyntax(String schemaName, ProtoFileElement protoFileElement) {
+                    if (protoFileElement.getSyntax() == null || !protoFileElement.getSyntax().equals(Syntax.PROTO_3)) {
+                        throw new IllegalArgumentException(""[Transport Configuration] invalid schema syntax: "" + protoFileElement.getSyntax() +
+                                "" for "" + schemaName + "" provided! Only "" + Syntax.PROTO_3 + "" allowed!"");
+                    }
+                }
+
+                private void checkProtoFileCommonSettings(String schemaName, boolean isEmptySettings, String invalidSettingsMessage) {
+                    if (!isEmptySettings) {
+                        throw new IllegalArgumentException(invalidSchemaProvidedMessage(schemaName) + invalidSettingsMessage);
+                    }
+                }
+
+                private void checkTypeElements(String schemaName, ProtoFileElement protoFileElement) {
+                    List<TypeElement> types = protoFileElement.getTypes();
+                    if (!types.isEmpty()) {
+                        if (types.stream().noneMatch(typeElement -> typeElement instanceof MessageElement)) {
+                            throw new IllegalArgumentException(invalidSchemaProvidedMessage(schemaName) + "" At least one Message definition should exists!"");
+                        } else {
+                            checkEnumElements(schemaName, getEnumElements(types));
+                            checkMessageElements(schemaName, getMessageTypes(types));
+                        }
+                    } else {
+                        throw new IllegalArgumentException(invalidSchemaProvidedMessage(schemaName) + "" Type elements is empty!"");
+                    }
+                }
+
+                private void checkFieldElements(String schemaName, List<FieldElement> fieldElements) {
+                    if (!fieldElements.isEmpty()) {
+                        boolean hasRequiredLabel = fieldElements.stream().anyMatch(fieldElement -> {
+                            Field.Label label = fieldElement.getLabel();
+                            return label != null && label.equals(Field.Label.REQUIRED);
+                        });
+                        if (hasRequiredLabel) {
+                            throw new IllegalArgumentException(invalidSchemaProvidedMessage(schemaName) + "" Required labels are not supported!"");
+                        }
+                        boolean hasDefaultValue = fieldElements.stream().anyMatch(fieldElement -> fieldElement.getDefaultValue() != null);
+                        if (hasDefaultValue) {
+                            throw new IllegalArgumentException(invalidSchemaProvidedMessage(schemaName) + "" Default values are not supported!"");
+                        }
+                    }
+                }
+
+                private void checkEnumElements(String schemaName, List<EnumElement> enumTypes) {
+                    if (enumTypes.stream().anyMatch(enumElement -> !enumElement.getNestedTypes().isEmpty())) {
+                        throw new IllegalArgumentException(invalidSchemaProvidedMessage(schemaName) + "" Nested types in Enum definitions are not supported!"");
+                    }
+                    if (enumTypes.stream().anyMatch(enumElement -> !enumElement.getOptions().isEmpty())) {
+                        throw new IllegalArgumentException(invalidSchemaProvidedMessage(schemaName) + "" Enum definitions options are not supported!"");
+                    }
+                }
+
+                private void checkMessageElements(String schemaName, List<MessageElement> messageElementsList) {
+                    if (!messageElementsList.isEmpty()) {
+                        messageElementsList.forEach(messageElement -> {
+                            checkProtoFileCommonSettings(schemaName, messageElement.getGroups().isEmpty(),
+                                    "" Message definition groups don't support!"");
+                            checkProtoFileCommonSettings(schemaName, messageElement.getOptions().isEmpty(),
+                                    "" Message definition options don't support!"");
+                            checkProtoFileCommonSettings(schemaName, messageElement.getExtensions().isEmpty(),
+                                    "" Message definition extensions don't support!"");
+                            checkProtoFileCommonSettings(schemaName, messageElement.getReserveds().isEmpty(),
+                                    "" Message definition reserved elements don't support!"");
+                            checkFieldElements(schemaName, messageElement.getFields());
+                            List<OneOfElement> oneOfs = messageElement.getOneOfs();
+                            if (!oneOfs.isEmpty()) {
+                                oneOfs.forEach(oneOfElement -> {
+                                    checkProtoFileCommonSettings(schemaName, oneOfElement.getGroups().isEmpty(),
+                                            "" OneOf definition groups don't support!"");
+                                    checkFieldElements(schemaName, oneOfElement.getFields());
+                                });
+                            }
+                            List<TypeElement> nestedTypes = messageElement.getNestedTypes();
+                            if (!nestedTypes.isEmpty()) {
+                                List<EnumElement> nestedEnumTypes = getEnumElements(nestedTypes);
+                                if (!nestedEnumTypes.isEmpty()) {
+                                    checkEnumElements(schemaName, nestedEnumTypes);
+                                }
+                                List<MessageElement> nestedMessageTypes = getMessageTypes(nestedTypes);
+                                checkMessageElements(schemaName, nestedMessageTypes);
+                            }
+                        });
+                    }
+                }
+
+                private List<MessageElement> getMessageTypes(List<TypeElement> types) {
+                    return types.stream()
+                            .filter(typeElement -> typeElement instanceof MessageElement)
+                            .map(typeElement -> (MessageElement) typeElement)
+                            .collect(Collectors.toList());
+                }
+
+                private List<EnumElement> getEnumElements(List<TypeElement> types) {
+                    return types.stream()
+                            .filter(typeElement -> typeElement instanceof EnumElement)
+                            .map(typeElement -> (EnumElement) typeElement)
+                            .collect(Collectors.toList());
+                }
+
+            };",False,True,,
+36,validateTelemetryDynamicMessageFields(ProtoTransportPayloadConfiguration),validate telemetry dynamic message fields proto transport payload type configuration ,Method,,,org.thingsboard.server.common.data.device.profile.ProtoTransportPayloadConfiguration+getTelemetryDynamicMessageDescriptor(String) org.thingsboard.server.common.data.device.profile.ProtoTransportPayloadConfiguration+getTelemetryDynamicMessageDescriptor(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String),org.thingsboard.server.dao.device.DeviceProfileServiceImpl+TELEMETRY_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+TELEMETRY_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+TELEMETRY_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+TELEMETRY_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+TELEMETRY_PROTO_SCHEMA,2305,26,2,,"private void validateTelemetryDynamicMessageFields(ProtoTransportPayloadConfiguration protoTransportPayloadTypeConfiguration) {
+        String deviceTelemetryProtoSchema = protoTransportPayloadTypeConfiguration.getDeviceTelemetryProtoSchema();
+        Descriptors.Descriptor telemetryDynamicMessageDescriptor = protoTransportPayloadTypeConfiguration.getTelemetryDynamicMessageDescriptor(deviceTelemetryProtoSchema);
+        if (telemetryDynamicMessageDescriptor == null) {
+            throw new DataValidationException(invalidSchemaProvidedMessage(TELEMETRY_PROTO_SCHEMA) + "" Failed to get telemetryDynamicMessageDescriptor!"");
+        } else {
+            List<Descriptors.FieldDescriptor> fields = telemetryDynamicMessageDescriptor.getFields();
+            if (CollectionUtils.isEmpty(fields)) {
+                throw new DataValidationException(invalidSchemaProvidedMessage(TELEMETRY_PROTO_SCHEMA) + "" "" + telemetryDynamicMessageDescriptor.getName() + "" fields is empty!"");
+            } else if (fields.size() == 2) {
+                Descriptors.FieldDescriptor tsFieldDescriptor = telemetryDynamicMessageDescriptor.findFieldByName(""ts"");
+                Descriptors.FieldDescriptor valuesFieldDescriptor = telemetryDynamicMessageDescriptor.findFieldByName(""values"");
+                if (tsFieldDescriptor != null && valuesFieldDescriptor != null) {
+                    if (!Descriptors.FieldDescriptor.Type.MESSAGE.equals(valuesFieldDescriptor.getType())) {
+                        throw new DataValidationException(invalidSchemaProvidedMessage(TELEMETRY_PROTO_SCHEMA) + "" Field 'values' has invalid data type. Only message type is supported!"");
+                    }
+                    if (!Descriptors.FieldDescriptor.Type.INT64.equals(tsFieldDescriptor.getType())) {
+                        throw new DataValidationException(invalidSchemaProvidedMessage(TELEMETRY_PROTO_SCHEMA) + "" Field 'ts' has invalid data type. Only int64 type is supported!"");
+                    }
+                    if (!tsFieldDescriptor.hasOptionalKeyword()) {
+                        throw new DataValidationException(invalidSchemaProvidedMessage(TELEMETRY_PROTO_SCHEMA) + "" Field 'ts' has invalid label. Field 'ts' should have optional keyword!"");
+                    }
+                }
+            }
+        }
+    }",True,True,"This method validates the fields of a telemetry dynamic message in a protobuf schema. It checks if the schema is valid, if the fields are empty, if the fields have the correct data types, and if the ""ts"" field has the optional keyword.","This code validates the fields of a dynamic message descriptor obtained from a telemetry protocol schema. It checks if the descriptor is null, if the fields are empty, and if the fields ""ts"" and ""values"" have the correct data types and labels. If any validation fails, a DataValidationException is thrown."
+37,validateRpcRequestDynamicMessageFields(ProtoTransportPayloadConfiguration),validate rpc request dynamic message fields proto transport payload type configuration ,Method,,,org.thingsboard.server.common.data.device.profile.ProtoTransportPayloadConfiguration+getRpcRequestDynamicMessageBuilder(String) org.thingsboard.server.common.data.device.profile.ProtoTransportPayloadConfiguration+getRpcRequestDynamicMessageBuilder(String) org.thingsboard.server.common.data.device.profile.ProtoTransportPayloadConfiguration+getDeviceRpcRequestProtoSchema() org.thingsboard.server.common.data.device.profile.ProtoTransportPayloadConfiguration+getDeviceRpcRequestProtoSchema() org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.exception.DataValidationException+DataValidationException(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String) org.thingsboard.server.dao.device.DeviceProfileServiceImpl+invalidSchemaProvidedMessage(String),org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA org.thingsboard.server.dao.device.DeviceProfileServiceImpl+RPC_REQUEST_PROTO_SCHEMA,3547,41,2,,"private void validateRpcRequestDynamicMessageFields(ProtoTransportPayloadConfiguration protoTransportPayloadTypeConfiguration) {
+        DynamicMessage.Builder rpcRequestDynamicMessageBuilder = protoTransportPayloadTypeConfiguration.getRpcRequestDynamicMessageBuilder(protoTransportPayloadTypeConfiguration.getDeviceRpcRequestProtoSchema());
+        Descriptors.Descriptor rpcRequestDynamicMessageDescriptor = rpcRequestDynamicMessageBuilder.getDescriptorForType();
+        if (rpcRequestDynamicMessageDescriptor == null) {
+            throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" Failed to get rpcRequestDynamicMessageDescriptor!"");
+        } else {
+            if (CollectionUtils.isEmpty(rpcRequestDynamicMessageDescriptor.getFields()) || rpcRequestDynamicMessageDescriptor.getFields().size() != 3) {
+                throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" "" + rpcRequestDynamicMessageDescriptor.getName() + "" message should always contains 3 fields: method, requestId and params!"");
+            }
+            Descriptors.FieldDescriptor methodFieldDescriptor = rpcRequestDynamicMessageDescriptor.findFieldByName(""method"");
+            if (methodFieldDescriptor == null) {
+                throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" Failed to get field descriptor for field: method!"");
+            } else {
+                if (!Descriptors.FieldDescriptor.Type.STRING.equals(methodFieldDescriptor.getType())) {
+                    throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" Field 'method' has invalid data type. Only string type is supported!"");
+                }
+                if (methodFieldDescriptor.isRepeated()) {
+                    throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" Field 'method' has invalid label!"");
+                }
+            }
+            Descriptors.FieldDescriptor requestIdFieldDescriptor = rpcRequestDynamicMessageDescriptor.findFieldByName(""requestId"");
+            if (requestIdFieldDescriptor == null) {
+                throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" Failed to get field descriptor for field: requestId!"");
+            } else {
+                if (!Descriptors.FieldDescriptor.Type.INT32.equals(requestIdFieldDescriptor.getType())) {
+                    throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" Field 'requestId' has invalid data type. Only int32 type is supported!"");
+                }
+                if (requestIdFieldDescriptor.isRepeated()) {
+                    throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" Field 'requestId' has invalid label!"");
+                }
+            }
+            Descriptors.FieldDescriptor paramsFieldDescriptor = rpcRequestDynamicMessageDescriptor.findFieldByName(""params"");
+            if (paramsFieldDescriptor == null) {
+                throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" Failed to get field descriptor for field: params!"");
+            } else {
+                if (paramsFieldDescriptor.isRepeated()) {
+                    throw new DataValidationException(invalidSchemaProvidedMessage(RPC_REQUEST_PROTO_SCHEMA) + "" Field 'params' has invalid label!"");
+                }
+            }
+        }
+    }",True,True,"The function of this method is to validate the fields of a dynamic message used in an RPC request. It checks if the message has the expected fields (method, requestId, and params) and if their data types and labels are correct. If any validation fails, it throws a DataValidationException.","The code validates the fields of a dynamic message in a protobuf schema for an RPC request. It checks if the message contains the required fields (method, requestId, and params) with the correct data types and labels, and throws exceptions if any validation fails."
+38,"validateLwm2mServersConfigOfBootstrapForClient(List<LwM2MBootstrapServerCredential>,boolean)",validate lwm2m servers config of bootstrap for client lw m2 m bootstrap servers configurations is bootstrap server update enable ,Method,,,org.thingsboard.server.dao.exception.DeviceCredentialsValidationException+DeviceCredentialsValidationException(String) org.thingsboard.server.dao.exception.DeviceCredentialsValidationException+DeviceCredentialsValidationException(String) java.util.Set+add(E) java.util.Set+add(E) org.thingsboard.server.dao.exception.DeviceCredentialsValidationException+DeviceCredentialsValidationException(String) java.util.Set+add(E) java.util.Set+add(E) org.thingsboard.server.dao.exception.DeviceCredentialsValidationException+DeviceCredentialsValidationException(String) org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.LwM2MBootstrapServerCredential+getSecurityMode() org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.LwM2MBootstrapServerCredential+getSecurityMode() org.thingsboard.server.dao.exception.DeviceCredentialsValidationException+DeviceCredentialsValidationException(String) org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.LwM2MBootstrapServerCredential+getSecurityMode() org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.LwM2MBootstrapServerCredential+getSecurityMode(),,2442,30,2,,"private void validateLwm2mServersConfigOfBootstrapForClient(List<LwM2MBootstrapServerCredential> lwM2MBootstrapServersConfigurations, boolean isBootstrapServerUpdateEnable) {
+        Set<String> uris = new HashSet<>();
+        Set<Integer> shortServerIds = new HashSet<>();
+        for (LwM2MBootstrapServerCredential bootstrapServerCredential : lwM2MBootstrapServersConfigurations) {
+            AbstractLwM2MBootstrapServerCredential serverConfig = (AbstractLwM2MBootstrapServerCredential) bootstrapServerCredential;
+            if (!isBootstrapServerUpdateEnable && serverConfig.isBootstrapServerIs()) {
+                throw new DeviceCredentialsValidationException(""Bootstrap config must not include \""Bootstrap Server\"". \""Include Bootstrap Server updates\"" is "" + isBootstrapServerUpdateEnable + ""."");
+            }
+            String server = serverConfig.isBootstrapServerIs() ? ""Bootstrap Server"" : ""LwM2M Server"" + "" shortServerId: "" + serverConfig.getShortServerId() + "":"";
+            if (serverConfig.getShortServerId() < 1 || serverConfig.getShortServerId() > 65534) {
+                throw new DeviceCredentialsValidationException(server + "" ShortServerId must not be less than 1 and more than 65534!"");
+            }
+            if (!shortServerIds.add(serverConfig.getShortServerId())) {
+                throw new DeviceCredentialsValidationException(server + "" \""Short server Id\"" value = "" + serverConfig.getShortServerId() + "". This value must be a unique value for all servers!"");
+            }
+            String uri = serverConfig.getHost() + "":"" + serverConfig.getPort();
+            if (!uris.add(uri)) {
+                throw new DeviceCredentialsValidationException(server + "" \""Host + port\"" value = "" + uri + "". This value must be a unique value for all servers!"");
+            }
+            Integer port;
+            if (LwM2MSecurityMode.NO_SEC.equals(serverConfig.getSecurityMode())) {
+                port = serverConfig.isBootstrapServerIs() ? 5687 : 5685;
+            } else {
+                port = serverConfig.isBootstrapServerIs() ? 5688 : 5686;
+            }
+            if (serverConfig.getPort() == null || serverConfig.getPort().intValue() != port) {
+                throw new DeviceCredentialsValidationException(server + "" \""Port\"" value = "" + serverConfig.getPort() + "". This value for security "" + serverConfig.getSecurityMode().name() + "" must be "" + port + ""!"");
+            }
+        }
+    }",True,True,"This method validates the configuration of LwM2M bootstrap servers for a client. It checks if the bootstrap server update is enabled, if the server IDs and URIs are unique, and if the port values are correct based on the security mode.","This code validates the configuration of LwM2M servers for a client. It checks if the bootstrap server is included when it shouldn't be, validates the short server ID and the uniqueness of server IDs and host+port combinations, and ensures that the port value matches the security mode. If any validation fails, a DeviceCredentialsValidationException is thrown."
+39,validateLwm2mServersCredentialOfBootstrapForClient(LwM2MBootstrapServerCredential),validate lwm2m servers credential of bootstrap for client bootstrap server config ,Method,,,org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.LwM2MBootstrapServerCredential+getSecurityMode() org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.LwM2MBootstrapServerCredential+getSecurityMode() org.thingsboard.server.common.data.StringUtils+isEmpty(String) org.thingsboard.server.common.data.StringUtils+isEmpty(String) org.thingsboard.server.dao.exception.DeviceCredentialsValidationException+DeviceCredentialsValidationException(String) org.thingsboard.server.common.msg.EncryptionUtil+pubkTrimNewLines(String) org.thingsboard.server.common.msg.EncryptionUtil+pubkTrimNewLines(String) org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.AbstractLwM2MBootstrapServerCredential+getDecodedCServerPublicKey() org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.AbstractLwM2MBootstrapServerCredential+getDecodedCServerPublicKey() org.thingsboard.server.dao.exception.DeviceCredentialsValidationException+DeviceCredentialsValidationException(String) org.thingsboard.server.common.data.StringUtils+isEmpty(String) org.thingsboard.server.common.data.StringUtils+isEmpty(String) org.thingsboard.server.dao.exception.DeviceCredentialsValidationException+DeviceCredentialsValidationException(String) org.thingsboard.server.common.msg.EncryptionUtil+certTrimNewLines(String) org.thingsboard.server.common.msg.EncryptionUtil+certTrimNewLines(String) org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.AbstractLwM2MBootstrapServerCredential+getDecodedCServerPublicKey() org.thingsboard.server.common.data.device.profile.lwm2m.bootstrap.AbstractLwM2MBootstrapServerCredential+getDecodedCServerPublicKey() org.thingsboard.server.dao.exception.DeviceCredentialsValidationException+DeviceCredentialsValidationException(String),,2415,37,2,,"private void validateLwm2mServersCredentialOfBootstrapForClient(LwM2MBootstrapServerCredential bootstrapServerConfig) {
+        String server;
+        switch (bootstrapServerConfig.getSecurityMode()) {
+            case NO_SEC:
+            case PSK:
+                break;
+            case RPK:
+                RPKLwM2MBootstrapServerCredential rpkServerCredentials = (RPKLwM2MBootstrapServerCredential)  bootstrapServerConfig;
+                server = rpkServerCredentials.isBootstrapServerIs() ? ""Bootstrap Server"" : ""LwM2M Server"";
+                if (StringUtils.isEmpty(rpkServerCredentials.getServerPublicKey())) {
+                    throw new DeviceCredentialsValidationException(server + "" RPK public key must be specified!"");
+                }
+                try {
+                    String pubkRpkSever = EncryptionUtil.pubkTrimNewLines(rpkServerCredentials.getServerPublicKey());
+                    rpkServerCredentials.setServerPublicKey(pubkRpkSever);
+                    SecurityUtil.publicKey.decode(rpkServerCredentials.getDecodedCServerPublicKey());
+                } catch (Exception e) {
+                    throw new DeviceCredentialsValidationException(server + "" RPK public key must be in standard [RFC7250] and then encoded to Base64 format!"");
+                }
+                break;
+            case X509:
+                X509LwM2MBootstrapServerCredential x509ServerCredentials = (X509LwM2MBootstrapServerCredential) bootstrapServerConfig;
+                server = x509ServerCredentials.isBootstrapServerIs() ? ""Bootstrap Server"" : ""LwM2M Server"";
+                if (StringUtils.isEmpty(x509ServerCredentials.getServerPublicKey())) {
+                    throw new DeviceCredentialsValidationException(server + "" X509 certificate must be specified!"");
+                }
+
+                try {
+                    String certServer = EncryptionUtil.certTrimNewLines(x509ServerCredentials.getServerPublicKey());
+                    x509ServerCredentials.setServerPublicKey(certServer);
+                    SecurityUtil.certificate.decode(x509ServerCredentials.getDecodedCServerPublicKey());
+                } catch (Exception e) {
+                    throw new DeviceCredentialsValidationException(server + "" X509 certificate must be in DER-encoded X509v3 format and support only EC algorithm and then encoded to Base64 format!"");
+                }
+                break;
+        }
+    }",True,True,"This method validates the credentials of a bootstrap server or LwM2M server for a client. It checks the security mode and performs specific validation based on the mode (NO_SEC, PSK, RPK, X509). If the validation fails, it throws a DeviceCredentialsValidationException.","This code validates the credentials of a LwM2M bootstrap server for a client. It checks the security mode of the server and performs specific validation based on the mode, such as checking for the presence of public keys or certificates and their correct format. If any validation fails, it throws a DeviceCredentialsValidationException."
+40,tenantDeviceProfilesRemover,tenant device profiles remover ,Field,,,,,586,13,2,,"private PaginatedRemover<TenantId, DeviceProfile> tenantDeviceProfilesRemover =
+            new PaginatedRemover<TenantId, DeviceProfile>() {
+
+                @Override
+                protected PageData<DeviceProfile> findEntities(TenantId tenantId, TenantId id, PageLink pageLink) {
+                    return deviceProfileDao.findDeviceProfiles(id, pageLink);
+                }
+
+                @Override
+                protected void removeEntity(TenantId tenantId, DeviceProfile entity) {
+                    removeDeviceProfile(tenantId, entity);
+                }
+            };",False,False,,

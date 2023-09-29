@@ -1,0 +1,852 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,WAITING_FOR_LOCK,waiting for lock the table name this thread is waiting to lock ,Field,,,,,136,4,25,"/** 
+ * The table name this thread is waiting to lock.
+ */
+","/**
+     * The table name this thread is waiting to lock.
+     */
+    public static final DebuggingThreadLocal<String> WAITING_FOR_LOCK;",False,False,"/** 
+ * The table name this thread is waiting to lock.
+ */
+",False,"/** 
+ * The table name this thread is waiting to lock.
+ */
+"
+2,EXCLUSIVE_LOCKS,exclusive locks the table names this thread has exclusively locked ,Field,,,,,151,4,25,"/** 
+ * The table names this thread has exclusively locked.
+ */
+","/**
+     * The table names this thread has exclusively locked.
+     */
+    public static final DebuggingThreadLocal<ArrayList<String>> EXCLUSIVE_LOCKS;",False,False,"/** 
+ * The table names this thread has exclusively locked.
+ */
+",False,"/** 
+ * The table names this thread has exclusively locked.
+ */
+"
+3,SHARED_LOCKS,shared locks the tables names this thread has a shared lock on ,Field,,,,,147,4,25,"/** 
+ * The tables names this thread has a shared lock on.
+ */
+","/**
+     * The tables names this thread has a shared lock on.
+     */
+    public static final DebuggingThreadLocal<ArrayList<String>> SHARED_LOCKS;",False,False,"/** 
+ * The tables names this thread has a shared lock on.
+ */
+",False,"/** 
+ * The tables names this thread has a shared lock on.
+ */
+"
+4,TraceLockEvent,trace lock event the type of trace lock events ,Field,,,,,80,4,2,"/** 
+ * The type of trace lock events
+ */
+","/**
+     * The type of trace lock events
+     */
+    private enum TraceLockEvent",False,False,"/** 
+ * The type of trace lock events
+ */
+",False,"/** 
+ * The type of trace lock events
+ */
+"
+5,eventText,event text ,Field,TraceLockEvent(String),,,,31,1,18,,private final String eventText;,False,False,,False,
+6,TraceLockEvent(String),trace lock event event text ,Method,,,,org.h2.mvstore.db.MVTable+eventText org.h2.mvstore.db.MVTable+eventText,84,3,0,,"TraceLockEvent(String eventText) {
+            this.eventText = eventText;
+        }",False,False,This method assigns the value of the eventText parameter to the eventText variable of the class.,False,"The code defines a constructor method called ""TraceLockEvent"" that takes a string parameter ""eventText"". It assigns the value of ""eventText"" to the instance variable ""eventText"" of the class."
+7,getEventText(),get event text ,Method,,,,org.h2.mvstore.db.MVTable+eventText,70,3,1,,"public String getEventText() {
+            return eventText;
+        }",False,False,"The function of the given method is to retrieve and return the value of the variable ""eventText"" as a string.",False,"The code contains a method named ""getEventText"" which returns a string. It retrieves the value of the ""eventText"" variable and returns it as the result of the method."
+8,NO_EXTRA_INFO,no extra info ,Field,,,,,47,1,26,,"private static final String NO_EXTRA_INFO = """";",False,False,,False,
+9,primaryIndex,primary index ,Field,,,,,36,1,2,,private MVPrimaryIndex primaryIndex;,False,False,,False,
+10,indexes,indexes ,Field,,,,,67,1,18,,private final ArrayList<Index> indexes = Utils.newSmallArrayList();,False,False,,False,
+11,lastModificationId,last modification id ,Field,,,,,63,1,18,,private final AtomicLong lastModificationId = new AtomicLong();,False,False,,False,
+12,lockExclusiveSession,lock exclusive session ,Field,,,,,46,1,66,,private volatile Session lockExclusiveSession;,True,True,,False,
+13,lockSharedSessions,lock shared sessions ,Field,,,,,109,2,18,,"private final ConcurrentHashMap<Session, Session> lockSharedSessions =
+            new ConcurrentHashMap<>();",True,True,,False,
+14,waitingSessions,waiting sessions the queue of sessions waiting to lock the table it is a fifo queue to prevent starvation since java s synchronized locking is biased ,Field,,,,,237,5,18,"/** 
+ * The queue of sessions waiting to lock the table. It is a FIFO queue to prevent starvation, since Java's synchronized locking is biased.
+ */
+","/**
+     * The queue of sessions waiting to lock the table. It is a FIFO queue to
+     * prevent starvation, since Java's synchronized locking is biased.
+     */
+    private final ArrayDeque<Session> waitingSessions = new ArrayDeque<>();",False,False,"/** 
+ * The queue of sessions waiting to lock the table. It is a FIFO queue to prevent starvation, since Java's synchronized locking is biased.
+ */
+",False,"/** 
+ * The queue of sessions waiting to lock the table. It is a FIFO queue to prevent starvation, since Java's synchronized locking is biased.
+ */
+"
+15,traceLock,trace lock ,Field,,,,,30,1,18,,private final Trace traceLock;,False,False,,False,
+16,changesUntilAnalyze,changes until analyze ,Field,,,,,48,1,18,,private final AtomicInteger changesUntilAnalyze;,False,False,,False,
+17,nextAnalyze,next analyze ,Field,,,,,24,1,2,,private int nextAnalyze;,False,False,,False,
+18,containsLargeObject,contains large object ,Field,,,,,42,1,18,,private final boolean containsLargeObject;,True,True,,False,
+19,rowIdColumn,row id column ,Field,,,,,27,1,2,,private Column rowIdColumn;,True,True,,False,
+20,store,store ,Field,"MVTable(CreateTableData,MVTableEngine.Store)",,,,40,1,18,,private final MVTableEngine.Store store;,False,False,,False,
+21,transactionStore,transaction store ,Field,"MVTable(CreateTableData,MVTableEngine.Store)",,,,48,1,18,,private final TransactionStore transactionStore;,False,False,,False,
+22,"MVTable(CreateTableData,MVTableEngine.Store)",mv table data store ,Method,,,"org.h2.engine.Database+getSettings() org.h2.engine.Database+getSettings() java.util.concurrent.atomic.AtomicInteger+AtomicInteger(int) org.h2.mvstore.db.MVTableEngine.Store+getTransactionStore() org.h2.mvstore.db.MVTableEngine.Store+getTransactionStore() org.h2.table.Table+getColumns() org.h2.table.Table+getColumns() org.h2.value.DataType+isLargeObject(int) org.h2.value.DataType+isLargeObject(int) org.h2.value.TypeInfo+getValueType() org.h2.table.Column+getType() org.h2.table.Column+getType() org.h2.value.TypeInfo+getValueType() org.h2.engine.Database+getTrace(int) org.h2.engine.Database+getTrace(int) org.h2.mvstore.db.MVPrimaryIndex+MVPrimaryIndex(Database,MVTable,int,IndexColumn[],IndexType) org.h2.engine.DbObjectBase+getId() org.h2.engine.DbObjectBase+getId() org.h2.table.IndexColumn+wrap(Column[]) org.h2.table.IndexColumn+wrap(Column[]) org.h2.table.Table+getColumns() org.h2.table.Table+getColumns() org.h2.index.IndexType+createScan(boolean) org.h2.index.IndexType+createScan(boolean) java.util.ArrayList+add(E) java.util.ArrayList+add(E)",org.h2.mvstore.db.MVTable+nextAnalyze org.h2.engine.DbSettings+analyzeAuto org.h2.engine.DbObjectBase+database org.h2.engine.DbSettings+analyzeAuto org.h2.mvstore.db.MVTable+changesUntilAnalyze org.h2.mvstore.db.MVTable+nextAnalyze org.h2.mvstore.db.MVTable+nextAnalyze org.h2.mvstore.db.MVTable+store org.h2.mvstore.db.MVTable+store org.h2.mvstore.db.MVTable+transactionStore org.h2.mvstore.db.MVTable+transactionStore org.h2.table.Table+isHidden org.h2.table.Table+isHidden org.h2.command.ddl.CreateTableData+isHidden org.h2.mvstore.db.MVTable+containsLargeObject org.h2.mvstore.db.MVTable+traceLock org.h2.engine.DbObjectBase+database org.h2.message.Trace+LOCK org.h2.mvstore.db.MVTable+primaryIndex org.h2.engine.DbObjectBase+database org.h2.mvstore.db.MVTable+indexes org.h2.mvstore.db.MVTable+primaryIndex,844,21,1,,"public MVTable(CreateTableData data, MVTableEngine.Store store) {
+        super(data);
+        nextAnalyze = database.getSettings().analyzeAuto;
+        changesUntilAnalyze = nextAnalyze <= 0 ? null : new AtomicInteger(nextAnalyze);
+        this.store = store;
+        this.transactionStore = store.getTransactionStore();
+        this.isHidden = data.isHidden;
+        boolean b = false;
+        for (Column col : getColumns()) {
+            if (DataType.isLargeObject(col.getType().getValueType())) {
+                b = true;
+                break;
+            }
+        }
+        containsLargeObject = b;
+        traceLock = database.getTrace(Trace.LOCK);
+
+        primaryIndex = new MVPrimaryIndex(database, this, getId(),
+                IndexColumn.wrap(getColumns()), IndexType.createScan(true));
+        indexes.add(primaryIndex);
+    }",False,False,The function of this method is to initialize a MVTable object with the given CreateTableData and MVTableEngine.Store parameters. It sets various properties and creates a primary index for the table.,True,"The code defines a constructor for the MVTable class, which initializes various instance variables and creates a primary index for the table. The constructor also checks if the table contains any large objects and sets a flag accordingly."
+23,getMapName(),get map name ,Method,,org.h2.mvstore.db.MVTableEngine+Store.createTable(CreateTableData) org.h2.mvstore.db.MVTableEngine+Store.removeTable(MVTable),org.h2.mvstore.db.MVPrimaryIndex+getMapName() org.h2.mvstore.db.MVPrimaryIndex+getMapName(),org.h2.mvstore.db.MVTable+primaryIndex,76,3,1,,"public String getMapName() {
+        return primaryIndex.getMapName();
+    }",False,False,The function of the method is to retrieve the name of the map from the primary index and return it as a string.,False,"The code defines a method named ""getMapName"" that returns a String value. This method retrieves the map name from the primary index and returns it as the result."
+24,"lock(Session,boolean,boolean)",lock session exclusive force lock even in mvcc ,Method,,,"org.h2.engine.Database+getLockMode() org.h2.engine.Database+getLockMode() java.util.concurrent.ConcurrentHashMap+containsKey(Object) java.util.concurrent.ConcurrentHashMap+containsKey(Object) org.h2.mvstore.db.MVTable+getLockSyncObject() org.h2.mvstore.db.MVTable+getLockSyncObject() java.util.concurrent.ConcurrentHashMap+containsKey(Object) java.util.concurrent.ConcurrentHashMap+containsKey(Object) org.h2.engine.Session+setWaitForLock(Table,Thread) org.h2.engine.Session+setWaitForLock(Table,Thread) java.lang.Thread+currentThread() java.lang.Thread+currentThread() org.h2.util.DebuggingThreadLocal+set(T) org.h2.util.DebuggingThreadLocal+set(T) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() java.util.ArrayDeque+addLast(E) java.util.ArrayDeque+addLast(E) org.h2.mvstore.db.MVTable+doLock1(Session,int,boolean) org.h2.mvstore.db.MVTable+doLock1(Session,int,boolean) org.h2.engine.Session+setWaitForLock(Table,Thread) org.h2.engine.Session+setWaitForLock(Table,Thread) org.h2.util.DebuggingThreadLocal+remove() org.h2.util.DebuggingThreadLocal+remove() java.util.ArrayDeque+remove(Object) java.util.ArrayDeque+remove(Object)",org.h2.engine.DbObjectBase+database org.h2.engine.Constants+LOCK_MODE_OFF org.h2.mvstore.db.MVTable+lockExclusiveSession org.h2.mvstore.db.MVTable+lockExclusiveSession org.h2.mvstore.db.MVTable+lockSharedSessions org.h2.mvstore.db.MVTable+lockSharedSessions org.h2.engine.SysProperties+THREAD_DEADLOCK_DETECTOR org.h2.mvstore.db.MVTable+WAITING_FOR_LOCK org.h2.mvstore.db.MVTable+waitingSessions org.h2.engine.SysProperties+THREAD_DEADLOCK_DETECTOR org.h2.mvstore.db.MVTable+WAITING_FOR_LOCK org.h2.mvstore.db.MVTable+waitingSessions,1675,47,1,,"@Override
+    public boolean lock(Session session, boolean exclusive,
+            boolean forceLockEvenInMvcc) {
+        int lockMode = database.getLockMode();
+        if (lockMode == Constants.LOCK_MODE_OFF) {
+            return false;
+        }
+        if (!forceLockEvenInMvcc) {
+            // MVCC: update, delete, and insert use a shared lock.
+            // Select doesn't lock except when using FOR UPDATE and
+            // the system property h2.selectForUpdateMvcc
+            // is not enabled
+            if (exclusive) {
+                exclusive = false;
+            } else {
+                if (lockExclusiveSession == null) {
+                    return false;
+                }
+            }
+        }
+        if (lockExclusiveSession == session) {
+            return true;
+        }
+        if (!exclusive && lockSharedSessions.containsKey(session)) {
+            return true;
+        }
+        synchronized (getLockSyncObject()) {
+            if (!exclusive && lockSharedSessions.containsKey(session)) {
+                return true;
+            }
+            session.setWaitForLock(this, Thread.currentThread());
+            if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
+                WAITING_FOR_LOCK.set(getName());
+            }
+            waitingSessions.addLast(session);
+            try {
+                doLock1(session, lockMode, exclusive);
+            } finally {
+                session.setWaitForLock(null, null);
+                if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
+                    WAITING_FOR_LOCK.remove();
+                }
+                waitingSessions.remove(session);
+            }
+        }
+        return false;
+    }",False,False,"This method is used to lock a session in a database. It checks the lock mode of the database and if it is not off, it determines whether the session should be locked exclusively or shared. It then synchronizes the locking process and returns true if the session is successfully locked, otherwise it returns false.",True,This code is a method that handles locking in a database session. It checks the lock mode of the database and determines if the session can be locked based on the parameters provided. It also handles waiting for the lock and removes the session from the waiting list once the lock is acquired or released.
+25,getLockSyncObject(),get lock sync object the the object on which to synchronize and wait on for the multi threaded mode this is this object but for non multi threaded it is the database as in this case all operations are synchronized on the database object return the lock sync object ,Method,"lock(Session,boolean,boolean) doLock1(Session,int,boolean) unlock(Session)",,org.h2.engine.Database+isMultiThreaded() org.h2.engine.Database+isMultiThreaded(),org.h2.engine.DbObjectBase+database org.h2.engine.DbObjectBase+database,453,14,2,"/** 
+ * The the object on which to synchronize and wait on. For the multi-threaded mode, this is this object, but for non-multi-threaded, it is the database, as in this case all operations are synchronized on the database object.
+ * @return the lock sync object
+ */
+","/**
+     * The the object on which to synchronize and wait on. For the
+     * multi-threaded mode, this is this object, but for non-multi-threaded, it
+     * is the database, as in this case all operations are synchronized on the
+     * database object.
+     *
+     * @return the lock sync object
+     */
+    private Object getLockSyncObject() {
+        if (database.isMultiThreaded()) {
+            return this;
+        }
+        return database;
+    }",False,False,"The function of this method is to determine the object on which to synchronize and wait on. If the database is in multi-threaded mode, it returns the current object. Otherwise, it returns the database object.",False,"The `getLockSyncObject()` method returns the object on which to synchronize and wait on. If the database is in multi-threaded mode, it returns the current object, otherwise it returns the database object itself. This method is used to ensure synchronization and thread safety in the code."
+26,"doLock1(Session,int,boolean)",do lock1 session lock mode exclusive ,Method,"lock(Session,boolean,boolean)",,"org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) java.util.ArrayDeque+getFirst() java.util.ArrayDeque+getFirst() org.h2.mvstore.db.MVTable+doLock2(Session,int,boolean) org.h2.mvstore.db.MVTable+doLock2(Session,int,boolean) org.h2.mvstore.db.MVTable+checkDeadlock(Session,Session,Set<Session>) org.h2.mvstore.db.MVTable+checkDeadlock(Session,Session,Set<Session>) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.mvstore.db.MVTable+getDeadlockDetails(ArrayList<Session>,boolean) org.h2.mvstore.db.MVTable+getDeadlockDetails(ArrayList<Session>,boolean) java.lang.System+nanoTime() java.lang.System+nanoTime() java.util.concurrent.TimeUnit+toNanos(long) java.util.concurrent.TimeUnit+toNanos(long) org.h2.engine.Session+getLockTimeout() org.h2.engine.Session+getLockTimeout() org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.engine.Session+getLockTimeout() org.h2.engine.Session+getLockTimeout() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.engine.Database+getLockMode() org.h2.engine.Database+getLockMode() java.lang.Runtime+freeMemory() java.lang.Runtime+getRuntime() java.lang.Runtime+getRuntime() java.lang.Runtime+freeMemory() java.lang.System+gc() java.lang.System+gc() java.lang.Runtime+freeMemory() java.lang.Runtime+getRuntime() java.lang.Runtime+getRuntime() java.lang.Runtime+freeMemory() java.lang.Math+min(long,long) java.lang.Math+min(long,long) java.util.concurrent.TimeUnit+toMillis(long) java.util.concurrent.TimeUnit+toMillis(long) java.lang.Object+wait(long) org.h2.mvstore.db.MVTable+getLockSyncObject() org.h2.mvstore.db.MVTable+getLockSyncObject() java.lang.Object+wait(long)",org.h2.mvstore.db.MVTable+TraceLockEvent org.h2.mvstore.db.MVTable+NO_EXTRA_INFO org.h2.mvstore.db.MVTable+waitingSessions org.h2.api.ErrorCode+DEADLOCK_1 java.util.concurrent.TimeUnit+MILLISECONDS org.h2.mvstore.db.MVTable+TraceLockEvent org.h2.mvstore.db.MVTable+NO_EXTRA_INFO org.h2.api.ErrorCode+LOCK_TIMEOUT_1 org.h2.mvstore.db.MVTable+TraceLockEvent org.h2.mvstore.db.MVTable+NO_EXTRA_INFO org.h2.engine.DbObjectBase+database org.h2.engine.Constants+LOCK_MODE_TABLE_GC org.h2.engine.Constants+DEADLOCK_CHECK java.util.concurrent.TimeUnit+NANOSECONDS,2460,55,2,,"private void doLock1(Session session, int lockMode, boolean exclusive) {
+        traceLock(session, exclusive, TraceLockEvent.TRACE_LOCK_REQUESTING_FOR, NO_EXTRA_INFO);
+        // don't get the current time unless necessary
+        long max = 0;
+        boolean checkDeadlock = false;
+        while (true) {
+            // if I'm the next one in the queue
+            if (waitingSessions.getFirst() == session) {
+                if (doLock2(session, lockMode, exclusive)) {
+                    return;
+                }
+            }
+            if (checkDeadlock) {
+                ArrayList<Session> sessions = checkDeadlock(session, null, null);
+                if (sessions != null) {
+                    throw DbException.get(ErrorCode.DEADLOCK_1,
+                            getDeadlockDetails(sessions, exclusive));
+                }
+            } else {
+                // check for deadlocks from now on
+                checkDeadlock = true;
+            }
+            long now = System.nanoTime();
+            if (max == 0) {
+                // try at least one more time
+                max = now + TimeUnit.MILLISECONDS.toNanos(session.getLockTimeout());
+            } else if (now >= max) {
+                traceLock(session, exclusive,
+                        TraceLockEvent.TRACE_LOCK_TIMEOUT_AFTER, NO_EXTRA_INFO+session.getLockTimeout());
+                throw DbException.get(ErrorCode.LOCK_TIMEOUT_1, getName());
+            }
+            try {
+                traceLock(session, exclusive, TraceLockEvent.TRACE_LOCK_WAITING_FOR, NO_EXTRA_INFO);
+                if (database.getLockMode() == Constants.LOCK_MODE_TABLE_GC) {
+                    for (int i = 0; i < 20; i++) {
+                        long free = Runtime.getRuntime().freeMemory();
+                        System.gc();
+                        long free2 = Runtime.getRuntime().freeMemory();
+                        if (free == free2) {
+                            break;
+                        }
+                    }
+                }
+                // don't wait too long so that deadlocks are detected early
+                long sleep = Math.min(Constants.DEADLOCK_CHECK,
+                        TimeUnit.NANOSECONDS.toMillis(max - now));
+                if (sleep == 0) {
+                    sleep = 1;
+                }
+                getLockSyncObject().wait(sleep);
+            } catch (InterruptedException e) {
+                // ignore
+            }
+        }
+    }",False,False,"The function of this method is to request a lock for a session, and wait for the lock to be granted. It also checks for deadlocks and handles lock timeouts.",True,"This code represents a method that handles locking in a session. It checks if the current session is the next one in the queue, attempts to acquire the lock, and if unsuccessful, checks for deadlocks and waits for a specified amount of time before trying again."
+27,"doLock2(Session,int,boolean)",do lock2 session lock mode exclusive ,Method,"doLock1(Session,int,boolean)",,"java.util.concurrent.ConcurrentHashMap+isEmpty() java.util.concurrent.ConcurrentHashMap+isEmpty() org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.engine.Session+addLock(Table) org.h2.engine.Session+addLock(Table) org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+set(T) org.h2.util.DebuggingThreadLocal+set(T) java.util.ArrayList+ArrayList() java.util.ArrayList+add(E) org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+get() java.util.ArrayList+add(E) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() java.util.concurrent.ConcurrentHashMap+size() java.util.concurrent.ConcurrentHashMap+size() java.util.concurrent.ConcurrentHashMap+containsKey(Object) java.util.concurrent.ConcurrentHashMap+containsKey(Object) org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+set(T) org.h2.util.DebuggingThreadLocal+set(T) java.util.ArrayList+ArrayList() java.util.ArrayList+add(E) org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+get() java.util.ArrayList+add(E) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() java.util.concurrent.ConcurrentHashMap+putIfAbsent(K,V) java.util.concurrent.ConcurrentHashMap+putIfAbsent(K,V) org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.engine.Session+addLock(Table) org.h2.engine.Session+addLock(Table) org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+set(T) org.h2.util.DebuggingThreadLocal+set(T) java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName()",org.h2.mvstore.db.MVTable+lockExclusiveSession org.h2.mvstore.db.MVTable+lockSharedSessions org.h2.mvstore.db.MVTable+TraceLockEvent org.h2.mvstore.db.MVTable+NO_EXTRA_INFO org.h2.mvstore.db.MVTable+lockExclusiveSession org.h2.engine.SysProperties+THREAD_DEADLOCK_DETECTOR org.h2.mvstore.db.MVTable+EXCLUSIVE_LOCKS org.h2.mvstore.db.MVTable+EXCLUSIVE_LOCKS org.h2.mvstore.db.MVTable+EXCLUSIVE_LOCKS org.h2.mvstore.db.MVTable+lockSharedSessions org.h2.mvstore.db.MVTable+lockSharedSessions org.h2.mvstore.db.MVTable+TraceLockEvent org.h2.mvstore.db.MVTable+NO_EXTRA_INFO org.h2.mvstore.db.MVTable+lockExclusiveSession org.h2.engine.SysProperties+THREAD_DEADLOCK_DETECTOR org.h2.mvstore.db.MVTable+EXCLUSIVE_LOCKS org.h2.mvstore.db.MVTable+EXCLUSIVE_LOCKS org.h2.mvstore.db.MVTable+EXCLUSIVE_LOCKS org.h2.mvstore.db.MVTable+lockSharedSessions org.h2.mvstore.db.MVTable+TraceLockEvent org.h2.mvstore.db.MVTable+NO_EXTRA_INFO org.h2.engine.SysProperties+THREAD_DEADLOCK_DETECTOR org.h2.mvstore.db.MVTable+SHARED_LOCKS org.h2.mvstore.db.MVTable+SHARED_LOCKS,2111,44,2,,"private boolean doLock2(Session session, int lockMode, boolean exclusive) {
+        if (lockExclusiveSession == null) {
+            if (exclusive) {
+                if (lockSharedSessions.isEmpty()) {
+                    traceLock(session, exclusive, TraceLockEvent.TRACE_LOCK_ADDED_FOR, NO_EXTRA_INFO);
+                    session.addLock(this);
+                    lockExclusiveSession = session;
+                    if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
+                        if (EXCLUSIVE_LOCKS.get() == null) {
+                            EXCLUSIVE_LOCKS.set(new ArrayList<String>());
+                        }
+                        EXCLUSIVE_LOCKS.get().add(getName());
+                    }
+                    return true;
+                } else if (lockSharedSessions.size() == 1 &&
+                        lockSharedSessions.containsKey(session)) {
+                    traceLock(session, exclusive, TraceLockEvent.TRACE_LOCK_ADD_UPGRADED_FOR, NO_EXTRA_INFO);
+                    lockExclusiveSession = session;
+                    if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
+                        if (EXCLUSIVE_LOCKS.get() == null) {
+                            EXCLUSIVE_LOCKS.set(new ArrayList<String>());
+                        }
+                        EXCLUSIVE_LOCKS.get().add(getName());
+                    }
+                    return true;
+                }
+            } else {
+                if (lockSharedSessions.putIfAbsent(session, session) == null) {
+                    traceLock(session, exclusive, TraceLockEvent.TRACE_LOCK_OK, NO_EXTRA_INFO);
+                    session.addLock(this);
+                    if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
+                        ArrayList<String> list = SHARED_LOCKS.get();
+                        if (list == null) {
+                            list = new ArrayList<>();
+                            SHARED_LOCKS.set(list);
+                        }
+                        list.add(getName());
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }",False,False,"This method serves to lock a session with a specified lock mode. It checks if the lock is exclusive or shared, and adds the session to the appropriate lock list. It also updates the trace lock event and adds the lock to the session.",True,"This code is a private method called `doLock2` that is responsible for acquiring locks in a multi-threaded environment. It checks if a session has an exclusive lock, and if not, it either adds an exclusive lock for the session or adds a shared lock for the session depending on the parameters passed."
+28,"getDeadlockDetails(ArrayList<Session>,boolean)",get deadlock details sessions exclusive ,Method,"doLock1(Session,int,boolean)",,java.lang.StringBuilder+StringBuilder() org.h2.engine.Session+getWaitForLock() org.h2.engine.Session+getWaitForLock() org.h2.engine.Session+getWaitForLockThread() org.h2.engine.Session+getWaitForLockThread() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.engine.Session+toString() org.h2.engine.Session+toString() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.Thread+getName() java.lang.Thread+getName() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.engine.DbObjectBase+toString() org.h2.engine.DbObjectBase+toString() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.engine.Session+getLocks() org.h2.engine.Session+getLocks() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.engine.DbObjectBase+toString() org.h2.engine.DbObjectBase+toString() org.h2.table.Table+isLockedExclusivelyBy(Session) org.h2.table.Table+isLockedExclusivelyBy(Session) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString(),,1295,30,10,,"private static String getDeadlockDetails(ArrayList<Session> sessions, boolean exclusive) {
+        // We add the thread details here to make it easier for customers to
+        // match up these error messages with their own logs.
+        StringBuilder buff = new StringBuilder();
+        for (Session s : sessions) {
+            Table lock = s.getWaitForLock();
+            Thread thread = s.getWaitForLockThread();
+            buff.append(""\nSession "").append(s.toString())
+                    .append("" on thread "").append(thread.getName())
+                    .append("" is waiting to lock "").append(lock.toString())
+                    .append(exclusive ? "" (exclusive)"" : "" (shared)"")
+                    .append("" while locking "");
+            int i = 0;
+            for (Table t : s.getLocks()) {
+                if (i++ > 0) {
+                    buff.append("", "");
+                }
+                buff.append(t.toString());
+                if (t instanceof MVTable) {
+                    if (t.isLockedExclusivelyBy(s)) {
+                        buff.append("" (exclusive)"");
+                    } else {
+                        buff.append("" (shared)"");
+                    }
+                }
+            }
+            buff.append('.');
+        }
+        return buff.toString();
+    }",True,True,"This method takes an ArrayList of Session objects and a boolean value as parameters. It iterates through each Session object in the list and retrieves the lock and thread details. It then appends these details to a StringBuilder object. Finally, it returns the string representation of the StringBuilder object.",False,"This code defines a private static method called ""getDeadlockDetails"" that takes an ArrayList of Session objects and a boolean value as parameters. It iterates over the sessions and retrieves information about the locks and threads involved in a potential deadlock scenario. It then appends this information to a StringBuilder and returns the resulting string."
+29,"checkDeadlock(Session,Session,Set<Session>)",check deadlock session clash visited ,Method,"doLock1(Session,int,boolean)",,"java.util.Set+contains(Object) java.util.Set+contains(Object) java.util.Set+add(E) java.util.Set+add(E) java.util.concurrent.ConcurrentHashMap+keySet() java.util.concurrent.ConcurrentHashMap+keySet() org.h2.engine.Session+getWaitForLock() org.h2.engine.Session+getWaitForLock() org.h2.table.Table+checkDeadlock(Session,Session,Set<Session>) org.h2.table.Table+checkDeadlock(Session,Session,Set<Session>) java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.engine.Session+getWaitForLock() org.h2.engine.Session+getWaitForLock() org.h2.table.Table+checkDeadlock(Session,Session,Set<Session>) org.h2.table.Table+checkDeadlock(Session,Session,Set<Session>) java.util.ArrayList+add(E) java.util.ArrayList+add(E)",org.h2.mvstore.db.MVTable+lockSharedSessions org.h2.mvstore.db.MVTable+lockExclusiveSession,2101,50,1,,"@Override
+    public ArrayList<Session> checkDeadlock(Session session, Session clash,
+            Set<Session> visited) {
+        // only one deadlock check at any given time
+        synchronized (MVTable.class) {
+            if (clash == null) {
+                // verification is started
+                clash = session;
+                visited = new HashSet<>();
+            } else if (clash == session) {
+                // we found a circle where this session is involved
+                return new ArrayList<>(0);
+            } else if (visited.contains(session)) {
+                // we have already checked this session.
+                // there is a circle, but the sessions in the circle need to
+                // find it out themselves
+                return null;
+            }
+            visited.add(session);
+            ArrayList<Session> error = null;
+            for (Session s : lockSharedSessions.keySet()) {
+                if (s == session) {
+                    // it doesn't matter if we have locked the object already
+                    continue;
+                }
+                Table t = s.getWaitForLock();
+                if (t != null) {
+                    error = t.checkDeadlock(s, clash, visited);
+                    if (error != null) {
+                        error.add(session);
+                        break;
+                    }
+                }
+            }
+            // take a local copy so we don't see inconsistent data, since we are
+            // not locked while checking the lockExclusiveSession value
+            Session copyOfLockExclusiveSession = lockExclusiveSession;
+            if (error == null && copyOfLockExclusiveSession != null) {
+                Table t = copyOfLockExclusiveSession.getWaitForLock();
+                if (t != null) {
+                    error = t.checkDeadlock(copyOfLockExclusiveSession, clash,
+                            visited);
+                    if (error != null) {
+                        error.add(session);
+                    }
+                }
+            }
+            return error;
+        }
+    }",False,True,"The function of this method is to check for deadlocks in a system by recursively checking if a session is involved in a circular dependency with other sessions. It returns an ArrayList of sessions involved in the deadlock, or null if no deadlock is found.",True,"This code is a method that checks for deadlocks in a multi-version table. It takes a session and a clash session as input, and recursively checks if there is a circular dependency between the sessions. If a deadlock is detected, it returns an empty ArrayList, otherwise it returns null."
+30,"traceLock(Session,boolean,TraceLockEvent,String)",trace lock session exclusive event enum extra info ,Method,"doLock1(Session,int,boolean) doLock1(Session,int,boolean) doLock1(Session,int,boolean) doLock2(Session,int,boolean) doLock2(Session,int,boolean) doLock2(Session,int,boolean) unlock(Session)",,"org.h2.message.Trace+isDebugEnabled() org.h2.message.Trace+isDebugEnabled() org.h2.message.Trace+debug(String,Object[]) org.h2.message.Trace+debug(String,Object[]) org.h2.engine.Session+getId() org.h2.engine.Session+getId() org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName()",org.h2.mvstore.db.MVTable+traceLock org.h2.mvstore.db.MVTable+traceLock,376,7,2,,"private void traceLock(Session session, boolean exclusive, TraceLockEvent eventEnum, String extraInfo) {
+        if (traceLock.isDebugEnabled()) {
+            traceLock.debug(""{0} {1} {2} {3} {4}"", session.getId(),
+                    exclusive ? ""exclusive write lock"" : ""shared read lock"", eventEnum.getEventText(),
+                    getName(), extraInfo);
+        }
+    }",False,False,"This method is used to log trace information about a lock event. It takes in parameters such as the session, lock type, event type, name, and additional information, and logs them if the trace lock is in debug mode.",True,"The given code defines a private method called ""traceLock"" that takes in a session, a boolean value indicating exclusivity, an event enumeration, and extra information as parameters. It checks if the ""traceLock"" is in debug mode and if so, logs a debug message with the session ID, lock type, event text, name, and extra information."
+31,isLockedExclusively(),is locked exclusively ,Method,,,,org.h2.mvstore.db.MVTable+lockExclusiveSession,103,4,1,,"@Override
+    public boolean isLockedExclusively() {
+        return lockExclusiveSession != null;
+    }",True,True,This method checks if the lockExclusiveSession is not null and returns a boolean value indicating whether the lock is exclusively locked or not.,True,"The code defines a method named ""isLockedExclusively"" which returns a boolean value. It checks if the ""lockExclusiveSession"" variable is not null and returns true if it is not null, indicating that the lock is held exclusively; otherwise, it returns false."
+32,isLockedExclusivelyBy(Session),is locked exclusively by session ,Method,,,,org.h2.mvstore.db.MVTable+lockExclusiveSession,123,4,1,,"@Override
+    public boolean isLockedExclusivelyBy(Session session) {
+        return lockExclusiveSession == session;
+    }",True,True,"This method checks if the lock is exclusively held by a specific session. It returns true if the lock is held by the given session, and false otherwise.",True,"The code defines a method named `isLockedExclusivelyBy` that checks if a given session is the exclusive lock holder. It returns `true` if the provided session matches the `lockExclusiveSession` variable, indicating that the lock is held exclusively by that session, otherwise it returns `false`."
+33,unlock(Session),unlock s ,Method,,,"org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) org.h2.mvstore.db.MVTable+traceLock(Session,boolean,TraceLockEvent,String) java.util.concurrent.ConcurrentHashMap+remove(Object) java.util.concurrent.ConcurrentHashMap+remove(Object) org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+get() java.util.ArrayList+remove(Object) org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+get() java.util.ArrayList+remove(Object) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() java.util.concurrent.ConcurrentHashMap+remove(Object) java.util.concurrent.ConcurrentHashMap+remove(Object) org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+get() java.util.ArrayList+remove(Object) org.h2.util.DebuggingThreadLocal+get() org.h2.util.DebuggingThreadLocal+get() java.util.ArrayList+remove(Object) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() java.util.ArrayDeque+isEmpty() java.util.ArrayDeque+isEmpty() org.h2.mvstore.db.MVTable+getLockSyncObject() org.h2.mvstore.db.MVTable+getLockSyncObject() java.lang.Object+notifyAll() java.lang.Object+notifyAll()",org.h2.engine.DbObjectBase+database org.h2.mvstore.db.MVTable+lockExclusiveSession org.h2.mvstore.db.MVTable+TraceLockEvent org.h2.mvstore.db.MVTable+NO_EXTRA_INFO org.h2.mvstore.db.MVTable+lockSharedSessions org.h2.mvstore.db.MVTable+lockExclusiveSession org.h2.engine.SysProperties+THREAD_DEADLOCK_DETECTOR org.h2.mvstore.db.MVTable+EXCLUSIVE_LOCKS org.h2.mvstore.db.MVTable+EXCLUSIVE_LOCKS org.h2.mvstore.db.MVTable+lockSharedSessions org.h2.engine.SysProperties+THREAD_DEADLOCK_DETECTOR org.h2.mvstore.db.MVTable+SHARED_LOCKS org.h2.mvstore.db.MVTable+SHARED_LOCKS org.h2.mvstore.db.MVTable+waitingSessions,1149,29,1,,"@Override
+    public void unlock(Session s) {
+        if (database != null) {
+            boolean wasLocked = lockExclusiveSession == s;
+            traceLock(s, wasLocked, TraceLockEvent.TRACE_LOCK_UNLOCK, NO_EXTRA_INFO);
+            if (wasLocked) {
+                lockSharedSessions.remove(s);
+                lockExclusiveSession = null;
+                if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
+                    if (EXCLUSIVE_LOCKS.get() != null) {
+                        EXCLUSIVE_LOCKS.get().remove(getName());
+                    }
+                }
+            } else {
+                wasLocked = lockSharedSessions.remove(s) != null;
+                if (SysProperties.THREAD_DEADLOCK_DETECTOR) {
+                    if (SHARED_LOCKS.get() != null) {
+                        SHARED_LOCKS.get().remove(getName());
+                    }
+                }
+            }
+            if (wasLocked && !waitingSessions.isEmpty()) {
+                Object lockSyncObject = getLockSyncObject();
+                synchronized (lockSyncObject) {
+                    lockSyncObject.notifyAll();
+                }
+            }
+        }
+    }",False,False,"This method serves to unlock a session in a database. It checks if the database is not null, then checks if the session is locked. If it is locked, it removes the session from the list of shared sessions and sets the exclusive session to null. If it is not locked, it removes the session from the list of shared sessions. If the session was locked and there are waiting sessions, it notifies all waiting sessions.",True,"This code is a method called ""unlock"" that is used to release a lock on a session. It checks if the database is not null, determines if the lock is exclusive or shared, removes the session from the appropriate lock list, and notifies any waiting sessions if the lock was successfully released."
+34,canTruncate(),can truncate ,Method,,,org.h2.table.Table+getCheckForeignKeyConstraints() org.h2.table.Table+getCheckForeignKeyConstraints() org.h2.engine.Database+getReferentialIntegrity() org.h2.engine.Database+getReferentialIntegrity() org.h2.table.Table+getConstraints() org.h2.table.Table+getConstraints() org.h2.constraint.Constraint+getConstraintType() org.h2.constraint.Constraint+getConstraintType() org.h2.constraint.ConstraintReferential+getRefTable() org.h2.constraint.ConstraintReferential+getRefTable(),org.h2.engine.DbObjectBase+database,694,19,1,,"@Override
+    public boolean canTruncate() {
+        if (getCheckForeignKeyConstraints() &&
+                database.getReferentialIntegrity()) {
+            ArrayList<Constraint> constraints = getConstraints();
+            if (constraints != null) {
+                for (Constraint c : constraints) {
+                    if (c.getConstraintType() != Constraint.Type.REFERENTIAL) {
+                        continue;
+                    }
+                    ConstraintReferential ref = (ConstraintReferential) c;
+                    if (ref.getRefTable() == this) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }",True,True,"This method checks if the current table can be truncated by verifying if there are any foreign key constraints that reference it. It returns true if there are no such constraints, and false otherwise.",True,"The `canTruncate()` method checks if a table can be truncated by verifying if there are any foreign key constraints and if referential integrity is enabled. It iterates through the constraints of the table and returns false if it finds a referential constraint that references the table itself, otherwise it returns true."
+35,close(Session),close session ,Method,removeChildrenAndResources(Session),,,,74,4,1,,"@Override
+    public void close(Session session) {
+        // ignore
+    }",False,False,This method serves to close a session.,True,"The given code snippet is an implementation of the `close` method, which is part of an overridden interface or superclass method. The method takes a `Session` object as a parameter and does nothing, as it contains a comment stating ""ignore."""
+36,"getRow(Session,long)",get row session key ,Method,,"org.h2.mvstore.db.MVSecondaryIndex+MVStoreCursor.get() org.h2.mvstore.db.MVSpatialIndex+MVStoreCursor.get() org.h2.mvstore.db.MVSpatialIndex+FindBoundsCursor.check(boolean,SpatialKey,SpatialKey) org.h2.mvstore.db.MVSpatialIndex+FindBoundsCursor.check(boolean,SpatialKey,SpatialKey)","org.h2.mvstore.db.MVPrimaryIndex+getRow(Session,long) org.h2.mvstore.db.MVPrimaryIndex+getRow(Session,long)",org.h2.mvstore.db.MVTable+primaryIndex,116,4,1,,"@Override
+    public Row getRow(Session session, long key) {
+        return primaryIndex.getRow(session, key);
+    }",False,False,"The function of the given method is to override the ""getRow"" method and return a row from the primary index based on the provided session and key.",True,The given code snippet is an overridden method that returns a row from a primary index based on a given session and key. It retrieves the row using the primary index's `getRow` method and returns it.
+37,"addIndex(Session,String,int,IndexColumn[],IndexType,boolean,String)",add index session index name index id cols index type create index comment ,Method,,,"org.h2.index.IndexType+isPrimaryKey() org.h2.index.IndexType+isPrimaryKey() org.h2.table.Column+isNullable() org.h2.table.Column+isNullable() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.table.Column+getName() org.h2.table.Column+getName() org.h2.table.Column+setPrimaryKey(boolean) org.h2.table.Column+setPrimaryKey(boolean) org.h2.engine.DbObjectBase+isTemporary() org.h2.engine.DbObjectBase+isTemporary() org.h2.table.TableBase+isGlobalTemporary() org.h2.table.TableBase+isGlobalTemporary() org.h2.engine.Database+lockMeta(Session) org.h2.engine.Database+lockMeta(Session) org.h2.mvstore.db.MVPrimaryIndex+getMainIndexColumn() org.h2.mvstore.db.MVPrimaryIndex+getMainIndexColumn() org.h2.table.TableBase+getMainIndexColumn(IndexType,IndexColumn[]) org.h2.table.TableBase+getMainIndexColumn(IndexType,IndexColumn[]) org.h2.engine.Database+isStarting() org.h2.engine.Database+isStarting() org.h2.mvstore.tx.TransactionStore+hasMap(String) org.h2.mvstore.tx.TransactionStore+hasMap(String) org.h2.mvstore.db.MVPrimaryIndex+getRowCountMax() org.h2.mvstore.db.MVPrimaryIndex+getRowCountMax() org.h2.mvstore.db.MVPrimaryIndex+setMainIndexColumn(int) org.h2.mvstore.db.MVPrimaryIndex+setMainIndexColumn(int) org.h2.mvstore.db.MVDelegateIndex+MVDelegateIndex(MVTable,int,String,MVPrimaryIndex,IndexType) org.h2.index.IndexType+isSpatial() org.h2.index.IndexType+isSpatial() org.h2.mvstore.db.MVSpatialIndex+MVSpatialIndex(Database,MVTable,int,String,IndexColumn[],IndexType) org.h2.engine.Session+getDatabase() org.h2.engine.Session+getDatabase() org.h2.mvstore.db.MVSecondaryIndex+MVSecondaryIndex(Database,MVTable,int,String,IndexColumn[],IndexType) org.h2.engine.Session+getDatabase() org.h2.engine.Session+getDatabase() org.h2.index.Index+needRebuild() org.h2.index.Index+needRebuild() org.h2.mvstore.db.MVTable+rebuildIndex(Session,MVIndex,String) org.h2.mvstore.db.MVTable+rebuildIndex(Session,MVIndex,String) org.h2.engine.DbObject+setTemporary(boolean) org.h2.engine.DbObject+setTemporary(boolean) org.h2.engine.DbObjectBase+isTemporary() org.h2.engine.DbObjectBase+isTemporary() org.h2.engine.DbObject+getCreateSQL() org.h2.engine.DbObject+getCreateSQL() org.h2.engine.DbObject+setComment(String) org.h2.engine.DbObject+setComment(String) org.h2.engine.Session+addLocalTempTableIndex(Index) org.h2.engine.Session+addLocalTempTableIndex(Index) org.h2.engine.Database+addSchemaObject(Session,SchemaObject) org.h2.engine.Database+addSchemaObject(Session,SchemaObject) java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.engine.DbObjectBase+setModified() org.h2.engine.DbObjectBase+setModified()",org.h2.table.IndexColumn+column org.h2.api.ErrorCode+COLUMN_MUST_NOT_BE_NULLABLE_1 org.h2.engine.DbObjectBase+database org.h2.mvstore.db.MVTable+primaryIndex org.h2.result.SearchRow+ROWID_INDEX org.h2.result.SearchRow+ROWID_INDEX org.h2.engine.DbObjectBase+database org.h2.mvstore.db.MVTable+transactionStore org.h2.result.SearchRow+ROWID_INDEX org.h2.mvstore.db.MVTable+primaryIndex org.h2.result.SearchRow+ROWID_INDEX org.h2.result.SearchRow+ROWID_INDEX org.h2.mvstore.db.MVTable+primaryIndex org.h2.mvstore.db.MVTable+primaryIndex org.h2.engine.DbObjectBase+database org.h2.mvstore.db.MVTable+indexes,2428,59,1,,"@Override
+    public Index addIndex(Session session, String indexName, int indexId,
+            IndexColumn[] cols, IndexType indexType, boolean create,
+            String indexComment) {
+        if (indexType.isPrimaryKey()) {
+            for (IndexColumn c : cols) {
+                Column column = c.column;
+                if (column.isNullable()) {
+                    throw DbException.get(
+                            ErrorCode.COLUMN_MUST_NOT_BE_NULLABLE_1,
+                            column.getName());
+                }
+                column.setPrimaryKey(true);
+            }
+        }
+        boolean isSessionTemporary = isTemporary() && !isGlobalTemporary();
+        if (!isSessionTemporary) {
+            database.lockMeta(session);
+        }
+        MVIndex index;
+        int mainIndexColumn = primaryIndex.getMainIndexColumn() != SearchRow.ROWID_INDEX
+                ? SearchRow.ROWID_INDEX : getMainIndexColumn(indexType, cols);
+        if (database.isStarting()) {
+            // if index does exists as a separate map it can't be a delegate
+            if (transactionStore.hasMap(""index."" + indexId)) {
+                // we can not reuse primary index
+                mainIndexColumn = SearchRow.ROWID_INDEX;
+            }
+        } else if (primaryIndex.getRowCountMax() != 0) {
+            mainIndexColumn = SearchRow.ROWID_INDEX;
+        }
+
+        if (mainIndexColumn != SearchRow.ROWID_INDEX) {
+            primaryIndex.setMainIndexColumn(mainIndexColumn);
+            index = new MVDelegateIndex(this, indexId, indexName, primaryIndex,
+                    indexType);
+        } else if (indexType.isSpatial()) {
+            index = new MVSpatialIndex(session.getDatabase(), this, indexId,
+                    indexName, cols, indexType);
+        } else {
+            index = new MVSecondaryIndex(session.getDatabase(), this, indexId,
+                    indexName, cols, indexType);
+        }
+        if (index.needRebuild()) {
+            rebuildIndex(session, index, indexName);
+        }
+        index.setTemporary(isTemporary());
+        if (index.getCreateSQL() != null) {
+            index.setComment(indexComment);
+            if (isSessionTemporary) {
+                session.addLocalTempTableIndex(index);
+            } else {
+                database.addSchemaObject(session, index);
+            }
+        }
+        indexes.add(index);
+        setModified();
+        return index;
+    }",False,False,"This method adds an index to a database table. It checks if the index is a primary key and sets the primary key flag on the corresponding columns. It then creates the appropriate type of index (delegate, spatial, or secondary) and adds it to the table's list of indexes. Finally, it updates the table's modified flag and returns the created index.",True,"This code is a method that adds an index to a database table. It checks if the index is a primary key and throws an exception if any of the columns are nullable. It then creates the appropriate type of index (delegate, spatial, or secondary) and adds it to the table's list of indexes."
+38,"rebuildIndex(Session,MVIndex,String)",rebuild index session index index name ,Method,"addIndex(Session,String,int,IndexColumn[],IndexType,boolean,String)",,"org.h2.engine.Database+getStore() org.h2.engine.Session+getDatabase() org.h2.engine.Session+getDatabase() org.h2.engine.Database+getStore() org.h2.mvstore.db.MVTable+rebuildIndexBuffered(Session,Index) org.h2.mvstore.db.MVTable+rebuildIndexBuffered(Session,Index) org.h2.mvstore.db.MVTable+rebuildIndexBlockMerge(Session,MVIndex) org.h2.mvstore.db.MVTable+rebuildIndexBlockMerge(Session,MVIndex) org.h2.schema.Schema+freeUniqueName(String) org.h2.schema.SchemaObjectBase+getSchema() org.h2.schema.SchemaObjectBase+getSchema() org.h2.schema.Schema+freeUniqueName(String) org.h2.index.Index+remove(Session) org.h2.index.Index+remove(Session) org.h2.message.Trace+error(Throwable,String) org.h2.message.Trace+error(Throwable,String)",org.h2.engine.DbObjectBase+trace,891,23,2,,"private void rebuildIndex(Session session, MVIndex index, String indexName) {
+        try {
+            if (session.getDatabase().getStore() == null ||
+                    index instanceof MVSpatialIndex) {
+                // in-memory
+                rebuildIndexBuffered(session, index);
+            } else {
+                rebuildIndexBlockMerge(session, index);
+            }
+        } catch (DbException e) {
+            getSchema().freeUniqueName(indexName);
+            try {
+                index.remove(session);
+            } catch (DbException e2) {
+                // this could happen, for example on failure in the storage
+                // but if that is not the case it means
+                // there is something wrong with the database
+                trace.error(e2, ""could not remove index"");
+                throw e2;
+            }
+            throw e;
+        }
+    }",False,False,"The function of this method is to rebuild an index in a database. It checks if the database is in-memory or not, and then calls different methods to rebuild the index accordingly. If an exception occurs during the process, it handles the exception and removes the index.",True,"The `rebuildIndex` method is responsible for rebuilding an index in a database. It first checks if the database is in-memory or not, and then calls different methods accordingly. If an exception occurs during the rebuilding process, it handles the exception by freeing the unique name of the index and removing it from the session."
+39,"rebuildIndexBlockMerge(Session,MVIndex)",rebuild index block merge session index ,Method,"rebuildIndex(Session,MVIndex,String)",,"org.h2.mvstore.db.MVTable+rebuildIndexBuffered(Session,Index) org.h2.mvstore.db.MVTable+rebuildIndexBuffered(Session,Index) org.h2.mvstore.db.MVTable+getScanIndex(Session) org.h2.mvstore.db.MVTable+getScanIndex(Session) org.h2.index.Index+getRowCount(Session) org.h2.index.Index+getRowCount(Session) org.h2.index.Index+find(Session,SearchRow,SearchRow) org.h2.index.Index+find(Session,SearchRow,SearchRow) org.h2.engine.Database+getStore() org.h2.engine.Session+getDatabase() org.h2.engine.Session+getDatabase() org.h2.engine.Database+getStore() org.h2.engine.Database+getMaxMemoryRows() org.h2.engine.Database+getMaxMemoryRows() org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObject+getName() org.h2.engine.DbObject+getName() org.h2.util.MathUtils+convertLongToInt(long) org.h2.util.MathUtils+convertLongToInt(long) org.h2.util.Utils+newSmallArrayList() org.h2.util.Utils+newSmallArrayList() org.h2.index.Cursor+next() org.h2.index.Cursor+next() org.h2.index.Cursor+get() org.h2.index.Cursor+get() java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.engine.Database+setProgress(int,String,int,int) org.h2.engine.Database+setProgress(int,String,int,int) org.h2.util.MathUtils+convertLongToInt(long) org.h2.util.MathUtils+convertLongToInt(long) java.util.ArrayList+size() java.util.ArrayList+size() org.h2.mvstore.db.MVTable+sortRows(ArrayList<? extends SearchRow>,Index) org.h2.mvstore.db.MVTable+sortRows(ArrayList<? extends SearchRow>,Index) org.h2.mvstore.db.MVTableEngine.Store+nextTemporaryMapName() org.h2.mvstore.db.MVTableEngine.Store+nextTemporaryMapName() org.h2.mvstore.db.MVIndex+addRowsToBuffer(List<Row>,String) org.h2.mvstore.db.MVIndex+addRowsToBuffer(List<Row>,String) java.util.ArrayList+add(E) java.util.ArrayList+add(E) java.util.ArrayList+clear() java.util.ArrayList+clear() org.h2.mvstore.db.MVTable+sortRows(ArrayList<? extends SearchRow>,Index) org.h2.mvstore.db.MVTable+sortRows(ArrayList<? extends SearchRow>,Index) java.util.ArrayList+isEmpty() java.util.ArrayList+isEmpty() org.h2.mvstore.db.MVTableEngine.Store+nextTemporaryMapName() org.h2.mvstore.db.MVTableEngine.Store+nextTemporaryMapName() org.h2.mvstore.db.MVIndex+addRowsToBuffer(List<Row>,String) org.h2.mvstore.db.MVIndex+addRowsToBuffer(List<Row>,String) java.util.ArrayList+add(E) java.util.ArrayList+add(E) java.util.ArrayList+clear() java.util.ArrayList+clear() org.h2.mvstore.db.MVIndex+addBufferedRows(List<String>) org.h2.mvstore.db.MVIndex+addBufferedRows(List<String>) org.h2.mvstore.db.MVTable+addRowsToIndex(Session,ArrayList<Row>,Index) org.h2.mvstore.db.MVTable+addRowsToIndex(Session,ArrayList<Row>,Index) org.h2.message.DbException+throwInternalError(String) org.h2.message.DbException+throwInternalError(String) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName()",org.h2.engine.DbObjectBase+database org.h2.engine.DbObjectBase+database org.h2.api.DatabaseEventListener+STATE_CREATE_INDEX,2418,53,2,,"private void rebuildIndexBlockMerge(Session session, MVIndex index) {
+        if (index instanceof MVSpatialIndex) {
+            // the spatial index doesn't support multi-way merge sort
+            rebuildIndexBuffered(session, index);
+        }
+        // Read entries in memory, sort them, write to a new map (in sorted
+        // order); repeat (using a new map for every block of 1 MB) until all
+        // record are read. Merge all maps to the target (using merge sort;
+        // duplicates are detected in the target). For randomly ordered data,
+        // this should use relatively few write operations.
+        // A possible optimization is: change the buffer size from ""row count""
+        // to ""amount of memory"", and buffer index keys instead of rows.
+        Index scan = getScanIndex(session);
+        long remaining = scan.getRowCount(session);
+        long total = remaining;
+        Cursor cursor = scan.find(session, null, null);
+        long i = 0;
+        Store store = session.getDatabase().getStore();
+
+        int bufferSize = database.getMaxMemoryRows() / 2;
+        ArrayList<Row> buffer = new ArrayList<>(bufferSize);
+        String n = getName() + "":"" + index.getName();
+        int t = MathUtils.convertLongToInt(total);
+        ArrayList<String> bufferNames = Utils.newSmallArrayList();
+        while (cursor.next()) {
+            Row row = cursor.get();
+            buffer.add(row);
+            database.setProgress(DatabaseEventListener.STATE_CREATE_INDEX, n,
+                    MathUtils.convertLongToInt(i++), t);
+            if (buffer.size() >= bufferSize) {
+                sortRows(buffer, index);
+                String mapName = store.nextTemporaryMapName();
+                index.addRowsToBuffer(buffer, mapName);
+                bufferNames.add(mapName);
+                buffer.clear();
+            }
+            remaining--;
+        }
+        sortRows(buffer, index);
+        if (!bufferNames.isEmpty()) {
+            String mapName = store.nextTemporaryMapName();
+            index.addRowsToBuffer(buffer, mapName);
+            bufferNames.add(mapName);
+            buffer.clear();
+            index.addBufferedRows(bufferNames);
+        } else {
+            addRowsToIndex(session, buffer, index);
+        }
+        if (remaining != 0) {
+            DbException.throwInternalError(""rowcount remaining="" + remaining +
+                    "" "" + getName());
+        }
+    }",False,False,"The function of this method is to rebuild the index block by merging sorted entries. It first checks if the index is a spatial index, and if so, it uses a different method to rebuild the index. Otherwise, it reads entries in memory, sorts them, and writes them to a new map in sorted order. This process is repeated until all records are read. Finally, it merges all the maps to the target using merge sort, and detects duplicates in the target.",True,"The `rebuildIndexBlockMerge` method is used to rebuild an index by reading entries in memory, sorting them, and writing them to a new map in sorted order. This process is repeated until all records are read, and then the maps are merged using merge sort to the target index. The method also includes optimizations such as buffering index keys instead of rows and using a buffer size based on the amount of memory available."
+40,"rebuildIndexBuffered(Session,Index)",rebuild index buffered session index ,Method,"rebuildIndex(Session,MVIndex,String) rebuildIndexBlockMerge(Session,MVIndex)",,"org.h2.mvstore.db.MVTable+getScanIndex(Session) org.h2.mvstore.db.MVTable+getScanIndex(Session) org.h2.index.Index+getRowCount(Session) org.h2.index.Index+getRowCount(Session) org.h2.index.Index+find(Session,SearchRow,SearchRow) org.h2.index.Index+find(Session,SearchRow,SearchRow) java.lang.Math+min(long,long) java.lang.Math+min(long,long) org.h2.engine.Database+getMaxMemoryRows() org.h2.engine.Database+getMaxMemoryRows() org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObject+getName() org.h2.engine.DbObject+getName() org.h2.util.MathUtils+convertLongToInt(long) org.h2.util.MathUtils+convertLongToInt(long) org.h2.index.Cursor+next() org.h2.index.Cursor+next() org.h2.index.Cursor+get() org.h2.index.Cursor+get() java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.engine.Database+setProgress(int,String,int,int) org.h2.engine.Database+setProgress(int,String,int,int) org.h2.util.MathUtils+convertLongToInt(long) org.h2.util.MathUtils+convertLongToInt(long) java.util.ArrayList+size() java.util.ArrayList+size() org.h2.mvstore.db.MVTable+addRowsToIndex(Session,ArrayList<Row>,Index) org.h2.mvstore.db.MVTable+addRowsToIndex(Session,ArrayList<Row>,Index) org.h2.mvstore.db.MVTable+addRowsToIndex(Session,ArrayList<Row>,Index) org.h2.mvstore.db.MVTable+addRowsToIndex(Session,ArrayList<Row>,Index) org.h2.message.DbException+throwInternalError(String) org.h2.message.DbException+throwInternalError(String) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName()",org.h2.engine.DbObjectBase+database org.h2.engine.DbObjectBase+database org.h2.api.DatabaseEventListener+STATE_CREATE_INDEX,1107,26,2,,"private void rebuildIndexBuffered(Session session, Index index) {
+        Index scan = getScanIndex(session);
+        long remaining = scan.getRowCount(session);
+        long total = remaining;
+        Cursor cursor = scan.find(session, null, null);
+        long i = 0;
+        int bufferSize = (int) Math.min(total, database.getMaxMemoryRows());
+        ArrayList<Row> buffer = new ArrayList<>(bufferSize);
+        String n = getName() + "":"" + index.getName();
+        int t = MathUtils.convertLongToInt(total);
+        while (cursor.next()) {
+            Row row = cursor.get();
+            buffer.add(row);
+            database.setProgress(DatabaseEventListener.STATE_CREATE_INDEX, n,
+                    MathUtils.convertLongToInt(i++), t);
+            if (buffer.size() >= bufferSize) {
+                addRowsToIndex(session, buffer, index);
+            }
+            remaining--;
+        }
+        addRowsToIndex(session, buffer, index);
+        if (remaining != 0) {
+            DbException.throwInternalError(""rowcount remaining="" + remaining +
+                    "" "" + getName());
+        }
+    }",False,False,This method rebuilds an index by scanning through a table and adding rows to the index in batches. It keeps track of the progress and throws an error if the number of remaining rows is not zero.,True,"This code is a private method that rebuilds an index in a buffered manner. It iterates over a cursor to retrieve rows, adds them to a buffer, and then adds the buffer to the index when it reaches a certain size. The method also updates the progress of the index creation."
+41,"addRowsToIndex(Session,ArrayList<Row>,Index)",add rows to index session list index ,Method,"rebuildIndexBlockMerge(Session,MVIndex) rebuildIndexBuffered(Session,Index) rebuildIndexBuffered(Session,Index)",,"org.h2.mvstore.db.MVTable+sortRows(ArrayList<? extends SearchRow>,Index) org.h2.mvstore.db.MVTable+sortRows(ArrayList<? extends SearchRow>,Index) org.h2.index.Index+add(Session,Row) org.h2.index.Index+add(Session,Row) java.util.ArrayList+clear() java.util.ArrayList+clear()",,236,8,10,,"private static void addRowsToIndex(Session session, ArrayList<Row> list,
+            Index index) {
+        sortRows(list, index);
+        for (Row row : list) {
+            index.add(session, row);
+        }
+        list.clear();
+    }",True,True,"This method adds rows from an ArrayList to an Index object. It first sorts the rows based on the given index, then iterates through the sorted list and adds each row to the index. Finally, it clears the original list.",False,"The code defines a private static method called ""addRowsToIndex"" that takes a Session object, an ArrayList of Row objects, and an Index object as parameters. It sorts the rows in the list based on the index, then iterates through the list and adds each row to the index using the session. Finally, it clears the list."
+42,"sortRows(ArrayList<? extends SearchRow>,Index)",sort rows list index ,Method,"rebuildIndexBlockMerge(Session,MVIndex) rebuildIndexBlockMerge(Session,MVIndex) addRowsToIndex(Session,ArrayList<Row>,Index)",,"java.util.Collections+sort(List,Comparator) java.util.Collections+sort(List,Comparator) +() +compare(SearchRow,SearchRow)",,312,8,10,,"private static void sortRows(ArrayList<? extends SearchRow> list, final Index index) {
+        Collections.sort(list, new Comparator<SearchRow>() {
+            @Override
+            public int compare(SearchRow r1, SearchRow r2) {
+                return index.compareRows(r1, r2);
+            }
+        });
+    }",False,True,The function of this method is to sort the rows in an ArrayList based on a given index. It uses the Collections.sort() method and a custom Comparator to compare and sort the rows.,False,The code defines a method called `sortRows` that takes an `ArrayList` of objects that extend the `SearchRow` class and an `Index` object as parameters. It sorts the list using the `compareRows` method of the `Index` object as the comparison criteria.
+43,"removeRow(Session,Row)",remove row session row ,Method,,,"org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase() org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase() org.h2.engine.Session+getTransaction() org.h2.engine.Session+getTransaction() org.h2.mvstore.tx.Transaction+setSavepoint() org.h2.mvstore.tx.Transaction+setSavepoint() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.index.Index+remove(Session,Row) org.h2.index.Index+remove(Session,Row) org.h2.mvstore.tx.Transaction+rollbackToSavepoint(long) org.h2.mvstore.tx.Transaction+rollbackToSavepoint(long) java.lang.Throwable+addSuppressed(Throwable) java.lang.Throwable+addSuppressed(Throwable) org.h2.message.DbException+convert(Throwable) org.h2.message.DbException+convert(Throwable) org.h2.mvstore.db.MVTable+analyzeIfRequired(Session) org.h2.mvstore.db.MVTable+analyzeIfRequired(Session)",org.h2.mvstore.db.MVTable+indexes org.h2.mvstore.db.MVTable+indexes,670,20,1,,"@Override
+    public void removeRow(Session session, Row row) {
+        syncLastModificationIdWithDatabase();
+        Transaction t = session.getTransaction();
+        long savepoint = t.setSavepoint();
+        try {
+            for (int i = indexes.size() - 1; i >= 0; i--) {
+                Index index = indexes.get(i);
+                index.remove(session, row);
+            }
+        } catch (Throwable e) {
+            try {
+                t.rollbackToSavepoint(savepoint);
+            } catch (Throwable nested) {
+                e.addSuppressed(nested);
+            }
+            throw DbException.convert(e);
+        }
+        analyzeIfRequired(session);
+    }",False,False,"The function of this method is to remove a row from a database table. It first synchronizes the last modification ID with the database, then starts a transaction and sets a savepoint. It then iterates through the indexes in reverse order and removes the row from each index. If an exception occurs, it rolls back to the savepoint and throws a converted database exception. Finally, it analyzes the session if required.",True,"This code represents a method that removes a row from a database table. It first synchronizes the last modification ID with the database, then creates a savepoint in the current transaction. It then iterates through the indexes of the table and removes the row from each index. If an exception occurs during the removal process, it rolls back to the savepoint and throws a converted database exception. Finally, it analyzes the table if required."
+44,truncate(Session),truncate session ,Method,removeChildrenAndResources(Session),,org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase() org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.index.Index+truncate(Session) org.h2.index.Index+truncate(Session) java.util.concurrent.atomic.AtomicInteger+set(int) java.util.concurrent.atomic.AtomicInteger+set(int),org.h2.mvstore.db.MVTable+indexes org.h2.mvstore.db.MVTable+indexes org.h2.mvstore.db.MVTable+changesUntilAnalyze org.h2.mvstore.db.MVTable+changesUntilAnalyze org.h2.mvstore.db.MVTable+nextAnalyze,353,11,1,,"@Override
+    public void truncate(Session session) {
+        syncLastModificationIdWithDatabase();
+        for (int i = indexes.size() - 1; i >= 0; i--) {
+            Index index = indexes.get(i);
+            index.truncate(session);
+        }
+        if (changesUntilAnalyze != null) {
+            changesUntilAnalyze.set(nextAnalyze);
+        }
+    }",False,False,The function of this method is to truncate (delete all data) from a session and its associated indexes. It also updates the last modification ID and sets the changes until analyze to the next analyze value if it exists.,True,"The given code is a method named ""truncate"" that is overridden from a superclass. It performs the truncation operation on a database table by synchronizing the last modification ID, truncating each index associated with the table, and updating the changes until the next analysis."
+45,"addRow(Session,Row)",add row session row ,Method,,,"org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase() org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase() org.h2.engine.Session+getTransaction() org.h2.engine.Session+getTransaction() org.h2.mvstore.tx.Transaction+setSavepoint() org.h2.mvstore.tx.Transaction+setSavepoint() org.h2.index.Index+add(Session,Row) org.h2.index.Index+add(Session,Row) org.h2.mvstore.tx.Transaction+rollbackToSavepoint(long) org.h2.mvstore.tx.Transaction+rollbackToSavepoint(long) java.lang.Throwable+addSuppressed(Throwable) java.lang.Throwable+addSuppressed(Throwable) org.h2.message.DbException+convert(Throwable) org.h2.message.DbException+convert(Throwable) org.h2.mvstore.db.MVTable+analyzeIfRequired(Session) org.h2.mvstore.db.MVTable+analyzeIfRequired(Session)",org.h2.mvstore.db.MVTable+indexes,600,19,1,,"@Override
+    public void addRow(Session session, Row row) {
+        syncLastModificationIdWithDatabase();
+        Transaction t = session.getTransaction();
+        long savepoint = t.setSavepoint();
+        try {
+            for (Index index : indexes) {
+                index.add(session, row);
+            }
+        } catch (Throwable e) {
+            try {
+                t.rollbackToSavepoint(savepoint);
+            } catch (Throwable nested) {
+                e.addSuppressed(nested);
+            }
+            throw DbException.convert(e);
+        }
+        analyzeIfRequired(session);
+    }",False,False,"The function of this method is to add a row to a database table. It first synchronizes the last modification ID with the database, then starts a transaction and sets a savepoint. It then iterates through a list of indexes and adds the row to each index. If an exception occurs, it rolls back to the savepoint and throws a converted database exception. Finally, it analyzes the session if required.",True,"This code represents a method that adds a row to a database table. It first synchronizes the last modification ID with the database, then creates a savepoint in the current transaction. It then iterates over a collection of indexes and adds the row to each index. If an exception occurs during this process, it rolls back to the savepoint and throws a converted database exception. Finally, it analyzes the session if required."
+46,"updateRow(Session,Row,Row)",update row session old row new row ,Method,,,"org.h2.result.SearchRow+setKey(long) org.h2.result.SearchRow+setKey(long) org.h2.result.SearchRow+getKey() org.h2.result.SearchRow+getKey() org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase() org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase() org.h2.engine.Session+getTransaction() org.h2.engine.Session+getTransaction() org.h2.mvstore.tx.Transaction+setSavepoint() org.h2.mvstore.tx.Transaction+setSavepoint() org.h2.index.Index+update(Session,Row,Row) org.h2.index.Index+update(Session,Row,Row) org.h2.mvstore.tx.Transaction+rollbackToSavepoint(long) org.h2.mvstore.tx.Transaction+rollbackToSavepoint(long) java.lang.Throwable+addSuppressed(Throwable) java.lang.Throwable+addSuppressed(Throwable) org.h2.message.DbException+convert(Throwable) org.h2.message.DbException+convert(Throwable) org.h2.mvstore.db.MVTable+analyzeIfRequired(Session) org.h2.mvstore.db.MVTable+analyzeIfRequired(Session)",org.h2.mvstore.db.MVTable+indexes,672,20,1,,"@Override
+    public void updateRow(Session session, Row oldRow, Row newRow) {
+        newRow.setKey(oldRow.getKey());
+        syncLastModificationIdWithDatabase();
+        Transaction t = session.getTransaction();
+        long savepoint = t.setSavepoint();
+        try {
+            for (Index index : indexes) {
+                index.update(session, oldRow, newRow);
+            }
+        } catch (Throwable e) {
+            try {
+                t.rollbackToSavepoint(savepoint);
+            } catch (Throwable nested) {
+                e.addSuppressed(nested);
+            }
+            throw DbException.convert(e);
+        }
+        analyzeIfRequired(session);
+    }",False,False,"The function of this method is to update a row in a database table. It sets the key of the new row to the key of the old row, updates indexes associated with the row, and analyzes the table if required.",True,"This code represents a method that updates a row in a database table. It first sets the key of the new row to match the old row, then updates the indexes associated with the table. If an error occurs during the update process, it rolls back the transaction to a savepoint and throws a converted database exception. Finally, it analyzes the session if required."
+47,"lockRow(Session,Row)",lock row session row ,Method,,,"org.h2.mvstore.db.MVPrimaryIndex+lockRow(Session,Row) org.h2.mvstore.db.MVPrimaryIndex+lockRow(Session,Row)",org.h2.mvstore.db.MVTable+primaryIndex,117,4,1,,"@Override
+    public Row lockRow(Session session, Row row) {
+        return primaryIndex.lockRow(session, row);
+    }",False,False,The function of the method is to override the lockRow method and return the locked row by calling the lockRow method of the primaryIndex object.,True,The given code snippet is an overridden method that locks a specific row in a database table. It takes a session and a row as input parameters and returns the locked row by calling the `lockRow` method of the primary index.
+48,analyzeIfRequired(Session),analyze if required session ,Method,"removeRow(Session,Row) addRow(Session,Row) updateRow(Session,Row,Row)",,java.util.concurrent.atomic.AtomicInteger+decrementAndGet() java.util.concurrent.atomic.AtomicInteger+decrementAndGet() java.util.concurrent.atomic.AtomicInteger+set(int) java.util.concurrent.atomic.AtomicInteger+set(int) org.h2.engine.Session+markTableForAnalyze(Table) org.h2.engine.Session+markTableForAnalyze(Table),org.h2.mvstore.db.MVTable+changesUntilAnalyze org.h2.mvstore.db.MVTable+changesUntilAnalyze org.h2.mvstore.db.MVTable+nextAnalyze java.lang.Integer+MAX_VALUE org.h2.mvstore.db.MVTable+nextAnalyze org.h2.mvstore.db.MVTable+changesUntilAnalyze org.h2.mvstore.db.MVTable+nextAnalyze,405,11,2,,"private void analyzeIfRequired(Session session) {
+        if (changesUntilAnalyze != null) {
+            if (changesUntilAnalyze.decrementAndGet() == 0) {
+                if (nextAnalyze <= Integer.MAX_VALUE / 2) {
+                    nextAnalyze *= 2;
+                }
+                changesUntilAnalyze.set(nextAnalyze);
+                session.markTableForAnalyze(this);
+            }
+        }
+    }",False,False,"This method analyzes if a session requires analysis. It checks if there are any changes until analysis, decrements the count, and if it reaches zero, it marks the table for analysis in the session.",True,"This code is a private method that checks if a certain number of changes have occurred. If the number of changes reaches zero, it doubles the value of `nextAnalyze` and sets `changesUntilAnalyze` to the new value. Finally, it calls a method on the `session` object to mark the table for analysis."
+49,checkSupportAlter(),check support alter ,Method,,,,,67,4,1,,"@Override
+    public void checkSupportAlter() {
+        // ok
+    }",True,True,"This method serves as an override for the checkSupportAlter() method. It does not have any specific functionality and only contains a comment stating ""ok"".",False,"The code snippet shows an overridden method named ""checkSupportAlter()"" which does not have any implementation. It is likely a placeholder method that is intended to be overridden in a subclass to perform specific actions related to checking support for altering something."
+50,getTableType(),get table type ,Method,,,,,85,4,1,,"@Override
+    public TableType getTableType() {
+        return TableType.TABLE;
+    }",False,True,"This method returns the TableType of the object, which is always TABLE.",False,"The code snippet defines a method named `getTableType()` that returns a value of type `TableType`. The method is annotated with `@Override`, indicating that it overrides a method from a superclass or interface. The method implementation simply returns `TableType.TABLE`."
+51,getScanIndex(Session),get scan index session ,Method,"rebuildIndexBlockMerge(Session,MVIndex) rebuildIndexBuffered(Session,Index)",,,org.h2.mvstore.db.MVTable+primaryIndex,93,4,1,,"@Override
+    public Index getScanIndex(Session session) {
+        return primaryIndex;
+    }",False,False,"The method ""getScanIndex"" returns the primary index for a given session.",False,"The code is implementing an overridden method called ""getScanIndex"" that returns an object of type ""Index"". The method returns the value of a variable called ""primaryIndex"" which is likely the index used for scanning in a database session."
+52,getUniqueIndex(),get unique index ,Method,,,,org.h2.mvstore.db.MVTable+primaryIndex,80,4,1,,"@Override
+    public Index getUniqueIndex() {
+        return primaryIndex;
+    }",False,False,This method serves to return the primary index as an instance of the Index class.,False,"The code snippet is a method named ""getUniqueIndex"" that returns an object of type ""Index"". It overrides a superclass method and specifically returns the ""primaryIndex"" object."
+53,getIndexes(),get indexes ,Method,,,,org.h2.mvstore.db.MVTable+indexes,82,4,1,,"@Override
+    public ArrayList<Index> getIndexes() {
+        return indexes;
+    }",False,False,This method serves to return the ArrayList of Index objects.,False,"The code snippet is a method named ""getIndexes"" that returns an ArrayList of objects of type ""Index"". It overrides a superclass method and simply returns the ""indexes"" ArrayList."
+54,getMaxDataModificationId(),get max data modification id ,Method,,,java.util.concurrent.atomic.AtomicLong+get() java.util.concurrent.atomic.AtomicLong+get(),org.h2.mvstore.db.MVTable+lastModificationId,101,4,1,,"@Override
+    public long getMaxDataModificationId() {
+        return lastModificationId.get();
+    }",False,False,This method returns the maximum data modification ID by retrieving the value of the lastModificationId variable.,False,"The code defines a method named `getMaxDataModificationId()` that returns the value of a variable `lastModificationId`, which is of type `long`. This method is annotated with `@Override`, indicating that it overrides a method from a superclass or interface."
+55,getContainsLargeObject(),get contains large object ,Method,,"org.h2.engine.Session+onRollback(MVMap<Object,VersionedValue>,Object,VersionedValue,VersionedValue) org.h2.mvstore.db.MVPrimaryIndex+add(Session,Row) org.h2.mvstore.db.MVPrimaryIndex+remove(Session,Row) org.h2.mvstore.db.MVPrimaryIndex+truncate(Session)",,org.h2.mvstore.db.MVTable+containsLargeObject,83,3,1,,"public boolean getContainsLargeObject() {
+        return containsLargeObject;
+    }",True,True,This method returns a boolean value indicating whether or not the object contains a large object.,False,"The code contains a method named ""getContainsLargeObject"" which returns a boolean value indicating whether a large object is present or not. It is a simple getter method that retrieves the value of the ""containsLargeObject"" variable."
+56,isDeterministic(),is deterministic ,Method,,,,,75,4,1,,"@Override
+    public boolean isDeterministic() {
+        return true;
+    }",True,True,"The function of the method isDeterministic() is to return a boolean value of true, indicating that the object or system it belongs to is deterministic.",False,"The code snippet defines a method named ""isDeterministic"" that returns a boolean value. The method is marked with the ""@Override"" annotation, indicating that it overrides a method from a superclass or interface. The method always returns true, indicating that the behavior it represents is deterministic."
+57,canGetRowCount(),can get row count ,Method,,,,,74,4,1,,"@Override
+    public boolean canGetRowCount() {
+        return true;
+    }",True,True,"The function of the method is to determine whether it is possible to retrieve the number of rows in a data structure or database. It returns a boolean value of true if it is possible, and false otherwise.",False,"The code snippet is implementing the method `canGetRowCount()` which returns a boolean value indicating whether the row count can be obtained. The method always returns `true`, implying that the row count can be determined."
+58,canDrop(),can drop ,Method,,,,,67,4,1,,"@Override
+    public boolean canDrop() {
+        return true;
+    }",True,True,"The function of the method is to determine whether an object can be dropped. It returns a boolean value of true if the object can be dropped, and false otherwise.",False,"The code snippet defines a method named ""canDrop()"" that returns a boolean value. The method is overridden from a superclass or interface and always returns true, indicating that an object can be dropped."
+59,removeChildrenAndResources(Session),remove children and resources session ,Method,,,"org.h2.mvstore.db.MVTable+truncate(Session) org.h2.mvstore.db.MVTable+truncate(Session) org.h2.store.LobStorageInterface+removeAllForTable(int) org.h2.engine.Database+getLobStorage() org.h2.engine.Database+getLobStorage() org.h2.store.LobStorageInterface+removeAllForTable(int) org.h2.engine.DbObjectBase+getId() org.h2.engine.DbObjectBase+getId() org.h2.engine.Database+lockMeta(Session) org.h2.engine.Database+lockMeta(Session) org.h2.mvstore.db.MVTableEngine.Store+removeTable(MVTable) org.h2.engine.Database+getStore() org.h2.engine.Database+getStore() org.h2.mvstore.db.MVTableEngine.Store+removeTable(MVTable) org.h2.table.Table+removeChildrenAndResources(Session) java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.index.Index+remove(Session) org.h2.index.Index+remove(Session) org.h2.engine.DbObject+getName() org.h2.engine.DbObject+getName() org.h2.engine.Database+removeSchemaObject(Session,SchemaObject) org.h2.engine.Database+removeSchemaObject(Session,SchemaObject) java.util.ArrayList+remove(Object) java.util.ArrayList+remove(Object) org.h2.mvstore.db.MVPrimaryIndex+remove(Session) org.h2.mvstore.db.MVPrimaryIndex+remove(Session) java.util.ArrayList+clear() java.util.ArrayList+clear() org.h2.engine.Database+getAllSchemaObjects(int) org.h2.engine.Database+getAllSchemaObjects(int) org.h2.index.Index+getTable() org.h2.index.Index+getTable() org.h2.message.DbException+throwInternalError(String) org.h2.message.DbException+throwInternalError(String) org.h2.engine.DbObject+getName() org.h2.engine.DbObject+getName() org.h2.mvstore.db.MVTable+close(Session) org.h2.mvstore.db.MVTable+close(Session) org.h2.engine.DbObjectBase+invalidate() org.h2.engine.DbObjectBase+invalidate()",org.h2.mvstore.db.MVTable+containsLargeObject org.h2.engine.DbObjectBase+database org.h2.engine.DbObjectBase+database org.h2.engine.DbObjectBase+database org.h2.mvstore.db.MVTable+indexes org.h2.mvstore.db.MVTable+indexes org.h2.engine.DbObjectBase+database org.h2.mvstore.db.MVTable+indexes org.h2.mvstore.db.MVTable+primaryIndex org.h2.mvstore.db.MVTable+indexes org.h2.engine.SysProperties+CHECK org.h2.engine.DbObjectBase+database org.h2.engine.DbObject+INDEX,1309,35,1,,"@Override
+    public void removeChildrenAndResources(Session session) {
+        if (containsLargeObject) {
+            // unfortunately, the data is gone on rollback
+            truncate(session);
+            database.getLobStorage().removeAllForTable(getId());
+            database.lockMeta(session);
+        }
+        database.getStore().removeTable(this);
+        super.removeChildrenAndResources(session);
+        // remove scan index (at position 0 on the list) last
+        while (indexes.size() > 1) {
+            Index index = indexes.get(1);
+            index.remove(session);
+            if (index.getName() != null) {
+                database.removeSchemaObject(session, index);
+            }
+            // needed for session temporary indexes
+            indexes.remove(index);
+        }
+        primaryIndex.remove(session);
+        indexes.clear();
+        if (SysProperties.CHECK) {
+            for (SchemaObject obj : database
+                    .getAllSchemaObjects(DbObject.INDEX)) {
+                Index index = (Index) obj;
+                if (index.getTable() == this) {
+                    DbException.throwInternalError(""index not dropped: "" +
+                            index.getName());
+                }
+            }
+        }
+        close(session);
+        invalidate();
+    }",False,False,"This method removes the children and resources associated with a table. If the table contains a large object, it truncates the data, removes the large object resources, and locks the metadata. It then removes the table from the database store and removes any indexes associated with the table. Finally, it closes the session and invalidates the table.",True,"This code is a method that removes children and resources associated with a table in a database. It first checks if the table contains a large object, and if so, truncates the data and removes all associated resources. It then removes the table itself, along with any indexes and the primary index, and finally closes the session and invalidates the table."
+60,getRowCount(Session),get row count session ,Method,,,org.h2.mvstore.db.MVPrimaryIndex+getRowCount(Session) org.h2.mvstore.db.MVPrimaryIndex+getRowCount(Session),org.h2.mvstore.db.MVTable+primaryIndex,112,4,1,,"@Override
+    public long getRowCount(Session session) {
+        return primaryIndex.getRowCount(session);
+    }",False,False,This method overrides the getRowCount method and returns the row count of the primary index in the given session.,True,The code snippet defines an overridden method named `getRowCount` that takes a `Session` object as a parameter and returns the row count of a primary index. It delegates the task to the `getRowCount` method of the `primaryIndex` object and returns the result.
+61,getRowCountApproximation(),get row count approximation ,Method,,,org.h2.mvstore.db.MVPrimaryIndex+getRowCountApproximation() org.h2.mvstore.db.MVPrimaryIndex+getRowCountApproximation(),org.h2.mvstore.db.MVTable+primaryIndex,116,4,1,,"@Override
+    public long getRowCountApproximation() {
+        return primaryIndex.getRowCountApproximation();
+    }",False,False,This method overrides the getRowCountApproximation() method and returns the approximate row count from the primary index.,True,The code snippet defines an overridden method called `getRowCountApproximation()` which returns an approximate count of the number of rows in a data structure. The method simply delegates the task to another method called `getRowCountApproximation()` of the `primaryIndex` object and returns its result.
+62,getDiskSpaceUsed(),get disk space used ,Method,,,org.h2.mvstore.db.MVPrimaryIndex+getDiskSpaceUsed() org.h2.mvstore.db.MVPrimaryIndex+getDiskSpaceUsed(),org.h2.mvstore.db.MVTable+primaryIndex,100,4,1,,"@Override
+    public long getDiskSpaceUsed() {
+        return primaryIndex.getDiskSpaceUsed();
+    }",False,False,This method serves to retrieve the amount of disk space used by the primary index.,True,"The code snippet defines an overridden method named ""getDiskSpaceUsed"" that returns the amount of disk space used. It calls the ""getDiskSpaceUsed"" method of the ""primaryIndex"" object and returns its result."
+63,checkRename(),check rename ,Method,,,,,61,4,1,,"@Override
+    public void checkRename() {
+        // ok
+    }",True,True,"This method serves as an override for the checkRename() method. It does not have any specific functionality as it only contains a comment saying ""ok"".",True,"The code snippet contains a method named ""checkRename"" which does not take any parameters and does not have any implementation logic. It is annotated with ""@Override"" indicating that it overrides a method from a superclass or interface."
+64,getTransactionBegin(),get transaction begin get a new transaction return the transaction ,Method,,"org.h2.mvstore.db.MVSpatialIndex+MVSpatialIndex(Database,MVTable,int,String,IndexColumn[],IndexType)",org.h2.mvstore.tx.TransactionStore+begin() org.h2.mvstore.tx.TransactionStore+begin(),org.h2.mvstore.db.MVTable+transactionStore,222,9,0,"/** 
+ * Get a new transaction.
+ * @return the transaction
+ */
+","/**
+     * Get a new transaction.
+     *
+     * @return the transaction
+     */
+    Transaction getTransactionBegin() {
+        // TODO need to commit/rollback the transaction
+        return transactionStore.begin();
+    }",False,False,This method serves to retrieve a new transaction from the transaction store. It returns the transaction that can be used for further operations.,True,"The code defines a method called ""getTransactionBegin()"" that returns a new transaction. The method is incomplete as it lacks the necessary code to commit or rollback the transaction."
+65,getRowIdColumn(),get row id column ,Method,,,"org.h2.table.Column+Column(String,int) org.h2.table.Column+setTable(Table,int) org.h2.table.Column+setTable(Table,int) org.h2.table.Column+setRowId(boolean) org.h2.table.Column+setRowId(boolean)",org.h2.mvstore.db.MVTable+rowIdColumn org.h2.mvstore.db.MVTable+rowIdColumn org.h2.table.Column+ROWID org.h2.value.Value+LONG org.h2.mvstore.db.MVTable+rowIdColumn org.h2.result.SearchRow+ROWID_INDEX org.h2.mvstore.db.MVTable+rowIdColumn org.h2.mvstore.db.MVTable+rowIdColumn,292,9,1,,"@Override
+    public Column getRowIdColumn() {
+        if (rowIdColumn == null) {
+            rowIdColumn = new Column(Column.ROWID, Value.LONG);
+            rowIdColumn.setTable(this, SearchRow.ROWID_INDEX);
+            rowIdColumn.setRowId(true);
+        }
+        return rowIdColumn;
+    }",True,True,"This method returns the row ID column. If the row ID column is null, it creates a new column with the row ID type and sets it as the row ID column for the table. Finally, it returns the row ID column.",False,"This code defines a method called `getRowIdColumn()` that returns a `Column` object. If the `rowIdColumn` is null, it creates a new `Column` object with a specific row ID and sets some properties for it. The method then returns the `rowIdColumn`."
+66,toString(),to string ,Method,,,org.h2.schema.SchemaObjectBase+getSQL(boolean) org.h2.schema.SchemaObjectBase+getSQL(boolean),,76,4,1,,"@Override
+    public String toString() {
+        return getSQL(false);
+    }",True,True,This method overrides the toString() method and returns the result of the getSQL() method with the parameter set to false.,False,The code overrides the `toString()` method and returns the result of calling the `getSQL()` method with a `false` parameter. The `getSQL()` method likely generates and returns a SQL query as a string.
+67,isMVStore(),is mv store ,Method,,,,,69,4,1,,"@Override
+    public boolean isMVStore() {
+        return true;
+    }",False,False,This method serves to determine if the object is an MVStore by returning a boolean value of true.,False,"The code snippet defines a method named ""isMVStore"" that returns a boolean value. The method always returns true, indicating that the code is using an MVStore."
+68,commit(),commit mark the transaction as committed so that the modification counter of the database is incremented ,Method,,org.h2.engine.Session+commit(boolean),org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase() org.h2.mvstore.db.MVTable+syncLastModificationIdWithDatabase(),org.h2.engine.DbObjectBase+database,250,9,1,"/** 
+ * Mark the transaction as committed, so that the modification counter of the database is incremented.
+ */
+","/**
+     * Mark the transaction as committed, so that the modification counter of
+     * the database is incremented.
+     */
+    public void commit() {
+        if (database != null) {
+            syncLastModificationIdWithDatabase();
+        }
+    }",False,False,"The function of the ""commit"" method is to mark a transaction as committed, which increments the modification counter of the database.",True,"The `commit()` method is used to mark a transaction as committed, which increments the modification counter of the database. If the database is not null, the method synchronizes the last modification ID with the database."
+69,syncLastModificationIdWithDatabase(),sync last modification id with database ,Method,"removeRow(Session,Row) truncate(Session) addRow(Session,Row) updateRow(Session,Row,Row) commit()",,"org.h2.engine.Database+getNextModificationDataId() org.h2.engine.Database+getNextModificationDataId() java.util.concurrent.atomic.AtomicLong+get() java.util.concurrent.atomic.AtomicLong+get() java.util.concurrent.atomic.AtomicLong+compareAndSet(long,long) java.util.concurrent.atomic.AtomicLong+compareAndSet(long,long)",org.h2.engine.DbObjectBase+database org.h2.mvstore.db.MVTable+lastModificationId org.h2.mvstore.db.MVTable+lastModificationId,362,8,2,,"private void syncLastModificationIdWithDatabase() {
+        long nextModificationDataId = database.getNextModificationDataId();
+        long currentId;
+        do {
+            currentId = lastModificationId.get();
+        } while (nextModificationDataId > currentId &&
+                !lastModificationId.compareAndSet(currentId, nextModificationDataId));
+    }",False,False,"This method synchronizes the last modification ID with the database. It retrieves the next modification ID from the database and compares it with the current ID. If the next ID is greater and the compare-and-set operation is successful, it updates the last modification ID.",False,"The `syncLastModificationIdWithDatabase` method is used to synchronize the last modification ID with the database. It retrieves the next modification data ID from the database and compares it with the current ID. If the next ID is greater than the current ID, it updates the last modification ID with the next ID using atomic compare-and-set operation. This process continues until the next ID is not greater than the current ID or the compare-and-set operation is successful."
+70,convertException(IllegalStateException),convert exception e convert the illegal state exception to a database exception param e the illegal state exception return the database exception ,Method,,"org.h2.mvstore.db.MVPrimaryIndex+add(Session,Row) org.h2.mvstore.db.MVPrimaryIndex+remove(Session,Row) org.h2.mvstore.db.MVPrimaryIndex+lockRow(TransactionMap<Value,Value>,long) org.h2.mvstore.db.MVSecondaryIndex+add(Session,Row) org.h2.mvstore.db.MVSecondaryIndex+remove(Session,Row) org.h2.mvstore.db.MVSpatialIndex+add(Session,Row) org.h2.mvstore.db.MVSpatialIndex+remove(Session,Row)","org.h2.mvstore.DataUtils+getErrorCode(String) org.h2.mvstore.DataUtils+getErrorCode(String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.engine.DbObjectBase+getName() org.h2.engine.DbObjectBase+getName() org.h2.mvstore.db.MVTableEngine.Store+convertIllegalStateException(IllegalStateException) org.h2.mvstore.db.MVTableEngine.Store+convertIllegalStateException(IllegalStateException)",org.h2.mvstore.DataUtils+ERROR_TRANSACTION_LOCKED org.h2.api.ErrorCode+CONCURRENT_UPDATE_1 org.h2.mvstore.DataUtils+ERROR_TRANSACTIONS_DEADLOCK org.h2.api.ErrorCode+DEADLOCK_1 org.h2.mvstore.db.MVTable+store,692,18,0,"/** 
+ * Convert the illegal state exception to a database exception.
+ * @param e the illegal state exception
+ * @return the database exception
+ */
+","/**
+     * Convert the illegal state exception to a database exception.
+     *
+     * @param e the illegal state exception
+     * @return the database exception
+     */
+    DbException convertException(IllegalStateException e) {
+        int errorCode = DataUtils.getErrorCode(e.getMessage());
+        if (errorCode == DataUtils.ERROR_TRANSACTION_LOCKED) {
+            throw DbException.get(ErrorCode.CONCURRENT_UPDATE_1,
+                    e, getName());
+        }
+        if (errorCode == DataUtils.ERROR_TRANSACTIONS_DEADLOCK) {
+            throw DbException.get(ErrorCode.DEADLOCK_1,
+                    e, getName());
+        }
+        return store.convertIllegalStateException(e);
+    }",False,False,"The function of this method is to convert an IllegalStateException to a DbException. It checks the error code of the exception and throws a specific DbException based on the error code. If the error code is not recognized, it calls another method to convert the exception.",True,"This code defines a method called `convertException` that takes an `IllegalStateException` as input and converts it into a `DbException`. It checks the error code of the input exception and throws a specific `DbException` based on the error code. If the error code does not match any specific cases, it delegates the conversion to another method called `convertIllegalStateException` in the `store` object."

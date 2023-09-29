@@ -1,0 +1,730 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,mEntries,m entries map of the key cache header pairs ,Field,,,,,131,2,18,"/** 
+ * Map of the Key, CacheHeader pairs 
+ */
+","/** Map of the Key, CacheHeader pairs */
+    private final Map<String, CacheHeader> mEntries = new LinkedHashMap<>(16, .75f, true);",False,False,"/** 
+ * Map of the Key, CacheHeader pairs 
+ */
+",False,"/** 
+ * Map of the Key, CacheHeader pairs 
+ */
+"
+2,mTotalSize,m total size total amount of space currently used by the cache in bytes ,Field,,,,,99,2,2,"/** 
+ * Total amount of space currently used by the cache in bytes. 
+ */
+","/** Total amount of space currently used by the cache in bytes. */
+    private long mTotalSize = 0;",False,False,"/** 
+ * Total amount of space currently used by the cache in bytes. 
+ */
+",False,"/** 
+ * Total amount of space currently used by the cache in bytes. 
+ */
+"
+3,mRootDirectorySupplier,m root directory supplier the supplier for the root directory to use for the cache ,Field,,,,,119,2,18,"/** 
+ * The supplier for the root directory to use for the cache. 
+ */
+","/** The supplier for the root directory to use for the cache. */
+    private final FileSupplier mRootDirectorySupplier;",False,False,"/** 
+ * The supplier for the root directory to use for the cache. 
+ */
+",False,"/** 
+ * The supplier for the root directory to use for the cache. 
+ */
+"
+4,mMaxCacheSizeInBytes,m max cache size in bytes the maximum size of the cache in bytes ,Field,,,,,90,2,18,"/** 
+ * The maximum size of the cache in bytes. 
+ */
+","/** The maximum size of the cache in bytes. */
+    private final int mMaxCacheSizeInBytes;",False,False,"/** 
+ * The maximum size of the cache in bytes. 
+ */
+",False,"/** 
+ * The maximum size of the cache in bytes. 
+ */
+"
+5,DEFAULT_DISK_USAGE_BYTES,default disk usage bytes default maximum disk usage in bytes ,Field,,,,,116,2,26,"/** 
+ * Default maximum disk usage in bytes. 
+ */
+","/** Default maximum disk usage in bytes. */
+    private static final int DEFAULT_DISK_USAGE_BYTES = 5 * 1024 * 1024;",True,True,"/** 
+ * Default maximum disk usage in bytes. 
+ */
+",False,"/** 
+ * Default maximum disk usage in bytes. 
+ */
+"
+6,HYSTERESIS_FACTOR,hysteresis factor high water mark percentage for the cache ,Field,,,,,115,2,24,"/** 
+ * High water mark percentage for the cache 
+ */
+","/** High water mark percentage for the cache */
+    @VisibleForTesting static final float HYSTERESIS_FACTOR = 0.9f;",True,True,"/** 
+ * High water mark percentage for the cache 
+ */
+",False,"/** 
+ * High water mark percentage for the cache 
+ */
+"
+7,CACHE_MAGIC,cache magic magic number for current version of cache file format ,Field,,,,,116,2,26,"/** 
+ * Magic number for current version of cache file format. 
+ */
+","/** Magic number for current version of cache file format. */
+    private static final int CACHE_MAGIC = 0x20150306;",False,True,"/** 
+ * Magic number for current version of cache file format. 
+ */
+",False,"/** 
+ * Magic number for current version of cache file format. 
+ */
+"
+8,"DiskBasedCache(File,int)",disk based cache root directory max cache size in bytes constructs an instance of the disk based cache at the specified directory param root directory the root directory of the cache param max cache size in bytes the maximum size of the cache in bytes note that the cache maybriefly exceed this size on disk when writing a new entry that pushes it over the limit until the ensuing pruning completes ,Method,,,+() +get(),com.android.volley.toolbox.DiskBasedCache+mRootDirectorySupplier,768,18,1,"/** 
+ * Constructs an instance of the DiskBasedCache at the specified directory.
+ * @param rootDirectory The root directory of the cache.
+ * @param maxCacheSizeInBytes The maximum size of the cache in bytes. Note that the cache maybriefly exceed this size on disk when writing a new entry that pushes it over the limit until the ensuing pruning completes.
+ */
+","/**
+     * Constructs an instance of the DiskBasedCache at the specified directory.
+     *
+     * @param rootDirectory The root directory of the cache.
+     * @param maxCacheSizeInBytes The maximum size of the cache in bytes. Note that the cache may
+     *     briefly exceed this size on disk when writing a new entry that pushes it over the limit
+     *     until the ensuing pruning completes.
+     */
+    public DiskBasedCache(final File rootDirectory, int maxCacheSizeInBytes) {
+        mRootDirectorySupplier =
+                new FileSupplier() {
+                    @Override
+                    public File get() {
+                        return rootDirectory;
+                    }
+                };
+        mMaxCacheSizeInBytes = maxCacheSizeInBytes;
+    }",False,False,This method constructs an instance of the DiskBasedCache class with a specified root directory and maximum cache size in bytes.,False,The code defines a constructor for a DiskBasedCache class that takes a root directory and maximum cache size as parameters. It initializes the root directory supplier and maximum cache size variables with the provided values.
+9,"DiskBasedCache(FileSupplier,int)",disk based cache root directory supplier max cache size in bytes constructs an instance of the disk based cache at the specified directory param root directory supplier the supplier for the root directory of the cache param max cache size in bytes the maximum size of the cache in bytes note that the cache maybriefly exceed this size on disk when writing a new entry that pushes it over the limit until the ensuing pruning completes ,Method,,,,com.android.volley.toolbox.DiskBasedCache+mRootDirectorySupplier com.android.volley.toolbox.DiskBasedCache+mMaxCacheSizeInBytes,632,12,1,"/** 
+ * Constructs an instance of the DiskBasedCache at the specified directory.
+ * @param rootDirectorySupplier The supplier for the root directory of the cache.
+ * @param maxCacheSizeInBytes The maximum size of the cache in bytes. Note that the cache maybriefly exceed this size on disk when writing a new entry that pushes it over the limit until the ensuing pruning completes.
+ */
+","/**
+     * Constructs an instance of the DiskBasedCache at the specified directory.
+     *
+     * @param rootDirectorySupplier The supplier for the root directory of the cache.
+     * @param maxCacheSizeInBytes The maximum size of the cache in bytes. Note that the cache may
+     *     briefly exceed this size on disk when writing a new entry that pushes it over the limit
+     *     until the ensuing pruning completes.
+     */
+    public DiskBasedCache(FileSupplier rootDirectorySupplier, int maxCacheSizeInBytes) {
+        mRootDirectorySupplier = rootDirectorySupplier;
+        mMaxCacheSizeInBytes = maxCacheSizeInBytes;
+    }",False,False,The function of this method is to construct an instance of the DiskBasedCache class with a specified root directory and maximum cache size in bytes.,False,This code defines a constructor for a DiskBasedCache class that takes a supplier for the root directory and the maximum cache size in bytes as parameters. The constructor initializes the instance variables with the provided values.
+10,DiskBasedCache(File),disk based cache root directory constructs an instance of the disk based cache at the specified directory using the default maximum cache size of 5 mb param root directory the root directory of the cache ,Method,,,,com.android.volley.toolbox.DiskBasedCache+DEFAULT_DISK_USAGE_BYTES,319,9,1,"/** 
+ * Constructs an instance of the DiskBasedCache at the specified directory using the default maximum cache size of 5MB.
+ * @param rootDirectory The root directory of the cache.
+ */
+","/**
+     * Constructs an instance of the DiskBasedCache at the specified directory using the default
+     * maximum cache size of 5MB.
+     *
+     * @param rootDirectory The root directory of the cache.
+     */
+    public DiskBasedCache(File rootDirectory) {
+        this(rootDirectory, DEFAULT_DISK_USAGE_BYTES);
+    }",False,False,The function of this method is to construct an instance of the DiskBasedCache class with a specified root directory and a default maximum cache size of 5MB.,False,The code is a constructor for a DiskBasedCache object that takes a root directory as a parameter. It initializes the cache with a default maximum size of 5MB.
+11,DiskBasedCache(FileSupplier),disk based cache root directory supplier constructs an instance of the disk based cache at the specified directory using the default maximum cache size of 5 mb param root directory supplier the supplier for the root directory of the cache ,Method,,,,com.android.volley.toolbox.DiskBasedCache+DEFAULT_DISK_USAGE_BYTES,368,9,1,"/** 
+ * Constructs an instance of the DiskBasedCache at the specified directory using the default maximum cache size of 5MB.
+ * @param rootDirectorySupplier The supplier for the root directory of the cache.
+ */
+","/**
+     * Constructs an instance of the DiskBasedCache at the specified directory using the default
+     * maximum cache size of 5MB.
+     *
+     * @param rootDirectorySupplier The supplier for the root directory of the cache.
+     */
+    public DiskBasedCache(FileSupplier rootDirectorySupplier) {
+        this(rootDirectorySupplier, DEFAULT_DISK_USAGE_BYTES);
+    }",False,False,The function of this method is to construct an instance of the DiskBasedCache class using the specified directory and the default maximum cache size of 5MB. It takes a FileSupplier object as a parameter to supply the root directory of the cache.,False,The code is a constructor for a DiskBasedCache object that takes a FileSupplier as a parameter. It initializes the cache with a default maximum size of 5MB by calling another constructor with the root directory supplier and the default disk usage bytes.
+12,clear(),clear clears the cache deletes all cached files from disk ,Method,,,"java.io.File+listFiles() com.android.volley.toolbox.DiskBasedCache.FileSupplier+get() com.android.volley.toolbox.DiskBasedCache.FileSupplier+get() java.io.File+listFiles() java.io.File+delete() java.io.File+delete() java.util.Map+clear() java.util.Map+clear() com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.VolleyLog+d(String,Object[])",com.android.volley.toolbox.DiskBasedCache+mRootDirectorySupplier com.android.volley.toolbox.DiskBasedCache+mEntries com.android.volley.toolbox.DiskBasedCache+mTotalSize,395,13,33,"/** 
+ * Clears the cache. Deletes all cached files from disk. 
+ */
+","/** Clears the cache. Deletes all cached files from disk. */
+    @Override
+    public synchronized void clear() {
+        File[] files = mRootDirectorySupplier.get().listFiles();
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
+        }
+        mEntries.clear();
+        mTotalSize = 0;
+        VolleyLog.d(""Cache cleared."");
+    }",False,False,This method serves to clear the cache by deleting all cached files from disk. It also clears the entries and resets the total size of the cache.,True,"The code is for a method called ""clear"" which is used to delete all cached files from disk. It first retrieves the root directory, then iterates through all the files in the directory and deletes them. Finally, it clears the cache entries and logs a message indicating that the cache has been cleared."
+13,get(String),get key returns the cache entry with the specified key if it exists null otherwise ,Method,,,"java.util.Map+get(Object) java.util.Map+get(Object) com.android.volley.toolbox.DiskBasedCache+getFileForKey(String) com.android.volley.toolbox.DiskBasedCache+getFileForKey(String) com.android.volley.toolbox.DiskBasedCache.CountingInputStream+CountingInputStream(InputStream,long) java.io.BufferedInputStream+BufferedInputStream(InputStream) com.android.volley.toolbox.DiskBasedCache+createInputStream(File) com.android.volley.toolbox.DiskBasedCache+createInputStream(File) java.io.File+length() java.io.File+length() com.android.volley.toolbox.DiskBasedCache.CacheHeader+readHeader(CountingInputStream) com.android.volley.toolbox.DiskBasedCache.CacheHeader+readHeader(CountingInputStream) com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.VolleyLog+d(String,Object[]) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() com.android.volley.toolbox.DiskBasedCache+removeEntry(String) com.android.volley.toolbox.DiskBasedCache+removeEntry(String) com.android.volley.toolbox.DiskBasedCache+streamToBytes(CountingInputStream,long) com.android.volley.toolbox.DiskBasedCache+streamToBytes(CountingInputStream,long) com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRemaining() com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRemaining() com.android.volley.toolbox.DiskBasedCache.CacheHeader+toCacheEntry(byte[]) com.android.volley.toolbox.DiskBasedCache.CacheHeader+toCacheEntry(byte[]) java.io.FilterInputStream+close() java.io.FilterInputStream+close() com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.VolleyLog+d(String,Object[]) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.lang.Throwable+toString() java.lang.Throwable+toString() com.android.volley.toolbox.DiskBasedCache+remove(String) com.android.volley.toolbox.DiskBasedCache+remove(String)",com.android.volley.toolbox.DiskBasedCache+mEntries com.android.volley.toolbox.DiskBasedCache.CacheHeader+key com.android.volley.toolbox.DiskBasedCache.CacheHeader+key,1586,36,33,"/** 
+ * Returns the cache entry with the specified key if it exists, null otherwise. 
+ */
+","/** Returns the cache entry with the specified key if it exists, null otherwise. */
+    @Override
+    public synchronized Entry get(String key) {
+        CacheHeader entry = mEntries.get(key);
+        // if the entry does not exist, return.
+        if (entry == null) {
+            return null;
+        }
+        File file = getFileForKey(key);
+        try {
+            CountingInputStream cis =
+                    new CountingInputStream(
+                            new BufferedInputStream(createInputStream(file)), file.length());
+            try {
+                CacheHeader entryOnDisk = CacheHeader.readHeader(cis);
+                if (!TextUtils.equals(key, entryOnDisk.key)) {
+                    // File was shared by two keys and now holds data for a different entry!
+                    VolleyLog.d(
+                            ""%s: key=%s, found=%s"", file.getAbsolutePath(), key, entryOnDisk.key);
+                    // Remove key whose contents on disk have been replaced.
+                    removeEntry(key);
+                    return null;
+                }
+                byte[] data = streamToBytes(cis, cis.bytesRemaining());
+                return entry.toCacheEntry(data);
+            } finally {
+                // Any IOException thrown here is handled by the below catch block by design.
+                //noinspection ThrowFromFinallyBlock
+                cis.close();
+            }
+        } catch (IOException e) {
+            VolleyLog.d(""%s: %s"", file.getAbsolutePath(), e.toString());
+            remove(key);
+            return null;
+        }
+    }",False,False,"This method serves to retrieve a cache entry with a specified key. It checks if the entry exists, reads the entry from disk, and returns it as a cache entry if it matches the specified key. If the entry does not exist or there is an error reading the entry, it returns null.",True,"This code is a method that retrieves a cache entry with a specified key. It checks if the entry exists, reads the entry from a file, and returns the cache entry if it matches the key. If the entry doesn't exist or there is an error reading the file, it returns null."
+14,initialize(),initialize initializes the disk based cache by scanning for all files currently in the specified root directory creates the root directory if necessary ,Method,,,"com.android.volley.toolbox.DiskBasedCache.FileSupplier+get() com.android.volley.toolbox.DiskBasedCache.FileSupplier+get() java.io.File+exists() java.io.File+exists() java.io.File+mkdirs() java.io.File+mkdirs() com.android.volley.VolleyLog+e(String,Object[]) com.android.volley.VolleyLog+e(String,Object[]) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.File+listFiles() java.io.File+listFiles() java.io.File+length() java.io.File+length() com.android.volley.toolbox.DiskBasedCache.CountingInputStream+CountingInputStream(InputStream,long) java.io.BufferedInputStream+BufferedInputStream(InputStream) com.android.volley.toolbox.DiskBasedCache+createInputStream(File) com.android.volley.toolbox.DiskBasedCache+createInputStream(File) com.android.volley.toolbox.DiskBasedCache.CacheHeader+readHeader(CountingInputStream) com.android.volley.toolbox.DiskBasedCache.CacheHeader+readHeader(CountingInputStream) com.android.volley.toolbox.DiskBasedCache+putEntry(String,CacheHeader) com.android.volley.toolbox.DiskBasedCache+putEntry(String,CacheHeader) java.io.FilterInputStream+close() java.io.FilterInputStream+close() java.io.File+delete() java.io.File+delete()",com.android.volley.toolbox.DiskBasedCache+mRootDirectorySupplier com.android.volley.toolbox.DiskBasedCache.CacheHeader+size com.android.volley.toolbox.DiskBasedCache.CacheHeader+key,1471,38,33,"/** 
+ * Initializes the DiskBasedCache by scanning for all files currently in the specified root directory. Creates the root directory if necessary.
+ */
+","/**
+     * Initializes the DiskBasedCache by scanning for all files currently in the specified root
+     * directory. Creates the root directory if necessary.
+     */
+    @Override
+    public synchronized void initialize() {
+        File rootDirectory = mRootDirectorySupplier.get();
+        if (!rootDirectory.exists()) {
+            if (!rootDirectory.mkdirs()) {
+                VolleyLog.e(""Unable to create cache dir %s"", rootDirectory.getAbsolutePath());
+            }
+            return;
+        }
+        File[] files = rootDirectory.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            try {
+                long entrySize = file.length();
+                CountingInputStream cis =
+                        new CountingInputStream(
+                                new BufferedInputStream(createInputStream(file)), entrySize);
+                try {
+                    CacheHeader entry = CacheHeader.readHeader(cis);
+                    entry.size = entrySize;
+                    putEntry(entry.key, entry);
+                } finally {
+                    // Any IOException thrown here is handled by the below catch block by design.
+                    //noinspection ThrowFromFinallyBlock
+                    cis.close();
+                }
+            } catch (IOException e) {
+                //noinspection ResultOfMethodCallIgnored
+                file.delete();
+            }
+        }
+    }",False,False,"The function of this method is to initialize the DiskBasedCache by scanning for all files in the specified root directory. It creates the root directory if it does not exist, and then reads the cache headers from each file and adds them to the cache.",True,"The `initialize()` method initializes the DiskBasedCache by scanning for all files in the specified root directory. It creates the root directory if it doesn't exist. It then reads each file, creates a CacheHeader object from it, and adds it to the cache."
+15,"invalidate(String,boolean)",invalidate key full expire invalidates an entry in the cache param key cache key param full expire true to fully expire the entry false to soft expire ,Method,,,"com.android.volley.toolbox.DiskBasedCache+get(String) com.android.volley.toolbox.DiskBasedCache+get(String) com.android.volley.toolbox.DiskBasedCache+put(String,Entry) com.android.volley.toolbox.DiskBasedCache+put(String,Entry)",com.android.volley.Cache.Entry+softTtl com.android.volley.Cache.Entry+ttl,466,17,33,"/** 
+ * Invalidates an entry in the cache.
+ * @param key Cache key
+ * @param fullExpire True to fully expire the entry, false to soft expire
+ */
+","/**
+     * Invalidates an entry in the cache.
+     *
+     * @param key Cache key
+     * @param fullExpire True to fully expire the entry, false to soft expire
+     */
+    @Override
+    public synchronized void invalidate(String key, boolean fullExpire) {
+        Entry entry = get(key);
+        if (entry != null) {
+            entry.softTtl = 0;
+            if (fullExpire) {
+                entry.ttl = 0;
+            }
+            put(key, entry);
+        }
+    }",False,False,"This method invalidates an entry in the cache by setting its softTtl to 0. If fullExpire is true, it also sets the entry's ttl to 0.",True,"The code defines a method called ""invalidate"" that is used to invalidate an entry in a cache. It takes a cache key and a boolean parameter to determine whether to fully expire the entry or just soft expire it. The method updates the entry's softTtl and ttl values accordingly and then puts the updated entry back into the cache."
+16,"put(String,Entry)",put key entry puts the entry with the specified key into the cache ,Method,,,"com.android.volley.toolbox.DiskBasedCache+getFileForKey(String) com.android.volley.toolbox.DiskBasedCache+getFileForKey(String) java.io.BufferedOutputStream+BufferedOutputStream(OutputStream) com.android.volley.toolbox.DiskBasedCache+createOutputStream(File) com.android.volley.toolbox.DiskBasedCache+createOutputStream(File) com.android.volley.toolbox.DiskBasedCache.CacheHeader+CacheHeader(String,Entry) com.android.volley.toolbox.DiskBasedCache.CacheHeader+writeHeader(OutputStream) com.android.volley.toolbox.DiskBasedCache.CacheHeader+writeHeader(OutputStream) java.io.FilterOutputStream+close() java.io.FilterOutputStream+close() com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.VolleyLog+d(String,Object[]) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.IOException+IOException() java.io.FilterOutputStream+write(byte[]) java.io.FilterOutputStream+write(byte[]) java.io.FilterOutputStream+close() java.io.FilterOutputStream+close() java.io.File+length() java.io.File+length() com.android.volley.toolbox.DiskBasedCache+putEntry(String,CacheHeader) com.android.volley.toolbox.DiskBasedCache+putEntry(String,CacheHeader) com.android.volley.toolbox.DiskBasedCache+pruneIfNeeded() com.android.volley.toolbox.DiskBasedCache+pruneIfNeeded() java.io.File+delete() java.io.File+delete() com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.VolleyLog+d(String,Object[]) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() com.android.volley.toolbox.DiskBasedCache+initializeIfRootDirectoryDeleted() com.android.volley.toolbox.DiskBasedCache+initializeIfRootDirectoryDeleted()",com.android.volley.toolbox.DiskBasedCache+mTotalSize com.android.volley.Cache.Entry+data com.android.volley.toolbox.DiskBasedCache+mMaxCacheSizeInBytes com.android.volley.Cache.Entry+data com.android.volley.toolbox.DiskBasedCache+mMaxCacheSizeInBytes com.android.volley.toolbox.DiskBasedCache+HYSTERESIS_FACTOR com.android.volley.Cache.Entry+data com.android.volley.toolbox.DiskBasedCache.CacheHeader+size,1569,34,33,"/** 
+ * Puts the entry with the specified key into the cache. 
+ */
+","/** Puts the entry with the specified key into the cache. */
+    @Override
+    public synchronized void put(String key, Entry entry) {
+        // If adding this entry would trigger a prune, but pruning would cause the new entry to be
+        // deleted, then skip writing the entry in the first place, as this is just churn.
+        // Note that we don't include the cache header overhead in this calculation for simplicity,
+        // so putting entries which are just below the threshold may still cause this churn.
+        if (mTotalSize + entry.data.length > mMaxCacheSizeInBytes
+                && entry.data.length > mMaxCacheSizeInBytes * HYSTERESIS_FACTOR) {
+            return;
+        }
+        File file = getFileForKey(key);
+        try {
+            BufferedOutputStream fos = new BufferedOutputStream(createOutputStream(file));
+            CacheHeader e = new CacheHeader(key, entry);
+            boolean success = e.writeHeader(fos);
+            if (!success) {
+                fos.close();
+                VolleyLog.d(""Failed to write header for %s"", file.getAbsolutePath());
+                throw new IOException();
+            }
+            fos.write(entry.data);
+            fos.close();
+            e.size = file.length();
+            putEntry(key, e);
+            pruneIfNeeded();
+        } catch (IOException e) {
+            boolean deleted = file.delete();
+            if (!deleted) {
+                VolleyLog.d(""Could not clean up file %s"", file.getAbsolutePath());
+            }
+            initializeIfRootDirectoryDeleted();
+        }
+    }",False,False,"This method is used to add an entry with a specified key into a cache. It checks if adding the entry would exceed the maximum cache size and if so, it skips adding the entry. It then writes the entry to a file, updates the size of the entry, and performs pruning if needed.",True,"This code is a method that puts an entry with a specified key into a cache. It checks if adding the entry would exceed the maximum cache size and skips writing the entry if it would cause churn. It then writes the entry to a file, updates the cache size, and prunes the cache if needed."
+17,remove(String),remove key removes the specified key from the cache if it exists ,Method,,,"java.io.File+delete() com.android.volley.toolbox.DiskBasedCache+getFileForKey(String) com.android.volley.toolbox.DiskBasedCache+getFileForKey(String) java.io.File+delete() com.android.volley.toolbox.DiskBasedCache+removeEntry(String) com.android.volley.toolbox.DiskBasedCache+removeEntry(String) com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.toolbox.DiskBasedCache+getFilenameForKey(String) com.android.volley.toolbox.DiskBasedCache+getFilenameForKey(String)",,397,11,33,"/** 
+ * Removes the specified key from the cache if it exists. 
+ */
+","/** Removes the specified key from the cache if it exists. */
+    @Override
+    public synchronized void remove(String key) {
+        boolean deleted = getFileForKey(key).delete();
+        removeEntry(key);
+        if (!deleted) {
+            VolleyLog.d(
+                    ""Could not delete cache entry for key=%s, filename=%s"",
+                    key, getFilenameForKey(key));
+        }
+    }",False,False,This method removes a specified key from the cache by deleting the corresponding file. It also removes the entry from the cache and logs an error message if the file cannot be deleted.,True,"The given code is a method that removes a specified key from a cache. It first deletes the file associated with the key, then removes the entry from the cache. If the file deletion fails, it logs a message indicating the failure."
+18,getFilenameForKey(String),get filename for key key creates a pseudo unique filename for the specified cache key param key the key to generate a file name for return a pseudo unique filename ,Method,,,"java.lang.String+length() java.lang.String+length() java.lang.String+valueOf(int) java.lang.String+valueOf(int) java.lang.String+hashCode() java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+hashCode() java.lang.String+valueOf(int) java.lang.String+valueOf(int) java.lang.String+hashCode() java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+hashCode()",,495,12,2,"/** 
+ * Creates a pseudo-unique filename for the specified cache key.
+ * @param key The key to generate a file name for.
+ * @return A pseudo-unique filename.
+ */
+","/**
+     * Creates a pseudo-unique filename for the specified cache key.
+     *
+     * @param key The key to generate a file name for.
+     * @return A pseudo-unique filename.
+     */
+    private String getFilenameForKey(String key) {
+        int firstHalfLength = key.length() / 2;
+        String localFilename = String.valueOf(key.substring(0, firstHalfLength).hashCode());
+        localFilename += String.valueOf(key.substring(firstHalfLength).hashCode());
+        return localFilename;
+    }",False,False,"This method generates a pseudo-unique filename for a given cache key by taking the first half of the key, converting it to a hash code, and appending the hash code of the second half of the key.",False,"This code defines a private method called ""getFilenameForKey"" that takes a cache key as input and generates a pseudo-unique filename based on the key. It splits the key into two halves, calculates the hash code for each half, and concatenates them to form the filename. The method then returns the generated filename."
+19,getFileForKey(String),get file for key key returns a file object for the given cache key ,Method,,,"java.io.File+File(File,String) com.android.volley.toolbox.DiskBasedCache.FileSupplier+get() com.android.volley.toolbox.DiskBasedCache.FileSupplier+get() com.android.volley.toolbox.DiskBasedCache+getFilenameForKey(String) com.android.volley.toolbox.DiskBasedCache+getFilenameForKey(String)",com.android.volley.toolbox.DiskBasedCache+mRootDirectorySupplier,182,4,1,"/** 
+ * Returns a file object for the given cache key. 
+ */
+","/** Returns a file object for the given cache key. */
+    public File getFileForKey(String key) {
+        return new File(mRootDirectorySupplier.get(), getFilenameForKey(key));
+    }",False,False,This method returns a File object based on a cache key. It uses the mRootDirectorySupplier to get the root directory and the getFilenameForKey method to get the filename for the given key.,True,The given code is a method named `getFileForKey` that takes a cache key as input and returns a file object. It creates a new file object using the root directory obtained from a supplier and the filename derived from the cache key.
+20,initializeIfRootDirectoryDeleted(),initialize if root directory deleted re initialize the cache if the directory was deleted ,Method,,,"java.io.File+exists() com.android.volley.toolbox.DiskBasedCache.FileSupplier+get() com.android.volley.toolbox.DiskBasedCache.FileSupplier+get() java.io.File+exists() com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.VolleyLog+d(String,Object[]) java.util.Map+clear() java.util.Map+clear() com.android.volley.toolbox.DiskBasedCache+initialize() com.android.volley.toolbox.DiskBasedCache+initialize()",com.android.volley.toolbox.DiskBasedCache+mRootDirectorySupplier com.android.volley.toolbox.DiskBasedCache+mEntries com.android.volley.toolbox.DiskBasedCache+mTotalSize,343,9,2,"/** 
+ * Re-initialize the cache if the directory was deleted. 
+ */
+","/** Re-initialize the cache if the directory was deleted. */
+    private void initializeIfRootDirectoryDeleted() {
+        if (!mRootDirectorySupplier.get().exists()) {
+            VolleyLog.d(""Re-initializing cache after external clearing."");
+            mEntries.clear();
+            mTotalSize = 0;
+            initialize();
+        }
+    }",False,False,"This method checks if the root directory exists, and if not, it re-initializes the cache by clearing the entries and total size, and then calling the initialize() method.",True,"This method checks if the root directory exists, and if not, it re-initializes the cache by clearing the entries and resetting the total size. It also logs a message indicating that the cache is being re-initialized after the directory was deleted."
+21,FileSupplier,file supplier represents a supplier for link file s ,MemberClass,,,com.android.volley.toolbox.DiskBasedCache.FileSupplier+get(),,109,4,1,"/** 
+ * Represents a supplier for  {@link File}s. 
+ */
+","/** Represents a supplier for {@link File}s. */
+    public interface FileSupplier {
+        File get();
+    }",False,False,"/** 
+ * Represents a supplier for  {@link File}s. 
+ */
+",False,"/** 
+ * Represents a supplier for  {@link File}s. 
+ */
+"
+22,pruneIfNeeded(),prune if needed prunes the cache to fit the maximum size ,Method,,,"com.android.volley.VolleyLog+v(String,Object[]) com.android.volley.VolleyLog+v(String,Object[]) java.util.Set+iterator() java.util.Map+entrySet() java.util.Map+entrySet() java.util.Set+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() java.util.Map.Entry+getValue() java.util.Map.Entry+getValue() java.io.File+delete() com.android.volley.toolbox.DiskBasedCache+getFileForKey(String) com.android.volley.toolbox.DiskBasedCache+getFileForKey(String) java.io.File+delete() com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.toolbox.DiskBasedCache+getFilenameForKey(String) com.android.volley.toolbox.DiskBasedCache+getFilenameForKey(String) java.util.Iterator+remove() java.util.Iterator+remove() com.android.volley.VolleyLog+v(String,Object[]) com.android.volley.VolleyLog+v(String,Object[])",com.android.volley.toolbox.DiskBasedCache+mTotalSize com.android.volley.toolbox.DiskBasedCache+mMaxCacheSizeInBytes com.android.volley.VolleyLog+DEBUG com.android.volley.toolbox.DiskBasedCache+mTotalSize com.android.volley.toolbox.DiskBasedCache+mEntries com.android.volley.toolbox.DiskBasedCache.CacheHeader+key com.android.volley.toolbox.DiskBasedCache+mTotalSize com.android.volley.toolbox.DiskBasedCache.CacheHeader+size com.android.volley.toolbox.DiskBasedCache.CacheHeader+key com.android.volley.toolbox.DiskBasedCache.CacheHeader+key com.android.volley.toolbox.DiskBasedCache+mTotalSize com.android.volley.toolbox.DiskBasedCache+mMaxCacheSizeInBytes com.android.volley.toolbox.DiskBasedCache+HYSTERESIS_FACTOR com.android.volley.VolleyLog+DEBUG com.android.volley.toolbox.DiskBasedCache+mTotalSize,1358,39,2,"/** 
+ * Prunes the cache to fit the maximum size. 
+ */
+","/** Prunes the cache to fit the maximum size. */
+    private void pruneIfNeeded() {
+        if (mTotalSize < mMaxCacheSizeInBytes) {
+            return;
+        }
+        if (VolleyLog.DEBUG) {
+            VolleyLog.v(""Pruning old cache entries."");
+        }
+
+        long before = mTotalSize;
+        int prunedFiles = 0;
+        long startTime = SystemClock.elapsedRealtime();
+
+        Iterator<Map.Entry<String, CacheHeader>> iterator = mEntries.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, CacheHeader> entry = iterator.next();
+            CacheHeader e = entry.getValue();
+            boolean deleted = getFileForKey(e.key).delete();
+            if (deleted) {
+                mTotalSize -= e.size;
+            } else {
+                VolleyLog.d(
+                        ""Could not delete cache entry for key=%s, filename=%s"",
+                        e.key, getFilenameForKey(e.key));
+            }
+            iterator.remove();
+            prunedFiles++;
+
+            if (mTotalSize < mMaxCacheSizeInBytes * HYSTERESIS_FACTOR) {
+                break;
+            }
+        }
+
+        if (VolleyLog.DEBUG) {
+            VolleyLog.v(
+                    ""pruned %d files, %d bytes, %d ms"",
+                    prunedFiles, (mTotalSize - before), SystemClock.elapsedRealtime() - startTime);
+        }
+    }",False,False,"The function of this method is to prune the cache to fit the maximum size. It iterates through the cache entries, deletes the files associated with each entry, and removes the entry from the cache. It stops pruning when the total size of the cache is less than the maximum size multiplied by a hysteresis factor.",True,"The `pruneIfNeeded()` method is used to prune the cache if its total size exceeds the maximum cache size. It iterates through the cache entries, deletes the corresponding files, updates the total size, and removes the entries from the cache. It also logs the number of pruned files, the reduced size, and the time taken for pruning."
+23,"putEntry(String,CacheHeader)",put entry key entry puts the entry with the specified key into the cache param key the key to identify the entry by param entry the entry to cache ,Method,,,"java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+put(K,V) java.util.Map+put(K,V)",com.android.volley.toolbox.DiskBasedCache+mEntries com.android.volley.toolbox.DiskBasedCache+mTotalSize com.android.volley.toolbox.DiskBasedCache.CacheHeader+size com.android.volley.toolbox.DiskBasedCache+mEntries com.android.volley.toolbox.DiskBasedCache+mTotalSize com.android.volley.toolbox.DiskBasedCache.CacheHeader+size com.android.volley.toolbox.DiskBasedCache.CacheHeader+size com.android.volley.toolbox.DiskBasedCache+mEntries,487,15,2,"/** 
+ * Puts the entry with the specified key into the cache.
+ * @param key The key to identify the entry by.
+ * @param entry The entry to cache.
+ */
+","/**
+     * Puts the entry with the specified key into the cache.
+     *
+     * @param key The key to identify the entry by.
+     * @param entry The entry to cache.
+     */
+    private void putEntry(String key, CacheHeader entry) {
+        if (!mEntries.containsKey(key)) {
+            mTotalSize += entry.size;
+        } else {
+            CacheHeader oldEntry = mEntries.get(key);
+            mTotalSize += (entry.size - oldEntry.size);
+        }
+        mEntries.put(key, entry);
+    }",False,False,"This method is used to add an entry to a cache. It checks if the entry already exists in the cache, and if it does, it updates the size of the cache accordingly. Finally, it adds the entry to the cache.",True,"The method `putEntry` is used to add an entry to a cache. It takes a key and a cache header as parameters and updates the total size of the cache based on the size of the new entry. If an entry with the same key already exists in the cache, the total size is adjusted by subtracting the size of the old entry and adding the size of the new entry."
+24,removeEntry(String),remove entry key removes the entry identified by key from the cache ,Method,,,java.util.Map+remove(Object) java.util.Map+remove(Object),com.android.volley.toolbox.DiskBasedCache+mEntries com.android.volley.toolbox.DiskBasedCache+mTotalSize com.android.volley.toolbox.DiskBasedCache.CacheHeader+size,242,7,2,"/** 
+ * Removes the entry identified by 'key' from the cache. 
+ */
+","/** Removes the entry identified by 'key' from the cache. */
+    private void removeEntry(String key) {
+        CacheHeader removed = mEntries.remove(key);
+        if (removed != null) {
+            mTotalSize -= removed.size;
+        }
+    }",False,False,This method serves to remove an entry from the cache identified by the given key. It updates the total size of the cache if the entry is successfully removed.,True,"The given code snippet represents a private method called ""removeEntry"" that removes an entry from a cache based on the provided key. It retrieves the cache header associated with the key, removes it from the cache, and updates the total size of the cache if the removal is successful."
+25,"streamToBytes(CountingInputStream,long)",stream to bytes cis length reads length bytes from counting input stream into byte array param cis input stream param length number of bytes to read throws io exception if fails to read all bytes ,Method,,,com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRemaining() com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRemaining() java.io.IOException+IOException(String) java.io.DataInputStream+readFully(byte[]) java.io.DataInputStream+DataInputStream(InputStream) java.io.DataInputStream+readFully(byte[]),,782,18,8,"/** 
+ * Reads length bytes from CountingInputStream into byte array.
+ * @param cis input stream
+ * @param length number of bytes to read
+ * @throws IOException if fails to read all bytes
+ */
+","/**
+     * Reads length bytes from CountingInputStream into byte array.
+     *
+     * @param cis input stream
+     * @param length number of bytes to read
+     * @throws IOException if fails to read all bytes
+     */
+    @VisibleForTesting
+    static byte[] streamToBytes(CountingInputStream cis, long length) throws IOException {
+        long maxLength = cis.bytesRemaining();
+        // Length cannot be negative or greater than bytes remaining, and must not overflow int.
+        if (length < 0 || length > maxLength || (int) length != length) {
+            throw new IOException(""streamToBytes length="" + length + "", maxLength="" + maxLength);
+        }
+        byte[] bytes = new byte[(int) length];
+        new DataInputStream(cis).readFully(bytes);
+        return bytes;
+    }",False,False,This method reads a specified number of bytes from a given input stream and returns them as a byte array. It checks if the length is valid and throws an exception if it is not.,False,"The method ""streamToBytes"" reads a specified number of bytes from a given input stream into a byte array. It checks if the length is valid and throws an IOException if it is not. The method then uses a DataInputStream to read the bytes from the input stream and returns the resulting byte array."
+26,createInputStream(File),create input stream file ,Method,,,java.io.FileInputStream+FileInputStream(File),,142,4,0,,"@VisibleForTesting
+    InputStream createInputStream(File file) throws FileNotFoundException {
+        return new FileInputStream(file);
+    }",False,False,This method creates an input stream from a file. It is marked as visible for testing purposes. It takes a file as input and returns an input stream. It may throw a FileNotFoundException.,False,"The code defines a method named `createInputStream` that takes a `File` object as input and returns an `InputStream`. It is marked with `@VisibleForTesting` annotation, indicating that it is intended for testing purposes. The method creates a new `FileInputStream` object using the provided `File` and returns it."
+27,createOutputStream(File),create output stream file ,Method,,,java.io.FileOutputStream+FileOutputStream(File),,145,4,0,,"@VisibleForTesting
+    OutputStream createOutputStream(File file) throws FileNotFoundException {
+        return new FileOutputStream(file);
+    }",False,False,This method creates an output stream for a given file. It is marked as visible for testing purposes. It throws a FileNotFoundException if the file cannot be found.,False,The code defines a method named `createOutputStream` that takes a `File` object as input and returns an `OutputStream` object. It creates a new `FileOutputStream` using the provided `File` object and returns it. The `@VisibleForTesting` annotation suggests that this method is primarily intended for testing purposes.
+28,CacheHeader,cache header handles holding onto the cache headers for an entry ,MemberClass,,,"com.android.volley.toolbox.DiskBasedCache.CacheHeader+CacheHeader(String,String,long,long,long,long,List<Header>) java.lang.String+equals(Object) java.lang.String+equals(Object) com.android.volley.toolbox.DiskBasedCache.CacheHeader+CacheHeader(String,Entry) com.android.volley.toolbox.DiskBasedCache.CacheHeader+getAllResponseHeaders(Entry) com.android.volley.toolbox.DiskBasedCache.CacheHeader+getAllResponseHeaders(Entry) com.android.volley.toolbox.DiskBasedCache.CacheHeader+getAllResponseHeaders(Entry) com.android.volley.toolbox.HttpHeaderParser+toAllHeaderList(Map<String,String>) com.android.volley.toolbox.HttpHeaderParser+toAllHeaderList(Map<String,String>) com.android.volley.toolbox.DiskBasedCache.CacheHeader+readHeader(CountingInputStream) com.android.volley.toolbox.DiskBasedCache+readInt(InputStream) com.android.volley.toolbox.DiskBasedCache+readInt(InputStream) java.io.IOException+IOException() com.android.volley.toolbox.DiskBasedCache+readString(CountingInputStream) com.android.volley.toolbox.DiskBasedCache+readString(CountingInputStream) com.android.volley.toolbox.DiskBasedCache+readString(CountingInputStream) com.android.volley.toolbox.DiskBasedCache+readString(CountingInputStream) com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+readHeaderList(CountingInputStream) com.android.volley.toolbox.DiskBasedCache+readHeaderList(CountingInputStream) com.android.volley.toolbox.DiskBasedCache.CacheHeader+CacheHeader(String,String,long,long,long,long,List<Header>) com.android.volley.toolbox.DiskBasedCache.CacheHeader+toCacheEntry(byte[]) com.android.volley.Cache.Entry+Entry() com.android.volley.toolbox.HttpHeaderParser+toHeaderMap(List<Header>) com.android.volley.toolbox.HttpHeaderParser+toHeaderMap(List<Header>) java.util.Collections+unmodifiableList(List) java.util.Collections+unmodifiableList(List) com.android.volley.toolbox.DiskBasedCache.CacheHeader+writeHeader(OutputStream) com.android.volley.toolbox.DiskBasedCache+writeInt(OutputStream,int) com.android.volley.toolbox.DiskBasedCache+writeInt(OutputStream,int) com.android.volley.toolbox.DiskBasedCache+writeString(OutputStream,String) com.android.volley.toolbox.DiskBasedCache+writeString(OutputStream,String) com.android.volley.toolbox.DiskBasedCache+writeString(OutputStream,String) com.android.volley.toolbox.DiskBasedCache+writeString(OutputStream,String) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) com.android.volley.toolbox.DiskBasedCache+writeHeaderList(List<Header>,OutputStream) com.android.volley.toolbox.DiskBasedCache+writeHeaderList(List<Header>,OutputStream) java.io.OutputStream+flush() java.io.OutputStream+flush() com.android.volley.VolleyLog+d(String,Object[]) com.android.volley.VolleyLog+d(String,Object[]) java.lang.Throwable+toString() java.lang.Throwable+toString()",com.android.volley.toolbox.DiskBasedCache.CacheHeader+size com.android.volley.toolbox.DiskBasedCache.CacheHeader+key com.android.volley.toolbox.DiskBasedCache.CacheHeader+etag com.android.volley.toolbox.DiskBasedCache.CacheHeader+serverDate com.android.volley.toolbox.DiskBasedCache.CacheHeader+lastModified com.android.volley.toolbox.DiskBasedCache.CacheHeader+ttl com.android.volley.toolbox.DiskBasedCache.CacheHeader+softTtl com.android.volley.toolbox.DiskBasedCache.CacheHeader+allResponseHeaders com.android.volley.toolbox.DiskBasedCache.CacheHeader+key com.android.volley.toolbox.DiskBasedCache.CacheHeader+etag com.android.volley.toolbox.DiskBasedCache.CacheHeader+serverDate com.android.volley.toolbox.DiskBasedCache.CacheHeader+lastModified com.android.volley.toolbox.DiskBasedCache.CacheHeader+ttl com.android.volley.toolbox.DiskBasedCache.CacheHeader+softTtl com.android.volley.toolbox.DiskBasedCache.CacheHeader+allResponseHeaders com.android.volley.Cache.Entry+etag com.android.volley.Cache.Entry+serverDate com.android.volley.Cache.Entry+lastModified com.android.volley.Cache.Entry+ttl com.android.volley.Cache.Entry+softTtl com.android.volley.Cache.Entry+allResponseHeaders com.android.volley.Cache.Entry+allResponseHeaders com.android.volley.Cache.Entry+responseHeaders com.android.volley.toolbox.DiskBasedCache+CACHE_MAGIC com.android.volley.Cache.Entry+data com.android.volley.Cache.Entry+etag com.android.volley.toolbox.DiskBasedCache.CacheHeader+etag com.android.volley.Cache.Entry+serverDate com.android.volley.toolbox.DiskBasedCache.CacheHeader+serverDate com.android.volley.Cache.Entry+lastModified com.android.volley.toolbox.DiskBasedCache.CacheHeader+lastModified com.android.volley.Cache.Entry+ttl com.android.volley.toolbox.DiskBasedCache.CacheHeader+ttl com.android.volley.Cache.Entry+softTtl com.android.volley.toolbox.DiskBasedCache.CacheHeader+softTtl com.android.volley.Cache.Entry+responseHeaders com.android.volley.toolbox.DiskBasedCache.CacheHeader+allResponseHeaders com.android.volley.Cache.Entry+allResponseHeaders com.android.volley.toolbox.DiskBasedCache.CacheHeader+allResponseHeaders com.android.volley.toolbox.DiskBasedCache+CACHE_MAGIC com.android.volley.toolbox.DiskBasedCache.CacheHeader+key com.android.volley.toolbox.DiskBasedCache.CacheHeader+etag com.android.volley.toolbox.DiskBasedCache.CacheHeader+etag com.android.volley.toolbox.DiskBasedCache.CacheHeader+serverDate com.android.volley.toolbox.DiskBasedCache.CacheHeader+lastModified com.android.volley.toolbox.DiskBasedCache.CacheHeader+ttl com.android.volley.toolbox.DiskBasedCache.CacheHeader+softTtl com.android.volley.toolbox.DiskBasedCache.CacheHeader+allResponseHeaders,4711,133,8,"/** 
+ * Handles holding onto the cache headers for an entry. 
+ */
+","/** Handles holding onto the cache headers for an entry. */
+    @VisibleForTesting
+    static class CacheHeader {
+        /**
+         * The size of the data identified by this CacheHeader on disk (both header and data).
+         *
+         * <p>Must be set by the caller after it has been calculated.
+         *
+         * <p>This is not serialized to disk.
+         */
+        long size;
+
+        /** The key that identifies the cache entry. */
+        final String key;
+
+        /** ETag for cache coherence. */
+        final String etag;
+
+        /** Date of this response as reported by the server. */
+        final long serverDate;
+
+        /** The last modified date for the requested object. */
+        final long lastModified;
+
+        /** TTL for this record. */
+        final long ttl;
+
+        /** Soft TTL for this record. */
+        final long softTtl;
+
+        /** Headers from the response resulting in this cache entry. */
+        final List<Header> allResponseHeaders;
+
+        private CacheHeader(
+                String key,
+                String etag,
+                long serverDate,
+                long lastModified,
+                long ttl,
+                long softTtl,
+                List<Header> allResponseHeaders) {
+            this.key = key;
+            this.etag = """".equals(etag) ? null : etag;
+            this.serverDate = serverDate;
+            this.lastModified = lastModified;
+            this.ttl = ttl;
+            this.softTtl = softTtl;
+            this.allResponseHeaders = allResponseHeaders;
+        }
+
+        /**
+         * Instantiates a new CacheHeader object.
+         *
+         * @param key The key that identifies the cache entry
+         * @param entry The cache entry.
+         */
+        CacheHeader(String key, Entry entry) {
+            this(
+                    key,
+                    entry.etag,
+                    entry.serverDate,
+                    entry.lastModified,
+                    entry.ttl,
+                    entry.softTtl,
+                    getAllResponseHeaders(entry));
+        }
+
+        private static List<Header> getAllResponseHeaders(Entry entry) {
+            // If the entry contains all the response headers, use that field directly.
+            if (entry.allResponseHeaders != null) {
+                return entry.allResponseHeaders;
+            }
+
+            // Legacy fallback - copy headers from the map.
+            return HttpHeaderParser.toAllHeaderList(entry.responseHeaders);
+        }
+
+        /**
+         * Reads the header from a CountingInputStream and returns a CacheHeader object.
+         *
+         * @param is The InputStream to read from.
+         * @throws IOException if fails to read header
+         */
+        static CacheHeader readHeader(CountingInputStream is) throws IOException {
+            int magic = readInt(is);
+            if (magic != CACHE_MAGIC) {
+                // don't bother deleting, it'll get pruned eventually
+                throw new IOException();
+            }
+            String key = readString(is);
+            String etag = readString(is);
+            long serverDate = readLong(is);
+            long lastModified = readLong(is);
+            long ttl = readLong(is);
+            long softTtl = readLong(is);
+            List<Header> allResponseHeaders = readHeaderList(is);
+            return new CacheHeader(
+                    key, etag, serverDate, lastModified, ttl, softTtl, allResponseHeaders);
+        }
+
+        /** Creates a cache entry for the specified data. */
+        Entry toCacheEntry(byte[] data) {
+            Entry e = new Entry();
+            e.data = data;
+            e.etag = etag;
+            e.serverDate = serverDate;
+            e.lastModified = lastModified;
+            e.ttl = ttl;
+            e.softTtl = softTtl;
+            e.responseHeaders = HttpHeaderParser.toHeaderMap(allResponseHeaders);
+            e.allResponseHeaders = Collections.unmodifiableList(allResponseHeaders);
+            return e;
+        }
+
+        /** Writes the contents of this CacheHeader to the specified OutputStream. */
+        boolean writeHeader(OutputStream os) {
+            try {
+                writeInt(os, CACHE_MAGIC);
+                writeString(os, key);
+                writeString(os, etag == null ? """" : etag);
+                writeLong(os, serverDate);
+                writeLong(os, lastModified);
+                writeLong(os, ttl);
+                writeLong(os, softTtl);
+                writeHeaderList(allResponseHeaders, os);
+                os.flush();
+                return true;
+            } catch (IOException e) {
+                VolleyLog.d(""%s"", e.toString());
+                return false;
+            }
+        }
+    }",False,True,"/** 
+ * Handles holding onto the cache headers for an entry. 
+ */
+",False,"/** 
+ * Handles holding onto the cache headers for an entry. 
+ */
+"
+29,CountingInputStream,counting input stream ,MemberClass,,,"com.android.volley.toolbox.DiskBasedCache.CountingInputStream+CountingInputStream(InputStream,long) com.android.volley.toolbox.DiskBasedCache.CountingInputStream+read() java.io.FilterInputStream+read() com.android.volley.toolbox.DiskBasedCache.CountingInputStream+read(byte[],int,int) java.io.FilterInputStream+read(byte[],int,int) com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRead() com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRemaining()",com.android.volley.toolbox.DiskBasedCache.CountingInputStream+length com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRead com.android.volley.toolbox.DiskBasedCache.CountingInputStream+length com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRead com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRead com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRead com.android.volley.toolbox.DiskBasedCache.CountingInputStream+length com.android.volley.toolbox.DiskBasedCache.CountingInputStream+bytesRead,959,37,8,,"@VisibleForTesting
+    static class CountingInputStream extends FilterInputStream {
+        private final long length;
+        private long bytesRead;
+
+        CountingInputStream(InputStream in, long length) {
+            super(in);
+            this.length = length;
+        }
+
+        @Override
+        public int read() throws IOException {
+            int result = super.read();
+            if (result != -1) {
+                bytesRead++;
+            }
+            return result;
+        }
+
+        @Override
+        public int read(byte[] buffer, int offset, int count) throws IOException {
+            int result = super.read(buffer, offset, count);
+            if (result != -1) {
+                bytesRead += result;
+            }
+            return result;
+        }
+
+        @VisibleForTesting
+        long bytesRead() {
+            return bytesRead;
+        }
+
+        long bytesRemaining() {
+            return length - bytesRead;
+        }
+    }",False,False,,False,
+30,read(InputStream),read is simple wrapper around link input stream read that throws eof exception instead ofreturning 1 ,Method,,,java.io.InputStream+read() java.io.InputStream+read() java.io.EOFException+EOFException(),,311,11,10,"/** 
+ * Simple wrapper around  {@link InputStream#read()} that throws EOFException instead ofreturning -1.
+ */
+","/**
+     * Simple wrapper around {@link InputStream#read()} that throws EOFException instead of
+     * returning -1.
+     */
+    private static int read(InputStream is) throws IOException {
+        int b = is.read();
+        if (b == -1) {
+            throw new EOFException();
+        }
+        return b;
+    }",True,True,"The function of this method is to read a single byte from an input stream and throw an EOFException if the end of the stream is reached, instead of returning -1.",False,"The code defines a private method called ""read"" that takes an InputStream as input and reads a single byte from it. If the byte is -1, indicating the end of the stream, an EOFException is thrown. Otherwise, the byte is returned."
+31,"writeInt(OutputStream,int)",write int os n ,Method,,,java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int),,213,6,8,,"static void writeInt(OutputStream os, int n) throws IOException {
+        os.write((n >> 0) & 0xff);
+        os.write((n >> 8) & 0xff);
+        os.write((n >> 16) & 0xff);
+        os.write((n >> 24) & 0xff);
+    }",True,True,"The function of the method is to write an integer value to an output stream in little-endian format, by splitting the integer into four bytes and writing them sequentially to the stream.",False,"The `writeInt` method takes an `OutputStream` and an integer `n` as parameters and writes the bytes of `n` to the output stream in little-endian order. It shifts the bits of `n` by 0, 8, 16, and 24 positions respectively, and writes the resulting bytes to the output stream."
+32,readInt(InputStream),read int is ,Method,,,com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream),,220,8,8,,"static int readInt(InputStream is) throws IOException {
+        int n = 0;
+        n |= (read(is) << 0);
+        n |= (read(is) << 8);
+        n |= (read(is) << 16);
+        n |= (read(is) << 24);
+        return n;
+    }",True,True,This method reads an integer from an input stream by reading 4 bytes and combining them into a single integer value using bitwise operations.,False,"The given code is a method named ""readInt"" that takes an InputStream as input and returns an integer. It reads four bytes from the InputStream and combines them to form an integer using bitwise OR operations."
+33,"writeLong(OutputStream,long)",write long os n ,Method,,,java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.OutputStream+write(int),,367,10,8,,"static void writeLong(OutputStream os, long n) throws IOException {
+        os.write((byte) (n >>> 0));
+        os.write((byte) (n >>> 8));
+        os.write((byte) (n >>> 16));
+        os.write((byte) (n >>> 24));
+        os.write((byte) (n >>> 32));
+        os.write((byte) (n >>> 40));
+        os.write((byte) (n >>> 48));
+        os.write((byte) (n >>> 56));
+    }",False,True,The function of the method is to write a long integer value to an output stream by splitting it into 8 bytes and writing each byte separately.,False,The `writeLong` method takes an `OutputStream` and a `long` number as input and writes the bytes of the number to the output stream in little-endian order. It throws an `IOException` if there is an error while writing to the stream.
+34,readLong(InputStream),read long is ,Method,,,com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream) com.android.volley.toolbox.DiskBasedCache+read(InputStream),,427,12,8,,"static long readLong(InputStream is) throws IOException {
+        long n = 0;
+        n |= ((read(is) & 0xFFL) << 0);
+        n |= ((read(is) & 0xFFL) << 8);
+        n |= ((read(is) & 0xFFL) << 16);
+        n |= ((read(is) & 0xFFL) << 24);
+        n |= ((read(is) & 0xFFL) << 32);
+        n |= ((read(is) & 0xFFL) << 40);
+        n |= ((read(is) & 0xFFL) << 48);
+        n |= ((read(is) & 0xFFL) << 56);
+        return n;
+    }",True,True,The function reads a long value from an input stream by reading 8 bytes and combining them into a single long value using bitwise operations.,False,"The given code defines a method named ""readLong"" that reads a long value from an input stream. It reads 8 bytes from the stream and combines them to form a long value using bitwise operations. The resulting long value is then returned."
+35,"writeString(OutputStream,String)",write string os s ,Method,,,"java.lang.String+getBytes(String) java.lang.String+getBytes(String) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) com.android.volley.toolbox.DiskBasedCache+writeLong(OutputStream,long) java.io.OutputStream+write(byte[],int,int) java.io.OutputStream+write(byte[],int,int)",,184,5,8,,"static void writeString(OutputStream os, String s) throws IOException {
+        byte[] b = s.getBytes(""UTF-8"");
+        writeLong(os, b.length);
+        os.write(b, 0, b.length);
+    }",True,True,"This method writes a string to an output stream. It converts the string to bytes using UTF-8 encoding, writes the length of the byte array to the output stream, and then writes the byte array itself.",False,"The `writeString` method takes an `OutputStream` and a `String` as input parameters. It converts the string to bytes using UTF-8 encoding, writes the length of the byte array to the output stream, and then writes the byte array itself to the output stream."
+36,readString(CountingInputStream),read string cis ,Method,,,"com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+readLong(InputStream) com.android.volley.toolbox.DiskBasedCache+streamToBytes(CountingInputStream,long) com.android.volley.toolbox.DiskBasedCache+streamToBytes(CountingInputStream,long) java.lang.String+String(byte[],String)",,189,5,8,,"static String readString(CountingInputStream cis) throws IOException {
+        long n = readLong(cis);
+        byte[] b = streamToBytes(cis, n);
+        return new String(b, ""UTF-8"");
+    }",True,True,"This method reads a string from a CountingInputStream by first reading a long value, then converting the remaining bytes into a string using UTF-8 encoding, and returning the string.",False,"The given code defines a static method named `readString` that takes a `CountingInputStream` as input and returns a string. It reads a long value from the input stream, converts the stream to bytes using another method, and then creates a new string from the byte array using the UTF-8 encoding."
+37,"writeHeaderList(List<Header>,OutputStream)",write header list headers os ,Method,,,"com.android.volley.toolbox.DiskBasedCache+writeInt(OutputStream,int) com.android.volley.toolbox.DiskBasedCache+writeInt(OutputStream,int) java.util.List+size() java.util.List+size() com.android.volley.toolbox.DiskBasedCache+writeString(OutputStream,String) com.android.volley.toolbox.DiskBasedCache+writeString(OutputStream,String) com.android.volley.Header+getName() com.android.volley.Header+getName() com.android.volley.toolbox.DiskBasedCache+writeString(OutputStream,String) com.android.volley.toolbox.DiskBasedCache+writeString(OutputStream,String) com.android.volley.Header+getValue() com.android.volley.Header+getValue() com.android.volley.toolbox.DiskBasedCache+writeInt(OutputStream,int) com.android.volley.toolbox.DiskBasedCache+writeInt(OutputStream,int)",,383,11,8,,"static void writeHeaderList(List<Header> headers, OutputStream os) throws IOException {
+        if (headers != null) {
+            writeInt(os, headers.size());
+            for (Header header : headers) {
+                writeString(os, header.getName());
+                writeString(os, header.getValue());
+            }
+        } else {
+            writeInt(os, 0);
+        }
+    }",False,True,"This method writes a list of headers to an output stream. It first writes the size of the list, then iterates through each header and writes its name and value to the stream. If the list is null, it writes 0 to the stream.",False,"The code is a static method that writes a list of headers to an output stream. It first writes the size of the list, and then iterates through each header to write its name and value. If the list is null, it writes 0 as the size."
+38,readHeaderList(CountingInputStream),read header list cis ,Method,,,"com.android.volley.toolbox.DiskBasedCache+readInt(InputStream) com.android.volley.toolbox.DiskBasedCache+readInt(InputStream) java.io.IOException+IOException(String) java.util.ArrayList+ArrayList() java.lang.String+intern() com.android.volley.toolbox.DiskBasedCache+readString(CountingInputStream) com.android.volley.toolbox.DiskBasedCache+readString(CountingInputStream) java.lang.String+intern() java.lang.String+intern() com.android.volley.toolbox.DiskBasedCache+readString(CountingInputStream) com.android.volley.toolbox.DiskBasedCache+readString(CountingInputStream) java.lang.String+intern() java.util.List+add(E) java.util.List+add(E) com.android.volley.Header+Header(String,String)",,566,14,8,,"static List<Header> readHeaderList(CountingInputStream cis) throws IOException {
+        int size = readInt(cis);
+        if (size < 0) {
+            throw new IOException(""readHeaderList size="" + size);
+        }
+        List<Header> result =
+                (size == 0) ? Collections.<Header>emptyList() : new ArrayList<Header>();
+        for (int i = 0; i < size; i++) {
+            String name = readString(cis).intern();
+            String value = readString(cis).intern();
+            result.add(new Header(name, value));
+        }
+        return result;
+    }",True,True,"This method reads a list of headers from a CountingInputStream. It first reads the size of the list, checks if it is valid, and then reads each header name and value from the input stream. It returns the list of headers.",False,"This code defines a static method called `readHeaderList` that takes a `CountingInputStream` as input and returns a list of `Header` objects. It reads an integer value from the input stream, checks if it is negative, creates an empty list if the size is zero, and then iteratively reads pairs of strings from the input stream to create `Header` objects and adds them to the list."

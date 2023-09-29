@@ -1,0 +1,514 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,BLOCK_COMPARISON_SIZE,block comparison size ,Field,,,,,53,1,26,,private static final int BLOCK_COMPARISON_SIZE = 512;,False,False,,False,
+2,"rangeCheckUnknown(long,long)",range check unknown zero based offset length ,Method,"rangeInputStream(InputStream,long,long,long) rangeReader(Reader,long,long,long)",,"org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object)",,322,8,10,,"private static void rangeCheckUnknown(long zeroBasedOffset, long length) {
+        if (zeroBasedOffset < 0) {
+            throw DbException.getInvalidValueException(""offset"", zeroBasedOffset + 1);
+        }
+        if (length < 0) {
+            throw DbException.getInvalidValueException(""length"", length);
+        }
+    }",False,False,"This method is used to check if the given zero-based offset and length are valid. If either of them is negative, it throws an exception indicating the invalid value.",False,"The given code is a private static method called ""rangeCheckUnknown"" that checks if the zero-based offset and length values are valid. If the offset is less than 0 or the length is less than 0, it throws an exception with an appropriate error message."
+3,"rangeInputStream(InputStream,long,long,long)",range input stream input stream one based offset length data size create an input stream that is s subset of the given stream param input stream the source input stream param one based offset the offset 1 means no offset param length the length of the result in bytes param data size the length of the input in bytes return the smaller input stream ,Method,,"org.h2.value.ValueLobDatabase+getInputStream(long,long) org.h2.value.ValueLobFetchOnDemand+getInputStream(long,long) org.h2.value.ValueLobFile+getInputStream(long,long) org.h2.value.ValueLobInMemory+getInputStream(long,long)","org.h2.value.Value+rangeCheck(long,long,long) org.h2.value.Value+rangeCheck(long,long,long) org.h2.value.ValueLob+rangeCheckUnknown(long,long) org.h2.value.ValueLob+rangeCheckUnknown(long,long) org.h2.store.RangeInputStream+RangeInputStream(InputStream,long,long) org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object)",,891,22,12,"/** 
+ * Create an input stream that is s subset of the given stream.
+ * @param inputStream the source input stream
+ * @param oneBasedOffset the offset (1 means no offset)
+ * @param length the length of the result, in bytes
+ * @param dataSize the length of the input, in bytes
+ * @return the smaller input stream
+ */
+","/**
+     * Create an input stream that is s subset of the given stream.
+     *
+     * @param inputStream the source input stream
+     * @param oneBasedOffset the offset (1 means no offset)
+     * @param length the length of the result, in bytes
+     * @param dataSize the length of the input, in bytes
+     * @return the smaller input stream
+     */
+    protected static InputStream rangeInputStream(InputStream inputStream, long oneBasedOffset, long length,
+            long dataSize) {
+        if (dataSize > 0) {
+            rangeCheck(oneBasedOffset - 1, length, dataSize);
+        } else {
+            rangeCheckUnknown(oneBasedOffset - 1, length);
+        }
+        try {
+            return new RangeInputStream(inputStream, oneBasedOffset - 1, length);
+        } catch (IOException e) {
+            throw DbException.getInvalidValueException(""offset"", oneBasedOffset);
+        }
+    }",False,False,"This method creates a smaller input stream that is a subset of the given input stream. It takes the source input stream, an offset, the length of the result, and the length of the input as parameters. It performs range checks and returns the smaller input stream.",False,"This code defines a method called `rangeInputStream` that takes an input stream, an offset, a length, and a data size as parameters. It performs range checks on the offset and length, and then creates and returns a new input stream that is a subset of the original input stream based on the offset and length values. If an IOException occurs during the creation of the new input stream, an exception is thrown."
+4,"rangeReader(Reader,long,long,long)",range reader reader one based offset length data size create a reader that is s subset of the given reader param reader the input reader param one based offset the offset 1 means no offset param length the length of the result in bytes param data size the length of the input in bytes return the smaller input stream ,Method,"getReader(long,long)",,"org.h2.value.Value+rangeCheck(long,long,long) org.h2.value.Value+rangeCheck(long,long,long) org.h2.value.ValueLob+rangeCheckUnknown(long,long) org.h2.value.ValueLob+rangeCheckUnknown(long,long) org.h2.store.RangeReader+RangeReader(Reader,long,long) org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object)",,828,21,10,"/** 
+ * Create a reader that is s subset of the given reader.
+ * @param reader the input reader
+ * @param oneBasedOffset the offset (1 means no offset)
+ * @param length the length of the result, in bytes
+ * @param dataSize the length of the input, in bytes
+ * @return the smaller input stream
+ */
+","/**
+     * Create a reader that is s subset of the given reader.
+     *
+     * @param reader the input reader
+     * @param oneBasedOffset the offset (1 means no offset)
+     * @param length the length of the result, in bytes
+     * @param dataSize the length of the input, in bytes
+     * @return the smaller input stream
+     */
+    private static Reader rangeReader(Reader reader, long oneBasedOffset, long length, long dataSize) {
+        if (dataSize > 0) {
+            rangeCheck(oneBasedOffset - 1, length, dataSize);
+        } else {
+            rangeCheckUnknown(oneBasedOffset - 1, length);
+        }
+        try {
+            return new RangeReader(reader, oneBasedOffset - 1, length);
+        } catch (IOException e) {
+            throw DbException.getInvalidValueException(""offset"", oneBasedOffset);
+        }
+    }",False,False,"This method creates a subset of a given reader by specifying an offset and length. It performs range checks on the offset and length parameters, and then creates a new RangeReader object with the specified offset and length.",False,"The `rangeReader` method takes a `Reader` object, an offset, a length, and the size of the input data as parameters. It performs range checks on the offset and length, and then creates and returns a new `Reader` object that represents a subset of the original reader starting from the specified offset and with the specified length."
+5,"compare(ValueLob,ValueLob)",compare v1 v2 compares lo bs of the same type param v1 first lob value param v2 second lob value return result of comparison ,Method,"compareTypeSafe(Value,CompareMode,CastDataProvider)","org.h2.value.ValueLobDatabase+compareTypeSafe(Value,CompareMode,CastDataProvider) org.h2.value.ValueLobFetchOnDemand+compareTypeSafe(Value,CompareMode,CastDataProvider) org.h2.value.ValueLobInMemory+compareTypeSafe(Value,CompareMode,CastDataProvider)",,,3126,71,12,"/** 
+ * Compares LOBs of the same type.
+ * @param v1 first LOB value
+ * @param v2 second LOB value
+ * @return result of comparison
+ */
+","/**
+     * Compares LOBs of the same type.
+     *
+     * @param v1 first LOB value
+     * @param v2 second LOB value
+     * @return result of comparison
+     */
+    protected static int compare(ValueLob v1, ValueLob v2) {
+        int valueType = v1.getValueType();
+        assert valueType == v2.getValueType();
+        long minPrec = Math.min(v1.getType().getPrecision(), v2.getType().getPrecision());
+        if (valueType == Value.BLOB) {
+            try (InputStream is1 = v1.getInputStream(); InputStream is2 = v2.getInputStream()) {
+                byte[] buf1 = new byte[BLOCK_COMPARISON_SIZE];
+                byte[] buf2 = new byte[BLOCK_COMPARISON_SIZE];
+                for (; minPrec >= BLOCK_COMPARISON_SIZE; minPrec -= BLOCK_COMPARISON_SIZE) {
+                    if (IOUtils.readFully(is1, buf1, BLOCK_COMPARISON_SIZE) != BLOCK_COMPARISON_SIZE
+                            || IOUtils.readFully(is2, buf2, BLOCK_COMPARISON_SIZE) != BLOCK_COMPARISON_SIZE) {
+                        throw DbException.getUnsupportedException(""Invalid LOB"");
+                    }
+                    int cmp = Bits.compareNotNullUnsigned(buf1, buf2);
+                    if (cmp != 0) {
+                        return cmp;
+                    }
+                }
+                for (;;) {
+                    int c1 = is1.read(), c2 = is2.read();
+                    if (c1 < 0) {
+                        return c2 < 0 ? 0 : -1;
+                    }
+                    if (c2 < 0) {
+                        return 1;
+                    }
+                    if (c1 != c2) {
+                        return (c1 & 0xFF) < (c2 & 0xFF) ? -1 : 1;
+                    }
+                }
+            } catch (IOException ex) {
+                throw DbException.convert(ex);
+            }
+        } else {
+            try (Reader reader1 = v1.getReader(); Reader reader2 = v2.getReader()) {
+                char[] buf1 = new char[BLOCK_COMPARISON_SIZE];
+                char[] buf2 = new char[BLOCK_COMPARISON_SIZE];
+                for (; minPrec >= BLOCK_COMPARISON_SIZE; minPrec -= BLOCK_COMPARISON_SIZE) {
+                    if (IOUtils.readFully(reader1, buf1, BLOCK_COMPARISON_SIZE) != BLOCK_COMPARISON_SIZE
+                            || IOUtils.readFully(reader2, buf2, BLOCK_COMPARISON_SIZE) != BLOCK_COMPARISON_SIZE) {
+                        throw DbException.getUnsupportedException(""Invalid LOB"");
+                    }
+                    int cmp = Bits.compareNotNull(buf1, buf2);
+                    if (cmp != 0) {
+                        return cmp;
+                    }
+                }
+                for (;;) {
+                    int c1 = reader1.read(), c2 = reader2.read();
+                    if (c1 < 0) {
+                        return c2 < 0 ? 0 : -1;
+                    }
+                    if (c2 < 0) {
+                        return 1;
+                    }
+                    if (c1 != c2) {
+                        return c1 < c2 ? -1 : 1;
+                    }
+                }
+            } catch (IOException ex) {
+                throw DbException.convert(ex);
+            }
+        }
+    }",True,True,"This method compares two LOB values of the same type. It reads the LOB values in blocks and compares them byte by byte. If the LOB values are not equal, it returns the result of the comparison. If one LOB value is shorter than the other, it returns -1 or 1 depending on which one is shorter. If the LOB values are equal, it returns 0.",False,"This code defines a method called `compare` that compares two LOB (Large Object) values of the same type. It handles both BLOB (binary) and CLOB (character) types, reading and comparing the values in blocks of a specified size. The method returns the result of the comparison."
+6,valueType,value type the value type value blob or clob ,Field,"ValueLob(int,long)","org.h2.value.ValueLobFetchOnDemand+getInputStream(long,long)",,,89,4,20,"/** 
+ * the value type (Value.BLOB or CLOB)
+ */
+","/**
+     * the value type (Value.BLOB or CLOB)
+     */
+    protected final int valueType;",False,False,"/** 
+ * the value type (Value.BLOB or CLOB)
+ */
+",False,"/** 
+ * the value type (Value.BLOB or CLOB)
+ */
+"
+7,type,type ,Field,getType() getType(),,,,22,1,2,,private TypeInfo type;,False,False,,False,
+8,precision,precision length in characters for character large objects or length in bytes for binary large objects ,Field,"ValueLob(int,long)","org.h2.value.ValueLobDatabase+convertPrecision(long) org.h2.value.ValueLobFetchOnDemand+convertPrecision(long) org.h2.value.ValueLobFile+ValueLobFile(DataHandler,Reader,long) org.h2.value.ValueLobFile+ValueLobFile(DataHandler,byte[],int,InputStream,long) org.h2.value.ValueLobInMemory+convertPrecision(long)",,,149,5,4,"/** 
+ * Length in characters for character large objects or length in bytes for binary large objects.
+ */
+","/**
+     * Length in characters for character large objects or length in bytes for
+     * binary large objects.
+     */
+    protected long precision;",False,False,"/** 
+ * Length in characters for character large objects or length in bytes for binary large objects.
+ */
+",False,"/** 
+ * Length in characters for character large objects or length in bytes for binary large objects.
+ */
+"
+9,otherPrecision,other precision length in characters for binary large objects or length in bytes for character large objects ,Field,,,,,159,5,64,"/** 
+ * Length in characters for binary large objects or length in bytes for character large objects.
+ */
+","/**
+     * Length in characters for binary large objects or length in bytes for
+     * character large objects.
+     */
+    volatile long otherPrecision = -1L;",False,False,"/** 
+ * Length in characters for binary large objects or length in bytes for character large objects.
+ */
+",False,"/** 
+ * Length in characters for binary large objects or length in bytes for character large objects.
+ */
+"
+10,hash,hash cache the hash code because it can be expensive to compute ,Field,,,,,99,4,2,"/** 
+ * Cache the hashCode because it can be expensive to compute.
+ */
+","/**
+     * Cache the hashCode because it can be expensive to compute.
+     */
+    private int hash;",False,False,"/** 
+ * Cache the hashCode because it can be expensive to compute.
+ */
+",False,"/** 
+ * Cache the hashCode because it can be expensive to compute.
+ */
+"
+11,"ValueLob(int,long)",value lob type precision ,Method,,,,org.h2.value.ValueLob+valueType org.h2.value.ValueLob+valueType org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision,119,4,4,,"protected ValueLob(int type, long precision) {
+        this.valueType = type;
+        this.precision = precision;
+    }",False,False,This method serves to initialize the valueType and precision variables of the ValueLob class.,True,"The code defines a protected constructor for a class called ValueLob. It takes two parameters, type and precision, and assigns them to the corresponding instance variables. The purpose of this constructor is to initialize the state of a ValueLob object."
+12,isLinkedToTable(),is linked to table check if this value is linked to a specific table for values that are kept fully in memory this method returns false return true if it is ,Method,,org.h2.engine.SessionLocal+removeAtCommit(ValueLob) org.h2.engine.SessionLocal+removeAtCommitStop(ValueLob),,,248,9,1,"/** 
+ * Check if this value is linked to a specific table. For values that are kept fully in memory, this method returns false.
+ * @return true if it is
+ */
+","/**
+     * Check if this value is linked to a specific table. For values that are
+     * kept fully in memory, this method returns false.
+     *
+     * @return true if it is
+     */
+    public boolean isLinkedToTable() {
+        return false;
+    }",False,False,"This method checks if the value is linked to a specific table. It returns false if the value is kept fully in memory, indicating that it is not linked to a table.",False,"The given code is a method named ""isLinkedToTable"" which returns a boolean value. It checks if the value is linked to a specific table and returns true if it is, otherwise it returns false."
+13,remove(),remove remove the underlying resource if any for values that are kept fully in memory this method has no effect ,Method,,"org.h2.command.CommandRemote+close() org.h2.engine.SessionLocal+setVariable(String,Value) org.h2.engine.SessionLocal+endTransaction(boolean) org.h2.expression.ParameterRemote+setValue(Value,boolean) org.h2.value.ValueLobInMemory+copy(DataHandler,int)",,,161,5,1,"/** 
+ * Remove the underlying resource, if any. For values that are kept fully in memory this method has no effect.
+ */
+","/**
+     * Remove the underlying resource, if any. For values that are kept fully in
+     * memory this method has no effect.
+     */
+    public void remove() {}",False,False,"The function of this method is to remove the underlying resource, if there is one. If the values are stored fully in memory, this method does not have any effect.",False,"The given code contains a method called ""remove"" which is used to remove the underlying resource. This method does not have any effect on values that are fully stored in memory."
+14,"copy(DataHandler,int)",copy database table id copy a large value to be used in the given table for values that are kept fully in memory this method has no effect param database the data handler param table id the table where this object is used return the new value or itself ,Method,,"org.h2.engine.SessionLocal+setVariable(String,Value) org.h2.mvstore.db.MVPrimaryIndex+add(SessionLocal,Row) org.h2.value.ValueLobInMemory+copy(DataHandler,int)",java.lang.UnsupportedOperationException+UnsupportedOperationException(),,407,11,1,"/** 
+ * Copy a large value, to be used in the given table. For values that are kept fully in memory this method has no effect.
+ * @param database the data handler
+ * @param tableId the table where this object is used
+ * @return the new value or itself
+ */
+","/**
+     * Copy a large value, to be used in the given table. For values that are
+     * kept fully in memory this method has no effect.
+     *
+     * @param database the data handler
+     * @param tableId the table where this object is used
+     * @return the new value or itself
+     */
+    public ValueLob copy(DataHandler database, int tableId) {
+        throw new UnsupportedOperationException();
+    }",True,True,"The function of this method is to copy a large value to be used in a table. If the value is already fully in memory, the method has no effect. It takes a data handler and a table ID as parameters and returns the new value or itself.",False,"The given code snippet represents a method named ""copy"" that is used to copy a large value to be used in a table. It takes a data handler and a table ID as parameters and returns either a new value or itself. The method is currently throwing an UnsupportedOperationException, indicating that it is not implemented and cannot be used."
+15,getType(),get type ,Method,,"org.h2.mvstore.db.LobStorageMap+copyLob(ValueLob,int,long) org.h2.mvstore.db.ValueDataType+write(WriteBuffer,Value) org.h2.tools.Recover+getSQL(StringBuilder,String,Value) org.h2.value.Transfer+writeValue(Value) org.h2.value.Transfer+writeValue(Value)","org.h2.value.TypeInfo+TypeInfo(int,long,int,ExtTypeInfo)",org.h2.value.ValueLob+type org.h2.value.ValueLob+type org.h2.value.ValueLob+type org.h2.value.ValueLob+type org.h2.value.ValueLob+valueType org.h2.value.ValueLob+precision,217,8,1,,"@Override
+    public TypeInfo getType() {
+        TypeInfo type = this.type;
+        if (type == null) {
+            this.type = type = new TypeInfo(valueType, precision, 0, null);
+        }
+        return type;
+    }",False,False,"This method returns the type of the object. If the type is null, it creates a new type object and assigns it to the instance variable before returning it.",False,"This code defines a method called `getType()` which returns the `TypeInfo` object. If the `type` variable is null, it creates a new `TypeInfo` object and assigns it to `type` before returning it."
+16,getValueType(),get value type ,Method,,"org.h2.mvstore.db.LobStorageMap+copyLob(ValueLob,int,long) org.h2.pagestore.db.LobStorageBackend+copyLob(ValueLob,int,long) org.h2.tools.Recover+getSQL(StringBuilder,String,Value) org.h2.util.JdbcUtils+setLob(PreparedStatement,int,ValueLob)",,org.h2.value.ValueLob+valueType,73,4,1,,"@Override
+    public int getValueType() {
+        return valueType;
+    }",True,True,"This method serves to return the value type, which is an integer.",False,"The code snippet defines a method named `getValueType()` that returns an integer value. It is marked with the `@Override` annotation, indicating that it overrides a method from a superclass or interface. The method simply returns the value of the `valueType` variable."
+17,getString(),get string ,Method,"getSQL(StringBuilder,int) getSQL(StringBuilder,int)",,org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+charLength() org.h2.value.ValueLob+charLength() org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+readString(int) java.lang.String+length() java.lang.String+length() org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+getStringTooLong(long),org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.value.ValueLob+precision org.h2.engine.Constants+MAX_STRING_LENGTH org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+otherPrecision org.h2.engine.Constants+MAX_STRING_LENGTH org.h2.value.ValueLob+precision org.h2.engine.Constants+MAX_STRING_LENGTH java.lang.Integer+MAX_VALUE org.h2.value.ValueLob+otherPrecision org.h2.engine.Constants+MAX_STRING_LENGTH,862,26,1,,"@Override
+    public String getString() {
+        if (valueType == CLOB) {
+            if (precision > Constants.MAX_STRING_LENGTH) {
+                throw getStringTooLong(precision);
+            }
+            return readString((int) precision);
+        }
+        long p = otherPrecision;
+        if (p >= 0L) {
+            if (p > Constants.MAX_STRING_LENGTH) {
+                throw getStringTooLong(p);
+            }
+            return readString((int) p);
+        }
+        // 1 Java character may be encoded with up to 3 bytes
+        if (precision > Constants.MAX_STRING_LENGTH * 3) {
+            throw getStringTooLong(charLength());
+        }
+        String s = readString(Integer.MAX_VALUE);
+        otherPrecision = p = s.length();
+        if (p > Constants.MAX_STRING_LENGTH) {
+            throw getStringTooLong(p);
+        }
+        return s;
+    }",True,True,"The function of this method is to return a string value. It checks the value type and precision, and throws an exception if the string is too long. It then reads the string and returns it.",False,"This code defines a method called `getString()` that returns a string value. It checks the value type and precision, and throws an exception if the string length exceeds the maximum allowed length. It then reads the string and returns it."
+18,getStringTooLong(long),get string too long precision ,Method,getString() getString() getString() getString(),,"org.h2.message.DbException+getValueTooLongException(String,String,long) org.h2.message.DbException+getValueTooLongException(String,String,long) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+readString(int)",,161,3,2,,"private DbException getStringTooLong(long precision) {
+        return DbException.getValueTooLongException(""CHARACTER VARYING"", readString(81), precision);
+    }",False,False,"The method returns a database exception for a string that is too long, specifying the data type, the actual string, and the precision value.",False,"The code defines a private method called `getStringTooLong` that returns a `DbException`. This method takes a `precision` parameter and uses it to create a `DbException` with a specific error message, using the `readString` method to retrieve a string value."
+19,readString(int),read string len ,Method,getString() getString() getString() getStringTooLong(long),,"org.h2.util.IOUtils+readStringAndClose(Reader,int) org.h2.util.IOUtils+readStringAndClose(Reader,int) org.h2.value.ValueLob+getReader() org.h2.value.ValueLob+getReader() org.h2.message.DbException+convertIOException(IOException,String) org.h2.message.DbException+convertIOException(IOException,String) org.h2.value.Value+toString() org.h2.value.Value+toString()",,230,7,2,,"private String readString(int len) {
+        try {
+            return IOUtils.readStringAndClose(getReader(), len);
+        } catch (IOException e) {
+            throw DbException.convertIOException(e, toString());
+        }
+    }",False,False,The function of the method is to read a string of a specified length from a reader and return it. It handles any IOException that may occur and converts it to a DbException.,False,"The `readString` method reads a string of specified length from a reader object. It uses the `IOUtils` class to read the string and handle any IOExceptions that may occur. If an IOException is caught, it is converted into a DbException and thrown."
+20,getReader(),get reader ,Method,"readString(int) getReader(long,long) charLength()","org.h2.util.JdbcUtils+setLob(PreparedStatement,int,ValueLob) org.h2.value.Value+convertToClob(TypeInfo,int,Object) org.h2.value.ValueLobDatabase+convertPrecision(long) org.h2.value.ValueLobFetchOnDemand+convertPrecision(long) org.h2.value.ValueLobInMemory+copy(DataHandler,int) org.h2.value.ValueLobInMemory+convertPrecision(long) org.h2.test.db.TestLob+testLimitsLarge(byte[],String,ValueLobInMemory)",org.h2.util.IOUtils+getReader(InputStream) org.h2.util.IOUtils+getReader(InputStream) org.h2.value.ValueLob+getInputStream() org.h2.value.ValueLob+getInputStream(),,99,4,1,,"@Override
+    public Reader getReader() {
+        return IOUtils.getReader(getInputStream());
+    }",False,False,The function of the method is to return a Reader object by calling the getReader() method. It uses the IOUtils class to get a Reader object from the InputStream object obtained from the getInputStream() method.,False,The code is implementing a method called `getReader()` which returns a `Reader` object. It uses the `IOUtils.getReader()` method to convert the input stream obtained from `getInputStream()` into a reader object and returns it.
+21,"getReader(long,long)",get reader one based offset length ,Method,,,"org.h2.value.ValueLob+rangeReader(Reader,long,long,long) org.h2.value.ValueLob+rangeReader(Reader,long,long,long) org.h2.value.ValueLob+getReader() org.h2.value.ValueLob+getReader()",org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.value.ValueLob+precision,186,4,1,,"@Override
+    public Reader getReader(long oneBasedOffset, long length) {
+        return rangeReader(getReader(), oneBasedOffset, length, valueType == Value.CLOB ? precision : -1);
+    }",False,False,"The method ""getReader"" returns a Reader object with a specified offset and length. It uses the ""rangeReader"" method to create the Reader object based on the given parameters.",False,"The code snippet is an overridden method that returns a Reader object. It calls the rangeReader method, passing the current Reader object, an offset, a length, and a precision value. The precision value is determined based on the valueType, which can be either Value.CLOB or another value."
+22,getBytes(),get bytes ,Method,,,org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+octetLength() org.h2.value.ValueLob+octetLength() org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+getBinaryTooLong(long),org.h2.value.ValueLob+valueType org.h2.value.Value+BLOB org.h2.value.ValueLob+precision org.h2.engine.Constants+MAX_STRING_LENGTH org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+otherPrecision org.h2.engine.Constants+MAX_STRING_LENGTH org.h2.value.ValueLob+precision org.h2.engine.Constants+MAX_STRING_LENGTH java.lang.Integer+MAX_VALUE org.h2.value.ValueLob+otherPrecision org.h2.engine.Constants+MAX_STRING_LENGTH,791,25,1,,"@Override
+    public byte[] getBytes() {
+        if (valueType == BLOB) {
+            if (precision > Constants.MAX_STRING_LENGTH) {
+                throw getBinaryTooLong(precision);
+            }
+            return readBytes((int) precision);
+        }
+        long p = otherPrecision;
+        if (p >= 0L) {
+            if (p > Constants.MAX_STRING_LENGTH) {
+                throw getBinaryTooLong(p);
+            }
+            return readBytes((int) p);
+        }
+        if (precision > Constants.MAX_STRING_LENGTH) {
+            throw getBinaryTooLong(octetLength());
+        }
+        byte[] b = readBytes(Integer.MAX_VALUE);
+        otherPrecision = p = b.length;
+        if (p > Constants.MAX_STRING_LENGTH) {
+            throw getBinaryTooLong(p);
+        }
+        return b;
+    }",False,False,"This method returns a byte array. If the value type is BLOB, it checks the precision and throws an exception if it exceeds the maximum string length. Otherwise, it reads bytes based on the precision and returns them.",False,"This code defines a method called `getBytes()` that returns a byte array. It checks the value type and precision of the data, and throws an exception if the precision exceeds the maximum allowed length. It then reads the bytes based on the precision and returns the byte array."
+23,getBinaryTooLong(long),get binary too long precision ,Method,getBytes() getBytes() getBytes() getBytes(),,"org.h2.message.DbException+getValueTooLongException(String,String,long) org.h2.message.DbException+getValueTooLongException(String,String,long) org.h2.util.StringUtils+convertBytesToHex(byte[]) org.h2.util.StringUtils+convertBytesToHex(byte[]) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+readBytes(int)",,204,4,2,,"private DbException getBinaryTooLong(long precision) {
+        return DbException.getValueTooLongException(""BINARY VARYING"", StringUtils.convertBytesToHex(readBytes(41)),
+                precision);
+    }",False,False,"This method returns a database exception with a specific message and precision value, using a utility method to convert bytes to hexadecimal.",False,"The given code is a private method named ""getBinaryTooLong"" that returns a DbException. It takes a long precision as a parameter and uses it to create a DbException with a specific error message, including a converted byte array as a hexadecimal string."
+24,readBytes(int),read bytes len ,Method,getBytes() getBytes() getBytes() getBinaryTooLong(long),,"org.h2.util.IOUtils+readBytesAndClose(InputStream,int) org.h2.util.IOUtils+readBytesAndClose(InputStream,int) org.h2.value.ValueLob+getInputStream() org.h2.value.ValueLob+getInputStream() org.h2.message.DbException+convertIOException(IOException,String) org.h2.message.DbException+convertIOException(IOException,String) org.h2.value.Value+toString() org.h2.value.Value+toString()",,233,7,2,,"private byte[] readBytes(int len) {
+        try {
+            return IOUtils.readBytesAndClose(getInputStream(), len);
+        } catch (IOException e) {
+            throw DbException.convertIOException(e, toString());
+        }
+    }",False,False,The function of the method is to read a specified number of bytes from an input stream and return them as a byte array. It handles any IOExceptions that occur and converts them to a DbException.,False,"The `readBytes` method reads a specified number of bytes from an input stream and returns them as a byte array. If an IOException occurs during the reading process, it is converted into a DbException and thrown."
+25,getInputStream(),get input stream ,Method,getReader() readBytes(int) octetLength(),"org.h2.util.JdbcUtils+setLob(PreparedStatement,int,ValueLob)",,,59,2,1025,,"@Override
+    public abstract InputStream getInputStream();",False,False,This method is an overridden abstract method that returns an InputStream.,False,"The code snippet defines an abstract method called ""getInputStream()"" that returns an InputStream object. The method is marked with the ""@Override"" annotation, indicating that it overrides a method from a superclass or interface."
+26,"getInputStream(long,long)",get input stream one based offset length ,Method,,,,,91,2,1025,,"@Override
+    public abstract InputStream getInputStream(long oneBasedOffset, long length);",True,True,"This method is an overridden abstract method that returns an InputStream. It takes two parameters, oneBasedOffset and length, and is used to retrieve an InputStream starting from the specified offset and with the specified length.",False,"The code contains an abstract method named ""getInputStream"" that returns an InputStream object. It takes two parameters: ""oneBasedOffset"" and ""length"", both of which are long data types. The method is overridden by a subclass and is responsible for returning an InputStream starting from the specified offset and with the specified length."
+27,hashCode(),hash code ,Method,equals(Object) equals(Object),,org.h2.util.Utils+getByteArrayHash(byte[]) org.h2.util.Utils+getByteArrayHash(byte[]) org.h2.value.Value+getBytesNoCopy() org.h2.value.Value+getBytesNoCopy(),org.h2.value.ValueLob+hash org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+hash org.h2.value.ValueLob+hash,395,12,1,,"@Override
+    public int hashCode() {
+        if (hash == 0) {
+            if (precision > 4096) {
+                // TODO: should calculate the hash code when saving, and store
+                // it in the database file
+                return (int) (precision ^ (precision >>> 32));
+            }
+            hash = Utils.getByteArrayHash(getBytesNoCopy());
+        }
+        return hash;
+    }",False,False,"This method calculates and returns the hash code of an object. If the hash code has not been calculated yet, it is calculated based on the precision value. If the precision is greater than 4096, a specific calculation is performed. Otherwise, the hash code is calculated using a utility method.",False,"This code overrides the default hashCode() method to calculate and return the hash code of an object. If the precision value is greater than 4096, it returns a calculated hash code, otherwise it uses a utility method to calculate the hash code based on the object's byte representation."
+28,"compareTypeSafe(Value,CompareMode,CastDataProvider)",compare type safe v mode provider ,Method,equals(Object),,"org.h2.value.ValueLob+compare(ValueLob,ValueLob) org.h2.value.ValueLob+compare(ValueLob,ValueLob)",,229,8,1,,"@Override
+    public int compareTypeSafe(Value v, CompareMode mode, CastDataProvider provider) {
+        if (v == this) {
+            return 0;
+        }
+        ValueLob v2 = (ValueLob) v;
+        return compare(this, v2);
+    }",True,True,"This method is used to compare two values of type ValueLob. It checks if the values are equal, and if not, it calls the compare method to determine the comparison result.",False,"This code is a method that compares two values of type ValueLob. It first checks if the values are the same object, in which case it returns 0. Otherwise, it casts the input value to ValueLob and calls the compare method to compare the two values."
+29,"getSQL(StringBuilder,int)",get sql builder sql flags ,Method,,,"java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) org.h2.value.ValueLobDatabase+getTableId() org.h2.value.ValueLobDatabase+getTableId() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) org.h2.value.ValueLobDatabase+getLobId() org.h2.value.ValueLobDatabase+getLobId() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.value.ValueLob+getString() org.h2.value.ValueLob+getString() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) org.h2.value.ValueLob+getString() org.h2.value.ValueLob+getString() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) org.h2.util.StringUtils+convertBytesToHex(StringBuilder,byte[]) org.h2.util.StringUtils+convertBytesToHex(StringBuilder,byte[]) org.h2.value.Value+getBytesNoCopy() org.h2.value.Value+getBytesNoCopy() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+convertBytesToHex(StringBuilder,byte[]) org.h2.util.StringUtils+convertBytesToHex(StringBuilder,byte[]) org.h2.value.Value+getBytesNoCopy() org.h2.value.Value+getBytesNoCopy() java.lang.StringBuilder+append(char)",org.h2.util.HasSQL+REPLACE_LOBS_FOR_TRACE org.h2.value.ValueLob+precision org.h2.engine.SysProperties+MAX_TRACE_DATA_LENGTH org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.util.HasSQL+REPLACE_LOBS_FOR_TRACE org.h2.util.HasSQL+NO_CASTS org.h2.value.ValueLob+precision org.h2.util.HasSQL+REPLACE_LOBS_FOR_TRACE org.h2.util.HasSQL+NO_CASTS org.h2.value.ValueLob+precision,1679,33,1,,"@Override
+    public StringBuilder getSQL(StringBuilder builder, int sqlFlags) {
+        if ((sqlFlags & REPLACE_LOBS_FOR_TRACE) != 0
+                && (!(this instanceof ValueLobInMemory) || precision > SysProperties.MAX_TRACE_DATA_LENGTH)) {
+            if (valueType == Value.CLOB) {
+                builder.append(""SPACE("").append(precision);
+            } else {
+                builder.append(""CAST(REPEAT(CHAR(0), "").append(precision).append("") AS BINARY VARYING"");
+            }
+            ValueLobDatabase lobDb = (ValueLobDatabase) this;
+            builder.append("" /* table: "").append(lobDb.getTableId()).append("" id: "").append(lobDb.getLobId())
+                    .append("" */)"");
+        } else {
+            if (valueType == Value.CLOB) {
+                if ((sqlFlags & (REPLACE_LOBS_FOR_TRACE | NO_CASTS)) == 0) {
+                    StringUtils.quoteStringSQL(builder.append(""CAST(""), getString())
+                            .append("" AS CHARACTER LARGE OBJECT("").append(precision).append(""))"");
+                } else {
+                    StringUtils.quoteStringSQL(builder, getString());
+                }
+            } else {
+                if ((sqlFlags & (REPLACE_LOBS_FOR_TRACE | NO_CASTS)) == 0) {
+                    builder.append(""CAST(X'"");
+                    StringUtils.convertBytesToHex(builder, getBytesNoCopy()).append(""' AS BINARY LARGE OBJECT("")
+                            .append(precision).append(""))"");
+                } else {
+                    builder.append(""X'"");
+                    StringUtils.convertBytesToHex(builder, getBytesNoCopy()).append('\'');
+                }
+            }
+        }
+        return builder;
+    }",True,True,"The function of this method is to generate an SQL statement based on the given StringBuilder and sqlFlags. The generated SQL statement depends on the value type and sqlFlags, and may involve casting, quoting, and appending specific values based on the conditions. The final SQL statement is returned as a StringBuilder.",False,"This code is a method that generates SQL statements based on the given parameters. It checks if the SQL flags indicate the need to replace large objects (LOBs) for tracing purposes, and if so, it constructs the SQL accordingly. Otherwise, it constructs the SQL based on the value type (CLOB or BLOB) and the SQL flags."
+30,getPrecision(),get precision returns the precision return the precision ,Method,,"org.h2.util.JdbcUtils+setLob(PreparedStatement,int,ValueLob) org.h2.value.Value+convertToClob(TypeInfo,int,Object) org.h2.value.Value+convertToBlob(TypeInfo,int,Object)",,org.h2.value.ValueLob+precision,142,8,1,"/** 
+ * Returns the precision.
+ * @return the precision
+ */
+","/**
+     * Returns the precision.
+     *
+     * @return the precision
+     */
+    public long getPrecision() {
+        return precision;
+    }",False,False,This method serves to retrieve the precision value.,False,"The code contains a method named ""getPrecision"" that returns a long value representing the precision. The method does not take any parameters and has a summary description stating that it returns the precision."
+31,equals(Object),equals other ,Method,,,"org.h2.value.ValueLob+hashCode() org.h2.value.ValueLob+hashCode() org.h2.value.ValueLob+hashCode() org.h2.value.ValueLob+hashCode() org.h2.value.ValueLob+compareTypeSafe(Value,CompareMode,CastDataProvider) org.h2.value.ValueLob+compareTypeSafe(Value,CompareMode,CastDataProvider)",,308,9,1,,"@Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ValueLob))
+            return false;
+        ValueLob otherLob = (ValueLob) other;
+        if (hashCode() != otherLob.hashCode())
+            return false;
+        return compareTypeSafe((Value) other, null, null) == 0;
+    }",False,False,"This method overrides the equals() method to compare two objects. It checks if the other object is an instance of ValueLob, has the same hash code, and is type-safe. It returns true if all conditions are met, otherwise false.",False,"The code is implementing the equals method for a class called ValueLob. It checks if the given object is an instance of ValueLob, compares their hash codes, and then calls a compareTypeSafe method to check for type-safe equality. If all conditions are met, it returns true, otherwise false."
+32,getMemory(),get memory ,Method,,,,,64,4,1,,"@Override
+    public int getMemory() {
+        return 140;
+    }",False,False,This method serves to return the value 140 as an integer.,False,"The code snippet defines a method named ""getMemory"" that returns an integer value of 140. It is likely a part of a class or interface implementation and can be used to retrieve the memory value associated with an object or system."
+33,getDataHandler(),get data handler returns the data handler return the data handler or code null ,Method,,"org.h2.value.Value+convertToBlob(TypeInfo,int,Object)",,,169,8,1,"/** 
+ * Returns the data handler.
+ * @return the data handler, or {@code null}
+ */
+","/**
+     * Returns the data handler.
+     *
+     * @return the data handler, or {@code null}
+     */
+    public DataHandler getDataHandler() {
+        return null;
+    }",False,False,This method returns the data handler. It can either return the data handler or null if there is no data handler available.,False,This code defines a method called `getDataHandler()` that returns a `DataHandler` object. The method has a comment indicating that it may return `null` if no data handler is available.
+34,copyToTemp(),copy to temp create an independent copy of this temporary value the file will not be deleted automatically return the value ,Method,,,,,215,9,1,"/** 
+ * Create an independent copy of this temporary value. The file will not be deleted automatically.
+ * @return the value
+ */
+","/**
+     * Create an independent copy of this temporary value. The file will not be
+     * deleted automatically.
+     *
+     * @return the value
+     */
+    public ValueLob copyToTemp() {
+        return this;
+    }",False,False,"The method ""copyToTemp"" returns a copy of the current value. The copy is independent and will not be automatically deleted.",False,"The given code is a method named ""copyToTemp"" which returns an instance of the ""ValueLob"" class. It creates an independent copy of a temporary value and does not delete the associated file automatically."
+35,copyToResult(),copy to result create an independent copy of this value that will be bound to a result return the value this for small objects ,Method,,"org.h2.result.LocalResult+cloneLobs(Value[]) org.h2.server.TcpServerThread+sendRows(ResultInterface,long)",,,213,8,1,"/** 
+ * Create an independent copy of this value, that will be bound to a result.
+ * @return the value (this for small objects)
+ */
+","/**
+     * Create an independent copy of this value, that will be bound to a result.
+     *
+     * @return the value (this for small objects)
+     */
+    public ValueLob copyToResult() {
+        return this;
+    }",False,False,The function of this method is to create a copy of the current value that can be used as a result. It returns the value itself if it is a small object.,False,"The given code is a method named ""copyToResult()"" which returns an instance of the class ""ValueLob"". This method creates and returns an independent copy of the current object, which can be used as a result."
+36,convertPrecision(long),convert precision precision convert the precision to the requested value param precision the new precision return the truncated or this value ,Method,,"org.h2.value.Value+convertToClob(TypeInfo,int,Object) org.h2.value.Value+convertToBlob(TypeInfo,int,Object)",java.lang.UnsupportedOperationException+UnsupportedOperationException(),,261,9,0,"/** 
+ * Convert the precision to the requested value.
+ * @param precision the new precision
+ * @return the truncated or this value
+ */
+","/**
+     * Convert the precision to the requested value.
+     *
+     * @param precision the new precision
+     * @return the truncated or this value
+     */
+    ValueLob convertPrecision(long precision) {
+        throw new UnsupportedOperationException();
+    }",False,False,This method converts the precision of a value to a new value. It returns either the truncated value or the original value.,False,"The given code contains a method called `convertPrecision` which takes a `long` value as input and returns a `ValueLob` object. This method is used to convert the precision of the object to the requested value. However, the method is not implemented and throws an `UnsupportedOperationException`."
+37,charLength(),char length ,Method,getString(),,"org.h2.value.ValueLob+getReader() org.h2.value.ValueLob+getReader() java.io.Reader+skip(long) java.io.Reader+skip(long) java.io.Reader+read() java.io.Reader+read() org.h2.message.DbException+convertIOException(IOException,String) org.h2.message.DbException+convertIOException(IOException,String)",org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.value.ValueLob+precision org.h2.value.ValueLob+otherPrecision java.lang.Long+MAX_VALUE org.h2.value.ValueLob+otherPrecision,628,23,1,,"@Override
+    public long charLength() {
+        if (valueType == CLOB) {
+            return precision;
+        }
+        long p = otherPrecision;
+        if (p < 0L) {
+            try (Reader r = getReader()) {
+                p = 0L;
+                for (;;) {
+                    p += r.skip(Long.MAX_VALUE);
+                    if (r.read() < 0) {
+                        break;
+                    }
+                    p++;
+                }
+            } catch (IOException e) {
+                throw DbException.convertIOException(e, null);
+            }
+            otherPrecision = p;
+        }
+        return p;
+    }",True,True,"This method returns the length of a character value. If the value type is CLOB, it returns the precision. Otherwise, it calculates the length by reading the characters from a reader and counting them.",False,"This code defines a method called `charLength()` that returns the length of a character value. If the value type is a CLOB, it returns the precision directly. Otherwise, it calculates the precision by reading the characters from a Reader object and counting them, caching the result for future calls."
+38,octetLength(),octet length ,Method,getBytes(),,"org.h2.value.ValueLob+getInputStream() org.h2.value.ValueLob+getInputStream() java.io.InputStream+skip(long) java.io.InputStream+skip(long) java.io.InputStream+read() java.io.InputStream+read() org.h2.message.DbException+convertIOException(IOException,String) org.h2.message.DbException+convertIOException(IOException,String)",org.h2.value.ValueLob+valueType org.h2.value.Value+BLOB org.h2.value.ValueLob+precision org.h2.value.ValueLob+otherPrecision java.lang.Long+MAX_VALUE org.h2.value.ValueLob+otherPrecision,642,23,1,,"@Override
+    public long octetLength() {
+        if (valueType == BLOB) {
+            return precision;
+        }
+        long p = otherPrecision;
+        if (p < 0L) {
+            try (InputStream is = getInputStream()) {
+                p = 0L;
+                for (;;) {
+                    p += is.skip(Long.MAX_VALUE);
+                    if (is.read() < 0) {
+                        break;
+                    }
+                    p++;
+                }
+            } catch (IOException e) {
+                throw DbException.convertIOException(e, null);
+            }
+            otherPrecision = p;
+        }
+        return p;
+    }",True,True,"This method returns the length of the octets (bytes) in a value. If the value type is BLOB, it returns the precision. Otherwise, it calculates the precision by reading the bytes from an input stream and counting them.",False,"This code defines a method called `octetLength()` that returns the length of a value in bytes. If the value type is a BLOB, it simply returns the precision. Otherwise, it calculates the length by reading the value from an input stream and counting the number of bytes."

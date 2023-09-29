@@ -1,0 +1,488 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,logger,logger ,Field,,,,,71,1,8,,static Logger logger = LoggerFactory.getLogger(AuditHandlerTest.class);,False,False,,False,
+2,server,server ,Field,,,,,30,1,8,,static Undertow server = null;,True,True,,False,
+3,auditLogger,audit logger ,Field,,,,,130,1,16,,final ch.qos.logback.classic.Logger auditLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Constants.AUDIT_LOGGER);,True,True,,False,
+4,mockAppender,mock appender ,Field,,,,,32,2,0,,"@Mock
+    Appender mockAppender;",True,True,,False,
+5,captorLoggingEvent,captor logging event ,Field,,,,,61,2,0,,"@Captor
+    ArgumentCaptor<ILoggingEvent> captorLoggingEvent;",True,True,,False,
+6,requiredKeys,required keys ,Field,,,,,300,5,0,,"String[] requiredKeys = { AuditHandler.TIMESTAMP,
+                                Constants.CORRELATION_ID_STRING,
+                                Constants.TRACEABILITY_ID_STRING,
+                                AuditHandler.STATUS_CODE,
+                                AuditHandler.RESPONSE_TIME };",True,True,,False,
+7,setUp(),set up ,Method,,,com.networknt.audit.AuditHandlerTest+getTestHandler() com.networknt.audit.AuditHandlerTest+getTestHandler() com.networknt.audit.AuditHandler+AuditHandler() com.networknt.audit.AuditHandler+setNext(HttpHandler) com.networknt.audit.AuditHandler+setNext(HttpHandler) com.networknt.correlation.CorrelationHandler+CorrelationHandler() com.networknt.correlation.CorrelationHandler+setNext(HttpHandler) com.networknt.correlation.CorrelationHandler+setNext(HttpHandler) com.networknt.body.BodyHandler+BodyHandler() com.networknt.body.BodyHandler+setNext(HttpHandler) com.networknt.body.BodyHandler+setNext(HttpHandler) com.networknt.audit.ParameterHandler+ParameterHandler() com.networknt.audit.ParameterHandler+setNext(HttpHandler) com.networknt.audit.ParameterHandler+setNext(HttpHandler),com.networknt.audit.AuditHandlerTest+server com.networknt.audit.AuditHandlerTest+logger com.networknt.audit.AuditHandlerTest+server com.networknt.audit.AuditHandlerTest+server,987,29,9,,"@BeforeClass
+    public static void setUp() {
+        if(server == null) {
+            logger.info(""starting server"");
+            HttpHandler handler = getTestHandler();
+
+            AuditHandler auditHandler = new AuditHandler();
+            auditHandler.setNext(handler);
+            handler = auditHandler;
+
+            CorrelationHandler correlationHandler = new CorrelationHandler();
+            correlationHandler.setNext(handler);
+            handler = correlationHandler;
+
+            BodyHandler bodyHandler = new BodyHandler();
+            bodyHandler.setNext(handler);
+            handler = bodyHandler;
+
+            ParameterHandler parameterHandler = new ParameterHandler();
+            parameterHandler.setNext(handler);
+            handler = parameterHandler;
+
+            server = Undertow.builder()
+                    .addHttpListener(8080, ""localhost"")
+                    .setHandler(handler)
+                    .build();
+            server.start();
+        }
+    }",False,False,The function of this method is to set up the necessary handlers for the server and start the server if it is not already running.,True,"The code is a setup method that is executed before the test class is run. It starts an Undertow server on localhost:8080 and sets up a chain of handlers for processing HTTP requests. The handlers include an AuditHandler, CorrelationHandler, BodyHandler, and ParameterHandler."
+8,tearDown(),tear down ,Method,,,java.lang.Thread+sleep(long) java.lang.Thread+sleep(long),com.networknt.audit.AuditHandlerTest+server com.networknt.audit.AuditHandlerTest+server com.networknt.audit.AuditHandlerTest+logger,308,12,9,,"@AfterClass
+    public static void tearDown() throws Exception {
+        if(server != null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ignored) {
+
+            }
+            server.stop();
+            logger.info(""The server is stopped."");
+        }
+    }",True,True,This method is used to clean up resources after all test cases in a test class have been executed. It stops the server if it is running and logs a message indicating that the server has been stopped.,True,"The code defines a static method called ""tearDown"" that is executed after all test classes have finished running. It checks if a server instance exists, sleeps for 100 milliseconds, stops the server, and logs a message indicating that the server has been stopped."
+9,getTestHandler(),get test handler ,Method,setUp(),,,,511,7,8,,"static RoutingHandler getTestHandler() {
+        return Handlers.routing()
+                .add(Methods.POST, ""/pet"", exchange -> exchange.getResponseSender().send(""OK""))
+                .add(Methods.POST, ""/error"", exchange -> new ErrorStatusTestHandler().handleRequest(exchange))
+                .add(Methods.POST, ""/error/{petId}"", exchange -> new ErrorStatusTestHandler().handleRequest(exchange))
+                .add(Methods.POST, ""/pet/{petId}"", exchange -> exchange.getResponseSender().send(""OK""));
+    }",False,False,"The function of the method is to return a RoutingHandler object that handles different HTTP POST requests for paths ""/pet"", ""/error"", ""/error/{petId}"", and ""/pet/{petId}"". The handler sends a response of ""OK"" for the ""/pet"" and ""/pet/{petId}"" paths, and delegates the handling of ""/error"" and ""/error/{petId}"" paths to an ErrorStatusTestHandler object.",True,"The code defines a static method called `getTestHandler()` that returns a `RoutingHandler` object. This handler is configured to handle HTTP POST requests for different paths (""/pet"", ""/error"", ""/error/{petId}"", ""/pet/{petId}"") and sends a response of ""OK"" for some paths or delegates the request to another handler for others."
+10,beforeTest(),before test ,Method,,,,com.networknt.audit.AuditHandlerTest+auditLogger com.networknt.audit.AuditHandlerTest+mockAppender,144,5,1,,"@Before
+    public void beforeTest() throws Exception {
+        // inject the mock appender
+        auditLogger.addAppender(mockAppender);
+    }",True,True,This method is a setup method that is executed before each test. It injects a mock appender into the auditLogger.,True,"The code snippet is a method named ""beforeTest"" that is annotated with ""@Before"", indicating it is executed before each test. It adds a mock appender to the auditLogger, which suggests that it is setting up a test environment for auditing purposes."
+11,afterTest(),after test ,Method,,,,com.networknt.audit.AuditHandlerTest+auditLogger com.networknt.audit.AuditHandlerTest+mockAppender,145,5,1,,"@After
+    public void afterTest() throws Exception {
+        // remove the mock appender
+        auditLogger.detachAppender(mockAppender);
+    }",True,True,"This method is used as an ""after"" hook in a testing framework. It is responsible for removing a mock appender from the audit logger.",True,The code defines an `afterTest` method that is executed after each test. It removes a mock appender from the audit logger.
+12,verifyAuditLog(String),verify audit log trace val ,Method,,,com.networknt.config.JsonMapper+string2Map(String) com.networknt.config.JsonMapper+string2Map(String) java.util.stream.Stream+allMatch(Predicate) java.util.Arrays+stream(T[]) java.util.Arrays+stream(T[]) java.util.stream.Stream+allMatch(Predicate) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object),com.networknt.audit.AuditHandlerTest+mockAppender com.networknt.audit.AuditHandlerTest+captorLoggingEvent com.networknt.audit.AuditHandlerTest+captorLoggingEvent com.networknt.audit.AuditHandlerTest+requiredKeys com.networknt.utility.Constants+TRACEABILITY_ID_STRING com.networknt.utility.Constants+CORRELATION_ID_STRING com.networknt.audit.AuditHandler+STATUS_CODE,669,11,2,,"private void verifyAuditLog(String traceVal) {
+        verify(mockAppender, times(1)).doAppend(captorLoggingEvent.capture());
+        ILoggingEvent event = captorLoggingEvent.getValue();
+        Map<String, Object> mapValue = JsonMapper.string2Map(event.getFormattedMessage());
+
+        Assert.assertEquals(Level.INFO, event.getLevel());
+        Assert.assertTrue(Arrays.stream(requiredKeys).allMatch(mapValue::containsKey));
+        Assert.assertEquals(traceVal, mapValue.get(Constants.TRACEABILITY_ID_STRING));
+        Assert.assertNotNull(mapValue.get(Constants.CORRELATION_ID_STRING));
+        Assert.assertEquals(200, mapValue.get(AuditHandler.STATUS_CODE));
+    }",True,True,"The function of the given method is to verify the contents of an audit log. It checks that the log contains a specific level, required keys, a specific trace value, a non-null correlation ID, and a specific status code.",True,"The code defines a private method called `verifyAuditLog` that takes a `traceVal` parameter. It verifies that a specific logging event has occurred, extracts the logged message as a map, and performs various assertions on the map's values, including checking the log level, the presence of required keys, the value of the traceability ID, the existence of a correlation ID, and the status code."
+13,verifyAuditErrorStatus(),verify audit error status ,Method,testAuditWithErrorStatus(),,com.networknt.config.JsonMapper+string2Map(String) com.networknt.config.JsonMapper+string2Map(String) java.lang.Object+toString() java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+toString(),com.networknt.audit.AuditHandlerTest+mockAppender com.networknt.audit.AuditHandlerTest+captorLoggingEvent com.networknt.audit.AuditHandlerTest+captorLoggingEvent,475,7,2,,"private void verifyAuditErrorStatus() {
+        verify(mockAppender, times(1)).doAppend(captorLoggingEvent.capture());
+        ILoggingEvent event = captorLoggingEvent.getValue();
+        Map<String, Object> mapValue = JsonMapper.string2Map(event.getFormattedMessage());
+
+        Assert.assertEquals(""{statusCode=401, code=ERR10001, severity=ERROR, message=AUTH_TOKEN_EXPIRED, description=Jwt token in authorization header expired}"", mapValue.get(""Status"").toString());
+    }",False,True,The function of the given method is to verify that a specific log event has occurred and to assert that the formatted message of the event matches a specific JSON string.,True,"The code is a method that verifies if a specific error status is logged correctly. It does this by capturing a logging event, converting its formatted message into a map, and then asserting that a specific value in the map matches the expected error status."
+14,"verifyAuditInfo(String,String)",verify audit info key value ,Method,testAudit401WithDumpRequest() testAudit200WithDumpRequest() testAuditWithDumpResponse() testAuditWithoutDumpResponse() testAudit200WithQueryParameters() testAudit401WithQueryParameters() testAudit200WithoutQueryParameters() testAudit401WithoutQueryParameters() testAuditWith200PathParameters() testAuditWith401PathParameters() testAuditWith200Cookies() testAuditWith401Cookies() testAuditWith200ServiceId() testAuditWith401ServiceId() testAuditWith200TimestampFormatted() testAuditWith401TimestampFormatted(),,com.networknt.config.JsonMapper+string2Map(String) com.networknt.config.JsonMapper+string2Map(String) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object),com.networknt.audit.AuditHandlerTest+mockAppender com.networknt.audit.AuditHandlerTest+captorLoggingEvent com.networknt.audit.AuditHandlerTest+captorLoggingEvent,458,10,2,,"private void verifyAuditInfo(String key, String value) {
+        verify(mockAppender, times(1)).doAppend(captorLoggingEvent.capture());
+        ILoggingEvent event = captorLoggingEvent.getValue();
+        Map<String, Object> mapValue = JsonMapper.string2Map(event.getFormattedMessage());
+        if (value == null) {
+            Assert.assertNull(mapValue.get(key));
+        } else {
+            Assert.assertEquals(value, mapValue.get(key));
+        }
+    }",True,True,"The function of the method is to verify the audit information by capturing the logging event, converting it to a map, and asserting that the value associated with the given key matches the expected value.",True,"The code defines a private method called ""verifyAuditInfo"" that takes in two parameters: a key and a value. It verifies that a specific logging event has occurred and extracts the logged message as a map. It then checks if the value associated with the given key in the map matches the provided value, or if the value is null, it checks if the key is absent in the map."
+15,testAuditWithTrace(),test audit with trace ,Method,,,"com.networknt.client.Http2Client+getInstance() com.networknt.client.Http2Client+getInstance() java.util.concurrent.CountDownLatch+CountDownLatch(int) com.networknt.client.Http2Client+connect(URI,XnioWorker,ByteBufferPool,OptionMap) com.networknt.client.Http2Client+connect(URI,XnioWorker,ByteBufferPool,OptionMap) java.net.URI+URI(String) com.networknt.exception.ClientException+ClientException(Throwable) +() +run()",com.networknt.client.Http2Client+WORKER com.networknt.client.Http2Client+BUFFER_POOL,3430,42,1,,"@Test
+    public void testAuditWithTrace() throws Exception {
+        final AtomicReference<ClientResponse> reference = new AtomicReference<>();
+        final Http2Client client = Http2Client.getInstance();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ClientConnection connection;
+        try {
+            connection = client.connect(new URI(""http://localhost:8080""), Http2Client.WORKER, Http2Client.BUFFER_POOL, OptionMap.EMPTY).get();
+        } catch (Exception e) {
+            throw new ClientException(e);
+        }
+
+        try {
+            String post = ""post"";
+            connection.getIoThread().execute(new Runnable() {
+                @Override
+                public void run() {
+                    final ClientRequest request = new ClientRequest().setMethod(Methods.POST).setPath(""/pet"");
+                    request.getRequestHeaders().put(Headers.HOST, ""localhost"");
+                    request.getRequestHeaders().put(HttpStringConstants.TRACEABILITY_ID, ""tid"");
+                    request.getRequestHeaders().put(Headers.AUTHORIZATION, ""Bearer eyJraWQiOiIxMDAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1cm46Y29tOm5ldHdvcmtudDpvYXV0aDI6djEiLCJhdWQiOiJ1cm46Y29tLm5ldHdvcmtudCIsImV4cCI6MTc5MDAzNTcwOSwianRpIjoiSTJnSmdBSHN6NzJEV2JWdUFMdUU2QSIsImlhdCI6MTQ3NDY3NTcwOSwibmJmIjoxNDc0Njc1NTg5LCJ2ZXJzaW9uIjoiMS4wIiwidXNlcl9pZCI6InN0ZXZlIiwidXNlcl90eXBlIjoiRU1QTE9ZRUUiLCJjbGllbnRfaWQiOiJmN2Q0MjM0OC1jNjQ3LTRlZmItYTUyZC00YzU3ODc0MjFlNzIiLCJzY29wZSI6WyJ3cml0ZTpwZXRzIiwicmVhZDpwZXRzIl19.mue6eh70kGS3Nt2BCYz7ViqwO7lh_4JSFwcHYdJMY6VfgKTHhsIGKq2uEDt3zwT56JFAePwAxENMGUTGvgceVneQzyfQsJeVGbqw55E9IfM_uSM-YcHwTfR7eSLExN4pbqzVDI353sSOvXxA98ZtJlUZKgXNE1Ngun3XFORCRIB_eH8B0FY_nT_D1Dq2WJrR-re-fbR6_va95vwoUdCofLRa4IpDfXXx19ZlAtfiVO44nw6CS8O87eGfAm7rCMZIzkWlCOFWjNHnCeRsh7CVdEH34LF-B48beiG5lM7h4N12-EME8_VDefgMjZ8eqs1ICvJMxdIut58oYbdnkwTjkA"");
+                    request.getRequestHeaders().put(HttpStringConstants.SCOPE_TOKEN, ""Bearer eyJraWQiOiIxMDAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1cm46Y29tOm5ldHdvcmtudDpvYXV0aDI6djEiLCJhdWQiOiJ1cm46Y29tLm5ldHdvcmtudCIsImV4cCI6MTc5MDAzNTcwOSwianRpIjoiSTJnSmdBSHN6NzJEV2JWdUFMdUU2QSIsImlhdCI6MTQ3NDY3NTcwOSwibmJmIjoxNDc0Njc1NTg5LCJ2ZXJzaW9uIjoiMS4wIiwidXNlcl9pZCI6InN0ZXZlIiwidXNlcl90eXBlIjoiRU1QTE9ZRUUiLCJjbGllbnRfaWQiOiJmN2Q0MjM0OC1jNjQ3LTRlZmItYTUyZC00YzU3ODc0MjFlNzIiLCJzY29wZSI6WyJ3cml0ZTpwZXRzIiwicmVhZDpwZXRzIl19.mue6eh70kGS3Nt2BCYz7ViqwO7lh_4JSFwcHYdJMY6VfgKTHhsIGKq2uEDt3zwT56JFAePwAxENMGUTGvgceVneQzyfQsJeVGbqw55E9IfM_uSM-YcHwTfR7eSLExN4pbqzVDI353sSOvXxA98ZtJlUZKgXNE1Ngun3XFORCRIB_eH8B0FY_nT_D1Dq2WJrR-re-fbR6_va95vwoUdCofLRa4IpDfXXx19ZlAtfiVO44nw6CS8O87eGfAm7rCMZIzkWlCOFWjNHnCeRsh7CVdEH34LF-B48beiG5lM7h4N12-EME8_VDefgMjZ8eqs1ICvJMxdIut58oYbdnkwTjkA"");
+                    request.getRequestHeaders().put(Headers.TRANSFER_ENCODING, ""chunked"");
+                    connection.sendRequest(request, client.createClientCallback(reference, latch, post));
+                }
+            });
+
+            latch.await(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            logger.error(""IOException: "", e);
+            throw new ClientException(e);
+        } finally {
+            IoUtils.safeClose(connection);
+        }
+        Assert.assertEquals(""OK"", reference.get().getAttachment(Http2Client.RESPONSE_BODY));
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ignored) {
+        }
+        verifyAuditLog(""tid"");
+    }",False,False,"The function of this method is to test the audit functionality with traceability. It sends a POST request to a specific endpoint and verifies that the response is ""OK"". It also verifies that the audit log contains the specified traceability ID.",True,"The code is a JUnit test method that sends a POST request to a specified URI using an HTTP/2 client. It waits for the response and verifies that the response body is ""OK"". It also verifies the audit log for a specific traceability ID."
+16,testAuditWithoutTrace(),test audit without trace ,Method,,,"com.networknt.client.Http2Client+getInstance() com.networknt.client.Http2Client+getInstance() java.util.concurrent.CountDownLatch+CountDownLatch(int) com.networknt.client.Http2Client+connect(URI,XnioWorker,XnioSsl,ByteBufferPool,OptionMap) com.networknt.client.Http2Client+connect(URI,XnioWorker,XnioSsl,ByteBufferPool,OptionMap) java.net.URI+URI(String) com.networknt.exception.ClientException+ClientException(Throwable) +() +run()",com.networknt.client.Http2Client+WORKER com.networknt.client.Http2Client+SSL com.networknt.client.Http2Client+BUFFER_POOL,3352,41,1,,"@Test
+    public void testAuditWithoutTrace() throws Exception {
+        final AtomicReference<ClientResponse> reference = new AtomicReference<>();
+        final Http2Client client = Http2Client.getInstance();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ClientConnection connection;
+        try {
+            connection = client.connect(new URI(""http://localhost:8080""), Http2Client.WORKER, Http2Client.SSL, Http2Client.BUFFER_POOL, OptionMap.EMPTY).get();
+        } catch (Exception e) {
+            throw new ClientException(e);
+        }
+
+        try {
+            String post = ""post"";
+            connection.getIoThread().execute(new Runnable() {
+                @Override
+                public void run() {
+                    final ClientRequest request = new ClientRequest().setMethod(Methods.POST).setPath(""/pet"");
+                    request.getRequestHeaders().put(Headers.HOST, ""localhost"");
+                    request.getRequestHeaders().put(Headers.AUTHORIZATION, ""Bearer eyJraWQiOiIxMDAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1cm46Y29tOm5ldHdvcmtudDpvYXV0aDI6djEiLCJhdWQiOiJ1cm46Y29tLm5ldHdvcmtudCIsImV4cCI6MTc5MDAzNTcwOSwianRpIjoiSTJnSmdBSHN6NzJEV2JWdUFMdUU2QSIsImlhdCI6MTQ3NDY3NTcwOSwibmJmIjoxNDc0Njc1NTg5LCJ2ZXJzaW9uIjoiMS4wIiwidXNlcl9pZCI6InN0ZXZlIiwidXNlcl90eXBlIjoiRU1QTE9ZRUUiLCJjbGllbnRfaWQiOiJmN2Q0MjM0OC1jNjQ3LTRlZmItYTUyZC00YzU3ODc0MjFlNzIiLCJzY29wZSI6WyJ3cml0ZTpwZXRzIiwicmVhZDpwZXRzIl19.mue6eh70kGS3Nt2BCYz7ViqwO7lh_4JSFwcHYdJMY6VfgKTHhsIGKq2uEDt3zwT56JFAePwAxENMGUTGvgceVneQzyfQsJeVGbqw55E9IfM_uSM-YcHwTfR7eSLExN4pbqzVDI353sSOvXxA98ZtJlUZKgXNE1Ngun3XFORCRIB_eH8B0FY_nT_D1Dq2WJrR-re-fbR6_va95vwoUdCofLRa4IpDfXXx19ZlAtfiVO44nw6CS8O87eGfAm7rCMZIzkWlCOFWjNHnCeRsh7CVdEH34LF-B48beiG5lM7h4N12-EME8_VDefgMjZ8eqs1ICvJMxdIut58oYbdnkwTjkA"");
+                    request.getRequestHeaders().put(HttpStringConstants.SCOPE_TOKEN, ""Bearer eyJraWQiOiIxMDAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1cm46Y29tOm5ldHdvcmtudDpvYXV0aDI6djEiLCJhdWQiOiJ1cm46Y29tLm5ldHdvcmtudCIsImV4cCI6MTc5MDAzNTcwOSwianRpIjoiSTJnSmdBSHN6NzJEV2JWdUFMdUU2QSIsImlhdCI6MTQ3NDY3NTcwOSwibmJmIjoxNDc0Njc1NTg5LCJ2ZXJzaW9uIjoiMS4wIiwidXNlcl9pZCI6InN0ZXZlIiwidXNlcl90eXBlIjoiRU1QTE9ZRUUiLCJjbGllbnRfaWQiOiJmN2Q0MjM0OC1jNjQ3LTRlZmItYTUyZC00YzU3ODc0MjFlNzIiLCJzY29wZSI6WyJ3cml0ZTpwZXRzIiwicmVhZDpwZXRzIl19.mue6eh70kGS3Nt2BCYz7ViqwO7lh_4JSFwcHYdJMY6VfgKTHhsIGKq2uEDt3zwT56JFAePwAxENMGUTGvgceVneQzyfQsJeVGbqw55E9IfM_uSM-YcHwTfR7eSLExN4pbqzVDI353sSOvXxA98ZtJlUZKgXNE1Ngun3XFORCRIB_eH8B0FY_nT_D1Dq2WJrR-re-fbR6_va95vwoUdCofLRa4IpDfXXx19ZlAtfiVO44nw6CS8O87eGfAm7rCMZIzkWlCOFWjNHnCeRsh7CVdEH34LF-B48beiG5lM7h4N12-EME8_VDefgMjZ8eqs1ICvJMxdIut58oYbdnkwTjkA"");
+                    request.getRequestHeaders().put(Headers.TRANSFER_ENCODING, ""chunked"");
+                    connection.sendRequest(request, client.createClientCallback(reference, latch, post));
+                }
+            });
+
+            latch.await(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            logger.error(""IOException: "", e);
+            throw new ClientException(e);
+        } finally {
+            IoUtils.safeClose(connection);
+        }
+        Assert.assertEquals(""OK"", reference.get().getAttachment(Http2Client.RESPONSE_BODY));
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ignored) {
+        }
+        verifyAuditLog(null);
+    }",False,False,"The function of this method is to test the audit functionality without including a trace. It sends a POST request to a specific endpoint and verifies that the response is ""OK"". It also verifies the audit log.",True,"The code is a JUnit test method that sends a POST request to a specified URI using an HTTP/2 client. It waits for the response and asserts that the response body is ""OK"". After that, it verifies the audit log."
+17,testAuditWithErrorStatus(),test audit with error status ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditErrorStatus() com.networknt.audit.AuditHandlerTest+verifyAuditErrorStatus()",,153,5,1,,"@Test
+    public void testAuditWithErrorStatus() throws Exception {
+        runTest(""/error"", ""post"", null, 401);
+        verifyAuditErrorStatus();
+    }",False,False,"The function of the method is to test the audit functionality when an error status is encountered. It runs a test with a specific URL, HTTP method, request body, and expected status code, and then verifies the audit error status.",True,"The code is a test method named ""testAuditWithErrorStatus"". It calls a method named ""runTest"" with specific parameters and then verifies the audit error status. The purpose of this test is to check if the ""runTest"" method correctly handles an error status of 401."
+18,testAudit401WithDumpRequest(),test audit401 with dump request ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,170,5,1,,"@Test
+    public void testAudit401WithDumpRequest() throws Exception {
+        runTest(""/error"", ""post"", null, 401);
+        verifyAuditInfo(""requestBody"", ""post"");
+    }",False,False,The function of the method is to test the audit functionality for a 401 error response with a dump request. It runs a test with a specific request and verifies the audit information for the request body and method.,True,"The code is a test method that verifies the behavior of an audit feature when a 401 error is encountered during a POST request to the ""/error"" endpoint. It calls a method called ""runTest"" to perform the request and then verifies that the audit information contains the request body as ""post""."
+19,testAudit200WithDumpRequest(),test audit200 with dump request ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,168,5,1,,"@Test
+    public void testAudit200WithDumpRequest() throws Exception {
+        runTest(""/pet"", ""post"", null, 200);
+        verifyAuditInfo(""requestBody"", ""post"");
+    }",False,False,"This method is a test case that verifies the functionality of the ""runTest"" method with specific parameters. It also verifies that the ""verifyAuditInfo"" method is called with specific arguments.",True,"The code is a test method that verifies if a POST request to ""/pet"" returns a 200 status code. It also verifies if the audit information contains the expected request body and method (""post"")."
+20,testAuditWithDumpResponse(),test audit with dump response ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,327,5,1,,"@Test
+    public void testAuditWithDumpResponse() throws Exception {
+        runTest(""/error"", ""post"", null, 401);
+        verifyAuditInfo(""responseBody"", ""{\""statusCode\"":401,\""code\"":\""ERR10001\"",\""message\"":\""AUTH_TOKEN_EXPIRED\"",\""description\"":\""Jwt token in authorization header expired\"",\""severity\"":\""ERROR\""}"");
+    }",False,False,The function of the method is to test the audit functionality by running a test with a specific request and verifying the audit information for the response body.,True,"The code is a unit test that verifies the behavior of an ""audit"" method when a specific request is made. It checks if the method correctly handles an error response with a status code of 401 and verifies that the audit information is correctly logged with the expected response body."
+21,testAuditWithoutDumpResponse(),test audit without dump response ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,168,5,1,,"@Test
+    public void testAuditWithoutDumpResponse() throws Exception {
+        runTest(""/pet"", ""post"", null, 200);
+        verifyAuditInfo(""responseBody"", null);
+    }",False,False,"This method is a test case that verifies the behavior of the ""audit"" feature when a request is made to create a new pet (""/pet"") using the ""post"" method. It checks that the response code is 200 and that the audit information for the response body is null.",True,"The code is a test method that verifies the behavior of an audit feature. It calls a method named `runTest` with specific parameters and expects a response with a status code of 200. After the test, it verifies that the audit information for the response body is null."
+22,testAudit200WithQueryParameters(),test audit200 with query parameters ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,193,5,1,,"@Test
+    public void testAudit200WithQueryParameters() throws Exception {
+        runTest(""/pet?testId=1"", ""post"", null, 200);
+        verifyAuditInfo(""queryParameters"", ""{testId=[1]}"");
+    }",False,False,"The function of the method is to test the ""runTest"" method with specific query parameters and verify the audit information for the query parameters.",True,"The code is a test method that verifies the behavior of an API endpoint ""/pet"" with a query parameter ""testId=1"". It checks if the response status code is 200 and verifies that the audit information for the query parameters is correctly recorded as ""{testId=[1]}"".
+"
+23,testAudit401WithQueryParameters(),test audit401 with query parameters ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,195,5,1,,"@Test
+    public void testAudit401WithQueryParameters() throws Exception {
+        runTest(""/error?testId=1"", ""post"", null, 401);
+        verifyAuditInfo(""queryParameters"", ""{testId=[1]}"");
+    }",False,False,"The function of the method is to test the audit functionality for a 401 error response with query parameters. It runs a test with a specific URL, HTTP method, and expected status code, and then verifies the audit information for the query parameters.",True,"The code is a test method that verifies the behavior of an audit feature when a 401 error is encountered with query parameters. It runs a test with a specific URL and HTTP method, and then verifies that the audit information contains the correct query parameters."
+24,testAudit200WithoutQueryParameters(),test audit200 without query parameters ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,177,5,1,,"@Test
+    public void testAudit200WithoutQueryParameters() throws Exception {
+        runTest(""/pet"", ""post"", null, 200);
+        verifyAuditInfo(""queryParameters"", null);
+    }",False,False,"The function of the method is to test the ""audit"" functionality when a POST request is made to the ""/pet"" endpoint without any query parameters. It verifies that the response code is 200 and checks the audit information for the absence of query parameters.",True,"The code is a test method that verifies the behavior of an API endpoint ""/pet"" with a POST request and no query parameters. It expects the response code to be 200 and also verifies that the audit information for query parameters is null."
+25,testAudit401WithoutQueryParameters(),test audit401 without query parameters ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,179,5,1,,"@Test
+    public void testAudit401WithoutQueryParameters() throws Exception {
+        runTest(""/error"", ""post"", null, 401);
+        verifyAuditInfo(""queryParameters"", null);
+    }",False,False,"The function of the method is to test the behavior of the ""runTest"" method when called with specific parameters, and to verify that the ""verifyAuditInfo"" method is called with the expected parameters.",True,"The code is a test method that verifies the behavior of an ""audit401WithoutQueryParameters"" method. It tests the functionality of the method by running a test case where it sends a POST request to the ""/error"" endpoint without any query parameters and expects a 401 (Unauthorized) response. It also verifies that the audit information for query parameters is null."
+26,testAuditWith200PathParameters(),test audit with200 path parameters ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,191,5,1,,"@Test
+    public void testAuditWith200PathParameters() throws Exception {
+        runTest(""/pet/1,2,3"", ""post"", null, 200);
+        verifyAuditInfo(""pathParameters"", ""{petId=[1,2,3]}"");
+    }",False,False,"The function of the method is to test the ""audit"" functionality with 200 path parameters. It runs a test with a specific path (""/pet/1,2,3""), HTTP method (""post""), and expected response code (200). It then verifies the audit information for the path parameters.",True,"The code is a unit test that verifies the behavior of an ""audit"" method when called with a specific set of path parameters. It runs the test by invoking the method with the given path parameters and HTTP method, and expects a response with a status code of 200. After the test, it verifies that the audit information captured during the method execution matches the expected path parameters."
+27,testAuditWith401PathParameters(),test audit with401 path parameters ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,193,5,1,,"@Test
+    public void testAuditWith401PathParameters() throws Exception {
+        runTest(""/error/1,2,3"", ""post"", null, 401);
+        verifyAuditInfo(""pathParameters"", ""{petId=[1,2,3]}"");
+    }",False,False,"The function of the method is to test the audit functionality with 401 path parameters. It runs a test with a specific path (""/error/1,2,3""), HTTP method (""post""), and expected response code (401). It then verifies the audit information for the path parameters.",True,"The code is a unit test that verifies the behavior of an audit method when called with a specific set of path parameters. It runs a test with a POST request to the ""/error/1,2,3"" endpoint and expects a 401 response. After the test, it verifies that the audit information contains the expected path parameters."
+28,testAuditWith200Cookies(),test audit with200 cookies ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,179,5,1,,"@Test
+    public void testAuditWith200Cookies() throws Exception {
+        runTest(""/pet"", ""post"", ""petsId=1"", 200);
+        verifyAuditInfo(""requestCookies"", ""{petsId=1}"");
+    }",False,False,"The function of the method is to test the ""audit"" functionality by running a test with 200 cookies. It calls the ""runTest"" method with specific parameters and then verifies the audit information by calling the ""verifyAuditInfo"" method.",True,"The code is a test method that verifies the behavior of an ""audit"" feature. It calls a method named ""runTest"" with specific parameters and expects a response with a status code of 200. After the test, it verifies that the audit information contains the expected request cookies."
+29,testAuditWith401Cookies(),test audit with401 cookies ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,181,5,1,,"@Test
+    public void testAuditWith401Cookies() throws Exception {
+        runTest(""/error"", ""post"", ""petsId=1"", 401);
+        verifyAuditInfo(""requestCookies"", ""{petsId=1}"");
+    }",False,False,"The function of the method is to test the audit functionality when a request with 401 status code and specific cookies is made. It runs a test with a specific URL, HTTP method, request parameters, and status code, and verifies the audit information related to the request cookies.",True,"The code is a test method that verifies the behavior of an ""audit"" functionality when a request with 401 status code and specific cookies is made. It uses the `runTest` method to simulate the request and checks if the audit information contains the expected cookies."
+30,testAuditWith200ServiceId(),test audit with200 service id ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,188,5,1,,"@Test
+    public void testAuditWith200ServiceId() throws Exception {
+        runTest(""/pet"", ""post"", null, 200);
+        verifyAuditInfo(""serviceId"", ""com.networknt.petstore-1.0.0"");
+    }",False,False,"The function of the method is to test the audit functionality with a service ID of 200. It runs a test with a specific endpoint and HTTP method, and verifies the audit information with the expected service ID.",True,"The code is a unit test that verifies the behavior of an audit method when a service ID of ""com.networknt.petstore-1.0.0"" is passed. It calls the `runTest` method with a specific endpoint and HTTP method, and expects a response code of 200. After the test, it verifies that the audit information contains the expected service ID."
+31,testAuditWith401ServiceId(),test audit with401 service id ,Method,,,"com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,190,5,1,,"@Test
+    public void testAuditWith401ServiceId() throws Exception {
+        runTest(""/error"", ""post"", null, 401);
+        verifyAuditInfo(""serviceId"", ""com.networknt.petstore-1.0.0"");
+    }",False,False,"The function of the method is to test the audit with a 401 service ID. It runs a test with a specific URL, HTTP method, and expected status code. It then verifies the audit information with a specific service ID.",True,"The code is a unit test that verifies the behavior of the ""testAuditWith401ServiceId"" method. It tests the functionality of the method by running a test with a specific input and expected output. Additionally, it verifies that the audit information contains a specific service ID."
+32,testAuditWith200TimestampFormatted(),test audit with200 timestamp formatted ,Method,,,"java.time.Instant+ofEpochMilli(long) java.time.Instant+ofEpochMilli(long) java.time.Instant+now() java.time.Instant+now() com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,444,10,1,,"@Test
+    public void testAuditWith200TimestampFormatted() throws Exception {
+        long time = 1607639411945L;
+        Instant instant = Instant.ofEpochMilli(time);
+        PowerMockito.mockStatic(System.class);
+        PowerMockito.mockStatic(Instant.class);
+        PowerMockito.when(Instant.now()).thenReturn(instant);
+        runTest(""/pet"", ""post"", null, 200);
+        verifyAuditInfo(""timestamp"", ""2020-12-10T17:30:11.945-0500"");
+    }",False,False,"The function of the method is to test the ""audit"" functionality with a timestamp formatted as ""2020-12-10T17:30:11.945-0500"" when the HTTP response code is 200.",True,"The code is a unit test that verifies the behavior of an audit method. It sets a specific timestamp using `Instant` and `System` classes, then runs a test for a specific API endpoint and HTTP method. Finally, it verifies that the audit information contains the expected timestamp in a specific format."
+33,testAuditWith401TimestampFormatted(),test audit with401 timestamp formatted ,Method,,,"java.time.Instant+ofEpochMilli(long) java.time.Instant+ofEpochMilli(long) java.time.Instant+now() java.time.Instant+now() com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+runTest(String,String,String,int) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String) com.networknt.audit.AuditHandlerTest+verifyAuditInfo(String,String)",,400,10,1,,"@Test
+    public void testAuditWith401TimestampFormatted() throws Exception {
+        long time = 1607639411945L;
+        Instant instant = Instant.ofEpochMilli(time);
+        PowerMockito.mockStatic(Instant.class);
+        PowerMockito.when(Instant.now()).thenReturn(instant);
+
+        runTest(""/error"", ""post"", null, 401);
+        verifyAuditInfo(""timestamp"", ""2020-12-10T17:30:11.945-0500"");
+    }",False,False,"The function of the method is to test the audit functionality when a 401 error occurs, and verify that the timestamp is formatted correctly.",True,"The code is a unit test that verifies the behavior of an audit method when a 401 error is encountered. It sets a specific timestamp using PowerMockito, runs the test with a specific endpoint and HTTP method, and then verifies that the audit information contains the expected timestamp in a specific format."
+34,testAuditWith200TimestampLong(),test audit with200 timestamp long ,Method,,,com.networknt.audit.AuditHandlerTest+testTimestampInitHelper(String) com.networknt.audit.AuditHandlerTest+testTimestampInitHelper(String) java.util.Map+get(Object) java.util.Map+get(Object),,266,5,1,,"@Test //used for testing when doesn't specify timestampFormat
+    public void testAuditWith200TimestampLong() throws Exception {
+        Map<String, Object> map = testTimestampInitHelper(null);
+        Assert.assertEquals(1607639411945L, map.get(""timestamp""));
+    }",False,False,"This method is a test case that verifies the behavior of the ""testAuditWith200TimestampLong"" method. It checks if the ""timestamp"" value in the map returned by the ""testTimestampInitHelper"" method is equal to 1607639411945L.",True,"The code is a unit test method that verifies the behavior of the ""testAuditWith200TimestampLong"" function. It tests the initialization of a map and asserts that the value of the ""timestamp"" key in the map is equal to 1607639411945L."
+35,testAuditWith200TimestampInvalidFormat(),test audit with200 timestamp invalid format ,Method,,,com.networknt.audit.AuditHandlerTest+testTimestampInitHelper(String) com.networknt.audit.AuditHandlerTest+testTimestampInitHelper(String) java.util.Map+get(Object) java.util.Map+get(Object),,290,5,1,,"@Test //used for testing when user specified a wrong format timestampFormat
+    public void testAuditWith200TimestampInvalidFormat() throws Exception {
+        Map<String, Object> map = testTimestampInitHelper(""abc"");
+        Assert.assertEquals(1607639411945L, map.get(""timestamp""));
+    }",False,False,"This method is a test case that checks the behavior of the ""testAuditWith200TimestampInvalidFormat"" method when the user specifies an invalid timestamp format. It verifies that the ""timestamp"" value in the returned map is equal to 1607639411945L.",True,
+36,testTimestampInitHelper(String),test timestamp init helper o ,Method,testAuditWith200TimestampLong() testAuditWith200TimestampInvalidFormat(),,java.util.concurrent.atomic.AtomicReference+set(V) java.util.concurrent.atomic.AtomicReference+set(V) com.networknt.audit.AuditConfig+getAuditFunc() com.networknt.audit.AuditConfig+getAuditFunc() com.networknt.audit.AuditConfig+getTimestampFormat() com.networknt.audit.AuditConfig+getTimestampFormat() com.networknt.config.Config+getMapper() com.networknt.config.Config+getMapper() com.networknt.audit.AuditConfig+getConfig() com.networknt.audit.AuditConfig+getConfig() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditHandler+AuditHandler() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() com.networknt.handler.Handler+init() com.networknt.handler.Handler+init() com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange) com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange) com.networknt.config.JsonMapper+string2Map(String) com.networknt.config.JsonMapper+string2Map(String) java.util.concurrent.atomic.AtomicReference+get() java.util.concurrent.atomic.AtomicReference+get(),,1455,30,2,,"private Map<String, Object> testTimestampInitHelper(String o) throws Exception {
+        PowerMockito.mockStatic(AuditConfig.class);
+        AtomicReference<String> content = new AtomicReference<>("""");
+        Consumer<String> consumer = (str) -> content.set(str);
+        // mock handler
+        AuditConfig auditConfig = Mockito.mock(AuditConfig.class);
+        when(auditConfig.getAuditFunc()).thenReturn(consumer);
+
+        Mockito.when(auditConfig.getTimestampFormat()).thenReturn(o);
+        Config config = Mockito.mock(Config.class);
+        when(config.getMapper()).thenReturn(new ObjectMapper());
+        Mockito.when(auditConfig.getConfig()).thenReturn(config);
+        PowerMockito.when(AuditConfig.load()).thenReturn(auditConfig);
+        AuditHandler auditHandler = Mockito.spy(new AuditHandler());
+        Mockito.doNothing().when(auditHandler).next(Mockito.any());
+
+        // mock exchange
+        HeaderMap headerMap = Mockito.spy(new HeaderMap());
+        HttpServerExchange httpServerExchange = Mockito.mock(HttpServerExchange.class);
+        Mockito.when(httpServerExchange.getRequestHeaders()).thenReturn(headerMap);
+
+        long time = 1607639411945L;
+        // mock time
+        PowerMockito.mockStatic(System.class);
+        PowerMockito.when(System.currentTimeMillis()).thenReturn(time);
+
+        Handler.init();
+        auditHandler.handleRequest(httpServerExchange);
+        return JsonMapper.string2Map(content.get());
+    }",False,False,"The function of the given method is to initialize and configure the necessary objects and dependencies for handling an audit request. It mocks static and instance methods, sets up a consumer for audit content, configures a timestamp format, creates a mock config object, loads the audit config, handles the request, and returns the audit content as a map.",False,"The `testTimestampInitHelper` method is a private method that initializes and mocks various objects and dependencies for auditing purposes. It sets up a mock audit configuration, a mock HTTP server exchange, and a mock timestamp. It then calls the `handleRequest` method of an `AuditHandler` object and returns the content as a map."
+37,shouldAddListenerIfIsStatusCodeAndIsResponseTimeAreTrue(),should add listener if is status code and is response time are true ,Method,,,com.networknt.audit.AuditConfig+isResponseTime() com.networknt.audit.AuditConfig+isResponseTime() com.networknt.audit.AuditConfig+isStatusCode() com.networknt.audit.AuditConfig+isStatusCode() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditHandler+AuditHandler() com.networknt.handler.Handler+init() com.networknt.handler.Handler+init() com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange) com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange),,975,22,1,,"@Test
+    public void shouldAddListenerIfIsStatusCodeAndIsResponseTimeAreTrue() throws Exception {
+        PowerMockito.mockStatic(AuditConfig.class);
+
+        AuditConfig configHandler = Mockito.mock(AuditConfig.class);
+        Mockito.when(configHandler.isResponseTime()).thenReturn(true);
+        Mockito.when(configHandler.isStatusCode()).thenReturn(true);
+
+        Mockito.when(AuditConfig.load()).thenReturn(configHandler);
+
+        HeaderMap headerMap = Mockito.spy(new HeaderMap());
+        HttpServerExchange httpServerExchange = Mockito.mock(HttpServerExchange.class);
+        Mockito.when(httpServerExchange.getRequestHeaders()).thenReturn(headerMap);
+
+        AuditHandler auditHandler = Mockito.spy(new AuditHandler());
+        Mockito.doNothing().when(auditHandler).next(Mockito.any());
+
+        Handler.init();
+
+        auditHandler.handleRequest(httpServerExchange);
+        Mockito.verify(httpServerExchange).addExchangeCompleteListener(Mockito.any());
+    }",False,False,"The function of this method is to test whether the ""handleRequest"" method in the ""AuditHandler"" class adds an exchange complete listener to the ""HttpServerExchange"" object if the ""isStatusCode"" and ""isResponseTime"" methods in the ""AuditConfig"" class return true.",True,"The code is a unit test for a method called `shouldAddListenerIfIsStatusCodeAndIsResponseTimeAreTrue()`. It mocks a static class and configures its behavior using Mockito. It then creates a `HttpServerExchange` object, initializes an `AuditHandler`, and verifies that the `addExchangeCompleteListener` method is called on the `httpServerExchange` object."
+38,shouldAddListenerIfIsStatusCodeIsFalseAndIsResponseTimeIsTrue(),should add listener if is status code is false and is response time is true ,Method,,,com.networknt.audit.AuditConfig+isResponseTime() com.networknt.audit.AuditConfig+isResponseTime() com.networknt.audit.AuditConfig+isStatusCode() com.networknt.audit.AuditConfig+isStatusCode() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditHandler+AuditHandler() com.networknt.handler.Handler+init() com.networknt.handler.Handler+init() com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange) com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange),,982,22,1,,"@Test
+    public void shouldAddListenerIfIsStatusCodeIsFalseAndIsResponseTimeIsTrue() throws Exception {
+        PowerMockito.mockStatic(AuditConfig.class);
+
+        AuditConfig configHandler = Mockito.mock(AuditConfig.class);
+        Mockito.when(configHandler.isResponseTime()).thenReturn(true);
+        Mockito.when(configHandler.isStatusCode()).thenReturn(false);
+
+        Mockito.when(AuditConfig.load()).thenReturn(configHandler);
+
+        HeaderMap headerMap = Mockito.spy(new HeaderMap());
+        HttpServerExchange httpServerExchange = Mockito.mock(HttpServerExchange.class);
+        Mockito.when(httpServerExchange.getRequestHeaders()).thenReturn(headerMap);
+
+        AuditHandler auditHandler = Mockito.spy(new AuditHandler());
+        Mockito.doNothing().when(auditHandler).next(Mockito.any());
+
+        Handler.init();
+
+        auditHandler.handleRequest(httpServerExchange);
+        Mockito.verify(httpServerExchange).addExchangeCompleteListener(Mockito.any());
+    }",False,False,"The function of this method is to test whether the ""handleRequest"" method in the ""AuditHandler"" class adds an exchange complete listener to the ""HttpServerExchange"" object if the ""isStatusCode"" method in the ""AuditConfig"" class returns false and the ""isResponseTime"" method returns true.",True,"The code is a unit test for a method called `shouldAddListenerIfIsStatusCodeIsFalseAndIsResponseTimeIsTrue()`. It mocks a static class and a configuration handler, sets up the necessary dependencies, and verifies that the `handleRequest()` method of an `AuditHandler` instance adds an exchange complete listener to the `HttpServerExchange` object."
+39,shouldAddListenerIfIsStatusCodeIsTrueAndIsResponseTimeIsFalse(),should add listener if is status code is true and is response time is false ,Method,,,com.networknt.audit.AuditConfig+isResponseTime() com.networknt.audit.AuditConfig+isResponseTime() com.networknt.audit.AuditConfig+isStatusCode() com.networknt.audit.AuditConfig+isStatusCode() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditHandler+AuditHandler() com.networknt.handler.Handler+init() com.networknt.handler.Handler+init() com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange) com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange),,982,22,1,,"@Test
+    public void shouldAddListenerIfIsStatusCodeIsTrueAndIsResponseTimeIsFalse() throws Exception {
+        PowerMockito.mockStatic(AuditConfig.class);
+
+        AuditConfig configHandler = Mockito.mock(AuditConfig.class);
+        Mockito.when(configHandler.isResponseTime()).thenReturn(false);
+        Mockito.when(configHandler.isStatusCode()).thenReturn(true);
+
+        Mockito.when(AuditConfig.load()).thenReturn(configHandler);
+
+        HeaderMap headerMap = Mockito.spy(new HeaderMap());
+        HttpServerExchange httpServerExchange = Mockito.mock(HttpServerExchange.class);
+        Mockito.when(httpServerExchange.getRequestHeaders()).thenReturn(headerMap);
+
+        AuditHandler auditHandler = Mockito.spy(new AuditHandler());
+        Mockito.doNothing().when(auditHandler).next(Mockito.any());
+
+        Handler.init();
+
+        auditHandler.handleRequest(httpServerExchange);
+        Mockito.verify(httpServerExchange).addExchangeCompleteListener(Mockito.any());
+    }",False,False,"The function of this method is to test whether the ""handleRequest"" method in the ""AuditHandler"" class adds an exchange complete listener to the ""HttpServerExchange"" object if the ""isStatusCode"" method in the ""AuditConfig"" class returns true and the ""isResponseTime"" method returns false.",True,The code is a unit test for a method called `shouldAddListenerIfIsStatusCodeIsTrueAndIsResponseTimeIsFalse()`. It mocks and sets up the necessary dependencies and then verifies that the `handleRequest()` method of an `AuditHandler` instance adds an exchange complete listener to the `HttpServerExchange` object if the `isStatusCode()` method of the `AuditConfig` object returns true and the `isResponseTime()` method returns false.
+40,shouldNotAddListenerIfStatusCodeAndResponseTimeAreFalse(),should not add listener if status code and response time are false ,Method,,,com.networknt.config.Config+getMapper() com.networknt.config.Config+getMapper() com.networknt.audit.AuditConfig+isResponseTime() com.networknt.audit.AuditConfig+isResponseTime() com.networknt.audit.AuditConfig+isStatusCode() com.networknt.audit.AuditConfig+isStatusCode() com.networknt.audit.AuditConfig+getAuditFunc() com.networknt.audit.AuditConfig+getAuditFunc() com.networknt.audit.AuditConfig+getConfig() com.networknt.audit.AuditConfig+getConfig() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditConfig+load() com.networknt.audit.AuditHandler+AuditHandler() com.networknt.handler.Handler+init() com.networknt.handler.Handler+init() com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange) com.networknt.audit.AuditHandler+handleRequest(HttpServerExchange),,1395,29,1,,"@Test
+    public void shouldNotAddListenerIfStatusCodeAndResponseTimeAreFalse() throws Exception {
+        PowerMockito.mockStatic(AuditConfig.class);
+        Consumer<String> auditFunc= (Consumer<String>) Mockito.spy(Consumer.class);
+        ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
+
+        Config config = Mockito.mock(Config.class);
+        Mockito.when(config.getMapper()).thenReturn(objectMapper);
+
+        AuditConfig configHandler = Mockito.mock(AuditConfig.class);
+        Mockito.when(configHandler.isResponseTime()).thenReturn(false);
+        Mockito.when(configHandler.isStatusCode()).thenReturn(false);
+        Mockito.when(configHandler.getAuditFunc()).thenReturn(auditFunc);
+        Mockito.when(configHandler.getConfig()).thenReturn(config);
+
+        Mockito.when(AuditConfig.load()).thenReturn(configHandler);
+
+        HttpServerExchange httpServerExchange = Mockito.mock(HttpServerExchange.class);
+
+        AuditHandler auditHandler = Mockito.spy(new AuditHandler());
+        Mockito.doNothing().when(auditHandler).next(Mockito.any());
+
+        Handler.init();
+
+        auditHandler.handleRequest(httpServerExchange);
+        Mockito.verify(httpServerExchange, Mockito.never()).addExchangeCompleteListener(Mockito.any());
+        Mockito.verify(auditFunc).accept(Mockito.any());
+        Mockito.verify(objectMapper).writeValueAsString(Mockito.any());
+    }",False,False,The function of this method is to test that a listener is not added if the status code and response time are both false. It also verifies that the audit function is called and the object mapper writes a value as a string.,True,"The code is a unit test for a method called `shouldNotAddListenerIfStatusCodeAndResponseTimeAreFalse()`. It mocks various dependencies and verifies that the method does not add an exchange complete listener, but does call the `auditFunc` and `objectMapper.writeValueAsString()` methods.
+"
+41,ArgumentMatcherAuditInfo,argument matcher audit info ,MemberClass,,,com.networknt.audit.AuditHandlerTest.ArgumentMatcherAuditInfo+matches(AttachmentKey),,388,10,10,,"private static class ArgumentMatcherAuditInfo implements ArgumentMatcher<AttachmentKey<Map>> {
+
+        @Override
+        public boolean matches(AttachmentKey<Map> attachmentKey) {
+            if (attachmentKey == null) {
+                return false;
+            }
+            return attachmentKey.toString().equals(""io.undertow.util.SimpleAttachmentKey<java.util.Map>"");
+        }
+    }",False,False,,False,
+42,ArgumentMatcherChainId,argument matcher chain id ,MemberClass,,,com.networknt.audit.AuditHandlerTest.ArgumentMatcherChainId+matches(AttachmentKey),,395,10,10,,"private static class ArgumentMatcherChainId implements ArgumentMatcher<AttachmentKey<String>> {
+
+        @Override
+        public boolean matches(AttachmentKey<String> attachmentKey) {
+            if (attachmentKey == null) {
+                return false;
+            }
+            return attachmentKey.toString().equals(""io.undertow.util.SimpleAttachmentKey<java.lang.String>"");
+        }
+    }",False,False,,False,
+43,ArgumentMatcherChainSeq,argument matcher chain seq ,MemberClass,,,com.networknt.audit.AuditHandlerTest.ArgumentMatcherChainSeq+matches(AttachmentKey),,399,10,10,,"private static class ArgumentMatcherChainSeq implements ArgumentMatcher<AttachmentKey<Integer>> {
+
+        @Override
+        public boolean matches(AttachmentKey<Integer> attachmentKey) {
+            if (attachmentKey == null) {
+                return false;
+            }
+            return attachmentKey.toString().equals(""io.undertow.util.SimpleAttachmentKey<java.lang.Integer>"");
+        }
+    }",False,False,,False,
+44,"runTest(String,String,String,int)",run test path body cookies expect status ,Method,testAuditWithErrorStatus() testAudit401WithDumpRequest() testAudit200WithDumpRequest() testAuditWithDumpResponse() testAuditWithoutDumpResponse() testAudit200WithQueryParameters() testAudit401WithQueryParameters() testAudit200WithoutQueryParameters() testAudit401WithoutQueryParameters() testAuditWith200PathParameters() testAuditWith401PathParameters() testAuditWith200Cookies() testAuditWith401Cookies() testAuditWith200ServiceId() testAuditWith401ServiceId() testAuditWith200TimestampFormatted() testAuditWith401TimestampFormatted(),,"com.networknt.client.Http2Client+getInstance() com.networknt.client.Http2Client+getInstance() java.util.concurrent.CountDownLatch+CountDownLatch(int) com.networknt.client.Http2Client+connect(URI,XnioWorker,ByteBufferPool,OptionMap) com.networknt.client.Http2Client+connect(URI,XnioWorker,ByteBufferPool,OptionMap) java.net.URI+URI(String) com.networknt.exception.ClientException+ClientException(Throwable) +() +run()",com.networknt.client.Http2Client+WORKER com.networknt.client.Http2Client+BUFFER_POOL,3660,44,2,,"private void runTest(String path, String body, String cookies, int expectStatus) throws ClientException {
+        final AtomicReference<ClientResponse> reference = new AtomicReference<>();
+        final Http2Client client = Http2Client.getInstance();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ClientConnection connection;
+        try {
+            connection = client.connect(new URI(""http://localhost:8080""), Http2Client.WORKER, Http2Client.BUFFER_POOL, OptionMap.EMPTY).get();
+        } catch (Exception e) {
+            throw new ClientException(e);
+        }
+
+        try {
+            String post = body;
+            connection.getIoThread().execute(new Runnable() {
+                @Override
+                public void run() {
+                    final ClientRequest request = new ClientRequest().setMethod(Methods.POST).setPath(path);
+                    request.getRequestHeaders().put(Headers.CONTENT_TYPE, ""text/plain"");
+                    request.getRequestHeaders().put(Headers.HOST, ""localhost"");
+                    request.getRequestHeaders().put(HttpStringConstants.TRACEABILITY_ID, ""tid"");
+                    request.getRequestHeaders().put(Headers.AUTHORIZATION, ""Bearer eyJraWQiOiIxMDAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1cm46Y29tOm5ldHdvcmtudDpvYXV0aDI6djEiLCJhdWQiOiJ1cm46Y29tLm5ldHdvcmtudCIsImV4cCI6MTc5MDAzNTcwOSwianRpIjoiSTJnSmdBSHN6NzJEV2JWdUFMdUU2QSIsImlhdCI6MTQ3NDY3NTcwOSwibmJmIjoxNDc0Njc1NTg5LCJ2ZXJzaW9uIjoiMS4wIiwidXNlcl9pZCI6InN0ZXZlIiwidXNlcl90eXBlIjoiRU1QTE9ZRUUiLCJjbGllbnRfaWQiOiJmN2Q0MjM0OC1jNjQ3LTRlZmItYTUyZC00YzU3ODc0MjFlNzIiLCJzY29wZSI6WyJ3cml0ZTpwZXRzIiwicmVhZDpwZXRzIl19.mue6eh70kGS3Nt2BCYz7ViqwO7lh_4JSFwcHYdJMY6VfgKTHhsIGKq2uEDt3zwT56JFAePwAxENMGUTGvgceVneQzyfQsJeVGbqw55E9IfM_uSM-YcHwTfR7eSLExN4pbqzVDI353sSOvXxA98ZtJlUZKgXNE1Ngun3XFORCRIB_eH8B0FY_nT_D1Dq2WJrR-re-fbR6_va95vwoUdCofLRa4IpDfXXx19ZlAtfiVO44nw6CS8O87eGfAm7rCMZIzkWlCOFWjNHnCeRsh7CVdEH34LF-B48beiG5lM7h4N12-EME8_VDefgMjZ8eqs1ICvJMxdIut58oYbdnkwTjkA"");
+                    request.getRequestHeaders().put(HttpStringConstants.SCOPE_TOKEN, ""Bearer eyJraWQiOiIxMDAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ1cm46Y29tOm5ldHdvcmtudDpvYXV0aDI6djEiLCJhdWQiOiJ1cm46Y29tLm5ldHdvcmtudCIsImV4cCI6MTc5MDAzNTcwOSwianRpIjoiSTJnSmdBSHN6NzJEV2JWdUFMdUU2QSIsImlhdCI6MTQ3NDY3NTcwOSwibmJmIjoxNDc0Njc1NTg5LCJ2ZXJzaW9uIjoiMS4wIiwidXNlcl9pZCI6InN0ZXZlIiwidXNlcl90eXBlIjoiRU1QTE9ZRUUiLCJjbGllbnRfaWQiOiJmN2Q0MjM0OC1jNjQ3LTRlZmItYTUyZC00YzU3ODc0MjFlNzIiLCJzY29wZSI6WyJ3cml0ZTpwZXRzIiwicmVhZDpwZXRzIl19.mue6eh70kGS3Nt2BCYz7ViqwO7lh_4JSFwcHYdJMY6VfgKTHhsIGKq2uEDt3zwT56JFAePwAxENMGUTGvgceVneQzyfQsJeVGbqw55E9IfM_uSM-YcHwTfR7eSLExN4pbqzVDI353sSOvXxA98ZtJlUZKgXNE1Ngun3XFORCRIB_eH8B0FY_nT_D1Dq2WJrR-re-fbR6_va95vwoUdCofLRa4IpDfXXx19ZlAtfiVO44nw6CS8O87eGfAm7rCMZIzkWlCOFWjNHnCeRsh7CVdEH34LF-B48beiG5lM7h4N12-EME8_VDefgMjZ8eqs1ICvJMxdIut58oYbdnkwTjkA"");
+                    request.getRequestHeaders().put(Headers.TRANSFER_ENCODING, ""chunked"");
+                    if (cookies != null) {
+                        request.getRequestHeaders().put(Headers.COOKIE, cookies);
+                    }
+                    connection.sendRequest(request, client.createClientCallback(reference, latch, post));
+                }
+            });
+
+            latch.await(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            logger.error(""IOException: "", e);
+            throw new ClientException(e);
+        } finally {
+            IoUtils.safeClose(connection);
+        }
+        Assert.assertEquals(expectStatus, reference.get().getResponseCode());
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ignored) {
+        }
+    }",True,True,"The function of this method is to run a test by sending a POST request to a specified path with a specified body, cookies, and expected status code. It uses an HTTP2 client to establish a connection, sends the request, and waits for the response. Finally, it asserts that the response code matches the expected status code.",False,"The code defines a private method called `runTest` that sends a POST request to a specified path with a given body, cookies, and expected status code. It uses the Http2Client library to establish a connection and sends the request asynchronously, waiting for a response before asserting the expected status code."

@@ -1,0 +1,279 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,TAG,tag ,Field,,,,,70,1,26,,private static final String TAG = CameraManager.class.getSimpleName();,False,False,,False,
+2,context,context ,Field,CameraManager(Context),,,,30,1,18,,private final Context context;,False,False,,False,
+3,camera,camera ,Field,,,,,22,1,2,,private Camera camera;,False,False,,False,
+4,cameraInfo,camera info ,Field,,,,,37,1,2,,private Camera.CameraInfo cameraInfo;,False,False,,False,
+5,autoFocusManager,auto focus manager ,Field,,,,,42,1,2,,private AutoFocusManager autoFocusManager;,False,False,,False,
+6,previewing,previewing ,Field,,,,,27,1,2,,private boolean previewing;,False,False,,False,
+7,defaultParameters,default parameters ,Field,,,,,33,1,2,,private String defaultParameters;,False,False,,False,
+8,requestedCameraId,requested camera id ,Field,,,,,72,1,2,,private int requestedCameraId = OpenCameraInterface.NO_REQUESTED_CAMERA;,True,True,,False,
+9,invertScan,invert scan ,Field,setInvertScan(boolean),,,,35,1,2,,private boolean invertScan = false;,True,True,,False,
+10,disableBarcodeSceneMode,disable barcode scene mode ,Field,setDisableBarcodeSceneMode(boolean),,,,47,1,2,,private boolean disableBarcodeSceneMode = true;,True,True,,False,
+11,disableMetering,disable metering ,Field,setDisableMetering(boolean),,,,39,1,2,,private boolean disableMetering = true;,True,True,,False,
+12,autoFocus,auto focus ,Field,setAutoFocus(boolean),,,,33,1,2,,private boolean autoFocus = true;,True,True,,False,
+13,disableContinuousFocus,disable continuous focus ,Field,setDisableContinuousFocus(boolean),,,,46,1,2,,private boolean disableContinuousFocus = true;,True,True,,False,
+14,rotated,rotated ,Field,,,,,24,1,2,,private boolean rotated;,False,False,,False,
+15,desiredLandscapeSize,desired landscape size ,Field,,,,,35,1,2,,private Point desiredLandscapeSize;,False,False,,False,
+16,desiredRotatedSize,desired rotated size ,Field,,,,,33,1,2,,private Point desiredRotatedSize;,False,False,,False,
+17,requestedPreviewSize,requested preview size ,Field,,,,,35,1,2,,private Point requestedPreviewSize;,False,False,,False,
+18,previewSize,preview size ,Field,,,,,26,1,2,,private Point previewSize;,False,False,,False,
+19,previewCallback,preview callback preview frames are delivered here which we pass on to the registered handler make sure to clear the handler so it will only receive one message ,Field,,,,,215,5,18,"/** 
+ * Preview frames are delivered here, which we pass on to the registered handler. Make sure to clear the handler so it will only receive one message.
+ */
+","/**
+   * Preview frames are delivered here, which we pass on to the registered handler. Make sure to
+   * clear the handler so it will only receive one message.
+   */
+  private final PreviewCallback previewCallback;",False,False,"/** 
+ * Preview frames are delivered here, which we pass on to the registered handler. Make sure to clear the handler so it will only receive one message.
+ */
+",False,"/** 
+ * Preview frames are delivered here, which we pass on to the registered handler. Make sure to clear the handler so it will only receive one message.
+ */
+"
+20,CameraManager(Context),camera manager context ,Method,,,com.journeyapps.barcodescanner.camera.PreviewCallback+PreviewCallback(),com.journeyapps.barcodescanner.camera.CameraManager+context com.journeyapps.barcodescanner.camera.CameraManager+context com.journeyapps.barcodescanner.camera.CameraManager+previewCallback,360,11,1,,"public CameraManager(Context context) {
+    this.context = context;
+    previewCallback = new PreviewCallback();
+
+    // 1. open(), set desired preview size and other parameters (any order)
+    // 2. configure(), setPreviewDisplay(holder) (any order)
+    // 3. startPreview()
+    // 4. requestPreviewFrame (repeat)
+    // 5. stopPreview()
+    // 6. close()
+  }",False,False,"The function of the method is to initialize a CameraManager object with a given Context, and set up the necessary steps for previewing camera frames, including opening the camera, configuring the preview display, starting and stopping the preview, and closing the camera.",False,"The code initializes a CameraManager object with a given context. It also creates a PreviewCallback object. The code includes comments outlining the steps involved in using the camera, such as opening, configuring, starting and stopping the preview, and closing the camera."
+21,open(),open ,Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),com.google.zxing.client.android.camera.open.OpenCameraInterface+open(int) com.google.zxing.client.android.camera.open.OpenCameraInterface+open(int) java.lang.RuntimeException+RuntimeException(String) com.google.zxing.client.android.camera.open.OpenCameraInterface+getCameraId(int) com.google.zxing.client.android.camera.open.OpenCameraInterface+getCameraId(int),com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+requestedCameraId com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+requestedCameraId com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo,334,10,1,,"public void open() {
+    camera = OpenCameraInterface.open(requestedCameraId);
+    if(camera == null) {
+      throw new RuntimeException(""Failed to open camera"");
+    }
+
+    int cameraId = OpenCameraInterface.getCameraId(requestedCameraId);
+    cameraInfo = new Camera.CameraInfo();
+    Camera.getCameraInfo(cameraId, cameraInfo);
+  }",False,False,The function of this method is to open the camera specified by the requestedCameraId. It throws a RuntimeException if the camera fails to open. It also retrieves information about the camera and stores it in the cameraInfo variable.,True,"The ""open()"" method is responsible for opening a camera using the requested camera ID. If the camera fails to open, it throws a runtime exception. It also retrieves the camera information for the opened camera."
+22,configure(),configure ,Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),com.journeyapps.barcodescanner.camera.CameraManager+setParameters() com.journeyapps.barcodescanner.camera.CameraManager+setParameters(),,50,3,1,,"public void configure() {
+    setParameters();
+  }",False,False,"The function of the method is to configure something. It does this by calling the ""setParameters()"" method.",True,"The code contains a method called ""configure"" that calls another method called ""setParameters"". The purpose of the ""configure"" method is to set the parameters required for the functionality of the code."
+23,setPreviewDisplay(SurfaceHolder),set preview display holder ,Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),,com.journeyapps.barcodescanner.camera.CameraManager+camera,114,3,1,,"public void setPreviewDisplay(SurfaceHolder holder) throws IOException {
+    camera.setPreviewDisplay(holder);
+  }",False,False,This method sets the preview display for the camera to the specified SurfaceHolder.,True,"The code defines a method named ""setPreviewDisplay"" that takes a SurfaceHolder object as a parameter. It sets the preview display of a camera to the specified SurfaceHolder, and throws an IOException if there is an error."
+24,startPreview(),start preview asks the camera hardware to begin drawing preview frames to the screen ,Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),"com.journeyapps.barcodescanner.camera.AutoFocusManager+AutoFocusManager(Context,Camera)",com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewing com.journeyapps.barcodescanner.camera.CameraManager+previewing com.journeyapps.barcodescanner.camera.CameraManager+autoFocusManager com.journeyapps.barcodescanner.camera.CameraManager+context com.journeyapps.barcodescanner.camera.CameraManager+camera,323,11,1,"/** 
+ * Asks the camera hardware to begin drawing preview frames to the screen.
+ */
+","/**
+   * Asks the camera hardware to begin drawing preview frames to the screen.
+   */
+  public void startPreview() {
+    Camera theCamera = camera;
+    if (theCamera != null && !previewing) {
+      theCamera.startPreview();
+      previewing = true;
+      autoFocusManager = new AutoFocusManager(context, camera);
+    }
+  }",False,False,"This method starts the camera preview, if the camera is available and previewing is not already in progress. It also initializes the autofocus manager.",True,"The `startPreview()` method initiates the camera hardware to display preview frames on the screen. It checks if the camera is available and not already previewing, then starts the preview, sets the previewing flag to true, and creates an instance of the `AutoFocusManager` class for handling autofocus."
+25,stopPreview(),stop preview tells the camera to stop drawing preview frames ,Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),"com.journeyapps.barcodescanner.camera.AutoFocusManager+stop() com.journeyapps.barcodescanner.camera.AutoFocusManager+stop() com.journeyapps.barcodescanner.camera.PreviewCallback+setHandler(Handler,int) com.journeyapps.barcodescanner.camera.PreviewCallback+setHandler(Handler,int)",com.journeyapps.barcodescanner.camera.CameraManager+autoFocusManager com.journeyapps.barcodescanner.camera.CameraManager+autoFocusManager com.journeyapps.barcodescanner.camera.CameraManager+autoFocusManager com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewing com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewCallback com.journeyapps.barcodescanner.camera.CameraManager+previewing,344,14,1,"/** 
+ * Tells the camera to stop drawing preview frames.
+ */
+","/**
+   * Tells the camera to stop drawing preview frames.
+   */
+  public void stopPreview() {
+    if (autoFocusManager != null) {
+      autoFocusManager.stop();
+      autoFocusManager = null;
+    }
+    if (camera != null && previewing) {
+      camera.stopPreview();
+      previewCallback.setHandler(null, 0);
+      previewing = false;
+    }
+  }",False,False,"This method is used to stop the camera from drawing preview frames. It stops the autofocus manager if it is not null, stops the camera preview if it is not null and currently previewing, and sets the previewing flag to false.",True,"The `stopPreview()` method is used to stop the camera from drawing preview frames. It first stops the autofocus manager if it exists, then stops the camera preview if it is currently running, and finally sets the previewing flag to false."
+26,close(),close closes the camera driver if still in use ,Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),,com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+camera,161,9,1,"/** 
+ * Closes the camera driver if still in use.
+ */
+","/**
+   * Closes the camera driver if still in use.
+   */
+  public void close() {
+    if (camera != null) {
+      camera.release();
+      camera = null;
+    }
+  }",False,False,This method closes the camera driver if it is still in use by releasing it and setting it to null.,True,"The given code defines a method named ""close"" that is responsible for releasing the camera resource if it is currently in use. It checks if the camera object is not null, releases it, and sets the camera object to null."
+27,getDefaultCameraParameters(),get default camera parameters ,Method,setDesiredParameters(boolean),,,com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+defaultParameters com.journeyapps.barcodescanner.camera.CameraManager+defaultParameters com.journeyapps.barcodescanner.camera.CameraManager+defaultParameters,292,9,2,,"private Camera.Parameters getDefaultCameraParameters() {
+    Camera.Parameters parameters = camera.getParameters();
+    if(defaultParameters == null) {
+      defaultParameters = parameters.flatten();
+    } else {
+      parameters.unflatten(defaultParameters);
+    }
+    return parameters;
+  }",False,False,"This method returns the default camera parameters. It gets the current camera parameters, flattens them if they are not already flattened, and returns the parameters.",False,"This code defines a private method called ""getDefaultCameraParameters"" that returns the default parameters of a camera. It retrieves the current camera parameters, flattens them into a string if they are not already stored, or unflattens them from the stored string if they are already stored, and then returns the parameters."
+28,setDesiredParameters(boolean),set desired parameters safe mode ,Method,setParameters() setParameters(),,"com.journeyapps.barcodescanner.camera.CameraManager+getDefaultCameraParameters() com.journeyapps.barcodescanner.camera.CameraManager+getDefaultCameraParameters() com.google.zxing.client.android.camera.CameraConfigurationUtils+setFocus(Parameters,boolean,boolean,boolean) com.google.zxing.client.android.camera.CameraConfigurationUtils+setFocus(Parameters,boolean,boolean,boolean) com.google.zxing.client.android.camera.CameraConfigurationUtils+setTorch(Parameters,boolean) com.google.zxing.client.android.camera.CameraConfigurationUtils+setTorch(Parameters,boolean) com.google.zxing.client.android.camera.CameraConfigurationUtils+setInvertColor(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setInvertColor(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setBarcodeSceneMode(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setBarcodeSceneMode(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setVideoStabilization(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setVideoStabilization(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setFocusArea(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setFocusArea(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setMetering(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setMetering(Parameters) java.lang.Object+Object() com.google.zxing.client.android.camera.CameraConfigurationUtils+findBestPreviewSizeValue(Parameters,Point) com.google.zxing.client.android.camera.CameraConfigurationUtils+findBestPreviewSizeValue(Parameters,Point)",com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+autoFocus com.journeyapps.barcodescanner.camera.CameraManager+disableContinuousFocus com.journeyapps.barcodescanner.camera.CameraManager+invertScan com.journeyapps.barcodescanner.camera.CameraManager+disableBarcodeSceneMode com.journeyapps.barcodescanner.camera.CameraManager+disableMetering com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+rotated com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize com.journeyapps.barcodescanner.camera.CameraManager+requestedPreviewSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize com.journeyapps.barcodescanner.camera.CameraManager+requestedPreviewSize com.journeyapps.barcodescanner.camera.CameraManager+requestedPreviewSize com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+camera,1738,55,2,,"private void setDesiredParameters(boolean safeMode) {
+    Camera.Parameters parameters = getDefaultCameraParameters();
+
+    //noinspection ConstantConditions
+    if (parameters == null) {
+      Log.w(TAG, ""Device error: no camera parameters are available. Proceeding without configuration."");
+      return;
+    }
+
+    Log.i(TAG, ""Initial camera parameters: "" + parameters.flatten());
+
+    if (safeMode) {
+      Log.w(TAG, ""In camera config safe mode -- most settings will not be honored"");
+    }
+
+
+    CameraConfigurationUtils.setFocus(parameters,autoFocus, disableContinuousFocus, safeMode);
+
+    if (!safeMode) {
+      CameraConfigurationUtils.setTorch(parameters, false);
+
+      if (invertScan) {
+        CameraConfigurationUtils.setInvertColor(parameters);
+      }
+
+      if (!disableBarcodeSceneMode) {
+        CameraConfigurationUtils.setBarcodeSceneMode(parameters);
+      }
+
+      if (!disableMetering) {
+        CameraConfigurationUtils.setVideoStabilization(parameters);
+        CameraConfigurationUtils.setFocusArea(parameters);
+        CameraConfigurationUtils.setMetering(parameters);
+      }
+
+    }
+
+    if(desiredRotatedSize != null) {
+      if(rotated) {
+        //noinspection SuspiciousNameCombination
+        desiredLandscapeSize = new Point(desiredRotatedSize.y, desiredRotatedSize.x);
+      } else {
+        desiredLandscapeSize = desiredRotatedSize;
+      }
+    }
+
+    if(desiredLandscapeSize != null) {
+      requestedPreviewSize = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, desiredLandscapeSize);
+      parameters.setPreviewSize(requestedPreviewSize.x, requestedPreviewSize.y);
+    }
+
+    Log.i(TAG, ""Final camera parameters: "" + parameters.flatten());
+
+    camera.setParameters(parameters);
+  }",False,False,"This method sets the desired parameters for the camera. It checks if the camera parameters are available, logs the initial and final camera parameters, and sets various camera settings based on the safe mode and other conditions. Finally, it sets the parameters for the camera and applies them.",True,
+29,setCameraDisplayOrientation(),set camera display orientation ,Method,setParameters(),,,com.journeyapps.barcodescanner.camera.CameraManager+context com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+rotated,829,22,2,,"private void setCameraDisplayOrientation() {
+    int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
+            .getRotation();
+    int degrees = 0;
+    switch (rotation) {
+      case Surface.ROTATION_0: degrees = 0; break;
+      case Surface.ROTATION_90: degrees = 90; break;
+      case Surface.ROTATION_180: degrees = 180; break;
+      case Surface.ROTATION_270: degrees = 270; break;
+    }
+
+    int result;
+    if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+      result = (cameraInfo.orientation + degrees) % 360;
+      result = (360 - result) % 360;  // compensate the mirror
+    } else {  // back-facing
+      result = (cameraInfo.orientation - degrees + 360) % 360;
+    }
+    camera.setDisplayOrientation(result);
+
+    rotated = degrees % 180 == 0;
+  }",False,False,"This method sets the display orientation of the camera based on the device's rotation. It calculates the degrees of rotation based on the device's rotation value and the camera's orientation. It then sets the display orientation of the camera using the calculated result. Finally, it determines if the device is rotated by checking if the degrees of rotation are divisible by 180.",True,"This code is a method that sets the display orientation of the camera based on the device's rotation. It calculates the desired orientation by considering the camera's orientation and the device's rotation, and then sets the display orientation accordingly."
+30,setParameters(),set parameters ,Method,configure(),,com.journeyapps.barcodescanner.camera.CameraManager+setCameraDisplayOrientation() com.journeyapps.barcodescanner.camera.CameraManager+setCameraDisplayOrientation() com.journeyapps.barcodescanner.camera.CameraManager+setDesiredParameters(boolean) com.journeyapps.barcodescanner.camera.CameraManager+setDesiredParameters(boolean) com.journeyapps.barcodescanner.camera.CameraManager+setDesiredParameters(boolean) com.journeyapps.barcodescanner.camera.CameraManager+setDesiredParameters(boolean) java.lang.Object+Object(),com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewSize com.journeyapps.barcodescanner.camera.CameraManager+requestedPreviewSize com.journeyapps.barcodescanner.camera.CameraManager+previewSize,720,25,2,,"private void setParameters() {
+    try {
+      setCameraDisplayOrientation();
+    } catch(Exception e) {
+      Log.w(TAG, ""Failed to set rotation."");
+    }
+    try {
+      setDesiredParameters(false);
+    } catch (Exception e) {
+      // Failed, use safe mode
+      try {
+        setDesiredParameters(false);
+      } catch (Exception e2) {
+        // Well, darn. Give up
+        Log.w(TAG, ""Camera rejected even safe-mode parameters! No configuration"");
+      }
+    }
+
+    Camera.Size realPreviewSize = camera.getParameters().getPreviewSize();
+    if(realPreviewSize == null) {
+      previewSize = requestedPreviewSize;
+    } else {
+      previewSize = new Point(realPreviewSize.width, realPreviewSize.height);
+    }
+  }",False,False,"This method sets the parameters for the camera. It first tries to set the camera display orientation and then sets the desired parameters. If that fails, it tries again in safe mode. Finally, it retrieves the preview size from the camera parameters.",True,"The `setParameters()` method attempts to set the camera display orientation and desired parameters for the camera. If these attempts fail, it falls back to safe mode parameters. Finally, it retrieves the preview size of the camera and assigns it to the `previewSize` variable."
+31,isOpen(),is open ,Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+camera,56,3,1,,"public boolean isOpen() {
+    return camera != null;
+  }",False,False,"This method checks if the camera is open by returning a boolean value. It returns true if the camera is not null, indicating that it is open, and false otherwise.",False,"The code defines a method named ""isOpen"" which checks if the camera object is not null and returns a boolean value indicating whether the camera is open or not."
+32,isRotated(),is rotated ,Method,,"com.journeyapps.barcodescanner.DecoderThread+createSource(byte[],int,int)",,com.journeyapps.barcodescanner.camera.CameraManager+rotated,52,3,1,,"public boolean isRotated() {
+    return rotated;
+  }",True,True,This method returns a boolean value indicating whether an object has been rotated or not.,False,"The code contains a method named ""isRotated"" which returns a boolean value indicating whether something is rotated or not. The method simply returns the value of a variable called ""rotated""."
+33,getPreviewSize(),get preview size ,Method,,com.journeyapps.barcodescanner.BarcodeView+getPreviewSize(),,com.journeyapps.barcodescanner.camera.CameraManager+previewSize,59,3,1,,"public Point getPreviewSize() {
+    return previewSize;
+  }",False,False,"This method returns the value of the variable ""previewSize"" of type Point.",False,"The code defines a method named ""getPreviewSize"" that returns a Point object. This method is used to retrieve the preview size of an image or video."
+34,"requestPreviewFrame(Handler,int)",request preview frame handler message a single preview frame will be returned to the handler supplied the data will arrive as byte in the message obj field with width and height encoded as message arg1 and message arg2 respectively param handler the handler to send the message to param message the what field of the message to be sent ,Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),"com.journeyapps.barcodescanner.camera.PreviewCallback+setHandler(Handler,int) com.journeyapps.barcodescanner.camera.PreviewCallback+setHandler(Handler,int)",com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewing com.journeyapps.barcodescanner.camera.CameraManager+previewCallback com.journeyapps.barcodescanner.camera.CameraManager+previewCallback,609,15,1,"/** 
+ * A single preview frame will be returned to the handler supplied. The data will arrive as byte[] in the message.obj field, with width and height encoded as message.arg1 and message.arg2, respectively.
+ * @param handler The handler to send the message to.
+ * @param message The what field of the message to be sent.
+ */
+","/**
+   * A single preview frame will be returned to the handler supplied. The data will arrive as byte[]
+   * in the message.obj field, with width and height encoded as message.arg1 and message.arg2,
+   * respectively.
+   *
+   * @param handler The handler to send the message to.
+   * @param message The what field of the message to be sent.
+   */
+  public void requestPreviewFrame(Handler handler, int message) {
+    Camera theCamera = camera;
+    if (theCamera != null && previewing) {
+      previewCallback.setHandler(handler, message);
+      theCamera.setOneShotPreviewCallback(previewCallback);
+    }
+  }",False,False,"This method is used to request a single preview frame from the camera. The frame is sent to the specified handler as a byte array in the message.obj field, with the width and height encoded as message.arg1 and message.arg2, respectively.",True,"The `requestPreviewFrame` method is used to request a single preview frame from the camera. The frame data is sent to the specified handler as a byte array, with the width and height encoded as message arguments."
+35,setManualCameraId(int),set manual camera id camera id allows third party apps to specify the camera id rather than determine it automatically based on available cameras and their orientation param camera id camera id of the camera to use a negative value means no preference ,Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+requestedCameraId,342,9,1,"/** 
+ * Allows third party apps to specify the camera ID, rather than determine it automatically based on available cameras and their orientation.
+ * @param cameraId camera ID of the camera to use. A negative value means ""no preference"".
+ */
+","/**
+   * Allows third party apps to specify the camera ID, rather than determine
+   * it automatically based on available cameras and their orientation.
+   *
+   * @param cameraId camera ID of the camera to use. A negative value means ""no preference"".
+   */
+  public void setManualCameraId(int cameraId) {
+    requestedCameraId = cameraId;
+  }",False,True,"This method allows third party apps to manually specify the camera ID to use, instead of it being determined automatically based on available cameras and their orientation. The specified camera ID is stored in the requestedCameraId variable.",False,"The code defines a method called ""setManualCameraId"" which allows third-party apps to specify the camera ID to use. The method takes an integer parameter representing the camera ID, with a negative value indicating no preference. The method sets the requestedCameraId variable to the provided camera ID."
+36,setInvertScan(boolean),set invert scan invert scan ,Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+invertScan com.journeyapps.barcodescanner.camera.CameraManager+invertScan,85,3,1,,"public void setInvertScan(boolean invertScan) {
+    this.invertScan = invertScan;
+  }",True,True,"This method sets the value of the ""invertScan"" variable to the provided boolean value.",False,"The code defines a method named ""setInvertScan"" that takes a boolean parameter ""invertScan"". This method sets the value of the ""invertScan"" variable in the current object to the value passed as the parameter."
+37,setDisableBarcodeSceneMode(boolean),set disable barcode scene mode disable barcode scene mode ,Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+disableBarcodeSceneMode com.journeyapps.barcodescanner.camera.CameraManager+disableBarcodeSceneMode,137,3,1,,"public void setDisableBarcodeSceneMode(boolean disableBarcodeSceneMode) {
+    this.disableBarcodeSceneMode = disableBarcodeSceneMode;
+  }",True,True,"This method sets the value of a boolean variable called ""disableBarcodeSceneMode"" to the value passed as a parameter.",False,"This code defines a method called ""setDisableBarcodeSceneMode"" that takes a boolean parameter. It sets the value of the ""disableBarcodeSceneMode"" variable to the provided parameter value."
+38,setDisableMetering(boolean),set disable metering disable metering ,Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+disableMetering com.journeyapps.barcodescanner.camera.CameraManager+disableMetering,105,3,1,,"public void setDisableMetering(boolean disableMetering) {
+    this.disableMetering = disableMetering;
+  }",True,True,This method sets the value of the disableMetering variable to the provided boolean value.,False,"The code defines a method named ""setDisableMetering"" that takes a boolean parameter. It sets the value of the ""disableMetering"" variable to the provided parameter value."
+39,setAutoFocus(boolean),set auto focus auto focus ,Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+autoFocus com.journeyapps.barcodescanner.camera.CameraManager+autoFocus,81,3,1,,"public void setAutoFocus(boolean autoFocus) {
+    this.autoFocus = autoFocus;
+  }",True,True,"This method sets the value of the ""autoFocus"" variable to the provided boolean value.",False,"The code defines a method named ""setAutoFocus"" that takes a boolean parameter. It sets the value of the ""autoFocus"" variable to the provided parameter value. This method is used to control the auto-focus feature of a camera or similar device."
+40,setDisableContinuousFocus(boolean),set disable continuous focus disable continuous focus ,Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+disableContinuousFocus com.journeyapps.barcodescanner.camera.CameraManager+disableContinuousFocus,133,3,1,,"public void setDisableContinuousFocus(boolean disableContinuousFocus) {
+    this.disableContinuousFocus = disableContinuousFocus;
+  }",True,True,"This method sets the value of a boolean variable called ""disableContinuousFocus"" in an object.",False,"This code defines a method named ""setDisableContinuousFocus"" that takes a boolean parameter. It sets the value of the ""disableContinuousFocus"" variable to the provided parameter value."
+41,setDesiredLandscapePreviewSize(Point),set desired landscape preview size size ,Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize,124,4,1,,"public void setDesiredLandscapePreviewSize(Point size) {
+    desiredRotatedSize = null;
+    desiredLandscapeSize = size;
+  }",False,False,This method sets the desired landscape preview size by assigning the given size to the desiredLandscapeSize variable and resetting the desiredRotatedSize variable to null.,False,"The code defines a method called ""setDesiredLandscapePreviewSize"" which takes a Point object as a parameter. This method sets the desired landscape size for previewing, while also resetting the desired rotated size to null."
+42,setDesiredPreviewSize(Point),set desired preview size size ,Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize,115,4,1,,"public void setDesiredPreviewSize(Point size) {
+    desiredRotatedSize = size;
+    desiredLandscapeSize = null;
+  }",False,False,This method sets the desired preview size for a camera. It assigns the given size to the desiredRotatedSize variable and sets desiredLandscapeSize to null.,False,"The code defines a method called ""setDesiredPreviewSize"" that takes a Point object as a parameter. It sets the value of the ""desiredRotatedSize"" variable to the provided size and sets the ""desiredLandscapeSize"" variable to null."
