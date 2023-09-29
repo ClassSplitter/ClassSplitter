@@ -1,0 +1,364 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,TAG,tag ,Field,,,,,52,1,26,,"private static final String TAG = ""AutoFitTextView"";",True,True,,False,
+2,SPEW,spew ,Field,,,,,42,1,26,,private static final boolean SPEW = false;,True,True,,False,
+3,DEFAULT_MIN_TEXT_SIZE,default min text size ,Field,,,,,51,1,26,,private static final int DEFAULT_MIN_TEXT_SIZE = 8;,True,True,,False,
+4,PRECISION,precision ,Field,,,,,44,1,26,,private static final float PRECISION = 0.5f;,False,True,,False,
+5,mSizeToFit,m size to fit ,Field,,,,,27,1,2,,private boolean mSizeToFit;,False,True,,False,
+6,mMaxLines,m max lines ,Field,,,,,22,1,2,,private int mMaxLines;,True,True,,False,
+7,mMinTextSize,m min text size ,Field,,,,,27,1,2,,private float mMinTextSize;,True,True,,False,
+8,mMaxTextSize,m max text size ,Field,,,,,27,1,2,,private float mMaxTextSize;,True,True,,False,
+9,mPrecision,m precision ,Field,,,,,25,1,2,,private float mPrecision;,True,True,,False,
+10,mPaint,m paint ,Field,,,,,25,1,2,,private TextPaint mPaint;,True,True,,False,
+11,AutofitTextView(Context),autofit text view context ,Method,,,"me.grantland.widget.AutofitTextView+init(Context,AttributeSet,int) me.grantland.widget.AutofitTextView+init(Context,AttributeSet,int)",,103,4,1,,"public AutofitTextView(Context context) {
+        super(context);
+        init(context, null, 0);
+    }",False,False,"The method is a constructor for the AutofitTextView class. It takes a Context object as a parameter, calls the superclass constructor, and then initializes the AutofitTextView object with the given context, null attributes, and 0 style.",False,"The code defines a constructor for the AutofitTextView class in Java. It takes a Context object as a parameter, calls the superclass constructor, and then initializes the AutofitTextView object by calling the init() method with the context, null, and 0 as arguments."
+12,"AutofitTextView(Context,AttributeSet)",autofit text view context attrs ,Method,,,"me.grantland.widget.AutofitTextView+init(Context,AttributeSet,int) me.grantland.widget.AutofitTextView+init(Context,AttributeSet,int)",,131,4,1,,"public AutofitTextView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context, attrs, 0);
+    }",False,False,"The function of this method is to create an instance of the AutofitTextView class, passing the context and attribute set as parameters, and then initializing it with the specified context, attributes, and a default value of 0.",False,"The code defines a constructor for the AutofitTextView class, which takes a Context and AttributeSet as parameters. It calls the superclass constructor and then initializes the AutofitTextView object by calling the init() method with the provided context and attributes."
+13,"AutofitTextView(Context,AttributeSet,int)",autofit text view context attrs def style ,Method,,,"me.grantland.widget.AutofitTextView+init(Context,AttributeSet,int) me.grantland.widget.AutofitTextView+init(Context,AttributeSet,int)",,162,4,1,,"public AutofitTextView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(context, attrs, defStyle);
+    }",False,False,"The function of this method is to create an instance of the AutofitTextView class, passing the context, attributes, and default style as parameters. It also calls the init() method to initialize the view.",False,"The code defines a constructor for the AutofitTextView class, which takes a Context, AttributeSet, and int as parameters. It calls the superclass constructor and then initializes the AutofitTextView by calling the init() method with the provided parameters."
+14,"init(Context,AttributeSet,int)",init context attrs def style ,Method,"AutofitTextView(Context) AutofitTextView(Context,AttributeSet) AutofitTextView(Context,AttributeSet,int)",,me.grantland.widget.AutofitTextView+setSizeToFit(boolean) me.grantland.widget.AutofitTextView+setSizeToFit(boolean) me.grantland.widget.AutofitTextView+setRawTextSize(float) me.grantland.widget.AutofitTextView+setRawTextSize(float) me.grantland.widget.AutofitTextView+setRawMinTextSize(float) me.grantland.widget.AutofitTextView+setRawMinTextSize(float) me.grantland.widget.AutofitTextView+setPrecision(float) me.grantland.widget.AutofitTextView+setPrecision(float),me.grantland.widget.AutofitTextView+DEFAULT_MIN_TEXT_SIZE me.grantland.widget.AutofitTextView+PRECISION me.grantland.widget.AutofitTextView+mPaint,1050,25,2,,"private void init(Context context, AttributeSet attrs, int defStyle) {
+        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+        boolean sizeToFit = true;
+        int minTextSize = (int) scaledDensity * DEFAULT_MIN_TEXT_SIZE;
+        float precision = PRECISION;
+
+        if (attrs != null) {
+            TypedArray ta = context.obtainStyledAttributes(
+                    attrs,
+                    R.styleable.AutofitTextView,
+                    defStyle,
+                    0);
+            sizeToFit = ta.getBoolean(R.styleable.AutofitTextView_sizeToFit, sizeToFit);
+            minTextSize = ta.getDimensionPixelSize(R.styleable.AutofitTextView_minTextSize,
+                    minTextSize);
+            precision = ta.getFloat(R.styleable.AutofitTextView_precision, precision);
+            ta.recycle();
+        }
+
+        mPaint = new TextPaint();
+        setSizeToFit(sizeToFit);
+        setRawTextSize(super.getTextSize());
+        setRawMinTextSize(minTextSize);
+        setPrecision(precision);
+    }",False,False,"This method initializes the AutofitTextView by setting the sizeToFit, minTextSize, and precision attributes. It also sets the TextPaint, sizeToFit, rawTextSize, rawMinTextSize, and precision values.",False,"The `init` method initializes the attributes of an `AutofitTextView` by retrieving values from the provided `Context` and `AttributeSet`. It sets the sizeToFit, minTextSize, and precision attributes, and initializes the TextPaint, rawTextSize, rawMinTextSize, and precision variables of the `AutofitTextView` object."
+15,isSizeToFit(),is size to fit return whether or not the text will be automatically resized to fit its constraints ,Method,,,,me.grantland.widget.AutofitTextView+mSizeToFit,172,6,1,"/** 
+ * @return whether or not the text will be automatically resized to fit its constraints.
+ */
+","/**
+     * @return whether or not the text will be automatically resized to fit its constraints.
+     */
+    public boolean isSizeToFit() {
+        return mSizeToFit;
+    }",False,False,This method returns a boolean value indicating whether or not the text will be automatically resized to fit its constraints.,False,"The given code snippet is a method named ""isSizeToFit"" that returns a boolean value indicating whether the text will be automatically resized to fit its constraints. It does not take any parameters and provides a summary description of the functionality it performs."
+16,setSizeToFit(),set size to fit sets the property of this field single line to automatically resize the text to fit its constraints ,Method,,,me.grantland.widget.AutofitTextView+setSizeToFit(boolean) me.grantland.widget.AutofitTextView+setSizeToFit(boolean),,187,6,1,"/** 
+ * Sets the property of this field (singleLine, to automatically resize the text to fit its constraints.
+ */
+","/**
+     * Sets the property of this field (singleLine, to automatically resize the text to fit its constraints.
+     */
+    public void setSizeToFit() {
+        setSizeToFit(true);
+    }",False,False,The function of this method is to set the property of a field to automatically resize the text to fit its constraints.,False,The method `setSizeToFit()` is used to set the property of a field to automatically resize the text to fit its constraints. It has an overloaded version that takes a boolean parameter to enable or disable this feature.
+17,setSizeToFit(boolean),set size to fit size to fit if true the text will automatically be resized to fit its constraints if false it will act like a normal text view param size to fit ,Method,"init(Context,AttributeSet,int) setSizeToFit()",,me.grantland.widget.AutofitTextView+refitText() me.grantland.widget.AutofitTextView+refitText(),me.grantland.widget.AutofitTextView+mSizeToFit,283,10,1,"/** 
+ * If true, the text will automatically be resized to fit its constraints; if false, it will act like a normal TextView.
+ * @param sizeToFit
+ */
+","/**
+     * If true, the text will automatically be resized to fit its constraints; if false, it will
+     * act like a normal TextView.
+     *
+     * @param sizeToFit
+     */
+    public void setSizeToFit(boolean sizeToFit) {
+        mSizeToFit = sizeToFit;
+        refitText();
+    }",False,False,This method sets a boolean value that determines whether the text in a TextView should automatically resize to fit its constraints or not. It also calls another method called refitText().,False,"The method `setSizeToFit` sets a boolean value that determines whether the text in a TextView should automatically resize to fit its constraints. If the value is true, the text will be resized, and if false, it will behave like a normal TextView. The method also calls the `refitText` function to update the text size accordingly."
+18,getTextSize(),get text size inherit doc ,Method,,,,me.grantland.widget.AutofitTextView+mMaxTextSize,114,7,1,"/** 
+ * {@inheritDoc}
+ */
+","/**
+     * {@inheritDoc}
+     */
+    @Override
+    public float getTextSize() {
+        return mMaxTextSize;
+    }",True,True,This method serves to override the getTextSize() method from the superclass and return the value of the mMaxTextSize variable as a float.,True,"This code is a method that overrides a superclass method and returns the value of a variable called mMaxTextSize, which represents the text size. The method is used to retrieve the current text size."
+19,"setTextSize(int,float)",set text size unit size inherit doc ,Method,,,me.grantland.widget.AutofitTextView+setRawTextSize(float) me.grantland.widget.AutofitTextView+setRawTextSize(float),,358,14,1,"/** 
+ * {@inheritDoc}
+ */
+","/**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTextSize(int unit, float size) {
+        Context context = getContext();
+        Resources r = Resources.getSystem();
+
+        if (context != null) {
+            r = context.getResources();
+        }
+
+        setRawTextSize(TypedValue.applyDimension(unit, size, r.getDisplayMetrics()));
+    }",False,False,"This method sets the text size for a view. It takes in a unit and size, and converts the size to pixels using the display metrics of the system resources.",True,"This code is an overridden method that sets the text size for a specific view. It first retrieves the context and resources, and then applies the specified text size using the display metrics."
+20,setRawTextSize(float),set raw text size size ,Method,"init(Context,AttributeSet,int) setTextSize(int,float)",,me.grantland.widget.AutofitTextView+refitText() me.grantland.widget.AutofitTextView+refitText(),me.grantland.widget.AutofitTextView+mMaxTextSize me.grantland.widget.AutofitTextView+mMaxTextSize,151,6,2,,"private void setRawTextSize(float size) {
+        if (size != mMaxTextSize) {
+            mMaxTextSize = size;
+            refitText();
+        }
+    }",False,False,This method sets the maximum text size to the given size and calls the refitText() method if the given size is different from the current maximum text size.,False,"The code defines a private method called `setRawTextSize` that takes a float parameter `size`. If the `size` is not equal to the current `mMaxTextSize`, the method updates `mMaxTextSize` with the new value and calls the `refitText()` method."
+21,getMinTextSize(),get min text size return the minimum size in pixels of the text size in this autofit text view ,Method,,,,me.grantland.widget.AutofitTextView+mMinTextSize,167,6,1,"/** 
+ * @return the minimum size (in pixels) of the text size in this AutofitTextView
+ */
+","/**
+     * @return the minimum size (in pixels) of the text size in this AutofitTextView
+     */
+    public float getMinTextSize() {
+        return mMinTextSize;
+    }",False,False,This method returns the minimum size of the text in pixels for an AutofitTextView.,False,"This code snippet is from an AutofitTextView class in Java. The method ""getMinTextSize()"" returns the minimum size of the text in pixels that can be displayed in the AutofitTextView. It is used to retrieve the minimum text size set for the view."
+22,"setMinTextSize(int,float)",set min text size unit min size set the minimum text size to a given unit and value see typed value for the possible dimension units param unit the desired dimension unit param min size the desired size in the given units attr ref me grantland r styleable autofit text view min text size ,Method,setMinTextSize(int),,me.grantland.widget.AutofitTextView+setRawMinTextSize(float) me.grantland.widget.AutofitTextView+setRawMinTextSize(float),,641,19,1,"/** 
+ * Set the minimum text size to a given unit and value. See TypedValue for the possible dimension units.
+ * @param unit The desired dimension unit.
+ * @param minSize The desired size in the given units.
+ * @attr ref me.grantland.R.styleable#AutofitTextView_minTextSize
+ */
+","/**
+     * Set the minimum text size to a given unit and value. See TypedValue for the possible
+     * dimension units.
+     *
+     * @param unit The desired dimension unit.
+     * @param minSize The desired size in the given units.
+     *
+     * @attr ref me.grantland.R.styleable#AutofitTextView_minTextSize
+     */
+    public void setMinTextSize(int unit, float minSize) {
+        Context context = getContext();
+        Resources r = Resources.getSystem();
+
+        if (context != null) {
+            r = context.getResources();
+        }
+
+        setRawMinTextSize(TypedValue.applyDimension(unit, minSize, r.getDisplayMetrics()));
+    }",False,False,"This method sets the minimum text size for an AutofitTextView. It takes a dimension unit and a size value as parameters, and converts the size value to pixels using the given unit. The converted value is then passed to the setRawMinTextSize method.",True,"This code defines a method called ""setMinTextSize"" that sets the minimum text size for a given unit and value. It uses the TypedValue class to convert the size to pixels based on the display metrics of the system or the context's resources."
+23,setMinTextSize(int),set min text size min size set the minimum text size to the given value interpreted as scaled pixel units this size is adjusted based on the current density and user font size preference param min size the scaled pixel size attr ref me grantland r styleable autofit text view min text size ,Method,,,"me.grantland.widget.AutofitTextView+setMinTextSize(int,float) me.grantland.widget.AutofitTextView+setMinTextSize(int,float)",,432,11,1,"/** 
+ * Set the minimum text size to the given value, interpreted as ""scaled pixel"" units. This size is adjusted based on the current density and user font size preference.
+ * @param minSize The scaled pixel size.
+ * @attr ref me.grantland.R.styleable#AutofitTextView_minTextSize
+ */
+","/**
+     * Set the minimum text size to the given value, interpreted as ""scaled pixel"" units. This size
+     * is adjusted based on the current density and user font size preference.
+     *
+     * @param minSize The scaled pixel size.
+     *
+     * @attr ref me.grantland.R.styleable#AutofitTextView_minTextSize
+     */
+    public void setMinTextSize(int minSize) {
+        setMinTextSize(TypedValue.COMPLEX_UNIT_SP, minSize);
+    }",False,False,"The function of this method is to set the minimum text size of an AutofitTextView to a given value, specified in scaled pixel units. It adjusts the size based on the current density and user font size preference.",True,"The code defines a method called ""setMinTextSize"" which sets the minimum text size for an AutofitTextView. The method takes an integer value as the minimum size and internally calls another overloaded version of the method to set the minimum size in scaled pixel units."
+24,setRawMinTextSize(float),set raw min text size min size ,Method,"init(Context,AttributeSet,int) setMinTextSize(int,float)",,me.grantland.widget.AutofitTextView+refitText() me.grantland.widget.AutofitTextView+refitText(),me.grantland.widget.AutofitTextView+mMinTextSize me.grantland.widget.AutofitTextView+mMinTextSize,163,6,2,,"private void setRawMinTextSize(float minSize) {
+        if (minSize != mMinTextSize) {
+            mMinTextSize = minSize;
+            refitText();
+        }
+    }",True,True,"This method sets the minimum text size for a view. If the given minimum size is different from the current minimum size, it updates the minimum size and calls another method to resize the text.",True,"The code defines a private method called `setRawMinTextSize` that takes a float parameter `minSize`. If the `minSize` is different from the current `mMinTextSize` value, it updates the `mMinTextSize` and calls the `refitText()` method."
+25,getPrecision(),get precision return the amount of precision used to calculate the correct text size to fit within it sbounds ,Method,,,,me.grantland.widget.AutofitTextView+mPrecision,191,7,1,"/** 
+ * @return the amount of precision used to calculate the correct text size to fit within it'sbounds.
+ */
+","/**
+     * @return the amount of precision used to calculate the correct text size to fit within it's
+     * bounds.
+     */
+    public float getPrecision() {
+        return mPrecision;
+    }",False,False,The method returns the amount of precision used to calculate the correct text size to fit within its bounds.,False,"This code defines a method called ""getPrecision"" that returns the precision value used to calculate the correct text size to fit within its bounds. The precision value is a float type."
+26,setPrecision(float),set precision precision set the amount of precision used to calculate the correct text size to fit within it s bounds lower precision is more precise and takes more time param precision the amount of precision ,Method,"init(Context,AttributeSet,int)",,me.grantland.widget.AutofitTextView+refitText() me.grantland.widget.AutofitTextView+refitText(),me.grantland.widget.AutofitTextView+mPrecision me.grantland.widget.AutofitTextView+mPrecision,393,12,1,"/** 
+ * Set the amount of precision used to calculate the correct text size to fit within it's bounds. Lower precision is more precise and takes more time.
+ * @param precision The amount of precision.
+ */
+","/**
+     * Set the amount of precision used to calculate the correct text size to fit within it's
+     * bounds. Lower precision is more precise and takes more time.
+     *
+     * @param precision The amount of precision.
+     */
+    public void setPrecision(float precision) {
+        if (precision != mPrecision) {
+            mPrecision = precision;
+            refitText();
+        }
+    }",False,False,"This method sets the precision used to calculate the correct text size to fit within its bounds. If the precision value is different from the current precision, it updates the precision value and calls the refitText() method.",True,"This code defines a method called ""setPrecision"" which sets the precision level for calculating the correct text size to fit within its bounds. If the precision value is different from the current precision value, it updates the precision and calls the ""refitText"" method."
+27,setLines(int),set lines lines inherit doc ,Method,,,me.grantland.widget.AutofitTextView+refitText() me.grantland.widget.AutofitTextView+refitText(),me.grantland.widget.AutofitTextView+mMaxLines,169,9,1,"/** 
+ * {@inheritDoc}
+ */
+","/**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLines(int lines) {
+        super.setLines(lines);
+        mMaxLines = lines;
+        refitText();
+    }",False,True,"This method overrides the setLines() method from the superclass. It sets the number of lines for the text, updates the maximum number of lines, and calls the refitText() method.",True,"This code overrides the setLines() method from the superclass and adds additional functionality. It sets the number of lines for a text view, updates the maximum number of lines, and then calls a method to resize the text to fit within the view."
+28,getMaxLines(),get max lines inherit doc ,Method,,,,me.grantland.widget.AutofitTextView+mMaxLines,109,7,1,"/** 
+ * {@inheritDoc}
+ */
+","/**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaxLines() {
+        return mMaxLines;
+    }",False,True,This method returns the maximum number of lines that can be displayed in a text view.,True,"The code snippet is a method called `getMaxLines()` that overrides a superclass method. It returns the value of a variable `mMaxLines`, which represents the maximum number of lines allowed in a text view."
+29,setMaxLines(int),set max lines max lines inherit doc ,Method,,,me.grantland.widget.AutofitTextView+refitText() me.grantland.widget.AutofitTextView+refitText(),me.grantland.widget.AutofitTextView+mMaxLines me.grantland.widget.AutofitTextView+mMaxLines,239,11,1,"/** 
+ * {@inheritDoc}
+ */
+","/**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMaxLines(int maxLines) {
+        super.setMaxLines(maxLines);
+        if (maxLines != mMaxLines) {
+            mMaxLines = maxLines;
+            refitText();
+        }
+    }",False,True,"This method overrides the setMaxLines method from the superclass. It sets the maximum number of lines for the text, and if the new value is different from the current value, it updates the value and recalculates the text size.",True,"This code overrides the setMaxLines method and adds additional functionality to it. It updates the value of mMaxLines if it is different from the current value, and then calls the refitText method."
+30,refitText(),refit text re size the font so the specified text fits in the text box assuming the text box is the specified width ,Method,"setSizeToFit(boolean) setRawTextSize(float) setRawMinTextSize(float) setPrecision(float) setLines(int) setMaxLines(int) onTextChanged(CharSequence,int,int,int) onSizeChanged(int,int,int,int)",,"java.lang.CharSequence+length() java.lang.CharSequence+length() me.grantland.widget.AutofitTextView+getLineCount(CharSequence,TextPaint,float,float,DisplayMetrics) me.grantland.widget.AutofitTextView+getLineCount(CharSequence,TextPaint,float,float,DisplayMetrics) me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics)",me.grantland.widget.AutofitTextView+mSizeToFit me.grantland.widget.AutofitTextView+mMaxLines me.grantland.widget.AutofitTextView+mMaxTextSize me.grantland.widget.AutofitTextView+mPaint me.grantland.widget.AutofitTextView+mPaint me.grantland.widget.AutofitTextView+mMaxLines me.grantland.widget.AutofitTextView+mPaint me.grantland.widget.AutofitTextView+mPaint me.grantland.widget.AutofitTextView+mMaxLines me.grantland.widget.AutofitTextView+mPaint me.grantland.widget.AutofitTextView+mMaxLines me.grantland.widget.AutofitTextView+mPrecision me.grantland.widget.AutofitTextView+mMinTextSize me.grantland.widget.AutofitTextView+mMinTextSize,1627,50,2,"/** 
+ * Re size the font so the specified text fits in the text box assuming the text box is the specified width.
+ */
+","/**
+     * Re size the font so the specified text fits in the text box assuming the text box is the
+     * specified width.
+     */
+    private void refitText() {
+        if (!mSizeToFit) {
+            return;
+        }
+
+        if (mMaxLines <= 0) {
+            // Don't auto-size since there's no limit on lines.
+            return;
+        }
+
+        CharSequence text = getText();
+        TransformationMethod method = getTransformationMethod();
+        if (method != null) {
+            text = method.getTransformation(text, this);
+        }
+        int targetWidth = getWidth() - getPaddingLeft() - getPaddingRight();
+        if (targetWidth > 0) {
+            Context context = getContext();
+            Resources r = Resources.getSystem();
+            DisplayMetrics displayMetrics;
+
+            float size = mMaxTextSize;
+            float high = size;
+            float low = 0;
+
+            if (context != null) {
+                r = context.getResources();
+            }
+            displayMetrics = r.getDisplayMetrics();
+
+            mPaint.set(getPaint());
+            mPaint.setTextSize(size);
+
+            if ((mMaxLines == 1 && mPaint.measureText(text, 0, text.length()) > targetWidth)
+                    || getLineCount(text, mPaint, size, targetWidth, displayMetrics) > mMaxLines) {
+                size = getTextSize(text, mPaint, targetWidth, mMaxLines, low, high, mPrecision,
+                        displayMetrics);
+            }
+
+            if (size < mMinTextSize) {
+                size = mMinTextSize;
+            }
+
+            super.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        }
+    }",True,True,This method resizes the font of a text box so that the specified text fits within the width of the text box. It takes into account the maximum number of lines allowed and adjusts the font size accordingly.,True,This code defines a method called `refitText()` that resizes the font of a text box to fit the specified text within the width of the text box. It checks the maximum number of lines allowed and adjusts the font size accordingly.
+31,"getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics)",get text size text paint target width max lines low high precision display metrics recursive binary search to find the best size for the text ,Method,"refitText() getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics)",,"java.lang.Object+Object() me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) java.lang.CharSequence+length() java.lang.CharSequence+length() me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics) me.grantland.widget.AutofitTextView+getTextSize(CharSequence,TextPaint,float,int,float,float,float,DisplayMetrics)",me.grantland.widget.AutofitTextView+SPEW me.grantland.widget.AutofitTextView+TAG,2282,56,10,"/** 
+ * Recursive binary search to find the best size for the text
+ */
+","/**
+     * Recursive binary search to find the best size for the text
+     */
+    private static float getTextSize(CharSequence text, TextPaint paint,
+                                     float targetWidth, int maxLines,
+                                     float low, float high, float precision,
+                                     DisplayMetrics displayMetrics) {
+        float mid = (low + high) / 2.0f;
+        int lineCount = 1;
+        StaticLayout layout = null;
+
+        paint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mid,
+                displayMetrics));
+
+        if (maxLines != 1) {
+            layout = new StaticLayout(text, paint, (int)targetWidth, Layout.Alignment.ALIGN_NORMAL,
+                    1.0f, 0.0f, true);
+            lineCount = layout.getLineCount();
+        }
+
+        if (SPEW) Log.d(TAG, ""low="" + low + "" high="" + high + "" mid="" + mid +
+                "" target="" + targetWidth + "" maxLines="" + maxLines + "" lineCount="" + lineCount);
+
+        if (lineCount > maxLines) {
+            return getTextSize(text, paint, targetWidth, maxLines, low, mid, precision,
+                    displayMetrics);
+        }
+        else if (lineCount < maxLines) {
+            return getTextSize(text, paint, targetWidth, maxLines, mid, high, precision,
+                    displayMetrics);
+        }
+        else {
+            float maxLineWidth = 0;
+            if (maxLines == 1) {
+                maxLineWidth = paint.measureText(text, 0, text.length());
+            } else {
+                for (int i = 0; i < lineCount; i++) {
+                    if (layout.getLineWidth(i) > maxLineWidth) {
+                        maxLineWidth = layout.getLineWidth(i);
+                    }
+                }
+            }
+
+            if ((high - low) < precision) {
+                return low;
+            } else if (maxLineWidth > targetWidth) {
+                return getTextSize(text, paint, targetWidth, maxLines, low, mid, precision,
+                        displayMetrics);
+            } else if (maxLineWidth < targetWidth) {
+                return getTextSize(text, paint, targetWidth, maxLines, mid, high, precision,
+                        displayMetrics);
+            } else {
+                return mid;
+            }
+        }
+    }",True,True,"The function serves as a recursive binary search to find the best size for the text, given the target width, maximum number of lines, and precision. It adjusts the text size until the line count matches the maximum lines and the maximum line width matches the target width.",True,"This code implements a recursive binary search algorithm to find the best font size for a given text, target width, and maximum number of lines. It adjusts the font size based on the measured line count and maximum line width until it finds the optimal size within a given precision."
+32,"getLineCount(CharSequence,TextPaint,float,float,DisplayMetrics)",get line count text paint size width display metrics ,Method,refitText(),,java.lang.Object+Object(),,463,8,10,,"private static int getLineCount(CharSequence text, TextPaint paint, float size, float width,
+                                    DisplayMetrics displayMetrics) {
+        paint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, size,
+                displayMetrics));
+        StaticLayout layout = new StaticLayout(text, paint, (int)width,
+                Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, true);
+        return layout.getLineCount();
+    }",True,True,This method calculates the number of lines needed to display a given text with a specific font size and width on a device screen.,False,"This code defines a method called ""getLineCount"" that takes in a CharSequence (text), a TextPaint object (paint), a float (size), a float (width), and a DisplayMetrics object (displayMetrics). It sets the text size of the paint object, creates a StaticLayout with the given parameters, and returns the number of lines in the layout."
+33,"onTextChanged(CharSequence,int,int,int)",on text changed text start length before length after ,Method,,,me.grantland.widget.AutofitTextView+refitText() me.grantland.widget.AutofitTextView+refitText(),,262,6,4,,"@Override
+    protected void onTextChanged(final CharSequence text, final int start,
+                                 final int lengthBefore, final int lengthAfter) {
+        super.onTextChanged(text, start, lengthBefore, lengthAfter);
+        refitText();
+    }",False,True,"This method is called when the text in a widget is changed. It calls the ""refitText()"" method to adjust the size of the text in the widget.",True,"This code snippet overrides the `onTextChanged` method, which is called when the text in a view is changed. It calls the `refitText` method to adjust the size of the text in the view based on the new text."
+34,"onSizeChanged(int,int,int,int)",on size changed w h oldw oldh ,Method,,,me.grantland.widget.AutofitTextView+refitText() me.grantland.widget.AutofitTextView+refitText(),,191,7,4,,"@Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (w != oldw) {
+            refitText();
+        }
+    }",False,True,"This method is called when the size of the view changes. It checks if the width has changed and if so, it calls the ""refitText()"" method.",True,"This code is an overridden method that is called when the size of the view changes. It checks if the width has changed and if so, it calls the ""refitText()"" method. The purpose of this code is to dynamically adjust the text size based on the view's width."

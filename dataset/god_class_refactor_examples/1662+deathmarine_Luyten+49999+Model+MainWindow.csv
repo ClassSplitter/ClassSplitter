@@ -1,0 +1,1309 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,serialVersionUID,serial version uid ,Field,,,,,66,1,26,,private static final long serialVersionUID = 6896857630400910200L;,False,False,,False,
+2,MAX_JAR_FILE_SIZE_BYTES,max jar file size bytes ,Field,,,,,67,1,26,,"private static final long MAX_JAR_FILE_SIZE_BYTES = 1_000_000_000;
+",False,False,,False,
+3,MAX_UNPACKED_FILE_SIZE_BYTES,max unpacked file size bytes ,Field,,,,,73,2,26,,"private static final long MAX_UNPACKED_FILE_SIZE_BYTES = 1_000_000;
+    
+",False,False,,False,
+4,typeLoader,type loader ,Field,State.close(),,,,59,1,16,,final LuytenTypeLoader typeLoader = new LuytenTypeLoader();,False,False,,False,
+5,languageLookup,language lookup ,Field,,,,,77,1,16,,"final Map<String, Language> languageLookup = new HashMap<String, Language>();",True,True,,False,
+6,base,base ,Field,,,,,17,1,8,,static File base;,False,False,,False,
+7,metadataSystem,metadata system ,Field,,,,,63,1,0,,MetadataSystem metadataSystem = new MetadataSystem(typeLoader);,False,False,,False,
+8,tree,tree ,Field,,,,,11,1,0,,JTree tree;,False,False,,False,
+9,house,house ,Field,,,,,18,1,0,,JTabbedPane house;,False,False,,False,
+10,file,file ,Field,,,,,10,1,0,,File file;,False,False,,False,
+11,jsp,jsp ,Field,,,,,15,1,0,,JSplitPane jsp;,False,False,,False,
+12,settings,settings ,Field,,,,,28,1,0,,DecompilerSettings settings;,False,False,,False,
+13,decompilationOptions,decompilation options ,Field,,,,,42,1,0,,DecompilationOptions decompilationOptions;,False,False,,False,
+14,frame,frame ,Field,,,,,19,1,8,,static Model frame;,False,False,,False,
+15,theme,theme ,Field,,,,,12,1,0,,Theme theme;,False,False,,False,
+16,flattenSwitchBlocks,flatten switch blocks ,Field,,,,,30,1,0,,JCheckBox flattenSwitchBlocks;,True,True,,False,
+17,forceExplicitImports,force explicit imports ,Field,,,,,31,1,0,,JCheckBox forceExplicitImports;,True,True,,False,
+18,forceExplicitTypes,force explicit types ,Field,,,,,29,1,0,,JCheckBox forceExplicitTypes;,True,True,,False,
+19,showSyntheticMembers,show synthetic members ,Field,,,,,31,1,0,,JCheckBox showSyntheticMembers;,True,True,,False,
+20,excludeNestedTypes,exclude nested types ,Field,,,,,29,1,0,,JCheckBox excludeNestedTypes;,True,True,,False,
+21,retainRedundantCasts,retain redundant casts ,Field,,,,,31,1,0,,JCheckBox retainRedundantCasts;,True,True,,False,
+22,showDebugInfo,show debug info ,Field,,,,,24,1,0,,JCheckBox showDebugInfo;,True,True,,False,
+23,java,java ,Field,,,,,26,1,0,,JRadioButtonMenuItem java;,True,True,,False,
+24,bytecode,bytecode ,Field,,,,,30,1,0,,JRadioButtonMenuItem bytecode;,True,True,,False,
+25,bytecodeAST,bytecode ast ,Field,,,,,33,1,0,,JRadioButtonMenuItem bytecodeAST;,True,True,,False,
+26,bar,bar ,Field,,,,,17,1,0,,JProgressBar bar;,False,False,,False,
+27,label,label ,Field,,,,,13,1,0,,JLabel label;,False,False,,False,
+28,hmap,hmap ,Field,,,,,49,1,0,,HashSet<OpenFile> hmap = new HashSet<OpenFile>();,False,False,,False,
+29,open,open ,Field,,,,,21,1,0,,boolean open = false;,False,False,,False,
+30,languagesGroup,languages group ,Field,,,,,35,1,2,,private ButtonGroup languagesGroup;,True,True,,False,
+31,state,state ,Field,FileClose.actionPerformed(ActionEvent),,,,20,1,2,,private State state;,False,False,,False,
+32,findBox,find box ,Field,,,,,24,1,2,,private FindBox findBox;,True,True,,False,
+33,configSaver,config saver ,Field,,,,,32,1,2,,private ConfigSaver configSaver;,False,False,,False,
+34,windowPosition,window position ,Field,,,,,38,1,2,,private WindowPosition windowPosition;,True,True,,False,
+35,luytenPrefs,luyten prefs ,Field,,,,,38,1,2,,private LuytenPreferences luytenPrefs;,False,False,,False,
+36,Model(),model ,Method,,,com.modcrafting.luyten.Model+setup() com.modcrafting.luyten.Model+setup(),com.modcrafting.luyten.Model+frame,61,4,1,,"public Model() {
+        frame = this;
+        setup();
+    }",False,False,The function of the given method is to initialize a new instance of the Model class. It sets the frame variable to refer to the current instance and calls the setup method.,False,"The code snippet defines a constructor for a class called ""Model"". It assigns the current instance of the class to a variable called ""frame"" and then calls a method called ""setup()"". The purpose of this constructor is to initialize the ""Model"" object and perform any necessary setup tasks."
+37,Model(String),model string ,Method,,,com.modcrafting.luyten.Model+setup() com.modcrafting.luyten.Model+setup() java.io.File+File(String) com.modcrafting.luyten.Model.FileLoad+loadFile(File) com.modcrafting.luyten.Model.FileLoad+FileLoad(boolean) com.modcrafting.luyten.Model.FileLoad+loadFile(File),com.modcrafting.luyten.Model+frame com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+file,145,6,1,,"public Model(String string) {
+        frame = this;
+        setup();
+        file = new File(string);
+		new FileLoad(false).loadFile(file);
+    }",False,False,"The function of the given method is to create a new instance of the Model class, assign the current instance to the ""frame"" variable, call the ""setup"" method, create a new File object using the provided string, and load the file using the FileLoad class.",False,"The code defines a constructor for the Model class that takes a string parameter. It initializes the frame variable with the current instance, calls the setup method, creates a new File object with the given string, and then loads the file using the FileLoad class."
+38,setup(),setup ,Method,Model() Model(String),,"com.modcrafting.luyten.ConfigSaver+getLoadedInstance() com.modcrafting.luyten.ConfigSaver+getLoadedInstance() com.modcrafting.luyten.ConfigSaver+getDecompilerSettings() com.modcrafting.luyten.ConfigSaver+getDecompilerSettings() com.modcrafting.luyten.ConfigSaver+getMainWindowPosition() com.modcrafting.luyten.ConfigSaver+getMainWindowPosition() com.modcrafting.luyten.ConfigSaver+getLuytenPreferences() com.modcrafting.luyten.ConfigSaver+getLuytenPreferences() com.modcrafting.luyten.Model+adjustWindowPositionBySavedState() com.modcrafting.luyten.Model+adjustWindowPositionBySavedState() java.awt.Frame+setTitle(String) java.awt.Frame+setTitle(String) java.awt.Window+addWindowListener(WindowListener) java.awt.Window+addWindowListener(WindowListener) java.awt.dnd.DropTarget+DropTarget() java.awt.dnd.DropTarget+addDropTargetListener(DropTargetListener) java.awt.dnd.DropTarget+addDropTargetListener(DropTargetListener) com.modcrafting.luyten.Model.DropListener+DropListener() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.awt.Component+setDropTarget(DropTarget) java.awt.Component+setDropTarget(DropTarget) com.modcrafting.luyten.LuytenPreferences+getThemeXml() com.modcrafting.luyten.LuytenPreferences+getThemeXml() java.lang.Class+getResourceAsStream(String) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getResourceAsStream(String) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() com.modcrafting.luyten.LuytenPreferences+setThemeXml(String) com.modcrafting.luyten.LuytenPreferences+setThemeXml(String) java.lang.Class+getResourceAsStream(String) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getResourceAsStream(String) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() javax.swing.UIManager+setLookAndFeel(String) javax.swing.UIManager+setLookAndFeel(String) javax.swing.UIManager+getSystemLookAndFeelClassName() javax.swing.UIManager+getSystemLookAndFeelClassName() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() javax.swing.JTree+JTree() javax.swing.JTree+setModel(TreeModel) javax.swing.JTree+setModel(TreeModel) javax.swing.tree.DefaultTreeModel+DefaultTreeModel(TreeNode) javax.swing.tree.TreeSelectionModel+setSelectionMode(int) javax.swing.JTree+getSelectionModel() javax.swing.JTree+getSelectionModel() javax.swing.tree.TreeSelectionModel+setSelectionMode(int) javax.swing.JTree+setCellRenderer(TreeCellRenderer) javax.swing.JTree+setCellRenderer(TreeCellRenderer) com.modcrafting.luyten.CellRenderer+CellRenderer() com.modcrafting.luyten.Model.TreeListener+TreeListener() java.awt.Component+addMouseListener(MouseListener) java.awt.Component+addMouseListener(MouseListener) javax.swing.JPanel+JPanel() java.awt.Container+setLayout(LayoutManager) java.awt.Container+setLayout(LayoutManager) javax.swing.BoxLayout+BoxLayout(Container,int) javax.swing.JComponent+setBorder(Border) javax.swing.JComponent+setBorder(Border) javax.swing.BorderFactory+createTitledBorder(String) javax.swing.BorderFactory+createTitledBorder(String) java.awt.Container+add(Component) java.awt.Container+add(Component) javax.swing.JScrollPane+JScrollPane(Component) javax.swing.JTabbedPane+JTabbedPane() javax.swing.JTabbedPane+setTabLayoutPolicy(int) javax.swing.JTabbedPane+setTabLayoutPolicy(int) javax.swing.JPanel+JPanel() java.awt.Container+setLayout(LayoutManager) java.awt.Container+setLayout(LayoutManager) javax.swing.BoxLayout+BoxLayout(Container,int) javax.swing.JComponent+setBorder(Border) javax.swing.JComponent+setBorder(Border) javax.swing.BorderFactory+createTitledBorder(String) javax.swing.BorderFactory+createTitledBorder(String) java.awt.Container+add(Component) java.awt.Container+add(Component) javax.swing.JSplitPane+JSplitPane(int,Component,Component) javax.swing.JSplitPane+setDividerLocation(int) javax.swing.JSplitPane+setDividerLocation(int) java.awt.Component+getWidth() java.awt.Component+getWidth() java.awt.Container+add(Component) javax.swing.JFrame+getContentPane() javax.swing.JFrame+getContentPane() java.awt.Container+add(Component) javax.swing.JPanel+JPanel() javax.swing.JComponent+setBorder(Border) javax.swing.JComponent+setBorder(Border) javax.swing.border.BevelBorder+BevelBorder(int) javax.swing.JComponent+setPreferredSize(Dimension) javax.swing.JComponent+setPreferredSize(Dimension) java.awt.Dimension+Dimension(int,int) java.awt.Component+getWidth() java.awt.Component+getWidth() java.awt.Container+setLayout(LayoutManager) java.awt.Container+setLayout(LayoutManager) javax.swing.BoxLayout+BoxLayout(Container,int) javax.swing.JPanel+JPanel() javax.swing.JLabel+JLabel(String) javax.swing.JLabel+setHorizontalAlignment(int) javax.swing.JLabel+setHorizontalAlignment(int) java.awt.Container+setLayout(LayoutManager) java.awt.Container+setLayout(LayoutManager) javax.swing.BoxLayout+BoxLayout(Container,int) javax.swing.JComponent+setBorder(Border) javax.swing.JComponent+setBorder(Border) javax.swing.border.BevelBorder+BevelBorder(int) javax.swing.JComponent+setPreferredSize(Dimension) javax.swing.JComponent+setPreferredSize(Dimension) java.awt.Dimension+Dimension(int,int) java.awt.Component+getWidth() java.awt.Component+getWidth() java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) javax.swing.JPanel+JPanel() javax.swing.JProgressBar+JProgressBar() javax.swing.JProgressBar+setIndeterminate(boolean) javax.swing.JProgressBar+setIndeterminate(boolean) javax.swing.JComponent+setOpaque(boolean) javax.swing.JComponent+setOpaque(boolean) java.awt.Container+setLayout(LayoutManager) java.awt.Container+setLayout(LayoutManager) javax.swing.BoxLayout+BoxLayout(Container,int) javax.swing.JComponent+setPreferredSize(Dimension) javax.swing.JComponent+setPreferredSize(Dimension) java.awt.Dimension+Dimension(int,int) java.awt.Component+getWidth() java.awt.Component+getWidth() java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component) java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object) javax.swing.JMenuBar+JMenuBar() javax.swing.JMenu+JMenu(String) javax.swing.JMenuItem+JMenuItem(String) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) com.modcrafting.luyten.Model.FileLoad+FileLoad(boolean) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+addSeparator() javax.swing.JMenu+addSeparator() javax.swing.JMenuItem+JMenuItem(String) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) com.modcrafting.luyten.Model.FileClose+FileClose() javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+addSeparator() javax.swing.JMenu+addSeparator() javax.swing.JMenuItem+JMenuItem(String) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) com.modcrafting.luyten.Model.FileExtractFile+FileExtractFile() javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenuItem+JMenuItem(String) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) com.modcrafting.luyten.Model.FileExtractJar+FileExtractJar() javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+addSeparator() javax.swing.JMenu+addSeparator() javax.swing.JMenuItem+JMenuItem(String) javax.swing.JMenuItem+setEnabled(boolean) javax.swing.JMenuItem+setEnabled(boolean) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+addSeparator() javax.swing.JMenu+addSeparator() javax.swing.JMenuItem+JMenuItem(String) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) com.modcrafting.luyten.Model.Quit+Quit() javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenuBar+add(JMenu) javax.swing.JMenuBar+add(JMenu) javax.swing.JMenu+JMenu(String) javax.swing.JMenuItem+JMenuItem(String) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.JMenuItem+setEnabled(boolean) javax.swing.JMenuItem+setEnabled(boolean) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenuItem+JMenuItem(String) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.text.DefaultEditorKit.CopyAction+CopyAction() javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenuItem+JMenuItem(String) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.JMenuItem+setEnabled(boolean) javax.swing.JMenuItem+setEnabled(boolean) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+add(JMenuItem) javax.swing.JMenu+addSeparator() javax.swing.JMenu+addSeparator() javax.swing.JMenuItem+JMenuItem(String) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.JMenuItem+setAccelerator(KeyStroke) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.KeyStroke+getKeyStroke(int,int) javax.swing.AbstractButton+addActionListener(ActionListener) javax.swing.AbstractButton+addActionListener(ActionListener) +() +actionPerformed(ActionEvent)",com.modcrafting.luyten.Model+configSaver com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+configSaver com.modcrafting.luyten.Model+windowPosition com.modcrafting.luyten.Model+configSaver com.modcrafting.luyten.Model+luytenPrefs com.modcrafting.luyten.Model+configSaver com.modcrafting.luyten.Model+luytenPrefs com.modcrafting.luyten.Model+theme com.modcrafting.luyten.LuytenPreferences+THEME_XML_PATH com.modcrafting.luyten.LuytenPreferences+DEFAULT_THEME_XML com.modcrafting.luyten.Model+luytenPrefs com.modcrafting.luyten.Model+theme com.modcrafting.luyten.LuytenPreferences+THEME_XML_PATH com.modcrafting.luyten.Model+tree com.modcrafting.luyten.Model+tree com.modcrafting.luyten.Model+tree javax.swing.tree.TreeSelectionModel+SINGLE_TREE_SELECTION com.modcrafting.luyten.Model+tree com.modcrafting.luyten.Model+tree com.modcrafting.luyten.Model+tree com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+house javax.swing.JTabbedPane+SCROLL_TAB_LAYOUT com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+jsp javax.swing.JSplitPane+HORIZONTAL_SPLIT com.modcrafting.luyten.Model+jsp com.modcrafting.luyten.Model+jsp javax.swing.border.BevelBorder+LOWERED com.modcrafting.luyten.Model+frame javax.swing.BoxLayout+X_AXIS com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+label javax.swing.SwingConstants+LEFT javax.swing.BoxLayout+X_AXIS javax.swing.border.BevelBorder+LOWERED com.modcrafting.luyten.Model+frame com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+bar com.modcrafting.luyten.Model+bar com.modcrafting.luyten.Model+bar javax.swing.BoxLayout+X_AXIS com.modcrafting.luyten.Model+frame com.modcrafting.luyten.Model+bar java.awt.BorderLayout+SOUTH java.awt.event.KeyEvent+VK_O java.awt.event.ActionEvent+CTRL_MASK java.awt.event.KeyEvent+VK_W java.awt.event.ActionEvent+CTRL_MASK java.awt.event.KeyEvent+VK_E java.awt.event.ActionEvent+CTRL_MASK java.awt.event.KeyEvent+VK_E java.awt.event.ActionEvent+CTRL_MASK java.awt.event.KeyEvent+VK_F4 java.awt.event.ActionEvent+ALT_MASK java.awt.event.KeyEvent+VK_X java.awt.event.ActionEvent+CTRL_MASK java.awt.event.KeyEvent+VK_C java.awt.event.ActionEvent+CTRL_MASK java.awt.event.KeyEvent+VK_V java.awt.event.ActionEvent+CTRL_MASK java.awt.event.KeyEvent+VK_A java.awt.event.ActionEvent+CTRL_MASK,14106,336,1,,"public void setup() {
+		configSaver = ConfigSaver.getLoadedInstance();
+		settings = configSaver.getDecompilerSettings();
+		windowPosition = configSaver.getMainWindowPosition();
+		luytenPrefs = configSaver.getLuytenPreferences();
+    	
+		this.adjustWindowPositionBySavedState();
+		
+        this.setTitle(""Luyten"");
+        this.addWindowListener(this);
+        DropTarget dt = new DropTarget();
+        try {
+            dt.addDropTargetListener(new DropListener());
+        } catch (TooManyListenersException e) {
+            e.printStackTrace();
+        }
+        this.setDropTarget(dt);
+        
+		try {
+			String themeXml = luytenPrefs.getThemeXml();
+			theme = Theme.load(getClass().getResourceAsStream(LuytenPreferences.THEME_XML_PATH + themeXml));
+		} catch (Exception e1) {
+			try {
+				e1.printStackTrace();
+				String themeXml = LuytenPreferences.DEFAULT_THEME_XML;
+				luytenPrefs.setThemeXml(themeXml);
+				theme = Theme.load(getClass().getResourceAsStream(LuytenPreferences.THEME_XML_PATH + themeXml));
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+        tree = new JTree();
+        tree.setModel(new DefaultTreeModel(null));
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.setCellRenderer(new CellRenderer());
+        TreeListener tl = new TreeListener();
+        tree.addMouseListener(tl);
+
+        JPanel panel2 = new JPanel();
+        panel2.setLayout(new BoxLayout(panel2, 1));
+        panel2.setBorder(BorderFactory.createTitledBorder(""Structure""));
+        panel2.add(new JScrollPane(tree));
+
+        house = new JTabbedPane();
+        house.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, 1));
+        panel.setBorder(BorderFactory.createTitledBorder(""Code""));
+        panel.add(house);
+        jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel2, panel);
+        jsp.setDividerLocation(250 % this.getWidth());
+        this.getContentPane().add(jsp);
+        JPanel pane = new JPanel();
+        pane.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        pane.setPreferredSize(new Dimension(frame.getWidth(), 24));
+        pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
+        
+        JPanel panel1 = new JPanel();
+        label = new JLabel("" "");
+        label.setHorizontalAlignment(JLabel.LEFT);
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
+        panel1.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        panel1.setPreferredSize(new Dimension(frame.getWidth()/2, 20));
+        panel1.add(label);
+        pane.add(panel1);
+        
+        panel1 = new JPanel();
+        bar = new JProgressBar();
+        bar.setIndeterminate(true);
+        bar.setOpaque(false);
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
+        panel1.setPreferredSize(new Dimension(frame.getWidth()/2, 20));
+        panel1.add(bar);
+        pane.add(panel1);
+        this.add(pane, BorderLayout.SOUTH);
+        
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu(""File"");
+
+        JMenuItem menuItem = new JMenuItem(""Open File..."");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        menuItem.addActionListener(new FileLoad(true));
+        fileMenu.add(menuItem);
+        fileMenu.addSeparator();
+
+        menuItem = new JMenuItem(""Close"");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+        menuItem.addActionListener(new FileClose());
+        fileMenu.add(menuItem);
+        fileMenu.addSeparator();
+
+        menuItem = new JMenuItem(""Save As..."");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+        menuItem.addActionListener(new FileExtractFile());
+        fileMenu.add(menuItem);
+
+        menuItem = new JMenuItem(""Save All..."");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+        //menuItem.setEnabled(false);
+        menuItem.addActionListener(new FileExtractJar());
+        fileMenu.add(menuItem);
+        fileMenu.addSeparator();
+
+        menuItem = new JMenuItem(""Recent Files"");
+        menuItem.setEnabled(false);
+        fileMenu.add(menuItem);
+        fileMenu.addSeparator();
+
+        menuItem = new JMenuItem(""Exit"");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
+        menuItem.addActionListener(new Quit());
+        fileMenu.add(menuItem);
+
+        menuBar.add(fileMenu);
+
+
+        fileMenu = new JMenu(""Edit"");
+
+        menuItem = new JMenuItem(""Cut"");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+        menuItem.setEnabled(false);
+        fileMenu.add(menuItem);
+
+        menuItem = new JMenuItem(""Copy"");
+        menuItem.addActionListener(new DefaultEditorKit.CopyAction());
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        fileMenu.add(menuItem);
+
+        menuItem = new JMenuItem(""Paste"");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+        menuItem.setEnabled(false);
+        fileMenu.add(menuItem);
+
+        fileMenu.addSeparator();
+
+        menuItem = new JMenuItem(""Select All"");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+            	try {
+	                int pos = house.getSelectedIndex();
+	    			if (pos < 0) {
+	    				label.setText(""No open tab"");
+	    				return;
+	    			}
+	                RTextScrollPane co = (RTextScrollPane) house.getComponentAt(pos);
+	                RSyntaxTextArea pane = (RSyntaxTextArea) co.getViewport().getView();
+	                pane.requestFocusInWindow();
+	                pane.setSelectionStart(0);
+	                pane.setSelectionEnd(pane.getText().length());
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+            }
+        });
+        fileMenu.add(menuItem);
+        fileMenu.addSeparator();
+
+        menuItem = new JMenuItem(""Find..."");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+        menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					int pos = house.getSelectedIndex();
+					if (pos >= 0) {
+						if (findBox == null)
+							findBox = new FindBox(Model.this);
+						findBox.showFindBox();
+					} else {
+						label.setText(""No open tab"");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+        fileMenu.add(menuItem);
+        menuBar.add(fileMenu);
+
+        fileMenu = new JMenu(""Themes"");
+        languagesGroup = new ButtonGroup();
+        JRadioButtonMenuItem a = new JRadioButtonMenuItem(new ThemeAction(""Default"", ""default.xml""));
+        a.setSelected(""default.xml"".equals(luytenPrefs.getThemeXml()));
+        languagesGroup.add(a);
+        fileMenu.add(a);
+        a = new JRadioButtonMenuItem(new ThemeAction(""Dark"", ""dark.xml""));
+        a.setSelected(""dark.xml"".equals(luytenPrefs.getThemeXml()));
+        languagesGroup.add(a);
+        fileMenu.add(a);
+        a = new JRadioButtonMenuItem(new ThemeAction(""Eclipse"", ""eclipse.xml""));
+        a.setSelected(""eclipse.xml"".equals(luytenPrefs.getThemeXml()));
+        languagesGroup.add(a);
+        fileMenu.add(a);
+        a = new JRadioButtonMenuItem(new ThemeAction(""Visual Studio"", ""vs.xml""));
+        a.setSelected(""vs.xml"".equals(luytenPrefs.getThemeXml()));
+        languagesGroup.add(a);
+        fileMenu.add(a);
+        menuBar.add(fileMenu);
+
+        fileMenu = new JMenu(""Settings"");
+        flattenSwitchBlocks = new JCheckBox(""Flatten Switch Blocks"");
+        flattenSwitchBlocks.setSelected(settings.getFlattenSwitchBlocks());
+        fileMenu.add(flattenSwitchBlocks);
+        forceExplicitImports = new JCheckBox(""Force Explicit Imports"");
+        forceExplicitImports.setSelected(settings.getForceExplicitImports());
+        fileMenu.add(forceExplicitImports);
+        forceExplicitTypes = new JCheckBox(""Force Explicit Types"");
+        forceExplicitTypes.setSelected(settings.getForceExplicitTypeArguments());
+        fileMenu.add(forceExplicitTypes);
+        showSyntheticMembers = new JCheckBox(""Show Synthetic Members"");
+        showSyntheticMembers.setSelected(settings.getShowSyntheticMembers());
+        fileMenu.add(showSyntheticMembers);
+        excludeNestedTypes = new JCheckBox(""Exclude Nested Types"");
+        excludeNestedTypes.setSelected(settings.getExcludeNestedTypes());
+        fileMenu.add(excludeNestedTypes);
+        retainRedundantCasts = new JCheckBox(""Retain Redundant Casts"");
+        retainRedundantCasts.setSelected(settings.getRetainRedundantCasts());
+        fileMenu.add(retainRedundantCasts);
+        JMenu debugSettingsMenu = new JMenu(""Debug Settings"");
+        showDebugInfo = new JCheckBox(""Include Error Diagnostics"");
+        showDebugInfo.setSelected(settings.getIncludeErrorDiagnostics());
+        debugSettingsMenu.add(showDebugInfo);
+        fileMenu.add(debugSettingsMenu);
+        fileMenu.addSeparator();
+
+        languageLookup.put(Languages.java().getName(), Languages.java());
+        languageLookup.put(Languages.bytecode().getName(), Languages.bytecode());
+        languageLookup.put(Languages.bytecodeAst().getName(), Languages.bytecodeAst());
+
+        languagesGroup = new ButtonGroup();
+        java = new JRadioButtonMenuItem(Languages.java().getName());
+        java.getModel().setActionCommand(Languages.java().getName());
+        java.setSelected(Languages.java().getName().equals(settings.getLanguage().getName()));
+        languagesGroup.add(java);
+        fileMenu.add(java);
+        bytecode = new JRadioButtonMenuItem(Languages.bytecode().getName());
+        bytecode.getModel().setActionCommand(Languages.bytecode().getName());
+        bytecode.setSelected(Languages.bytecode().getName().equals(settings.getLanguage().getName()));
+        languagesGroup.add(bytecode);
+        fileMenu.add(bytecode);
+        bytecodeAST = new JRadioButtonMenuItem(Languages.bytecodeAst().getName());
+        bytecodeAST.getModel().setActionCommand(Languages.bytecodeAst().getName());
+        bytecodeAST.setSelected(Languages.bytecodeAst().getName().equals(settings.getLanguage().getName()));
+        languagesGroup.add(bytecodeAST);
+        fileMenu.add(bytecodeAST);
+        
+        JMenu debugLanguagesMenu = new JMenu(""Debug Languages"");
+        for (final Language language : Languages.debug()) {
+            final JRadioButtonMenuItem m = new JRadioButtonMenuItem(language.getName());
+            m.getModel().setActionCommand(language.getName());
+            m.setSelected(language.getName().equals(settings.getLanguage().getName()));
+            languagesGroup.add(m);
+            debugLanguagesMenu.add(m);
+            languageLookup.put(language.getName(), language);
+        }
+        fileMenu.add(debugLanguagesMenu);
+        menuBar.add(fileMenu);
+        fileMenu = new JMenu(""Help"");
+        menuItem = new JMenuItem(""Legal"");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+
+                final StringBuilder sb = new StringBuilder();
+                try {
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(getClass().getResourceAsStream(""/distfiles/Procyon.License.txt"")));
+                    String line;
+                    while ((line = reader.readLine()) != null)
+                        sb.append(line).append(""\n"");
+                    sb.append(""\n\n\n\n\n"");
+                    reader = new BufferedReader(
+                            new InputStreamReader(getClass().getResourceAsStream(""/distfiles/RSyntaxTextArea.License.txt"")));
+                    while ((line = reader.readLine()) != null)
+                        sb.append(line).append(""\n"");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+				new Thread() {
+					public void run() {
+						try {
+							bar.setVisible(true);
+			                OpenFile open = new OpenFile(""Legal"", ""*/Legal"", sb.toString(), theme);
+			                hmap.add(open);
+			                addOrSwitchToTab(open);
+						} finally {
+							bar.setVisible(false);
+						}
+					}
+				}.start();
+            }
+        });
+        fileMenu.add(menuItem);
+        menuItem = new JMenuItem(""About"");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                JOptionPane.showMessageDialog(null, 
+                		""Luyten Gui \n"" +
+                		""by Deathmarine\n\n"" +
+                        ""Powered By\nProcyon\n"" +
+                        ""(c) 2013 Mike Strobel\n\n"" +
+                        ""RSyntaxTextArea\n"" +
+                        ""(c) 2012 Robert Futrell\n"" +
+                        ""All rights reserved."");
+            }
+        });
+        fileMenu.add(menuItem);
+        menuBar.add(fileMenu);
+
+        this.setJMenuBar(menuBar);
+        this.setHideFindBoxOnMainWindowFocus();
+        this.setVisible(true);
+        bar.setVisible(false);
+
+
+        decompilationOptions = new DecompilationOptions();
+        decompilationOptions.setSettings(settings);
+        decompilationOptions.setFullDecompilation(true);
+    }",False,False,"The function of this method is to set up the initial state of the GUI for the Luyten program. It initializes various components, sets their properties and adds them to the main window. It also sets up event listeners and handles exceptions.",True,"The `setup()` method initializes the GUI components and settings for the Luyten application, including setting up the main window, menu bar, tree structure, code panel, and various options and listeners. It also loads the theme, sets the look and feel, and handles file operations and user interactions."
+39,populateSettingsFromSettingsMenu(),populate settings from settings menu ,Method,openEntryByTreePath(TreePath) FileExtractJar.actionPerformed(ActionEvent) Quit.actionPerformed(ActionEvent),,javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.ButtonGroup+getSelection() javax.swing.ButtonGroup+getSelection() javax.swing.ButtonModel+getActionCommand() javax.swing.ButtonModel+getActionCommand() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected() javax.swing.AbstractButton+isSelected(),com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+flattenSwitchBlocks com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+forceExplicitImports com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+showSyntheticMembers com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+excludeNestedTypes com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+forceExplicitTypes com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+retainRedundantCasts com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+showDebugInfo com.modcrafting.luyten.Model+languagesGroup com.modcrafting.luyten.Model+languageLookup com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+java com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+bytecode com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+bytecodeAST com.modcrafting.luyten.Model+settings,1501,31,2,,"private void populateSettingsFromSettingsMenu() {
+        settings.setFlattenSwitchBlocks(flattenSwitchBlocks.isSelected());
+        settings.setForceExplicitImports(forceExplicitImports.isSelected());
+        settings.setShowSyntheticMembers(showSyntheticMembers.isSelected());
+        settings.setExcludeNestedTypes(excludeNestedTypes.isSelected());
+        settings.setForceExplicitTypeArguments(forceExplicitTypes.isSelected());
+        settings.setRetainRedundantCasts(retainRedundantCasts.isSelected());
+        settings.setIncludeErrorDiagnostics(showDebugInfo.isSelected());
+        //
+        // Note: You shouldn't ever need to set this.  It's only for languages that support catch
+        //       blocks without an exception variable.  Java doesn't allow this.  I think Scala does.
+        //
+        // settings.setAlwaysGenerateExceptionVariableForCatchBlocks(true);
+        //
+
+        final ButtonModel selectedLanguage = languagesGroup.getSelection();
+        if (selectedLanguage != null) {
+            final Language language = languageLookup.get(selectedLanguage.getActionCommand());
+
+            if (language != null)
+                settings.setLanguage(language);
+        }
+
+        if (java.isSelected()) {
+            settings.setLanguage(Languages.java());
+        } else if (bytecode.isSelected()) {
+            settings.setLanguage(Languages.bytecode());
+        } else if (bytecodeAST.isSelected()) {
+            settings.setLanguage(Languages.bytecodeAst());
+        }
+	}",True,False,"This method populates the settings object with values based on the selected options in the settings menu. It sets various properties such as flattenSwitchBlocks, forceExplicitImports, showSyntheticMembers, excludeNestedTypes, forceExplicitTypeArguments, retainRedundantCasts, includeErrorDiagnostics, and language based on the selected options in the menu.",False,"The method `populateSettingsFromSettingsMenu()` updates the settings object based on the selected options in the settings menu. It sets various properties such as flatten switch blocks, force explicit imports, show synthetic members, exclude nested types, force explicit type arguments, retain redundant casts, include error diagnostics, and the selected language."
+40,main(String[]),main args ,Method,,,javax.swing.SwingUtilities+invokeLater(Runnable) javax.swing.SwingUtilities+invokeLater(Runnable) +() +run(),,210,8,9,,"public static void main(final String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+            	new Model();
+            }
+        });
+    }",False,False,The main method is used to start the program. It creates a new instance of the Model class and runs it on the event dispatch thread using the SwingUtilities.invokeLater method.,False,The code initializes a Swing GUI by creating a new instance of the Model class within the main method. The SwingUtilities.invokeLater() method ensures that the GUI is created and executed on the Event Dispatch Thread (EDT) to ensure thread safety.
+41,addOrSwitchToTab(OpenFile),add or switch to tab open ,Method,"extractClassToTextPane(TypeReference,String,String) extractClassToTextPane(TypeReference,String,String) extractClassToTextPane(TypeReference,String,String) extractSimpleFileEntryToTextPane(InputStream,String,String) extractSimpleFileEntryToTextPane(InputStream,String,String) extractSimpleFileEntryToTextPane(InputStream,String,String)",,"javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+addTab(String,Component) javax.swing.JTabbedPane+addTab(String,Component) javax.swing.JTabbedPane+setSelectedIndex(int) javax.swing.JTabbedPane+setSelectedIndex(int) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) com.modcrafting.luyten.Model.Tab+Tab(String) java.awt.Component+addMouseListener(MouseListener) com.modcrafting.luyten.Model.Tab+getButton() com.modcrafting.luyten.Model.Tab+getButton() java.awt.Component+addMouseListener(MouseListener) com.modcrafting.luyten.Model.CloseTab+CloseTab(String) javax.swing.JTabbedPane+setTabComponentAt(int,Component) javax.swing.JTabbedPane+setTabComponentAt(int,Component) javax.swing.JTabbedPane+setSelectedIndex(int) javax.swing.JTabbedPane+setSelectedIndex(int) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String)",com.modcrafting.luyten.OpenFile+name com.modcrafting.luyten.OpenFile+scrollPane com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+house,490,14,1,,"public void addOrSwitchToTab(OpenFile open) {
+		String title = open.name;
+		RTextScrollPane rTextScrollPane = open.scrollPane;
+		if (house.indexOfTab(title) < 0) {
+			house.addTab(title, rTextScrollPane);
+			house.setSelectedIndex(house.indexOfTab(title));
+			int index = house.indexOfTab(title);
+			Tab ct = new Tab(title);
+			ct.getButton().addMouseListener(new CloseTab(title));
+			house.setTabComponentAt(index, ct);
+		} else {
+			house.setSelectedIndex(house.indexOfTab(title));
+		}
+	}",False,False,"This method adds a new tab to a tabbed pane if it does not already exist, and switches to the existing tab if it does. The tab's title and content are provided by the ""open"" parameter.",False,"The `addOrSwitchToTab` method takes an `OpenFile` object as a parameter and adds a new tab to a container if it doesn't already exist, otherwise it switches to the existing tab. The method also sets a custom tab component with a close button for each tab."
+42,closeOpenTab(int),close open tab index ,Method,CloseTab.mouseClicked(MouseEvent),,javax.swing.JTabbedPane+getComponentAt(int) javax.swing.JTabbedPane+getComponentAt(int) java.util.HashSet+contains(Object) java.util.HashSet+contains(Object) java.util.HashSet+remove(Object) java.util.HashSet+remove(Object) javax.swing.JTabbedPane+remove(Component) javax.swing.JTabbedPane+remove(Component),com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+hmap com.modcrafting.luyten.OpenFile+textArea com.modcrafting.luyten.Model+hmap com.modcrafting.luyten.Model+hmap com.modcrafting.luyten.Model+house,440,11,1,,"public void closeOpenTab(int index) {
+        RTextScrollPane co = (RTextScrollPane) house.getComponentAt(index);
+        RSyntaxTextArea pane = (RSyntaxTextArea) co.getViewport().getView();
+        OpenFile open = null;
+        for (OpenFile file : hmap)
+            if (pane.equals(file.textArea))
+                open = file;
+        if (open != null && hmap.contains(open))
+            hmap.remove(open);
+        house.remove(co);
+    }",False,False,"This method closes an open tab in a graphical user interface. It takes an index as input, retrieves the corresponding text area, removes it from the interface, and updates the data structure that tracks open files.",True,"The code defines a method called `closeOpenTab` that takes an index as a parameter. It retrieves the RSyntaxTextArea component at the specified index from a container called `house`, searches for a matching RSyntaxTextArea in a list called `hmap`, removes it from the list if found, and finally removes the component from `house`."
+43,getName(String),get name path ,Method,FileExtractJar.actionPerformed(ActionEvent),,java.lang.String+lastIndexOf(String) java.lang.String+lastIndexOf(String) java.lang.String+lastIndexOf(String) java.lang.String+lastIndexOf(String) java.lang.String+substring(int) java.lang.String+substring(int),,275,10,1,,"public String getName(String path) {
+        if (path == null)
+            return """";
+        int i = path.lastIndexOf(""/"");
+        if (i == -1)
+            i = path.lastIndexOf(""\\"");
+        if (i != -1)
+            return path.substring(i + 1);
+        return path;
+    }",False,False,"This method returns the name of a file or directory from a given path. If the path is null, it returns an empty string. It searches for the last occurrence of either ""/"" or ""\"" and returns the substring after it. If no occurrence is found, it returns the original path.",False,"The given code is a method named ""getName"" that takes a string parameter ""path"" and returns the name of the file or directory from the given path. It checks for the last occurrence of either ""/"" or ""\"" in the path and returns the substring after that occurrence. If no occurrence is found, it returns the original path."
+44,windowActivated(WindowEvent),window activated arg0 ,Method,,,,,62,2,1,,"@Override
+    public void windowActivated(WindowEvent arg0) {}",False,False,This method is used to handle the event when a window is activated.,False,"The code snippet defines an overridden method called ""windowActivated"" that is part of a class implementing the WindowListener interface. This method is called when a window is activated, but it does not contain any specific functionality as it is empty."
+45,windowClosed(WindowEvent),window closed event ,Method,,,,,60,2,1,,"@Override
+    public void windowClosed(WindowEvent event) {}",False,False,"This method serves as an override for the windowClosed() function, which is called when a window is closed. It does not return any value and does not perform any specific action.",False,"The code snippet defines an overridden method called ""windowClosed"" that takes a WindowEvent parameter. The method does not have any implementation, meaning it does not perform any specific actions when a window is closed."
+46,windowClosing(WindowEvent),window closing event ,Method,,,com.modcrafting.luyten.Model.Quit+actionPerformed(ActionEvent) com.modcrafting.luyten.Model.Quit+Quit() com.modcrafting.luyten.Model.Quit+actionPerformed(ActionEvent),,108,4,1,,"@Override
+    public void windowClosing(WindowEvent event) {
+        new Quit().actionPerformed(null);
+    }",False,False,This method is used to handle the event of a window closing. It creates a new instance of the Quit class and calls its actionPerformed method with a null argument.,False,"The code snippet overrides the `windowClosing` method, which is called when a window is about to be closed. It creates a new instance of the `Quit` class and invokes its `actionPerformed` method with a null argument, presumably to handle the closing event."
+47,windowDeactivated(WindowEvent),window deactivated arg0 ,Method,,,,,64,2,1,,"@Override
+    public void windowDeactivated(WindowEvent arg0) {}",False,False,This method is used to handle the event when a window is deactivated.,False,"The code snippet defines a method named ""windowDeactivated"" that is part of a class implementing the WindowListener interface. This method is called when the window associated with the event listener loses focus or becomes inactive. However, the method does not contain any specific functionality as it is empty."
+48,windowDeiconified(WindowEvent),window deiconified arg0 ,Method,,,,,64,2,1,,"@Override
+    public void windowDeiconified(WindowEvent arg0) {}",False,False,"This method is used to handle the event when a window is deiconified, meaning it is restored from a minimized or iconified state.",False,"The code snippet defines an overridden method called ""windowDeiconified"" which is a part of a class implementing the WindowListener interface. This method is called when a window is restored from a minimized state, and it does not perform any specific actions as it is empty."
+49,windowIconified(WindowEvent),window iconified arg0 ,Method,,,,,62,2,1,,"@Override
+    public void windowIconified(WindowEvent arg0) {}",False,False,This method is used to override the default behavior when a window is minimized or iconified. It does not perform any specific action as it is an empty method.,False,"The code snippet defines an overridden method called ""windowIconified"" that is part of a class implementing the WindowListener interface. This method is called when the window associated with the listener is minimized or iconified, but it does not perform any specific actions as the method body is empty."
+50,windowOpened(WindowEvent),window opened arg0 ,Method,,,,,59,2,1,,"@Override
+    public void windowOpened(WindowEvent arg0) {}",False,False,This method is used to override the windowOpened() function from the WindowListener interface. It is called when a window is opened and does not perform any specific actions.,False,"The code snippet defines an overridden method called ""windowOpened"" that is part of a class implementing the WindowListener interface. This method is called when a window is opened, but it does not contain any specific functionality as it is empty."
+51,TreeListener,tree listener ,MemberClass,,,"com.modcrafting.luyten.Model.TreeListener+mouseClicked(MouseEvent) javax.swing.JTree+getPathForLocation(int,int) javax.swing.JTree+getPathForLocation(int,int) java.awt.event.MouseEvent+getX() java.awt.event.MouseEvent+getX() java.awt.event.MouseEvent+getY() java.awt.event.MouseEvent+getY() javax.swing.SwingUtilities+isLeftMouseButton(MouseEvent) javax.swing.SwingUtilities+isLeftMouseButton(MouseEvent) java.awt.event.MouseEvent+getClickCount() java.awt.event.MouseEvent+getClickCount() java.lang.Thread+start() +() +run() com.modcrafting.luyten.Model+openEntryByTreePath(TreePath) com.modcrafting.luyten.Model+openEntryByTreePath(TreePath) java.lang.Thread+start() javax.swing.tree.TreeSelectionModel+setSelectionPath(TreePath) javax.swing.JTree+getSelectionModel() javax.swing.JTree+getSelectionModel() javax.swing.tree.TreeSelectionModel+setSelectionPath(TreePath)",com.modcrafting.luyten.Model+tree com.modcrafting.luyten.Model+tree,576,18,2,,"private class TreeListener extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent event) {
+            final TreePath trp = tree.getPathForLocation(event.getX(), event.getY());
+            if (trp == null)
+                return;
+            if (SwingUtilities.isLeftMouseButton(event) 
+            		&& event.getClickCount() == 2) {
+				new Thread() {
+					public void run() {
+						openEntryByTreePath(trp);
+					}
+				}.start();
+            } else {
+                tree.getSelectionModel().setSelectionPath(trp);
+            }
+        }
+    }",False,False,,False,
+52,openEntryByTreePath(TreePath),open entry by tree path trp ,Method,,,"java.lang.String+replace(CharSequence,CharSequence) javax.swing.tree.TreePath+toString() javax.swing.tree.TreePath+toString() java.lang.String+replace(CharSequence,CharSequence) java.io.File+getName() java.io.File+getName() java.lang.String+split(String) java.lang.String+replace(CharSequence,CharSequence) java.lang.String+replace(CharSequence,CharSequence) java.lang.String+replace(CharSequence,CharSequence) java.lang.String+replace(CharSequence,CharSequence) java.lang.String+split(String) javax.swing.JComponent+setVisible(boolean) javax.swing.JComponent+setVisible(boolean) java.lang.StringBuilder+StringBuilder() java.lang.String+trim() java.lang.String+trim() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.String+trim() java.lang.String+trim() java.lang.StringBuilder+append(String) java.lang.String+replace(CharSequence,CharSequence) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() java.lang.String+replace(CharSequence,CharSequence) com.modcrafting.luyten.Model+populateSettingsFromSettingsMenu() com.modcrafting.luyten.Model+populateSettingsFromSettingsMenu() java.lang.String+endsWith(String) java.io.File+getName() java.io.File+getName() java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.io.File+getName() java.io.File+getName() java.lang.String+endsWith(String) java.util.jar.JarFile+JarFile(File) com.modcrafting.luyten.LuytenTypeLoader+getTypeLoaders() com.modcrafting.luyten.LuytenTypeLoader+getTypeLoaders() com.modcrafting.luyten.Model.State+State(String,File,JarFile,ITypeLoader) java.io.File+getCanonicalPath() java.io.File+getCanonicalPath() java.util.jar.JarFile+getJarEntry(String) java.util.jar.JarFile+getJarEntry(String) com.modcrafting.luyten.FileEntryNotFoundException+FileEntryNotFoundException() java.util.zip.ZipEntry+getSize() java.util.zip.ZipEntry+getSize() com.modcrafting.luyten.TooLargeFileException+TooLargeFileException(long) java.util.zip.ZipEntry+getSize() java.util.zip.ZipEntry+getSize() java.lang.String+endsWith(String) java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() java.lang.String+endsWith(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() com.modcrafting.luyten.Model+extractClassToTextPane(TypeReference,String,String) com.modcrafting.luyten.Model+extractClassToTextPane(TypeReference,String,String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.util.jar.JarFile+getInputStream(ZipEntry) java.util.jar.JarFile+getInputStream(ZipEntry) com.modcrafting.luyten.Model+extractSimpleFileEntryToTextPane(InputStream,String,String) com.modcrafting.luyten.Model+extractSimpleFileEntryToTextPane(InputStream,String,String) java.io.File+getName() java.io.File+getName() java.lang.String+replaceAll(String,String) java.io.File+getPath() java.io.File+getPath() java.lang.String+replaceAll(String,String) java.io.File+length() java.io.File+length() com.modcrafting.luyten.TooLargeFileException+TooLargeFileException(long) java.io.File+length() java.io.File+length() java.lang.String+endsWith(String) java.lang.String+endsWith(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) com.modcrafting.luyten.Model+extractClassToTextPane(TypeReference,String,String) com.modcrafting.luyten.Model+extractClassToTextPane(TypeReference,String,String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.io.FileInputStream+FileInputStream(File) com.modcrafting.luyten.Model+extractSimpleFileEntryToTextPane(InputStream,String,String) com.modcrafting.luyten.Model+extractSimpleFileEntryToTextPane(InputStream,String,String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) com.modcrafting.luyten.TooLargeFileException+getReadableFileSize() com.modcrafting.luyten.TooLargeFileException+getReadableFileSize() javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) java.lang.Throwable+toString() java.lang.Throwable+toString() javax.swing.JComponent+setVisible(boolean) javax.swing.JComponent+setVisible(boolean)",com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+bar com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+typeLoader com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model.State+jarFile com.modcrafting.luyten.Model+MAX_UNPACKED_FILE_SIZE_BYTES com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+metadataSystem com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model.State+jarFile com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+MAX_UNPACKED_FILE_SIZE_BYTES com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+metadataSystem com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+label javax.swing.JOptionPane+ERROR_MESSAGE com.modcrafting.luyten.Model+bar,3434,80,2,,"private void openEntryByTreePath(TreePath trp) {
+        String st = trp.toString().replace(file.getName(), """");
+        final String[] args = st.replace(""["", """").replace(""]"", """").split("","");
+        String name = """";
+        String path = """";
+        try {
+        	bar.setVisible(true);
+            if (args.length > 1) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 1; i < args.length; i++) {
+                    if (i == args.length - 1) {
+                        name = args[i].trim();
+                    } else {
+                        sb.append(args[i].trim()).append(""/"");
+                    }
+                }
+                path = sb.toString().replace(""."", ""/"") + name;
+                populateSettingsFromSettingsMenu();
+                
+                if (file.getName().endsWith("".jar"") || file.getName().endsWith("".zip"")) {
+                    if (state == null) {
+                        JarFile jfile = new JarFile(file);
+                        ITypeLoader jarLoader = new JarTypeLoader(jfile);
+
+                        typeLoader.getTypeLoaders().add(jarLoader);
+                        state = new State(file.getCanonicalPath(), file, jfile, jarLoader);
+                    }
+
+                    JarEntry entry = state.jarFile.getJarEntry(path);
+					if (entry == null) {
+						throw new FileEntryNotFoundException();
+					}
+                    if (entry.getSize() > MAX_UNPACKED_FILE_SIZE_BYTES) {
+						throw new TooLargeFileException(entry.getSize());
+					}
+
+                    if (entry.getName().endsWith("".class"")) {
+                    	label.setText(""Extracting: "" + name);
+                        String internalName = StringUtilities.removeRight(entry.getName(), "".class"");
+                        TypeReference type = metadataSystem.lookupType(internalName);
+                        extractClassToTextPane(type, name, path);
+                    } else {
+                    	label.setText(""Opening: "" + name);
+						try (InputStream in = state.jarFile.getInputStream(entry);) {
+							extractSimpleFileEntryToTextPane(in, name, path);
+						}
+                    }
+                }
+            } else {
+                name = file.getName();
+                path = file.getPath().replaceAll(""\\\\"", ""/"");
+				if (file.length() > MAX_UNPACKED_FILE_SIZE_BYTES) {
+					throw new TooLargeFileException(file.length());
+				}
+                if (name.endsWith("".class"")) {
+                	label.setText(""Extracting: "" + name);
+                    TypeReference type = metadataSystem.lookupType(path);
+                    extractClassToTextPane(type, name, path);
+                } else {
+                	label.setText(""Opening: "" + name);
+					try (InputStream in = new FileInputStream(file);) {
+						extractSimpleFileEntryToTextPane(in, name, path);
+					}
+                }
+            }
+			label.setText(""Complete"");
+		} catch (FileEntryNotFoundException e) {
+			label.setText(""File not found: "" + name);
+		} catch (FileIsBinaryException e) {
+			label.setText(""Binary resource: "" + name);
+		} catch (TooLargeFileException e) {
+			label.setText(""File is too large: "" + name + "" - size: "" + e.getReadableFileSize());
+		} catch (Exception e) {
+			label.setText(""Cannot open: "" + name);
+			e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.toString(), ""Error!"", JOptionPane.ERROR_MESSAGE);
+		} finally {
+			bar.setVisible(false);
+		}
+	}",False,False,"The function of the method is to open an entry specified by a TreePath. It extracts the name and path from the TreePath, and then performs different actions based on the type of file. If the file is a .jar or .zip file, it extracts the entry and displays it in a text pane. If the file is a .class file or a simple file, it opens and displays the file in a text pane. If the file is not found, too large, or encounters an error, it displays an appropriate message. Finally, it hides a progress bar.",True,"The `openEntryByTreePath` method is responsible for opening and extracting files from a given `TreePath`. It handles different scenarios based on the file type, such as extracting class files from JAR or ZIP archives, or opening regular files. It also handles exceptions and updates a label to display the current status of the operation."
+53,"extractClassToTextPane(TypeReference,String,String)",extract class to text pane type tab title path ,Method,openEntryByTreePath(TreePath) openEntryByTreePath(TreePath),,"java.lang.String+length() java.lang.String+trim() java.lang.String+trim() java.lang.String+length() com.modcrafting.luyten.FileEntryNotFoundException+FileEntryNotFoundException() java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) com.modcrafting.luyten.OpenFile+getPath() com.modcrafting.luyten.OpenFile+getPath() com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) java.lang.Exception+Exception(String) java.io.StringWriter+StringWriter() java.io.StringWriter+toString() java.io.StringWriter+toString() com.modcrafting.luyten.OpenFile+setContent(String) com.modcrafting.luyten.OpenFile+setContent(String) com.modcrafting.luyten.OpenFile+setPath(String) com.modcrafting.luyten.OpenFile+setPath(String) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) com.modcrafting.luyten.OpenFile+OpenFile(String,String,String,Theme) java.util.HashSet+add(E) java.util.HashSet+add(E) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile)",com.modcrafting.luyten.Model+hmap com.modcrafting.luyten.OpenFile+name com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+decompilationOptions com.modcrafting.luyten.Model+theme com.modcrafting.luyten.Model+hmap,1236,37,2,,"private void extractClassToTextPane(TypeReference type, String tabTitle, String path) throws Exception {
+		if (tabTitle == null || tabTitle.trim().length() < 1 || path == null) {
+			throw new FileEntryNotFoundException();
+		}
+		OpenFile sameTitledOpen = null;
+		for (OpenFile nextOpen : hmap) {
+			if (tabTitle.equals(nextOpen.name)) {
+				sameTitledOpen = nextOpen;
+				break;
+			}
+		}
+		if (sameTitledOpen != null && path.equals(sameTitledOpen.getPath())) {
+			addOrSwitchToTab(sameTitledOpen);
+			return;
+		}
+		
+		// build tab content: do decompilation
+		TypeDefinition resolvedType = null;
+		if (type == null || ((resolvedType = type.resolve()) == null)) {
+			throw new Exception(""Unable to resolve type."");
+		}
+		StringWriter stringwriter = new StringWriter();
+		settings.getLanguage().decompileType(resolvedType,
+				new PlainTextOutput(stringwriter), decompilationOptions);
+		String decompiledSource = stringwriter.toString();
+
+		// open tab
+		if (sameTitledOpen != null) {
+			sameTitledOpen.setContent(decompiledSource);
+			sameTitledOpen.setPath(path);
+			addOrSwitchToTab(sameTitledOpen);
+		} else {
+			OpenFile open = new OpenFile(tabTitle, path, decompiledSource, theme);
+			hmap.add(open);
+			addOrSwitchToTab(open);
+		}
+	}",False,False,"This method extracts a class and displays it in a text pane. It takes a type reference, tab title, and path as parameters. If the tab title or path is null or empty, it throws an exception. It checks if there is already an open file with the same title and path, and if so, it adds or switches to that tab. If not, it decompiles the type, sets the content and path of the open file, and adds or switches to that tab.",True,"The code is a method that extracts a class to a text pane. It checks if the tab title and path are valid, searches for an existing open file with the same title, and if found, adds or switches to that tab. If not found, it decompiles the type, opens a new tab with the decompiled source, and adds it to a hashmap."
+54,"extractSimpleFileEntryToTextPane(InputStream,String,String)",extract simple file entry to text pane input stream tab title path ,Method,openEntryByTreePath(TreePath) openEntryByTreePath(TreePath),,"java.lang.String+length() java.lang.String+trim() java.lang.String+trim() java.lang.String+length() com.modcrafting.luyten.FileEntryNotFoundException+FileEntryNotFoundException() java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) com.modcrafting.luyten.OpenFile+getPath() com.modcrafting.luyten.OpenFile+getPath() com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) java.lang.StringBuilder+StringBuilder() java.io.InputStreamReader+InputStreamReader(InputStream) java.io.BufferedReader+BufferedReader(Reader) java.io.BufferedReader+readLine() java.io.BufferedReader+readLine() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.String+getBytes() java.lang.String+getBytes() java.lang.String+replaceAll(String,String) java.lang.String+replaceAll(String,String) java.lang.String+replaceAll(String,String) java.lang.String+replaceAll(String,String) java.util.HashSet+contains(Object) java.util.HashSet+contains(Object) java.lang.StringBuilder+length() java.lang.StringBuilder+length() com.modcrafting.luyten.FileIsBinaryException+FileIsBinaryException() com.modcrafting.luyten.OpenFile+setContent(String) com.modcrafting.luyten.OpenFile+setContent(String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() com.modcrafting.luyten.OpenFile+setPath(String) com.modcrafting.luyten.OpenFile+setPath(String) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) com.modcrafting.luyten.OpenFile+OpenFile(String,String,String,Theme) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() java.util.HashSet+add(E) java.util.HashSet+add(E) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile) com.modcrafting.luyten.Model+addOrSwitchToTab(OpenFile)",com.modcrafting.luyten.Model+hmap com.modcrafting.luyten.OpenFile+name com.modcrafting.luyten.OpenFile+WELL_KNOWN_TEXT_FILE_EXTENSIONS com.modcrafting.luyten.Model+theme com.modcrafting.luyten.Model+hmap,1660,53,2,,"private void extractSimpleFileEntryToTextPane(InputStream inputStream, String tabTitle, String path) throws Exception {
+		if (inputStream == null || tabTitle == null || tabTitle.trim().length() < 1 || path == null) {
+			throw new FileEntryNotFoundException();
+		}
+		OpenFile sameTitledOpen = null;
+		for (OpenFile nextOpen : hmap) {
+			if (tabTitle.equals(nextOpen.name)) {
+				sameTitledOpen = nextOpen;
+				break;
+			}
+		}
+		if (sameTitledOpen != null && path.equals(sameTitledOpen.getPath())) {
+			addOrSwitchToTab(sameTitledOpen);
+			return;
+		}
+
+		// build tab content
+		StringBuilder sb = new StringBuilder();
+		long nonprintableCharactersCount = 0;
+		try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+				BufferedReader reader = new BufferedReader(inputStreamReader);) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line).append(""\n"");
+
+				for (byte nextByte : line.getBytes()) {
+					if (nextByte <= 0) {
+						nonprintableCharactersCount++;
+					}
+				}
+
+			}
+		}
+		
+		// guess binary or text
+		String extension = ""."" + tabTitle.replaceAll(""^[^\\.]*$"", """").replaceAll(""[^\\.]*\\."", """");
+		boolean isTextFile = (OpenFile.WELL_KNOWN_TEXT_FILE_EXTENSIONS.contains(extension) ||
+				nonprintableCharactersCount < sb.length() / 5);
+		if (!isTextFile) {
+			throw new FileIsBinaryException();
+		}
+		
+		// open tab
+		if (sameTitledOpen != null) {
+			sameTitledOpen.setContent(sb.toString());
+			sameTitledOpen.setPath(path);
+			addOrSwitchToTab(sameTitledOpen);
+		} else {
+			OpenFile open = new OpenFile(tabTitle, path, sb.toString(), theme);
+			hmap.add(open);
+			addOrSwitchToTab(open);
+		}
+	}",False,False,This method extracts a file entry from an input stream and displays it in a text pane. It checks if the file entry already exists in the text pane and either updates the existing entry or creates a new one. It also checks if the file is a text file or a binary file.,True,The code extracts the content of a file from an input stream and displays it in a text pane. It checks if the file is already open in a tab and either adds a new tab or switches to the existing tab. It also determines if the file is a text or binary file based on the presence of non-printable characters.
+55,State,state ,MemberClass,,,"com.modcrafting.luyten.Model.State+State(String,File,JarFile,ITypeLoader) com.modcrafting.luyten.Model.State+close() com.modcrafting.luyten.LuytenTypeLoader+getTypeLoaders() com.modcrafting.luyten.LuytenTypeLoader+getTypeLoaders() com.modcrafting.luyten.Closer+tryClose(AutoCloseable) com.modcrafting.luyten.Closer+tryClose(AutoCloseable) com.modcrafting.luyten.Model.State+getFile() com.modcrafting.luyten.Model.State+getKey()",com.modcrafting.luyten.Model.State+key com.modcrafting.luyten.Model.State+file com.modcrafting.luyten.Model.State+jarFile com.modcrafting.luyten.Model.State+typeLoader com.modcrafting.luyten.Model.State+key com.modcrafting.luyten.Model.State+file com.modcrafting.luyten.Model.State+jarFile com.modcrafting.luyten.Model.State+typeLoader com.modcrafting.luyten.Model.State+typeLoader com.modcrafting.luyten.Model+typeLoader com.modcrafting.luyten.Model.State+typeLoader com.modcrafting.luyten.Model.State+jarFile com.modcrafting.luyten.Model.State+file com.modcrafting.luyten.Model.State+key,810,29,18,,"private final class State implements AutoCloseable {
+        private final String key;
+        private final File file;
+        final JarFile jarFile;
+        final ITypeLoader typeLoader;
+
+        private State(String key, File file, JarFile jarFile, ITypeLoader typeLoader) {
+            this.key = VerifyArgument.notNull(key, ""key"");
+            this.file = VerifyArgument.notNull(file, ""file"");
+            this.jarFile = jarFile;
+            this.typeLoader = typeLoader;
+        }
+
+        @Override
+        public void close() {
+            if (typeLoader != null) {
+                Model.this.typeLoader.getTypeLoaders().remove(typeLoader);
+            }
+            Closer.tryClose(jarFile);
+        }
+
+		public File getFile() {
+			return file;
+		}
+
+		public String getKey() {
+			return key;
+		}
+    }",False,False,,False,
+56,Tab,tab ,MemberClass,,,"javax.swing.JLabel+JLabel(Icon) javax.swing.ImageIcon+ImageIcon(Image) java.awt.Toolkit+getImage(URL) java.awt.Toolkit+getDefaultToolkit() java.awt.Toolkit+getDefaultToolkit() java.awt.Toolkit+getImage(URL) java.lang.Class+getResource(String) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getResource(String) javax.swing.JLabel+JLabel() com.modcrafting.luyten.Model.Tab+Tab(String) java.awt.GridBagLayout+GridBagLayout() javax.swing.JComponent+setOpaque(boolean) javax.swing.JComponent+setOpaque(boolean) javax.swing.JLabel+JLabel(String) com.modcrafting.luyten.Model.Tab+createTab() com.modcrafting.luyten.Model.Tab+createTab() com.modcrafting.luyten.Model.Tab+getButton() com.modcrafting.luyten.Model.Tab+createTab() java.awt.GridBagConstraints+GridBagConstraints() java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object) java.awt.Insets+Insets(int,int,int,int) java.awt.Container+add(Component,Object) java.awt.Container+add(Component,Object)",com.modcrafting.luyten.Model.Tab+serialVersionUID com.modcrafting.luyten.Model.Tab+closeButton com.modcrafting.luyten.Model.Tab+tabTitle com.modcrafting.luyten.Model.Tab+title com.modcrafting.luyten.Model.Tab+title com.modcrafting.luyten.Model.Tab+tabTitle com.modcrafting.luyten.Model.Tab+title com.modcrafting.luyten.Model.Tab+closeButton java.awt.GridBagConstraints+gridx java.awt.GridBagConstraints+gridy java.awt.GridBagConstraints+weightx com.modcrafting.luyten.Model.Tab+tabTitle java.awt.GridBagConstraints+gridx java.awt.GridBagConstraints+insets java.awt.GridBagConstraints+anchor java.awt.GridBagConstraints+EAST com.modcrafting.luyten.Model.Tab+closeButton,1059,33,2,,"private class Tab extends JPanel {
+        private static final long serialVersionUID = -514663009333644974L;
+        private JLabel closeButton = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource(""/resources/icon_close.png""))));
+        private JLabel tabTitle = new JLabel();
+        private String title = """";
+
+
+        public Tab(String t) {
+            super(new GridBagLayout());
+            this.setOpaque(false);
+
+            this.title = t;
+            this.tabTitle = new JLabel(title);
+
+            this.createTab();
+        }
+
+        public JLabel getButton() {
+            return this.closeButton;
+        }
+
+        public void createTab() {
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.weightx = 1;
+            this.add(tabTitle, gbc);
+            gbc.gridx++;
+            gbc.insets = new Insets(0, 5, 0, 0);
+            gbc.anchor = GridBagConstraints.EAST;
+            this.add(closeButton, gbc);
+        }
+    }",False,False,,False,
+57,CloseTab,close tab ,MemberClass,,,com.modcrafting.luyten.Model.CloseTab+CloseTab(String) com.modcrafting.luyten.Model.CloseTab+mouseClicked(MouseEvent) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) com.modcrafting.luyten.Model+closeOpenTab(int) com.modcrafting.luyten.Model+closeOpenTab(int),com.modcrafting.luyten.Model.CloseTab+title com.modcrafting.luyten.Model.CloseTab+title com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model.CloseTab+title,316,13,2,,"private class CloseTab extends MouseAdapter {
+        String title;
+
+        public CloseTab(String title) {
+            this.title = title;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int index = house.indexOfTab(title);
+            closeOpenTab(index);
+        }
+    }",False,False,,False,
+58,FileLoad,file load ,MemberClass,,,"com.modcrafting.luyten.Model.FileLoad+FileLoad(boolean) javax.swing.JFileChooser+JFileChooser() javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) com.modcrafting.luyten.Model.FileChooserFileFilter+FileChooserFileFilter(String) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) com.modcrafting.luyten.Model.FileChooserFileFilter+FileChooserFileFilter(String) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) com.modcrafting.luyten.Model.FileChooserFileFilter+FileChooserFileFilter(String) javax.swing.JFileChooser+setFileSelectionMode(int) javax.swing.JFileChooser+setFileSelectionMode(int) javax.swing.JFileChooser+setMultiSelectionEnabled(boolean) javax.swing.JFileChooser+setMultiSelectionEnabled(boolean) com.modcrafting.luyten.Model+retrieveOpenDialogDir(JFileChooser) com.modcrafting.luyten.Model+retrieveOpenDialogDir(JFileChooser) com.modcrafting.luyten.Model.FileLoad+actionPerformed(ActionEvent) com.modcrafting.luyten.Model+retrieveOpenDialogDir(JFileChooser) com.modcrafting.luyten.Model+retrieveOpenDialogDir(JFileChooser) javax.swing.JFileChooser+showOpenDialog(Component) javax.swing.JFileChooser+showOpenDialog(Component) com.modcrafting.luyten.Model+saveOpenDialogDir(JFileChooser) com.modcrafting.luyten.Model+saveOpenDialogDir(JFileChooser) javax.swing.JFileChooser+getSelectedFile() javax.swing.JFileChooser+getSelectedFile() com.modcrafting.luyten.Model.FileClose+actionPerformed(ActionEvent) com.modcrafting.luyten.Model.FileClose+FileClose() com.modcrafting.luyten.Model.FileClose+actionPerformed(ActionEvent) com.modcrafting.luyten.Model.FileLoad+loadFile(File) com.modcrafting.luyten.Model.FileLoad+loadFile(File) com.modcrafting.luyten.Model.FileLoad+load(DefaultMutableTreeNode,List<String>) java.util.List+size() java.util.List+size() java.util.List+remove(int) java.util.List+remove(int) com.modcrafting.luyten.Model.FileLoad+getChild(DefaultMutableTreeNode,String) com.modcrafting.luyten.Model.FileLoad+getChild(DefaultMutableTreeNode,String) javax.swing.tree.DefaultMutableTreeNode+DefaultMutableTreeNode(Object) javax.swing.tree.DefaultMutableTreeNode+add(MutableTreeNode) javax.swing.tree.DefaultMutableTreeNode+add(MutableTreeNode) com.modcrafting.luyten.Model.FileLoad+load(DefaultMutableTreeNode,List<String>) com.modcrafting.luyten.Model.FileLoad+load(DefaultMutableTreeNode,List<String>) com.modcrafting.luyten.Model.FileLoad+getChild(DefaultMutableTreeNode,String) javax.swing.tree.DefaultMutableTreeNode+children() javax.swing.tree.DefaultMutableTreeNode+children() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() java.lang.Object+equals(Object) javax.swing.tree.DefaultMutableTreeNode+getUserObject() javax.swing.tree.DefaultMutableTreeNode+getUserObject() java.lang.Object+equals(Object) com.modcrafting.luyten.Model.FileLoad+loadFile(File) java.lang.Thread+start() java.lang.Thread+Thread(Runnable) +() +run() java.io.File+length() java.io.File+length() com.modcrafting.luyten.TooLargeFileException+TooLargeFileException(long) java.io.File+length() java.io.File+length() java.lang.String+endsWith(String) java.io.File+getName() java.io.File+getName() java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.io.File+getName() java.io.File+getName() java.lang.String+endsWith(String) java.util.jar.JarFile+JarFile(File) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.util.zip.ZipFile+getName() java.util.zip.ZipFile+getName() javax.swing.JComponent+setVisible(boolean) javax.swing.JComponent+setVisible(boolean) java.util.jar.JarFile+entries() java.util.jar.JarFile+entries() javax.swing.tree.DefaultMutableTreeNode+DefaultMutableTreeNode(Object) com.modcrafting.luyten.Model+getName(String) com.modcrafting.luyten.Model+getName(String) java.io.File+getName() java.io.File+getName() java.util.ArrayList+ArrayList() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() java.util.zip.ZipEntry+isDirectory() java.util.zip.ZipEntry+isDirectory() java.util.List+add(E) java.util.List+add(E) java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() java.util.ArrayList+ArrayList() java.util.Collections+sort(List,Comparator) java.util.Collections+sort(List,Comparator) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.util.List+contains(Object) java.util.List+contains(Object) java.util.List+add(E) java.util.List+add(E) java.util.HashSet+HashSet() java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.util.Set+add(E) java.util.Set+add(E) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+lastIndexOf(String) java.lang.String+lastIndexOf(String) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.util.Set+toArray(T[]) java.util.Set+toArray(T[]) java.util.Collections+sort(List,Comparator) java.util.Collections+sort(List,Comparator) java.util.Collections+sort(List,Comparator) java.util.Collections+sort(List,Comparator) +() +compare(String,String) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+replace(CharSequence,CharSequence) java.lang.String+replace(CharSequence,CharSequence) java.lang.String+contains(CharSequence) java.util.List+add(E) java.util.List+add(E) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.util.List+contains(Object) java.util.List+contains(Object) java.util.List+add(E) java.util.List+add(E) java.util.LinkedList+LinkedList(Collection) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.lang.String+split(String) java.lang.String+split(String) com.modcrafting.luyten.Model.FileLoad+load(DefaultMutableTreeNode,List<String>) com.modcrafting.luyten.Model.FileLoad+load(DefaultMutableTreeNode,List<String>) javax.swing.JTree+setModel(TreeModel) javax.swing.JTree+setModel(TreeModel) javax.swing.tree.DefaultTreeModel+DefaultTreeModel(TreeNode) com.modcrafting.luyten.LuytenTypeLoader+getTypeLoaders() com.modcrafting.luyten.LuytenTypeLoader+getTypeLoaders() com.modcrafting.luyten.Model.State+State(String,File,JarFile,ITypeLoader) java.io.File+getCanonicalPath() java.io.File+getCanonicalPath() javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.tree.DefaultMutableTreeNode+DefaultMutableTreeNode(Object) com.modcrafting.luyten.Model+getName(String) com.modcrafting.luyten.Model+getName(String) java.io.File+getName() java.io.File+getName() javax.swing.JTree+setModel(TreeModel) javax.swing.JTree+setModel(TreeModel) javax.swing.tree.DefaultTreeModel+DefaultTreeModel(TreeNode) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.io.File+getName() java.io.File+getName() com.modcrafting.luyten.TooLargeFileException+getReadableFileSize() com.modcrafting.luyten.TooLargeFileException+getReadableFileSize() javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.io.File+getName() java.io.File+getName() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() javax.swing.JComponent+setVisible(boolean) javax.swing.JComponent+setVisible(boolean) java.lang.Thread+start()",com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model.FileLoad+fc javax.swing.JFileChooser+FILES_ONLY com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model+frame com.modcrafting.luyten.Model.FileLoad+fc javax.swing.JFileChooser+APPROVE_OPTION com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model.FileLoad+fc com.modcrafting.luyten.Model+open com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+MAX_JAR_FILE_SIZE_BYTES com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+bar java.lang.String+CASE_INSENSITIVE_ORDER java.lang.String+CASE_INSENSITIVE_ORDER com.modcrafting.luyten.Model+tree com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model+typeLoader com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model+open com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+tree com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+open com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+bar,5495,135,2,,"private class FileLoad implements ActionListener {
+        JFileChooser fc;
+
+        public FileLoad(boolean dialog) {
+            if (dialog) {
+                fc = new JFileChooser();
+                fc.addChoosableFileFilter(new FileChooserFileFilter(""*.jar""));
+                fc.addChoosableFileFilter(new FileChooserFileFilter(""*.zip""));
+                fc.addChoosableFileFilter(new FileChooserFileFilter(""*.class""));
+                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fc.setMultiSelectionEnabled(false);
+                retrieveOpenDialogDir(fc);
+            }
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        	retrieveOpenDialogDir(fc);
+            int returnVal = fc.showOpenDialog(Model.frame);
+			saveOpenDialogDir(fc);
+			
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = fc.getSelectedFile();
+                if (open)
+                    new FileClose().actionPerformed(e);
+                loadFile(file);
+            }
+        }
+
+        public DefaultMutableTreeNode load(DefaultMutableTreeNode node, List<String> args) {
+            if (args.size() > 0) {
+                String name = args.remove(0);
+                DefaultMutableTreeNode nod = getChild(node, name);
+                if (nod == null)
+                    nod = new DefaultMutableTreeNode(name);
+                node.add(load(nod, args));
+            }
+            return node;
+        }
+
+        @SuppressWarnings(""unchecked"")
+        public DefaultMutableTreeNode getChild(DefaultMutableTreeNode node, String name) {
+            Enumeration<DefaultMutableTreeNode> entry = node.children();
+            while (entry.hasMoreElements()) {
+                DefaultMutableTreeNode nods = entry.nextElement();
+                if (nods.getUserObject().equals(name)) {
+                    return nods;
+                }
+            }
+            return null;
+        }
+
+        public void loadFile(final File file) {
+        	new Thread(new Runnable(){
+				@Override
+				public void run() {
+					try {
+						if (file == null) {
+							return;
+						}
+						if (file.length() > MAX_JAR_FILE_SIZE_BYTES) {
+							throw new TooLargeFileException(file.length());
+						}
+				        if (file.getName().endsWith("".zip"") || file.getName().endsWith("".jar"")) {
+				            JarFile jfile;
+							jfile = new JarFile(file); 
+			                label.setText(""Loading: ""+jfile.getName());
+			                bar.setVisible(true);
+							Enumeration<JarEntry> entry = jfile.entries();
+				            DefaultMutableTreeNode top = new DefaultMutableTreeNode(getName(file.getName()));
+				            List<String> mass = new ArrayList<String>();
+				            while (entry.hasMoreElements()){
+				            	JarEntry e = entry.nextElement();
+				            	if(!e.isDirectory())
+				                    mass.add(e.getName());
+				      
+				            }
+				            List<String> sort = new ArrayList<String>();
+				            Collections.sort(mass, String.CASE_INSENSITIVE_ORDER);
+				            for(String m : mass)
+				            	if(m.contains(""META-INF"") && !sort.contains(m))
+				            		sort.add(m);
+				            Set<String> set = new HashSet<String>();
+				            for(String m : mass){
+				            	if(m.contains(""/"")){
+				                	set.add(m.substring(0, m.lastIndexOf(""/"")+1));
+				            	}
+				            }
+				            List<String> packs = Arrays.asList(set.toArray(new String[]{}));
+				            Collections.sort(packs, String.CASE_INSENSITIVE_ORDER);                
+				            Collections.sort(packs, new Comparator<String>(){
+				            	public int compare(String o1, String o2) {
+				            		return o2.split(""/"").length - o1.split(""/"").length;
+				            	}
+				            });
+				            for(String pack : packs)
+				            	for(String m : mass)
+				            		if(!m.contains(""META-INF"") && m.contains(pack) && !m.replace(pack, """").contains(""/""))
+				            			sort.add(m);
+				            for(String m : mass)
+				            	if(!m.contains(""META-INF"") && !m.contains(""/"") && !sort.contains(m))
+				            		sort.add(m);
+				            for (String pack : sort) {
+				                LinkedList<String> list = new LinkedList<String>(Arrays.asList(pack.split(""/"")));
+				                load(top, list);
+				            }
+				            tree.setModel(new DefaultTreeModel(top));
+				            if (state == null) {
+				                ITypeLoader jarLoader = new JarTypeLoader(jfile);
+				                typeLoader.getTypeLoaders().add(jarLoader);
+				                state = new State(file.getCanonicalPath(), file, jfile, jarLoader);
+				            }
+				            open = true;
+		            		label.setText(""Complete"");
+				        } else {
+				            DefaultMutableTreeNode top = new DefaultMutableTreeNode(getName(file.getName()));
+				            tree.setModel(new DefaultTreeModel(top));
+				            settings.setTypeLoader(new InputTypeLoader());
+				            open = true;
+		            		label.setText(""Complete"");
+				        }
+					} catch (TooLargeFileException e) {
+						label.setText(""File is too large: "" + file.getName() + "" - size: "" + e.getReadableFileSize());
+					} catch (Exception e1) {
+						label.setText(""Cannot open: "" + file.getName());
+						e1.printStackTrace();
+					} finally {
+						bar.setVisible(false);
+					}
+				}
+
+        	}).start();
+        }
+    }",False,False,,False,
+59,FileClose,file close ,MemberClass,,,com.modcrafting.luyten.Model.FileClose+actionPerformed(ActionEvent) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+indexOfTab(String) javax.swing.JTabbedPane+remove(int) javax.swing.JTabbedPane+remove(int) com.modcrafting.luyten.Closer+tryClose(AutoCloseable) com.modcrafting.luyten.Closer+tryClose(AutoCloseable) java.util.HashSet+clear() java.util.HashSet+clear() javax.swing.JTree+setModel(TreeModel) javax.swing.JTree+setModel(TreeModel) javax.swing.tree.DefaultTreeModel+DefaultTreeModel(TreeNode),com.modcrafting.luyten.Model+hmap com.modcrafting.luyten.Model+house com.modcrafting.luyten.OpenFile+name com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model+hmap com.modcrafting.luyten.Model+tree com.modcrafting.luyten.Model+open com.modcrafting.luyten.Model+metadataSystem com.modcrafting.luyten.Model+typeLoader,658,21,1,,"public class FileClose implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            for (OpenFile co : hmap) {
+                int pos = house.indexOfTab(co.name);
+                if (pos >= 0)
+                    house.remove(pos);
+            }
+
+            final State oldState = state;
+            Model.this.state = null;
+            if (oldState != null) {
+                Closer.tryClose(oldState);
+            }
+
+            hmap.clear();
+            tree.setModel(new DefaultTreeModel(null));
+            open = false;
+            metadataSystem = new MetadataSystem(typeLoader);
+        }
+    }",False,False,,False,
+60,FileExtractFile,file extract file ,MemberClass,,,"com.modcrafting.luyten.Model.FileExtractFile+FileExtractFile() javax.swing.JFileChooser+JFileChooser() javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) com.modcrafting.luyten.Model.FileChooserFileFilter+FileChooserFileFilter(String) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) com.modcrafting.luyten.Model.FileChooserFileFilter+FileChooserFileFilter(String) javax.swing.JFileChooser+setFileSelectionMode(int) javax.swing.JFileChooser+setFileSelectionMode(int) javax.swing.JFileChooser+setMultiSelectionEnabled(boolean) javax.swing.JFileChooser+setMultiSelectionEnabled(boolean) com.modcrafting.luyten.Model+retrieveSaveDialogDir(JFileChooser) com.modcrafting.luyten.Model+retrieveSaveDialogDir(JFileChooser) com.modcrafting.luyten.Model.FileExtractFile+actionPerformed(ActionEvent) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JTabbedPane+getSelectedIndex() javax.swing.JTabbedPane+getSelectedIndex() javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JTabbedPane+getComponentAt(int) javax.swing.JTabbedPane+getComponentAt(int) javax.swing.JTabbedPane+getTitleAt(int) javax.swing.JTabbedPane+getTitleAt(int) javax.swing.JFileChooser+setSelectedFile(File) javax.swing.JFileChooser+setSelectedFile(File) java.io.File+File(String) java.lang.String+replace(CharSequence,CharSequence) java.lang.String+replace(CharSequence,CharSequence) com.modcrafting.luyten.Model+retrieveSaveDialogDir(JFileChooser) com.modcrafting.luyten.Model+retrieveSaveDialogDir(JFileChooser) javax.swing.JFileChooser+showSaveDialog(Component) javax.swing.JFileChooser+showSaveDialog(Component) com.modcrafting.luyten.Model+saveSaveDialogDir(JFileChooser) com.modcrafting.luyten.Model+saveSaveDialogDir(JFileChooser) java.lang.Thread+start() java.lang.Thread+Thread(Runnable) +() +run() javax.swing.JFileChooser+getSelectedFile() javax.swing.JFileChooser+getSelectedFile() java.io.FileWriter+FileWriter(File) java.io.BufferedWriter+BufferedWriter(Writer) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.io.File+getName() java.io.File+getName() javax.swing.JComponent+setVisible(boolean) javax.swing.JComponent+setVisible(boolean) java.io.Writer+write(char[]) java.io.Writer+write(char[]) java.io.BufferedWriter+flush() java.io.BufferedWriter+flush() javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.io.File+getName() java.io.File+getName() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) java.lang.Throwable+toString() java.lang.Throwable+toString() javax.swing.JComponent+setVisible(boolean) javax.swing.JComponent+setVisible(boolean) java.lang.Thread+start()",com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model.FileExtractFile+fc javax.swing.JFileChooser+FILES_ONLY com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model+open com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model+house com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model+frame com.modcrafting.luyten.Model.FileExtractFile+fc javax.swing.JFileChooser+APPROVE_OPTION com.modcrafting.luyten.Model.FileExtractFile+fc com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+bar com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+label javax.swing.JOptionPane+ERROR_MESSAGE com.modcrafting.luyten.Model+bar,1837,56,2,,"private class FileExtractFile implements ActionListener{
+        JFileChooser fc;
+    	public FileExtractFile(){
+    		fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileChooserFileFilter(""*.txt""));
+            fc.addChoosableFileFilter(new FileChooserFileFilter(""*.java""));
+            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fc.setMultiSelectionEnabled(false);
+            retrieveSaveDialogDir(fc);
+    	}
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (!open || file == null) {
+				label.setText(""No open file"");
+				return;
+			}
+			int index = house.getSelectedIndex();
+			if (index < 0) {
+				label.setText(""No open tab"");
+				return;
+			}
+			RTextScrollPane co = (RTextScrollPane) house.getComponentAt(index);
+			final RSyntaxTextArea pane = (RSyntaxTextArea) co.getViewport().getView();
+			String title = house.getTitleAt(index);
+			fc.setSelectedFile(new File(title.replace("".class"", "".java"")));
+			
+			retrieveSaveDialogDir(fc);
+			int returnVal = fc.showSaveDialog(Model.frame);
+			saveSaveDialogDir(fc);
+			
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						File fil = fc.getSelectedFile();
+						try (FileWriter fw = new FileWriter(fil);
+								BufferedWriter bw = new BufferedWriter(fw);) {
+							label.setText(""Extracting: "" + fil.getName());
+							bar.setVisible(true);
+							bw.write(pane.getText());
+							bw.flush();
+							label.setText(""Complete"");
+						} catch (Exception e1) {
+							label.setText(""Cannot save file: "" + fil.getName());
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, e1.toString(), ""Error!"", JOptionPane.ERROR_MESSAGE);
+						} finally {
+							bar.setVisible(false);
+						}
+					}
+				}).start();
+			}
+			
+		}
+    	
+    }",False,False,,False,
+61,FileExtractJar,file extract jar ,MemberClass,,,"com.modcrafting.luyten.Model.FileExtractJar+FileExtractJar() javax.swing.JFileChooser+JFileChooser() javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) com.modcrafting.luyten.Model.FileChooserFileFilter+FileChooserFileFilter(String) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) javax.swing.JFileChooser+addChoosableFileFilter(FileFilter) com.modcrafting.luyten.Model.FileChooserFileFilter+FileChooserFileFilter(String) javax.swing.JFileChooser+setFileSelectionMode(int) javax.swing.JFileChooser+setFileSelectionMode(int) javax.swing.JFileChooser+setMultiSelectionEnabled(boolean) javax.swing.JFileChooser+setMultiSelectionEnabled(boolean) com.modcrafting.luyten.Model+retrieveSaveDialogDir(JFileChooser) com.modcrafting.luyten.Model+retrieveSaveDialogDir(JFileChooser) com.modcrafting.luyten.Model.FileExtractJar+actionPerformed(ActionEvent) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) com.modcrafting.luyten.Model+populateSettingsFromSettingsMenu() com.modcrafting.luyten.Model+populateSettingsFromSettingsMenu() com.modcrafting.luyten.Model+getName(String) com.modcrafting.luyten.Model+getName(String) java.io.File+getName() java.io.File+getName() java.lang.String+endsWith(String) java.lang.String+endsWith(String) com.modcrafting.luyten.Model.FileExtractFile+actionPerformed(ActionEvent) com.modcrafting.luyten.Model.FileExtractFile+FileExtractFile() com.modcrafting.luyten.Model.FileExtractFile+actionPerformed(ActionEvent) java.lang.String+endsWith(String) java.lang.String+toLowerCase() java.lang.String+toLowerCase() java.lang.String+endsWith(String) java.lang.String+replaceAll(String,String) java.lang.String+replaceAll(String,String) javax.swing.JFileChooser+setSelectedFile(File) javax.swing.JFileChooser+setSelectedFile(File) java.io.File+File(String) com.modcrafting.luyten.Model+retrieveSaveDialogDir(JFileChooser) com.modcrafting.luyten.Model+retrieveSaveDialogDir(JFileChooser) javax.swing.JFileChooser+showSaveDialog(Component) javax.swing.JFileChooser+showSaveDialog(Component) com.modcrafting.luyten.Model+saveSaveDialogDir(JFileChooser) com.modcrafting.luyten.Model+saveSaveDialogDir(JFileChooser) java.lang.Thread+start() java.lang.Thread+Thread(Runnable) +() +run() javax.swing.JFileChooser+getSelectedFile() javax.swing.JFileChooser+getSelectedFile() java.io.FileOutputStream+FileOutputStream(File) java.io.BufferedOutputStream+BufferedOutputStream(OutputStream) java.util.zip.ZipOutputStream+ZipOutputStream(OutputStream) java.util.jar.JarFile+JarFile(File) com.modcrafting.luyten.LuytenTypeLoader+getTypeLoaders() com.modcrafting.luyten.LuytenTypeLoader+getTypeLoaders() com.modcrafting.luyten.Model.State+State(String,File,JarFile,ITypeLoader) java.io.File+getCanonicalPath() java.io.File+getCanonicalPath() java.util.jar.JarFile+entries() java.util.jar.JarFile+entries() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.io.File+getName() java.io.File+getName() javax.swing.JComponent+setVisible(boolean) javax.swing.JComponent+setVisible(boolean) java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() java.lang.String+endsWith(String) java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() java.lang.String+endsWith(String) java.util.jar.JarEntry+JarEntry(String) java.lang.String+replace(CharSequence,CharSequence) java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() java.lang.String+replace(CharSequence,CharSequence) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() java.util.zip.ZipOutputStream+putNextEntry(ZipEntry) java.util.zip.ZipOutputStream+putNextEntry(ZipEntry) java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() java.lang.Throwable+printStackTrace() java.lang.Exception+Exception(String) java.lang.Throwable+printStackTrace() javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) java.io.OutputStreamWriter+OutputStreamWriter(OutputStream) java.io.Writer+flush() java.io.Writer+flush() java.util.zip.ZipOutputStream+closeEntry() java.util.zip.ZipOutputStream+closeEntry() java.util.jar.JarEntry+JarEntry(String) java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() java.util.zip.ZipOutputStream+putNextEntry(ZipEntry) java.util.zip.ZipOutputStream+putNextEntry(ZipEntry) java.util.jar.JarFile+getInputStream(ZipEntry) java.util.jar.JarFile+getInputStream(ZipEntry) java.io.InputStream+read(byte[],int,int) java.io.InputStream+read(byte[],int,int) java.util.zip.ZipOutputStream+write(byte[],int,int) java.util.zip.ZipOutputStream+write(byte[],int,int) java.io.InputStream+close() java.io.InputStream+close() java.util.zip.ZipOutputStream+closeEntry() java.util.zip.ZipOutputStream+closeEntry() java.lang.String+contains(CharSequence) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() java.lang.String+contains(CharSequence) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) javax.swing.JLabel+setText(String) java.io.File+getName() java.io.File+getName() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) java.lang.Throwable+toString() java.lang.Throwable+toString() javax.swing.JComponent+setVisible(boolean) javax.swing.JComponent+setVisible(boolean) java.lang.Thread+start()",com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model.FileExtractJar+fc javax.swing.JFileChooser+FILES_ONLY com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model+open com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model+frame com.modcrafting.luyten.Model.FileExtractJar+fc javax.swing.JFileChooser+APPROVE_OPTION com.modcrafting.luyten.Model.FileExtractJar+fc com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+typeLoader com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model.State+jarFile com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+bar com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+metadataSystem javax.swing.JOptionPane+ERROR_MESSAGE com.modcrafting.luyten.Model+settings com.modcrafting.luyten.Model+decompilationOptions com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+state com.modcrafting.luyten.Model.State+jarFile com.modcrafting.luyten.Model+label com.modcrafting.luyten.Model+label javax.swing.JOptionPane+ERROR_MESSAGE com.modcrafting.luyten.Model+bar,4081,115,2,,"private class FileExtractJar implements ActionListener{
+        JFileChooser fc;
+    	public FileExtractJar(){
+    		fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileChooserFileFilter(""*.jar""));
+            fc.addChoosableFileFilter(new FileChooserFileFilter(""*.zip""));
+            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fc.setMultiSelectionEnabled(false);
+            retrieveSaveDialogDir(fc);
+    	}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (!open || file == null) {
+				label.setText(""No open file"");
+				return;
+			}
+			populateSettingsFromSettingsMenu();
+			
+			String s = getName(file.getName());
+			if (s.endsWith("".class"")) {
+				new FileExtractFile().actionPerformed(e);
+				return;
+			}
+			if (s.toLowerCase().endsWith("".jar""))
+				s = s.replaceAll(""\\.[jJ][aA][rR]"", "".zip"");
+			fc.setSelectedFile(new File(""decompiled-"" + s));
+			
+			retrieveSaveDialogDir(fc);
+			int returnVal = fc.showSaveDialog(Model.frame);
+			saveSaveDialogDir(fc);
+
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						File fil = fc.getSelectedFile();
+						try (FileOutputStream dest = new FileOutputStream(fil);
+								BufferedOutputStream buffDest = new BufferedOutputStream(dest);
+								ZipOutputStream out = new ZipOutputStream(buffDest);) {
+							byte data[] = new byte[1024];
+							if (state == null) {
+								JarFile jfile = new JarFile(file);
+								ITypeLoader jarLoader = new JarTypeLoader(jfile);
+								typeLoader.getTypeLoaders().add(jarLoader);
+								state = new State(file.getCanonicalPath(), file, jfile, jarLoader);
+							}
+
+							Enumeration<JarEntry> ent = state.jarFile.entries();
+							while (ent.hasMoreElements()) {
+								label.setText(""Extracting: "" + file.getName());
+								bar.setVisible(true);
+								JarEntry entry = ent.nextElement();
+								if (entry.getName().endsWith("".class"")) {
+									JarEntry etn = new JarEntry(entry.getName().replace("".class"", "".java""));
+									label.setText(""Extracting: "" + etn.getName());
+									out.putNextEntry(etn);
+									try {
+										String internalName = StringUtilities.removeRight(entry.getName(), "".class"");
+										TypeReference type = metadataSystem.lookupType(internalName);
+										TypeDefinition resolvedType = null;
+										if ((type == null) || ((resolvedType = type.resolve()) == null)) {
+											new Exception(""Unable to resolve type."").printStackTrace();
+											JOptionPane.showMessageDialog(null, ""Unable to resolve type."", ""Error!"",
+													JOptionPane.ERROR_MESSAGE);
+											return;
+										}
+										Writer writer = new OutputStreamWriter(out);
+										settings.getLanguage().decompileType(resolvedType,
+												new PlainTextOutput(writer), decompilationOptions);
+										writer.flush();
+									} finally {
+										out.closeEntry();
+									}
+								} else {
+									try {
+										JarEntry etn = new JarEntry(entry.getName());
+										label.setText(""Extracting: "" + etn.getName());
+										out.putNextEntry(etn);
+										try {
+											InputStream in = state.jarFile.getInputStream(entry);
+											if (in != null) {
+												try {
+													int count;
+													while ((count = in.read(data, 0, 1024)) != -1) {
+														out.write(data, 0, count);
+													}
+												} finally {
+													in.close();
+												}
+											}
+										} finally {
+											out.closeEntry();
+										}
+									} catch (ZipException ze) {
+										// some jar-s contain duplicate pom.xml entries: ignore it
+										if (!ze.getMessage().contains(""duplicate"")) {
+											throw ze;
+										}
+									}
+								}
+							}
+							label.setText(""Complete"");
+						} catch (Exception e1) {
+							label.setText(""Cannot save file: "" + fil.getName());
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, e1.toString(), ""Error!"", JOptionPane.ERROR_MESSAGE);
+						} finally {
+							bar.setVisible(false);
+						}
+					}
+				}).start();
+			}
+
+		}
+    }",False,False,,False,
+62,Quit,quit ,MemberClass,,,com.modcrafting.luyten.Model.Quit+actionPerformed(ActionEvent) com.modcrafting.luyten.Model+populateSettingsFromSettingsMenu() com.modcrafting.luyten.Model+populateSettingsFromSettingsMenu() com.modcrafting.luyten.WindowPosition+readPositionFromWindow(JFrame) com.modcrafting.luyten.WindowPosition+readPositionFromWindow(JFrame) com.modcrafting.luyten.ConfigSaver+saveConfig() com.modcrafting.luyten.ConfigSaver+saveConfig() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.awt.Window+dispose() java.awt.Window+dispose() java.lang.System+exit(int) java.lang.System+exit(int),com.modcrafting.luyten.Model+windowPosition com.modcrafting.luyten.Model+configSaver com.modcrafting.luyten.Model+frame,423,18,1,,"public class Quit implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+			try {
+				populateSettingsFromSettingsMenu();
+				windowPosition.readPositionFromWindow(Model.this);
+				configSaver.saveConfig();
+			} catch (Exception exc) {
+				exc.printStackTrace();
+			} finally {
+				try {
+					Model.frame.dispose();
+				} finally {
+					System.exit(0);
+				}
+			}
+        }
+    }",False,False,,False,
+63,FileChooserFileFilter,file chooser file filter ,MemberClass,,,com.modcrafting.luyten.Model.FileChooserFileFilter+FileChooserFileFilter(String) com.modcrafting.luyten.Model.FileChooserFileFilter+accept(File) java.io.File+isDirectory() java.io.File+isDirectory() java.lang.String+endsWith(String) java.lang.String+toLowerCase() java.io.File+getName() java.io.File+getName() java.lang.String+toLowerCase() java.lang.String+endsWith(String) java.lang.String+substring(int) java.lang.String+substring(int) com.modcrafting.luyten.Model.FileChooserFileFilter+getDescription(),com.modcrafting.luyten.Model.FileChooserFileFilter+objType com.modcrafting.luyten.Model.FileChooserFileFilter+objType com.modcrafting.luyten.Model.FileChooserFileFilter+objType com.modcrafting.luyten.Model.FileChooserFileFilter+objType,488,20,1,,"public class FileChooserFileFilter extends FileFilter {
+        String objType;
+
+        public FileChooserFileFilter(String string) {
+            objType = string;
+        }
+
+        @Override
+        public boolean accept(File f) {
+            if (f.isDirectory())
+                return false;
+            return f.getName().toLowerCase().endsWith(objType.substring(1));
+        }
+
+        @Override
+        public String getDescription() {
+            return objType;
+        }
+
+    }",False,False,,False,
+64,DropListener,drop listener ,MemberClass,,,com.modcrafting.luyten.Model.DropListener+drop(DropTargetDropEvent) java.awt.dnd.DropTargetDropEvent+acceptDrop(int) java.awt.dnd.DropTargetDropEvent+acceptDrop(int) java.awt.dnd.DropTargetDropEvent+getTransferable() java.awt.dnd.DropTargetDropEvent+getTransferable() java.awt.datatransfer.Transferable+isDataFlavorSupported(DataFlavor) java.awt.datatransfer.Transferable+isDataFlavorSupported(DataFlavor) java.awt.datatransfer.Transferable+getTransferDataFlavors() java.awt.datatransfer.Transferable+getTransferDataFlavors() java.awt.datatransfer.DataFlavor+isFlavorJavaFileListType() java.awt.datatransfer.DataFlavor+isFlavorJavaFileListType() java.awt.datatransfer.Transferable+getTransferData(DataFlavor) java.awt.datatransfer.Transferable+getTransferData(DataFlavor) java.util.List+size() java.util.List+size() java.awt.dnd.DropTargetDropEvent+rejectDrop() java.awt.dnd.DropTargetDropEvent+rejectDrop() java.util.List+size() java.util.List+size() com.modcrafting.luyten.Model.FileClose+actionPerformed(ActionEvent) com.modcrafting.luyten.Model.FileClose+FileClose() com.modcrafting.luyten.Model.FileClose+actionPerformed(ActionEvent) java.util.List+get(int) java.util.List+get(int) com.modcrafting.luyten.Model.FileLoad+loadFile(File) com.modcrafting.luyten.Model.FileLoad+FileLoad(boolean) com.modcrafting.luyten.Model.FileLoad+loadFile(File) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.awt.dnd.DropTargetDropEvent+dropComplete(boolean) java.awt.dnd.DropTargetDropEvent+dropComplete(boolean) java.awt.datatransfer.Transferable+getTransferDataFlavors() java.awt.datatransfer.Transferable+getTransferDataFlavors() java.awt.datatransfer.DataFlavor+isRepresentationClassReader() java.awt.datatransfer.DataFlavor+isRepresentationClassReader() java.awt.datatransfer.DataFlavor+getReaderForText(Transferable) java.awt.datatransfer.DataFlavor+getReaderForText(Transferable) java.io.BufferedReader+BufferedReader(Reader) java.util.ArrayList+ArrayList() java.io.BufferedReader+readLine() java.io.BufferedReader+readLine() java.lang.String+equals(Object) java.lang.String+String(String) java.lang.String+equals(Object) java.io.File+File(URI) java.net.URI+URI(String) java.util.List+add(E) java.util.List+add(E) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.util.List+size() java.util.List+size() java.awt.dnd.DropTargetDropEvent+rejectDrop() java.awt.dnd.DropTargetDropEvent+rejectDrop() java.util.List+size() java.util.List+size() com.modcrafting.luyten.Model.FileClose+actionPerformed(ActionEvent) com.modcrafting.luyten.Model.FileClose+FileClose() com.modcrafting.luyten.Model.FileClose+actionPerformed(ActionEvent) java.util.List+get(int) java.util.List+get(int) com.modcrafting.luyten.Model.FileLoad+loadFile(File) com.modcrafting.luyten.Model.FileLoad+FileLoad(boolean) com.modcrafting.luyten.Model.FileLoad+loadFile(File) java.awt.dnd.DropTargetContext+dropComplete(boolean) java.awt.dnd.DropTargetEvent+getDropTargetContext() java.awt.dnd.DropTargetEvent+getDropTargetContext() java.awt.dnd.DropTargetContext+dropComplete(boolean) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.awt.dnd.DropTargetDropEvent+rejectDrop() java.awt.dnd.DropTargetDropEvent+rejectDrop() com.modcrafting.luyten.Model.DropListener+dragEnter(DropTargetDragEvent) com.modcrafting.luyten.Model.DropListener+dragExit(DropTargetEvent) com.modcrafting.luyten.Model.DropListener+dragOver(DropTargetDragEvent) com.modcrafting.luyten.Model.DropListener+dropActionChanged(DropTargetDragEvent),java.awt.dnd.DnDConstants+ACTION_COPY java.awt.datatransfer.DataFlavor+javaFileListFlavor com.modcrafting.luyten.Model+open com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+open com.modcrafting.luyten.Model+file com.modcrafting.luyten.Model+file,3784,90,1,,"public class DropListener implements DropTargetListener {
+
+        @SuppressWarnings(""unchecked"")
+        @Override
+        public void drop(DropTargetDropEvent event) {
+            event.acceptDrop(DnDConstants.ACTION_COPY);
+            Transferable transferable = event.getTransferable();
+            if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                DataFlavor[] flavors = transferable.getTransferDataFlavors();
+                for (DataFlavor flavor : flavors) {
+                    try {
+                        if (flavor.isFlavorJavaFileListType()) {
+                            List<File> files = (List<File>) transferable
+                                    .getTransferData(flavor);
+                            if (files.size() > 1) {
+                                event.rejectDrop();
+                                return;
+                            }
+                            if (files.size() == 1) {
+                                if (open)
+                                    new FileClose().actionPerformed(null);
+                                file = files.get(0);
+                                new FileLoad(false).loadFile(file);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                event.dropComplete(true);
+            } else {
+                DataFlavor[] flavors = transferable.getTransferDataFlavors();
+                boolean handled = false;
+                for (int zz = 0; zz < flavors.length; zz++) {
+                    if (flavors[zz].isRepresentationClassReader()) {
+                        try {
+                            Reader reader = flavors[zz].getReaderForText(transferable);
+                            BufferedReader br = new BufferedReader(reader);
+                            List<File> list = new ArrayList<File>();
+                            String line = null;
+                            while ((line = br.readLine()) != null) {
+                                try {
+                                    if (new String("""" + (char) 0).equals(line)) continue;
+                                    File file = new File(new URI(line));
+                                    list.add(file);
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                            if (list.size() > 1) {
+                                event.rejectDrop();
+                                return;
+                            }
+                            if (list.size() == 1) {
+                                if (open)
+                                    new FileClose().actionPerformed(null);
+                                file = list.get(0);
+                                new FileLoad(false).loadFile(file);
+                            }
+                            event.getDropTargetContext().dropComplete(true);
+                            handled = true;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                }
+                if (!handled) {
+                    event.rejectDrop();
+                }
+            }
+
+        }
+
+        @Override
+        public void dragEnter(DropTargetDragEvent arg0) {
+        }
+
+        @Override
+        public void dragExit(DropTargetEvent arg0) {
+        }
+
+        @Override
+        public void dragOver(DropTargetDragEvent arg0) {
+        }
+
+        @Override
+        public void dropActionChanged(DropTargetDragEvent arg0) {
+        }
+    }",False,False,,False,
+65,ThemeAction,theme action ,MemberClass,,,"com.modcrafting.luyten.Model.ThemeAction+ThemeAction(String,String) javax.swing.AbstractAction+putValue(String,Object) javax.swing.AbstractAction+putValue(String,Object) com.modcrafting.luyten.Model.ThemeAction+actionPerformed(ActionEvent) java.lang.Class+getResourceAsStream(String) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getResourceAsStream(String) com.modcrafting.luyten.LuytenPreferences+setThemeXml(String) com.modcrafting.luyten.LuytenPreferences+setThemeXml(String) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) javax.swing.JOptionPane+showMessageDialog(Component,Object,String,int) java.lang.Throwable+toString() java.lang.Throwable+toString()",com.modcrafting.luyten.Model.ThemeAction+serialVersionUID com.modcrafting.luyten.Model.ThemeAction+xml javax.swing.Action+NAME com.modcrafting.luyten.Model.ThemeAction+xml com.modcrafting.luyten.LuytenPreferences+THEME_XML_PATH com.modcrafting.luyten.Model.ThemeAction+xml com.modcrafting.luyten.Model+theme com.modcrafting.luyten.Model+luytenPrefs com.modcrafting.luyten.Model.ThemeAction+xml com.modcrafting.luyten.Model+hmap com.modcrafting.luyten.Model+theme com.modcrafting.luyten.OpenFile+textArea javax.swing.JOptionPane+ERROR_MESSAGE,768,26,2,,"private class ThemeAction extends AbstractAction {
+
+        private static final long serialVersionUID = -6618680171943723199L;
+        private String xml;
+
+        public ThemeAction(String name, String xml) {
+            putValue(NAME, name);
+            this.xml = xml;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+			InputStream in = getClass().getResourceAsStream(LuytenPreferences.THEME_XML_PATH + xml);
+			try {
+				if (in != null) {
+					theme = Theme.load(in);
+					luytenPrefs.setThemeXml(xml);
+					for (OpenFile f : hmap) {
+						theme.apply(f.textArea);
+					}
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, e1.toString(), ""Error!"", JOptionPane.ERROR_MESSAGE);
+			}
+        }
+    }",False,False,,False,
+66,setHideFindBoxOnMainWindowFocus(),set hide find box on main window focus ,Method,,,java.awt.Window+addWindowFocusListener(WindowFocusListener) java.awt.Window+addWindowFocusListener(WindowFocusListener) +() +windowGainedFocus(WindowEvent),,265,10,2,,"private void setHideFindBoxOnMainWindowFocus() {
+		this.addWindowFocusListener(new WindowAdapter() {
+			@Override
+			public void windowGainedFocus(WindowEvent e) {
+				if (findBox != null && findBox.isVisible()) {
+					findBox.setVisible(false);
+				}
+			}
+		});
+	}",True,True,This method sets the visibility of a find box to false when the main window gains focus.,True,"The code defines a method called ""setHideFindBoxOnMainWindowFocus"" that adds a window focus listener to the current object. When the window gains focus, the method checks if a variable called ""findBox"" is not null and visible, and if so, it sets its visibility to false."
+67,adjustWindowPositionBySavedState(),adjust window position by saved state ,Method,setup(),,"java.awt.Toolkit+getScreenSize() java.awt.Toolkit+getDefaultToolkit() java.awt.Toolkit+getDefaultToolkit() java.awt.Toolkit+getScreenSize() com.modcrafting.luyten.WindowPosition+isSavedWindowPositionValid() com.modcrafting.luyten.WindowPosition+isSavedWindowPositionValid() java.awt.Dimension+Dimension(int,int) java.awt.Window+setBounds(int,int,int,int) java.awt.Window+setBounds(int,int,int,int) com.modcrafting.luyten.WindowPosition+isFullScreen() com.modcrafting.luyten.WindowPosition+isFullScreen() java.awt.Window+setBounds(int,int,int,int) java.awt.Window+setBounds(int,int,int,int) java.awt.Frame+setExtendedState(int) java.awt.Frame+setExtendedState(int) java.awt.Component+addComponentListener(ComponentListener) java.awt.Component+addComponentListener(ComponentListener) +() +componentResized(ComponentEvent)",com.modcrafting.luyten.Model+windowPosition java.awt.Dimension+width java.awt.Dimension+height java.awt.Dimension+width java.awt.Dimension+height java.awt.Dimension+width java.awt.Dimension+height com.modcrafting.luyten.Model+windowPosition java.awt.Dimension+height java.awt.Dimension+height java.awt.Dimension+width java.awt.Frame+MAXIMIZED_BOTH,1382,34,2,,"private void adjustWindowPositionBySavedState() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		if (!windowPosition.isSavedWindowPositionValid()) {
+			final Dimension center = new Dimension((int) (screenSize.width * 0.75), (int) (screenSize.height * 0.75));
+			final int x = (int) (center.width * 0.2);
+			final int y = (int) (center.height * 0.2);
+			this.setBounds(x, y, center.width, center.height);
+
+		} else if (windowPosition.isFullScreen()) {
+			int heightMinusTray = screenSize.height;
+			if (screenSize.height > 30)
+				heightMinusTray -= 30;
+			this.setBounds(0, 0, screenSize.width, heightMinusTray);
+			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+			this.addComponentListener(new ComponentAdapter() {
+				@Override
+				public void componentResized(ComponentEvent e) {
+					if (Model.this.getExtendedState() != JFrame.MAXIMIZED_BOTH) {
+						windowPosition.setFullScreen(false);
+						if (windowPosition.isSavedWindowPositionValid()) {
+							Model.this.setBounds(windowPosition.getWindowX(), windowPosition.getWindowY(),
+									windowPosition.getWindowWidth(), windowPosition.getWindowHeight());
+						}
+						Model.this.removeComponentListener(this);
+					}
+				}
+			});
+
+		} else {
+			this.setBounds(windowPosition.getWindowX(), windowPosition.getWindowY(),
+					windowPosition.getWindowWidth(), windowPosition.getWindowHeight());
+		}
+	}",True,True,"This method adjusts the position and size of a window based on its saved state. If the saved state is not valid, the window is set to a default size and position. If the saved state indicates that the window was in full screen mode, the window is set to full screen and a listener is added to handle resizing events. If the saved state indicates a specific position and size, the window is set to that position and size.",True,"The `adjustWindowPositionBySavedState()` method adjusts the position and size of a window based on its saved state. If the saved state is not valid, the window is centered on the screen. If the saved state indicates fullscreen mode, the window is set to fullscreen and a listener is added to restore the previous size and position when the window is resized. Otherwise, the window is set to the saved size and position."
+68,retrieveOpenDialogDir(JFileChooser),retrieve open dialog dir fc ,Method,FileLoad.FileLoad(boolean) FileLoad.actionPerformed(ActionEvent),,com.modcrafting.luyten.LuytenPreferences+getFileOpenCurrentDirectory() com.modcrafting.luyten.LuytenPreferences+getFileOpenCurrentDirectory() java.lang.String+length() java.lang.String+trim() java.lang.String+trim() java.lang.String+length() java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.File+isDirectory() java.io.File+isDirectory() javax.swing.JFileChooser+setCurrentDirectory(File) javax.swing.JFileChooser+setCurrentDirectory(File) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),com.modcrafting.luyten.Model+luytenPrefs,418,13,2,,"private void retrieveOpenDialogDir(JFileChooser fc) {
+		try {
+			String currentDirStr = luytenPrefs.getFileOpenCurrentDirectory();
+			if (currentDirStr != null && currentDirStr.trim().length() > 0) {
+				File currentDir = new File(currentDirStr);
+				if (currentDir.exists() && currentDir.isDirectory()) {
+					fc.setCurrentDirectory(currentDir);
+				}
+			}
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+	}",True,True,"This method retrieves the last used directory from preferences and sets it as the current directory for a file chooser dialog, if the directory exists and is a valid directory.",True,This code retrieves the current directory for opening files from a file chooser dialog. It checks if the directory exists and is a valid directory before setting it as the current directory for the file chooser. Any exceptions that occur during this process are printed to the console.
+69,saveOpenDialogDir(JFileChooser),save open dialog dir fc ,Method,FileLoad.actionPerformed(ActionEvent),,javax.swing.JFileChooser+getCurrentDirectory() javax.swing.JFileChooser+getCurrentDirectory() java.io.File+exists() java.io.File+exists() java.io.File+isDirectory() java.io.File+isDirectory() com.modcrafting.luyten.LuytenPreferences+setFileOpenCurrentDirectory(String) com.modcrafting.luyten.LuytenPreferences+setFileOpenCurrentDirectory(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),com.modcrafting.luyten.Model+luytenPrefs,325,10,2,,"private void saveOpenDialogDir(JFileChooser fc) {
+		try {
+			File currentDir = fc.getCurrentDirectory();
+			if (currentDir != null && currentDir.exists() && currentDir.isDirectory()) {
+				luytenPrefs.setFileOpenCurrentDirectory(currentDir.getAbsolutePath());
+			}
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+	}",True,False,"This method saves the current directory of a file chooser dialog to a preference file, if the directory exists and is a valid directory.",True,"This code is a private method that saves the current directory of a JFileChooser object. It checks if the current directory exists and is a directory before saving its absolute path to a preference variable. If any exception occurs, it will be printed to the console."
+70,retrieveSaveDialogDir(JFileChooser),retrieve save dialog dir fc ,Method,FileExtractFile.FileExtractFile() FileExtractFile.actionPerformed(ActionEvent) FileExtractJar.FileExtractJar() FileExtractJar.actionPerformed(ActionEvent),,com.modcrafting.luyten.LuytenPreferences+getFileSaveCurrentDirectory() com.modcrafting.luyten.LuytenPreferences+getFileSaveCurrentDirectory() java.lang.String+length() java.lang.String+trim() java.lang.String+trim() java.lang.String+length() java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.File+isDirectory() java.io.File+isDirectory() javax.swing.JFileChooser+setCurrentDirectory(File) javax.swing.JFileChooser+setCurrentDirectory(File) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),com.modcrafting.luyten.Model+luytenPrefs,418,13,2,,"private void retrieveSaveDialogDir(JFileChooser fc) {
+		try {
+			String currentDirStr = luytenPrefs.getFileSaveCurrentDirectory();
+			if (currentDirStr != null && currentDirStr.trim().length() > 0) {
+				File currentDir = new File(currentDirStr);
+				if (currentDir.exists() && currentDir.isDirectory()) {
+					fc.setCurrentDirectory(currentDir);
+				}
+			}
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+	}",True,True,This method retrieves the current directory for saving files from the preferences and sets it as the current directory for the file chooser.,True,"This method retrieves the current directory for saving files from the preferences. If the directory exists and is a valid directory, it sets the current directory of the file chooser to that directory. If any exception occurs, it prints the stack trace."
+71,saveSaveDialogDir(JFileChooser),save save dialog dir fc ,Method,FileExtractFile.actionPerformed(ActionEvent) FileExtractJar.actionPerformed(ActionEvent),,javax.swing.JFileChooser+getCurrentDirectory() javax.swing.JFileChooser+getCurrentDirectory() java.io.File+exists() java.io.File+exists() java.io.File+isDirectory() java.io.File+isDirectory() com.modcrafting.luyten.LuytenPreferences+setFileSaveCurrentDirectory(String) com.modcrafting.luyten.LuytenPreferences+setFileSaveCurrentDirectory(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),com.modcrafting.luyten.Model+luytenPrefs,325,10,2,,"private void saveSaveDialogDir(JFileChooser fc) {
+		try {
+			File currentDir = fc.getCurrentDirectory();
+			if (currentDir != null && currentDir.exists() && currentDir.isDirectory()) {
+				luytenPrefs.setFileSaveCurrentDirectory(currentDir.getAbsolutePath());
+			}
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+	}",True,True,"This method saves the current directory selected in a file chooser dialog to a preference file, if the directory exists and is a valid directory.",True,"This code is a private method that saves the current directory of a file chooser dialog. It checks if the current directory exists and is a directory before saving it to a preference file. If any exception occurs, it will print the stack trace."

@@ -1,0 +1,971 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,log,log ,Field,,,,,69,1,26,,private static final Logger log = LoggingManager.getLoggerForClass();,False,False,,False,
+2,PRESERVE,preserve ,Field,,,,,42,1,24,,"final static String PRESERVE = ""preserve"";",False,False,,False,
+3,XML_SPACE,xml space ,Field,,,,,44,1,24,,"final static String XML_SPACE = ""xml:space"";",False,False,,False,
+4,ASSERTION_RESULT_TAG_NAME,assertion result tag name ,Field,,,,,74,1,26,,"private static final String ASSERTION_RESULT_TAG_NAME = ""assertionResult"";",False,False,,False,
+5,BINARY,binary ,Field,,,,,46,1,26,,"private static final String BINARY = ""binary"";",False,False,,False,
+6,DATA_TYPE,data type ,Field,,,,,51,1,26,,"private static final String DATA_TYPE = ""dataType"";",False,False,,False,
+7,ERROR,error ,Field,,,,,44,1,26,,"private static final String ERROR = ""error"";",False,False,,False,
+8,FAILURE,failure ,Field,,,,,48,1,26,,"private static final String FAILURE = ""failure"";",False,False,,False,
+9,FAILURE_MESSAGE,failure message ,Field,,,,,63,1,26,,"private static final String FAILURE_MESSAGE = ""failureMessage"";",False,False,,False,
+10,LABEL,label ,Field,,,,,44,1,26,,"private static final String LABEL = ""label"";",False,False,,False,
+11,RESPONSE_CODE,response code ,Field,,,,,59,1,26,,"private static final String RESPONSE_CODE = ""responseCode"";",False,False,,False,
+12,RESPONSE_MESSAGE,response message ,Field,,,,,65,1,26,,"private static final String RESPONSE_MESSAGE = ""responseMessage"";",False,False,,False,
+13,SAMPLE_RESULT_TAG_NAME,sample result tag name ,Field,,,,,68,1,26,,"private static final String SAMPLE_RESULT_TAG_NAME = ""sampleResult"";",False,False,,False,
+14,SUCCESSFUL,successful ,Field,,,,,51,1,26,,"private static final String SUCCESSFUL = ""success"";",False,False,,False,
+15,THREAD_NAME,thread name ,Field,,,,,55,1,26,,"private static final String THREAD_NAME = ""threadName"";",False,False,,False,
+16,TIME,time ,Field,,,,,42,1,26,,"private static final String TIME = ""time"";",False,False,,False,
+17,TIME_STAMP,time stamp ,Field,,,,,53,1,26,,"private static final String TIME_STAMP = ""timeStamp"";",False,False,,False,
+18,CSV_ELAPSED,csv elapsed ,Field,,,,,52,1,26,,"private static final String CSV_ELAPSED = ""elapsed"";",True,True,,False,
+19,CSV_BYTES,csv bytes ,Field,,,,,47,1,26,,"private static final String CSV_BYTES= ""bytes"";",False,True,,False,
+20,CSV_THREAD_COUNT1,csv thread count1 ,Field,,,,,61,1,26,,"private static final String CSV_THREAD_COUNT1 = ""grpThreads"";",True,True,,False,
+21,CSV_THREAD_COUNT2,csv thread count2 ,Field,,,,,61,1,26,,"private static final String CSV_THREAD_COUNT2 = ""allThreads"";",True,True,,False,
+22,CSV_SAMPLE_COUNT,csv sample count ,Field,,,,,61,1,26,,"private static final String CSV_SAMPLE_COUNT = ""SampleCount"";",True,True,,False,
+23,CSV_ERROR_COUNT,csv error count ,Field,,,,,59,1,26,,"private static final String CSV_ERROR_COUNT = ""ErrorCount"";",True,True,,False,
+24,CSV_URL,csv url ,Field,,,,,44,1,26,,"private static final String CSV_URL = ""URL"";",True,True,,False,
+25,CSV_FILENAME,csv filename ,Field,,,,,54,1,26,,"private static final String CSV_FILENAME = ""Filename"";",True,True,,False,
+26,CSV_LATENCY,csv latency ,Field,,,,,52,1,26,,"private static final String CSV_LATENCY = ""Latency"";",True,True,,False,
+27,CSV_ENCODING,csv encoding ,Field,,,,,54,1,26,,"private static final String CSV_ENCODING = ""Encoding"";",True,True,,False,
+28,CSV_HOSTNAME,csv hostname ,Field,,,,,54,1,26,,"private static final String CSV_HOSTNAME = ""Hostname"";",True,True,,False,
+29,_saveConfig, saveconfig ,Field,,,,,98,1,26,,static private final SampleSaveConfiguration _saveConfig = SampleSaveConfiguration.staticConfig();,True,True,,False,
+30,DEFAULT_DATE_FORMAT_STRING,default date format string ,Field,,,,,77,1,26,,"private static final String DEFAULT_DATE_FORMAT_STRING = ""MM/dd/yy HH:mm:ss"";",True,True,,False,
+31,DEFAULT_DATE_FORMAT,default date format ,Field,,,,,103,1,26,,private static final DateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat(DEFAULT_DATE_FORMAT_STRING);,True,True,,False,
+32,builder,builder ,Field,,,,,87,1,10,,private static DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();,False,False,,False,
+33,OldSaveService(),old save service private constructor to prevent instantiation ,Method,,,,,89,5,2,"/** 
+ * Private constructor to prevent instantiation.
+ */
+","/**
+	 * Private constructor to prevent instantiation.
+	 */
+	private OldSaveService() {
+	}",False,False,This method serves as a private constructor to prevent the instantiation of the OldSaveService class.,False,"The code snippet defines a private constructor for the class ""OldSaveService"" which prevents its instantiation. This means that objects of this class cannot be created from outside the class."
+34,"makeResultFromDelimitedString(String,SampleSaveConfiguration,long)",make result from delimited string input line save config line number make a sample result given a delimited string param input line line from csv file param save config configuration param line number line number for error reporting return sample result or null if header line detected throws j meter error ,Method,,org.apache.jmeter.reporters.ResultCollector+loadExistingFile(),"java.lang.String+split(String) java.lang.String+split(String) org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter() org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTimestamp() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTimestamp() org.apache.jmeter.samplers.SampleSaveConfiguration+printMilliseconds() org.apache.jmeter.samplers.SampleSaveConfiguration+printMilliseconds() java.lang.Long+parseLong(String) java.lang.Long+parseLong(String) java.lang.Throwable+toString() java.lang.Throwable+toString() java.text.DateFormat+parse(String) java.text.DateFormat+parse(String) java.util.Date+getTime() java.util.Date+getTime() org.apache.jmeter.samplers.SampleSaveConfiguration+setFormatter(DateFormat) org.apache.jmeter.samplers.SampleSaveConfiguration+setFormatter(DateFormat) org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() java.text.DateFormat+parse(String) org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() java.text.DateFormat+parse(String) java.util.Date+getTime() java.util.Date+getTime() org.apache.jorphan.util.JMeterError+JMeterError(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveTime() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTime() java.lang.Long+parseLong(String) java.lang.Long+parseLong(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveSampleCount() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSampleCount() org.apache.jmeter.samplers.StatisticalSampleResult+StatisticalSampleResult(long,long) org.apache.jmeter.samplers.SampleResult+SampleResult(long,long) org.apache.jmeter.samplers.SampleSaveConfiguration+saveLabel() org.apache.jmeter.samplers.SampleSaveConfiguration+saveLabel() org.apache.jmeter.samplers.SampleResult+setSampleLabel(String) org.apache.jmeter.samplers.SampleResult+setSampleLabel(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveCode() org.apache.jmeter.samplers.SampleSaveConfiguration+saveCode() org.apache.jmeter.samplers.SampleResult+setResponseCode(String) org.apache.jmeter.samplers.SampleResult+setResponseCode(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveMessage() org.apache.jmeter.samplers.SampleSaveConfiguration+saveMessage() org.apache.jmeter.samplers.SampleResult+setResponseMessage(String) org.apache.jmeter.samplers.SampleResult+setResponseMessage(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadName() org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadName() org.apache.jmeter.samplers.SampleResult+setThreadName(String) org.apache.jmeter.samplers.SampleResult+setThreadName(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveDataType() org.apache.jmeter.samplers.SampleSaveConfiguration+saveDataType() org.apache.jmeter.samplers.SampleResult+setDataType(String) org.apache.jmeter.samplers.SampleResult+setDataType(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveSuccess() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSuccess() org.apache.jmeter.samplers.SampleResult+setSuccessful(boolean) org.apache.jmeter.samplers.SampleResult+setSuccessful(boolean) java.lang.Boolean+booleanValue() java.lang.Boolean+valueOf(String) java.lang.Boolean+valueOf(String) java.lang.Boolean+booleanValue() org.apache.jmeter.samplers.SampleSaveConfiguration+saveAssertionResultsFailureMessage() org.apache.jmeter.samplers.SampleSaveConfiguration+saveAssertionResultsFailureMessage() org.apache.jmeter.samplers.SampleSaveConfiguration+saveBytes() org.apache.jmeter.samplers.SampleSaveConfiguration+saveBytes() org.apache.jmeter.samplers.SampleResult+setBytes(int) org.apache.jmeter.samplers.SampleResult+setBytes(int) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadCounts() org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadCounts() org.apache.jmeter.samplers.SampleResult+setGroupThreads(int) org.apache.jmeter.samplers.SampleResult+setGroupThreads(int) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) org.apache.jmeter.samplers.SampleResult+setAllThreads(int) org.apache.jmeter.samplers.SampleResult+setAllThreads(int) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveUrl() org.apache.jmeter.samplers.SampleSaveConfiguration+saveUrl() org.apache.jmeter.samplers.SampleSaveConfiguration+saveFileName() org.apache.jmeter.samplers.SampleSaveConfiguration+saveFileName() org.apache.jmeter.samplers.SampleResult+setResultFileName(String) org.apache.jmeter.samplers.SampleResult+setResultFileName(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveLatency() org.apache.jmeter.samplers.SampleSaveConfiguration+saveLatency() org.apache.jmeter.samplers.SampleResult+setLatency(long) org.apache.jmeter.samplers.SampleResult+setLatency(long) java.lang.Long+parseLong(String) java.lang.Long+parseLong(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveEncoding() org.apache.jmeter.samplers.SampleSaveConfiguration+saveEncoding() org.apache.jmeter.samplers.SampleResult+setEncodingAndType(String) org.apache.jmeter.samplers.SampleResult+setEncodingAndType(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveSampleCount() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSampleCount() org.apache.jmeter.samplers.SampleResult+setSampleCount(int) org.apache.jmeter.samplers.SampleResult+setSampleCount(int) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) org.apache.jmeter.samplers.SampleResult+setErrorCount(int) org.apache.jmeter.samplers.SampleResult+setErrorCount(int) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveHostname() org.apache.jmeter.samplers.SampleSaveConfiguration+saveHostname() org.apache.jorphan.util.JMeterError+JMeterError(Throwable) org.apache.jorphan.util.JMeterError+JMeterError(Throwable) org.apache.jorphan.util.JMeterError+JMeterError(Throwable) org.apache.jmeter.samplers.SampleEvent+SampleEvent(SampleResult,String,String)",org.apache.jmeter.save.OldSaveService+TIME_STAMP org.apache.jmeter.save.OldSaveService+log org.apache.jmeter.save.OldSaveService+DEFAULT_DATE_FORMAT org.apache.jmeter.save.OldSaveService+log org.apache.jmeter.save.OldSaveService+DEFAULT_DATE_FORMAT_STRING org.apache.jmeter.save.OldSaveService+DEFAULT_DATE_FORMAT org.apache.jmeter.save.OldSaveService+log org.apache.jmeter.save.OldSaveService+CSV_ELAPSED org.apache.jmeter.save.OldSaveService+LABEL org.apache.jmeter.save.OldSaveService+RESPONSE_CODE org.apache.jmeter.save.OldSaveService+RESPONSE_MESSAGE org.apache.jmeter.save.OldSaveService+THREAD_NAME org.apache.jmeter.save.OldSaveService+DATA_TYPE org.apache.jmeter.save.OldSaveService+SUCCESSFUL org.apache.jmeter.save.OldSaveService+CSV_BYTES org.apache.jmeter.save.OldSaveService+CSV_THREAD_COUNT1 org.apache.jmeter.save.OldSaveService+CSV_THREAD_COUNT2 org.apache.jmeter.save.OldSaveService+CSV_FILENAME org.apache.jmeter.save.OldSaveService+CSV_LATENCY org.apache.jmeter.save.OldSaveService+CSV_ENCODING org.apache.jmeter.save.OldSaveService+CSV_SAMPLE_COUNT org.apache.jmeter.save.OldSaveService+CSV_ERROR_COUNT org.apache.jmeter.save.OldSaveService+CSV_HOSTNAME org.apache.jmeter.save.OldSaveService+log org.apache.jmeter.save.OldSaveService+log org.apache.jmeter.save.OldSaveService+log,5190,169,9,"/** 
+ * Make a SampleResult given a delimited string.
+ * @param inputLine - line from CSV file
+ * @param saveConfig - configuration
+ * @param lineNumber - line number for error reporting
+ * @return SampleResult or null if header line detected
+ * @throws JMeterError
+ */
+","/**
+     * Make a SampleResult given a delimited string.
+     * 
+     * @param inputLine - line from CSV file
+     * @param saveConfig - configuration
+     * @param lineNumber - line number for error reporting
+     * @return SampleResult or null if header line detected
+     * 
+     * @throws JMeterError
+     */
+    public static SampleEvent makeResultFromDelimitedString(
+    		final String inputLine, 
+    		final SampleSaveConfiguration saveConfig, // may be updated
+    		final long lineNumber) {
+ 
+    	SampleResult result = null;
+        String hostname = """";// $NON-NLS-1$
+		long timeStamp = 0;
+		long elapsed = 0;
+		/*
+		 * Bug 40772: replaced StringTokenizer with String.split(), as the
+		 * former does not return empty tokens.
+		 */
+		// The \Q prefix is needed to ensure that meta-characters (e.g. ""."") work.
+		String parts[]=inputLine.split(""\\Q""+saveConfig.getDelimiter());// $NON-NLS-1$
+		String text = null;
+		String field = null; // Save the name for error reporting
+		int i=0;
+
+		try {
+			if (saveConfig.saveTimestamp()){
+				field = TIME_STAMP;
+				text = parts[i++];
+				if (saveConfig.printMilliseconds()) {
+					try {
+						timeStamp = Long.parseLong(text);
+					} catch (NumberFormatException e) {// see if this works
+						log.warn(e.toString());
+						Date stamp = DEFAULT_DATE_FORMAT.parse(text);
+						timeStamp = stamp.getTime();
+						log.warn(""Setting date format to: ""+DEFAULT_DATE_FORMAT_STRING);
+						saveConfig.setFormatter(DEFAULT_DATE_FORMAT);
+					}
+				} else if (saveConfig.formatter() != null) {
+					Date stamp = saveConfig.formatter().parse(text);
+					timeStamp = stamp.getTime();
+				} else { // can this happen?
+					final String msg = ""Unknown timestamp format"";
+					log.warn(msg);
+					throw new JMeterError(msg);
+				}
+			}
+
+			if (saveConfig.saveTime()) {
+				field = CSV_ELAPSED;
+				text = parts[i++];
+				elapsed = Long.parseLong(text);
+			}
+
+			if (saveConfig.saveSampleCount()) {
+				result = new StatisticalSampleResult(timeStamp, elapsed);
+			} else {
+				result = new SampleResult(timeStamp, elapsed);
+			}
+
+			if (saveConfig.saveLabel()) {
+				field = LABEL;
+				text = parts[i++];
+				result.setSampleLabel(text);
+			}
+			if (saveConfig.saveCode()) {
+				field = RESPONSE_CODE;
+				text = parts[i++];
+				result.setResponseCode(text);
+			}
+
+			if (saveConfig.saveMessage()) {
+				field = RESPONSE_MESSAGE;
+				text = parts[i++];
+				result.setResponseMessage(text);
+			}
+
+			if (saveConfig.saveThreadName()) {
+				field = THREAD_NAME;
+				text = parts[i++];
+				result.setThreadName(text);
+			}
+
+			if (saveConfig.saveDataType()) {
+				field = DATA_TYPE;
+				text = parts[i++];
+				result.setDataType(text);
+			}
+
+			if (saveConfig.saveSuccess()) {
+				field = SUCCESSFUL;
+				text = parts[i++];
+				result.setSuccessful(Boolean.valueOf(text).booleanValue());
+			}
+
+			if (saveConfig.saveAssertionResultsFailureMessage()) {
+				i++;
+                // TODO - should this be restored?
+			}
+            
+            if (saveConfig.saveBytes()) {
+            	field = CSV_BYTES;
+                text = parts[i++];
+                result.setBytes(Integer.parseInt(text));
+            }
+        
+            if (saveConfig.saveThreadCounts()) {
+            	field = CSV_THREAD_COUNT1;
+                text = parts[i++];
+                result.setGroupThreads(Integer.parseInt(text));
+                
+            	field = CSV_THREAD_COUNT2;
+                text = parts[i++];
+                result.setAllThreads(Integer.parseInt(text));
+            }
+
+            if (saveConfig.saveUrl()) {
+                i++;
+                // TODO: should this be restored?
+            }
+        
+            if (saveConfig.saveFileName()) {
+            	field = CSV_FILENAME;
+                text = parts[i++];
+                result.setResultFileName(text);
+            }            
+            if (saveConfig.saveLatency()) {
+            	field = CSV_LATENCY;
+                text = parts[i++];
+                result.setLatency(Long.parseLong(text));
+            }
+
+            if (saveConfig.saveEncoding()) {
+            	field = CSV_ENCODING;
+                text = parts[i++];
+                result.setEncodingAndType(text);
+            }
+
+            if (saveConfig.saveSampleCount()) {
+            	field = CSV_SAMPLE_COUNT;
+                text = parts[i++];
+                result.setSampleCount(Integer.parseInt(text));
+            	field = CSV_ERROR_COUNT;
+                text = parts[i++];
+                result.setErrorCount(Integer.parseInt(text));
+            }
+
+            if (saveConfig.saveHostname()) {
+            	field = CSV_HOSTNAME;
+                hostname = parts[i++];
+            }
+            
+		} catch (NumberFormatException e) {
+			log.warn(""Error parsing field '"" + field + ""' at line "" + lineNumber + "" "" + e);
+			throw new JMeterError(e);
+		} catch (ParseException e) {
+			log.warn(""Error parsing field '"" + field + ""' at line "" + lineNumber + "" "" + e);
+			throw new JMeterError(e);
+		} catch (ArrayIndexOutOfBoundsException e){
+			log.warn(""Insufficient columns to parse field '"" + field + ""' at line "" + lineNumber);
+			throw new JMeterError(e);
+		}
+		return new SampleEvent(result,"""",hostname);
+	}",True,True,This method takes a delimited string as input and creates a SampleResult object based on the values in the string. It uses a SampleSaveConfiguration object to determine which values to extract from the string and how to format them. The method returns the created SampleResult object.,False,The `makeResultFromDelimitedString` method takes a delimited string as input and converts it into a `SampleResult` object. It parses the input line based on the provided delimiter and sets the values of various fields in the `SampleResult` object. The method also handles error reporting and returns a `SampleEvent` object containing the created `SampleResult` and the hostname.
+35,printableFieldNamesToString(),printable field names to string generates the field names for the output file return the field names as a string ,Method,,,org.apache.jmeter.save.OldSaveService+printableFieldNamesToString(SampleSaveConfiguration) org.apache.jmeter.save.OldSaveService+printableFieldNamesToString(SampleSaveConfiguration),org.apache.jmeter.save.OldSaveService+_saveConfig,235,8,9,"/** 
+ * Generates the field names for the output file
+ * @return the field names as a string
+ */
+","/**
+     * Generates the field names for the output file
+     * 
+     * @return the field names as a string
+     */
+    public static String printableFieldNamesToString() {
+        return printableFieldNamesToString(_saveConfig);
+    }",True,True,This method generates the field names for the output file and returns them as a string.,False,The method `printableFieldNamesToString()` generates and returns the field names for the output file. It takes no input parameters and uses the `_saveConfig` variable to generate the field names. The returned field names are in the form of a string.
+36,printableFieldNamesToString(SampleSaveConfiguration),printable field names to string save config generates the field names for the output file return the field names as a string ,Method,printableFieldNamesToString(),"org.apache.jmeter.reporters.ResultCollector+writeFileStart(PrintWriter,SampleSaveConfiguration)","java.lang.StringBuffer+StringBuffer() org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter() org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTimestamp() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTimestamp() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveTime() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTime() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveLabel() org.apache.jmeter.samplers.SampleSaveConfiguration+saveLabel() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveCode() org.apache.jmeter.samplers.SampleSaveConfiguration+saveCode() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveMessage() org.apache.jmeter.samplers.SampleSaveConfiguration+saveMessage() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadName() org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadName() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveDataType() org.apache.jmeter.samplers.SampleSaveConfiguration+saveDataType() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveSuccess() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSuccess() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveAssertionResultsFailureMessage() org.apache.jmeter.samplers.SampleSaveConfiguration+saveAssertionResultsFailureMessage() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveBytes() org.apache.jmeter.samplers.SampleSaveConfiguration+saveBytes() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadCounts() org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadCounts() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveUrl() org.apache.jmeter.samplers.SampleSaveConfiguration+saveUrl() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveFileName() org.apache.jmeter.samplers.SampleSaveConfiguration+saveFileName() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveLatency() org.apache.jmeter.samplers.SampleSaveConfiguration+saveLatency() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveEncoding() org.apache.jmeter.samplers.SampleSaveConfiguration+saveEncoding() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveSampleCount() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSampleCount() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveHostname() org.apache.jmeter.samplers.SampleSaveConfiguration+saveHostname() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+length() java.lang.StringBuffer+length() java.lang.String+length() java.lang.String+length() java.lang.StringBuffer+substring(int,int) java.lang.StringBuffer+substring(int,int) java.lang.StringBuffer+toString() java.lang.StringBuffer+toString()",org.apache.jmeter.save.OldSaveService+TIME_STAMP org.apache.jmeter.save.OldSaveService+CSV_ELAPSED org.apache.jmeter.save.OldSaveService+LABEL org.apache.jmeter.save.OldSaveService+RESPONSE_CODE org.apache.jmeter.save.OldSaveService+RESPONSE_MESSAGE org.apache.jmeter.save.OldSaveService+THREAD_NAME org.apache.jmeter.save.OldSaveService+DATA_TYPE org.apache.jmeter.save.OldSaveService+SUCCESSFUL org.apache.jmeter.save.OldSaveService+FAILURE_MESSAGE org.apache.jmeter.save.OldSaveService+CSV_BYTES org.apache.jmeter.save.OldSaveService+CSV_THREAD_COUNT1 org.apache.jmeter.save.OldSaveService+CSV_THREAD_COUNT2 org.apache.jmeter.save.OldSaveService+CSV_URL org.apache.jmeter.save.OldSaveService+CSV_FILENAME org.apache.jmeter.save.OldSaveService+CSV_LATENCY org.apache.jmeter.save.OldSaveService+CSV_ENCODING org.apache.jmeter.save.OldSaveService+CSV_SAMPLE_COUNT org.apache.jmeter.save.OldSaveService+CSV_ERROR_COUNT org.apache.jmeter.save.OldSaveService+CSV_HOSTNAME,2492,110,9,"/** 
+ * Generates the field names for the output file
+ * @return the field names as a string
+ */
+","/**
+	 * Generates the field names for the output file
+	 * 
+	 * @return the field names as a string
+	 */
+	public static String printableFieldNamesToString(SampleSaveConfiguration saveConfig) {
+		StringBuffer text = new StringBuffer();
+		String delim = saveConfig.getDelimiter();
+
+		if (saveConfig.saveTimestamp()) {
+			text.append(TIME_STAMP);
+			text.append(delim);
+		}
+
+		if (saveConfig.saveTime()) {
+			text.append(CSV_ELAPSED);
+			text.append(delim);
+		}
+
+		if (saveConfig.saveLabel()) {
+			text.append(LABEL);
+			text.append(delim);
+		}
+
+		if (saveConfig.saveCode()) {
+			text.append(RESPONSE_CODE);
+			text.append(delim);
+		}
+
+		if (saveConfig.saveMessage()) {
+			text.append(RESPONSE_MESSAGE);
+			text.append(delim);
+		}
+
+		if (saveConfig.saveThreadName()) {
+			text.append(THREAD_NAME);
+			text.append(delim);
+		}
+
+		if (saveConfig.saveDataType()) {
+			text.append(DATA_TYPE);
+			text.append(delim);
+		}
+
+		if (saveConfig.saveSuccess()) {
+			text.append(SUCCESSFUL);
+			text.append(delim);
+		}
+
+		if (saveConfig.saveAssertionResultsFailureMessage()) {
+			text.append(FAILURE_MESSAGE);
+			text.append(delim);
+		}
+
+        if (saveConfig.saveBytes()) {
+            text.append(CSV_BYTES);
+            text.append(delim);
+        }
+
+        if (saveConfig.saveThreadCounts()) {
+            text.append(CSV_THREAD_COUNT1);
+            text.append(delim);
+            text.append(CSV_THREAD_COUNT2);
+            text.append(delim);
+        }
+
+        if (saveConfig.saveUrl()) {
+            text.append(CSV_URL);
+            text.append(delim);
+        }
+
+        if (saveConfig.saveFileName()) {
+            text.append(CSV_FILENAME);
+            text.append(delim);
+        }
+
+        if (saveConfig.saveLatency()) {
+            text.append(CSV_LATENCY);
+            text.append(delim);
+        }
+
+        if (saveConfig.saveEncoding()) {
+            text.append(CSV_ENCODING);
+            text.append(delim);
+        }
+
+		if (saveConfig.saveSampleCount()) {
+			text.append(CSV_SAMPLE_COUNT);
+			text.append(delim);
+			text.append(CSV_ERROR_COUNT);
+			text.append(delim);
+		}
+
+        if (saveConfig.saveHostname()) {
+            text.append(CSV_HOSTNAME);
+            text.append(delim);
+        }
+
+        String resultString = null;
+		int size = text.length();
+		int delSize = delim.length();
+
+		// Strip off the trailing delimiter
+		if (size >= delSize) {
+			resultString = text.substring(0, size - delSize);
+		} else {
+			resultString = text.toString();
+		}
+		return resultString;
+	}",False,True,This method generates a string of field names for an output file based on the provided configuration. The field names are separated by a delimiter.,False,"The `printableFieldNamesToString` method generates a string of field names based on the provided `SampleSaveConfiguration`. It appends various field names to a `StringBuffer` based on the configuration settings, and then removes the trailing delimiter before returning the final string."
+37,headerLabelMethods,header label methods ,Field,,,,,68,1,26,,private static final LinkedMap headerLabelMethods = new LinkedMap();,True,True,,False,
+38,"getSampleSaveConfiguration(String,String)",get sample save configuration header line filename parse a csv header line param header line from csv file param filename name of file for log message only return config corresponding to the header items found or null if not a header line ,Method,,org.apache.jmeter.reporters.ResultCollector+loadExistingFile(),"org.apache.jmeter.save.OldSaveService+splitHeader(String,String) org.apache.jmeter.save.OldSaveService+splitHeader(String,String) org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter() org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter() org.apache.jmeter.util.JMeterUtils+getMatcher() org.apache.jmeter.util.JMeterUtils+getMatcher() org.apache.jmeter.util.JMeterUtils+getPatternCache() org.apache.jmeter.util.JMeterUtils+getPatternCache() org.apache.jmeter.save.OldSaveService+splitHeader(String,String) org.apache.jmeter.save.OldSaveService+splitHeader(String,String) org.apache.jmeter.samplers.SampleSaveConfiguration+SampleSaveConfiguration(boolean) org.apache.jorphan.reflect.Functor+invoke(Object,Object[]) org.apache.jorphan.reflect.Functor+invoke(Object,Object[]) org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter() org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter() org.apache.jmeter.samplers.SampleSaveConfiguration+setDelimiter(String) org.apache.jmeter.samplers.SampleSaveConfiguration+setDelimiter(String)",org.apache.jmeter.save.OldSaveService+_saveConfig org.apache.jmeter.save.OldSaveService+headerLabelMethods java.lang.Boolean+TRUE org.apache.jmeter.save.OldSaveService+log org.apache.jmeter.save.OldSaveService+_saveConfig,1724,45,9,"/** 
+ * Parse a CSV header line
+ * @param headerLine from CSV file
+ * @param filename name of file (for log message only)
+ * @return config corresponding to the header items found or null if not a header line
+ */
+","/**
+	 * Parse a CSV header line
+	 * @param headerLine from CSV file
+	 * @param filename name of file (for log message only)
+	 * @return config corresponding to the header items found or null if not a header line
+	 */
+	public static SampleSaveConfiguration getSampleSaveConfiguration(String headerLine, String filename){
+		String[] parts = splitHeader(headerLine,_saveConfig.getDelimiter()); // Try default delimiter
+
+		String delim = null;
+		
+		if (parts == null){
+			Perl5Matcher matcher = JMeterUtils.getMatcher();
+			PatternMatcherInput input = new PatternMatcherInput(headerLine);
+			Pattern pattern = JMeterUtils.getPatternCache()
+			// This assumes the header names are all single words with no spaces
+			// word followed by 0 or more repeats of (non-word char + word)
+			// where the non-word char (\2) is the same
+			// e.g.  abc|def|ghi but not abd|def~ghi
+			        .getPattern(""\\w+((\\W)\\w+)?(\\2\\w+)*"", // $NON-NLS-1$
+					Perl5Compiler.READ_ONLY_MASK);
+			if (matcher.matches(input, pattern)) {
+				delim = matcher.getMatch().group(2);
+				parts = splitHeader(headerLine,delim);// now validate the result
+			}
+		}
+		
+		if (parts == null) {
+			return null; // failed to recognise the header
+		}
+		
+		// We know the column names all exist, so create the config 
+		SampleSaveConfiguration saveConfig=new SampleSaveConfiguration(false);
+		
+		for(int i=0;i<parts.length;i++){
+			Functor set = (Functor) headerLabelMethods.get(parts[i]);
+			set.invoke(saveConfig,new Boolean[]{Boolean.TRUE});
+		}
+
+		if (delim != null){
+			log.warn(""Default delimiter '""+_saveConfig.getDelimiter()+""' did not work; using alternate '""+delim+""' for reading ""+filename);
+			saveConfig.setDelimiter(delim);
+		}
+		return saveConfig;
+	}",True,True,"This method parses a CSV header line and returns a configuration object based on the header items found. It checks if the header line matches a specific pattern and splits the header line using a delimiter. It then creates a configuration object and sets the corresponding values based on the header items. If the default delimiter does not work, it uses an alternate delimiter and logs a warning message.",False,"This code is a method that parses a CSV header line and returns a configuration object based on the header items found. It first tries to split the header using a default delimiter, and if that fails, it uses a regular expression to determine the delimiter. It then creates a SampleSaveConfiguration object and sets its properties based on the column names in the header."
+39,"splitHeader(String,String)",split header header line delim ,Method,"getSampleSaveConfiguration(String,String) getSampleSaveConfiguration(String,String)",,java.lang.String+split(String) java.lang.String+split(String),org.apache.jmeter.save.OldSaveService+headerLabelMethods org.apache.jmeter.save.OldSaveService+log,573,18,10,,"private static String[] splitHeader(String headerLine, String delim) {
+		String parts[]=headerLine.split(""\\Q""+delim);// $NON-NLS-1$
+		int previous = -1;
+		// Check if the line is a header
+		for(int i=0;i<parts.length;i++){
+			final String label = parts[i];
+			int current = headerLabelMethods.indexOf(label);
+			if (current == -1){
+				return null; // unknown column name
+			}
+			if (current <= previous){
+				log.warn(""Column header number ""+(i+1)+"" name ""+ label + "" is out of order."");
+				return null; // out of order
+			}
+			previous = current;
+		}
+		return parts;
+	}",True,True,"The function of the method is to split a header line into parts using a specified delimiter. It checks if the line is a valid header by comparing the parts with a list of known header labels. If the parts are not in the correct order or contain an unknown label, it returns null. Otherwise, it returns the array of parts.",False,"The code defines a method called ""splitHeader"" that takes a header line and a delimiter as input. It splits the header line into an array of strings using the delimiter, checks if the header is valid by comparing it with a predefined list of header labels, and returns the array of header parts if it is valid, otherwise returns null."
+40,"saveCSVStats(Vector,FileWriter)",save csv stats data writer method will save aggregate statistics as csv for now i put it here not sure if it should go in the newer save service instead of here if we ever decide to get rid of this class we ll need to move this method to the new save service param data param writer throws io exception ,Method,,org.apache.jmeter.visualizers.StatGraphVisualizer+actionPerformed(ActionEvent),java.util.Vector+size() java.util.Vector+size() java.util.Vector+elementAt(int) java.util.Vector+elementAt(int) java.util.Vector+size() java.util.Vector+size() java.io.Writer+write(String) java.io.Writer+write(String) java.util.Vector+elementAt(int) java.util.Vector+elementAt(int) java.io.Writer+write(String) java.io.Writer+write(String) java.lang.String+valueOf(Object) java.lang.String+valueOf(Object) java.io.Writer+write(String) java.io.Writer+write(String) java.lang.System+getProperty(String) java.lang.System+getProperty(String),,908,22,9,"/** 
+ * Method will save aggregate statistics as CSV. For now I put it here. Not sure if it should go in the newer SaveService instead of here. if we ever decide to get rid of this class, we'll need to move this method to the new save service.
+ * @param data
+ * @param writer
+ * @throws IOException
+ */
+","/**
+     * Method will save aggregate statistics as CSV. For now I put it here.
+     * Not sure if it should go in the newer SaveService instead of here.
+     * if we ever decide to get rid of this class, we'll need to move this
+     * method to the new save service.
+     * @param data
+     * @param writer
+     * @throws IOException
+     */
+    public static void saveCSVStats(Vector data, FileWriter writer) throws IOException {
+        for (int idx=0; idx < data.size(); idx++) {
+            Vector row = (Vector)data.elementAt(idx);
+            for (int idy=0; idy < row.size(); idy++) {
+                if (idy > 0) {
+                    writer.write("",""); // $NON-NLS-1$
+                }
+                Object item = row.elementAt(idy);
+                writer.write( String.valueOf(item) );
+            }
+            writer.write(System.getProperty(""line.separator"")); // $NON-NLS-1$
+        }
+    }",True,True,"The function of this method is to save aggregate statistics as a CSV file. It takes a vector of data and a file writer as parameters, and writes the data to the file in CSV format.",False,"This code defines a method called `saveCSVStats` that takes a vector of data and a file writer as input. It iterates over the data vector, writing each element to the file writer as a CSV row. The method is used to save aggregate statistics as a CSV file."
+41,resultToDelimitedString(SampleEvent),result to delimited string event convert a result into a string where the fields of the result are separated by the default delimiter param event the sample event to be converted return the separated value representation of the result ,Method,,org.apache.jmeter.reporters.ResultCollector+sampleOccurred(SampleEvent),"org.apache.jmeter.save.OldSaveService+resultToDelimitedString(SampleEvent,String) org.apache.jmeter.save.OldSaveService+resultToDelimitedString(SampleEvent,String) org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter() org.apache.jmeter.samplers.SampleResult+getSaveConfig() org.apache.jmeter.samplers.SampleEvent+getResult() org.apache.jmeter.samplers.SampleEvent+getResult() org.apache.jmeter.samplers.SampleResult+getSaveConfig() org.apache.jmeter.samplers.SampleSaveConfiguration+getDelimiter()",,441,11,9,"/** 
+ * Convert a result into a string, where the fields of the result are separated by the default delimiter.
+ * @param event the sample event to be converted
+ * @return the separated value representation of the result
+ */
+","/**
+     * Convert a result into a string, where the fields of the result are
+     * separated by the default delimiter.
+     * 
+     * @param event
+     *            the sample event to be converted
+     * @return the separated value representation of the result
+     */
+    public static String resultToDelimitedString(SampleEvent event) {
+    	return resultToDelimitedString(event, event.getResult().getSaveConfig().getDelimiter());
+    }",True,True,"This method converts a result into a string representation, where the fields of the result are separated by a delimiter. The delimiter used is the default delimiter specified in the save configuration of the event's result.",False,"The code contains a method named ""resultToDelimitedString"" that takes a SampleEvent object as input and converts it into a string representation. The method uses the default delimiter specified in the SaveConfig object of the SampleEvent to separate the fields of the result."
+42,"resultToDelimitedString(SampleEvent,String)",result to delimited string event delimiter convert a result into a string where the fields of the result are separated by a specified string param event the sample event to be converted param delimiter the separation string return the separated value representation of the result ,Method,resultToDelimitedString(SampleEvent),,"java.lang.StringBuffer+StringBuffer() org.apache.jmeter.samplers.SampleEvent+getResult() org.apache.jmeter.samplers.SampleEvent+getResult() org.apache.jmeter.samplers.SampleResult+getSaveConfig() org.apache.jmeter.samplers.SampleResult+getSaveConfig() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTimestamp() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTimestamp() org.apache.jmeter.samplers.SampleSaveConfiguration+printMilliseconds() org.apache.jmeter.samplers.SampleSaveConfiguration+printMilliseconds() java.lang.StringBuffer+append(long) java.lang.StringBuffer+append(long) org.apache.jmeter.samplers.SampleResult+getTimeStamp() org.apache.jmeter.samplers.SampleResult+getTimeStamp() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() java.text.DateFormat+format(Date) org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() java.text.DateFormat+format(Date) java.util.Date+Date(long) org.apache.jmeter.samplers.SampleResult+getTimeStamp() org.apache.jmeter.samplers.SampleResult+getTimeStamp() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveTime() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTime() java.lang.StringBuffer+append(long) java.lang.StringBuffer+append(long) org.apache.jmeter.samplers.SampleResult+getTime() org.apache.jmeter.samplers.SampleResult+getTime() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveLabel() org.apache.jmeter.samplers.SampleSaveConfiguration+saveLabel() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleResult+getSampleLabel() org.apache.jmeter.samplers.SampleResult+getSampleLabel() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveCode() org.apache.jmeter.samplers.SampleSaveConfiguration+saveCode() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleResult+getResponseCode() org.apache.jmeter.samplers.SampleResult+getResponseCode() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveMessage() org.apache.jmeter.samplers.SampleSaveConfiguration+saveMessage() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleResult+getResponseMessage() org.apache.jmeter.samplers.SampleResult+getResponseMessage() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadName() org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadName() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleResult+getThreadName() org.apache.jmeter.samplers.SampleResult+getThreadName() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveDataType() org.apache.jmeter.samplers.SampleSaveConfiguration+saveDataType() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleResult+getDataType() org.apache.jmeter.samplers.SampleResult+getDataType() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveSuccess() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSuccess() java.lang.StringBuffer+append(boolean) java.lang.StringBuffer+append(boolean) org.apache.jmeter.samplers.SampleResult+isSuccessful() org.apache.jmeter.samplers.SampleResult+isSuccessful() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveAssertionResultsFailureMessage() org.apache.jmeter.samplers.SampleSaveConfiguration+saveAssertionResultsFailureMessage() org.apache.jmeter.samplers.SampleResult+getAssertionResults() org.apache.jmeter.samplers.SampleResult+getAssertionResults() org.apache.jmeter.assertions.AssertionResult+getFailureMessage() org.apache.jmeter.assertions.AssertionResult+getFailureMessage() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveBytes() org.apache.jmeter.samplers.SampleSaveConfiguration+saveBytes() java.lang.StringBuffer+append(int) java.lang.StringBuffer+append(int) org.apache.jmeter.samplers.SampleResult+getBytes() org.apache.jmeter.samplers.SampleResult+getBytes() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadCounts() org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadCounts() java.lang.StringBuffer+append(int) java.lang.StringBuffer+append(int) org.apache.jmeter.samplers.SampleResult+getGroupThreads() org.apache.jmeter.samplers.SampleResult+getGroupThreads() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(int) java.lang.StringBuffer+append(int) org.apache.jmeter.samplers.SampleResult+getAllThreads() org.apache.jmeter.samplers.SampleResult+getAllThreads() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveUrl() org.apache.jmeter.samplers.SampleSaveConfiguration+saveUrl() java.lang.StringBuffer+append(Object) java.lang.StringBuffer+append(Object) org.apache.jmeter.samplers.SampleResult+getURL() org.apache.jmeter.samplers.SampleResult+getURL() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveFileName() org.apache.jmeter.samplers.SampleSaveConfiguration+saveFileName() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleResult+getResultFileName() org.apache.jmeter.samplers.SampleResult+getResultFileName() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveLatency() org.apache.jmeter.samplers.SampleSaveConfiguration+saveLatency() java.lang.StringBuffer+append(long) java.lang.StringBuffer+append(long) org.apache.jmeter.samplers.SampleResult+getLatency() org.apache.jmeter.samplers.SampleResult+getLatency() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveEncoding() org.apache.jmeter.samplers.SampleSaveConfiguration+saveEncoding() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleResult+getDataEncoding() org.apache.jmeter.samplers.SampleResult+getDataEncoding() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveSampleCount() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSampleCount() java.lang.StringBuffer+append(int) java.lang.StringBuffer+append(int) org.apache.jmeter.samplers.SampleResult+getSampleCount() org.apache.jmeter.samplers.SampleResult+getSampleCount() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(int) java.lang.StringBuffer+append(int) org.apache.jmeter.samplers.SampleResult+getErrorCount() org.apache.jmeter.samplers.SampleResult+getErrorCount() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleSaveConfiguration+saveHostname() org.apache.jmeter.samplers.SampleSaveConfiguration+saveHostname() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.apache.jmeter.samplers.SampleEvent+getHostname() org.apache.jmeter.samplers.SampleEvent+getHostname() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+length() java.lang.StringBuffer+length() java.lang.String+length() java.lang.String+length() java.lang.StringBuffer+substring(int,int) java.lang.StringBuffer+substring(int,int) java.lang.StringBuffer+toString() java.lang.StringBuffer+toString()",,3912,134,9,"/** 
+ * Convert a result into a string, where the fields of the result are separated by a specified String.
+ * @param event the sample event to be converted
+ * @param delimiter the separation string
+ * @return the separated value representation of the result
+ */
+","/**
+     * Convert a result into a string, where the fields of the result are
+     * separated by a specified String.
+     * 
+     * @param event
+     *            the sample event to be converted
+     * @param delimiter
+     *            the separation string
+     * @return the separated value representation of the result
+     */
+    public static String resultToDelimitedString(SampleEvent event, String delimiter) {
+    	StringBuffer text = new StringBuffer();
+    	SampleResult sample = event.getResult();
+    	SampleSaveConfiguration saveConfig = sample.getSaveConfig();
+    
+    	if (saveConfig.saveTimestamp()) {
+    		if (saveConfig.printMilliseconds()){
+    			text.append(sample.getTimeStamp());
+    			text.append(delimiter);
+    		} else if (saveConfig.formatter() != null) {
+    			String stamp = saveConfig.formatter().format(new Date(sample.getTimeStamp()));
+    			text.append(stamp);
+    			text.append(delimiter);
+    		}
+    	}
+    
+    	if (saveConfig.saveTime()) {
+    		text.append(sample.getTime());
+    		text.append(delimiter);
+    	}
+    
+    	if (saveConfig.saveLabel()) {
+    		text.append(sample.getSampleLabel());
+    		text.append(delimiter);
+    	}
+    
+    	if (saveConfig.saveCode()) {
+    		text.append(sample.getResponseCode());
+    		text.append(delimiter);
+    	}
+    
+    	if (saveConfig.saveMessage()) {
+    		text.append(sample.getResponseMessage());
+    		text.append(delimiter);
+    	}
+    
+    	if (saveConfig.saveThreadName()) {
+    		text.append(sample.getThreadName());
+    		text.append(delimiter);
+    	}
+    
+    	if (saveConfig.saveDataType()) {
+    		text.append(sample.getDataType());
+    		text.append(delimiter);
+    	}
+    
+    	if (saveConfig.saveSuccess()) {
+    		text.append(sample.isSuccessful());
+    		text.append(delimiter);
+    	}
+    
+    	if (saveConfig.saveAssertionResultsFailureMessage()) {
+    		String message = null;
+    		AssertionResult[] results = sample.getAssertionResults();
+    
+    		if (results != null) {
+    			// Find the first non-null message
+    			for (int i = 0; i < results.length; i++){
+        			message = results[i].getFailureMessage();
+    				if (message != null) break;
+    			}
+    		}
+    
+    		if (message != null) {
+    			text.append(message);
+    		}
+    		text.append(delimiter);
+    	}
+    
+        if (saveConfig.saveBytes()) {
+            text.append(sample.getBytes());
+            text.append(delimiter);
+        }
+    
+        if (saveConfig.saveThreadCounts()) {
+            text.append(sample.getGroupThreads());
+            text.append(delimiter);
+            text.append(sample.getAllThreads());
+            text.append(delimiter);
+        }
+        if (saveConfig.saveUrl()) {
+            text.append(sample.getURL());
+            text.append(delimiter);
+        }
+    
+        if (saveConfig.saveFileName()) {
+            text.append(sample.getResultFileName());
+            text.append(delimiter);
+        }
+    
+        if (saveConfig.saveLatency()) {
+            text.append(sample.getLatency());
+            text.append(delimiter);
+        }
+
+        if (saveConfig.saveEncoding()) {
+            text.append(sample.getDataEncoding());
+            text.append(delimiter);
+        }
+
+    	if (saveConfig.saveSampleCount()) {// Need both sample and error count to be any use
+    		text.append(sample.getSampleCount());
+    		text.append(delimiter);
+    		text.append(sample.getErrorCount());
+    		text.append(delimiter);
+    	}
+    
+        if (saveConfig.saveHostname()) {
+            text.append(event.getHostname());
+            text.append(delimiter);
+        }
+
+    	String resultString = null;
+    	int size = text.length();
+    	int delSize = delimiter.length();
+    
+    	// Strip off the trailing delimiter
+    	if (size >= delSize) {
+    		resultString = text.substring(0, size - delSize);
+    	} else {
+    		resultString = text.toString();
+    	}
+    	return resultString;
+    }",True,True,"This method converts a result into a string, where the fields of the result are separated by a specified delimiter.",False,The `resultToDelimitedString` method takes a `SampleEvent` object and a delimiter string as input and converts the fields of the `SampleResult` object within the event into a delimited string. The method checks the save configuration settings to determine which fields to include in the string and appends them accordingly. The resulting string is returned as the output.
+43,"saveSubTree(HashTree,OutputStream)",save sub tree sub tree writer ,Method,,org.apache.jmeter.gui.action.Save+doAction(ActionEvent) org.apache.jmeter.report.gui.action.ReportSave+doAction(ActionEvent),java.util.List+get(int) org.apache.jmeter.save.OldSaveService+getConfigsFromTree(HashTree) org.apache.jmeter.save.OldSaveService+getConfigsFromTree(HashTree) java.util.List+get(int) java.io.IOException+IOException(String) java.io.IOException+IOException(String),,517,13,9,,"public static void saveSubTree(HashTree subTree, OutputStream writer) throws IOException {
+		Configuration config = (Configuration) getConfigsFromTree(subTree).get(0);
+		DefaultConfigurationSerializer saver = new DefaultConfigurationSerializer();
+
+		saver.setIndent(true);
+		try {
+			saver.serialize(writer, config);
+		} catch (SAXException e) {
+			throw new IOException(""SAX implementation problem"");
+		} catch (ConfigurationException e) {
+			throw new IOException(""Problem using Avalon Configuration tools"");
+		}
+	}",False,False,"This method saves a subtree of a hash tree to an output stream. It retrieves the configuration from the subtree, sets up a configuration serializer, and then serializes the configuration to the output stream.",True,"This code defines a method called `saveSubTree` that takes a `HashTree` and an `OutputStream` as parameters. It serializes the first configuration object obtained from the `HashTree` using the `DefaultConfigurationSerializer` and writes it to the specified output stream. If any exceptions occur during the serialization process, they are caught and rethrown as `IOExceptions`."
+44,getSampleResult(Configuration),get sample result config read sample result from avalon xml file param config avalon configuration return sample result ,Method,getSampleResult(Configuration),org.apache.jmeter.reporters.ResultCollector+loadExistingFile(),"org.apache.jmeter.samplers.SampleResult+SampleResult(long,boolean) org.apache.jmeter.samplers.SampleResult+setThreadName(String) org.apache.jmeter.samplers.SampleResult+setThreadName(String) org.apache.jmeter.samplers.SampleResult+setDataType(String) org.apache.jmeter.samplers.SampleResult+setDataType(String) org.apache.jmeter.samplers.SampleResult+setResponseCode(String) org.apache.jmeter.samplers.SampleResult+setResponseCode(String) org.apache.jmeter.samplers.SampleResult+setResponseMessage(String) org.apache.jmeter.samplers.SampleResult+setResponseMessage(String) org.apache.jmeter.samplers.SampleResult+setSuccessful(boolean) org.apache.jmeter.samplers.SampleResult+setSuccessful(boolean) org.apache.jmeter.samplers.SampleResult+setSampleLabel(String) org.apache.jmeter.samplers.SampleResult+setSampleLabel(String) org.apache.jmeter.samplers.SampleResult+setResponseData(byte[]) org.apache.jmeter.samplers.SampleResult+setResponseData(byte[]) org.apache.jmeter.save.OldSaveService+getBinaryData(Configuration) org.apache.jmeter.save.OldSaveService+getBinaryData(Configuration) org.apache.jmeter.samplers.SampleResult+storeSubResult(SampleResult) org.apache.jmeter.samplers.SampleResult+storeSubResult(SampleResult) org.apache.jmeter.save.OldSaveService+getSampleResult(Configuration) org.apache.jmeter.save.OldSaveService+getSampleResult(Configuration) org.apache.jmeter.samplers.SampleResult+addAssertionResult(AssertionResult) org.apache.jmeter.samplers.SampleResult+addAssertionResult(AssertionResult) org.apache.jmeter.save.OldSaveService+getAssertionResult(Configuration) org.apache.jmeter.save.OldSaveService+getAssertionResult(Configuration) org.apache.jmeter.samplers.SampleResult+setSamplerData(String) org.apache.jmeter.samplers.SampleResult+setSamplerData(String)",org.apache.jmeter.save.OldSaveService+TIME_STAMP org.apache.jmeter.save.OldSaveService+TIME org.apache.jmeter.save.OldSaveService+THREAD_NAME org.apache.jmeter.save.OldSaveService+DATA_TYPE org.apache.jmeter.save.OldSaveService+RESPONSE_CODE org.apache.jmeter.save.OldSaveService+RESPONSE_MESSAGE org.apache.jmeter.save.OldSaveService+SUCCESSFUL org.apache.jmeter.save.OldSaveService+LABEL org.apache.jmeter.save.OldSaveService+BINARY org.apache.jmeter.save.OldSaveService+SAMPLE_RESULT_TAG_NAME org.apache.jmeter.save.OldSaveService+ASSERTION_RESULT_TAG_NAME,1523,35,9,"/** 
+ * Read sampleResult from Avalon XML file.
+ * @param config Avalon configuration
+ * @return sample result
+ */
+","/**
+     * Read sampleResult from Avalon XML file.
+     * 
+     * @param config Avalon configuration
+     * @return sample result
+     */
+    // Probably no point in converting this to return a SampleEvent
+    public static SampleResult getSampleResult(Configuration config) {
+		SampleResult result = new SampleResult(config.getAttributeAsLong(TIME_STAMP, 0L), config.getAttributeAsLong(
+				TIME, 0L));
+
+		result.setThreadName(config.getAttribute(THREAD_NAME, """")); // $NON-NLS-1$
+		result.setDataType(config.getAttribute(DATA_TYPE, """"));
+		result.setResponseCode(config.getAttribute(RESPONSE_CODE, """")); // $NON-NLS-1$
+		result.setResponseMessage(config.getAttribute(RESPONSE_MESSAGE, """")); // $NON-NLS-1$
+		result.setSuccessful(config.getAttributeAsBoolean(SUCCESSFUL, false));
+		result.setSampleLabel(config.getAttribute(LABEL, """")); // $NON-NLS-1$
+		result.setResponseData(getBinaryData(config.getChild(BINARY)));
+		Configuration[] subResults = config.getChildren(SAMPLE_RESULT_TAG_NAME);
+
+		for (int i = 0; i < subResults.length; i++) {
+			result.storeSubResult(getSampleResult(subResults[i]));
+		}
+		Configuration[] assResults = config.getChildren(ASSERTION_RESULT_TAG_NAME);
+
+		for (int i = 0; i < assResults.length; i++) {
+			result.addAssertionResult(getAssertionResult(assResults[i]));
+		}
+
+		Configuration[] samplerData = config.getChildren(""property""); // $NON-NLS-1$
+		for (int i = 0; i < samplerData.length; i++) {
+			result.setSamplerData(samplerData[i].getValue("""")); // $NON-NLS-1$
+		}
+		return result;
+	}",False,False,This method reads a SampleResult from an Avalon XML file. It takes an Avalon configuration as input and returns the sample result.,False,"This code defines a method called ""getSampleResult"" that reads a sample result from an Avalon XML file. It extracts various attributes and values from the XML configuration and sets them in a SampleResult object, which is then returned."
+45,getConfigsFromTree(HashTree),get configs from tree sub tree ,Method,"saveSubTree(HashTree,OutputStream) getConfigsFromTree(HashTree)",,"java.util.Collection+iterator() org.apache.jorphan.collections.HashTree+list() org.apache.jorphan.collections.HashTree+list() java.util.Collection+iterator() java.util.LinkedList+LinkedList() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() org.apache.jmeter.save.OldSaveService+getConfigForTestElement(String,TestElement) org.apache.jmeter.save.OldSaveService+getConfigForTestElement(String,TestElement) org.apache.jmeter.save.OldSaveService+getConfigsFromTree(HashTree) org.apache.jmeter.save.OldSaveService+getConfigsFromTree(HashTree) org.apache.jorphan.collections.HashTree+getTree(Object) org.apache.jorphan.collections.HashTree+getTree(Object) java.util.List+iterator() java.util.List+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() java.util.List+add(E) java.util.List+add(E)",,620,19,10,,"private static List getConfigsFromTree(HashTree subTree) {
+		Iterator iter = subTree.list().iterator();
+		List configs = new LinkedList();
+
+		while (iter.hasNext()) {
+			TestElement item = (TestElement) iter.next();
+			DefaultConfiguration config = new DefaultConfiguration(""node"", ""node""); // $NON-NLS-1$ // $NON-NLS-2$
+
+			config.addChild(getConfigForTestElement(null, item));
+			List configList = getConfigsFromTree(subTree.getTree(item));
+			Iterator iter2 = configList.iterator();
+
+			while (iter2.hasNext()) {
+				config.addChild((Configuration) iter2.next());
+			}
+			configs.add(config);
+		}
+		return configs;
+	}",False,False,"The function takes a HashTree as input and returns a List of configurations. It iterates through the elements in the HashTree, creates a DefaultConfiguration for each element, adds child configurations recursively, and adds the final configuration to the List.",False,"The code defines a private static method called `getConfigsFromTree` that takes a `HashTree` object as input. It iterates through the elements in the tree, creates a `DefaultConfiguration` object for each element, and recursively adds child configurations for each sub-tree. The method returns a list of configurations."
+46,getConfiguration(byte[]),get configuration bin ,Method,"getConfiguration(SampleResult,SampleSaveConfiguration)",,"java.lang.String+String(byte[],String)",org.apache.jmeter.save.OldSaveService+BINARY org.apache.jmeter.save.OldSaveService+log,337,10,9,,"public static Configuration getConfiguration(byte[] bin) {
+		DefaultConfiguration config = new DefaultConfiguration(BINARY, ""JMeter Save Service""); // $NON-NLS-1$
+
+		try {
+			config.setValue(new String(bin, ""UTF-8"")); // $NON-NLS-1$
+		} catch (UnsupportedEncodingException e) {
+			log.error("""", e); // $NON-NLS-1$
+		}
+		return config;
+	}",False,False,"This method returns a Configuration object. It creates a DefaultConfiguration object with a specified type and name. It sets the value of the configuration using the provided byte array, encoded in UTF-8. If an UnsupportedEncodingException occurs, it logs an error.",False,"This code defines a method named ""getConfiguration"" that takes a byte array as input and returns a Configuration object. It creates a DefaultConfiguration object, sets its value using the byte array converted to a UTF-8 string, and returns the configuration."
+47,getBinaryData(Configuration),get binary data config ,Method,getSampleResult(Configuration),,,,256,10,9,,"public static byte[] getBinaryData(Configuration config) {
+		if (config == null) {
+			return new byte[0];
+		}
+		try {
+			return config.getValue("""").getBytes(""UTF-8""); // $NON-NLS-1$
+		} catch (UnsupportedEncodingException e) {
+			return new byte[0];
+		}
+	}",False,False,"This method takes a Configuration object as input and returns a byte array. If the input is null, it returns an empty byte array. Otherwise, it tries to get the value from the Configuration object and converts it to a byte array using UTF-8 encoding. If the encoding is not supported, it also returns an empty byte array.",False,"This code defines a method named ""getBinaryData"" that takes a Configuration object as input. It returns a byte array containing the binary data obtained from the Configuration object's value, encoded in UTF-8. If the Configuration object is null or an UnsupportedEncodingException occurs, it returns an empty byte array."
+48,getAssertionResult(Configuration),get assertion result config ,Method,getSampleResult(Configuration),,org.apache.jmeter.assertions.AssertionResult+AssertionResult(String) org.apache.jmeter.assertions.AssertionResult+setError(boolean) org.apache.jmeter.assertions.AssertionResult+setError(boolean) org.apache.jmeter.assertions.AssertionResult+setFailure(boolean) org.apache.jmeter.assertions.AssertionResult+setFailure(boolean) org.apache.jmeter.assertions.AssertionResult+setFailureMessage(String) org.apache.jmeter.assertions.AssertionResult+setFailureMessage(String),org.apache.jmeter.save.OldSaveService+ERROR org.apache.jmeter.save.OldSaveService+FAILURE org.apache.jmeter.save.OldSaveService+FAILURE_MESSAGE,372,7,9,,"public static AssertionResult getAssertionResult(Configuration config) {
+		AssertionResult result = new AssertionResult(""""); //TODO provide proper name?
+		result.setError(config.getAttributeAsBoolean(ERROR, false));
+		result.setFailure(config.getAttributeAsBoolean(FAILURE, false));
+		result.setFailureMessage(config.getAttribute(FAILURE_MESSAGE, """"));
+		return result;
+	}",False,False,"This method takes a Configuration object as input and returns an AssertionResult object. It sets the error, failure, and failure message attributes of the AssertionResult object based on the corresponding attributes in the Configuration object.",False,"The code defines a method named ""getAssertionResult"" that takes a Configuration object as a parameter. It creates an AssertionResult object, sets its properties based on the attributes of the Configuration object, and returns the AssertionResult object."
+49,getConfiguration(AssertionResult),get configuration ass result ,Method,"getConfiguration(SampleResult,SampleSaveConfiguration)",,org.apache.jmeter.assertions.AssertionResult+getFailureMessage() org.apache.jmeter.assertions.AssertionResult+getFailureMessage() org.apache.jmeter.assertions.AssertionResult+isError() org.apache.jmeter.assertions.AssertionResult+isError() org.apache.jmeter.assertions.AssertionResult+isFailure() org.apache.jmeter.assertions.AssertionResult+isFailure(),org.apache.jmeter.save.OldSaveService+ASSERTION_RESULT_TAG_NAME org.apache.jmeter.save.OldSaveService+FAILURE_MESSAGE org.apache.jmeter.save.OldSaveService+ERROR org.apache.jmeter.save.OldSaveService+FAILURE,389,8,9,,"public static Configuration getConfiguration(AssertionResult assResult) {
+		DefaultConfiguration config = new DefaultConfiguration(ASSERTION_RESULT_TAG_NAME, ""JMeter Save Service"");
+
+		config.setAttribute(FAILURE_MESSAGE, assResult.getFailureMessage());
+		config.setAttribute(ERROR, """" + assResult.isError());
+		config.setAttribute(FAILURE, """" + assResult.isFailure());
+		return config;
+	}",False,False,"This method returns a Configuration object that is used to store information about an AssertionResult. It sets attributes for failure message, error status, and failure status before returning the Configuration object.",False,"The code defines a method named ""getConfiguration"" that takes an AssertionResult object as a parameter and returns a Configuration object. It creates a DefaultConfiguration object, sets attributes based on the properties of the AssertionResult object, and returns the configuration."
+50,"getConfiguration(SampleResult,SampleSaveConfiguration)",get configuration result save config this method determines the content of the result data that will be stored for the avalon xml format param result the object containing all of the data that has been collected param save config the configuration giving the data items to be saved n b it is rather out of date as many fields are not saved however it is probably not worth updating as no one should be using the format ,Method,"getConfiguration(SampleResult,SampleSaveConfiguration)",org.apache.jmeter.reporters.ResultCollector+getSerializedSampleResult(SampleResult),"org.apache.jmeter.samplers.SampleSaveConfiguration+saveTime() org.apache.jmeter.samplers.SampleSaveConfiguration+saveTime() java.lang.String+valueOf(long) java.lang.String+valueOf(long) org.apache.jmeter.samplers.SampleResult+getTime() org.apache.jmeter.samplers.SampleResult+getTime() org.apache.jmeter.samplers.SampleSaveConfiguration+saveLabel() org.apache.jmeter.samplers.SampleSaveConfiguration+saveLabel() org.apache.jmeter.samplers.SampleResult+getSampleLabel() org.apache.jmeter.samplers.SampleResult+getSampleLabel() org.apache.jmeter.samplers.SampleSaveConfiguration+saveCode() org.apache.jmeter.samplers.SampleSaveConfiguration+saveCode() org.apache.jmeter.samplers.SampleResult+getResponseCode() org.apache.jmeter.samplers.SampleResult+getResponseCode() org.apache.jmeter.samplers.SampleSaveConfiguration+saveMessage() org.apache.jmeter.samplers.SampleSaveConfiguration+saveMessage() org.apache.jmeter.samplers.SampleResult+getResponseMessage() org.apache.jmeter.samplers.SampleResult+getResponseMessage() org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadName() org.apache.jmeter.samplers.SampleSaveConfiguration+saveThreadName() org.apache.jmeter.samplers.SampleResult+getThreadName() org.apache.jmeter.samplers.SampleResult+getThreadName() org.apache.jmeter.samplers.SampleSaveConfiguration+saveDataType() org.apache.jmeter.samplers.SampleSaveConfiguration+saveDataType() org.apache.jmeter.samplers.SampleResult+getDataType() org.apache.jmeter.samplers.SampleResult+getDataType() org.apache.jmeter.samplers.SampleSaveConfiguration+printMilliseconds() org.apache.jmeter.samplers.SampleSaveConfiguration+printMilliseconds() java.lang.String+valueOf(long) java.lang.String+valueOf(long) org.apache.jmeter.samplers.SampleResult+getTimeStamp() org.apache.jmeter.samplers.SampleResult+getTimeStamp() org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() java.text.DateFormat+format(Date) org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() org.apache.jmeter.samplers.SampleSaveConfiguration+formatter() java.text.DateFormat+format(Date) java.util.Date+Date(long) org.apache.jmeter.samplers.SampleResult+getTimeStamp() org.apache.jmeter.samplers.SampleResult+getTimeStamp() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSuccess() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSuccess() java.lang.Boolean+toString(boolean) java.lang.Boolean+toString(boolean) org.apache.jmeter.samplers.SampleResult+isSuccessful() org.apache.jmeter.samplers.SampleResult+isSuccessful() org.apache.jmeter.samplers.SampleResult+getSubResults() org.apache.jmeter.samplers.SampleResult+getSubResults() org.apache.jmeter.save.OldSaveService+getConfiguration(SampleResult,SampleSaveConfiguration) org.apache.jmeter.save.OldSaveService+getConfiguration(SampleResult,SampleSaveConfiguration) org.apache.jmeter.samplers.SampleResult+getAssertionResults() org.apache.jmeter.samplers.SampleResult+getAssertionResults() org.apache.jmeter.samplers.SampleSaveConfiguration+saveSamplerData(SampleResult) org.apache.jmeter.samplers.SampleSaveConfiguration+saveSamplerData(SampleResult) org.apache.jmeter.save.OldSaveService+createConfigForString(String,String) org.apache.jmeter.save.OldSaveService+createConfigForString(String,String) org.apache.jmeter.samplers.SampleResult+getSamplerData() org.apache.jmeter.samplers.SampleResult+getSamplerData() org.apache.jmeter.samplers.SampleSaveConfiguration+saveAssertions() org.apache.jmeter.samplers.SampleSaveConfiguration+saveAssertions() org.apache.jmeter.save.OldSaveService+getConfiguration(AssertionResult) org.apache.jmeter.save.OldSaveService+getConfiguration(AssertionResult) org.apache.jmeter.samplers.SampleSaveConfiguration+saveResponseData(SampleResult) org.apache.jmeter.samplers.SampleSaveConfiguration+saveResponseData(SampleResult) org.apache.jmeter.save.OldSaveService+getConfiguration(byte[]) org.apache.jmeter.save.OldSaveService+getConfiguration(byte[]) org.apache.jmeter.samplers.SampleResult+getResponseData() org.apache.jmeter.samplers.SampleResult+getResponseData()",org.apache.jmeter.save.OldSaveService+SAMPLE_RESULT_TAG_NAME org.apache.jmeter.save.OldSaveService+TIME org.apache.jmeter.save.OldSaveService+LABEL org.apache.jmeter.save.OldSaveService+RESPONSE_CODE org.apache.jmeter.save.OldSaveService+RESPONSE_MESSAGE org.apache.jmeter.save.OldSaveService+THREAD_NAME org.apache.jmeter.save.OldSaveService+DATA_TYPE org.apache.jmeter.save.OldSaveService+TIME_STAMP org.apache.jmeter.save.OldSaveService+TIME_STAMP org.apache.jmeter.save.OldSaveService+SUCCESSFUL,2414,68,9,"/** 
+ * This method determines the content of the result data that will be stored for the Avalon XML format.
+ * @param result the object containing all of the data that has been collected.
+ * @param saveConfig the configuration giving the data items to be saved. N.B. It is rather out of date, as many fields are not saved. However it is probably not worth updating, as no-one should be using the format.
+ */
+","/**
+	 * This method determines the content of the result data that will be
+	 * stored for the Avalon XML format.
+	 * 
+	 * @param result
+	 *            the object containing all of the data that has been collected.
+	 * @param saveConfig
+	 *            the configuration giving the data items to be saved.
+	 * N.B. It is rather out of date, as many fields are not saved.
+	 * However it is probably not worth updating, as no-one should be using the format.
+	 */
+	public static Configuration getConfiguration(SampleResult result, SampleSaveConfiguration saveConfig) {
+		DefaultConfiguration config = new DefaultConfiguration(SAMPLE_RESULT_TAG_NAME, ""JMeter Save Service""); // $NON-NLS-1$
+
+		if (saveConfig.saveTime()) {
+			config.setAttribute(TIME, String.valueOf(result.getTime()));
+		}
+		if (saveConfig.saveLabel()) {
+			config.setAttribute(LABEL, result.getSampleLabel());
+		}
+		if (saveConfig.saveCode()) {
+			config.setAttribute(RESPONSE_CODE, result.getResponseCode());
+		}
+		if (saveConfig.saveMessage()) {
+			config.setAttribute(RESPONSE_MESSAGE, result.getResponseMessage());
+		}
+		if (saveConfig.saveThreadName()) {
+			config.setAttribute(THREAD_NAME, result.getThreadName());
+		}
+		if (saveConfig.saveDataType()) {
+			config.setAttribute(DATA_TYPE, result.getDataType());
+		}
+
+		if (saveConfig.printMilliseconds()) {
+			config.setAttribute(TIME_STAMP, String.valueOf(result.getTimeStamp()));
+		} else if (saveConfig.formatter() != null) {
+			String stamp = saveConfig.formatter().format(new Date(result.getTimeStamp()));
+
+			config.setAttribute(TIME_STAMP, stamp);
+		}
+
+		if (saveConfig.saveSuccess()) {
+			config.setAttribute(SUCCESSFUL, Boolean.toString(result.isSuccessful()));
+		}
+
+		SampleResult[] subResults = result.getSubResults();
+
+		if (subResults != null) {
+			for (int i = 0; i < subResults.length; i++) {
+				config.addChild(getConfiguration(subResults[i], saveConfig));
+			}
+		}
+
+		AssertionResult[] assResults = result.getAssertionResults();
+
+		if (saveConfig.saveSamplerData(result)) {
+			config.addChild(createConfigForString(""samplerData"", result.getSamplerData())); // $NON-NLS-1$
+		}
+		if (saveConfig.saveAssertions() && assResults != null) {
+			for (int i = 0; i < assResults.length; i++) {
+				config.addChild(getConfiguration(assResults[i]));
+			}
+		}
+		if (saveConfig.saveResponseData(result)) {
+			config.addChild(getConfiguration(result.getResponseData()));
+		}
+		return config;
+	}",False,False,"This method returns a configuration object that contains the data to be saved in the Avalon XML format. The data includes information such as time, label, response code, response message, thread name, data type, timestamp, success status, sub results, assertion results, sampler data, and response data.",False,"The `getConfiguration` method takes a `SampleResult` object and a `SampleSaveConfiguration` object as parameters and returns a `Configuration` object. It creates a configuration object with attributes based on the values in the `SampleResult` object and recursively adds child configurations for sub-results, assertion results, sampler data, and response data. The method is used to determine the content of the result data that will be stored for the Avalon XML format."
+51,"getConfigForTestElement(String,TestElement)",get config for test element named item ,Method,getConfigsFromTree(HashTree),,org.apache.jmeter.save.TestElementSaver+TestElementSaver(String) org.apache.jmeter.testelement.TestElement+traverse(TestElementTraverser) org.apache.jmeter.testelement.TestElement+traverse(TestElementTraverser) org.apache.jmeter.save.TestElementSaver+getConfiguration() org.apache.jmeter.save.TestElementSaver+getConfiguration(),,1160,27,9,,"public static Configuration getConfigForTestElement(String named, TestElement item) {
+		TestElementSaver saver = new TestElementSaver(named);
+		item.traverse(saver);
+		Configuration config = saver.getConfiguration();
+		/*
+		 * DefaultConfiguration config = new DefaultConfiguration(""testelement"",
+		 * ""testelement"");
+		 * 
+		 * if (named != null) { config.setAttribute(""name"", named); } if
+		 * (item.getProperty(TestElement.TEST_CLASS) != null) {
+		 * config.setAttribute(""class"", (String)
+		 * item.getProperty(TestElement.TEST_CLASS)); } else {
+		 * config.setAttribute(""class"", item.getClass().getName()); } Iterator
+		 * iter = item.getPropertyNames().iterator();
+		 * 
+		 * while (iter.hasNext()) { String name = (String) iter.next(); Object
+		 * value = item.getProperty(name);
+		 * 
+		 * if (value instanceof TestElement) {
+		 * config.addChild(getConfigForTestElement(name, (TestElement) value)); }
+		 * else if (value instanceof Collection) {
+		 * config.addChild(createConfigForCollection(name, (Collection) value)); }
+		 * else if (value != null) { config.addChild(createConfigForString(name,
+		 * value.toString())); } }
+		 */
+		return config;
+	}",False,False,"The function of this method is to generate a configuration object for a given test element. It creates a TestElementSaver object, traverses the test element, and retrieves the configuration from the saver. The configuration object contains information about the test element, such as its name, class, and properties.",False,"The code defines a method named `getConfigForTestElement` that takes a name and a `TestElement` object as parameters. It creates a `TestElementSaver` object, traverses the `TestElement` object, and retrieves the configuration from the saver. The method then returns the configuration."
+52,"createConfigForString(String,String)",create config for string name value ,Method,"getConfiguration(SampleResult,SampleSaveConfiguration)",,,org.apache.jmeter.save.OldSaveService+XML_SPACE org.apache.jmeter.save.OldSaveService+PRESERVE,331,11,10,,"private static Configuration createConfigForString(String name, String value) {
+		if (value == null) {
+			value = """";
+		}
+		DefaultConfiguration config = new DefaultConfiguration(""property"", ""property"");
+
+		config.setAttribute(""name"", name);
+		config.setValue(value);
+		config.setAttribute(XML_SPACE, PRESERVE);
+		return config;
+	}",False,False,"This method creates a configuration object with a given name and value. If the value is null, it sets it to an empty string. It then sets the attributes and value of the configuration object and returns it.",False,"The code defines a private static method named `createConfigForString` that takes two string parameters `name` and `value`. It creates a new `DefaultConfiguration` object with the given name and value, sets an attribute and value for the configuration, and returns the configuration object."
+53,loadSubTree(InputStream),load sub tree in ,Method,,org.apache.jmeter.save.SaveService+loadTree(InputStream),org.apache.jmeter.save.OldSaveService+generateNode(Configuration) org.apache.jmeter.save.OldSaveService+generateNode(Configuration) java.io.IOException+IOException(String) java.io.IOException+IOException(String),org.apache.jmeter.save.OldSaveService+builder org.apache.jmeter.save.OldSaveService+log org.apache.jmeter.save.OldSaveService+log,531,16,41,,"public synchronized static HashTree loadSubTree(InputStream in) throws IOException {
+		try {
+			Configuration config = builder.build(in);
+			HashTree loadedTree = generateNode(config);
+
+			return loadedTree;
+		} catch (ConfigurationException e) {
+			String message = ""Problem loading using Avalon Configuration tools"";
+			log.error(message, e);
+			throw new IOException(message);
+		} catch (SAXException e) {
+			String message = ""Problem with SAX implementation"";
+			log.error(message, e);
+			throw new IOException(message);
+		}
+	}",False,False,"This method loads a subtree from an input stream. It uses Avalon Configuration tools to build a configuration object, then generates a hash tree node from the configuration. If there are any configuration or SAX errors, it logs an error and throws an IOException.",False,"This code defines a synchronized static method called `loadSubTree` that takes an `InputStream` as input and returns a `HashTree`. It uses the Avalon Configuration tools to build a configuration from the input stream, generates a `HashTree` from the configuration, and handles any exceptions that may occur during the process."
+54,createTestElement(Configuration),create test element config ,Method,generateNode(Configuration),,"org.apache.jmeter.util.NameUpdater+getCurrentTestName(String,String) org.apache.jmeter.util.NameUpdater+getCurrentTestName(String,String) java.lang.Class+newInstance() java.lang.Class+forName(String) java.lang.Class+forName(String) java.lang.Class+newInstance() org.apache.jmeter.save.OldSaveService+createProperty(Configuration,String) org.apache.jmeter.save.OldSaveService+createProperty(Configuration,String) org.apache.jmeter.testelement.TestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.TestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.TestElement+setProperty(String,String) org.apache.jmeter.testelement.TestElement+setProperty(String,String) org.apache.jmeter.testelement.TestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.TestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.TestElementProperty+TestElementProperty(String,TestElement) org.apache.jmeter.save.OldSaveService+createTestElement(Configuration) org.apache.jmeter.save.OldSaveService+createTestElement(Configuration) org.apache.jmeter.testelement.TestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.TestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.CollectionProperty+CollectionProperty(String,Collection) org.apache.jmeter.save.OldSaveService+createCollection(Configuration,String) org.apache.jmeter.save.OldSaveService+createCollection(Configuration,String) org.apache.jmeter.testelement.TestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.TestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.MapProperty+MapProperty(String,Map) org.apache.jmeter.save.OldSaveService+createMap(Configuration,String) org.apache.jmeter.save.OldSaveService+createMap(Configuration,String)",org.apache.jmeter.testelement.TestElement+GUI_CLASS org.apache.jmeter.save.OldSaveService+log,2041,42,9,,"public static TestElement createTestElement(Configuration config) throws ConfigurationException,
+			ClassNotFoundException, IllegalAccessException, InstantiationException {
+		TestElement element = null;
+
+		String testClass = config.getAttribute(""class""); // $NON-NLS-1$
+		
+        String gui_class=""""; // $NON-NLS-1$
+		Configuration[] children = config.getChildren();
+        for (int i = 0; i < children.length; i++) {
+            if (children[i].getName().equals(""property"")) { // $NON-NLS-1$
+                if (children[i].getAttribute(""name"").equals(TestElement.GUI_CLASS)){ // $NON-NLS-1$
+                    gui_class=children[i].getValue();
+                }
+            }  
+        }
+        
+        String newClass = NameUpdater.getCurrentTestName(testClass,gui_class);
+
+        element = (TestElement) Class.forName(newClass).newInstance();
+
+        for (int i = 0; i < children.length; i++) {
+			if (children[i].getName().equals(""property"")) { // $NON-NLS-1$
+				try {
+                    JMeterProperty prop = createProperty(children[i], newClass);
+					if (prop!=null) element.setProperty(prop);
+				} catch (Exception ex) {
+					log.error(""Problem loading property"", ex);
+					element.setProperty(children[i].getAttribute(""name""), """"); // $NON-NLS-1$ // $NON-NLS-2$
+				}
+			} else if (children[i].getName().equals(""testelement"")) { // $NON-NLS-1$
+				element.setProperty(new TestElementProperty(children[i].getAttribute(""name"", """"), // $NON-NLS-1$ // $NON-NLS-2$
+						createTestElement(children[i])));
+			} else if (children[i].getName().equals(""collection"")) { // $NON-NLS-1$
+				element.setProperty(new CollectionProperty(children[i].getAttribute(""name"", """"), // $NON-NLS-1$ // $NON-NLS-2$
+                        createCollection(children[i], newClass)));
+			} else if (children[i].getName().equals(""map"")) { // $NON-NLS-1$
+				element.setProperty(new MapProperty(children[i].getAttribute(""name"", """"), // $NON-NLS-1$ // $NON-NLS-2$
+                        createMap(children[i],newClass)));
+			}
+		}
+		return element;
+	}",False,False,"The function of this method is to create a TestElement object based on the provided Configuration object. It retrieves the class name from the configuration, updates it with the current test name, and then uses reflection to instantiate the class. It also sets properties of the TestElement object based on the child elements of the configuration.",False,"This code defines a method called `createTestElement` that takes a `Configuration` object as input and returns a `TestElement` object. It retrieves the class name and GUI class from the configuration, creates an instance of the class using reflection, and sets properties based on the child elements of the configuration. It handles different types of properties such as JMeterProperty, TestElementProperty, CollectionProperty, and MapProperty."
+55,"createCollection(Configuration,String)",create collection config test class ,Method,,,"java.lang.Class+forName(String) java.lang.Class+forName(String) org.apache.jmeter.save.OldSaveService+createProperty(Configuration,String) org.apache.jmeter.save.OldSaveService+createProperty(Configuration,String) java.util.Collection+add(E) java.util.Collection+add(E) java.util.Collection+add(E) java.util.Collection+add(E) org.apache.jmeter.testelement.property.TestElementProperty+TestElementProperty(String,TestElement) org.apache.jmeter.save.OldSaveService+createTestElement(Configuration) org.apache.jmeter.save.OldSaveService+createTestElement(Configuration) java.util.Collection+add(E) java.util.Collection+add(E) org.apache.jmeter.testelement.property.CollectionProperty+CollectionProperty(String,Collection) org.apache.jmeter.save.OldSaveService+createCollection(Configuration,String) org.apache.jmeter.save.OldSaveService+createCollection(Configuration,String) org.apache.jmeter.save.OldSaveService+createProperty(Configuration,String) org.apache.jmeter.save.OldSaveService+createProperty(Configuration,String) java.util.Collection+add(E) java.util.Collection+add(E) java.util.Collection+add(E) java.util.Collection+add(E) org.apache.jmeter.testelement.property.MapProperty+MapProperty(String,Map) org.apache.jmeter.save.OldSaveService+createMap(Configuration,String) org.apache.jmeter.save.OldSaveService+createMap(Configuration,String)",,1393,23,10,,"private static Collection createCollection(Configuration config, String testClass) throws ConfigurationException,
+			ClassNotFoundException, IllegalAccessException, InstantiationException {
+		Collection coll = (Collection) Class.forName(config.getAttribute(""class"")).newInstance(); // $NON-NLS-1$ 
+		Configuration[] items = config.getChildren();
+
+		for (int i = 0; i < items.length; i++) {
+			if (items[i].getName().equals(""property"")) { // $NON-NLS-1$ 
+                JMeterProperty prop = createProperty(items[i], testClass);
+				if (prop!=null) coll.add(prop);
+			} else if (items[i].getName().equals(""testelement"")) { // $NON-NLS-1$ 
+				coll.add(new TestElementProperty(items[i].getAttribute(""name"", """"), createTestElement(items[i]))); // $NON-NLS-1$ // $NON-NLS-2$
+			} else if (items[i].getName().equals(""collection"")) { // $NON-NLS-1$ 
+				coll.add(new CollectionProperty(items[i].getAttribute(""name"", """"), // $NON-NLS-1$ // $NON-NLS-2$
+						createCollection(items[i], testClass)));
+			} else if (items[i].getName().equals(""string"")) { // $NON-NLS-1$ 
+                JMeterProperty prop = createProperty(items[i], testClass);
+				if (prop!=null) coll.add(prop);
+			} else if (items[i].getName().equals(""map"")) { // $NON-NLS-1$ 
+				coll.add(new MapProperty(items[i].getAttribute(""name"", """"), createMap(items[i], testClass))); // $NON-NLS-1$ // $NON-NLS-2$
+			}
+		}
+		return coll;
+	}",False,False,"This method creates a collection based on the given configuration and test class. It iterates through the configuration items and adds properties, test elements, collections, strings, and maps to the collection. The resulting collection is then returned.",False,"This code defines a method called ""createCollection"" that takes a Configuration object and a testClass string as parameters. It creates a Collection object based on the class attribute of the Configuration object, and then iterates through the children of the Configuration object to add properties, test elements, collections, strings, and maps to the Collection object. The method returns the populated Collection object."
+56,"createProperty(Configuration,String)",create property config test class ,Method,"createTestElement(Configuration) createCollection(Configuration,String) createCollection(Configuration,String) createMap(Configuration,String)",,"java.lang.Class+getName() java.lang.Class+getName() org.apache.jmeter.util.NameUpdater+getCurrentName(String,String) org.apache.jmeter.util.NameUpdater+getCurrentName(String,String) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.util.NameUpdater+getCurrentName(String) org.apache.jmeter.util.NameUpdater+getCurrentName(String) java.lang.String+equals(Object) java.lang.String+equals(Object) org.apache.jmeter.util.NameUpdater+getCurrentName(String,String,String) org.apache.jmeter.util.NameUpdater+getCurrentName(String,String,String) java.lang.String+length() java.lang.String+length() java.lang.String+length() java.lang.String+length() java.lang.Class+newInstance() java.lang.Class+forName(String) java.lang.Class+forName(String) java.lang.Class+newInstance() org.apache.jmeter.testelement.property.JMeterProperty+setName(String) org.apache.jmeter.testelement.property.JMeterProperty+setName(String) org.apache.jmeter.testelement.property.JMeterProperty+setObjectValue(Object) org.apache.jmeter.testelement.property.JMeterProperty+setObjectValue(Object)",org.apache.jmeter.testelement.TestElement+GUI_CLASS org.apache.jmeter.testelement.TestElement+TEST_CLASS,1119,29,10,,"private static JMeterProperty createProperty(Configuration config, String testClass) throws IllegalAccessException,
+			ClassNotFoundException, InstantiationException {
+		String value = config.getValue(""""); // $NON-NLS-1$ 
+		String name = config.getAttribute(""name"", value); // $NON-NLS-1$ 
+        String oname = name;
+		String type = config.getAttribute(""propType"", StringProperty.class.getName()); // $NON-NLS-1$ 
+
+		// Do upgrade translation:
+		name = NameUpdater.getCurrentName(name, testClass);
+		if (TestElement.GUI_CLASS.equals(name)) {
+			value = NameUpdater.getCurrentName(value);
+        } else if (TestElement.TEST_CLASS.equals(name)) {
+            value=testClass; // must always agree
+		} else {
+			value = NameUpdater.getCurrentName(value, name, testClass);
+		}
+
+        // Delete any properties whose name converts to the empty string
+        if (oname.length() != 0 && name.length()==0) {
+            return null;
+        }
+
+        // Create the property:
+		JMeterProperty prop = (JMeterProperty) Class.forName(type).newInstance();
+		prop.setName(name);
+		prop.setObjectValue(value);
+
+		return prop;
+	}",False,False,"The function of this method is to create a JMeterProperty object based on the given Configuration and testClass. It retrieves values and attributes from the Configuration, performs some translations and updates, and then creates and returns the JMeterProperty object.",False,"This code defines a private static method called `createProperty` that takes a `Configuration` object and a `testClass` string as parameters. It creates a `JMeterProperty` object based on the provided configuration, including handling upgrades and name conversions. The method returns the created `JMeterProperty` object."
+57,"createMap(Configuration,String)",create map config test class ,Method,,,"java.lang.Class+forName(String) java.lang.Class+forName(String) org.apache.jmeter.save.OldSaveService+createProperty(Configuration,String) org.apache.jmeter.save.OldSaveService+createProperty(Configuration,String) java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.jmeter.testelement.property.JMeterProperty+getName() org.apache.jmeter.testelement.property.JMeterProperty+getName() java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.jmeter.testelement.property.TestElementProperty+TestElementProperty(String,TestElement) org.apache.jmeter.save.OldSaveService+createTestElement(Configuration) org.apache.jmeter.save.OldSaveService+createTestElement(Configuration) java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.jmeter.testelement.property.CollectionProperty+CollectionProperty(String,Collection) org.apache.jmeter.save.OldSaveService+createCollection(Configuration,String) org.apache.jmeter.save.OldSaveService+createCollection(Configuration,String) java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.jmeter.testelement.property.MapProperty+MapProperty(String,Map) org.apache.jmeter.save.OldSaveService+createMap(Configuration,String) org.apache.jmeter.save.OldSaveService+createMap(Configuration,String)",,1340,24,10,,"private static Map createMap(Configuration config, String testClass) throws ConfigurationException,
+			ClassNotFoundException, IllegalAccessException, InstantiationException {
+		Map map = (Map) Class.forName(config.getAttribute(""class"")).newInstance();
+		Configuration[] items = config.getChildren();
+
+		for (int i = 0; i < items.length; i++) {
+			if (items[i].getName().equals(""property"")) { // $NON-NLS-1$ 
+				JMeterProperty prop = createProperty(items[i], testClass);
+				if (prop!=null) map.put(prop.getName(), prop);
+			} else if (items[i].getName().equals(""testelement"")) { // $NON-NLS-1$ 
+				map.put(items[i].getAttribute(""name"", """"), new TestElementProperty(items[i].getAttribute(""name"", """"), // $NON-NLS-1$ // $NON-NLS-2$
+						createTestElement(items[i])));
+			} else if (items[i].getName().equals(""collection"")) { // $NON-NLS-1$ 
+				map.put(items[i].getAttribute(""name""),  // $NON-NLS-1$ 
+						new CollectionProperty(items[i].getAttribute(""name"", """"), // $NON-NLS-1$ // $NON-NLS-2$
+						createCollection(items[i], testClass)));
+			} else if (items[i].getName().equals(""map"")) { // $NON-NLS-1$ 
+				map.put(items[i].getAttribute(""name"", """"),  // $NON-NLS-1$ // $NON-NLS-2$
+						new MapProperty(items[i].getAttribute(""name"", """"), // $NON-NLS-1$ // $NON-NLS-2$
+						createMap(items[i], testClass)));
+			}
+		}
+		return map;
+	}",False,False,"The function of this method is to create a map based on the given configuration and test class. It uses reflection to instantiate objects and populates the map with properties, test elements, collections, and nested maps.",False,"The code defines a private static method called `createMap` that takes a `Configuration` object and a `String` as parameters. It creates a `Map` object and populates it with properties, test elements, collections, and nested maps based on the configuration data. The method returns the populated map."
+58,generateNode(Configuration),generate node config ,Method,loadSubTree(InputStream) generateNode(Configuration),,"org.apache.jmeter.save.OldSaveService+createTestElement(Configuration) org.apache.jmeter.save.OldSaveService+createTestElement(Configuration) org.apache.jorphan.collections.ListedHashTree+ListedHashTree(Object) org.apache.jmeter.save.OldSaveService+generateNode(Configuration) org.apache.jmeter.save.OldSaveService+generateNode(Configuration) org.apache.jorphan.collections.HashTree+add(Object,HashTree) org.apache.jorphan.collections.HashTree+add(Object,HashTree)",org.apache.jmeter.save.OldSaveService+log,567,21,10,,"private static HashTree generateNode(Configuration config) {
+		TestElement element = null;
+
+		try {
+			element = createTestElement(config.getChild(""testelement"")); // $NON-NLS-1$ 
+		} catch (Exception e) {
+			log.error(""Problem loading part of file"", e);
+			return null;
+		}
+		HashTree subTree = new ListedHashTree(element);
+		Configuration[] subNodes = config.getChildren(""node""); // $NON-NLS-1$ 
+
+		for (int i = 0; i < subNodes.length; i++) {
+			HashTree t = generateNode(subNodes[i]);
+
+			if (t != null) {
+				subTree.add(element, t);
+			}
+		}
+		return subTree;
+	}",False,False,"The function generates a HashTree node based on the given Configuration object. It creates a TestElement from the child ""testelement"" of the Configuration, and then recursively generates HashTree nodes for each child ""node"" of the Configuration. The generated HashTree nodes are added to the parent HashTree node.",False,"The code defines a private static method called `generateNode` that takes a `Configuration` object as input. It creates a `TestElement` object by calling the `createTestElement` method with a child configuration, and then recursively generates a `HashTree` by calling itself on each child configuration. The method returns the generated `HashTree`."

@@ -1,0 +1,916 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,getFolderPipelineTest(),get folder pipeline test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j,312,8,1,,"@Test
+    public void getFolderPipelineTest() throws IOException {
+        MockFolder folder = j.createFolder(""folder1"");
+        Project p = folder.createProject(FreeStyleProject.class, ""test1"");
+
+        Map response = get(""/organizations/jenkins/pipelines/test1"");
+        validatePipeline(p, response);
+    }",False,False,"The function of the given method is to test the ""getFolderPipeline"" functionality. It creates a mock folder and project, then calls the ""get"" method to retrieve pipeline information for the project, and finally validates the pipeline response.",True,"The code is a unit test method that tests the functionality of the ""getFolderPipelineTest"" method. It creates a mock folder and project, then calls the ""get"" method with a specific URL and validates the response against the created project."
+2,getPipelineTest(),get pipeline test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j,254,7,1,,"@Test
+    public void getPipelineTest() throws IOException {
+        Project p = j.createFreeStyleProject(""pipeline1"");
+
+        Map<String,Object> response = get(""/organizations/jenkins/pipelines/pipeline1"");
+        validatePipeline(p, response);
+    }",False,False,"The function of the method is to test the ""getPipelineTest"" by creating a free-style project, getting the pipeline information for the project, and validating the pipeline against the response.",False,"The code is a unit test method that tests the functionality of the ""getPipelineTest"" method. It creates a new free-style project called ""pipeline1"" and then calls the ""get"" method to retrieve information about the pipeline. The retrieved information is then validated using the ""validatePipeline"" method."
+3,deletePipelineTest(),delete pipeline test todo latest stapler change broke delete disabled for now ,Method,,,io.jenkins.blueocean.service.embedded.BaseTest+delete(String) io.jenkins.blueocean.service.embedded.BaseTest+delete(String) org.junit.Assert+assertNull(Object) org.junit.Assert+assertNull(Object),io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,324,9,1,"/** 
+ * TODO: latest stapler change broke delete, disabled for now 
+ */
+","/** TODO: latest stapler change broke delete, disabled for now */
+//    @Test
+    public void deletePipelineTest() throws IOException {
+        Project p = j.createFreeStyleProject(""pipeline1"");
+
+        delete(""/organizations/jenkins/pipelines/pipeline1/"");
+
+        Assert.assertNull(j.jenkins.getItem(p.getName()));
+    }",False,False,"The function of this method is to test the deletion of a pipeline in Jenkins. It creates a new project, deletes the pipeline, and then asserts that the pipeline no longer exists in Jenkins.",False,"The code is a test method named ""deletePipelineTest"" that tests the deletion of a pipeline in Jenkins. It creates a free-style project named ""pipeline1"", deletes it using a specific URL, and then asserts that the project no longer exists in Jenkins. However, the test is currently disabled due to a recent change in the stapler library."
+4,getFreeStyleJobTest(),get free style job test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,682,18,1,,"@Test
+    public void getFreeStyleJobTest() throws Exception {
+        Project p1 = j.createFreeStyleProject(""pipeline1"");
+        Project p2 = j.createFreeStyleProject(""pipeline2"");
+        p1.getBuildersList().add(new Shell(""echo hello!\nsleep 1""));
+        FreeStyleBuild b = (FreeStyleBuild) p1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b);
+
+        List<Map> resp = get(""/organizations/jenkins/pipelines/"", List.class);
+        Project[] projects = {p1,p2};
+
+        Assert.assertEquals(projects.length, resp.size());
+
+        for(int i=0; i<projects.length; i++){
+            Map p = resp.get(i);
+            validatePipeline(projects[i], p);
+        }
+    }",False,False,"The function of this method is to test the ""getFreeStyleJob"" method. It creates two free-style projects, adds a shell command to one of them, schedules a build, asserts the build status, retrieves a list of pipelines, and validates each pipeline against its corresponding project.",False,"The code is a unit test for the `getFreeStyleJobTest` method. It creates two free-style projects, adds a shell command to one of them, schedules a build, and asserts that the build is successful. It then retrieves a list of pipelines and validates each pipeline against the corresponding project."
+5,findPipelinesTest(),find pipelines test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,531,15,1,,"@Test
+    public void findPipelinesTest() throws IOException {
+        FreeStyleProject p1 = j.createFreeStyleProject(""pipeline2"");
+        FreeStyleProject p2 = j.createFreeStyleProject(""pipeline3"");
+
+        List<Map> resp = get(""/search?q=type:pipeline;organization:jenkins"", List.class);
+        Project[] projects = {p1,p2};
+
+        Assert.assertEquals(projects.length, resp.size());
+
+        for(int i=0; i<projects.length; i++){
+            Map p = resp.get(i);
+            validatePipeline(projects[i], p);
+        }
+    }",False,False,"The function of this method is to test the functionality of finding pipelines in Jenkins. It creates two FreeStyle projects, makes a search request for pipelines with a specific organization, and then validates the pipelines returned in the response.",False,"The code is a JUnit test method that tests the functionality of finding pipelines. It creates two FreeStyle projects, makes a GET request to search for pipelines with specific criteria, and then validates the response by comparing it with the created projects."
+6,getPipelineWithLastSuccessfulRun(),get pipeline with last successful run ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,417,10,1,,"@Test
+    public void getPipelineWithLastSuccessfulRun() throws Exception {
+        FreeStyleProject p = j.createFreeStyleProject(""pipeline4"");
+        p.getBuildersList().add(new Shell(""echo hello!\nsleep 1""));
+        FreeStyleBuild b = p.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b);
+        Map resp = get(""/organizations/jenkins/pipelines/pipeline4/"");
+
+        validatePipeline(p, resp);
+    }",False,False,"The function of the method is to test the functionality of the ""getPipelineWithLastSuccessfulRun"" method. It creates a FreeStyleProject, adds a Shell builder, schedules a build, asserts the build status, and validates the pipeline response.",False,"The code is a unit test that verifies the functionality of the ""getPipelineWithLastSuccessfulRun"" method. It creates a FreeStyleProject, adds a Shell builder to it, schedules a build, and then validates the pipeline by calling the ""validatePipeline"" function with the project and response as parameters."
+7,getPipelineRunTest(),get pipeline run test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,411,9,1,,"@Test
+    public void getPipelineRunTest() throws Exception {
+        FreeStyleProject p = j.createFreeStyleProject(""pipeline4"");
+        p.getBuildersList().add(new Shell(""echo hello!\nsleep 1""));
+        FreeStyleBuild b = p.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b);
+        Map resp = get(""/organizations/jenkins/pipelines/pipeline4/runs/""+b.getId());
+        validateRun(b,resp);
+    }",False,False,"The function of the given method is to test the ""getPipelineRun"" functionality. It creates a FreeStyleProject, adds a Shell builder, schedules a build, asserts the build status, and then retrieves and validates the run details using a specific URL.",False,"The code is a unit test method that tests the functionality of the ""getPipelineRun"" method. It creates a FreeStyleProject, adds a Shell builder to it, schedules a build, and then asserts that the build status is successful. Finally, it calls the ""get"" method with the build ID to retrieve the pipeline run and validates it against the expected response."
+8,getPipelineRunStopTest(),get pipeline run stop test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest.RequestBuilder+build(Class<T>) io.jenkins.blueocean.service.embedded.BaseTest.RequestBuilder+put(String) io.jenkins.blueocean.service.embedded.BaseTest+request() io.jenkins.blueocean.service.embedded.BaseTest+request() io.jenkins.blueocean.service.embedded.BaseTest.RequestBuilder+put(String) io.jenkins.blueocean.service.embedded.BaseTest.RequestBuilder+build(Class<T>) java.lang.String+equalsIgnoreCase(String) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.String+equalsIgnoreCase(String) java.lang.Thread+sleep(long) java.lang.Thread+sleep(long) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) io.jenkins.blueocean.service.embedded.BaseTest+put(String,Object) io.jenkins.blueocean.service.embedded.BaseTest+put(String,Object) java.lang.String+equalsIgnoreCase(String) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.String+equalsIgnoreCase(String) java.lang.Thread+sleep(long) java.lang.Thread+sleep(long) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,1582,42,1,,"@Test
+    public void getPipelineRunStopTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+
+        job1.setDefinition(new CpsFlowDefinition("""" +
+            ""node {"" +
+            ""   stage ('Build1'); "" +
+            ""   sh('sleep 60') "" +
+            ""   stage ('Test1'); "" +
+            ""   echo ('Testing'); "" +
+            ""}""));
+
+        WorkflowRun b1 = job1.scheduleBuild2(0).waitForStart();
+        Map r=null;
+
+        for (int i = 0; i < 10; i++) {
+             r = request().put(""/organizations/jenkins/pipelines/pipeline1/runs/1/stop"")
+                .build(Map.class);
+             if(((String) r.get(""state"")).equalsIgnoreCase(""FINISHED""))
+                continue;
+            Thread.sleep(1000);
+        }
+        Assert.assertEquals(r.get(""state""), ""FINISHED"");
+        Assert.assertEquals(r.get(""result""), ""ABORTED"");
+
+        j.assertBuildStatus(Result.ABORTED, b1);
+
+        FreeStyleProject p = j.createFreeStyleProject(""pipeline5"");
+        p.getBuildersList().add(new Shell(""echo hello!\nsleep 69""));
+        FreeStyleBuild b2 = p.scheduleBuild2(0).waitForStart();
+
+        for (int i = 0; i < 10; i++) {
+            r = put(""/organizations/jenkins/pipelines/pipeline5/runs/1/stop"",null);
+            if(((String) r.get(""state"")).equalsIgnoreCase(""finished""))
+                continue;
+            Thread.sleep(1000);
+        }
+        Assert.assertEquals(r.get(""state""), ""FINISHED"");
+        Assert.assertEquals(r.get(""result""), ""ABORTED"");
+        j.assertBuildStatus(Result.ABORTED, b2);
+
+    }",False,False,"The function of this method is to test the functionality of stopping a pipeline run. It creates two pipeline jobs, runs them, and then attempts to stop the runs. It asserts that the runs are aborted and checks their status.",False,"The code is a JUnit test method that tests the functionality of stopping pipeline runs in Jenkins. It creates two different types of jobs (WorkflowJob and FreeStyleProject), schedules builds for them, and then attempts to stop the runs using HTTP requests. It asserts that the runs are successfully stopped and aborted."
+9,getPipelineRunLatestTest(),get pipeline run latest test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,626,17,1,,"@Test
+    public void getPipelineRunLatestTest() throws Exception {
+        FreeStyleProject p = j.createFreeStyleProject(""pipeline5"");
+        p.getBuildersList().add(new Shell(""echo hello!\nsleep 1""));
+        FreeStyleBuild b = p.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b);
+
+        List<Map> resp = get(""/search?q=type:run;organization:jenkins;pipeline:pipeline5;latestOnly:true"", List.class);
+        Run[] run = {b};
+
+        Assert.assertEquals(run.length, resp.size());
+
+        for(int i=0; i<run.length; i++){
+            Map lr = resp.get(i);
+            validateRun(run[i], lr);
+        }
+    }",False,False,"The function of this method is to test the ""getPipelineRunLatest"" method. It creates a FreeStyleProject, adds a Shell builder, schedules a build, and then asserts that the response from the ""get"" method matches the expected result.",False,"This code is a unit test for the `getPipelineRunLatestTest` method. It creates a FreeStyleProject, adds a Shell builder, schedules a build, and then asserts that the build is successful. It then calls a `get` method with a specific query and validates the response against the build."
+10,getPipelineRunsTest(),get pipeline runs test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,495,13,1,,"@Test
+    public void getPipelineRunsTest() throws Exception {
+        FreeStyleProject p = j.createFreeStyleProject(""pipeline6"");
+        p.getBuildersList().add(new Shell(""echo hello!\nsleep 1""));
+        FreeStyleBuild b = p.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b);
+
+        List<Map> resp = get(""/organizations/jenkins/pipelines/pipeline6/runs"", List.class);
+        Assert.assertEquals(1, resp.size());
+
+        Map lr = resp.get(0);
+        validateRun(b, lr);
+    }",False,False,"The function of this method is to test the ""getPipelineRuns"" functionality. It creates a FreeStyleProject, adds a Shell builder, schedules a build, asserts the build status, and then retrieves a list of pipeline runs and validates the first run.",False,"The code is a unit test for the `getPipelineRunsTest` method. It creates a FreeStyleProject, adds a Shell builder to it, schedules a build, and then asserts that the build was successful. It then calls a `get` method to retrieve a list of pipeline runs and validates the first run in the list."
+11,getPipelineJobsTest(),get pipeline jobs test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map) io.jenkins.blueocean.service.embedded.BaseTest+validatePipeline(Job,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,555,16,1,,"@Test
+    public void getPipelineJobsTest() throws IOException {
+        WorkflowJob p1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+        WorkflowJob p2 = j.jenkins.createProject(WorkflowJob.class, ""pipeline2"");
+
+        List<Map> resp = get(""/organizations/jenkins/pipelines/"", List.class);
+
+        WorkflowJob[] projects = {p1,p2};
+
+        Assert.assertEquals(projects.length, resp.size());
+
+        for(int i=0; i<projects.length; i++){
+            Map lr = resp.get(i);
+            validatePipeline(projects[i], lr);
+        }
+    }",False,False,"The function of this method is to test the ""getPipelineJobs"" method. It creates two WorkflowJob objects, retrieves a list of pipelines using the ""get"" method, compares the length of the list with the number of projects, and validates each pipeline using the ""validatePipeline"" method.",False,"The code is a unit test for the `getPipelineJobs` method. It creates two `WorkflowJob` objects, calls the `get` method to retrieve a list of pipelines, and then asserts that the size of the response matches the number of projects created. Finally, it validates each pipeline in the response using the `validatePipeline` method."
+12,getPipelineJobRunTest(),get pipeline job run test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,608,18,1,,"@Test
+    public void getPipelineJobRunTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+
+        job1.setDefinition(new CpsFlowDefinition("""" +
+            ""node {"" +
+            ""   stage ('Build1'); "" +
+            ""   echo ('Building'); "" +
+            ""   stage ('Test1'); "" +
+            ""   echo ('Testing'); "" +
+            ""}""));
+
+        WorkflowRun b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b1);
+
+        Map resp = get(""/organizations/jenkins/pipelines/pipeline1/runs/1"");
+        validateRun(b1, resp);
+    }",False,False,"The function of this method is to test the ""getPipelineJobRun"" functionality. It creates a new pipeline job, sets its definition, schedules a build, and then retrieves and validates the run information using the ""/organizations/jenkins/pipelines/pipeline1/runs/1"" endpoint.",False,"This code is a unit test for the `getPipelineJobRunTest` method. It creates a Jenkins pipeline job, sets its definition using a DSL script, schedules a build, and then validates the response received from a GET request to retrieve information about the pipeline run."
+13,nodesTest(),nodes test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.Object+equals(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertNull(Object) org.junit.Assert+assertNull(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertNull(Object) org.junit.Assert+assertNull(Object) java.util.Map+get(Object) java.util.Map+get(Object)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,5467,137,1,,"@Test
+    public void nodesTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+        job1.setDefinition(new CpsFlowDefinition(""stage \""Build\""\n"" +
+            ""    node {\n"" +
+            ""       sh \""echo here\""\n"" +
+            ""    }\n"" +
+            ""\n"" +
+            ""stage \""Test\""\n"" +
+            ""    parallel (\n"" +
+            ""        \""Firefox\"" : {\n"" +
+            ""            node {\n"" +
+            ""                sh \""echo ffox\""\n"" +
+            ""            }\n"" +
+            ""        },\n"" +
+            ""        \""Chrome\"" : {\n"" +
+            ""            node {\n"" +
+            ""                sh \""echo chrome\""\n"" +
+            ""            }\n"" +
+            ""        }\n"" +
+            ""    )\n"" +
+            ""\n"" +
+            ""stage \""CrashyMcgee\""\n"" +
+            ""  parallel (\n"" +
+            ""    \""SlowButSuccess\"" : {\n"" +
+            ""        node {\n"" +
+            ""            echo 'This is time well spent.'\n"" +
+            ""        }\n"" +
+            ""    },\n"" +
+            ""    \""DelayThenFail\"" : {\n"" +
+            ""        node {\n"" +
+            ""            echo 'Not yet.'\n"" +
+            ""        }\n"" +
+            ""    },\n"" +
+            ""  )\n"" +
+            ""\n"" +
+            ""\n"" +
+            ""stage \""Deploy\""\n"" +
+            ""    node {\n"" +
+            ""        sh \""echo deploying\""\n"" +
+            ""    }""));
+
+        WorkflowRun b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b1);
+
+        get(""/organizations/jenkins/pipelines/pipeline1/runs/1/nodes/"", List.class);
+
+        job1.setDefinition(new CpsFlowDefinition(""stage \""Build\""\n"" +
+            ""    node {\n"" +
+            ""       sh \""echo here\""\n"" +
+            ""    }\n"" +
+            ""\n"" +
+            ""stage \""Test\""\n"" +
+            ""    parallel (\n"" +
+            ""        \""Firefox\"" : {\n"" +
+            ""            node {\n"" +
+            ""                sh \""echo ffox\""\n"" +
+            ""            }\n"" +
+            ""        },\n"" +
+            ""        \""Chrome\"" : {\n"" +
+            ""            node {\n"" +
+            ""                sh \""echo chrome\""\n"" +
+            ""            }\n"" +
+            ""        }\n"" +
+            ""    )\n"" +
+            ""\n"" +
+            ""stage \""CrashyMcgee\""\n"" +
+            ""  parallel (\n"" +
+            ""    \""SlowButSuccess\"" : {\n"" +
+            ""        node {\n"" +
+            ""            echo 'This is time well spent.'\n"" +
+            ""            sh 'sleep 3;'\n"" +
+            ""        }\n"" +
+            ""    },\n"" +
+            ""    \""DelayThenFail\"" : {\n"" +
+            ""        node {\n"" +
+            ""            echo 'Fail soon.'\n"" +
+            ""            echo 'KABOOM!'\n"" +
+            ""            sh '11exit 1'\n"" +
+            ""        }\n"" +
+            ""    },\n"" +
+            ""  )\n"" +
+            ""\n"" +
+            ""\n"" +
+            ""stage \""Deploy\""\n"" +
+            ""    node {\n"" +
+            ""        sh \""echo deploying\""\n"" +
+            ""    }""));
+
+
+
+        WorkflowRun b2 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatus(Result.FAILURE,b2);
+
+        List<Map> resp = get(""/organizations/jenkins/pipelines/pipeline1/runs/2/nodes/"", List.class);
+        Assert.assertEquals(resp.size(), 8);
+        for(int i=0; i< resp.size();i++){
+            Map rn = resp.get(i);
+            List<Map> edges = (List<Map>) rn.get(""edges"");
+
+            if(rn.get(""displayName"").equals(""Test"")){
+                Assert.assertEquals(2, edges.size());
+                Assert.assertEquals(rn.get(""result""), ""SUCCESS"");
+                Assert.assertEquals(rn.get(""state""), ""FINISHED"");
+            }else if(rn.get(""displayName"").equals(""Firefox"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(rn.get(""result""), ""SUCCESS"");
+                Assert.assertEquals(rn.get(""state""), ""FINISHED"");
+            }else if(rn.get(""displayName"").equals(""Chrome"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(rn.get(""result""), ""SUCCESS"");
+                Assert.assertEquals(rn.get(""state""), ""FINISHED"");
+            }else if(rn.get(""displayName"").equals(""CrashyMcgee"")){
+                Assert.assertEquals(2, edges.size());
+                Assert.assertEquals(rn.get(""result""), ""FAILURE"");
+                Assert.assertEquals(rn.get(""state""), ""FINISHED"");
+            }else if(rn.get(""displayName"").equals(""SlowButSuccess"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(rn.get(""result""), ""SUCCESS"");
+                Assert.assertEquals(rn.get(""state""), ""FINISHED"");
+            }else if(rn.get(""displayName"").equals(""DelayThenFail"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(rn.get(""result""), ""FAILURE"");
+                Assert.assertEquals(rn.get(""state""), ""FINISHED"");
+            }else if(rn.get(""displayName"").equals(""build"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(rn.get(""result""), ""SUCCESS"");
+                Assert.assertEquals(rn.get(""state""), ""FINISHED"");
+            }else if(rn.get(""displayName"").equals(""Deploy"")){
+                Assert.assertEquals(0, edges.size());
+                Assert.assertNull(rn.get(""result""));
+                Assert.assertNull(rn.get(""state""));
+            }
+
+        }
+
+    }",True,True,"The function of this method is to test the behavior of a Jenkins pipeline. It creates a Jenkins job with a defined pipeline, runs the job twice with different pipeline definitions, and then asserts the expected results of each stage and node in the pipeline.",False,"The code is a test method that creates a Jenkins pipeline job with multiple stages and nodes. It then runs the job twice, asserting the expected results for each node in the pipeline. The function summary is to test the behavior and results of a Jenkins pipeline job with different stages and nodes."
+14,getPipelineJobRunNodesTest(),get pipeline job run nodes test ,Method,,,"java.lang.Object+Object() io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,2878,74,1,,"@Test
+    public void getPipelineJobRunNodesTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+
+
+        job1.setDefinition(new CpsFlowDefinition(""stage 'build'\n"" +
+            ""node{\n"" +
+            ""  echo \""Building...\""\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'test'\n"" +
+            ""parallel 'unit':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Unit testing...\""\n"" +
+            ""  }\n"" +
+            ""},'integration':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Integration testing...\""\n"" +
+            ""  }\n"" +
+            ""}, 'ui':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""UI testing...\""\n"" +
+            ""  }\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'deploy'\n"" +
+            ""node{\n"" +
+            ""  echo \""Deploying\""\n"" +
+            ""}"" +
+            ""\n"" +
+            ""stage 'deployToProd'\n"" +
+            ""node{\n"" +
+            ""  echo \""Deploying to production\""\n"" +
+            ""}""
+        ));
+        WorkflowRun b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b1);
+
+        FlowGraphTable nodeGraphTable = new FlowGraphTable(b1.getExecution());
+        nodeGraphTable.build();
+        List<FlowNode> nodes = getStages(nodeGraphTable);
+        List<FlowNode> parallelNodes = getParallelNodes(nodeGraphTable);
+
+        Assert.assertEquals(7, nodes.size());
+        Assert.assertEquals(3, parallelNodes.size());
+
+        List<Map> resp = get(""/organizations/jenkins/pipelines/pipeline1/runs/1/nodes/"", List.class);
+
+        Assert.assertEquals(nodes.size(), resp.size());
+        for(int i=0; i< nodes.size();i++){
+            FlowNode n = nodes.get(i);
+            Map rn = resp.get(i);
+            Assert.assertEquals(n.getId(), rn.get(""id""));
+            Assert.assertEquals(getNodeName(n), rn.get(""displayName""));
+            Assert.assertEquals(""SUCCESS"", rn.get(""result""));
+            List<Map> edges = (List<Map>) rn.get(""edges"");
+
+
+            if(n.getDisplayName().equals(""test"")){
+                Assert.assertEquals(parallelNodes.size(), edges.size());
+                Assert.assertEquals(edges.get(i).get(""id""), parallelNodes.get(i).getId());
+            }else if(n.getDisplayName().equals(""build"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(edges.get(i).get(""id""), nodes.get(i+1).getId());
+            }else if(n.getDisplayName().equals(""deploy"")){
+                Assert.assertEquals(1, edges.size());
+            }else if(n.getDisplayName().equals(""deployToProd"")){
+                Assert.assertEquals(0, edges.size());
+            }else{
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(edges.get(0).get(""id""), nodes.get(nodes.size() - 2).getId());
+            }
+        }
+    }",True,True,"The function of the method is to test the functionality of the ""getPipelineJobRunNodes"" method. It creates a pipeline job, sets its definition, schedules a build, and then asserts the expected number of nodes and edges in the pipeline graph. It also asserts the expected values for each node's id, display name, and result.",False,"The code is a test method that verifies the correctness of a pipeline job's run nodes. It creates a pipeline job with multiple stages and parallel branches, executes the job, and then compares the expected nodes and edges with the actual nodes and edges obtained from the API response."
+15,getPipelineJobRunNodesTestWithFuture(),get pipeline job run nodes test with future ,Method,,,"java.lang.Object+Object() io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) io.jenkins.blueocean.service.embedded.rest.PipelineNodeUtil+getDisplayName(FlowNode) io.jenkins.blueocean.service.embedded.rest.PipelineNodeUtil+getDisplayName(FlowNode) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertNull(Object) org.junit.Assert+assertNull(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertNull(Object) org.junit.Assert+assertNull(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertNull(Object) org.junit.Assert+assertNull(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertNull(Object) org.junit.Assert+assertNull(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertNull(Object) org.junit.Assert+assertNull(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertNull(Object) org.junit.Assert+assertNull(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,6805,154,1,,"@Test
+    public void getPipelineJobRunNodesTestWithFuture() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+
+
+        job1.setDefinition(new CpsFlowDefinition(""stage 'build'\n"" +
+            ""node{\n"" +
+            ""  echo \""Building...\""\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'test'\n"" +
+            ""parallel 'unit':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Unit testing...\""\n"" +
+            ""  }\n"" +
+            ""},'integration':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Integration testing...\""\n"" +
+            ""  }\n"" +
+            ""}, 'ui':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""UI testing...\""\n"" +
+            ""  }\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'deploy'\n"" +
+            ""node{\n"" +
+            ""  echo \""Deploying\""\n"" +
+            ""}"" +
+            ""\n"" +
+            ""stage 'deployToProd'\n"" +
+            ""node{\n"" +
+            ""  echo \""Deploying to production\""\n"" +
+            ""}""
+        ));
+        WorkflowRun b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b1);
+
+        FlowGraphTable nodeGraphTable = new FlowGraphTable(b1.getExecution());
+        nodeGraphTable.build();
+        List<FlowNode> nodes = getStages(nodeGraphTable);
+        List<FlowNode> parallelNodes = getParallelNodes(nodeGraphTable);
+
+        Assert.assertEquals(7, nodes.size());
+        Assert.assertEquals(3, parallelNodes.size());
+
+        List<Map> resp = get(""/organizations/jenkins/pipelines/pipeline1/runs/1/nodes/"", List.class);
+
+        Assert.assertEquals(nodes.size(), resp.size());
+        for(int i=0; i< nodes.size();i++){
+            FlowNode n = nodes.get(i);
+            Map rn = resp.get(i);
+            Assert.assertEquals(n.getId(), rn.get(""id""));
+            Assert.assertEquals(getNodeName(n), rn.get(""displayName""));
+            Assert.assertEquals(""SUCCESS"", rn.get(""result""));
+            List<Map> edges = (List<Map>) rn.get(""edges"");
+
+            if(n.getDisplayName().equals(""test"")){
+                Assert.assertEquals(parallelNodes.size(), edges.size());
+                Assert.assertEquals(edges.get(i).get(""id""), parallelNodes.get(i).getId());
+            }else if(n.getDisplayName().equals(""build"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(edges.get(i).get(""id""), nodes.get(i+1).getId());
+            }else if(n.getDisplayName().equals(""deploy"")){
+                Assert.assertEquals(1, edges.size());
+            }else if(n.getDisplayName().equals(""deployToProd"")){
+                Assert.assertEquals(0, edges.size());
+            }else{
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(edges.get(0).get(""id""), nodes.get(nodes.size() - 2).getId());
+            }
+        }
+
+        job1.setDefinition(new CpsFlowDefinition(""stage 'build'\n"" +
+            ""node{\n"" +
+            ""  echo \""Building...\""\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'test'\n"" +
+            ""parallel 'unit':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Unit testing...\""\n"" +
+            ""    sh \""`fail-the-build`\""\n"" + //fail the build intentionally
+            ""  }\n"" +
+            ""},'integration':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Integration testing...\""\n"" +
+            ""  }\n"" +
+            ""}, 'ui':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""UI testing...\""\n"" +
+            ""  }\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'deploy'\n"" +
+            ""node{\n"" +
+            ""  echo \""Deploying\""\n"" +
+            ""}"" +
+            ""\n"" +
+            ""stage 'deployToProd'\n"" +
+            ""node{\n"" +
+            ""  echo \""Deploying to production\""\n"" +
+            ""}""
+        ));
+        b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatus(Result.FAILURE,b1);
+        resp = get(String.format(""/organizations/jenkins/pipelines/pipeline1/runs/%s/nodes/"",b1.getId()), List.class);
+        Assert.assertEquals(nodes.size(), resp.size());
+        for(int i=0; i< nodes.size();i++){
+            FlowNode n = nodes.get(i);
+            Map rn = resp.get(i);
+            Assert.assertEquals(n.getId(), rn.get(""id""));
+            Assert.assertEquals(getNodeName(n), rn.get(""displayName""));
+            List<Map> edges = (List<Map>) rn.get(""edges"");
+            if(n.getDisplayName().equals(""build"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(edges.get(i).get(""id""), nodes.get(i+1).getId());
+                Assert.assertEquals(""SUCCESS"", rn.get(""result""));
+                Assert.assertEquals(""FINISHED"", rn.get(""state""));
+            }else if (n.getDisplayName().equals(""test"")){
+                Assert.assertEquals(parallelNodes.size(), edges.size());
+                Assert.assertEquals(edges.get(i).get(""id""), parallelNodes.get(i).getId());
+                Assert.assertEquals(""FAILURE"", rn.get(""result""));
+                Assert.assertEquals(""FINISHED"", rn.get(""state""));
+            }else if(PipelineNodeUtil.getDisplayName(n).equals(""unit"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(edges.get(0).get(""id""), nodes.get(nodes.size() - 2).getId());
+                Assert.assertEquals(edges.get(0).get(""durationInMillis""), -1);
+                Assert.assertEquals(""FAILURE"", rn.get(""result""));
+                Assert.assertEquals(""FINISHED"", rn.get(""state""));
+            }else if(n.getDisplayName().equals(""deploy"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertNull(rn.get(""result""));
+                Assert.assertNull(rn.get(""state""));
+                Assert.assertNull(rn.get(""startTime""));
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(edges.get(0).get(""id""), nodes.get(nodes.size() - 1).getId());
+                Assert.assertEquals(edges.get(0).get(""durationInMillis""), -1);
+            }else if(n.getDisplayName().equals(""deployToProd"")){
+                Assert.assertEquals(0, edges.size());
+                Assert.assertNull(rn.get(""result""));
+                Assert.assertNull(rn.get(""state""));
+                Assert.assertNull(rn.get(""startTime""));
+                Assert.assertEquals(0, edges.size());
+            }else{
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(edges.get(0).get(""id""), nodes.get(nodes.size() - 2).getId());
+                Assert.assertEquals(edges.get(0).get(""durationInMillis""), -1);
+                Assert.assertEquals(""SUCCESS"", rn.get(""result""));
+                Assert.assertEquals(""FINISHED"", rn.get(""state""));
+            }
+        }
+
+    }",True,True,The function of the method is to test the behavior of a pipeline job run with parallel stages and handle the response from the API.,False,"This code is a test method that verifies the behavior of a pipeline job run. It creates a pipeline job with multiple stages and parallel nodes, executes the job, and then checks the results and properties of the executed nodes."
+16,getPipelineJobRunNodesWithFailureTest(),get pipeline job run nodes with failure test ,Method,,,"java.lang.Object+Object() io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,2814,71,1,,"@Test
+    public void getPipelineJobRunNodesWithFailureTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+
+
+        job1.setDefinition(new CpsFlowDefinition(""stage 'build'\n"" +
+            ""node{\n"" +
+            ""  echo \""Building...\""\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'test'\n"" +
+            ""parallel 'unit':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Unit testing...\""\n"" +
+            ""    sh \""`fail-the-build`\""\n"" + //fail the build intentionally
+            ""  }\n"" +
+            ""},'integration':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Integration testing...\""\n"" +
+            ""  }\n"" +
+            ""}, 'ui':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""UI testing...\""\n"" +
+            ""  }\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'deploy'\n"" +
+            ""node{\n"" +
+            ""  echo \""Deploying\""\n"" +
+            ""}""
+        ));
+        WorkflowRun b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatus(Result.FAILURE, b1);
+
+        FlowGraphTable nodeGraphTable = new FlowGraphTable(b1.getExecution());
+        nodeGraphTable.build();
+        List<FlowNode> nodes = getStages(nodeGraphTable);
+        List<FlowNode> parallelNodes = getParallelNodes(nodeGraphTable);
+
+        Assert.assertEquals(5, nodes.size());
+        Assert.assertEquals(3, parallelNodes.size());
+
+        List<Map> resp = get(""/organizations/jenkins/pipelines/pipeline1/runs/1/nodes/"", List.class);
+
+        Assert.assertEquals(nodes.size(), resp.size());
+        for(int i=0; i< nodes.size();i++){
+            FlowNode n = nodes.get(i);
+            Map rn = resp.get(i);
+            Assert.assertEquals(n.getId(), rn.get(""id""));
+            Assert.assertEquals(getNodeName(n), rn.get(""displayName""));
+
+            List<Map> edges = (List<Map>) rn.get(""edges"");
+
+
+            if(n.getDisplayName().equals(""test"")){
+                Assert.assertEquals(parallelNodes.size(), edges.size());
+                Assert.assertEquals(edges.get(i).get(""id""), parallelNodes.get(i).getId());
+                Assert.assertEquals(""FAILURE"", rn.get(""result""));
+            }else if(n.getDisplayName().equals(""build"")){
+                Assert.assertEquals(1, edges.size());
+                Assert.assertEquals(edges.get(i).get(""id""), nodes.get(i+1).getId());
+                Assert.assertEquals(""SUCCESS"", rn.get(""result""));
+            }else if(n.getDisplayName().equals(""Branch: unit"")){
+                Assert.assertEquals(0, edges.size());
+                Assert.assertEquals(""FAILURE"", rn.get(""result""));
+            }else{
+                Assert.assertEquals(0, edges.size());
+                Assert.assertEquals(""SUCCESS"", rn.get(""result""));
+            }
+        }
+    }",True,True,"The function of this method is to test the behavior of the ""getPipelineJobRunNodesWithFailure"" method. It creates a pipeline job, sets its definition, schedules a build, and then asserts the expected results based on the flow graph of the build execution.",False,"The code is a JUnit test method that tests the behavior of a pipeline job with multiple stages and parallel execution. It verifies the expected results of each stage and parallel node, including checking for failure and success statuses."
+17,getPipelineJobRunNodeTest(),get pipeline job run node test ,Method,,,"java.lang.Object+Object() io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) io.jenkins.blueocean.service.embedded.BaseTest+getNodeName(FlowNode) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.Map+get(Object) java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,2620,70,1,,"@Test
+    public void getPipelineJobRunNodeTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+
+
+        job1.setDefinition(new CpsFlowDefinition(""stage 'build'\n"" +
+            ""node{\n"" +
+            ""  echo \""Building...\""\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'test'\n"" +
+            ""parallel 'unit':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Unit testing...\""\n"" +
+            ""  }\n"" +
+            ""},'integration':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Integration testing...\""\n"" +
+            ""  }\n"" +
+            ""}, 'ui':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""UI testing...\""\n"" +
+            ""  }\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'deploy'\n"" +
+            ""node{\n"" +
+            ""  echo \""Deploying\""\n"" +
+            ""}""));
+
+        WorkflowRun b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b1);
+        FlowGraphTable nodeGraphTable = new FlowGraphTable(b1.getExecution());
+        nodeGraphTable.build();
+        List<FlowNode> nodes = getStages(nodeGraphTable);
+        List<FlowNode> parallelNodes = getParallelNodes(nodeGraphTable);
+
+        Assert.assertEquals(6, nodes.size());
+        Assert.assertEquals(3, parallelNodes.size());
+
+        // get all nodes for pipeline1
+        List<Map> resp = get(""/organizations/jenkins/pipelines/pipeline1/runs/1/nodes/"", List.class);
+        Assert.assertEquals(nodes.size(), resp.size());
+
+        //Get a node detail
+        FlowNode n = nodes.get(0);
+
+        Map node = get(""/organizations/jenkins/pipelines/pipeline1/runs/1/nodes/""+n.getId());
+
+        List<Map> edges = (List<Map>) node.get(""edges"");
+
+        Assert.assertEquals(n.getId(), node.get(""id""));
+        Assert.assertEquals(getNodeName(n), node.get(""displayName""));
+        Assert.assertEquals(""SUCCESS"", node.get(""result""));
+        Assert.assertEquals(1, edges.size());
+        Assert.assertEquals(nodes.get(1).getId(), edges.get(0).get(""id""));
+
+
+        //Get a parllel node detail
+        node = get(""/organizations/jenkins/pipelines/pipeline1/runs/1/nodes/""+parallelNodes.get(0).getId());
+
+        n = parallelNodes.get(0);
+        edges = (List<Map>) node.get(""edges"");
+
+        Assert.assertEquals(n.getId(), node.get(""id""));
+        Assert.assertEquals(getNodeName(n), node.get(""displayName""));
+        Assert.assertEquals(""SUCCESS"", node.get(""result""));
+        Assert.assertEquals(1, edges.size());
+        Assert.assertEquals(nodes.get(nodes.size()-1).getId(), edges.get(0).get(""id""));
+    }",True,True,"The function of this method is to test the functionality of the ""getPipelineJobRunNode"" method. It creates a pipeline job, sets its definition, schedules a build, and then asserts various conditions to ensure the correctness of the pipeline job's nodes and edges.",False,"The code is a unit test for a method called `getPipelineJobRunNodeTest()`. It creates a Jenkins pipeline job, runs the job, and then retrieves and verifies information about the nodes and edges in the pipeline run."
+18,getPipelineJobAbortTest(),get pipeline job abort test ,Method,,,"java.lang.Thread+sleep(long) java.lang.Thread+sleep(long) io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,804,26,1,,"@Test
+    public void getPipelineJobAbortTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+
+        job1.setDefinition(new CpsFlowDefinition("""" +
+            ""node {"" +
+            ""   stage ('Build1'); "" +
+            ""   sh('sleep 60') "" +
+            ""   stage ('Test1'); "" +
+            ""   echo ('Testing'); "" +
+            ""}""));
+
+        WorkflowRun b1 = job1.scheduleBuild2(0).waitForStart();
+        for (int i = 0; i < 10; i++) {
+            b1.doStop();
+            if (b1.getResult() != null) {
+                break;
+            }
+            Thread.sleep(1000);
+        }
+        j.assertBuildStatus(Result.ABORTED, b1);
+
+        Map r = get(""/organizations/jenkins/pipelines/pipeline1/runs/1"");
+
+        validateRun(b1, r);
+    }",False,False,"This method is a test case that verifies the functionality of the ""getPipelineJobAbortTest"" method. It creates a pipeline job, sets its definition, schedules a build, stops the build after a certain number of iterations, and asserts that the build status is ""ABORTED"". It then retrieves information about the build and validates it.",False,"This code is a JUnit test method that tests the functionality of aborting a pipeline job. It creates a pipeline job with two stages, waits for the job to start, and then attempts to abort the job. It then asserts that the job's status is set to ""ABORTED"" and validates the run using a helper function."
+19,getPipelineJobRunNodeLogTest(),get pipeline job run node log test ,Method,,,"java.lang.Object+Object() io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getStages(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) io.jenkins.blueocean.service.embedded.PipelineApiTest+getParallelNodes(FlowGraphTable) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertNotNull(Object) org.junit.Assert+assertNotNull(Object) java.io.PrintStream+println(String) java.io.PrintStream+println(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertNotNull(Object) org.junit.Assert+assertNotNull(Object) java.io.PrintStream+println(String) java.io.PrintStream+println(String) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertNotNull(Object) org.junit.Assert+assertNotNull(Object) java.io.PrintStream+println(String) java.io.PrintStream+println(String)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j java.lang.System+out java.lang.System+out java.lang.System+out,1932,53,1,,"@Test
+    public void getPipelineJobRunNodeLogTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+
+
+        job1.setDefinition(new CpsFlowDefinition(""stage 'build'\n"" +
+            ""node{\n"" +
+            ""  echo \""Building...\""\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'test'\n"" +
+            ""parallel 'unit':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Unit testing...\""\n"" +
+            ""  }\n"" +
+            ""},'integration':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""Integration testing...\""\n"" +
+            ""  }\n"" +
+            ""}, 'ui':{\n"" +
+            ""  node{\n"" +
+            ""    echo \""UI testing...\""\n"" +
+            ""  }\n"" +
+            ""}\n"" +
+            ""\n"" +
+            ""stage 'deploy'\n"" +
+            ""node{\n"" +
+            ""  echo \""Deploying\""\n"" +
+            ""}""));
+
+        WorkflowRun b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b1);
+        FlowGraphTable nodeGraphTable = new FlowGraphTable(b1.getExecution());
+        nodeGraphTable.build();
+        List<FlowNode> nodes = getStages(nodeGraphTable);
+        List<FlowNode> parallelNodes = getParallelNodes(nodeGraphTable);
+
+        Assert.assertEquals(6, nodes.size());
+        Assert.assertEquals(3, parallelNodes.size());
+
+        String output = get(""/organizations/jenkins/pipelines/pipeline1/runs/1/log"", String.class);
+        Assert.assertNotNull(output);
+        System.out.println(output);
+
+        output = get(""/organizations/jenkins/pipelines/pipeline1/runs/1/nodes/""+nodes.get(0).getId()+""/log"", String.class);
+        Assert.assertNotNull(output);
+        System.out.println(output);
+
+        output = get(""/organizations/jenkins/pipelines/pipeline1/runs/1/nodes/""+parallelNodes.get(0).getId()+""/log"", String.class);
+        Assert.assertNotNull(output);
+        System.out.println(output);
+
+    }",True,True,"The function of this method is to test the functionality of the ""getPipelineJobRunNodeLog"" method. It creates a pipeline job, sets its definition, schedules a build, retrieves the log output for different nodes in the pipeline, and asserts that the output is not null.",False,"The code is a JUnit test method that tests the functionality of retrieving log information for different stages and parallel nodes in a Jenkins pipeline job. It creates a pipeline job with multiple stages and parallel nodes, executes the job, and then retrieves and prints the log information for the job, stages, and parallel nodes."
+20,getPipelineJobRunsTest(),get pipeline job runs test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map) java.util.List+get(int) java.util.List+get(int)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,840,26,1,,"@Test
+    public void getPipelineJobRunsTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+
+        job1.setDefinition(new CpsFlowDefinition("""" +
+            ""node {"" +
+            ""   stage ('Build1'); "" +
+            ""   echo ('Building'); "" +
+            ""   stage ('Test1'); "" +
+            ""   echo ('Testing'); "" +
+            ""}""));
+
+        WorkflowRun b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b1);
+
+        WorkflowRun b2 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b2);
+
+        Run[] runs = {b2,b1};
+
+        List<Map> runResponses = get(""/organizations/jenkins/pipelines/pipeline1/runs"", List.class);
+
+        for(int i=0; i < runs.length; i++){
+            validateRun(runs[i], runResponses.get(i));
+        };
+    }",False,False,"The function of this method is to test the ""getPipelineJobRuns"" functionality. It creates a Jenkins pipeline job, sets its definition, schedules builds, asserts the build status, retrieves the runs, and validates each run against the corresponding response.",False,"This code is a unit test for the `getPipelineJobRunsTest` method. It creates a Jenkins pipeline job, runs the job twice, retrieves the list of job runs using an API call, and validates the response against the expected results."
+21,getPipelineJobRunsLogTest(),get pipeline job runs log test ,Method,,,"io.jenkins.blueocean.service.embedded.BaseTest+get(String,int,String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,int,String,Class<T>) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) java.io.PrintStream+println(char[]) java.io.PrintStream+println(char[]) org.junit.Assert+assertTrue(boolean) org.junit.Assert+assertTrue(boolean)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j java.lang.System+out,833,20,1,,"@Test
+    public void getPipelineJobRunsLogTest() throws Exception {
+        WorkflowJob job1 = j.jenkins.createProject(WorkflowJob.class, ""pipeline1"");
+        job1.setDefinition(new CpsFlowDefinition("""" +
+            ""node {"" +
+            ""   stage ('Build1'); "" +
+            ""   echo ('Building'); "" +
+            ""   stage ('Test1'); "" +
+            ""   echo ('Testing'); "" +
+            ""}""));
+
+        WorkflowRun b1 = job1.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b1);
+
+        HttpResponse<String> response = get(""/organizations/jenkins/pipelines/pipeline1/runs/""+b1.getId()+""/log?start=0"", 200,""plain/text"",HttpResponse.class);
+
+        int size = Integer.parseInt(response.getHeaders().getFirst(""X-Text-Size""));
+        System.out.println(response.getBody());
+        Assert.assertTrue(size > 0);
+    }",False,False,"The function of this method is to test the functionality of the ""getPipelineJobRunsLog"" method. It creates a Jenkins pipeline job, runs the job, retrieves the log of the job run, and asserts that the log size is greater than 0.",False,"This code is a JUnit test method that tests the functionality of the `getPipelineJobRunsLogTest` method. It creates a Jenkins pipeline job, runs the job, and then retrieves the log of the job run using an HTTP request. The test asserts that the size of the log is greater than 0."
+22,findPipelineRunsForAPipelineTest(),find pipeline runs for a pipeline test ,Method,,,"java.util.Stack+Stack() io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(Object,Object) org.junit.Assert+assertEquals(Object,Object) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,1001,24,1,,"@Test
+    public void findPipelineRunsForAPipelineTest() throws Exception {
+        FreeStyleProject p1 = j.createFreeStyleProject(""pipeline1"");
+        FreeStyleProject p2 = j.createFreeStyleProject(""pipeline2"");
+        p1.getBuildersList().add(new Shell(""echo hello!\nsleep 1""));
+        p2.getBuildersList().add(new Shell(""echo hello!\nsleep 1""));
+        Stack<FreeStyleBuild> builds = new Stack<FreeStyleBuild>();
+        FreeStyleBuild b11 = p1.scheduleBuild2(0).get();
+        FreeStyleBuild b12 = p1.scheduleBuild2(0).get();
+        builds.push(b11);
+        builds.push(b12);
+
+        j.assertBuildStatusSuccess(b11);
+        j.assertBuildStatusSuccess(b12);
+
+        List<Map> resp = get(""/search?q=type:run;organization:jenkins;pipeline:pipeline1"", List.class);
+
+        Assert.assertEquals(builds.size(), resp.size());
+        for(int i=0; i< builds.size(); i++){
+            Map p = resp.get(i);
+            FreeStyleBuild b = builds.pop();
+            validateRun(b, p);
+        }
+    }",False,False,"The function of this method is to test the functionality of finding pipeline runs for a specific pipeline. It creates two freestyle projects, adds shell commands to them, schedules builds, and then asserts the build status. It then makes a request to search for pipeline runs and validates the results.",False,"The code is a JUnit test method that tests the functionality of finding pipeline runs for a specific pipeline. It creates two FreeStyleProjects, adds a Shell build step to each, schedules builds for the projects, and then asserts that the number of builds returned matches the expected number. It also validates each build returned against the expected build."
+23,findPipelineRunsForAllPipelineTest(),find pipeline runs for all pipeline test ,Method,,,"java.util.Stack+Stack() java.util.Stack+Stack() com.google.common.collect.ImmutableMap+of(K,V,K,V) com.google.common.collect.ImmutableMap+of(K,V,K,V) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) io.jenkins.blueocean.service.embedded.BaseTest+get(String,Class<T>) org.junit.Assert+assertEquals(long,long) org.junit.Assert+assertEquals(long,long) java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) java.util.Map+get(Object) java.util.Map+get(Object) org.junit.Assert+assertNotNull(Object) org.junit.Assert+assertNotNull(Object) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map) io.jenkins.blueocean.service.embedded.BaseTest+validateRun(Run,Map)",io.jenkins.blueocean.service.embedded.BaseTest+j io.jenkins.blueocean.service.embedded.BaseTest+j,1238,26,1,,"@Test
+    public void findPipelineRunsForAllPipelineTest() throws IOException, ExecutionException, InterruptedException {
+        FreeStyleProject p1 = j.createFreeStyleProject(""pipeline11"");
+        FreeStyleProject p2 = j.createFreeStyleProject(""pipeline22"");
+        p1.getBuildersList().add(new Shell(""echo hello!\nsleep 1""));
+        p2.getBuildersList().add(new Shell(""echo hello!\nsleep 1""));
+        Stack<FreeStyleBuild> p1builds = new Stack<FreeStyleBuild>();
+        p1builds.push(p1.scheduleBuild2(0).get());
+        p1builds.push(p1.scheduleBuild2(0).get());
+
+        Stack<FreeStyleBuild> p2builds = new Stack<FreeStyleBuild>();
+        p2builds.push(p2.scheduleBuild2(0).get());
+        p2builds.push(p2.scheduleBuild2(0).get());
+
+        Map<String, Stack<FreeStyleBuild>> buildMap = ImmutableMap.of(p1.getName(), p1builds, p2.getName(), p2builds);
+
+        List<Map> resp = get(""/search?q=type:run;organization:jenkins"", List.class);
+
+        Assert.assertEquals(4, resp.size());
+        for(int i=0; i< 4; i++){
+            Map p = resp.get(i);
+            String pipeline = (String) p.get(""pipeline"");
+            Assert.assertNotNull(pipeline);
+            validateRun(buildMap.get(pipeline).pop(), p);
+        }
+    }",False,False,"The function of this method is to test the functionality of finding pipeline runs for all pipelines. It creates two FreeStyleProjects, adds builders to them, schedules builds, creates a map of builds, and then retrieves a list of pipeline runs. Finally, it asserts the size of the response and validates each run in the response.",False,"The code is a JUnit test method that tests the functionality of finding pipeline runs for all pipelines in a Jenkins organization. It creates two Freestyle projects, adds shell commands to them, schedules builds, and then retrieves the pipeline runs using an API call. It asserts that the response contains the expected number of runs and validates each run against the corresponding build in the build map."
+24,getStages(FlowGraphTable),get stages node graph table ,Method,getPipelineJobRunNodesTest() getPipelineJobRunNodesTestWithFuture() getPipelineJobRunNodesWithFailureTest() getPipelineJobRunNodeTest() getPipelineJobRunNodeLogTest(),,io.jenkins.blueocean.service.embedded.rest.PipelineNodeUtil+isStage(FlowNode) io.jenkins.blueocean.service.embedded.rest.PipelineNodeUtil+isStage(FlowNode) io.jenkins.blueocean.service.embedded.rest.PipelineNodeUtil+isParallelBranch(FlowNode) io.jenkins.blueocean.service.embedded.rest.PipelineNodeUtil+isParallelBranch(FlowNode),,396,10,2,,"private List<FlowNode> getStages(FlowGraphTable nodeGraphTable){
+        List<FlowNode> nodes = new ArrayList<>();
+        for(FlowGraphTable.Row row: nodeGraphTable.getRows()){
+            if(PipelineNodeUtil.isStage(row.getNode()) ||
+                PipelineNodeUtil.isParallelBranch(row.getNode())){
+                nodes.add(row.getNode());
+            }
+        }
+        return nodes;
+    }",True,True,This method returns a list of FlowNodes that are either stages or parallel branches from a given FlowGraphTable.,False,"This code defines a private method named ""getStages"" that takes a FlowGraphTable as input and returns a List of FlowNodes. It iterates through the rows of the table and checks if each node is a stage or a parallel branch using the PipelineNodeUtil class. If it is, the node is added to the list."
+25,getParallelNodes(FlowGraphTable),get parallel nodes node graph table ,Method,getPipelineJobRunNodesTest() getPipelineJobRunNodesTestWithFuture() getPipelineJobRunNodesWithFailureTest() getPipelineJobRunNodeTest() getPipelineJobRunNodeLogTest(),,io.jenkins.blueocean.service.embedded.rest.PipelineNodeUtil+isParallelBranch(FlowNode) io.jenkins.blueocean.service.embedded.rest.PipelineNodeUtil+isParallelBranch(FlowNode),,369,10,2,,"private List<FlowNode> getParallelNodes(FlowGraphTable nodeGraphTable){
+        List<FlowNode> parallelNodes = new ArrayList<>();
+
+        for(FlowGraphTable.Row row: nodeGraphTable.getRows()){
+            if(PipelineNodeUtil.isParallelBranch(row.getNode())){
+                parallelNodes.add(row.getNode());
+            }
+        }
+        return parallelNodes;
+    }",True,True,This method returns a list of FlowNodes that are parallel branches in a given FlowGraphTable.,False,"The code defines a private method called ""getParallelNodes"" that takes a FlowGraphTable as input and returns a List of FlowNodes. It iterates through the rows of the table and checks if each node is a parallel branch using the ""isParallelBranch"" method from the PipelineNodeUtil class. If a node is a parallel branch, it is added to the list of parallelNodes."
+26,testArtifactsRunApi(),test artifacts run api ,Method,,,"+perform(AbstractBuild,Launcher,BuildListener)",io.jenkins.blueocean.service.embedded.BaseTest+j,1255,29,1,,"@Test
+    public void testArtifactsRunApi() throws Exception {
+        FreeStyleProject p = j.createFreeStyleProject(""pipeline1"");
+        p.getBuildersList().add(new TestBuilder() {
+            @Override public boolean perform(AbstractBuild<?,?> build, Launcher launcher, BuildListener listener) throws InterruptedException, IOException {
+                FilePath ws = build.getWorkspace();
+                if (ws == null) {
+                    return false;
+                }
+                FilePath dir = ws.child(""dir"");
+                dir.mkdirs();
+                dir.child(""fizz"").write(""contents"", null);
+                dir.child(""lodge"").symlinkTo(""fizz"", listener);
+                return true;
+            }
+        });
+        ArtifactArchiver aa = new ArtifactArchiver(""dir/fizz"");
+        aa.setAllowEmptyArchive(true);
+        p.getPublishersList().add(aa);
+        FreeStyleBuild b = j.assertBuildStatusSuccess(p.scheduleBuild2(0));
+
+
+        Map run = get(""/organizations/jenkins/pipelines/pipeline1/runs/""+b.getId());
+
+        validateRun(b, run);
+        List<Map> artifacts = (List<Map>) run.get(""artifacts"");
+        Assert.assertEquals(1, artifacts.size());
+        Assert.assertEquals(""fizz"", artifacts.get(0).get(""name""));
+    }",False,False,"The function of this method is to test the ""Artifacts Run API"" by creating a FreeStyleProject, adding a TestBuilder that performs certain actions, archiving an artifact, and then validating the run and the artifacts produced.",False,"This code is a unit test for a Jenkins pipeline. It creates a FreeStyleProject, adds a TestBuilder that creates a directory and a symlink, adds an ArtifactArchiver to archive a file, and then validates the run and the artifacts created."

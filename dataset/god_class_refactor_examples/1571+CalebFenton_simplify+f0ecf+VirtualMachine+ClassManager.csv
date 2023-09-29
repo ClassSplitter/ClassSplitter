@@ -1,0 +1,355 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,getParameterSize(List<String>),get parameter size parameter types ,Method,getRootExecutionContext(String),org.cf.smalivm.opcode.InvokeOp+buildNonLocalCalleeContext(MethodState),java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object),,242,8,9,,"public static int getParameterSize(List<String> parameterTypes) {
+        int result = 0;
+        for (String type : parameterTypes) {
+            result += type.equals(""J"") || type.equals(""D"") ? 2 : 1;
+        }
+
+        return result;
+    }",False,False,"This method calculates the size of the parameters in a list. It iterates through each parameter type and adds 2 to the result if the type is ""J"" or ""D"", otherwise it adds 1. The final result is returned.",False,"The given code is a method named ""getParameterSize"" that takes a list of strings representing parameter types as input. It calculates and returns the total size of the parameters, where each parameter of type ""J"" or ""D"" occupies 2 units of size, while all other types occupy 1 unit of size."
+2,buildLocalClasses(List<BuilderClassDef>),build local classes class defs ,Method,"VirtualMachine(List<BuilderClassDef>,int,int,int)",,java.util.HashSet+HashSet(Collection) java.util.Set+add(E) java.util.Set+add(E),,350,9,10,,"private static Set<String> buildLocalClasses(List<BuilderClassDef> classDefs) {
+        Set<String> result = new HashSet<String>(classDefs.size());
+        for (BuilderClassDef classDef : classDefs) {
+            String className = ReferenceUtil.getReferenceString(classDef);
+            result.add(className);
+        }
+
+        return result;
+    }",True,True,"This method takes a list of BuilderClassDef objects and returns a set of strings. It iterates through the list, gets the reference string for each object, and adds it to the set.",True,"This code defines a private static method called ""buildLocalClasses"" that takes a list of BuilderClassDef objects as input. It creates a new HashSet and iterates over the input list, extracting the class name from each BuilderClassDef object using a utility method called ""getReferenceString"". The class names are then added to the HashSet, which is returned as the result."
+3,buildMethodDescriptorToBuilderMethod(List<BuilderClassDef>),build method descriptor to builder method class defs ,Method,"VirtualMachine(List<BuilderClassDef>,int,int,int)",,java.util.HashMap+HashMap(Map),,522,11,10,,"private static Map<String, BuilderMethod> buildMethodDescriptorToBuilderMethod(List<BuilderClassDef> classDefs) {
+        Map<String, BuilderMethod> result = new HashMap<String, BuilderMethod>(classDefs.size());
+        for (BuilderClassDef classDef : classDefs) {
+            for (BuilderMethod method : classDef.getMethods()) {
+                String methodDescriptor = ReferenceUtil.getMethodDescriptor(method);
+                result.put(methodDescriptor, method);
+            }
+        }
+
+        return result;
+    }",True,True,This method builds a map that maps method descriptors to builder methods. It takes a list of builder class definitions as input and returns a map with method descriptors as keys and corresponding builder methods as values.,True,"This code defines a private static method that takes a list of BuilderClassDef objects as input. It iterates over each BuilderClassDef and its methods, generating a method descriptor using ReferenceUtil.getMethodDescriptor(). It then adds the method descriptor and corresponding method to a HashMap and returns the resulting map."
+4,buildMethodDescriptorToParameterTypes(List<BuilderClassDef>),build method descriptor to parameter types class defs ,Method,"VirtualMachine(List<BuilderClassDef>,int,int,int)",,"java.util.HashMap+HashMap(Map) java.util.ArrayList+ArrayList(int) java.util.List+size() java.util.List+size() java.util.List+add(E) java.util.List+add(E) java.util.List+add(int,E) java.util.List+add(int,E) java.util.Map+put(K,V) java.util.Map+put(K,V)",,1243,24,10,,"private static Map<String, List<String>> buildMethodDescriptorToParameterTypes(List<BuilderClassDef> classDefs) {
+        Map<String, List<String>> result = new HashMap<String, List<String>>(classDefs.size());
+        for (BuilderClassDef classDef : classDefs) {
+            for (BuilderMethod method : classDef.getMethods()) {
+                List<? extends BuilderMethodParameter> builderParameters = method.getParameters();
+                List<String> parameterTypes = new ArrayList<String>(builderParameters.size());
+                for (BuilderMethodParameter builderParameter : builderParameters) {
+                    parameterTypes.add(builderParameter.getType());
+                }
+
+                int accessFlags = method.getAccessFlags();
+                boolean isStatic = ((accessFlags & AccessFlags.STATIC.getValue()) != 0);
+                if (!isStatic) {
+                    // First ""parameter"" for non-static methods is instance ref
+                    parameterTypes.add(0, method.getDefiningClass());
+                }
+
+                String methodDescriptor = ReferenceUtil.getMethodDescriptor(method);
+                result.put(methodDescriptor, parameterTypes);
+            }
+        }
+
+        return result;
+    }",True,True,"This method builds a map that maps method descriptors to their corresponding parameter types. It takes a list of BuilderClassDef objects as input, iterates through each class definition, and for each method in the class, retrieves the parameter types and adds them to a list. If the method is non-static, it adds the instance reference as the first parameter. Finally, it creates a method descriptor using ReferenceUtil.getMethodDescriptor() and adds the method descriptor and parameter types to the map. The resulting map is then returned.",True,"This code builds a map that maps method descriptors to their corresponding parameter types. It iterates over a list of builder class definitions, retrieves the methods and their parameters, determines if the method is static or not, adds the instance reference for non-static methods, and finally adds the method descriptor and parameter types to the map."
+5,buildMethodDescriptorToTryCatchList(List<BuilderClassDef>),build method descriptor to try catch list class defs ,Method,"VirtualMachine(List<BuilderClassDef>,int,int,int)",,java.util.HashMap+HashMap(),,843,17,10,,"private static Map<String, List<? extends TryBlock<? extends ExceptionHandler>>> buildMethodDescriptorToTryCatchList(
+                    List<BuilderClassDef> classDefs) {
+        Map<String, List<? extends TryBlock<? extends ExceptionHandler>>> result = new HashMap<String, List<? extends TryBlock<? extends ExceptionHandler>>>();
+        for (BuilderClassDef classDef : classDefs) {
+            for (BuilderMethod method : classDef.getMethods()) {
+                String methodDescriptor = ReferenceUtil.getMethodDescriptor(method);
+                MethodImplementation implementation = method.getImplementation();
+                if (implementation == null) {
+                    continue;
+                }
+                result.put(methodDescriptor, implementation.getTryBlocks());
+            }
+        }
+
+        return result;
+
+    }",True,True,This method builds a map that maps method descriptors to a list of try-catch blocks for each method in a list of builder class definitions.,True,"This code defines a private static method that takes a list of BuilderClassDef objects as input and returns a map. The map contains method descriptors as keys and lists of TryBlock objects as values, which are obtained from the input classDefs."
+6,getClassNameFromMethodDescriptor(String),get class name from method descriptor method descriptor ,Method,"execute(String,ExecutionContext,ExecutionContext,int[]) getRootExecutionContext(String)",,"java.lang.String+split(String,int) java.lang.String+split(String,int)",,138,3,10,,"private static String getClassNameFromMethodDescriptor(String methodDescriptor) {
+        return methodDescriptor.split(""->"", 2)[0];
+    }",False,False,"This method takes a method descriptor as input and returns the class name extracted from it by splitting the descriptor at the ""->"" delimiter and returning the first part.",True,"The given code is a private static method named ""getClassNameFromMethodDescriptor"" that takes a method descriptor as input and returns the class name extracted from it. It splits the method descriptor using ""->"" as the delimiter and returns the first element of the resulting array."
+7,"getMutableParameterConsensus(TIntList,ExecutionGraph,int)",get mutable parameter consensus address list graph parameter index ,Method,"collapseMultiverse(String,ExecutionGraph,ExecutionContext,ExecutionContext,int[])",,org.cf.smalivm.context.ExecutionGraph+getNodePile(int) org.cf.smalivm.context.ExecutionGraph+getNodePile(int) org.cf.smalivm.context.MethodState+peekParameter(int) org.cf.smalivm.context.ExecutionContext+getMethodState() org.cf.smalivm.context.ExecutionNode+getContext() org.cf.smalivm.context.ExecutionNode+getContext() org.cf.smalivm.context.ExecutionContext+getMethodState() org.cf.smalivm.context.MethodState+peekParameter(int) org.cf.smalivm.context.ExecutionGraph+getNodePile(int) org.cf.smalivm.context.ExecutionGraph+getNodePile(int) org.cf.smalivm.context.MethodState+peekParameter(int) org.cf.smalivm.context.ExecutionContext+getMethodState() org.cf.smalivm.context.ExecutionNode+getContext() org.cf.smalivm.context.ExecutionNode+getContext() org.cf.smalivm.context.ExecutionContext+getMethodState() org.cf.smalivm.context.MethodState+peekParameter(int) org.cf.smalivm.type.UnknownValue+UnknownValue(String) org.cf.smalivm.type.TypeUtil+getValueType(Object) org.cf.smalivm.type.TypeUtil+getValueType(Object),org.cf.smalivm.VirtualMachine+log org.cf.smalivm.VirtualMachine+log,976,22,10,,"private static Object getMutableParameterConsensus(TIntList addressList, ExecutionGraph graph, int parameterIndex) {
+        ExecutionNode firstNode = graph.getNodePile(addressList.get(0)).get(0);
+        Object value = firstNode.getContext().getMethodState().peekParameter(parameterIndex);
+        int[] addresses = addressList.toArray();
+        for (int address : addresses) {
+            List<ExecutionNode> nodes = graph.getNodePile(address);
+            for (ExecutionNode node : nodes) {
+                Object otherValue = node.getContext().getMethodState().peekParameter(parameterIndex);
+
+                if (value != otherValue) {
+                    if (log.isTraceEnabled()) {
+                        log.trace(""No conensus value for parameterIndex #"" + parameterIndex + "", returning unknown"");
+                    }
+
+                    return new UnknownValue(TypeUtil.getValueType(value));
+                }
+            }
+
+        }
+
+        return value;
+    }",False,False,"This method returns the consensus value of a mutable parameter in an execution graph. It iterates through the given address list, retrieves the parameter value from each node, and checks if they are all the same. If not, it returns an unknown value. Otherwise, it returns the consensus value.",True,"This code defines a method called `getMutableParameterConsensus` that takes a list of addresses, an execution graph, and a parameter index as input. It retrieves the parameter value from the first node in the graph and compares it with the parameter values from other nodes in the graph. If there is a difference, it returns an ""UnknownValue"" object, otherwise it returns the parameter value."
+8,log,log ,Field,,,,,96,1,26,,private static final Logger log = LoggerFactory.getLogger(VirtualMachine.class.getSimpleName());,False,False,,False,
+9,DEFAULT_MAX_ADDRESS_VISITS,default max address visits ,Field,,,,,58,1,26,,private static final int DEFAULT_MAX_ADDRESS_VISITS = 500;,False,False,,False,
+10,DEFAULT_MAX_METHOD_VISITS,default max method visits ,Field,,,,,86,1,26,,private static final int DEFAULT_MAX_METHOD_VISITS = DEFAULT_MAX_ADDRESS_VISITS * 500;,False,False,,False,
+11,DEFAULT_MAX_CALL_DEPTH,default max call depth ,Field,,,,,53,1,26,,private static final int DEFAULT_MAX_CALL_DEPTH = 20;,False,False,,False,
+12,localClasses,local classes ,Field,,,,,39,1,18,,private final Set<String> localClasses;,True,True,,False,
+13,maxCallDepth,max call depth ,Field,"VirtualMachine(List<BuilderClassDef>,int,int,int)",,,,31,1,18,,private final int maxCallDepth;,False,False,,False,
+14,maxAddressVisits,max address visits ,Field,"VirtualMachine(List<BuilderClassDef>,int,int,int)",,,,35,1,18,,private final int maxAddressVisits;,False,False,,False,
+15,maxMethodVisits,max method visits ,Field,"VirtualMachine(List<BuilderClassDef>,int,int,int)",,,,34,1,18,,private final int maxMethodVisits;,False,False,,False,
+16,methodDescriptorToBuilderMethod,method descriptor to builder method ,Field,,,,,73,1,18,,"private final Map<String, BuilderMethod> methodDescriptorToBuilderMethod;",True,True,,False,
+17,methodDescriptorToParameterTypes,method descriptor to parameter types ,Field,,,,,73,1,18,,"private final Map<String, List<String>> methodDescriptorToParameterTypes;",True,True,,False,
+18,methodDescriptorToTemplateContextGraph,method descriptor to template context graph ,Field,,,,,81,1,18,,"private final Map<String, ExecutionGraph> methodDescriptorToTemplateContextGraph;",False,True,,False,
+19,methodDescriptorToTryCatchList,method descriptor to try catch list ,Field,,,,,111,1,18,,"private final Map<String, List<? extends TryBlock<? extends ExceptionHandler>>> methodDescriptorToTryCatchList;",True,True,,False,
+20,classNameToFieldNameAndType,class name to field name and type ,Field,,,,,68,1,18,,"private final Map<String, List<String>> classNameToFieldNameAndType;",True,True,,False,
+21,methodExecutor,method executor ,Field,,,,,44,1,18,,private final MethodExecutor methodExecutor;,False,False,,False,
+22,VirtualMachine(List<BuilderClassDef>),virtual machine class defs ,Method,,,,org.cf.smalivm.VirtualMachine+DEFAULT_MAX_ADDRESS_VISITS org.cf.smalivm.VirtualMachine+DEFAULT_MAX_CALL_DEPTH org.cf.smalivm.VirtualMachine+DEFAULT_MAX_METHOD_VISITS,166,3,1,,"public VirtualMachine(List<BuilderClassDef> classDefs) {
+        this(classDefs, DEFAULT_MAX_ADDRESS_VISITS, DEFAULT_MAX_CALL_DEPTH, DEFAULT_MAX_METHOD_VISITS);
+    }",False,False,"The function of this method is to create a new instance of the VirtualMachine class, taking a list of BuilderClassDef objects as a parameter. It then calls another constructor of the VirtualMachine class with default values for additional parameters.",False,"The code snippet shows a constructor method for a VirtualMachine class that takes a list of BuilderClassDef objects as a parameter. It initializes the VirtualMachine object with the given classDefs list and default values for maximum address visits, maximum call depth, and maximum method visits."
+23,"VirtualMachine(List<BuilderClassDef>,int,int,int)",virtual machine class defs max address visits max call depth max method visits ,Method,,,org.cf.smalivm.VirtualMachine+buildLocalClasses(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildLocalClasses(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildMethodDescriptorToBuilderMethod(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildMethodDescriptorToBuilderMethod(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildMethodDescriptorToParameterTypes(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildMethodDescriptorToParameterTypes(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildMethodDescriptorToTryCatchList(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildMethodDescriptorToTryCatchList(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildClassNameToFieldNameAndType(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildClassNameToFieldNameAndType(List<BuilderClassDef>) org.cf.smalivm.MethodExecutor+MethodExecutor(VirtualMachine) java.util.HashMap+HashMap() org.cf.smalivm.VirtualMachine+buildMethodDescriptorToTemplateContextGraph(List<BuilderClassDef>) org.cf.smalivm.VirtualMachine+buildMethodDescriptorToTemplateContextGraph(List<BuilderClassDef>),org.cf.smalivm.VirtualMachine+maxAddressVisits org.cf.smalivm.VirtualMachine+maxAddressVisits org.cf.smalivm.VirtualMachine+maxMethodVisits org.cf.smalivm.VirtualMachine+maxMethodVisits org.cf.smalivm.VirtualMachine+maxCallDepth org.cf.smalivm.VirtualMachine+maxCallDepth org.cf.smalivm.VirtualMachine+localClasses org.cf.smalivm.VirtualMachine+methodDescriptorToBuilderMethod org.cf.smalivm.VirtualMachine+methodDescriptorToParameterTypes org.cf.smalivm.VirtualMachine+methodDescriptorToTryCatchList org.cf.smalivm.VirtualMachine+classNameToFieldNameAndType org.cf.smalivm.VirtualMachine+methodExecutor org.cf.smalivm.VirtualMachine+methodDescriptorToTemplateContextGraph,970,16,1,,"public VirtualMachine(List<BuilderClassDef> classDefs, int maxAddressVisits, int maxCallDepth, int maxMethodVisits) {
+        this.maxAddressVisits = maxAddressVisits;
+        this.maxMethodVisits = maxMethodVisits;
+        this.maxCallDepth = maxCallDepth;
+
+        localClasses = buildLocalClasses(classDefs);
+        methodDescriptorToBuilderMethod = buildMethodDescriptorToBuilderMethod(classDefs);
+        methodDescriptorToParameterTypes = buildMethodDescriptorToParameterTypes(classDefs);
+        methodDescriptorToTryCatchList = buildMethodDescriptorToTryCatchList(classDefs);
+        classNameToFieldNameAndType = buildClassNameToFieldNameAndType(classDefs);
+        methodExecutor = new MethodExecutor(this);
+
+        // Build graphs last because that's when ops are created and they may access the VM.
+        methodDescriptorToTemplateContextGraph = new HashMap<String, ExecutionGraph>();
+        buildMethodDescriptorToTemplateContextGraph(classDefs);
+    }",False,False,"The function of this method is to initialize a VirtualMachine object with the given parameters and build various data structures needed for execution, such as local classes, method descriptors, try-catch lists, and graphs.",False,"This code snippet is a constructor for a VirtualMachine class. It initializes various data structures and objects needed for the virtual machine's execution, such as local classes, method descriptors, try-catch lists, and execution graphs."
+24,VirtualMachine(String),virtual machine path ,Method,,,,org.cf.smalivm.VirtualMachine+DEFAULT_MAX_ADDRESS_VISITS org.cf.smalivm.VirtualMachine+DEFAULT_MAX_CALL_DEPTH org.cf.smalivm.VirtualMachine+DEFAULT_MAX_METHOD_VISITS,158,3,1,,"public VirtualMachine(String path) throws Exception {
+        this(path, DEFAULT_MAX_ADDRESS_VISITS, DEFAULT_MAX_CALL_DEPTH, DEFAULT_MAX_METHOD_VISITS);
+    }",False,False,"The function of the method is to create a new instance of the VirtualMachine class, taking a path as a parameter, and setting default values for maximum address visits, maximum call depth, and maximum method visits.",False,"The code snippet shows a constructor method for a class called VirtualMachine. It takes a string parameter 'path' and initializes the object with default values for maximum address visits, maximum call depth, and maximum method visits. It throws an exception if any error occurs during the initialization process."
+25,"VirtualMachine(String,int,int,int)",virtual machine path max address visits max call depth max method visits ,Method,,,org.cf.util.Dexifier+dexifySmaliFiles(String) org.cf.util.Dexifier+dexifySmaliFiles(String),,216,3,1,,"public VirtualMachine(String path, int maxAddressVisits, int maxCallDepth, int maxMethodVisits) throws Exception {
+        this(Dexifier.dexifySmaliFiles(path), maxAddressVisits, maxCallDepth, maxMethodVisits);
+    }",False,False,"The function of the method is to create a new instance of the VirtualMachine class by calling another constructor with the parameters path, maxAddressVisits, maxCallDepth, and maxMethodVisits. It throws an exception if an error occurs.",False,"The code defines a constructor for a VirtualMachine class that takes in a path to Smali files, maximum address visits, maximum call depth, and maximum method visits as parameters. It then calls another constructor with the dexified Smali files and the provided parameters."
+26,execute(String),execute method descriptor ,Method,,org.cf.demoapp.Main+main(String[]) org.cf.demoapp.Main+executeParameterLogic(int) org.cf.simplify.Main+main(String[]) org.cf.smalivm.TestAbstractMethods+ChildClass.TestInvokingAbstractMethodThroughParentReferenceWorks() org.cf.smalivm.TestAbstractMethods+ChildClass.TestInvokingImplemenetedAbstractMethodWorks() org.cf.smalivm.TestAbstractMethods+ParentClass.TestExecutingAbstractMethodReturnsNull() org.cf.smalivm.TestSideEffects+TestConstOpsHaveNoSideEffects() org.cf.smalivm.TestSideEffects+TestEmptyMethodHasNoSideEffects() org.cf.smalivm.TestSideEffects+TestInvokeMethodThatInvokesUnknownMethodHasStrongSideEffects() org.cf.smalivm.TestSideEffects+TestInvokeMethodWithNoSideEffectsHasNoSideEffects() org.cf.smalivm.TestSideEffects+TestInvokeOfNonAnalyzableMethodHasStrongSideEffects() org.cf.smalivm.TestSideEffects+TestInvokeSideEffectMethodHasStrongSideEffects() org.cf.smalivm.TestSideEffects+TestInvokeUnknownMethodHasStrongSideEffects() org.cf.smalivm.TestSideEffects+TestInvokeWhitelistedMethodsHasNoSideEffects() org.cf.smalivm.TestSideEffects+TestModifyInstanceMemberHasStrongSideEffects() org.cf.smalivm.TestSideEffects+TestNewInstanceNonLocalNonWhitelistedClassHasStrongSideEffects() org.cf.smalivm.TestSideEffects+TestNewInstanceNonLocalWhitelistedClassHasNoSideEffects() org.cf.smalivm.TestSideEffects+TestNewInstanceOfClassWithStaticInitializerWithStrongSideEffectsHasStrongSideEffects() org.cf.smalivm.TestSideEffects+TestNewInstanceOfClassWithStaticInitializerWithWeakSideEffectsHasWeakSideEffects() org.cf.smalivm.TestSideEffects+TestNewInstanceOfMethodWithNoStaticInitializerHasNoSideEffects() org.cf.smalivm.TestSideEffects+TestNewInstanceOfMethodWithStaticInitializerWithNoSideEffectsHasNoSideEffects() org.cf.smalivm.TestSideEffects+TestWriteOutputStreamHasStrongSideEffects(),"org.cf.smalivm.VirtualMachine+methodHasImplementation(String) org.cf.smalivm.VirtualMachine+methodHasImplementation(String) org.cf.smalivm.VirtualMachine+getRootExecutionContext(String) org.cf.smalivm.VirtualMachine+getRootExecutionContext(String) org.cf.smalivm.VirtualMachine+execute(String,ExecutionContext) org.cf.smalivm.VirtualMachine+execute(String,ExecutionContext)",,279,8,1,,"public ExecutionGraph execute(String methodDescriptor) {
+        if (!methodHasImplementation(methodDescriptor)) {
+            return null;
+        }
+        ExecutionContext ectx = getRootExecutionContext(methodDescriptor);
+
+        return execute(methodDescriptor, ectx);
+    }",False,False,"This method executes a given method by checking if it has an implementation, getting the root execution context, and then executing the method with the provided method descriptor and execution context.",False,"This code snippet defines a method called ""execute"" that takes a method descriptor as input and returns an ExecutionGraph object. It first checks if the method has an implementation, and if so, it retrieves the root execution context and calls the execute method again with the method descriptor and execution context as arguments."
+27,"execute(String,ExecutionContext)",execute method descriptor ectx ,Method,execute(String),"org.cf.demoapp.Main+executeParameterLogic(int) org.cf.demoapp.Main+executePrintParameter(int) org.cf.smalivm.VMTester+execute(VirtualMachine,String,String,TIntObjectMap<Object>,Map<String,Map<String,Object>>)","org.cf.smalivm.VirtualMachine+execute(String,ExecutionContext,ExecutionContext,int[]) org.cf.smalivm.VirtualMachine+execute(String,ExecutionContext,ExecutionContext,int[])",,145,3,1,,"public ExecutionGraph execute(String methodDescriptor, ExecutionContext ectx) {
+        return execute(methodDescriptor, ectx, null, null);
+    }",False,False,"The method ""execute"" takes a method descriptor and an execution context as parameters, and returns an ExecutionGraph. It also has an overloaded version that takes two additional parameters and calls itself with those parameters.",False,"The given code snippet defines a method named ""execute"" that takes a method descriptor and an execution context as input parameters. It returns an ExecutionGraph object by calling another overloaded version of the same method with additional null parameters."
+28,"execute(String,ExecutionContext,ExecutionContext,int[])",execute method descriptor callee context caller context parameter registers ,Method,"execute(String,ExecutionContext)","org.cf.smalivm.context.ExecutionContext+staticallyInitializeClassIfNecessary(String) org.cf.smalivm.opcode.InvokeOp+executeLocalMethod(String,ExecutionContext)","org.cf.smalivm.VirtualMachine+inheritClassStates(ExecutionContext,ExecutionContext) org.cf.smalivm.VirtualMachine+inheritClassStates(ExecutionContext,ExecutionContext) org.cf.smalivm.VirtualMachine+getClassNameFromMethodDescriptor(String) org.cf.smalivm.VirtualMachine+getClassNameFromMethodDescriptor(String) org.cf.smalivm.context.ExecutionContext+staticallyInitializeClassIfNecessary(String) org.cf.smalivm.context.ExecutionContext+staticallyInitializeClassIfNecessary(String) org.cf.smalivm.VirtualMachine+getInstructionGraphClone(String) org.cf.smalivm.VirtualMachine+getInstructionGraphClone(String) org.cf.smalivm.context.ExecutionNode+ExecutionNode(ExecutionNode) org.cf.smalivm.context.ExecutionGraph+getRoot() org.cf.smalivm.context.ExecutionGraph+getRoot() org.cf.smalivm.context.ExecutionNode+setContext(ExecutionContext) org.cf.smalivm.context.ExecutionNode+setContext(ExecutionContext) org.cf.smalivm.context.ExecutionGraph+addNode(ExecutionNode) org.cf.smalivm.context.ExecutionGraph+addNode(ExecutionNode) org.cf.smalivm.MethodExecutor+execute(ExecutionGraph) org.cf.smalivm.MethodExecutor+execute(ExecutionGraph) java.lang.Throwable+toString() java.lang.Throwable+toString() org.cf.smalivm.VirtualMachine+collapseMultiverse(String,ExecutionGraph,ExecutionContext,ExecutionContext,int[]) org.cf.smalivm.VirtualMachine+collapseMultiverse(String,ExecutionGraph,ExecutionContext,ExecutionContext,int[])",org.cf.smalivm.VirtualMachine+methodExecutor org.cf.smalivm.VirtualMachine+log org.cf.smalivm.VirtualMachine+log org.cf.smalivm.VirtualMachine+log org.cf.smalivm.VirtualMachine+log org.cf.smalivm.VirtualMachine+log org.cf.smalivm.VirtualMachine+log,1423,36,1,,"public ExecutionGraph execute(String methodDescriptor, ExecutionContext calleeContext,
+                    ExecutionContext callerContext, int[] parameterRegisters) {
+        if (callerContext != null) {
+            inheritClassStates(callerContext, calleeContext);
+        }
+
+        String className = getClassNameFromMethodDescriptor(methodDescriptor);
+        calleeContext.staticallyInitializeClassIfNecessary(className);
+
+        ExecutionGraph graph = getInstructionGraphClone(methodDescriptor);
+        ExecutionNode rootNode = new ExecutionNode(graph.getRoot());
+        rootNode.setContext(calleeContext);
+        graph.addNode(rootNode);
+
+        ExecutionGraph result = null;
+        try {
+            result = methodExecutor.execute(graph);
+        } catch (MaxCallDepthExceeded | MaxAddressVisitsExceeded e) {
+            if (log.isWarnEnabled()) {
+                log.warn(e.toString());
+            }
+        } catch (Exception e) {
+            if (log.isWarnEnabled()) {
+                log.warn(""Unhandled exception in "" + methodDescriptor + "". Giving up on this method."");
+            }
+            if (log.isDebugEnabled()) {
+                log.debug(""Stack trace: "", e);
+            }
+        }
+
+        if ((result != null) && (callerContext != null)) {
+            collapseMultiverse(methodDescriptor, graph, calleeContext, callerContext, parameterRegisters);
+        }
+
+        return result;
+    }",False,False,"The function of this method is to execute a given method in an execution context. It initializes the class if necessary, creates an execution graph, executes the graph, handles exceptions, and collapses the multiverse if necessary. The method returns the execution graph result.",False,"This code defines a method called `execute` that takes in a method descriptor, callee context, caller context, and an array of parameter registers. It executes the method by initializing the necessary class, creating an execution graph, executing the graph, and collapsing the multiverse if necessary. The method returns the execution graph as a result."
+29,getFieldNameAndTypes(String),get field name and types class name ,Method,"addTemplateClassState(ExecutionContext,String) collapseMultiverse(String,ExecutionGraph,ExecutionContext,ExecutionContext,int[]) inheritClassStates(ExecutionContext,ExecutionContext)",,java.util.Map+get(Object) java.util.Map+get(Object),org.cf.smalivm.VirtualMachine+classNameToFieldNameAndType,125,3,1,,"public List<String> getFieldNameAndTypes(String className) {
+        return classNameToFieldNameAndType.get(className);
+    }",False,False,This method returns a list of strings that contains the field names and types associated with a given class name.,False,"This code defines a method named ""getFieldNameAndTypes"" that takes a className as input and returns a List of Strings. The method retrieves the corresponding value from a map named ""classNameToFieldNameAndType"" using the className as the key and returns it."
+30,getInstructionGraphClone(String),get instruction graph clone method descriptor ,Method,"execute(String,ExecutionContext,ExecutionContext,int[])",,java.util.Map+get(Object) java.util.Map+get(Object) org.cf.smalivm.context.ExecutionGraph+ExecutionGraph(ExecutionGraph),org.cf.smalivm.VirtualMachine+methodDescriptorToTemplateContextGraph,253,6,1,,"public ExecutionGraph getInstructionGraphClone(String methodDescriptor) {
+        ExecutionGraph graph = methodDescriptorToTemplateContextGraph.get(methodDescriptor);
+        ExecutionGraph clone = new ExecutionGraph(graph);
+
+        return clone;
+    }",False,False,This method returns a clone of the ExecutionGraph object associated with the given method descriptor from the methodDescriptorToTemplateContextGraph map.,False,"This code defines a method named ""getInstructionGraphClone"" that takes a method descriptor as input. It retrieves an ExecutionGraph object from a map using the method descriptor as the key, creates a clone of the retrieved graph, and returns the clone."
+31,getLocalClasses(),get local classes ,Method,"collapseMultiverse(String,ExecutionGraph,ExecutionContext,ExecutionContext,int[]) inheritClassStates(ExecutionContext,ExecutionContext)",,java.util.Set+toArray(T[]) java.util.Set+toArray(T[]) java.util.Set+size() java.util.Set+size() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]),org.cf.smalivm.VirtualMachine+localClasses org.cf.smalivm.VirtualMachine+localClasses,173,5,1,,"public List<String> getLocalClasses() {
+        String[] classNames = localClasses.toArray(new String[localClasses.size()]);
+
+        return Arrays.asList(classNames);
+    }",True,True,This method returns a list of local classes by converting the localClasses array to a list using the Arrays.asList() method.,False,"The code defines a method named ""getLocalClasses"" that converts a list of local class names into an array of strings. It then returns a new list containing the same class names."
+32,getMaxAddressVisits(),get max address visits ,Method,,"org.cf.smalivm.MethodExecutor+checkMaxVisits(ExecutionNode,String,TIntIntMap)",,org.cf.smalivm.VirtualMachine+maxAddressVisits,73,3,1,,"public int getMaxAddressVisits() {
+        return maxAddressVisits;
+    }",False,False,"This method returns the value of the variable ""maxAddressVisits"".",False,"The code contains a method named ""getMaxAddressVisits"" which returns an integer value. This method is used to retrieve the maximum number of visits to an address."
+33,getMaxCallDepth(),get max call depth ,Method,,org.cf.smalivm.MethodExecutor+execute(ExecutionGraph),,org.cf.smalivm.VirtualMachine+maxCallDepth,65,3,1,,"public int getMaxCallDepth() {
+        return maxCallDepth;
+    }",False,False,"This method returns the value of the variable ""maxCallDepth"".",False,"The code contains a method named ""getMaxCallDepth"" which returns an integer value representing the maximum call depth. It does not take any parameters and simply returns the value of the ""maxCallDepth"" variable."
+34,getMaxMethodVisits(),get max method visits ,Method,,"org.cf.smalivm.MethodExecutor+checkMaxVisits(ExecutionNode,String,TIntIntMap)",,org.cf.smalivm.VirtualMachine+maxMethodVisits,71,3,1,,"public int getMaxMethodVisits() {
+        return maxMethodVisits;
+    }",False,False,"The function of the given method is to return the value of the variable ""maxMethodVisits"" as an integer.",False,"The code contains a method named ""getMaxMethodVisits"" which returns an integer value. This method is used to retrieve the maximum number of visits made to a method."
+35,getMethodDescriptors(),get method descriptors ,Method,,,,org.cf.smalivm.VirtualMachine+methodDescriptorToBuilderMethod,106,3,1,,"public Set<String> getMethodDescriptors() {
+        return methodDescriptorToBuilderMethod.keySet();
+    }",True,True,This method returns a set of strings that represents the method descriptors.,False,"The given code defines a method named ""getMethodDescriptors"" that returns a Set of Strings. This method retrieves the keys from a map called ""methodDescriptorToBuilderMethod"" and returns them as a Set."
+36,getParameterTypes(String),get parameter types method descriptor ,Method,"getRootExecutionContext(String) collapseMultiverse(String,ExecutionGraph,ExecutionContext,ExecutionContext,int[])","org.cf.smalivm.opcode.InvokeOp+create(Instruction,int,VirtualMachine)",java.util.Map+get(Object) java.util.Map+get(Object),org.cf.smalivm.VirtualMachine+methodDescriptorToParameterTypes,141,3,1,,"public List<String> getParameterTypes(String methodDescriptor) {
+        return methodDescriptorToParameterTypes.get(methodDescriptor);
+    }",True,True,This method returns a list of strings that represents the parameter types of a given method descriptor.,False,"This code defines a method named ""getParameterTypes"" that takes a string parameter called ""methodDescriptor"". It retrieves and returns a list of strings from a map called ""methodDescriptorToParameterTypes"" using the provided ""methodDescriptor"" as the key."
+37,getRootExecutionContext(String),get root execution context method descriptor ,Method,execute(String),"org.cf.demoapp.Main+executeParameterLogic(int) org.cf.demoapp.Main+executePrintParameter(int) org.cf.smalivm.context.ExecutionContext+staticallyInitializeClassIfNecessary(String) org.cf.smalivm.opcode.InvokeOp+buildLocalCalleeContext(String,ExecutionContext) org.cf.smalivm.VMTester+getSetupExecutionContext(VirtualMachine,String,TIntObjectMap<Object>,Map<String,Map<String,Object>>)","org.cf.smalivm.VirtualMachine+getBuilderMethod(String) org.cf.smalivm.VirtualMachine+getBuilderMethod(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) org.cf.smalivm.VirtualMachine+getParameterTypes(String) org.cf.smalivm.VirtualMachine+getParameterTypes(String) org.cf.smalivm.VirtualMachine+getParameterSize(List<String>) org.cf.smalivm.VirtualMachine+getParameterSize(List<String>) org.cf.smalivm.context.ExecutionContext+ExecutionContext(VirtualMachine) org.cf.smalivm.VirtualMachine+getClassNameFromMethodDescriptor(String) org.cf.smalivm.VirtualMachine+getClassNameFromMethodDescriptor(String) org.cf.smalivm.VirtualMachine+addTemplateClassState(ExecutionContext,String) org.cf.smalivm.VirtualMachine+addTemplateClassState(ExecutionContext,String) org.cf.smalivm.context.MethodState+MethodState(ExecutionContext,int,int,int) java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) org.cf.smalivm.type.LocalInstance+LocalInstance(String) org.cf.smalivm.type.UnknownValue+UnknownValue(String) org.cf.smalivm.context.MethodState+assignParameter(int,Object) org.cf.smalivm.context.MethodState+assignParameter(int,Object) org.cf.smalivm.context.ExecutionContext+setMethodState(MethodState) org.cf.smalivm.context.ExecutionContext+setMethodState(MethodState)",,1543,29,1,,"public ExecutionContext getRootExecutionContext(String methodDescriptor) {
+        BuilderMethod method = getBuilderMethod(methodDescriptor);
+        MethodImplementation impl = method.getImplementation();
+        if (null == impl) {
+            // Interface or abstract methods have no implementation. Shouldn't be executing them.
+            throw new IllegalArgumentException(""No implementation for "" + methodDescriptor);
+        }
+        int registerCount = impl.getRegisterCount();
+        List<String> parameterTypes = getParameterTypes(methodDescriptor);
+        int parameterSize = getParameterSize(parameterTypes);
+
+        int accessFlags = method.getAccessFlags();
+        boolean isStatic = ((accessFlags & AccessFlags.STATIC.getValue()) != 0);
+
+        ExecutionContext rootContext = new ExecutionContext(this);
+        String className = getClassNameFromMethodDescriptor(methodDescriptor);
+        addTemplateClassState(rootContext, className);
+
+        // Assume all input values are unknown.
+        MethodState mState = new MethodState(rootContext, registerCount, parameterTypes.size(), parameterSize);
+        for (int parameterIndex = 0; parameterIndex < parameterTypes.size(); parameterIndex++) {
+            String type = parameterTypes.get(parameterIndex);
+            Object value = (!isStatic && (parameterIndex == 0)) ? new LocalInstance(type) : new UnknownValue(type);
+            mState.assignParameter(parameterIndex, value);
+        }
+        rootContext.setMethodState(mState);
+
+        return rootContext;
+    }",False,False,"This method returns the root execution context for a given method descriptor. It creates an execution context, sets the method state, and assigns values to the parameters of the method.",False,"This code defines a method `getRootExecutionContext` that takes a method descriptor as input and returns an `ExecutionContext` object. It retrieves the implementation of the method, checks if it exists, and creates a new `MethodState` object with unknown input values for the method's parameters. Finally, it sets the `MethodState` in the `ExecutionContext` and returns it."
+38,getTryCatchList(String),get try catch list method descriptor ,Method,,org.cf.smalivm.MethodExecutor+execute(ExecutionGraph),,org.cf.smalivm.VirtualMachine+methodDescriptorToTryCatchList,177,3,1,,"public List<? extends TryBlock<? extends ExceptionHandler>> getTryCatchList(String methodDescriptor) {
+        return methodDescriptorToTryCatchList.get(methodDescriptor);
+    }",True,True,This method returns a list of try-catch blocks based on the given method descriptor. The list contains objects that extend the TryBlock class and have exception handlers that extend the ExceptionHandler class.,False,"This code defines a method named ""getTryCatchList"" that takes a string parameter ""methodDescriptor"" and returns a list of objects that extend the ""TryBlock"" class, which in turn extends the ""ExceptionHandler"" class. The method retrieves the list from a map called ""methodDescriptorToTryCatchList"" using the provided ""methodDescriptor"" as the key."
+39,isLocalClass(String),is local class class name ,Method,,"org.cf.smalivm.context.ExecutionContext+staticallyInitializeClassIfNecessary(String) org.cf.smalivm.opcode.CheckCastOp+execute(MethodState) org.cf.smalivm.opcode.ConstOp+create(Instruction,int,VirtualMachine) org.cf.smalivm.opcode.FilledNewArrayOp+create(Instruction,int,VirtualMachine) org.cf.smalivm.opcode.NewArrayOp+create(Instruction,int,VirtualMachine) org.cf.smalivm.opcode.NewInstanceOp+execute(ExecutionContext) org.cf.smalivm.StaticFieldAccessor+getField(VirtualMachine,ExecutionContext,String) org.cf.smalivm.StaticFieldAccessor+putField(VirtualMachine,ExecutionContext,String,Object)",java.util.Set+contains(Object) java.util.Set+contains(Object),org.cf.smalivm.VirtualMachine+localClasses,102,3,1,,"public boolean isLocalClass(String className) {
+        return localClasses.contains(className);
+    }",False,False,"This method checks if a given class name is a local class by checking if it exists in a collection of local classes. It returns true if the class name is found in the collection, and false otherwise.",False,"The given code defines a method named ""isLocalClass"" that takes a string parameter ""className"". It checks if the provided className exists in a collection called ""localClasses"" and returns a boolean value indicating whether it is present or not."
+40,isLocalMethod(String),is local method method descriptor ,Method,,"org.cf.smalivm.context.ExecutionContext+staticallyInitializeClassIfNecessary(String) org.cf.smalivm.opcode.InvokeOp+create(Instruction,int,VirtualMachine) org.cf.smalivm.opcode.InvokeOp+execute(ExecutionContext)",,org.cf.smalivm.VirtualMachine+methodDescriptorToBuilderMethod,139,3,1,,"public boolean isLocalMethod(String methodDescriptor) {
+        return methodDescriptorToBuilderMethod.containsKey(methodDescriptor);
+    }",True,True,"This method checks if a given method descriptor exists in a map and returns true if it does, indicating that the method is a local method.",False,"The given code is a method named ""isLocalMethod"" that takes a method descriptor as input and returns a boolean value. It checks if the method descriptor exists in a map called ""methodDescriptorToBuilderMethod"" and returns true if it does, otherwise false."
+41,methodHasImplementation(String),method has implementation method descriptor ,Method,execute(String),org.cf.smalivm.opcode.InvokeOp+execute(ExecutionContext),org.cf.smalivm.VirtualMachine+getBuilderMethod(String) org.cf.smalivm.VirtualMachine+getBuilderMethod(String),,190,5,1,,"public boolean methodHasImplementation(String methodDescriptor) {
+        BuilderMethod method = getBuilderMethod(methodDescriptor);
+
+        return null != method.getImplementation();
+    }",True,True,This method checks if a given method descriptor has an implementation by retrieving the builder method using the descriptor and returning true if the implementation is not null.,False,"The given code is a method named ""methodHasImplementation"" that takes a method descriptor as input. It retrieves a BuilderMethod object based on the descriptor and checks if the method has an implementation by verifying if the implementation is not null. The method returns a boolean value indicating whether the method has an implementation or not."
+42,updateInstructionGraph(String),update instruction graph method descriptor ,Method,buildMethodDescriptorToTemplateContextGraph(List<BuilderClassDef>),org.cf.simplify.Main+main(String[]),"org.cf.smalivm.context.ExecutionGraph+ExecutionGraph(VirtualMachine,BuilderMethod) java.util.Map+put(K,V) java.util.Map+put(K,V)",org.cf.smalivm.VirtualMachine+methodDescriptorToBuilderMethod org.cf.smalivm.VirtualMachine+methodDescriptorToTemplateContextGraph,295,5,1,,"public void updateInstructionGraph(String methodDescriptor) {
+        BuilderMethod method = methodDescriptorToBuilderMethod.get(methodDescriptor);
+        ExecutionGraph graph = new ExecutionGraph(this, method);
+        methodDescriptorToTemplateContextGraph.put(methodDescriptor, graph);
+    }",False,False,This method updates the instruction graph by creating a new ExecutionGraph object using the given method descriptor and adding it to a map using the method descriptor as the key.,False,"This code defines a method called ""updateInstructionGraph"" that takes a method descriptor as input. It retrieves a BuilderMethod object based on the method descriptor, creates an ExecutionGraph object using the BuilderMethod, and then adds the ExecutionGraph to a map using the method descriptor as the key."
+43,"addTemplateClassState(ExecutionContext,String)",add template class state ectx class name ,Method,getRootExecutionContext(String),,"org.cf.smalivm.VirtualMachine+getFieldNameAndTypes(String) org.cf.smalivm.VirtualMachine+getFieldNameAndTypes(String) org.cf.smalivm.context.ClassState+ClassState(ExecutionContext,String,int) java.util.List+size() java.util.List+size() java.lang.String+split(String) java.lang.String+split(String) org.cf.smalivm.context.ClassState+pokeField(String,Object) org.cf.smalivm.context.ClassState+pokeField(String,Object) org.cf.smalivm.type.UnknownValue+UnknownValue(String)",org.cf.smalivm.SideEffect+Level,514,9,2,,"private void addTemplateClassState(ExecutionContext ectx, String className) {
+        List<String> fieldNameAndTypes = getFieldNameAndTypes(className);
+        ClassState cState = new ClassState(ectx, className, fieldNameAndTypes.size());
+        ectx.setClassState(className, cState, SideEffect.Level.NONE);
+        for (String fieldNameAndType : fieldNameAndTypes) {
+            String type = fieldNameAndType.split("":"")[1];
+            cState.pokeField(fieldNameAndType, new UnknownValue(type));
+        }
+    }",False,False,"The function of this method is to add a template class state to the execution context. It retrieves the field names and types for the given class, creates a new class state object, sets the class state in the execution context, and initializes the fields with unknown values.",True,"This code defines a private method called ""addTemplateClassState"" that takes an ExecutionContext object and a className string as parameters. It retrieves a list of field names and types for the given className, creates a new ClassState object with the ExecutionContext and className, sets the ClassState in the ExecutionContext, and then iterates over the field names and types to poke each field with a new UnknownValue object of the corresponding type."
+44,buildClassNameToFieldNameAndType(List<BuilderClassDef>),build class name to field name and type class defs ,Method,"VirtualMachine(List<BuilderClassDef>,int,int,int)",,"java.util.HashMap+HashMap() java.util.LinkedList+LinkedList() java.lang.String+split(String) java.lang.String+split(String) java.util.List+add(E) java.util.List+add(E) java.util.Map+put(K,V) java.util.Map+put(K,V)",,880,16,2,,"private Map<String, List<String>> buildClassNameToFieldNameAndType(List<BuilderClassDef> classDefs) {
+        Map<String, List<String>> classNameToFieldNameAndType = new HashMap<String, List<String>>();
+        for (BuilderClassDef classDef : classDefs) {
+            String className = ReferenceUtil.getReferenceString(classDef);
+            Collection<BuilderField> fields = classDef.getFields();
+            List<String> fieldNameAndTypes = new LinkedList<String>();
+            for (BuilderField field : fields) {
+                String fieldDescriptor = ReferenceUtil.getFieldDescriptor(field);
+                String fieldNameAndType = fieldDescriptor.split(""->"")[1];
+                fieldNameAndTypes.add(fieldNameAndType);
+            }
+            classNameToFieldNameAndType.put(className, fieldNameAndTypes);
+        }
+
+        return classNameToFieldNameAndType;
+    }",True,True,"This method takes a list of BuilderClassDef objects as input and returns a Map<String, List<String>>. It iterates over each BuilderClassDef object and extracts the class name and a list of field names and types. It then adds this information to the map and returns it.",True,"This code takes a list of BuilderClassDef objects and builds a map where the keys are the class names and the values are lists of field names and types. It iterates over each class definition, retrieves the class name and fields, and adds the field names and types to the corresponding list in the map. Finally, it returns the map."
+45,buildMethodDescriptorToTemplateContextGraph(List<BuilderClassDef>),build method descriptor to template context graph class defs ,Method,"VirtualMachine(List<BuilderClassDef>,int,int,int)",,org.cf.smalivm.VirtualMachine+updateInstructionGraph(String) org.cf.smalivm.VirtualMachine+updateInstructionGraph(String),,564,12,2,,"private void buildMethodDescriptorToTemplateContextGraph(final List<BuilderClassDef> classDefs) {
+        for (BuilderClassDef classDef : classDefs) {
+            for (BuilderMethod method : classDef.getMethods()) {
+                String methodDescriptor = ReferenceUtil.getMethodDescriptor(method);
+                MethodImplementation implementation = method.getImplementation();
+                if (implementation == null) {
+                    continue;
+                }
+                updateInstructionGraph(methodDescriptor);
+            }
+        }
+    }",False,False,"This method builds a graph of method descriptors for a given list of builder class definitions. It iterates through each class definition and its methods, retrieves the method descriptor and implementation, and updates the instruction graph if the implementation is not null.",True,"This code iterates over a list of builder class definitions and their methods. For each method, it retrieves the method descriptor and checks if there is an implementation. If an implementation exists, it updates an instruction graph with the method descriptor."
+46,"collapseMultiverse(String,ExecutionGraph,ExecutionContext,ExecutionContext,int[])",collapse multiverse method descriptor graph callee context caller context parameter registers ,Method,"execute(String,ExecutionContext,ExecutionContext,int[])",,"org.cf.smalivm.context.ExecutionGraph+getConnectedTerminatingAddresses() org.cf.smalivm.context.ExecutionGraph+getConnectedTerminatingAddresses() org.cf.smalivm.context.ExecutionContext+getMethodState() org.cf.smalivm.context.ExecutionContext+getMethodState() org.cf.smalivm.VirtualMachine+getParameterTypes(String) org.cf.smalivm.VirtualMachine+getParameterTypes(String) java.util.List+get(int) java.util.List+get(int) org.cf.util.ImmutableUtils+isImmutableClass(String) org.cf.util.ImmutableUtils+isImmutableClass(String) org.cf.smalivm.VirtualMachine+getMutableParameterConsensus(TIntList,ExecutionGraph,int) org.cf.smalivm.VirtualMachine+getMutableParameterConsensus(TIntList,ExecutionGraph,int) org.cf.smalivm.context.MethodState+assignRegister(int,Object) org.cf.smalivm.context.MethodState+assignRegister(int,Object) org.cf.smalivm.VirtualMachine+getLocalClasses() org.cf.smalivm.VirtualMachine+getLocalClasses() org.cf.smalivm.context.ExecutionContext+isClassInitialized(String) org.cf.smalivm.context.ExecutionContext+isClassInitialized(String) org.cf.smalivm.context.ExecutionContext+isClassInitialized(String) org.cf.smalivm.context.ExecutionContext+isClassInitialized(String) org.cf.smalivm.VirtualMachine+getFieldNameAndTypes(String) org.cf.smalivm.VirtualMachine+getFieldNameAndTypes(String) org.cf.smalivm.context.ExecutionContext+isClassInitialized(String) org.cf.smalivm.context.ExecutionContext+isClassInitialized(String) org.cf.smalivm.context.ExecutionContext+peekClassState(String) org.cf.smalivm.context.ExecutionContext+peekClassState(String) org.cf.smalivm.context.ClassState+ClassState(ExecutionContext,String,int) java.util.List+size() java.util.List+size() org.cf.smalivm.context.ExecutionGraph+getFieldConsensus(TIntList,String,String) org.cf.smalivm.context.ExecutionGraph+getFieldConsensus(TIntList,String,String) org.cf.smalivm.context.ClassState+pokeField(String,Object) org.cf.smalivm.context.ClassState+pokeField(String,Object)",,2187,41,2,,"private void collapseMultiverse(String methodDescriptor, ExecutionGraph graph, ExecutionContext calleeContext,
+                    ExecutionContext callerContext, int[] parameterRegisters) {
+        TIntList terminatingAddresses = graph.getConnectedTerminatingAddresses();
+        if (parameterRegisters != null) {
+            MethodState mState = callerContext.getMethodState();
+            List<String> parameterTypes = getParameterTypes(methodDescriptor);
+            for (int parameterIndex = 0; parameterIndex < parameterRegisters.length; parameterIndex++) {
+                String type = parameterTypes.get(parameterIndex);
+                boolean mutable = !ImmutableUtils.isImmutableClass(type);
+                if (!mutable) {
+                    continue;
+                }
+
+                Object value = getMutableParameterConsensus(terminatingAddresses, graph, parameterIndex);
+                int register = parameterRegisters[parameterIndex];
+                mState.assignRegister(register, value);
+            }
+        }
+
+        for (String currentClassName : getLocalClasses()) {
+            if (!callerContext.isClassInitialized(currentClassName)
+                            && !calleeContext.isClassInitialized(currentClassName)) {
+                continue;
+            }
+
+            List<String> fieldNameAndTypes = getFieldNameAndTypes(currentClassName);
+            ClassState currentClassState;
+            if (callerContext.isClassInitialized(currentClassName)) {
+                currentClassState = callerContext.peekClassState(currentClassName);
+            } else {
+                currentClassState = new ClassState(callerContext, currentClassName, fieldNameAndTypes.size());
+                SideEffect.Level level = graph.getHighestClassSideEffectLevel(currentClassName);
+                callerContext.initializeClass(currentClassName, currentClassState, level);
+            }
+
+            for (String fieldNameAndType : fieldNameAndTypes) {
+                Object value = graph.getFieldConsensus(terminatingAddresses, currentClassName, fieldNameAndType);
+                currentClassState.pokeField(fieldNameAndType, value);
+            }
+        }
+    }",False,False,This method collapses the multiverse by assigning consensus values to mutable parameters and fields in the execution graph. It also initializes class states and assigns consensus values to fields in the caller and callee contexts.,True,The `collapseMultiverse` method collapses the execution graph by assigning consensus values to mutable parameters and updating field values in class states. It also initializes class states and assigns field consensus values based on the connected terminating addresses in the graph.
+47,getBuilderMethod(String),get builder method method descriptor ,Method,getRootExecutionContext(String) methodHasImplementation(String),,,org.cf.smalivm.VirtualMachine+methodDescriptorToBuilderMethod,141,3,2,,"private BuilderMethod getBuilderMethod(String methodDescriptor) {
+        return methodDescriptorToBuilderMethod.get(methodDescriptor);
+    }",True,True,This method returns the BuilderMethod object associated with the given method descriptor by using a map called methodDescriptorToBuilderMethod.,True,"The given code is a private method named ""getBuilderMethod"" that takes a string parameter called ""methodDescriptor"". It retrieves and returns a BuilderMethod object from a map called ""methodDescriptorToBuilderMethod"" based on the provided method descriptor."
+48,"inheritClassStates(ExecutionContext,ExecutionContext)",inherit class states parent child ,Method,"execute(String,ExecutionContext,ExecutionContext,int[])",,"org.cf.smalivm.VirtualMachine+getLocalClasses() org.cf.smalivm.VirtualMachine+getLocalClasses() org.cf.smalivm.context.ExecutionContext+isClassInitialized(String) org.cf.smalivm.context.ExecutionContext+isClassInitialized(String) org.cf.smalivm.context.ExecutionContext+peekClassState(String) org.cf.smalivm.context.ExecutionContext+peekClassState(String) org.cf.smalivm.context.ClassState+ClassState(ClassState,ExecutionContext) org.cf.smalivm.VirtualMachine+getFieldNameAndTypes(String) org.cf.smalivm.VirtualMachine+getFieldNameAndTypes(String) org.cf.smalivm.context.ClassState+peekField(String) org.cf.smalivm.context.ClassState+peekField(String) org.cf.smalivm.context.ClassState+pokeField(String,Object) org.cf.smalivm.context.ClassState+pokeField(String,Object)",,784,16,2,,"private void inheritClassStates(ExecutionContext parent, ExecutionContext child) {
+        for (String className : getLocalClasses()) {
+            if (!parent.isClassInitialized(className)) {
+                continue;
+            }
+
+            ClassState fromClassState = parent.peekClassState(className);
+            ClassState toClassState = new ClassState(fromClassState, child);
+            for (String fieldNameAndType : getFieldNameAndTypes(className)) {
+                Object value = fromClassState.peekField(fieldNameAndType);
+                toClassState.pokeField(fieldNameAndType, value);
+            }
+            SideEffect.Level level = parent.getClassStateSideEffectLevel(className);
+            child.initializeClass(className, toClassState, level);
+        }
+    }",False,False,"The function ""inheritClassStates"" copies the class states from the parent execution context to the child execution context, ensuring that the child has the same initialized classes and field values as the parent.",True,"The `inheritClassStates` method is responsible for inheriting class states from a parent `ExecutionContext` to a child `ExecutionContext`. It iterates over the local classes in the parent context, creates a new class state in the child context based on the parent's class state, copies field values from the parent to the child, and initializes the class in the child context with the new state and side effect level."

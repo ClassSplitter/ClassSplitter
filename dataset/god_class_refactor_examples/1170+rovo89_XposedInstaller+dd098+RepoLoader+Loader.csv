@@ -1,0 +1,372 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,code summary
+1,UPDATE_FREQUENCY,update frequency ,Field,,,,,64,1,26,,private static final int UPDATE_FREQUENCY = 24 * 60 * 60 * 1000;,False,False,,
+2,DEFAULT_REPOSITORIES,default repositories ,Field,,,,,92,1,26,,"private static final String DEFAULT_REPOSITORIES = ""http://dl.xposed.info/repo/full.xml.gz"";",False,False,,
+3,mInstance,m instance ,Field,,,,,43,1,10,,private static RepoLoader mInstance = null;,False,False,,
+4,mListeners,m listeners ,Field,,,,,75,1,18,,private final List<RepoListener> mListeners = new CopyOnWriteArrayList<>();,False,True,,
+5,mLocalReleaseTypesCache,m local release types cache ,Field,,,,,81,1,18,,"private final Map<String, ReleaseType> mLocalReleaseTypesCache = new HashMap<>();",False,False,,
+6,mApp,m app ,Field,,,,,30,1,2,,private XposedApp mApp = null;,True,True,,
+7,mPref,m pref ,Field,,,,,32,1,2,,private SharedPreferences mPref;,True,True,,
+8,mModulePref,m module pref ,Field,,,,,38,1,2,,private SharedPreferences mModulePref;,False,False,,
+9,mConMgr,m con mgr ,Field,,,,,36,1,2,,private ConnectivityManager mConMgr;,False,True,,
+10,mIsLoading,m is loading ,Field,,,,,35,1,2,,private boolean mIsLoading = false;,True,True,,
+11,mReloadTriggeredOnce,m reload triggered once ,Field,,,,,45,1,2,,private boolean mReloadTriggeredOnce = false;,True,True,,
+12,mRepositories,m repositories ,Field,,,,,51,1,2,,"private Map<Long, Repository> mRepositories = null;",False,False,,
+13,mGlobalReleaseType,m global release type ,Field,,,,,39,1,2,,private ReleaseType mGlobalReleaseType;,False,False,,
+14,mSwipeRefreshLayout,m swipe refresh layout ,Field,setSwipeRefreshLayout(SwipeRefreshLayout),,,,47,1,2,,private SwipeRefreshLayout mSwipeRefreshLayout;,True,True,,
+15,RepoLoader(),repo loader ,Method,,,"de.robv.android.xposed.installer.XposedApp+getInstance() de.robv.android.xposed.installer.XposedApp+getInstance() de.robv.android.xposed.installer.XposedApp+getPreferences() de.robv.android.xposed.installer.XposedApp+getPreferences() de.robv.android.xposed.installer.repo.RepoDb+init(Context,RepoLoader) de.robv.android.xposed.installer.repo.RepoDb+init(Context,RepoLoader) de.robv.android.xposed.installer.util.RepoLoader+refreshRepositories() de.robv.android.xposed.installer.util.RepoLoader+refreshRepositories()",de.robv.android.xposed.installer.util.RepoLoader+mInstance de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mPref de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mModulePref de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mConMgr de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mGlobalReleaseType de.robv.android.xposed.installer.util.RepoLoader+mApp,539,11,2,,"private RepoLoader() {
+        mInstance = this;
+        mApp = XposedApp.getInstance();
+        mPref = mApp.getSharedPreferences(""repo"", Context.MODE_PRIVATE);
+        mModulePref = mApp.getSharedPreferences(""module_settings"", Context.MODE_PRIVATE);
+        mConMgr = (ConnectivityManager) mApp.getSystemService(Context.CONNECTIVITY_SERVICE);
+        mGlobalReleaseType = ReleaseType.fromString(XposedApp.getPreferences().getString(""release_type_global"", ""stable""));
+
+        RepoDb.init(mApp, this);
+        refreshRepositories();
+    }",False,False,"The function of this method is to initialize the RepoLoader class by setting instance variables, initializing shared preferences, setting up connectivity manager, setting global release type, initializing the RepoDb, and refreshing repositories.","The code defines a private constructor for the RepoLoader class, which initializes various variables and preferences. It also initializes the RepoDb and refreshes repositories."
+16,getInstance(),get instance ,Method,,"de.robv.android.xposed.installer.DownloadDetailsActivity+onOptionsItemSelected(MenuItem) de.robv.android.xposed.installer.DownloadDetailsSettingsFragment+onPreferenceChange(Preference,Object) de.robv.android.xposed.installer.DownloadDetailsVersionsFragment+onActivityCreated(Bundle) de.robv.android.xposed.installer.DownloadFragment+onCreate(Bundle) de.robv.android.xposed.installer.ModulesBookmark+onCreate(Bundle) de.robv.android.xposed.installer.SettingsActivity+SettingsFragment.onPreferenceChange(Preference,Object) de.robv.android.xposed.installer.XposedApp+updateProgressIndicator(SwipeRefreshLayout) de.robv.android.xposed.installer.XposedApp+onActivityCreated(Activity,Bundle)",de.robv.android.xposed.installer.util.RepoLoader+RepoLoader(),de.robv.android.xposed.installer.util.RepoLoader+mInstance de.robv.android.xposed.installer.util.RepoLoader+mInstance,146,5,41,,"public static synchronized RepoLoader getInstance() {
+        if (mInstance == null)
+            new RepoLoader();
+        return mInstance;
+    }",False,False,"This method serves as a singleton pattern implementation. It ensures that only one instance of the RepoLoader class is created and returned, by synchronizing access to the getInstance() method.","The code defines a method named `getInstance()` which returns an instance of the `RepoLoader` class. It ensures that only one instance of `RepoLoader` is created by using the `synchronized` keyword. If the instance is null, it creates a new instance and returns it."
+17,refreshRepositories(),refresh repositories ,Method,RepoLoader() setRepositories(String),,de.robv.android.xposed.installer.repo.RepoDb+getRepositories() de.robv.android.xposed.installer.repo.RepoDb+getRepositories() java.util.Map+size() java.util.Map+size() java.util.Map+values() java.util.Map+values() java.lang.String+equals(Object) java.lang.String+equals(Object) de.robv.android.xposed.installer.util.RepoLoader+clear(boolean) de.robv.android.xposed.installer.util.RepoLoader+clear(boolean) de.robv.android.xposed.installer.repo.RepoDb+insertRepository(String) de.robv.android.xposed.installer.repo.RepoDb+insertRepository(String) de.robv.android.xposed.installer.repo.RepoDb+getRepositories() de.robv.android.xposed.installer.repo.RepoDb+getRepositories(),de.robv.android.xposed.installer.util.RepoLoader+mRepositories de.robv.android.xposed.installer.util.RepoLoader+mPref de.robv.android.xposed.installer.util.RepoLoader+DEFAULT_REPOSITORIES de.robv.android.xposed.installer.util.RepoLoader+mRepositories de.robv.android.xposed.installer.util.RepoLoader+mRepositories de.robv.android.xposed.installer.repo.Repository+url de.robv.android.xposed.installer.util.RepoLoader+mRepositories,897,29,1,,"public boolean refreshRepositories() {
+        mRepositories = RepoDb.getRepositories();
+
+		// Unlikely case (usually only during initial load): DB state doesn't
+		// fit to configuration
+		boolean needReload = false;
+        String[] config = mPref.getString(""repositories"", DEFAULT_REPOSITORIES).split(""\\|"");
+        if (mRepositories.size() != config.length) {
+            needReload = true;
+        } else {
+            int i = 0;
+            for (Repository repo : mRepositories.values()) {
+                if (!repo.url.equals(config[i++])) {
+                    needReload = true;
+                    break;
+                }
+            }
+        }
+
+        if (!needReload)
+            return false;
+
+        clear(false);
+        for (String url : config) {
+            RepoDb.insertRepository(url);
+        }
+        mRepositories = RepoDb.getRepositories();
+        return true;
+    }",False,False,"The function of this method is to refresh the repositories by checking if the current repositories in the database match the configuration. If they don't match, the method reloads the repositories by clearing the current ones and inserting the new ones from the configuration. The method returns true if the repositories were reloaded, and false otherwise.","This code defines a method called `refreshRepositories()` that updates a list of repositories based on a configuration stored in a database. It checks if the current repositories in the database match the configuration, and if not, it clears the existing repositories, inserts the new ones, and returns true to indicate that the repositories were refreshed."
+18,setReleaseTypeGlobal(String),set release type global rel type string ,Method,,"de.robv.android.xposed.installer.SettingsActivity+SettingsFragment.onPreferenceChange(Preference,Object)",java.lang.Thread+start() +(String) +run(),de.robv.android.xposed.installer.util.RepoLoader+mGlobalReleaseType de.robv.android.xposed.installer.util.RepoLoader+mGlobalReleaseType,515,16,1,,"public void setReleaseTypeGlobal(String relTypeString) {
+        ReleaseType relType = ReleaseType.fromString(relTypeString);
+        if (mGlobalReleaseType == relType)
+            return;
+
+        mGlobalReleaseType = relType;
+
+        // Updating the latest version for all modules takes a moment
+        new Thread(""DBUpdate"") {
+            @Override
+            public void run() {
+                RepoDb.updateAllModulesLatestVersion();
+                notifyListeners();
+            }
+        }.start();
+    }",False,False,"The function of this method is to set the global release type based on the input string, update the global release type if it has changed, and then start a new thread to update the latest version for all modules and notify listeners.","The code defines a method called `setReleaseTypeGlobal` that takes a string parameter `relTypeString`. It sets the global release type based on the input string, and then creates a new thread to update the latest version for all modules in a database and notify listeners."
+19,"setReleaseTypeLocal(String,String)",set release type local package name rel type string ,Method,,"de.robv.android.xposed.installer.DownloadDetailsSettingsFragment+onPreferenceChange(Preference,Object)",de.robv.android.xposed.installer.util.RepoLoader+getReleaseTypeLocal(String) de.robv.android.xposed.installer.util.RepoLoader+getReleaseTypeLocal(String) de.robv.android.xposed.installer.repo.RepoDb+updateModuleLatestVersion(String) de.robv.android.xposed.installer.repo.RepoDb+updateModuleLatestVersion(String) de.robv.android.xposed.installer.util.RepoLoader+notifyListeners() de.robv.android.xposed.installer.util.RepoLoader+notifyListeners(),de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache,479,13,1,,"public void setReleaseTypeLocal(String packageName, String relTypeString) {
+        ReleaseType relType = (!TextUtils.isEmpty(relTypeString)) ? ReleaseType.fromString(relTypeString) : null;
+
+        if (getReleaseTypeLocal(packageName) == relType)
+            return;
+
+        synchronized (mLocalReleaseTypesCache) {
+            mLocalReleaseTypesCache.put(packageName, relType);
+        }
+
+        RepoDb.updateModuleLatestVersion(packageName);
+        notifyListeners();
+    }",False,False,"This method sets the release type of a package locally. It checks if the release type is already set to the given value, and if not, updates the local cache and notifies listeners.","The code defines a method called ""setReleaseTypeLocal"" that takes in a package name and a release type string. It converts the release type string to a ReleaseType object and checks if the current release type for the given package name is the same as the new release type. If not, it updates the release type in a cache, updates the latest version of the module in a database, and notifies listeners."
+20,getReleaseTypeLocal(String),get release type local package name ,Method,"setReleaseTypeLocal(String,String) getMaxShownReleaseType(String)",,,de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache de.robv.android.xposed.installer.util.RepoLoader+mModulePref de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache,555,12,2,,"private ReleaseType getReleaseTypeLocal(String packageName) {
+        synchronized (mLocalReleaseTypesCache) {
+            if (mLocalReleaseTypesCache.containsKey(packageName))
+                return mLocalReleaseTypesCache.get(packageName);
+
+            String value = mModulePref.getString(packageName + ""_release_type"",
+                    null);
+            ReleaseType result = (!TextUtils.isEmpty(value)) ? ReleaseType.fromString(value) : null;
+            mLocalReleaseTypesCache.put(packageName, result);
+            return result;
+        }
+    }",False,False,"This method retrieves the release type of a given package name from a local cache. If the release type is not found in the cache, it retrieves it from shared preferences, converts it to a ReleaseType object, stores it in the cache, and returns it.","This code defines a private method called `getReleaseTypeLocal` that retrieves the release type of a given package name. It first checks if the release type is already cached, and if not, it retrieves it from shared preferences, converts it to a `ReleaseType` object, caches it, and returns it. The method is thread-safe due to the use of synchronization."
+21,getRepository(long),get repository repo id ,Method,,de.robv.android.xposed.installer.repo.RepoDb+getModuleByPackageName(String),java.util.Map+get(Object) java.util.Map+get(Object),de.robv.android.xposed.installer.util.RepoLoader+mRepositories,94,3,1,,"public Repository getRepository(long repoId) {
+        return mRepositories.get(repoId);
+    }",False,False,This method returns the repository object associated with the given repoId from the mRepositories collection.,"The given code defines a method named ""getRepository"" that takes a long value as input and returns a Repository object. It retrieves the Repository object associated with the given repoId from a map called mRepositories and returns it."
+22,getModule(String),get module package name ,Method,,de.robv.android.xposed.installer.DownloadDetailsActivity+onCreate(Bundle) de.robv.android.xposed.installer.ModulesBookmark+ModulesBookmarkFragment.getModules(),de.robv.android.xposed.installer.repo.RepoDb+getModuleByPackageName(String) de.robv.android.xposed.installer.repo.RepoDb+getModuleByPackageName(String),,110,3,1,,"public Module getModule(String packageName) {
+        return RepoDb.getModuleByPackageName(packageName);
+    }",False,False,This method returns a Module object by calling the RepoDb.getModuleByPackageName() method with the provided packageName as a parameter.,"The code defines a method named ""getModule"" that takes a string parameter ""packageName"". It calls a method ""getModuleByPackageName"" from the ""RepoDb"" class and returns the result, which is a ""Module"" object."
+23,getLatestVersion(Module),get latest version module ,Method,,"de.robv.android.xposed.installer.repo.RepoDb+insertModule(long,Module)",java.util.List+isEmpty() java.util.List+isEmpty() de.robv.android.xposed.installer.util.RepoLoader+isVersionShown(ModuleVersion) de.robv.android.xposed.installer.util.RepoLoader+isVersionShown(ModuleVersion),de.robv.android.xposed.installer.repo.Module+versions de.robv.android.xposed.installer.repo.Module+versions de.robv.android.xposed.installer.repo.ModuleVersion+downloadLink,335,10,1,,"public ModuleVersion getLatestVersion(Module module) {
+        if (module == null || module.versions.isEmpty())
+            return null;
+
+        for (ModuleVersion version : module.versions) {
+            if (version.downloadLink != null && isVersionShown(version))
+                return version;
+        }
+        return null;
+    }",False,False,"This method returns the latest version of a module by iterating through the versions of the module and checking if the version has a download link and is shown. If no such version is found, it returns null.","This code defines a method named ""getLatestVersion"" that takes a ""Module"" object as input and returns the latest version of the module. It iterates through the versions of the module and returns the first version that has a non-null download link and satisfies the ""isVersionShown"" condition. If no such version is found, it returns null."
+24,isVersionShown(ModuleVersion),is version shown version ,Method,getLatestVersion(Module),de.robv.android.xposed.installer.DownloadDetailsVersionsFragment+onActivityCreated(Bundle),de.robv.android.xposed.installer.util.RepoLoader+getMaxShownReleaseType(String) de.robv.android.xposed.installer.util.RepoLoader+getMaxShownReleaseType(String),de.robv.android.xposed.installer.repo.ModuleVersion+relType de.robv.android.xposed.installer.repo.ModuleVersion+module de.robv.android.xposed.installer.repo.Module+packageName,183,4,1,,"public boolean isVersionShown(ModuleVersion version) {
+        return version.relType
+                .ordinal() <= getMaxShownReleaseType(version.module.packageName).ordinal();
+    }",False,False,The function of the method isVersionShown is to determine if a given ModuleVersion is shown based on its release type and the maximum shown release type for its module's package. It returns a boolean value.,"The given code is a method named ""isVersionShown"" that takes a ModuleVersion object as input. It compares the ordinal value of the relType property of the input version with the ordinal value of the maximum shown release type for the module's package name. If the relType ordinal is less than or equal to the maximum shown release type ordinal, it returns true; otherwise, it returns false."
+25,getMaxShownReleaseType(String),get max shown release type package name ,Method,isVersionShown(ModuleVersion),de.robv.android.xposed.installer.repo.RepoDb+updateModuleLatestVersion(String),de.robv.android.xposed.installer.util.RepoLoader+getReleaseTypeLocal(String) de.robv.android.xposed.installer.util.RepoLoader+getReleaseTypeLocal(String),de.robv.android.xposed.installer.util.RepoLoader+mGlobalReleaseType,257,7,1,,"public ReleaseType getMaxShownReleaseType(String packageName) {
+        ReleaseType localSetting = getReleaseTypeLocal(packageName);
+        if (localSetting != null)
+            return localSetting;
+        else
+            return mGlobalReleaseType;
+    }",False,False,"This method returns the maximum shown release type for a given package name. It first checks if there is a local setting for the package, and if so, returns it. Otherwise, it returns the global release type.","The code defines a method called ""getMaxShownReleaseType"" that takes a package name as input. It first checks if there is a local release type setting for the package, and if so, returns that value. If there is no local setting, it returns the global release type value."
+26,triggerReload(boolean),trigger reload force ,Method,triggerFirstLoadIfNecessary() setRepositories(String),de.robv.android.xposed.installer.DownloadDetailsActivity+onClick(View) de.robv.android.xposed.installer.DownloadDetailsActivity+onOptionsItemSelected(MenuItem) de.robv.android.xposed.installer.DownloadFragment+onRefresh(),de.robv.android.xposed.installer.util.RepoLoader+resetLastUpdateCheck() de.robv.android.xposed.installer.util.RepoLoader+resetLastUpdateCheck() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() de.robv.android.xposed.installer.XposedApp+updateProgressIndicator(SwipeRefreshLayout) de.robv.android.xposed.installer.XposedApp+updateProgressIndicator(SwipeRefreshLayout) java.lang.Thread+start() +(String) +run(),de.robv.android.xposed.installer.util.RepoLoader+mReloadTriggeredOnce de.robv.android.xposed.installer.util.RepoLoader+mPref de.robv.android.xposed.installer.util.RepoLoader+UPDATE_FREQUENCY de.robv.android.xposed.installer.util.RepoLoader+mConMgr de.robv.android.xposed.installer.util.RepoLoader+mIsLoading de.robv.android.xposed.installer.util.RepoLoader+mIsLoading de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mSwipeRefreshLayout,1649,49,1,,"public void triggerReload(final boolean force) {
+        mReloadTriggeredOnce = true;
+
+        if (force) {
+            resetLastUpdateCheck();
+        } else {
+            long lastUpdateCheck = mPref.getLong(""last_update_check"", 0);
+            if (System.currentTimeMillis() < lastUpdateCheck + UPDATE_FREQUENCY)
+                return;
+        }
+
+        NetworkInfo netInfo = mConMgr.getActiveNetworkInfo();
+        if (netInfo == null || !netInfo.isConnected())
+            return;
+
+        synchronized (this) {
+            if (mIsLoading)
+                return;
+            mIsLoading = true;
+        }
+        mApp.updateProgressIndicator(mSwipeRefreshLayout);
+
+        new Thread(""RepositoryReload"") {
+            public void run() {
+                final List<String> messages = new LinkedList<>();
+                boolean hasChanged = downloadAndParseFiles(messages);
+
+                mPref.edit().putLong(""last_update_check"", System.currentTimeMillis()).apply();
+
+                if (!messages.isEmpty()) {
+                    XposedApp.runOnUiThread(new Runnable() {
+                        public void run() {
+                            for (String message : messages) {
+                                Toast.makeText(mApp, message, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+
+                if (hasChanged)
+                    notifyListeners();
+
+                synchronized (this) {
+                    mIsLoading = false;
+                }
+                mApp.updateProgressIndicator(mSwipeRefreshLayout);
+            }
+        }.start();
+    }",True,True,"The function of this method is to trigger a reload of data. It checks if a reload is necessary based on the force parameter and the last update check time. It also checks for an active network connection. If all conditions are met, it starts a new thread to download and parse files, update the last update check time, display toast messages, notify listeners if data has changed, and update the progress indicator.","The code defines a method called `triggerReload` that is responsible for triggering a reload of a repository. It checks if a reload is necessary based on a specified update frequency and the network connectivity. If a reload is needed, it performs the reload asynchronously, updates the last update check time, displays any relevant messages, and notifies listeners if there were changes."
+27,setSwipeRefreshLayout(SwipeRefreshLayout),set swipe refresh layout m swipe refresh layout ,Method,,de.robv.android.xposed.installer.DownloadFragment+onRefresh(),,de.robv.android.xposed.installer.util.RepoLoader+mSwipeRefreshLayout de.robv.android.xposed.installer.util.RepoLoader+mSwipeRefreshLayout,137,3,1,,"public void setSwipeRefreshLayout(SwipeRefreshLayout mSwipeRefreshLayout) {
+        this.mSwipeRefreshLayout = mSwipeRefreshLayout;
+    }",True,True,This method sets the SwipeRefreshLayout object for the current instance.,"The code defines a method named ""setSwipeRefreshLayout"" that takes a parameter of type SwipeRefreshLayout. This method assigns the value of the parameter to the instance variable ""mSwipeRefreshLayout"" of the current object. It is used to set the SwipeRefreshLayout object for the current object."
+28,triggerFirstLoadIfNecessary(),trigger first load if necessary ,Method,,"de.robv.android.xposed.installer.XposedApp+onActivityCreated(Activity,Bundle)",de.robv.android.xposed.installer.util.RepoLoader+triggerReload(boolean) de.robv.android.xposed.installer.util.RepoLoader+triggerReload(boolean),de.robv.android.xposed.installer.util.RepoLoader+mReloadTriggeredOnce,118,4,1,,"public void triggerFirstLoadIfNecessary() {
+        if (!mReloadTriggeredOnce)
+            triggerReload(false);
+    }",True,True,"The function of the method ""triggerFirstLoadIfNecessary"" is to check if the ""mReloadTriggeredOnce"" flag is false, and if so, it triggers a reload by calling the ""triggerReload"" method with a parameter set to false.","The method ""triggerFirstLoadIfNecessary"" checks if the variable ""mReloadTriggeredOnce"" is false, and if so, it calls the method ""triggerReload"" with a parameter of false. This method is used to trigger the initial load of data if it hasn't been triggered before."
+29,resetLastUpdateCheck(),reset last update check ,Method,triggerReload(boolean) clear(boolean),,,de.robv.android.xposed.installer.util.RepoLoader+mPref,100,3,1,,"public void resetLastUpdateCheck() {
+        mPref.edit().remove(""last_update_check"").apply();
+    }",False,True,"This method resets the last update check by removing the ""last_update_check"" key from the shared preferences.","The code defines a method called ""resetLastUpdateCheck"" that removes a specific key-value pair (""last_update_check"") from a shared preferences object. This method is used to reset the last update check for a certain feature or functionality."
+30,isLoading(),is loading ,Method,,de.robv.android.xposed.installer.XposedApp+updateProgressIndicator(SwipeRefreshLayout),,de.robv.android.xposed.installer.util.RepoLoader+mIsLoading,74,3,33,,"public synchronized boolean isLoading() {
+        return mIsLoading;
+    }",True,True,"This method serves to check whether the value of the variable ""mIsLoading"" is true or false. It is synchronized to ensure thread safety.","The code snippet defines a synchronized method named `isLoading()` that returns a boolean value. It is used to check the current state of a variable `mIsLoading`, which likely indicates whether a process or operation is currently in progress or not. The synchronization ensures thread safety when accessing this variable."
+31,clear(boolean),clear notify ,Method,refreshRepositories(),de.robv.android.xposed.installer.repo.RepoDb+onCreate(SQLiteDatabase),de.robv.android.xposed.installer.repo.RepoDb+deleteRepositories() de.robv.android.xposed.installer.repo.RepoDb+deleteRepositories() java.util.LinkedHashMap+LinkedHashMap(int) de.robv.android.xposed.installer.util.RepoLoader+resetLastUpdateCheck() de.robv.android.xposed.installer.util.RepoLoader+resetLastUpdateCheck() de.robv.android.xposed.installer.util.RepoLoader+notifyListeners() de.robv.android.xposed.installer.util.RepoLoader+notifyListeners(),de.robv.android.xposed.installer.util.RepoLoader+mIsLoading de.robv.android.xposed.installer.util.RepoLoader+mRepositories,447,15,1,,"public void clear(boolean notify) {
+        synchronized (this) {
+            // TODO Stop reloading repository when it should be cleared
+            if (mIsLoading)
+                return;
+
+            RepoDb.deleteRepositories();
+            mRepositories = new LinkedHashMap<Long, Repository>(0);
+            DownloadsUtil.clearCache(null);
+            resetLastUpdateCheck();
+        }
+
+        if (notify)
+            notifyListeners();
+    }",True,True,"This method clears the repositories and cache, and resets the last update check. If the ""notify"" parameter is true, it also notifies the listeners.","The `clear` method is used to clear a repository by deleting all repositories, clearing the cache, and resetting the last update check. If the `notify` parameter is true, it also notifies the listeners. The method is synchronized to ensure thread safety and prevent reloading of the repository while it is being cleared."
+32,setRepositories(String),set repositories repos ,Method,,,java.lang.StringBuilder+StringBuilder() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() de.robv.android.xposed.installer.util.RepoLoader+refreshRepositories() de.robv.android.xposed.installer.util.RepoLoader+refreshRepositories() de.robv.android.xposed.installer.util.RepoLoader+triggerReload(boolean) de.robv.android.xposed.installer.util.RepoLoader+triggerReload(boolean),de.robv.android.xposed.installer.util.RepoLoader+mPref,386,11,1,,"public void setRepositories(String... repos) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < repos.length; i++) {
+            if (i > 0)
+                sb.append(""|"");
+            sb.append(repos[i]);
+        }
+        mPref.edit().putString(""repositories"", sb.toString()).apply();
+        if (refreshRepositories())
+            triggerReload(true);
+    }",False,False,"This method sets the repositories by converting the given array of strings into a single string separated by ""|"" and saves it in shared preferences. It then checks if refreshing the repositories is successful and triggers a reload if it is.","The `setRepositories` method takes in a variable number of repository names as input and stores them as a single string separated by ""|"". It then saves this string in shared preferences. If the method `refreshRepositories` returns true, it triggers a reload of the repositories and updates the UI accordingly."
+33,hasModuleUpdates(),has module updates ,Method,,de.robv.android.xposed.installer.WelcomeActivity+notifyDataSetChanged(),de.robv.android.xposed.installer.repo.RepoDb+hasModuleUpdates() de.robv.android.xposed.installer.repo.RepoDb+hasModuleUpdates(),,83,3,1,,"public boolean hasModuleUpdates() {
+        return RepoDb.hasModuleUpdates();
+    }",False,False,"This method serves to check if there are any module updates available by calling the ""hasModuleUpdates"" method from the ""RepoDb"" class and returning the result as a boolean value.","The given code defines a method named ""hasModuleUpdates"" which returns a boolean value. This method calls another method named ""hasModuleUpdates"" from the ""RepoDb"" class and returns its result. It is used to check if there are any updates available for a module."
+34,getFrameworkUpdateVersion(),get framework update version ,Method,,de.robv.android.xposed.installer.WelcomeActivity+notifyDataSetChanged(),de.robv.android.xposed.installer.repo.RepoDb+getFrameworkUpdateVersion() de.robv.android.xposed.installer.repo.RepoDb+getFrameworkUpdateVersion(),,100,3,1,,"public String getFrameworkUpdateVersion() {
+        return RepoDb.getFrameworkUpdateVersion();
+    }",False,False,This method returns the framework update version by calling the getFrameworkUpdateVersion() method from the RepoDb class.,"The code defines a method named ""getFrameworkUpdateVersion"" that returns a string. It calls a method from the ""RepoDb"" class to retrieve the framework update version and returns it."
+35,getRepoCacheFile(String),get repo cache file repo ,Method,downloadAndParseFiles(List<String>),,"de.robv.android.xposed.installer.util.HashUtil+md5(String) de.robv.android.xposed.installer.util.HashUtil+md5(String) java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.io.File+File(String,String)",de.robv.android.xposed.installer.util.RepoLoader+mApp,235,6,2,,"private File getRepoCacheFile(String repo) {
+        String filename = ""repo_"" + HashUtil.md5(repo) + "".xml"";
+        if (repo.endsWith("".gz""))
+            filename += "".gz"";
+        return new File(mApp.getCacheDir(), filename);
+    }",False,False,"This method returns a File object that represents the cache file for a given repository. The file name is generated based on the repository name and its MD5 hash value. If the repository name ends with "".gz"", the file name will also have a "".gz"" extension. The file is located in the cache directory of the application.","This code defines a private method named ""getRepoCacheFile"" that takes a string parameter ""repo"" and returns a File object. It generates a filename based on the MD5 hash of the ""repo"" string and appends "".xml"" or "".gz"" depending on whether the ""repo"" string ends with "".gz"". The File object is created using the generated filename and the cache directory of the application."
+36,downloadAndParseFiles(List<String>),download and parse files messages ,Method,,,"java.util.concurrent.atomic.AtomicBoolean+AtomicBoolean(boolean) java.util.concurrent.atomic.AtomicInteger+AtomicInteger() java.util.concurrent.atomic.AtomicInteger+AtomicInteger() java.util.Map+entrySet() java.util.Map+entrySet() java.util.Map.Entry+getKey() java.util.Map.Entry+getKey() java.util.Map.Entry+getValue() java.util.Map.Entry+getValue() java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) de.robv.android.xposed.installer.util.RepoLoader+getRepoCacheFile(String) de.robv.android.xposed.installer.util.RepoLoader+getRepoCacheFile(String) java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) java.io.File+length() java.io.File+length() java.util.List+add(E) java.util.List+add(E) de.robv.android.xposed.installer.repo.RepoDb+beginTransation() de.robv.android.xposed.installer.repo.RepoDb+beginTransation() java.io.FileInputStream+FileInputStream(File) java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.util.zip.GZIPInputStream+GZIPInputStream(InputStream) de.robv.android.xposed.installer.repo.RepoParser+parse(InputStream,RepoParserCallback) de.robv.android.xposed.installer.repo.RepoParser+parse(InputStream,RepoParserCallback) +() +onRepositoryMetadata(Repository)",de.robv.android.xposed.installer.util.RepoLoader+mRepositories de.robv.android.xposed.installer.repo.Repository+partialUrl de.robv.android.xposed.installer.repo.Repository+version de.robv.android.xposed.installer.repo.Repository+partialUrl de.robv.android.xposed.installer.repo.Repository+version de.robv.android.xposed.installer.repo.Repository+url de.robv.android.xposed.installer.XposedApp+TAG de.robv.android.xposed.installer.util.SyncDownloadInfo+status de.robv.android.xposed.installer.util.SyncDownloadInfo+errorMessage de.robv.android.xposed.installer.util.SyncDownloadInfo+status de.robv.android.xposed.installer.util.SyncDownloadInfo+STATUS_SUCCESS de.robv.android.xposed.installer.util.SyncDownloadInfo+errorMessage de.robv.android.xposed.installer.util.SyncDownloadInfo+errorMessage,5744,122,2,,"private boolean downloadAndParseFiles(List<String> messages) {
+        // These variables don't need to be atomic, just mutable
+        final AtomicBoolean hasChanged = new AtomicBoolean(false);
+        final AtomicInteger insertCounter = new AtomicInteger();
+        final AtomicInteger deleteCounter = new AtomicInteger();
+
+        for (Entry<Long, Repository> repoEntry : mRepositories.entrySet()) {
+            final long repoId = repoEntry.getKey();
+            final Repository repo = repoEntry.getValue();
+
+            String url = (repo.partialUrl != null && repo.version != null) ? String.format(repo.partialUrl, repo.version) : repo.url;
+
+            File cacheFile = getRepoCacheFile(url);
+            SyncDownloadInfo info = DownloadsUtil.downloadSynchronously(url,
+                    cacheFile);
+
+            Log.i(XposedApp.TAG, String.format(
+                    ""RepoLoader -> Downloaded %s with status %d (error: %s), size %d bytes"",
+                    url, info.status, info.errorMessage, cacheFile.length()));
+
+            if (info.status != SyncDownloadInfo.STATUS_SUCCESS) {
+                if (info.errorMessage != null)
+                    messages.add(info.errorMessage);
+                continue;
+            }
+
+            InputStream in = null;
+            RepoDb.beginTransation();
+            try {
+                in = new FileInputStream(cacheFile);
+                if (url.endsWith("".gz""))
+                    in = new GZIPInputStream(in);
+
+                RepoParser.parse(in, new RepoParserCallback() {
+                    @Override
+                    public void onRepositoryMetadata(Repository repository) {
+                        if (!repository.isPartial) {
+                            RepoDb.deleteAllModules(repoId);
+                            hasChanged.set(true);
+                        }
+                    }
+
+                    @Override
+                    public void onNewModule(Module module) {
+                        RepoDb.insertModule(repoId, module);
+                        hasChanged.set(true);
+                        insertCounter.incrementAndGet();
+                    }
+
+                    @Override
+                    public void onRemoveModule(String packageName) {
+                        RepoDb.deleteModule(repoId, packageName);
+                        hasChanged.set(true);
+                        deleteCounter.decrementAndGet();
+                    }
+
+                    @Override
+                    public void onCompleted(Repository repository) {
+                        if (!repository.isPartial) {
+                            RepoDb.updateRepository(repoId, repository);
+                            repo.name = repository.name;
+                            repo.partialUrl = repository.partialUrl;
+                            repo.version = repository.version;
+                        } else {
+                            RepoDb.updateRepositoryVersion(repoId, repository.version);
+                            repo.version = repository.version;
+                        }
+
+                        Log.i(XposedApp.TAG, String.format(
+                                ""RepoLoader -> Updated repository %s to version %s (%d new / %d removed modules)"",
+                                repo.url, repo.version, insertCounter.get(),
+                                deleteCounter.get()));
+                    }
+                });
+
+                RepoDb.setTransactionSuccessful();
+            } catch (SQLiteException e) {
+                XposedApp.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new MaterialDialog.Builder(DownloadFragment.sActivity)
+                                .title(R.string.restart_needed)
+                                .content(R.string.cache_cleaned)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        Intent i = new Intent(DownloadFragment.sActivity, WelcomeActivity.class);
+                                        i.putExtra(""fragment"", 2);
+
+                                        PendingIntent pi = PendingIntent.getActivity(DownloadFragment.sActivity, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                                        AlarmManager mgr = (AlarmManager) mApp.getSystemService(Context.ALARM_SERVICE);
+                                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pi);
+                                        System.exit(0);
+                                    }
+                                })
+                                .positiveText(android.R.string.ok)
+                                .canceledOnTouchOutside(false)
+                                .show();
+                    }
+                });
+
+                DownloadsUtil.clearCache(url);
+            } catch (Throwable t) {
+                Log.e(XposedApp.TAG, ""RepoLoader -> Cannot load repository from "" + url, t);
+                messages.add(mApp.getString(R.string.repo_load_failed, url, t.getMessage()));
+                DownloadsUtil.clearCache(url);
+            } finally {
+                if (in != null)
+                    try {
+                        in.close();
+                    } catch (IOException ignored) {
+                    }
+                cacheFile.delete();
+                RepoDb.endTransation();
+            }
+        }
+
+        // TODO Set ModuleColumns.PREFERRED for modules which appear in multiple
+        // repositories
+        return hasChanged.get();
+    }",False,False,"The function of this method is to download and parse files from a list of URLs. It updates the repository and module information in a database, and keeps track of changes made during the process. It returns a boolean value indicating whether any changes were made.","The `downloadAndParseFiles` method downloads and parses repository files from a list of URLs. It updates the local database with new modules, deletes removed modules, and updates repository metadata. It returns a boolean indicating whether any changes were made during the process."
+37,"addListener(RepoListener,boolean)",add listener listener trigger immediately ,Method,,de.robv.android.xposed.installer.DownloadDetailsActivity+onCreate(Bundle),java.util.List+contains(Object) java.util.List+contains(Object) java.util.List+add(E) java.util.List+add(E) de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader) de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader),de.robv.android.xposed.installer.util.RepoLoader+mListeners de.robv.android.xposed.installer.util.RepoLoader+mListeners,240,7,1,,"public void addListener(RepoListener listener, boolean triggerImmediately) {
+        if (!mListeners.contains(listener))
+            mListeners.add(listener);
+
+        if (triggerImmediately)
+            listener.onRepoReloaded(this);
+    }",True,True,"This method adds a listener to a list of listeners. If the ""triggerImmediately"" parameter is true, it calls the ""onRepoReloaded"" method on the listener.","The code defines a method called ""addListener"" that takes a ""RepoListener"" object and a boolean flag as parameters. It adds the listener to a list if it is not already present, and if the flag is true, it triggers the ""onRepoReloaded"" method of the listener immediately."
+38,removeListener(RepoListener),remove listener listener ,Method,,de.robv.android.xposed.installer.DownloadDetailsActivity+onDestroy() de.robv.android.xposed.installer.DownloadFragment+onDestroyView() de.robv.android.xposed.installer.WelcomeActivity+onDestroy(),java.util.List+remove(Object) java.util.List+remove(Object),de.robv.android.xposed.installer.util.RepoLoader+mListeners,94,3,1,,"public void removeListener(RepoListener listener) {
+        mListeners.remove(listener);
+    }",True,True,This method removes a listener from a list of listeners.,"The given code defines a method named ""removeListener"" that takes a parameter of type ""RepoListener"". This method is responsible for removing the specified listener from a collection called ""mListeners""."
+39,notifyListeners(),notify listeners ,Method,"setReleaseTypeLocal(String,String) clear(boolean)",,de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader) de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader),de.robv.android.xposed.installer.util.RepoLoader+mListeners de.robv.android.xposed.installer.util.RepoLoader+mInstance,147,5,2,,"private void notifyListeners() {
+        for (RepoListener listener : mListeners) {
+            listener.onRepoReloaded(mInstance);
+        }
+    }",True,True,This method notifies all the listeners that the repository has been reloaded.,"The `notifyListeners()` method is a private method that iterates over a list of `RepoListener` objects and calls the `onRepoReloaded()` method on each listener, passing in the `mInstance` object as a parameter. This method is responsible for notifying all the listeners that a repository has been reloaded."
+40,RepoListener,repo listener ,MemberClass,,,de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader),,216,7,1,,"public interface RepoListener {
+        /**
+         * Called whenever the list of modules from repositories has been
+         * successfully reloaded
+         */
+        void onRepoReloaded(RepoLoader loader);
+    }",False,True,,

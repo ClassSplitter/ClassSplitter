@@ -1,0 +1,169 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,function,function ,Field,"FunctionTable(Schema,Session,Expression,FunctionCall)",,,,36,1,18,,private final FunctionCall function;,False,False,,False,
+2,rowCount,row count ,Field,,,,,28,1,18,,private final long rowCount;,False,False,,False,
+3,functionExpr,function expr ,Field,"FunctionTable(Schema,Session,Expression,FunctionCall)",,,,32,1,2,,private Expression functionExpr;,False,False,,False,
+4,"FunctionTable(Schema,Session,Expression,FunctionCall)",function table schema session function expr function ,Method,,,"org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.TableFunction+getRowCount() org.h2.expression.function.TableFunction+getRowCount() org.h2.expression.function.FunctionCall+optimize(Session) org.h2.expression.function.FunctionCall+optimize(Session) org.h2.expression.function.FunctionCall+getValueType() org.h2.expression.function.FunctionCall+getValueType() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.FunctionCall+getArgs() org.h2.expression.function.FunctionCall+getArgs() org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+optimize(Session) org.h2.expression.function.FunctionCall+getValueForColumnList(Session,Expression[]) org.h2.expression.function.FunctionCall+getValueForColumnList(Session,Expression[]) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.FunctionCall+getName() org.h2.value.ValueResultSet+getResult() org.h2.value.ValueResultSet+getResult() org.h2.result.ResultInterface+getVisibleColumnCount() org.h2.result.ResultInterface+getVisibleColumnCount() org.h2.table.Column+Column(String,TypeInfo) org.h2.result.ResultInterface+getColumnName(int) org.h2.result.ResultInterface+getColumnName(int) org.h2.result.ResultInterface+getColumnType(int) org.h2.result.ResultInterface+getColumnType(int) org.h2.table.Table+setColumns(Column[]) org.h2.table.Table+setColumns(Column[])",org.h2.table.FunctionTable+functionExpr org.h2.table.FunctionTable+functionExpr org.h2.table.FunctionTable+function org.h2.table.FunctionTable+function org.h2.table.FunctionTable+rowCount org.h2.table.FunctionTable+rowCount java.lang.Long+MAX_VALUE org.h2.value.Value+RESULT_SET org.h2.api.ErrorCode+FUNCTION_MUST_RETURN_RESULT_SET_1 org.h2.api.ErrorCode+FUNCTION_MUST_RETURN_RESULT_SET_1,1583,37,1,,"public FunctionTable(Schema schema, Session session,
+            Expression functionExpr, FunctionCall function) {
+        super(schema, 0, function.getName(), false, true);
+        this.functionExpr = functionExpr;
+        this.function = function;
+        if (function instanceof TableFunction) {
+            rowCount = ((TableFunction) function).getRowCount();
+        } else {
+            rowCount = Long.MAX_VALUE;
+        }
+        function.optimize(session);
+        int type = function.getValueType();
+        if (type != Value.RESULT_SET) {
+            throw DbException.get(
+                    ErrorCode.FUNCTION_MUST_RETURN_RESULT_SET_1, function.getName());
+        }
+        Expression[] args = function.getArgs();
+        int numParams = args.length;
+        Expression[] columnListArgs = new Expression[numParams];
+        for (int i = 0; i < numParams; i++) {
+            args[i] = args[i].optimize(session);
+            columnListArgs[i] = args[i];
+        }
+        ValueResultSet template = function.getValueForColumnList(
+                session, columnListArgs);
+        if (template == null) {
+            throw DbException.get(
+                    ErrorCode.FUNCTION_MUST_RETURN_RESULT_SET_1, function.getName());
+        }
+        ResultInterface result = template.getResult();
+        int columnCount = result.getVisibleColumnCount();
+        Column[] cols = new Column[columnCount];
+        for (int i = 0; i < columnCount; i++) {
+            cols[i] = new Column(result.getColumnName(i), result.getColumnType(i));
+        }
+        setColumns(cols);
+    }",False,False,"The function of this method is to create a FunctionTable object by initializing its properties based on the given parameters, optimizing the function, and setting the columns of the table based on the result of the function.",True,"This code defines a constructor for a FunctionTable class that takes in a schema, session, function expression, and function call as parameters. It initializes various properties of the FunctionTable object, including the number of rows, column names, and column types, based on the provided function."
+5,"lock(Session,boolean,boolean)",lock session exclusive force lock even in mvcc ,Method,,,,,153,5,1,,"@Override
+    public boolean lock(Session session, boolean exclusive, boolean forceLockEvenInMvcc) {
+        // nothing to do
+        return false;
+    }",True,True,"The function of this method is to lock a session, but it does nothing and always returns false.",True,"The given code is an implementation of the `lock` method, which takes a `Session` object, a boolean value indicating exclusivity, and a boolean value indicating whether to force locking even in MVCC (Multi-Version Concurrency Control) mode. The method does not perform any actions and always returns false."
+6,close(Session),close session ,Method,,,,,81,4,1,,"@Override
+    public void close(Session session) {
+        // nothing to do
+    }",True,True,This method serves as an override for the close() method in the parent class. It takes a Session object as a parameter and does nothing.,True,"The given code snippet is an implementation of the `close` method, which is part of a class that overrides a superclass method. The method takes a `Session` object as a parameter and does nothing, indicating that there is no specific action required for closing the session."
+7,unlock(Session),unlock s ,Method,,,,,76,4,1,,"@Override
+    public void unlock(Session s) {
+        // nothing to do
+    }",True,True,This method serves as an override for the unlock function in a class or interface. It takes a Session object as a parameter and does nothing.,True,"The code snippet represents an overridden method called ""unlock"" that takes a Session object as a parameter. The method does not perform any actions and simply contains a comment stating that there is nothing to do."
+8,isLockedExclusively(),is locked exclusively ,Method,,,,,80,4,1,,"@Override
+    public boolean isLockedExclusively() {
+        return false;
+    }",True,True,"This method serves to check if an object is exclusively locked. It returns false, indicating that the object is not locked exclusively.",True,"The code snippet defines a method named ""isLockedExclusively"" that returns a boolean value. The method always returns false, indicating that the object is not locked exclusively."
+9,"addIndex(Session,String,int,IndexColumn[],IndexType,boolean,String)",add index session index name index id cols index type create index comment ,Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,253,6,1,,"@Override
+    public Index addIndex(Session session, String indexName, int indexId,
+            IndexColumn[] cols, IndexType indexType, boolean create,
+            String indexComment) {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True,True,"This method is used to add an index to a database table. It throws an exception with a message indicating that the ""ALIAS"" feature is not supported.",True,"The given code is an overridden method that adds an index to a database table. It throws an unsupported exception with the message ""ALIAS"" indicating that the functionality is not supported."
+10,"removeRow(Session,Row)",remove row session row ,Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,129,4,1,,"@Override
+    public void removeRow(Session session, Row row) {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True,True,"This method is used to remove a row from a session. It throws an exception with the message ""ALIAS"" to indicate that the operation is not supported.",True,"The given code snippet is a method named ""removeRow"" that overrides a method from a superclass or interface. It takes a session and a row as parameters, but instead of performing any action, it throws an exception with the message ""ALIAS"" indicating that the operation is not supported."
+11,truncate(Session),truncate session ,Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,119,4,1,,"@Override
+    public void truncate(Session session) {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True,True,"This method is used to truncate a session by throwing an unsupported exception with the message ""ALIAS"".",True,"The given code snippet is a method named ""truncate"" that overrides a method from a superclass or interface. It throws an exception with a message indicating that the operation is not supported for the given alias."
+12,canDrop(),can drop ,Method,,,org.h2.message.DbException+throwInternalError(String) org.h2.message.DbException+throwInternalError(String) org.h2.engine.DbObjectBase+toString() org.h2.engine.DbObjectBase+toString(),,104,4,1,,"@Override
+    public boolean canDrop() {
+        throw DbException.throwInternalError(toString());
+    }",True,True,This method is used to determine if an object can be dropped. It throws an internal error with a message that represents the object.,True,The method `canDrop()` is overridden to throw an internal error with the string representation of the object. It is likely used to indicate that dropping an object is not allowed or supported in the current context.
+13,"addRow(Session,Row)",add row session row ,Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,126,4,1,,"@Override
+    public void addRow(Session session, Row row) {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True,True,"This method is used to add a row to a session, but it throws an exception with the message ""ALIAS"" if the operation is not supported.",True,"The given code snippet is an implementation of the `addRow` method, which is expected to add a row to a session. However, it throws an unsupported exception with the message ""ALIAS"" using the `DbException.getUnsupportedException` method."
+14,checkSupportAlter(),check support alter ,Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,113,4,1,,"@Override
+    public void checkSupportAlter() {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True,True,"This method is used to check if altering the support is possible. It throws an exception with a message indicating that altering the support for ""ALIAS"" is not supported.",True,"The code snippet defines a method named ""checkSupportAlter"" that throws an exception indicating that the ""ALIAS"" feature is not supported. This method is likely part of a larger codebase that handles database operations and checks for support of various features."
+15,getTableType(),get table type ,Method,,,,,74,4,1,,"@Override
+    public TableType getTableType() {
+        return null;
+    }",False,True,"This method is used to override the getTableType() function from a superclass. It returns a TableType object, but in this case, it always returns null.",True,"The code snippet defines a method named `getTableType()` that returns an object of type `TableType`. However, the implementation of this method is incomplete as it always returns `null`."
+16,getScanIndex(Session),get scan index session ,Method,,,"org.h2.index.FunctionIndex+FunctionIndex(FunctionTable,IndexColumn[]) org.h2.table.IndexColumn+wrap(Column[]) org.h2.table.IndexColumn+wrap(Column[])",org.h2.table.Table+columns,131,4,1,,"@Override
+    public Index getScanIndex(Session session) {
+        return new FunctionIndex(this, IndexColumn.wrap(columns));
+    }",True,True,"The method ""getScanIndex"" overrides a method from a superclass and returns a new instance of the ""FunctionIndex"" class, passing the current object and a wrapped array of columns as arguments.",True,"The code is overriding the `getScanIndex` method, which returns an `Index` object. It creates a new `FunctionIndex` object with the current instance and a list of `IndexColumn` objects as parameters, and returns it as the result."
+17,getIndexes(),get indexes ,Method,,,,,79,4,1,,"@Override
+    public ArrayList<Index> getIndexes() {
+        return null;
+    }",True,True,"This method is an overridden implementation of the ""getIndexes"" function. It returns an ArrayList of Index objects, but in this case, it always returns null.",True,"The code contains a method named ""getIndexes"" that returns an ArrayList of objects of type ""Index"". The method is overridden from a superclass or interface and currently returns null, indicating that it does not provide any actual implementation."
+18,canGetRowCount(),can get row count ,Method,,"org.h2.index.FunctionIndex+getCost(Session,int[],TableFilter[],int,SortOrder,AllColumnsForPlan)",,org.h2.table.FunctionTable+rowCount java.lang.Long+MAX_VALUE,96,4,1,,"@Override
+    public boolean canGetRowCount() {
+        return rowCount != Long.MAX_VALUE;
+    }",False,False,"This method checks if the rowCount is not equal to the maximum value of a long data type, and returns a boolean value indicating whether the rowCount can be obtained.",True,"The given code is implementing a method called `canGetRowCount()` which returns a boolean value. It checks if the `rowCount` variable is not equal to the maximum value of a long data type, and returns true if it is not, indicating that the row count can be obtained."
+19,getRowCount(Session),get row count session ,Method,,org.h2.index.FunctionIndex+getRowCount(Session),,org.h2.table.FunctionTable+rowCount,87,4,1,,"@Override
+    public long getRowCount(Session session) {
+        return rowCount;
+    }",False,False,"The method ""getRowCount"" returns the value of the variable ""rowCount"" as a long data type. It takes a Session object as a parameter.",True,The given code is a method named `getRowCount` that overrides a method from a superclass or interface. It takes a `Session` object as a parameter and returns a `long` value representing the row count. The value returned is stored in the `rowCount` variable.
+20,getCreateSQL(),get create sql ,Method,,,,,71,4,1,,"@Override
+    public String getCreateSQL() {
+        return null;
+    }",True,True,"This method is used to override the ""getCreateSQL"" function from a superclass. It returns a null value, indicating that no SQL statement is being created or returned by this method.",True,"The code snippet is a method named ""getCreateSQL"" that returns a String. It is marked with the ""@Override"" annotation, indicating that it overrides a method from a superclass or interface. The method currently returns null, meaning it does not provide any SQL statement for creating something."
+21,getDropSQL(),get drop sql ,Method,,,,,69,4,1,,"@Override
+    public String getDropSQL() {
+        return null;
+    }",True,True,"This method is an overridden implementation of the ""getDropSQL"" method. It returns a null value, indicating that there is no SQL statement to drop a specific object.",True,"The code snippet is a method named ""getDropSQL"" that returns a String. It is marked with the ""@Override"" annotation, indicating that it overrides a method from a superclass or interface. The method currently returns null, meaning it does not provide any SQL statement for dropping a database object."
+22,checkRename(),check rename ,Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,107,4,1,,"@Override
+    public void checkRename() {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True,True,This method is used to check if renaming is supported. It throws an exception with a message indicating that renaming is not supported for aliases.,True,The code snippet defines a method named `checkRename()` which throws an exception with a message indicating that renaming is not supported for aliases. This method is likely part of a larger codebase or class that handles database operations.
+23,getResult(Session),get result session read the result from the function param session the session return the result ,Method,,"org.h2.index.FunctionIndex+find(Session,SearchRow,SearchRow)",org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+getValue(Session) org.h2.expression.Expression+getValue(Session) org.h2.value.ValueResultSet+getResult() org.h2.value.ValueResultSet+getResult(),org.h2.table.FunctionTable+functionExpr org.h2.table.FunctionTable+functionExpr org.h2.table.FunctionTable+functionExpr org.h2.value.ValueNull+INSTANCE,410,14,1,"/** 
+ * Read the result from the function.
+ * @param session the session
+ * @return the result
+ */
+","/**
+     * Read the result from the function.
+     *
+     * @param session the session
+     * @return the result
+     */
+    public ResultInterface getResult(Session session) {
+        functionExpr = functionExpr.optimize(session);
+        Value v = functionExpr.getValue(session);
+        if (v == ValueNull.INSTANCE) {
+            return null;
+        }
+        return ((ValueResultSet) v).getResult();
+    }",False,False,"This method reads the result from a function. It optimizes the function expression, gets the value from the session, and returns the result as a ResultInterface object. If the value is null, it returns null.",False,"The given code is a method named `getResult` that takes a `Session` object as a parameter and returns a `ResultInterface` object. It optimizes the function expression, retrieves the value from the session, and if the value is not null, it returns the result obtained from the value."
+24,getMaxDataModificationId(),get max data modification id ,Method,,,,java.lang.Long+MAX_VALUE,198,6,1,,"@Override
+    public long getMaxDataModificationId() {
+        // TODO optimization: table-as-a-function currently doesn't know the
+        // last modified date
+        return Long.MAX_VALUE;
+    }",True,True,"This method returns the maximum data modification ID. It is overridden to provide a default value of Long.MAX_VALUE, indicating that the last modified date is unknown for the table-as-a-function optimization.",True,"The code snippet defines a method named `getMaxDataModificationId()` that returns the maximum possible value of a `long` data type. It includes a comment suggesting a potential optimization to track the last modified date of a table-as-a-function, which is not currently implemented."
+25,getUniqueIndex(),get unique index ,Method,,,,,72,4,1,,"@Override
+    public Index getUniqueIndex() {
+        return null;
+    }",True,True,"This method is an overridden implementation of the ""getUniqueIndex"" function. It returns a null value, indicating that there is no unique index available.",True,"The code snippet defines a method named ""getUniqueIndex"" that returns an object of type ""Index"". However, the implementation of this method always returns null, indicating that there is no unique index available."
+26,getSQL(boolean),get sql always quote ,Method,,,org.h2.expression.function.FunctionCall+getSQL(boolean) org.h2.expression.function.FunctionCall+getSQL(boolean),org.h2.table.FunctionTable+function,108,4,1,,"@Override
+    public String getSQL(boolean alwaysQuote) {
+        return function.getSQL(alwaysQuote);
+    }",False,False,"This method overrides the getSQL method and returns the SQL string from the function, with an option to always quote the values.",True,"The code is implementing a method called `getSQL` that returns a SQL string. It takes a boolean parameter `alwaysQuote` and calls the `getSQL` method of a `function` object, passing the `alwaysQuote` value."
+27,"getSQL(StringBuilder,boolean)",get sql builder always quote ,Method,,,java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.expression.function.FunctionCall+getSQL(boolean) org.h2.expression.function.FunctionCall+getSQL(boolean),org.h2.table.FunctionTable+function,154,4,1,,"@Override
+    public StringBuilder getSQL(StringBuilder builder, boolean alwaysQuote) {
+        return builder.append(function.getSQL(alwaysQuote));
+    }",False,False,This method appends the SQL representation of a function to a StringBuilder object and returns the modified StringBuilder.,True,"The given code is an overridden method that appends the SQL representation of a function to a StringBuilder object. The function's SQL representation is obtained by calling the getSQL() method of the function object, and the result is appended to the provided StringBuilder."
+28,getRowCountApproximation(),get row count approximation ,Method,,"org.h2.index.FunctionIndex+getCost(Session,int[],TableFilter[],int,SortOrder,AllColumnsForPlan) org.h2.index.FunctionIndex+getRowCountApproximation()",,org.h2.table.FunctionTable+rowCount,85,4,1,,"@Override
+    public long getRowCountApproximation() {
+        return rowCount;
+    }",False,False,This method returns the approximate count of rows in a data set.,True,"The code snippet defines a method named ""getRowCountApproximation"" that returns the value of a variable called ""rowCount"". This method is likely part of a class or interface implementation and is annotated with ""@Override"" to indicate that it overrides a method from a superclass or interface."
+29,getDiskSpaceUsed(),get disk space used ,Method,,,,,70,4,1,,"@Override
+    public long getDiskSpaceUsed() {
+        return 0;
+    }",False,False,"This method is used to retrieve the amount of disk space used. It returns a long value of 0, indicating that no disk space is currently being used.",True,"The code snippet defines a method named ""getDiskSpaceUsed"" that returns a long value. However, the method implementation currently returns a constant value of 0, indicating that it does not provide any information about the actual disk space used."
+30,isDeterministic(),is deterministic ,Method,,,org.h2.expression.function.FunctionCall+isDeterministic() org.h2.expression.function.FunctionCall+isDeterministic(),org.h2.table.FunctionTable+function,97,4,1,,"@Override
+    public boolean isDeterministic() {
+        return function.isDeterministic();
+    }",False,False,"The method ""isDeterministic"" overrides a method from a superclass and returns a boolean value indicating whether the function is deterministic or not.",True,"The code snippet is implementing the `isDeterministic()` method, which returns a boolean value. It calls the `isDeterministic()` method of the `function` object and returns its result. The method is used to determine if the function is deterministic or not."
+31,canReference(),can reference ,Method,,,,,73,4,1,,"@Override
+    public boolean canReference() {
+        return false;
+    }",True,True,The function of the method is to determine whether a reference can be made. It returns a boolean value of false.,True,"The code snippet defines a method named `canReference()` which returns a boolean value. The method is overridden from a superclass or interface and always returns `false`, indicating that referencing is not allowed."

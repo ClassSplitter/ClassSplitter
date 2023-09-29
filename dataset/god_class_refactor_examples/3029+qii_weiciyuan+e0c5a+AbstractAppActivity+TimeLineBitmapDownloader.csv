@@ -1,0 +1,293 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,theme,theme ,Field,,,,,22,1,2,,private int theme = 0;,False,False,,False,
+2,defaultAvatar,default avatar ,Field,,,,,38,1,2,,private Drawable defaultAvatar = null;,False,True,,False,
+3,defaultPic,default pic ,Field,,,,,35,1,2,,private Drawable defaultPic = null;,False,True,,False,
+4,errorPic,error pic ,Field,,,,,33,1,2,,private Drawable errorPic = null;,False,True,,False,
+5,transPic,trans pic ,Field,,,,,65,1,2,,private Drawable transPic = new ColorDrawable(Color.TRANSPARENT);,False,True,,False,
+6,picBgBorder,pic bg border ,Field,,,,,36,1,2,,private Drawable picBgBorder = null;,False,True,,False,
+7,avatarBitmapWorkerTaskHashMap,avatar bitmap worker task hash map ,Field,,,,,132,1,2,,"private Map<String, AvatarBitmapWorkerTask> avatarBitmapWorkerTaskHashMap = new ConcurrentHashMap<String, AvatarBitmapWorkerTask>();",True,True,,False,
+8,pictureBitmapWorkerTaskMap,picture bitmap worker task map ,Field,,,,,131,1,2,,"private Map<String, PictureBitmapWorkerTask> pictureBitmapWorkerTaskMap = new ConcurrentHashMap<String, PictureBitmapWorkerTask>();",True,True,,False,
+9,"getMemCacheKey(String,int)",get mem cache key url key position ,Method,"PicCommander.downloadAvatar(ImageView,String,int,ListView,boolean) PicCommander.downloadAvatar(ImageView,String,int,ListView,boolean)",,,,104,3,4,,"protected String getMemCacheKey(String urlKey, int position) {
+        return urlKey + position;
+    }",True,True,The function of the method is to concatenate the given urlKey and position values and return the resulting string as the memCacheKey.,True,"The code defines a protected method named ""getMemCacheKey"" that takes a string parameter ""urlKey"" and an integer parameter ""position"". It concatenates the two parameters and returns the resulting string, which represents a key for a memory cache."
+10,commander,commander ,Field,,,,,52,1,4,,protected ICommander commander = new PicCommander();,False,True,,False,
+11,PicCommander,pic commander ,MemberClass,,,"org.qii.weiciyuan.ui.interfaces.AbstractAppActivity.PicCommander+downloadAvatar(ImageView,String,int,ListView,boolean) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getBitmapFromMemCache(String) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getBitmapFromMemCache(String) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+isSameUrl(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+isSameUrl(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialAvatarDownload(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialAvatarDownload(String,ImageView) java.util.Map+remove(Object) java.util.Map+remove(Object) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getMemCacheKey(String,int) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getMemCacheKey(String,int) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialAvatarDownload(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialAvatarDownload(String,ImageView) org.qii.weiciyuan.ui.main.AvatarBitmapWorkerTask+AvatarBitmapWorkerTask(LruCache,Map<String,AvatarBitmapWorkerTask>,ImageView,String,int,Activity) org.qii.weiciyuan.support.utils.GlobalContext+getAvatarCache() org.qii.weiciyuan.support.utils.GlobalContext+getInstance() org.qii.weiciyuan.support.utils.GlobalContext+getInstance() org.qii.weiciyuan.support.utils.GlobalContext+getAvatarCache() org.qii.weiciyuan.support.lib.AvatarBitmapDrawable+AvatarBitmapDrawable(AvatarBitmapWorkerTask) org.qii.weiciyuan.support.lib.MyAsyncTask+executeOnExecutor(Executor,Params[]) org.qii.weiciyuan.support.lib.MyAsyncTask+executeOnExecutor(Executor,Params[]) java.util.Map+put(K,V) java.util.Map+put(K,V) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getMemCacheKey(String,int) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getMemCacheKey(String,int) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity.PicCommander+downContentPic(ImageView,String,int,ListView,FileLocationMethod,boolean) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getBitmapFromMemCache(String) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getBitmapFromMemCache(String) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+isSameUrl(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+isSameUrl(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialDownload(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialDownload(String,ImageView) java.util.Map+remove(Object) java.util.Map+remove(Object) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+isSameUrl(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+isSameUrl(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialDownload(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialDownload(String,ImageView) java.util.Map+remove(Object) java.util.Map+remove(Object) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialDownload(String,ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+cancelPotentialDownload(String,ImageView) org.qii.weiciyuan.ui.main.PictureBitmapWorkerTask+PictureBitmapWorkerTask(LruCache,Map<String,PictureBitmapWorkerTask>,ImageView,String,int,Activity,FileLocationMethod) org.qii.weiciyuan.support.utils.GlobalContext+getAvatarCache() org.qii.weiciyuan.support.utils.GlobalContext+getInstance() org.qii.weiciyuan.support.utils.GlobalContext+getInstance() org.qii.weiciyuan.support.utils.GlobalContext+getAvatarCache() org.qii.weiciyuan.support.lib.PictureBitmapDrawable+PictureBitmapDrawable(PictureBitmapWorkerTask) org.qii.weiciyuan.support.lib.MyAsyncTask+executeOnExecutor(Executor,Params[]) org.qii.weiciyuan.support.lib.MyAsyncTask+executeOnExecutor(Executor,Params[]) java.util.Map+put(K,V) java.util.Map+put(K,V)",org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+avatarBitmapWorkerTaskHashMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+transPic org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+avatarBitmapWorkerTaskHashMap org.qii.weiciyuan.support.lib.MyAsyncTask+THREAD_POOL_EXECUTOR org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+avatarBitmapWorkerTaskHashMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+pictureBitmapWorkerTaskMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+pictureBitmapWorkerTaskMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+transPic org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+transPic org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+pictureBitmapWorkerTaskMap org.qii.weiciyuan.support.lib.MyAsyncTask+THREAD_POOL_EXECUTOR org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+pictureBitmapWorkerTaskMap,3591,79,2,,"private class PicCommander implements ICommander {
+        @Override
+        public void downloadAvatar(ImageView view, String urlKey, int position, ListView listView, boolean isFling) {
+
+            Bitmap bitmap = getBitmapFromMemCache(urlKey);
+            if (bitmap != null) {
+                if (!isSameUrl(urlKey, view)) {
+                    view.setImageBitmap(bitmap);
+                    view.setTag(urlKey);
+                }
+                cancelPotentialAvatarDownload(urlKey, view);
+                avatarBitmapWorkerTaskHashMap.remove(getMemCacheKey(urlKey, position));
+            } else {
+                view.setImageDrawable(transPic);
+                view.setTag("""");
+                if (cancelPotentialAvatarDownload(urlKey, view) && !isFling) {
+                    AvatarBitmapWorkerTask task = new AvatarBitmapWorkerTask(GlobalContext.getInstance().getAvatarCache(), avatarBitmapWorkerTaskHashMap, view, urlKey, position, AbstractAppActivity.this);
+                    AvatarBitmapDrawable downloadedDrawable = new AvatarBitmapDrawable(task);
+                    view.setImageDrawable(downloadedDrawable);
+                    task.executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
+                    avatarBitmapWorkerTaskHashMap.put(getMemCacheKey(urlKey, position), task);
+                }
+            }
+
+        }
+
+        @Override
+        public void downContentPic(final ImageView view, String urlKey, int position, ListView listView, FileLocationMethod method, boolean isFling) {
+            final Bitmap bitmap = getBitmapFromMemCache(urlKey);
+            if (bitmap != null) {
+                switch (method) {
+                    case picture_thumbnail:
+
+                        if (!isSameUrl(urlKey, view)) {
+                            view.setImageBitmap(bitmap);
+                            view.setTag(urlKey);
+                        }
+                        cancelPotentialDownload(urlKey, view);
+                        pictureBitmapWorkerTaskMap.remove(urlKey);
+
+                        break;
+                    case picture_bmiddle:
+                        if (!isSameUrl(urlKey, view)) {
+                            view.setImageBitmap(bitmap);
+                            view.setTag(urlKey);
+                        }
+                        cancelPotentialDownload(urlKey, view);
+                        pictureBitmapWorkerTaskMap.remove(urlKey);
+                        break;
+                }
+
+            } else {
+
+                switch (method) {
+                    case picture_thumbnail:
+
+                        view.setImageDrawable(transPic);
+                        view.setTag("""");
+
+                        break;
+                    case picture_bmiddle:
+                        view.setImageDrawable(transPic);
+                        view.setTag("""");
+                        break;
+
+                }
+                if (cancelPotentialDownload(urlKey, view) && !isFling) {
+
+                    PictureBitmapWorkerTask task = new PictureBitmapWorkerTask(GlobalContext.getInstance().getAvatarCache(), pictureBitmapWorkerTaskMap, view, urlKey, position, AbstractAppActivity.this, method);
+                    PictureBitmapDrawable downloadedDrawable = new PictureBitmapDrawable(task);
+                    view.setImageDrawable(downloadedDrawable);
+                    task.executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
+                    pictureBitmapWorkerTaskMap.put(urlKey, task);
+                }
+            }
+
+        }
+
+    }",False,True,,False,
+12,"cancelPotentialDownload(String,ImageView)",cancel potential download url image view ,Method,"PicCommander.downContentPic(ImageView,String,int,ListView,FileLocationMethod,boolean) PicCommander.downContentPic(ImageView,String,int,ListView,FileLocationMethod,boolean) PicCommander.downContentPic(ImageView,String,int,ListView,FileLocationMethod,boolean)",,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getBitmapDownloaderTask(ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getBitmapDownloaderTask(ImageView) org.qii.weiciyuan.ui.main.PictureBitmapWorkerTask+getUrl() org.qii.weiciyuan.ui.main.PictureBitmapWorkerTask+getUrl() java.lang.String+equals(Object) java.lang.String+equals(Object) org.qii.weiciyuan.support.lib.MyAsyncTask+cancel(boolean) org.qii.weiciyuan.support.lib.MyAsyncTask+cancel(boolean) org.qii.weiciyuan.support.lib.MyAsyncTask+getStatus() org.qii.weiciyuan.support.lib.MyAsyncTask+getStatus() org.qii.weiciyuan.support.lib.MyAsyncTask+getStatus() org.qii.weiciyuan.support.lib.MyAsyncTask+getStatus(),,707,14,10,,"private static boolean cancelPotentialDownload(String url, ImageView imageView) {
+        PictureBitmapWorkerTask bitmapDownloaderTask = getBitmapDownloaderTask(imageView);
+
+        if (bitmapDownloaderTask != null) {
+            String bitmapUrl = bitmapDownloaderTask.getUrl();
+            if ((bitmapUrl == null) || (!bitmapUrl.equals(url))) {
+                bitmapDownloaderTask.cancel(true);
+            } else if (bitmapDownloaderTask.getStatus() == MyAsyncTask.Status.PENDING || bitmapDownloaderTask.getStatus() == MyAsyncTask.Status.RUNNING) {
+                // The same URL is already being downloaded.
+                return false;
+            }
+        }
+        return true;
+    }",True,True,"The function of this method is to check if there is a pending or running download task for a given URL and image view. If there is, it cancels the task. If not, it returns true.",True,"The `cancelPotentialDownload` method checks if there is a currently running or pending download task for the given URL and image view. If there is, it cancels the task. If not, it returns true indicating that a new download can be initiated."
+13,"isSameUrl(String,ImageView)",is same url url image view ,Method,"PicCommander.downloadAvatar(ImageView,String,int,ListView,boolean) PicCommander.downContentPic(ImageView,String,int,ListView,FileLocationMethod,boolean) PicCommander.downContentPic(ImageView,String,int,ListView,FileLocationMethod,boolean)",,java.lang.String+equals(Object) java.lang.String+equals(Object),,270,9,10,,"private static boolean isSameUrl(String url, ImageView imageView) {
+
+        String bitmapUrl = (String) imageView.getTag();
+        if ((!TextUtils.isEmpty(bitmapUrl)) && (bitmapUrl.equals(url))) {
+            return true;
+        }
+
+        return false;
+    }",False,True,"This method checks if the URL of the image associated with the ImageView matches the given URL. It returns true if they are the same, and false otherwise.",True,"The code defines a private static method called ""isSameUrl"" that takes a URL and an ImageView as parameters. It checks if the URL stored in the ImageView's tag is not empty and is equal to the given URL, and returns true if they are the same, otherwise false."
+14,"cancelPotentialAvatarDownload(String,ImageView)",cancel potential avatar download url image view ,Method,"PicCommander.downloadAvatar(ImageView,String,int,ListView,boolean) PicCommander.downloadAvatar(ImageView,String,int,ListView,boolean)",,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getAvatarBitmapDownloaderTask(ImageView) org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+getAvatarBitmapDownloaderTask(ImageView) org.qii.weiciyuan.ui.main.AvatarBitmapWorkerTask+getUrl() org.qii.weiciyuan.ui.main.AvatarBitmapWorkerTask+getUrl() java.lang.String+equals(Object) java.lang.String+equals(Object) org.qii.weiciyuan.support.lib.MyAsyncTask+cancel(boolean) org.qii.weiciyuan.support.lib.MyAsyncTask+cancel(boolean) org.qii.weiciyuan.support.lib.MyAsyncTask+getStatus() org.qii.weiciyuan.support.lib.MyAsyncTask+getStatus() org.qii.weiciyuan.support.lib.MyAsyncTask+getStatus() org.qii.weiciyuan.support.lib.MyAsyncTask+getStatus(),,718,14,10,,"private static boolean cancelPotentialAvatarDownload(String url, ImageView imageView) {
+        AvatarBitmapWorkerTask bitmapDownloaderTask = getAvatarBitmapDownloaderTask(imageView);
+
+        if (bitmapDownloaderTask != null) {
+            String bitmapUrl = bitmapDownloaderTask.getUrl();
+            if ((bitmapUrl == null) || (!bitmapUrl.equals(url))) {
+                bitmapDownloaderTask.cancel(true);
+            } else if (bitmapDownloaderTask.getStatus() == MyAsyncTask.Status.PENDING || bitmapDownloaderTask.getStatus() == MyAsyncTask.Status.RUNNING) {
+                // The same URL is already being downloaded.
+                return false;
+            }
+        }
+        return true;
+    }",True,True,"The function of this method is to check if there is a pending or running task to download an avatar image for a given URL and ImageView. If such a task exists, it is canceled. If not, it returns true.",True,"This method checks if there is a potential ongoing download task for an avatar image associated with the given URL and ImageView. If there is, it cancels the task if the URL is different, otherwise it returns false. If there is no ongoing task or the task is not pending or running, it returns true."
+15,getAvatarBitmapDownloaderTask(ImageView),get avatar bitmap downloader task image view ,Method,"cancelPotentialAvatarDownload(String,ImageView)",,org.qii.weiciyuan.support.lib.AvatarBitmapDrawable+getBitmapDownloaderTask() org.qii.weiciyuan.support.lib.AvatarBitmapDrawable+getBitmapDownloaderTask(),,460,10,10,,"private static AvatarBitmapWorkerTask getAvatarBitmapDownloaderTask(ImageView imageView) {
+        if (imageView != null) {
+            Drawable drawable = imageView.getDrawable();
+            if (drawable instanceof AvatarBitmapDrawable) {
+                AvatarBitmapDrawable downloadedDrawable = (AvatarBitmapDrawable) drawable;
+                return downloadedDrawable.getBitmapDownloaderTask();
+            }
+        }
+        return null;
+    }",True,True,"This method returns the AvatarBitmapWorkerTask associated with the given ImageView, if it exists. It checks if the ImageView has a drawable of type AvatarBitmapDrawable and returns the associated BitmapDownloaderTask.",True,"This code is a helper method that retrieves the AvatarBitmapWorkerTask associated with an ImageView. It checks if the ImageView has a drawable of type AvatarBitmapDrawable and returns the associated BitmapDownloaderTask, which is responsible for downloading the avatar bitmap."
+16,getBitmapDownloaderTask(ImageView),get bitmap downloader task image view ,Method,"cancelPotentialDownload(String,ImageView)",,org.qii.weiciyuan.support.lib.PictureBitmapDrawable+getBitmapDownloaderTask() org.qii.weiciyuan.support.lib.PictureBitmapDrawable+getBitmapDownloaderTask(),,458,10,10,,"private static PictureBitmapWorkerTask getBitmapDownloaderTask(ImageView imageView) {
+        if (imageView != null) {
+            Drawable drawable = imageView.getDrawable();
+            if (drawable instanceof PictureBitmapDrawable) {
+                PictureBitmapDrawable downloadedDrawable = (PictureBitmapDrawable) drawable;
+                return downloadedDrawable.getBitmapDownloaderTask();
+            }
+        }
+        return null;
+    }",True,True,"This method returns the PictureBitmapWorkerTask associated with an ImageView if it exists, otherwise it returns null.",True,"This code is a method that takes an ImageView as a parameter and checks if it has a PictureBitmapDownloaderTask associated with it. If it does, it returns the task, otherwise it returns null."
+17,onResume(),on resume ,Method,,,org.qii.weiciyuan.support.utils.GlobalContext+setActivity(Activity) org.qii.weiciyuan.support.utils.GlobalContext+getInstance() org.qii.weiciyuan.support.utils.GlobalContext+getInstance() org.qii.weiciyuan.support.utils.GlobalContext+setActivity(Activity) org.qii.weiciyuan.support.settinghelper.SettingUtility+getAppTheme() org.qii.weiciyuan.support.settinghelper.SettingUtility+getAppTheme() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+reload() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+reload(),org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+theme,392,14,4,,"@Override
+    protected void onResume() {
+        super.onResume();
+        GlobalContext.getInstance().setActivity(this);
+        if (getResources().getBoolean(R.bool.is_phone)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+        if (theme == SettingUtility.getAppTheme()) {
+
+        } else {
+            reload();
+        }
+    }",False,False,"This method is called when the activity is resumed. It sets the current activity in the global context, checks if the device is a phone and sets the orientation to portrait if it is, and reloads the activity if the theme has changed.",False,"The code is an overridden method called onResume() that is executed when the activity is resumed. It sets the current activity in the GlobalContext, checks if the device is a phone and sets the orientation to portrait if true, and checks if the current theme matches the app theme and reloads the activity if they are different."
+18,onSaveInstanceState(Bundle),on save instance state out state ,Method,,,,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+theme,165,6,4,,"@Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(""theme"", theme);
+
+    }",False,False,"This method is used to save the current state of the activity, including the value of the ""theme"" variable, into a Bundle object called outState.",False,"The code snippet shows an overridden method called ""onSaveInstanceState"" which is used to save the current state of an activity. It saves the value of a variable called ""theme"" into a Bundle object named ""outState""."
+19,onCreate(Bundle),on create saved instance state ,Method,,,org.qii.weiciyuan.support.settinghelper.SettingUtility+getAppTheme() org.qii.weiciyuan.support.settinghelper.SettingUtility+getAppTheme() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+forceShowActionBarOverflowMenu() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+forceShowActionBarOverflowMenu() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initDefaultAvatar() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initDefaultAvatar() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initDefaultPic() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initDefaultPic() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initPicBgBorder() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initPicBgBorder() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initErrorPic() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initErrorPic() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initNFC() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+initNFC(),org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+theme org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+theme org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+theme,648,19,4,,"@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            theme = SettingUtility.getAppTheme();
+        } else {
+            theme = savedInstanceState.getInt(""theme"");
+        }
+        setTheme(theme);
+        super.onCreate(savedInstanceState);
+        if (getResources().getBoolean(R.bool.is_phone)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        forceShowActionBarOverflowMenu();
+        initDefaultAvatar();
+        initDefaultPic();
+        initPicBgBorder();
+        initErrorPic();
+        initNFC();
+    }",False,False,"This method is used to initialize various components and settings when the activity is created. It sets the theme, orientation, and initializes default avatars, pictures, NFC, and other components.",False,"This code is the `onCreate` method of an Android activity. It sets the theme of the activity based on a saved instance state or a default value, sets the orientation to portrait for phones, and initializes various components such as avatars, pictures, NFC, etc."
+20,initDefaultAvatar(),init default avatar ,Method,onCreate(Bundle),,,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+defaultAvatar,191,5,2,,"private void initDefaultAvatar() {
+        int[] attrs = new int[]{R.attr.account};
+        TypedArray ta = obtainStyledAttributes(attrs);
+        defaultAvatar = ta.getDrawable(0);
+    }",False,True,This method initializes the default avatar by obtaining the styled attributes for the account and setting the default avatar drawable based on the obtained attributes.,True,"The code initializes a default avatar by obtaining a styled attribute value from the current theme. It retrieves the drawable resource associated with the ""account"" attribute and assigns it to the defaultAvatar variable."
+21,initDefaultPic(),init default pic ,Method,onCreate(Bundle),,,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+defaultPic,185,5,2,,"private void initDefaultPic() {
+        int[] attrs = new int[]{R.attr.picture};
+        TypedArray ta = obtainStyledAttributes(attrs);
+        defaultPic = ta.getDrawable(0);
+    }",False,True,This method initializes the default picture by obtaining the styled attributes for the picture resource and setting it as the default picture.,True,"The code initializes a default picture by obtaining the styled attributes of a resource called ""picture"" and assigning it to the variable ""defaultPic""."
+22,initErrorPic(),init error pic ,Method,onCreate(Bundle),,,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+errorPic,179,5,2,,"private void initErrorPic() {
+        int[] attrs = new int[]{R.attr.error};
+        TypedArray ta = obtainStyledAttributes(attrs);
+        errorPic = ta.getDrawable(0);
+    }",False,True,This method initializes an error picture by obtaining the styled attributes for the error attribute and setting the error picture to the obtained drawable.,True,"The code initializes an error picture by obtaining the styled attributes for the ""error"" attribute and assigning the corresponding drawable to the errorPic variable."
+23,initPicBgBorder(),init pic bg border ,Method,onCreate(Bundle),,,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+picBgBorder,202,5,2,,"private void initPicBgBorder() {
+        int[] attrs = new int[]{R.attr.listview_pic_bg_border};
+        TypedArray ta = obtainStyledAttributes(attrs);
+        picBgBorder = ta.getDrawable(0);
+    }",False,True,This method initializes the picBgBorder variable by obtaining the styled attributes for the listview_pic_bg_border and setting the drawable at index 0 to picBgBorder.,True,"The code initializes a variable called ""picBgBorder"" by retrieving a drawable resource from the app's theme attributes. The specific attribute used is ""listview_pic_bg_border""."
+24,forceShowActionBarOverflowMenu(),force show action bar overflow menu ,Method,onCreate(Bundle),,"java.lang.Class+getDeclaredField(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setBoolean(Object,boolean) java.lang.reflect.Field+setBoolean(Object,boolean)",,454,12,2,,"private void forceShowActionBarOverflowMenu() {
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField(""sHasPermanentMenuKey"");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception ignored) {
+
+        }
+    }",False,False,"This method is used to force the display of the overflow menu in the action bar, even if the device has a permanent menu key.",True,"The code defines a private method called ""forceShowActionBarOverflowMenu"" that attempts to disable the permanent menu key on the device by using reflection. If successful, it allows the overflow menu in the action bar to be shown even if the device has a physical menu key."
+25,onDestroy(),on destroy ,Method,,,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+totalStopLoadPicture() org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+totalStopLoadPicture(),org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+defaultAvatar org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+defaultPic,172,8,4,,"@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        totalStopLoadPicture();
+
+        defaultAvatar = null;
+        defaultPic = null;
+    }",False,False,This method is called when the activity is being destroyed. It performs some cleanup tasks such as stopping picture loading and releasing memory by setting some variables to null.,False,"The code is overriding the onDestroy() method of an Android activity. It calls the superclass's onDestroy() method, and then performs some additional actions, including stopping the loading of pictures and setting two variables to null."
+26,totalStopLoadPicture(),total stop load picture ,Method,onDestroy(),,java.util.Map+keySet() java.util.Map+keySet() org.qii.weiciyuan.support.lib.MyAsyncTask+cancel(boolean) java.util.Map+get(Object) java.util.Map+get(Object) org.qii.weiciyuan.support.lib.MyAsyncTask+cancel(boolean) java.util.Map+keySet() java.util.Map+keySet() org.qii.weiciyuan.support.lib.MyAsyncTask+cancel(boolean) java.util.Map+get(Object) java.util.Map+get(Object) org.qii.weiciyuan.support.lib.MyAsyncTask+cancel(boolean),org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+avatarBitmapWorkerTaskHashMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+avatarBitmapWorkerTaskHashMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+avatarBitmapWorkerTaskHashMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+avatarBitmapWorkerTaskHashMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+pictureBitmapWorkerTaskMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+pictureBitmapWorkerTaskMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+pictureBitmapWorkerTaskMap org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+pictureBitmapWorkerTaskMap,586,14,4,,"protected void totalStopLoadPicture() {
+        if (avatarBitmapWorkerTaskHashMap != null) {
+            for (String task : avatarBitmapWorkerTaskHashMap.keySet()) {
+                avatarBitmapWorkerTaskHashMap.get(task).cancel(true);
+            }
+            avatarBitmapWorkerTaskHashMap = null;
+        }
+        if (pictureBitmapWorkerTaskMap != null) {
+            for (String task : pictureBitmapWorkerTaskMap.keySet()) {
+                pictureBitmapWorkerTaskMap.get(task).cancel(true);
+            }
+            pictureBitmapWorkerTaskMap = null;
+        }
+    }",False,True,"This method cancels all running tasks in the avatarBitmapWorkerTaskHashMap and pictureBitmapWorkerTaskMap, and sets both maps to null.",True,"The `totalStopLoadPicture()` method cancels any ongoing avatar and picture loading tasks by iterating through the respective hashmaps and calling the `cancel()` method on each task. It then sets the hashmaps to null, effectively stopping any further loading of pictures."
+27,initNFC(),init nfc ,Method,onCreate(Bundle),,+createNdefMessage(NfcEvent),,791,20,2,,"private void initNFC() {
+        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter == null) {
+            return;
+        }
+
+        mNfcAdapter.setNdefPushMessageCallback(new NfcAdapter.CreateNdefMessageCallback() {
+            @Override
+            public NdefMessage createNdefMessage(NfcEvent event) {
+                String text = (GlobalContext.getInstance().getCurrentAccountName());
+
+                NdefMessage msg = new NdefMessage(
+                        new NdefRecord[]{createMimeRecord(
+                                ""application/org.qii.weiciyuan.beam"", text.getBytes()), NdefRecord.createApplicationRecord(getPackageName())
+                        });
+                return msg;
+            }
+        }, this);
+
+    }",False,False,"The function of this method is to initialize the NFC (Near Field Communication) functionality. It checks if the device has an NFC adapter, and if so, sets a callback to create an NDEF (NFC Data Exchange Format) message when an NFC event occurs. The message includes the current account name and the package name of the application.",True,"The code initializes NFC functionality by checking if the device has an NFC adapter. If it does, it sets a callback for creating an NDEF message to be sent via NFC. The message contains the current account name and the package name of the application."
+28,"createMimeRecord(String,byte[])",create mime record mime type payload ,Method,,,java.lang.String+getBytes(Charset) java.lang.String+getBytes(Charset) java.nio.charset.Charset+forName(String) java.nio.charset.Charset+forName(String) java.lang.Object+Object(),,308,6,2,,"private NdefRecord createMimeRecord(String mimeType, byte[] payload) {
+        byte[] mimeBytes = mimeType.getBytes(Charset.forName(""US-ASCII""));
+        NdefRecord mimeRecord = new NdefRecord(
+                NdefRecord.TNF_MIME_MEDIA, mimeBytes, new byte[0], payload);
+        return mimeRecord;
+    }",False,False,"The function of the method is to create an NdefRecord object with a specified MIME type and payload. It converts the MIME type to bytes using the US-ASCII charset and creates the NdefRecord object with the MIME type, empty ID, and payload.",True,"The code defines a private method called ""createMimeRecord"" that takes a MIME type and a payload as input. It creates an NdefRecord object with the given MIME type and payload, and returns the record."
+29,reload(),reload ,Method,onResume(),,,,268,10,2,,"private void reload() {
+
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }",False,False,The function of this method is to reload the current activity without any animation. It does this by finishing the current activity and starting a new instance of the same activity.,True,"The `reload()` method is used to reload the current activity without any animation. It first gets the current intent, adds a flag to disable animation, finishes the current activity, and then starts a new instance of the activity with the updated intent."
+30,getBitmapFromMemCache(String),get bitmap from mem cache key ,Method,"PicCommander.downloadAvatar(ImageView,String,int,ListView,boolean) PicCommander.downContentPic(ImageView,String,int,ListView,FileLocationMethod,boolean)",,org.qii.weiciyuan.support.utils.GlobalContext+getAvatarCache() org.qii.weiciyuan.support.utils.GlobalContext+getInstance() org.qii.weiciyuan.support.utils.GlobalContext+getInstance() org.qii.weiciyuan.support.utils.GlobalContext+getAvatarCache(),,130,3,4,,"protected Bitmap getBitmapFromMemCache(String key) {
+        return GlobalContext.getInstance().getAvatarCache().get(key);
+    }",True,True,This method retrieves a Bitmap object from a memory cache using a given key.,True,"The given code is a method named ""getBitmapFromMemCache"" that retrieves a Bitmap object from a memory cache. It takes a key as a parameter and returns the corresponding Bitmap object from the avatar cache of the GlobalContext instance."
+31,getPictureBitmapWorkerTaskMap(),get picture bitmap worker task map ,Method,,org.qii.weiciyuan.ui.basefragment.AbstractTimeLineFragment+refresh(),,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+pictureBitmapWorkerTaskMap,128,3,1,,"public Map<String, PictureBitmapWorkerTask> getPictureBitmapWorkerTaskMap() {
+        return pictureBitmapWorkerTaskMap;
+    }",False,True,This method returns a map that contains String keys and PictureBitmapWorkerTask values.,False,"The code defines a method named ""getPictureBitmapWorkerTaskMap"" that returns a Map object containing PictureBitmapWorkerTask objects. This method allows access to the map of PictureBitmapWorkerTask objects stored in the pictureBitmapWorkerTaskMap variable."
+32,getAvatarBitmapWorkerTaskHashMap(),get avatar bitmap worker task hash map ,Method,,org.qii.weiciyuan.ui.basefragment.AbstractTimeLineFragment+refresh() org.qii.weiciyuan.ui.basefragment.AbstractUserListFragment+refresh(),,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+avatarBitmapWorkerTaskHashMap,133,3,1,,"public Map<String, AvatarBitmapWorkerTask> getAvatarBitmapWorkerTaskHashMap() {
+        return avatarBitmapWorkerTaskHashMap;
+    }",False,True,"This method returns a HashMap that contains AvatarBitmapWorkerTask objects, with the keys being Strings.",False,"This code defines a method named ""getAvatarBitmapWorkerTaskHashMap"" that returns a Map object containing String keys and AvatarBitmapWorkerTask values. The method retrieves and returns the avatarBitmapWorkerTaskHashMap."
+33,getCommander(),get commander ,Method,,org.qii.weiciyuan.ui.basefragment.AbstractFriendsFanListFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.basefragment.AbstractMessageTimeLineFragment+buildListAdapter() org.qii.weiciyuan.ui.basefragment.AbstractTimeLineFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.browser.CommentsByIdTimeLineFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.browser.CommentsByIdTimeLineFragment+buildListAdapter() org.qii.weiciyuan.ui.browser.RepostsByIdTimeLineFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.browser.RepostsByIdTimeLineFragment+buildListAdapter() org.qii.weiciyuan.ui.dm.DMConversationListFragment+buildListAdapter() org.qii.weiciyuan.ui.dm.DMUserListFragment+buildListAdapter() org.qii.weiciyuan.ui.maintimeline.CommentsTimeLineFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.maintimeline.CommentsTimeLineFragment+buildListAdapter() org.qii.weiciyuan.ui.maintimeline.MyStatussTimeLineFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.search.SearchStatusFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.search.SearchUserFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.userinfo.MyFavListFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.userinfo.MyInfoFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.userinfo.StatusesByIdTimeLineFragment+onActivityCreated(Bundle) org.qii.weiciyuan.ui.userinfo.UserInfoFragment+onActivityCreated(Bundle),,org.qii.weiciyuan.ui.interfaces.AbstractAppActivity+commander,68,3,1,,"public ICommander getCommander() {
+        return commander;
+    }",False,False,This method returns the commander object.,False,"The code defines a method named ""getCommander"" that returns an object of type ""ICommander"". The method retrieves and returns the value of the ""commander"" variable."
+34,dealWithException(WeiboException),deal with exception e ,Method,,,org.qii.weiciyuan.support.error.WeiboException+getError() org.qii.weiciyuan.support.error.WeiboException+getError(),,131,3,4,,"protected void dealWithException(WeiboException e) {
+        Toast.makeText(this, e.getError(), Toast.LENGTH_SHORT).show();
+    }",False,False,This method handles a WeiboException by displaying an error message as a toast notification.,True,"The code defines a protected method named ""dealWithException"" that takes a WeiboException as a parameter. It displays a toast message with the error message from the exception."

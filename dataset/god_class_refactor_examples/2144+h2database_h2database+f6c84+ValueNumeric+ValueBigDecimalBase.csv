@@ -1,0 +1,280 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,ZERO,zero the value zero ,Field,,,,,115,4,25,"/** 
+ * The value 'zero'.
+ */
+","/**
+     * The value 'zero'.
+     */
+    public static final ValueNumeric ZERO = new ValueNumeric(BigDecimal.ZERO);",False,False,"/** 
+ * The value 'zero'.
+ */
+",False,"/** 
+ * The value 'zero'.
+ */
+"
+2,ONE,one the value one ,Field,,,,,112,4,25,"/** 
+ * The value 'one'.
+ */
+","/**
+     * The value 'one'.
+     */
+    public static final ValueNumeric ONE = new ValueNumeric(BigDecimal.ONE);",False,False,"/** 
+ * The value 'one'.
+ */
+",False,"/** 
+ * The value 'one'.
+ */
+"
+3,DEFAULT_PRECISION,default precision the default precision for a numeric value ,Field,,,,,116,4,25,"/** 
+ * The default precision for a NUMERIC value.
+ */
+","/**
+     * The default precision for a NUMERIC value.
+     */
+    public static final int DEFAULT_PRECISION = 65535;",False,False,"/** 
+ * The default precision for a NUMERIC value.
+ */
+",False,"/** 
+ * The default precision for a NUMERIC value.
+ */
+"
+4,DEFAULT_SCALE,default scale the default scale for a numeric value ,Field,,,,,104,4,25,"/** 
+ * The default scale for a NUMERIC value.
+ */
+","/**
+     * The default scale for a NUMERIC value.
+     */
+    public static final int DEFAULT_SCALE = 0;",False,False,"/** 
+ * The default scale for a NUMERIC value.
+ */
+",False,"/** 
+ * The default scale for a NUMERIC value.
+ */
+"
+5,DEFAULT_DISPLAY_SIZE,default display size the default display size for a numeric value ,Field,,,,,115,4,24,"/** 
+ * The default display size for a NUMERIC value.
+ */
+","/**
+     * The default display size for a NUMERIC value.
+     */
+    static final int DEFAULT_DISPLAY_SIZE = 65535;",False,False,"/** 
+ * The default display size for a NUMERIC value.
+ */
+",False,"/** 
+ * The default display size for a NUMERIC value.
+ */
+"
+6,MAXIMUM_SCALE,maximum scale the maximum scale ,Field,,,,,92,4,25,"/** 
+ * The maximum scale.
+ */
+","/**
+     * The maximum scale.
+     */
+    public static final int MAXIMUM_SCALE = 100_000;
+
+",False,False,"/** 
+ * The maximum scale.
+ */
+",False,"/** 
+ * The maximum scale.
+ */
+"
+7,MINIMUM_SCALE,minimum scale the minimum scale ,Field,,,,,93,4,25,"/** 
+ * The minimum scale.
+ */
+","/**
+     * The minimum scale.
+     */
+    public static final int MINIMUM_SCALE = -100_000;
+
+",False,False,"/** 
+ * The minimum scale.
+ */
+",False,"/** 
+ * The minimum scale.
+ */
+"
+8,value,value ,Field,"ValueNumeric(BigDecimal) divide(Value,long) compareTypeSafe(Value,CompareMode,CastDataProvider) equals(Object)",,,,31,1,18,,private final BigDecimal value;,True,True,,False,
+9,type,type ,Field,getType() getType(),,,,22,1,2,,private TypeInfo type;,True,True,,False,
+10,ValueNumeric(BigDecimal),value numeric value ,Method,,,"java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.Object+getClass() java.lang.Object+getClass() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) java.lang.Class+getName() java.lang.Class+getName() java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName()",org.h2.api.ErrorCode+INVALID_CLASS_2 org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value,366,9,2,,"private ValueNumeric(BigDecimal value) {
+        if (value == null) {
+            throw new IllegalArgumentException(""null"");
+        } else if (value.getClass() != BigDecimal.class) {
+            throw DbException.get(ErrorCode.INVALID_CLASS_2,
+                    BigDecimal.class.getName(), value.getClass().getName());
+        }
+        this.value = value;
+    }",False,False,"This private method is used to assign a BigDecimal value to the ""value"" field of an object. It also performs some validation checks to ensure that the value is not null and is of the correct class type.",True,"The code defines a private constructor for a class called ValueNumeric. It takes a BigDecimal value as a parameter and checks if it is null or not an instance of BigDecimal. If either condition is true, it throws an exception. Otherwise, it assigns the value to the class variable."
+11,add(Value),add v ,Method,,,org.h2.value.ValueNumeric+get(BigDecimal) org.h2.value.ValueNumeric+get(BigDecimal) java.math.BigDecimal+add(BigDecimal) java.math.BigDecimal+add(BigDecimal),org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value,147,5,1,,"@Override
+    public Value add(Value v) {
+        ValueNumeric dec = (ValueNumeric) v;
+        return ValueNumeric.get(value.add(dec.value));
+    }",True,True,"This method overrides the ""add"" function and takes a Value object as input. It casts the input to a ValueNumeric object, adds its value to the current object's value, and returns a new ValueNumeric object with the result.",True,"The code defines an overridden method called ""add"" that takes a parameter of type ""Value"" and returns a value of type ""ValueNumeric"". It casts the input value to ""ValueNumeric"" and adds its value to the current value, then returns the result as a new ""ValueNumeric"" object."
+12,subtract(Value),subtract v ,Method,,,org.h2.value.ValueNumeric+get(BigDecimal) org.h2.value.ValueNumeric+get(BigDecimal) java.math.BigDecimal+subtract(BigDecimal) java.math.BigDecimal+subtract(BigDecimal),org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value,157,5,1,,"@Override
+    public Value subtract(Value v) {
+        ValueNumeric dec = (ValueNumeric) v;
+        return ValueNumeric.get(value.subtract(dec.value));
+    }",True,True,This method subtracts the value of a given object from the current object's value and returns the result as a new object of the same type.,True,"The code defines a method named ""subtract"" that takes a parameter of type ""Value"" and returns a value of type ""ValueNumeric"". It casts the input value to ""ValueNumeric"" and subtracts its value from the current object's value, then returns the result as a new ""ValueNumeric"" object."
+13,negate(),negate ,Method,,,org.h2.value.ValueNumeric+get(BigDecimal) org.h2.value.ValueNumeric+get(BigDecimal) java.math.BigDecimal+negate() java.math.BigDecimal+negate(),org.h2.value.ValueNumeric+value,92,4,1,,"@Override
+    public Value negate() {
+        return ValueNumeric.get(value.negate());
+    }",True,True,"The method ""negate"" overrides a method from a superclass and returns a new Value object with the negated value of the current object's value.",True,"The code snippet defines an overridden method called ""negate"" that returns a Value object. It takes the current value and returns its negation as a ValueNumeric object."
+14,multiply(Value),multiply v ,Method,,,org.h2.value.ValueNumeric+get(BigDecimal) org.h2.value.ValueNumeric+get(BigDecimal) java.math.BigDecimal+multiply(BigDecimal) java.math.BigDecimal+multiply(BigDecimal),org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value,157,5,1,,"@Override
+    public Value multiply(Value v) {
+        ValueNumeric dec = (ValueNumeric) v;
+        return ValueNumeric.get(value.multiply(dec.value));
+    }",True,True,"This method overrides the multiply function and takes a Value object as input. It casts the input to a ValueNumeric object, multiplies the value of the current object with the value of the input object, and returns a new ValueNumeric object with the result.",True,"The code defines a method called ""multiply"" that takes a parameter of type ""Value"" and returns a value of type ""Value"". It casts the input value to a ""ValueNumeric"" type, multiplies it with the current value, and returns the result as a new ""ValueNumeric"" object."
+15,"divide(Value,long)",divide v divisor precision ,Method,,org.h2.expression.IntervalOperation+getValue(Session),"java.math.BigDecimal+signum() java.math.BigDecimal+signum() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.util.HasSQL+getTraceSQL() org.h2.util.HasSQL+getTraceSQL() org.h2.value.ValueNumeric+get(BigDecimal) org.h2.value.ValueNumeric+get(BigDecimal) java.math.BigDecimal+divide(BigDecimal,int,RoundingMode) java.math.BigDecimal+divide(BigDecimal,int,RoundingMode) org.h2.value.ValueNumeric+getQuotientScale(int,long,int) org.h2.value.ValueNumeric+getQuotientScale(int,long,int) java.math.BigDecimal+scale() java.math.BigDecimal+scale() java.math.BigDecimal+scale() java.math.BigDecimal+scale()",org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value org.h2.api.ErrorCode+DIVISION_BY_ZERO_1 org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value java.math.RoundingMode+HALF_DOWN,419,9,1,,"@Override
+    public Value divide(Value v, long divisorPrecision) {
+        BigDecimal divisor = ((ValueNumeric) v).value;
+        if (divisor.signum() == 0) {
+            throw DbException.get(ErrorCode.DIVISION_BY_ZERO_1, getTraceSQL());
+        }
+        return ValueNumeric.get(value.divide(divisor,
+                getQuotientScale(value.scale(), divisorPrecision, divisor.scale()), RoundingMode.HALF_DOWN));
+    }",False,True,"This method divides the current value by a given value, with a specified precision for the divisor. It handles the case of division by zero and returns the result as a numeric value.",True,"This code defines a method called ""divide"" that takes a value and a precision as input. It performs a division operation between the current value and the input value, using a specified rounding mode. The result is returned as a new numeric value."
+16,"getQuotientScale(int,long,int)",get quotient scale divider scale divisor precision divisor scale evaluates the scale of the quotient param divider scale the scale of the divider param divisor precision the precision of the divisor param divisor scale the scale of the divisor return the scale of the quotient ,Method,"divide(Value,long)","org.h2.expression.BinaryOperation+optimizeNumeric(TypeInfo,TypeInfo)",,org.h2.value.ValueNumeric+MAXIMUM_SCALE org.h2.value.ValueNumeric+MAXIMUM_SCALE,569,15,9,"/** 
+ * Evaluates the scale of the quotient.
+ * @param dividerScale the scale of the divider
+ * @param divisorPrecision the precision of the divisor
+ * @param divisorScale the scale of the divisor
+ * @return the scale of the quotient
+ */
+","/**
+     * Evaluates the scale of the quotient.
+     *
+     * @param dividerScale
+     *            the scale of the divider
+     * @param divisorPrecision
+     *            the precision of the divisor
+     * @param divisorScale
+     *            the scale of the divisor
+     * @return the scale of the quotient
+     */
+    public static int getQuotientScale(int dividerScale, long divisorPrecision, int divisorScale) {
+        long scale = dividerScale - divisorScale + divisorPrecision * 2;
+        return scale >= MAXIMUM_SCALE ? MAXIMUM_SCALE : (int) scale;
+    }",True,True,"This method calculates the scale of the quotient based on the given parameters. It subtracts the divisor scale from the divider scale, adds twice the divisor precision, and returns the result. If the result is greater than or equal to the maximum scale, it returns the maximum scale.",False,"This code defines a method called ""getQuotientScale"" that calculates the scale of a quotient based on the scale of the divider, the precision of the divisor, and the scale of the divisor. The scale is determined by subtracting the divisor scale from the divider scale and adding twice the divisor precision. The method returns the calculated scale, capped at a maximum value."
+17,modulus(Value),modulus v ,Method,,org.h2.test.unit.TestValue+test(),"java.math.BigDecimal+signum() java.math.BigDecimal+signum() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.util.HasSQL+getTraceSQL() org.h2.util.HasSQL+getTraceSQL() java.math.BigDecimal+remainder(BigDecimal) java.math.BigDecimal+remainder(BigDecimal) org.h2.value.ValueNumeric+get(BigDecimal) org.h2.value.ValueNumeric+get(BigDecimal)",org.h2.value.ValueNumeric+value org.h2.api.ErrorCode+DIVISION_BY_ZERO_1 org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value,321,9,1,,"@Override
+    public ValueNumeric modulus(Value v) {
+        ValueNumeric dec = (ValueNumeric) v;
+        if (dec.value.signum() == 0) {
+            throw DbException.get(ErrorCode.DIVISION_BY_ZERO_1, getTraceSQL());
+        }
+        BigDecimal bd = value.remainder(dec.value);
+        return ValueNumeric.get(bd);
+    }",True,True,"This method calculates the remainder of dividing the current value by the given value. If the given value is zero, it throws an exception. It returns the remainder as a numeric value.",True,"This code defines a method called ""modulus"" that calculates the remainder of dividing the current value by a given value. It checks if the given value is zero and throws an exception if it is. It then calculates the remainder using the BigDecimal class and returns the result as a ValueNumeric object."
+18,"getSQL(StringBuilder,int)",get sql builder sql flags ,Method,,,org.h2.value.ValueNumeric+getString() org.h2.value.ValueNumeric+getString() java.math.BigDecimal+scale() java.math.BigDecimal+scale() java.math.BigDecimal+compareTo(BigDecimal) java.math.BigDecimal+compareTo(BigDecimal) java.math.BigDecimal+compareTo(BigDecimal) java.math.BigDecimal+compareTo(BigDecimal) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(Object) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(Object) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.math.BigDecimal+precision() java.math.BigDecimal+precision() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String),org.h2.util.HasSQL+NO_CASTS org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value org.h2.value.Value+MAX_LONG_DECIMAL org.h2.value.ValueNumeric+value org.h2.value.Value+MIN_LONG_DECIMAL org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value,446,9,1,,"@Override
+    public StringBuilder getSQL(StringBuilder builder, int sqlFlags) {
+        String s = getString();
+        if ((sqlFlags & NO_CASTS) == 0 && value.scale() == 0 && value.compareTo(MAX_LONG_DECIMAL) <= 0
+                && value.compareTo(MIN_LONG_DECIMAL) >= 0) {
+            return builder.append(""CAST("").append(value).append("" AS NUMERIC("").append(value.precision()).append(""))"");
+        }
+        return builder.append(s);
+    }",False,False,"The function of this method is to generate an SQL query string. It takes a StringBuilder object and an integer as parameters. It checks certain conditions and appends a specific string to the StringBuilder object based on the conditions. Finally, it returns the modified StringBuilder object.",False,"This code defines a method called `getSQL` that takes a `StringBuilder` and an integer as parameters. It checks if certain conditions are met and appends a specific SQL string to the `StringBuilder` based on the result. If the conditions are not met, it appends a different string to the `StringBuilder`."
+19,getType(),get type ,Method,,,"java.math.BigDecimal+precision() java.math.BigDecimal+precision() org.h2.value.TypeInfo+TypeInfo(int,long,int,int,ExtTypeInfo) java.math.BigDecimal+scale() java.math.BigDecimal+scale() org.h2.util.MathUtils+convertLongToInt(long) org.h2.util.MathUtils+convertLongToInt(long)",org.h2.value.ValueNumeric+type org.h2.value.ValueNumeric+type org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+type org.h2.value.ValueNumeric+type org.h2.value.Value+NUMERIC org.h2.value.ValueNumeric+value,394,11,1,,"@Override
+    public TypeInfo getType() {
+        TypeInfo type = this.type;
+        if (type == null) {
+            long precision = value.precision();
+            this.type = type = new TypeInfo(NUMERIC, precision, value.scale(),
+                    // add 2 characters for '-' and '.'
+                    MathUtils.convertLongToInt(precision + 2), null);
+        }
+        return type;
+    }",False,False,"This method returns the type information of a value. If the type information is null, it creates a new type information object and assigns it to the variable ""type"". Finally, it returns the type information.",False,"This code defines a method called `getType()` that returns the `TypeInfo` object. If the `type` variable is null, it creates a new `TypeInfo` object with specific properties and assigns it to `type` before returning it."
+20,getValueType(),get value type ,Method,,,,org.h2.value.Value+NUMERIC,71,4,1,,"@Override
+    public int getValueType() {
+        return NUMERIC;
+    }",False,False,"This method serves to return the value type, which is an integer representing a numeric value.",False,"The code snippet defines a method named `getValueType()` that returns an integer value. The method is annotated with `@Override`, indicating that it overrides a method from a superclass or interface. The method always returns a constant value `NUMERIC`."
+21,"compareTypeSafe(Value,CompareMode,CastDataProvider)",compare type safe o mode provider ,Method,,,java.math.BigDecimal+compareTo(BigDecimal) java.math.BigDecimal+compareTo(BigDecimal),org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value,160,4,1,,"@Override
+    public int compareTypeSafe(Value o, CompareMode mode, CastDataProvider provider) {
+        return value.compareTo(((ValueNumeric) o).value);
+    }",True,True,"This method is used to compare two values of type ValueNumeric. It takes in three parameters: the other value to compare, the compare mode, and the cast data provider. It returns an integer value indicating the result of the comparison.",True,"The given code is a method that compares two values of type ""ValueNumeric"" in a type-safe manner. It uses the ""compareTo"" method to compare the values and returns the result as an integer."
+22,getSignum(),get signum ,Method,,,java.math.BigDecimal+signum() java.math.BigDecimal+signum(),org.h2.value.ValueNumeric+value,75,4,1,,"@Override
+    public int getSignum() {
+        return value.signum();
+    }",True,True,This method returns the signum of the value.,True,"The code snippet defines a method named ""getSignum"" that returns the signum of a value. The signum is a mathematical function that returns -1 for negative numbers, 0 for zero, and 1 for positive numbers."
+23,getBigDecimal(),get big decimal ,Method,,"org.h2.value.Value+convertToNumeric(TypeInfo,CastDataProvider,int,Object) org.h2.value.Value+convertToNumeric(TypeInfo,CastDataProvider,int,Object)",,org.h2.value.ValueNumeric+value,77,4,1,,"@Override
+    public BigDecimal getBigDecimal() {
+        return value;
+    }",True,True,This method serves to retrieve and return a BigDecimal value.,True,"The code snippet defines a method named ""getBigDecimal"" that returns a BigDecimal value. The method is marked with the ""@Override"" annotation, indicating that it overrides a method from a superclass or interface."
+24,getString(),get string ,Method,"getSQL(StringBuilder,int)",,java.math.BigDecimal+toString() java.math.BigDecimal+toString(),org.h2.value.ValueNumeric+value,80,4,1,,"@Override
+    public String getString() {
+        return value.toString();
+    }",True,True,This method returns a string representation of the value.,True,"The code snippet is a method named ""getString"" that overrides a superclass method. It returns a string representation of the value stored in the object."
+25,hashCode(),hash code ,Method,,org.h2.test.unit.TestValueMemory+testCompare() org.h2.test.unit.TestValueMemory+testCompare(),java.math.BigDecimal+hashCode() java.math.BigDecimal+hashCode(),org.h2.value.ValueNumeric+value,76,4,1,,"@Override
+    public int hashCode() {
+        return value.hashCode();
+    }",True,True,This method overrides the default hashCode() method and returns the hash code of the value variable.,True,"The code snippet is implementing the `hashCode()` method, which returns the hash code value for the object. It uses the `hashCode()` method of the `value` object to calculate the hash code and returns it as an integer."
+26,get(BigDecimal),get dec get or create a numeric value for the given big decimal param dec the big decimal return the value ,Method,"add(Value) subtract(Value) negate() multiply(Value) divide(Value,long) modulus(Value)","org.h2.expression.aggregate.JavaAggregate+interpolate(Value,Value,BigDecimal,int,Session,CompareMode) org.h2.expression.aggregate.JavaAggregate+interpolate(Value,Value,BigDecimal,int,Session,CompareMode) org.h2.expression.aggregate.JavaAggregate+interpolate(Value,Value,BigDecimal,int,Session,CompareMode) org.h2.expression.aggregate.JavaAggregate+interpolate(Value,Value,BigDecimal,int,Session,CompareMode) org.h2.expression.function.DateTimeFunction+extractEpoch(Session,Value) org.h2.expression.function.DateTimeFunction+extractEpoch(Session,Value) org.h2.expression.function.DateTimeFunction+extractEpoch(Session,Value) org.h2.expression.function.DateTimeFunction+extractEpoch(Session,Value) org.h2.expression.function.DateTimeFunction+extractEpoch(Session,Value) org.h2.expression.function.Function+round(Value,Value) org.h2.expression.function.Function+truncate(Session,Value,Value) org.h2.expression.function.Function+truncateValue(Session,Value,long,boolean) org.h2.expression.function.Function+truncateValue(Session,Value,long,boolean) org.h2.expression.function.MathFunction+getValue(Session) org.h2.jdbc.JdbcPreparedStatement+setBigDecimal(int,BigDecimal) org.h2.jdbc.JdbcResultSet+updateBigDecimal(int,BigDecimal) org.h2.jdbc.JdbcResultSet+updateBigDecimal(String,BigDecimal) org.h2.value.Transfer+readValue() org.h2.value.Value+convertToNumeric(TypeInfo,CastDataProvider,int,Object) org.h2.value.Value+convertToNumeric(TypeInfo,CastDataProvider,int,Object) org.h2.value.Value+convertToNumeric(TypeInfo,CastDataProvider,int,Object) org.h2.value.Value+convertToNumeric(TypeInfo,CastDataProvider,int,Object) org.h2.value.Value+convertToNumeric(TypeInfo,CastDataProvider,int,Object) org.h2.value.ValueToObjectConverter+objectToValue(SessionInterface,Object,int) org.h2.value.ValueToObjectConverter2+readValueOther(SessionInterface,ResultSet,int,int) org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestDataPage+testValues() org.h2.test.unit.TestValue+testModulusDecimal() org.h2.test.unit.TestValue+test() org.h2.test.unit.TestValueMemory+testCompare() org.h2.test.unit.TestValueMemory+testCompare()",java.math.BigDecimal+equals(Object) java.math.BigDecimal+equals(Object) java.math.BigDecimal+equals(Object) java.math.BigDecimal+equals(Object) org.h2.value.Value+cache(Value) org.h2.value.Value+cache(Value) org.h2.value.ValueNumeric+ValueNumeric(BigDecimal),java.math.BigDecimal+ZERO org.h2.value.ValueNumeric+ZERO java.math.BigDecimal+ONE org.h2.value.ValueNumeric+ONE,417,14,9,"/** 
+ * Get or create a NUMERIC value for the given big decimal.
+ * @param dec the big decimal
+ * @return the value
+ */
+","/**
+     * Get or create a NUMERIC value for the given big decimal.
+     *
+     * @param dec the big decimal
+     * @return the value
+     */
+    public static ValueNumeric get(BigDecimal dec) {
+        if (BigDecimal.ZERO.equals(dec)) {
+            return ZERO;
+        } else if (BigDecimal.ONE.equals(dec)) {
+            return ONE;
+        }
+        return (ValueNumeric) Value.cache(new ValueNumeric(dec));
+    }",False,False,"This method returns a numeric value for a given BigDecimal. If the BigDecimal is zero, it returns a predefined value ZERO. If the BigDecimal is one, it returns a predefined value ONE. Otherwise, it creates a new ValueNumeric object and caches it before returning it.",False,"This code defines a method called ""get"" that takes a BigDecimal as input and returns a ValueNumeric object. It checks if the input is zero or one and returns pre-defined constants for those cases. Otherwise, it creates a new ValueNumeric object and caches it before returning."
+27,get(BigInteger),get big integer get or create a numeric value for the given big integer param big integer the big integer return the value ,Method,,"org.h2.expression.function.DateTimeFunction+extractEpoch(Session,Value) org.h2.expression.function.DateTimeFunction+extractEpoch(Session,Value) org.h2.expression.IntervalOperation+getValue(Session) org.h2.expression.IntervalOperation+getValue(Session) org.h2.value.ValueToObjectConverter+objectToValue(SessionInterface,Object,int)",java.math.BigInteger+signum() java.math.BigInteger+signum() java.math.BigInteger+equals(Object) java.math.BigInteger+equals(Object) org.h2.value.Value+cache(Value) org.h2.value.Value+cache(Value) org.h2.value.ValueNumeric+ValueNumeric(BigDecimal) java.math.BigDecimal+BigDecimal(BigInteger),org.h2.value.ValueNumeric+ZERO java.math.BigInteger+ONE org.h2.value.ValueNumeric+ONE,458,14,9,"/** 
+ * Get or create a NUMERIC value for the given big integer.
+ * @param bigInteger the big integer
+ * @return the value
+ */
+","/**
+     * Get or create a NUMERIC value for the given big integer.
+     *
+     * @param bigInteger the big integer
+     * @return the value
+     */
+    public static ValueNumeric get(BigInteger bigInteger) {
+        if (bigInteger.signum() == 0) {
+            return ZERO;
+        } else if (BigInteger.ONE.equals(bigInteger)) {
+            return ONE;
+        }
+        return (ValueNumeric) Value.cache(new ValueNumeric(new BigDecimal(bigInteger)));
+    }",False,False,"This method serves to get or create a numeric value for a given big integer. It checks if the big integer is zero or one, and returns pre-defined values for those cases. Otherwise, it creates a new numeric value using the big integer and caches it.",False,"This code defines a method called ""get"" that takes a BigInteger as input and returns a ValueNumeric object. If the input BigInteger is zero, it returns a pre-defined constant ZERO. If the input BigInteger is one, it returns a pre-defined constant ONE. Otherwise, it creates a new ValueNumeric object using the input BigInteger and caches it for future use."
+28,equals(Object),equals other ,Method,,org.h2.test.unit.TestValueMemory+testCompare(),java.math.BigDecimal+equals(Object) java.math.BigDecimal+equals(Object),org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value org.h2.value.ValueNumeric+value,441,9,1,,"@Override
+    public boolean equals(Object other) {
+        // Two BigDecimal objects are considered equal only if they are equal in
+        // value and scale (thus 2.0 is not equal to 2.00 when using equals;
+        // however -0.0 and 0.0 are). Can not use compareTo because 2.0 and 2.00
+        // have different hash codes
+        return other instanceof ValueNumeric &&
+                value.equals(((ValueNumeric) other).value);
+    }",False,True,This method is used to check if the current object is equal to another object. It specifically checks if the other object is an instance of ValueNumeric and if the values of the two objects are equal.,True,This code overrides the equals() method to compare two BigDecimal objects. It checks if the other object is an instance of ValueNumeric and if its value is equal to the current object's value. It takes into account the value and scale of the BigDecimal objects to determine equality.
+29,getMemory(),get memory ,Method,,,java.math.BigDecimal+precision() java.math.BigDecimal+precision(),org.h2.value.ValueNumeric+value,84,4,1,,"@Override
+    public int getMemory() {
+        return value.precision() + 120;
+    }",True,True,This method returns the memory size by adding the precision of a value to 120.,True,"The code snippet is an implementation of the `getMemory()` method, which returns an integer value. It calculates the memory required based on the precision of a `value` object and adds a constant value of 120 to it."
+30,"setScale(BigDecimal,int)",set scale bd scale set the scale of a big decimal value param bd the big decimal value param scale the new scale return the scaled value ,Method,,"org.h2.jdbc.JdbcResultSet+getBigDecimal(String,int) org.h2.jdbc.JdbcResultSet+getBigDecimal(int,int) org.h2.value.Value+convertToNumeric(TypeInfo,CastDataProvider,int,Object)","org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object) java.math.BigDecimal+setScale(int,RoundingMode) java.math.BigDecimal+setScale(int,RoundingMode)",org.h2.value.ValueNumeric+MAXIMUM_SCALE org.h2.value.ValueNumeric+MINIMUM_SCALE java.math.RoundingMode+HALF_UP,439,13,9,"/** 
+ * Set the scale of a BigDecimal value.
+ * @param bd the BigDecimal value
+ * @param scale the new scale
+ * @return the scaled value
+ */
+","/**
+     * Set the scale of a BigDecimal value.
+     *
+     * @param bd the BigDecimal value
+     * @param scale the new scale
+     * @return the scaled value
+     */
+    public static BigDecimal setScale(BigDecimal bd, int scale) {
+        if (scale > MAXIMUM_SCALE || scale < MINIMUM_SCALE) {
+            throw DbException.getInvalidValueException(""scale"", scale);
+        }
+        return bd.setScale(scale, RoundingMode.HALF_UP);
+    }",False,False,"This method sets the scale of a BigDecimal value to a new scale. It checks if the new scale is within the valid range, and throws an exception if it is not. It then returns the scaled value using the HALF_UP rounding mode.",True,"This code defines a method called ""setScale"" that takes a BigDecimal value and a scale as parameters. It checks if the scale is within a valid range and then returns the scaled value of the BigDecimal using the HALF_UP rounding mode."
