@@ -1,0 +1,2079 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,LOGGER,logger logger ,Field,,,,,106,4,26,"/** 
+ * Logger.
+ */
+","/**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(IrcConnection.class);",False,False,"/** 
+ * Logger.
+ */
+",False,"/** 
+ * Logger.
+ */
+"
+2,IRC_PROTOCOL_MAXIMUM_MESSAGE_SIZE,irc protocol maximum message size maximum message size for irc messages given the spec specifies a buffer of 512 bytes the command ending crlf takes up 2 bytes ,Field,,,,,225,5,26,"/** 
+ * Maximum message size for IRC messages given the spec specifies a buffer of 512 bytes. The command ending (CRLF) takes up 2 bytes.
+ */
+","/**
+     * Maximum message size for IRC messages given the spec specifies a buffer
+     * of 512 bytes. The command ending (CRLF) takes up 2 bytes.
+     */
+    private static final int IRC_PROTOCOL_MAXIMUM_MESSAGE_SIZE = 510;",False,False,"/** 
+ * Maximum message size for IRC messages given the spec specifies a buffer of 512 bytes. The command ending (CRLF) takes up 2 bytes.
+ */
+",False,"/** 
+ * Maximum message size for IRC messages given the spec specifies a buffer of 512 bytes. The command ending (CRLF) takes up 2 bytes.
+ */
+"
+3,SPECIAL_CHARACTERS,special characters set of characters with special meanings for irc such as used as separator of list of items channels nicks etc space separator of command parameters etc ,Field,,,,,263,6,25,"/** 
+ * Set of characters with special meanings for IRC, such as: ',' used as separator of list of items (channels, nicks, etc.), ' ' (space) separator of command parameters, etc.
+ */
+","/**
+     * Set of characters with special meanings for IRC, such as: ',' used as
+     * separator of list of items (channels, nicks, etc.), ' ' (space) separator
+     * of command parameters, etc.
+     */
+    public static final Set<Character> SPECIAL_CHARACTERS;",False,False,"/** 
+ * Set of characters with special meanings for IRC, such as: ',' used as separator of list of items (channels, nicks, etc.), ' ' (space) separator of command parameters, etc.
+ */
+",False,"/** 
+ * Set of characters with special meanings for IRC, such as: ',' used as separator of list of items (channels, nicks, etc.), ' ' (space) separator of command parameters, etc.
+ */
+"
+4,provider,provider instance of the protocol provider service ,Field,"IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) onSuccess(IRCChannel) onSuccess(IRCChannel) onFailure(Exception) prepareChatRoom(ChatRoomIrcImpl,IRCChannel) ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onError(ErrorMessage) ServerListener.onUserPrivMessage(UserPrivMsg) ServerListener.onUserPrivMessage(UserPrivMsg) ServerListener.onUserNotice(UserNotice) ServerListener.onUserNotice(UserNotice) ServerListener.onUserAction(UserActionMsg) ServerListener.onUserAction(UserActionMsg) ChatRoomListener.onChannelJoin(ChanJoinMessage) ChatRoomListener.onChannelKick(ChannelKick) ChatRoomListener.onChannelMessage(ChannelPrivMsg) ChatRoomListener.onChannelAction(ChannelActionMsg) ChatRoomListener.onChannelNotice(ChannelNotice) ChatRoomListener.leaveChatRoom() ChatRoomListener.extractChatRoomMember(ChannelModeMessage)",,,,120,4,18,"/** 
+ * Instance of the protocol provider service.
+ */
+","/**
+     * Instance of the protocol provider service.
+     */
+    private final ProtocolProviderServiceIrcImpl provider;",False,False,"/** 
+ * Instance of the protocol provider service.
+ */
+",False,"/** 
+ * Instance of the protocol provider service.
+ */
+"
+5,irc,irc instance of irc api ,Field,"IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) disconnect() disconnect() setSubject(ChatRoomIrcImpl,String) setSubject(ChatRoomIrcImpl,String) join(ChatRoomIrcImpl,String) join(ChatRoomIrcImpl,String) onSuccess(IRCChannel) onSuccess(IRCChannel) leave(String) leave(String) kickParticipant(ChatRoomIrcImpl,ChatRoomMember,String) kickParticipant(ChatRoomIrcImpl,ChatRoomMember,String) invite(String,ChatRoomIrcImpl) invite(String,ChatRoomIrcImpl) command(String,String) command(String,String) command(String,String) command(String,String) command(String,String) command(String,String) command(String,String) command(String,String) message(ChatRoomIrcImpl,String) message(ChatRoomIrcImpl,String) message(Contact,Message) message(Contact,Message) grant(ChatRoomIrcImpl,String,Mode) grant(ChatRoomIrcImpl,String,Mode) revoke(ChatRoomIrcImpl,String,Mode) revoke(ChatRoomIrcImpl,String,Mode)",,,,69,4,18,"/** 
+ * Instance of IRC Api.
+ */
+","/**
+     * Instance of IRC Api.
+     */
+    private final IRCApi irc;",False,False,"/** 
+ * Instance of IRC Api.
+ */
+",False,"/** 
+ * Instance of IRC Api.
+ */
+"
+6,connectionState,connection state connection state of a successful irc connection ,Field,"IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) isConnected() isConnected() isSecureConnection() getChannelTypes() ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onError(ErrorMessage) ServerListener.onError(ErrorMessage) ServerListener.onUserQuit(QuitMessage) ChatRoomListener.onUserQuit(QuitMessage) ChatRoomListener.isMe(String)",,,,112,4,18,"/** 
+ * Connection state of a successful IRC connection.
+ */
+","/**
+     * Connection state of a successful IRC connection.
+     */
+    private final IIRCState connectionState;",False,False,"/** 
+ * Connection state of a successful IRC connection.
+ */
+",False,"/** 
+ * Connection state of a successful IRC connection.
+ */
+"
+7,presence,presence manager component that manages current irc presence ,Field,"IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) getPresenceManager()",,,,115,4,18,"/** 
+ * Manager component that manages current IRC presence.
+ */
+","/**
+     * Manager component that manages current IRC presence.
+     */
+    private final PresenceManager presence;",False,False,"/** 
+ * Manager component that manages current IRC presence.
+ */
+",False,"/** 
+ * Manager component that manages current IRC presence.
+ */
+"
+8,channelLister,channel lister manager component for server channel listing ,Field,"IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) getServerChannelLister()",,,,117,4,18,"/** 
+ * Manager component for server channel listing.
+ */
+","/**
+     * Manager component for server channel listing.
+     */
+    private final ServerChannelLister channelLister;",False,False,"/** 
+ * Manager component for server channel listing.
+ */
+",False,"/** 
+ * Manager component for server channel listing.
+ */
+"
+9,identity,identity the local user s identity as it will be used in server client communication for sent messages ,Field,"IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) getIdentityManager() prepareChatRoom(ChatRoomIrcImpl,IRCChannel) calculateMaximumMessageSize(Contact)",,,,164,5,18,"/** 
+ * The local user's identity as it will be used in server-client communication for sent messages.
+ */
+","/**
+     * The local user's identity as it will be used in server-client
+     * communication for sent messages.
+     */
+    private final IdentityManager identity;",False,False,"/** 
+ * The local user's identity as it will be used in server-client communication for sent messages.
+ */
+",False,"/** 
+ * The local user's identity as it will be used in server-client communication for sent messages.
+ */
+"
+10,joined,joined container for joined channels there are two different cases null value joining is initiated but still in progress non null value joining is finished chat room instance is available ,Field,"isJoined(ChatRoomIrcImpl) join(ChatRoomIrcImpl,String) join(ChatRoomIrcImpl,String) onSuccess(IRCChannel) onSuccess(IRCChannel) onFailure(Exception) ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onServerNumericMessage(ServerNumericMessage) ServerListener.onServerNumericMessage(ServerNumericMessage) ChatRoomListener.onChannelKick(ChannelKick) ChatRoomListener.leaveChatRoom()",,,,406,12,18,"/** 
+ * Container for joined channels. There are two different cases: <pre> - null value: joining is initiated but still in progress. - non-null value: joining is finished, chat room instance is available. </pre>
+ */
+","/**
+     * Container for joined channels.
+     *
+     * There are two different cases:
+     *
+     * <pre>
+     * - null value: joining is initiated but still in progress.
+     * - non-null value: joining is finished, chat room instance is available.
+     * </pre>
+     */
+    private final Map<String, ChatRoomIrcImpl> joined = Collections
+        .synchronizedMap(new HashMap<String, ChatRoomIrcImpl>());",True,True,"/** 
+ * Container for joined channels. There are two different cases: <pre> - null value: joining is initiated but still in progress. - non-null value: joining is finished, chat room instance is available. </pre>
+ */
+",False,"/** 
+ * Container for joined channels. There are two different cases: <pre> - null value: joining is initiated but still in progress. - non-null value: joining is finished, chat room instance is available. </pre>
+ */
+"
+11,"IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi)",irc connection provider params irc constructor param provider protocol provider service instance param params connection parameters param irc irc api instance throws exception throws io exception in case of connection problems ,Method,,,"java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) com.ircclouds.irc.api.IRCApi+addListener(IMessageListener) com.ircclouds.irc.api.IRCApi+addListener(IMessageListener) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+ServerListener(IRCApi) net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectSynchronized(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectSynchronized(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi) net.java.sip.communicator.impl.protocol.irc.PresenceManager+PresenceManager(IRCApi,IIRCState,OperationSetPersistentPresenceIrcImpl) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.ServerChannelLister+ServerChannelLister(IRCApi,IIRCState) net.java.sip.communicator.impl.protocol.irc.IdentityManager+IdentityManager(IRCApi,IIRCState)",net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+presence net.java.sip.communicator.impl.protocol.irc.IrcConnection+presence net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+channelLister net.java.sip.communicator.impl.protocol.irc.IrcConnection+channelLister net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+identity net.java.sip.communicator.impl.protocol.irc.IrcConnection+identity net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState,1640,43,1,"/** 
+ * Constructor.
+ * @param provider ProtocolProviderService instance
+ * @param params connection parameters
+ * @param irc IRC api instance
+ * @throws Exception Throws IOException in case of connection problems.
+ */
+","/**
+     * Constructor.
+     *
+     * @param provider ProtocolProviderService instance
+     * @param params connection parameters
+     * @param irc IRC api instance
+     * @throws Exception Throws IOException in case of connection problems.
+     */
+    public IrcConnection(final ProtocolProviderServiceIrcImpl provider,
+        final IServerParameters params, final IRCApi irc)
+        throws Exception
+    {
+        if (provider == null)
+        {
+            throw new IllegalArgumentException(""provider cannot be null"");
+        }
+        this.provider = provider;
+        if (irc == null)
+        {
+            throw new IllegalArgumentException(""irc instance cannot be null"");
+        }
+        // Install a listener for everything that is not directly related to a
+        // specific chat room or operation.
+        irc.addListener(new ServerListener(irc));
+        this.irc = irc;
+        this.connectionState = connectSynchronized(this.provider, params, irc);
+
+        // instantiate presence manager for the connection
+        this.presence =
+            new PresenceManager(this.irc, this.connectionState,
+                this.provider.getPersistentPresence());
+
+        // instantiate server channel lister
+        this.channelLister =
+            new ServerChannelLister(this.irc, this.connectionState);
+
+        // instantiate identity manager for the connection
+        this.identity = new IdentityManager(this.irc, this.connectionState);
+
+        // TODO Read IRC network capabilities based on RPL_ISUPPORT
+        // (005) replies if available. This information should be
+        // available in irc-api if possible.
+    }",False,False,"This method is a constructor for an IRC connection. It initializes various components and sets up listeners for the connection. It also instantiates a presence manager, server channel lister, and identity manager for the connection. There is a TODO comment indicating that IRC network capabilities should be read based on RPL_ISUPPORT replies.",False,"This code defines a constructor for an IRC connection. It takes in a ProtocolProviderService, server parameters, and an IRC API instance. It initializes various managers for presence, channel listing, and identity, and also includes a TODO comment for reading IRC network capabilities."
+12,"connectSynchronized(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi)",connect synchronized provider params irc perform synchronized connect operation param provider parent protocol provider param params server connection parameters param irc irc api instance throws exception exception thrown when connect fails ,Method,"IrcConnection(ProtocolProviderServiceIrcImpl,IServerParameters,IRCApi)",,"net.java.sip.communicator.impl.protocol.irc.Result+Result() com.ircclouds.irc.api.IRCApi+connect(IServerParameters,Callback) com.ircclouds.irc.api.IRCApi+connect(IServerParameters,Callback) +() +onSuccess(IIRCState)",,2240,71,10,"/** 
+ * Perform synchronized connect operation.
+ * @param provider Parent protocol provider
+ * @param params Server connection parameters
+ * @param irc IRC Api instance
+ * @throws Exception exception thrown when connect fails
+ */
+","/**
+     * Perform synchronized connect operation.
+     *
+     * @param provider Parent protocol provider
+     * @param params Server connection parameters
+     * @param irc IRC Api instance
+     * @throws Exception exception thrown when connect fails
+     */
+    private static IIRCState connectSynchronized(
+        final ProtocolProviderServiceIrcImpl provider,
+        final IServerParameters params, final IRCApi irc) throws Exception
+    {
+        final Result<IIRCState, Exception> result =
+            new Result<IIRCState, Exception>();
+        synchronized (result)
+        {
+            // start connecting to the specified server ...
+            irc.connect(params, new Callback<IIRCState>()
+            {
+
+                @Override
+                public void onSuccess(final IIRCState state)
+                {
+                    synchronized (result)
+                    {
+                        LOGGER.trace(""IRC connected successfully!"");
+                        result.setDone(state);
+                        result.notifyAll();
+                    }
+                }
+
+                @Override
+                public void onFailure(final Exception e)
+                {
+                    synchronized (result)
+                    {
+                        LOGGER.trace(""IRC connection FAILED!"", e);
+                        result.setDone(e);
+                        result.notifyAll();
+                    }
+                }
+            });
+
+            provider.setCurrentRegistrationState(RegistrationState.REGISTERING);
+
+            while (!result.isDone())
+            {
+                LOGGER.trace(""Waiting for the connection to be ""
+                    + ""established ..."");
+                result.wait();
+            }
+        }
+
+        // TODO Implement connection timeout and a way to recognize that
+        // the timeout occurred.
+
+        final Exception e = result.getException();
+        if (e != null)
+        {
+            throw new IOException(e);
+        }
+
+        final IIRCState state = result.getValue();
+        if (state == null)
+        {
+            throw new IOException(
+                ""Failed to connect to IRC server: connection state is null"");
+        }
+
+        return state;
+    }",False,False,"The function of this method is to perform a synchronized connect operation. It connects to a specified server using the provided parameters and IRC API instance. It handles success and failure callbacks, sets the current registration state, waits for the connection to be established, and returns the connection state.",True,"This code defines a private method called `connectSynchronized` that performs a synchronized connect operation using the provided IRC parameters. It uses a Result object to handle the success and failure callbacks of the connect operation, and waits until the connection is established before returning the resulting IRC state."
+13,isConnected(),is connected check whether or not a connection is established return true if connected false otherwise ,Method,"isSecureConnection() getChannelTypes() setSubject(ChatRoomIrcImpl,String) join(ChatRoomIrcImpl,String) leave(String) kickParticipant(ChatRoomIrcImpl,ChatRoomMember,String) invite(String,ChatRoomIrcImpl) command(String,String) message(ChatRoomIrcImpl,String) message(Contact,Message) grant(ChatRoomIrcImpl,String,Mode) revoke(ChatRoomIrcImpl,String,Mode) ServerListener.onServerNumericMessage(ServerNumericMessage) ChatRoomListener.onChannelKick(ChannelKick)","net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+join() net.java.sip.communicator.impl.protocol.irc.IrcStack+connect(String,int,String,boolean,boolean) net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+getPresenceStatus()",com.ircclouds.irc.api.state.IIRCState+isConnected() com.ircclouds.irc.api.state.IIRCState+isConnected(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState,266,10,1,"/** 
+ * Check whether or not a connection is established.
+ * @return true if connected, false otherwise.
+ */
+","/**
+     * Check whether or not a connection is established.
+     *
+     * @return true if connected, false otherwise.
+     */
+    public boolean isConnected()
+    {
+        return this.connectionState != null
+            && this.connectionState.isConnected();
+    }",False,False,This method checks if a connection is established by returning true if the connection state is not null and the connection state is connected.,False,The `isConnected()` method checks if a connection is established by verifying if the `connectionState` object is not null and if it is connected. It returns true if a connection is established and false otherwise.
+14,isSecureConnection(),is secure connection check whether the connection is a secure connection tls return true if connection is secure false otherwise ,Method,,net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+isSignalingTransportSecure(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() com.ircclouds.irc.api.domain.IRCServer+isSSL() com.ircclouds.irc.api.state.IIRCState+getServer() com.ircclouds.irc.api.state.IIRCState+getServer() com.ircclouds.irc.api.domain.IRCServer+isSSL(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState,272,9,1,"/** 
+ * Check whether the connection is a secure connection (TLS).
+ * @return true if connection is secure, false otherwise.
+ */
+","/**
+     * Check whether the connection is a secure connection (TLS).
+     *
+     * @return true if connection is secure, false otherwise.
+     */
+    public boolean isSecureConnection()
+    {
+        return isConnected() && this.connectionState.getServer().isSSL();
+    }",False,False,"This method checks if the connection is secure by verifying if the connection is established and if the server is using SSL/TLS encryption. It returns true if the connection is secure, and false otherwise.",False,"The given code is a method named ""isSecureConnection"" that checks whether the connection is secure (TLS) by verifying if the connection is established and the server is using SSL. It returns a boolean value indicating whether the connection is secure or not."
+15,disconnect(),disconnect disconnect ,Method,,net.java.sip.communicator.impl.protocol.irc.IrcStack+disconnect(),"com.ircclouds.irc.api.IRCApi+disconnect() com.ircclouds.irc.api.IRCApi+disconnect() net.java.sip.communicator.util.Logger+debug(Object,Throwable) net.java.sip.communicator.util.Logger+debug(Object,Throwable)",net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER,467,19,0,"/** 
+ * Disconnect.
+ */
+","/**
+     * Disconnect.
+     */
+    void disconnect()
+    {
+        try
+        {
+            synchronized (this.irc)
+            {
+                this.irc.disconnect();
+            }
+        }
+        catch (RuntimeException e)
+        {
+            // Disconnect might throw ChannelClosedException. Shouldn't be a
+            // problem, but for now lets log it just to be sure.
+            LOGGER.debug(""exception occurred while disconnecting"", e);
+        }
+    }",False,False,"This method is used to disconnect from an IRC server. It synchronizes on the ""irc"" object and then calls the ""disconnect"" method on it. If a RuntimeException occurs, it logs the exception.",False,"The `disconnect()` method is used to disconnect from an IRC server. It synchronizes on the `irc` object and then calls the `disconnect()` method on it. If a `RuntimeException` occurs during the disconnection process, it is caught and logged as a debug message."
+16,getPresenceManager(),get presence manager get the presence manager return returns the presence manager instance ,Method,,"net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+getPresenceStatus() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+publishPresenceStatus(PresenceStatus,String) net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+publishPresenceStatus(PresenceStatus,String) net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+getCurrentStatusMessage() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+getCurrentStatusMessage()",,net.java.sip.communicator.impl.protocol.irc.IrcConnection+presence net.java.sip.communicator.impl.protocol.irc.IrcConnection+presence,194,9,1,"/** 
+ * Get the presence manager.
+ * @return returns the presence manager instance
+ */
+","/**
+     * Get the presence manager.
+     *
+     * @return returns the presence manager instance
+     */
+    public PresenceManager getPresenceManager()
+    {
+        return this.presence;
+    }",False,False,This method returns the instance of the presence manager.,False,"This code defines a method called ""getPresenceManager()"" that returns an instance of the PresenceManager class. The method does not take any parameters and is used to retrieve the presence manager object."
+17,getServerChannelLister(),get server channel lister get the channel lister that facilitates server channel queries return returns the channel lister instance ,Method,,net.java.sip.communicator.impl.protocol.irc.OperationSetMultiUserChatIrcImpl+getExistingChatRooms(),,net.java.sip.communicator.impl.protocol.irc.IrcConnection+channelLister net.java.sip.communicator.impl.protocol.irc.IrcConnection+channelLister,243,9,1,"/** 
+ * Get the channel lister that facilitates server channel queries.
+ * @return returns the channel lister instance
+ */
+","/**
+     * Get the channel lister that facilitates server channel queries.
+     *
+     * @return returns the channel lister instance
+     */
+    public ServerChannelLister getServerChannelLister()
+    {
+        return this.channelLister;
+    }",False,False,"This method returns the instance of the ServerChannelLister class, which is used to facilitate server channel queries.",False,This code defines a method called `getServerChannelLister()` that returns an instance of the `ServerChannelLister` class. The method is used to retrieve the channel lister object that is responsible for handling server channel queries.
+18,getIdentityManager(),get identity manager get the identity manager instance return returns the identity manager instance ,Method,,net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getUserNickname(),,net.java.sip.communicator.impl.protocol.irc.IrcConnection+identity net.java.sip.communicator.impl.protocol.irc.IrcConnection+identity,203,9,1,"/** 
+ * Get the identity manager instance.
+ * @return returns the identity manager instance
+ */
+","/**
+     * Get the identity manager instance.
+     *
+     * @return returns the identity manager instance
+     */
+    public IdentityManager getIdentityManager()
+    {
+        return this.identity;
+    }",False,False,This method returns the instance of the identity manager.,False,"This code defines a method called ""getIdentityManager"" that returns an instance of the IdentityManager class. The method does not take any parameters and is used to retrieve the identity manager instance."
+19,getChannelTypes(),get channel types get a set of channel type indicators return returns set of channel type indicators ,Method,,"net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+ChatRoomIrcImpl(String,ProtocolProviderServiceIrcImpl,boolean) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+setUp() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testEqualsOtherProviderInstance() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testEqualsOtherRoomInstance() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testEqualsSameRoomRepresentation() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testOnlyAlternativeChannelTypesWithDefault()",net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) com.ircclouds.irc.api.domain.IRCServerOptions+getChanTypes() com.ircclouds.irc.api.state.IIRCState+getServerOptions() com.ircclouds.irc.api.state.IIRCState+getServerOptions() com.ircclouds.irc.api.domain.IRCServerOptions+getChanTypes(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState,369,13,1,"/** 
+ * Get a set of channel type indicators.
+ * @return returns set of channel type indicators.
+ */
+","/**
+     * Get a set of channel type indicators.
+     *
+     * @return returns set of channel type indicators.
+     */
+    public Set<Character> getChannelTypes()
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(""not connected to IRC server"");
+        }
+        return this.connectionState.getServerOptions().getChanTypes();
+    }",True,True,"This method serves to retrieve a set of channel type indicators from the IRC server. It throws an exception if not connected, and returns the set of channel type indicators if connected.",False,"This code defines a method called ""getChannelTypes"" that returns a set of channel type indicators. It first checks if the connection to the IRC server is established, and if not, throws an exception. Otherwise, it retrieves the channel types from the server options and returns them."
+20,"setSubject(ChatRoomIrcImpl,String)",set subject chatroom subject set the subject of the specified chat room param chatroom the chat room for which to set the subject param subject the subject ,Method,,net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+setSubject(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testSetChatRoomSubject() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testSetChatRoomSubject() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testSetChatRoomSubjectFailedByIndirectIOException() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testSetChatRoomSubjectFailedByIndirectIOException() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testSetChatRoomSubjectFailedByOtherRuntimeException() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testSetChatRoomSubjectFailedByOtherRuntimeException(),"net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) com.ircclouds.irc.api.IRCApi+changeTopic(String,String) com.ircclouds.irc.api.IRCApi+changeTopic(String,String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier()",net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc,775,24,1,"/** 
+ * Set the subject of the specified chat room.
+ * @param chatroom The chat room for which to set the subject.
+ * @param subject The subject.
+ */
+","/**
+     * Set the subject of the specified chat room.
+     *
+     * @param chatroom The chat room for which to set the subject.
+     * @param subject The subject.
+     */
+    public void setSubject(final ChatRoomIrcImpl chatroom, final String subject)
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(
+                ""Please connect to an IRC server first."");
+        }
+        if (chatroom == null)
+        {
+            throw new IllegalArgumentException(""Cannot have a null chatroom"");
+        }
+        LOGGER.trace(""Setting chat room topic to '"" + subject + ""'"");
+        synchronized (this.irc)
+        {
+            this.irc.changeTopic(chatroom.getIdentifier(), subject == null ? """"
+                : subject);
+        }
+    }",True,True,This method sets the subject of a specified chat room. It throws exceptions if the IRC server is not connected or if the chat room is null. It then changes the topic of the chat room using the IRC library.,True,"This code defines a method called `setSubject` that sets the subject of a specified chat room in an IRC server. It first checks if the server is connected and if the chat room is not null, then it changes the topic of the chat room to the specified subject."
+21,isJoined(ChatRoomIrcImpl),is joined chatroom check whether the user has joined a particular chat room param chatroom chat room to check for return returns true in case the user is already joined or false if theuser has not joined ,Method,,net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+join() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+isJoined() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImplTest+testRoomIsJoined(),java.util.Map+get(Object) java.util.Map+get(Object) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined,384,11,1,"/** 
+ * Check whether the user has joined a particular chat room.
+ * @param chatroom Chat room to check for.
+ * @return Returns true in case the user is already joined, or false if theuser has not joined.
+ */
+","/**
+     * Check whether the user has joined a particular chat room.
+     *
+     * @param chatroom Chat room to check for.
+     * @return Returns true in case the user is already joined, or false if the
+     *         user has not joined.
+     */
+    public boolean isJoined(final ChatRoomIrcImpl chatroom)
+    {
+        return this.joined.get(chatroom.getIdentifier()) != null;
+    }",True,True,"This method checks if the user has joined a specific chat room by checking if the chat room's identifier exists in the ""joined"" map. It returns true if the user has joined, and false if not.",False,"The `isJoined` method checks if the user has already joined a specific chat room. It takes a `ChatRoomIrcImpl` object as a parameter and returns `true` if the user has joined the chat room, and `false` otherwise."
+22,join(ChatRoomIrcImpl),join chatroom join a particular chat room param chatroom chat room to join throws operation failed exception failed to join the chat room ,Method,,net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+join(),"net.java.sip.communicator.impl.protocol.irc.IrcConnection+join(ChatRoomIrcImpl,String) net.java.sip.communicator.impl.protocol.irc.IrcConnection+join(ChatRoomIrcImpl,String)",,298,11,1,"/** 
+ * Join a particular chat room.
+ * @param chatroom Chat room to join.
+ * @throws OperationFailedException failed to join the chat room
+ */
+","/**
+     * Join a particular chat room.
+     *
+     * @param chatroom Chat room to join.
+     * @throws OperationFailedException failed to join the chat room
+     */
+    public void join(final ChatRoomIrcImpl chatroom)
+        throws OperationFailedException
+    {
+        join(chatroom, """");
+    }",True,True,The function of this method is to join a chat room by calling another method with the chat room and an empty string as parameters. It throws an exception if the operation fails.,True,"The given code is a method named ""join"" that allows a user to join a specific chat room. It takes a ChatRoomIrcImpl object as a parameter and throws an OperationFailedException if the user fails to join the chat room. The method also has an overloaded version that takes an additional parameter for a password."
+23,"join(ChatRoomIrcImpl,String)",join chatroom password join a particular chat room issue a join channel irc operation and wait for the join operation to complete either successfully or failing param chatroom the chatroom to join param password optionally a password that may be required for somechannels throws operation failed exception failed to join the chat room ,Method,join(ChatRoomIrcImpl),net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+join(byte[]),"net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.impl.protocol.irc.Result+Result() net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) java.util.Map+put(K,V) java.util.Map+put(K,V) com.ircclouds.irc.api.IRCApi+joinChannel(String,String,Callback) com.ircclouds.irc.api.IRCApi+joinChannel(String,String,Callback) +() +onSuccess(IRCChannel)",net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc,10590,214,1,"/** 
+ * Join a particular chat room. Issue a join channel IRC operation and wait for the join operation to complete (either successfully or failing).
+ * @param chatroom The chatroom to join.
+ * @param password Optionally, a password that may be required for somechannels.
+ * @throws OperationFailedException failed to join the chat room
+ */
+","/**
+     * Join a particular chat room.
+     *
+     * Issue a join channel IRC operation and wait for the join operation to
+     * complete (either successfully or failing).
+     *
+     * @param chatroom The chatroom to join.
+     * @param password Optionally, a password that may be required for some
+     *            channels.
+     * @throws OperationFailedException failed to join the chat room
+     */
+    public void join(final ChatRoomIrcImpl chatroom, final String password)
+        throws OperationFailedException
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(
+                ""Please connect to an IRC server first"");
+        }
+        if (chatroom == null)
+        {
+            throw new IllegalArgumentException(""chatroom cannot be null"");
+        }
+        if (password == null)
+        {
+            throw new IllegalArgumentException(""password cannot be null"");
+        }
+
+        final String chatRoomId = chatroom.getIdentifier();
+        if (this.joined.containsKey(chatRoomId))
+        {
+            // If we already joined this particular chatroom, no further action
+            // is required.
+            return;
+        }
+
+        LOGGER.trace(""Start joining channel "" + chatRoomId);
+        final Result<Object, Exception> joinSignal =
+            new Result<Object, Exception>();
+        synchronized (joinSignal)
+        {
+            LOGGER.trace(""Issue join channel command to IRC library and wait ""
+                + ""for join operation to complete (un)successfully."");
+
+            this.joined.put(chatRoomId, null);
+            synchronized (this.irc)
+            {
+                // TODO Refactor this ridiculous nesting of functions and
+                // classes.
+                this.irc.joinChannel(chatRoomId, password,
+                    new Callback<IRCChannel>()
+                    {
+
+                        @Override
+                        public void onSuccess(final IRCChannel channel)
+                        {
+                            if (LOGGER.isTraceEnabled())
+                            {
+                                LOGGER
+                                    .trace(""Started callback for successful ""
+                                        + ""join of channel '""
+                                        + chatroom.getIdentifier() + ""'."");
+                            }
+                            boolean isRequestedChatRoom =
+                                channel.getName().equalsIgnoreCase(chatRoomId);
+                            synchronized (joinSignal)
+                            {
+                                if (!isRequestedChatRoom)
+                                {
+                                    // We joined another chat room than the one
+                                    // we requested initially.
+                                    if (LOGGER.isTraceEnabled())
+                                    {
+                                        LOGGER.trace(""Callback for successful ""
+                                            + ""join finished prematurely ""
+                                            + ""since we got forwarded from ""
+                                            + ""'""
+                                            + chatRoomId
+                                            + ""' to '""
+                                            + channel.getName()
+                                            + ""'. Joining of forwarded channel ""
+                                            + ""gets handled by Server Listener ""
+                                            + ""since that channel was not ""
+                                            + ""announced."");
+                                    }
+                                    // Remove original chat room id from
+                                    // joined-list since we aren't actually
+                                    // attempting to join this room anymore.
+                                    IrcConnection.this.joined
+                                        .remove(chatRoomId);
+                                    IrcConnection.this.provider
+                                        .getMUC()
+                                        .fireLocalUserPresenceEvent(
+                                            chatroom,
+                                            LocalUserChatRoomPresenceChangeEvent
+                                                .LOCAL_USER_JOIN_FAILED,
+                                            ""We got forwarded to channel '""
+                                                + channel.getName() + ""'."");
+                                    // Notify waiting threads of finished
+                                    // execution.
+                                    joinSignal.setDone();
+                                    joinSignal.notifyAll();
+                                    // The channel that we were forwarded to
+                                    // will be handled by the Server Listener,
+                                    // since the channel join was unannounced,
+                                    // and we are done here.
+                                    return;
+                                }
+
+                                try
+                                {
+                                    IrcConnection.this.joined.put(chatRoomId,
+                                        chatroom);
+                                    IrcConnection.this.irc
+                                        .addListener(new ChatRoomListener(
+                                            IrcConnection.this.irc, chatroom));
+                                    prepareChatRoom(chatroom, channel);
+                                }
+                                finally
+                                {
+                                    // In any case, issue the local user
+                                    // presence, since the irc library notified
+                                    // us of a successful join. We should wait
+                                    // as long as possible though. First we need
+                                    // to fill the list of chat room members and
+                                    // other chat room properties.
+                                    IrcConnection.this.provider
+                                        .getMUC()
+                                        .fireLocalUserPresenceEvent(
+                                            chatroom,
+                                            LocalUserChatRoomPresenceChangeEvent
+                                                .LOCAL_USER_JOINED,
+                                            null);
+                                    if (LOGGER.isTraceEnabled())
+                                    {
+                                        LOGGER
+                                            .trace(""Finished successful join ""
+                                                + ""callback for channel '""
+                                                + chatRoomId
+                                                + ""'. Waking up original ""
+                                                + ""thread."");
+                                    }
+                                    // Notify waiting threads of finished
+                                    // execution.
+                                    joinSignal.setDone();
+                                    joinSignal.notifyAll();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(final Exception e)
+                        {
+                            LOGGER
+                                .trace(""Started callback for failed attempt to ""
+                                    + ""join channel '"" + chatRoomId + ""'."");
+                            synchronized (joinSignal)
+                            {
+                                try
+                                {
+                                    IrcConnection.this.joined
+                                        .remove(chatRoomId);
+                                    IrcConnection.this.provider
+                                        .getMUC()
+                                        .fireLocalUserPresenceEvent(
+                                            chatroom,
+                                            LocalUserChatRoomPresenceChangeEvent
+                                                .LOCAL_USER_JOIN_FAILED,
+                                            e.getMessage());
+                                }
+                                finally
+                                {
+                                    if (LOGGER.isTraceEnabled())
+                                    {
+                                        LOGGER
+                                            .trace(""Finished callback for ""
+                                                + ""failed attempt to join ""
+                                                + ""channel '""
+                                                + chatRoomId
+                                                + ""'. Waking up original ""
+                                                + ""thread."");
+                                    }
+                                    // Notify waiting threads of finished
+                                    // execution
+                                    joinSignal.setDone(e);
+                                    joinSignal.notifyAll();
+                                }
+                            }
+                        }
+                    });
+            }
+
+            try
+            {
+                while (!joinSignal.isDone())
+                {
+                    LOGGER.trace(""Waiting for channel join message ..."");
+                    // Wait until async channel join operation has finished.
+                    joinSignal.wait();
+                }
+
+                LOGGER
+                    .trace(""Finished waiting for join operation for channel '""
+                        + chatroom.getIdentifier() + ""' to complete."");
+                // TODO How to handle 480 (+j): Channel throttle exceeded?
+            }
+            catch (InterruptedException e)
+            {
+                LOGGER.error(""Wait for join operation was interrupted."", e);
+                throw new OperationFailedException(e.getMessage(),
+                    OperationFailedException.INTERNAL_ERROR, e);
+            }
+        }
+    }",True,True,"This method serves to join a chat room in an IRC server. It checks if the user is connected to the server, if the chat room and password are not null, and if the user has already joined the chat room. It then issues a join channel command to the IRC library and waits for the join operation to complete, either successfully or failing.",True,"This code defines a method called ""join"" that allows a user to join a chat room in an IRC server. It performs various checks and validations before issuing a join command to the IRC library, and then waits for the join operation to complete either successfully or unsuccessfully, notifying the caller accordingly."
+24,leave(ChatRoomIrcImpl),leave chatroom part from a joined chat room param chatroom the chat room to part from ,Method,,net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+leave(),net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.IrcConnection+leave(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection+leave(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER,292,10,1,"/** 
+ * Part from a joined chat room.
+ * @param chatroom The chat room to part from.
+ */
+","/**
+     * Part from a joined chat room.
+     *
+     * @param chatroom The chat room to part from.
+     */
+    public void leave(final ChatRoomIrcImpl chatroom)
+    {
+        LOGGER.trace(""Leaving chat room '"" + chatroom.getIdentifier() + ""'."");
+        leave(chatroom.getIdentifier());
+    }",True,True,"This method is used to leave a chat room. It takes a chat room as a parameter, logs a trace message indicating that the user is leaving the chat room, and then calls another method to actually leave the chat room.",True,The `leave` method is used to leave a chat room. It takes a `ChatRoomIrcImpl` object as a parameter and logs a trace message indicating the chat room being left. It then calls the `leave` method with the identifier of the chat room.
+25,leave(String),leave chat room name part from a joined chat room param chat room name the chat room to part from ,Method,leave(ChatRoomIrcImpl),,"net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) com.ircclouds.irc.api.IRCApi+leaveChannel(String) com.ircclouds.irc.api.IRCApi+leaveChannel(String) net.java.sip.communicator.util.Logger+warn(Object,Throwable) net.java.sip.communicator.util.Logger+warn(Object,Throwable)",net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER,573,24,2,"/** 
+ * Part from a joined chat room.
+ * @param chatRoomName The chat room to part from.
+ */
+","/**
+     * Part from a joined chat room.
+     *
+     * @param chatRoomName The chat room to part from.
+     */
+    private void leave(final String chatRoomName)
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(""Not connected to an IRC server."");
+        }
+
+        try
+        {
+            synchronized (this.irc)
+            {
+                this.irc.leaveChannel(chatRoomName);
+            }
+        }
+        catch (ApiException e)
+        {
+            LOGGER.warn(""exception occurred while leaving channel"", e);
+        }
+    }",True,True,"This method is used to leave a chat room in an IRC server. It checks if the user is connected to the server, and then calls the leaveChannel method to leave the specified chat room. If an exception occurs, it logs a warning message.",True,"The `leave` method is used to leave a chat room in an IRC server. It checks if the client is connected to the server, and then calls the `leaveChannel` method to leave the specified chat room. If an `ApiException` occurs during the process, it is logged as a warning."
+26,"banParticipant(ChatRoomIrcImpl,ChatRoomMember,String)",ban participant chatroom member reason ban chat room member param chatroom chat room to ban from param member member to ban param reason reason for banning throws operation failed exception throws operation failed in case oftrouble ,Method,,"net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+banParticipant(ChatRoomMember,String)","net.java.sip.communicator.service.protocol.OperationFailedException+OperationFailedException(String,int)",net.java.sip.communicator.service.protocol.OperationFailedException+NOT_SUPPORTED_OPERATION,615,17,1,"/** 
+ * Ban chat room member.
+ * @param chatroom chat room to ban from
+ * @param member member to ban
+ * @param reason reason for banning
+ * @throws OperationFailedException throws operation failed in case oftrouble.
+ */
+","/**
+     * Ban chat room member.
+     *
+     * @param chatroom chat room to ban from
+     * @param member member to ban
+     * @param reason reason for banning
+     * @throws OperationFailedException throws operation failed in case of
+     *             trouble.
+     */
+    public void banParticipant(final ChatRoomIrcImpl chatroom,
+        final ChatRoomMember member, final String reason)
+        throws OperationFailedException
+    {
+        // TODO Implement banParticipant.
+        throw new OperationFailedException(""Not implemented yet."",
+            OperationFailedException.NOT_SUPPORTED_OPERATION);
+    }",True,True,"This method is used to ban a member from a chat room. It takes the chat room, the member to ban, and the reason for banning as parameters. It throws an OperationFailedException if there is any trouble.",True,"The code defines a method called ""banParticipant"" that is used to ban a member from a chat room. It takes the chat room, member, and reason as parameters and throws an exception if the operation fails. However, the method is not implemented yet and throws an exception indicating that."
+27,"kickParticipant(ChatRoomIrcImpl,ChatRoomMember,String)",kick participant chatroom member reason kick channel member param chatroom channel to kick from param member member to kick param reason kick message to deliver ,Method,,"net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+kickParticipant(ChatRoomMember,String)","net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() com.ircclouds.irc.api.IRCApi+kick(String,String,String) com.ircclouds.irc.api.IRCApi+kick(String,String,String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.service.protocol.ChatRoomMember+getContactAddress() net.java.sip.communicator.service.protocol.ChatRoomMember+getContactAddress()",net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc,530,20,1,"/** 
+ * Kick channel member.
+ * @param chatroom channel to kick from
+ * @param member member to kick
+ * @param reason kick message to deliver
+ */
+","/**
+     * Kick channel member.
+     *
+     * @param chatroom channel to kick from
+     * @param member member to kick
+     * @param reason kick message to deliver
+     */
+    public void kickParticipant(final ChatRoomIrcImpl chatroom,
+        final ChatRoomMember member, final String reason)
+    {
+        if (!isConnected())
+        {
+            return;
+        }
+        synchronized (this.irc)
+        {
+            this.irc.kick(chatroom.getIdentifier(), member.getContactAddress(),
+                reason);
+        }
+    }",False,True,This method kicks a member from a chatroom by sending a kick message with a reason. It checks if the user is connected before performing the action.,True,"This code defines a method called ""kickParticipant"" that is used to kick a member from a chatroom. It checks if the connection is active, and if so, it uses the IRC library to perform the kick operation with the specified reason."
+28,"invite(String,ChatRoomIrcImpl)",invite member id chatroom issue invite command to irc server param member id member to invite param chatroom channel to invite to ,Method,,"net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+invite(String,String)",net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) com.ircclouds.irc.api.IRCApi+rawMessage(String) com.ircclouds.irc.api.IRCApi+rawMessage(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc,519,18,1,"/** 
+ * Issue invite command to IRC server.
+ * @param memberId member to invite
+ * @param chatroom channel to invite to
+ */
+","/**
+     * Issue invite command to IRC server.
+     *
+     * @param memberId member to invite
+     * @param chatroom channel to invite to
+     */
+    public void invite(final String memberId, final ChatRoomIrcImpl chatroom)
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(""Not connected to an IRC server."");
+        }
+        synchronized (this.irc)
+        {
+            this.irc.rawMessage(""INVITE "" + memberId + "" ""
+                + chatroom.getIdentifier());
+        }
+    }",True,True,"This method sends an invite command to an IRC server, inviting a specific member to join a specific chatroom. It checks if the server is connected, and throws an exception if it is not.",True,"This code defines a method called ""invite"" that sends an invite command to an IRC server. It takes a member ID and a chatroom as parameters, and throws an exception if not connected to the server. The method then sends a raw message to the server with the invite command and the member ID and chatroom identifier."
+29,"command(ChatRoomIrcImpl,String)",command chatroom message send a command to the irc server param chatroom the chat room param message the command message ,Method,,net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+sendMessage(Message),"net.java.sip.communicator.impl.protocol.irc.IrcConnection+command(String,String) net.java.sip.communicator.impl.protocol.irc.IrcConnection+command(String,String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier()",,285,10,1,"/** 
+ * Send a command to the IRC server.
+ * @param chatroom the chat room
+ * @param message the command message
+ */
+","/**
+     * Send a command to the IRC server.
+     *
+     * @param chatroom the chat room
+     * @param message the command message
+     */
+    public void command(final ChatRoomIrcImpl chatroom, final String message)
+    {
+        this.command(chatroom.getIdentifier(), message);
+    }",False,False,This method sends a command message to the IRC server using the specified chat room.,True,"The code defines a method called ""command"" that takes a chat room and a message as parameters. It then calls another version of the ""command"" method with the chat room's identifier and the message. This method is used to send a command to an IRC server."
+30,"command(Contact,MessageIrcImpl)",command contact message send a command to the irc server param contact the chat room param message the command message ,Method,,"net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+sendInstantMessage(Contact,Message)","net.java.sip.communicator.impl.protocol.irc.IrcConnection+command(String,String) net.java.sip.communicator.impl.protocol.irc.IrcConnection+command(String,String) net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.service.protocol.AbstractMessage+getContent() net.java.sip.communicator.service.protocol.AbstractMessage+getContent()",,292,10,1,"/** 
+ * Send a command to the IRC server.
+ * @param contact the chat room
+ * @param message the command message
+ */
+","/**
+     * Send a command to the IRC server.
+     *
+     * @param contact the chat room
+     * @param message the command message
+     */
+    public void command(final Contact contact, final MessageIrcImpl message)
+    {
+        this.command(contact.getAddress(), message.getContent());
+    }",False,False,This method sends a command message to an IRC server using the address of a chat room and the content of the message.,True,"The code defines a method called ""command"" that sends a command message to an IRC server. It takes a contact (representing a chat room) and a message as parameters, and then calls another method with the contact's address and the message's content as arguments."
+31,"command(String,String)",command source message implementation of some commands if the command is not recognized or implemented it will be sent as if it were a normal message todo eventually replace this with a factory such that we can easily extend with new commands param source source contact or chat room from which the message is sent param message command message that is sent ,Method,"command(ChatRoomIrcImpl,String) command(Contact,MessageIrcImpl)",,"net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) java.lang.String+toLowerCase() java.lang.String+toLowerCase() java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+substring(int) java.lang.String+substring(int) com.ircclouds.irc.api.IRCApi+message(String,String) com.ircclouds.irc.api.IRCApi+message(String,String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+substring(int) java.lang.String+substring(int) com.ircclouds.irc.api.IRCApi+act(String,String) com.ircclouds.irc.api.IRCApi+act(String,String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+matches(String) java.lang.String+matches(String) com.ircclouds.irc.api.IRCApi+joinChannel(String,String) com.ircclouds.irc.api.IRCApi+joinChannel(String,String) com.ircclouds.irc.api.IRCApi+message(String,String) com.ircclouds.irc.api.IRCApi+message(String,String)",net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc,2379,73,2,"/** 
+ * Implementation of some commands. If the command is not recognized or implemented, it will be sent as if it were a normal message. TODO Eventually replace this with a factory such that we can easily extend with new commands.
+ * @param source Source contact or chat room from which the message is sent.
+ * @param message Command message that is sent.
+ */
+","/**
+     * Implementation of some commands. If the command is not recognized or
+     * implemented, it will be sent as if it were a normal message.
+     *
+     * TODO Eventually replace this with a factory such that we can easily
+     * extend with new commands.
+     *
+     * @param source Source contact or chat room from which the message is sent.
+     * @param message Command message that is sent.
+     */
+    private void command(final String source, final String message)
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(""Not connected to IRC server."");
+        }
+        final String msg = message.toLowerCase();
+        if (msg.startsWith(""/msg ""))
+        {
+            final String part = message.substring(5);
+            int endOfNick = part.indexOf(' ');
+            if (endOfNick == -1)
+            {
+                throw new IllegalArgumentException(""Invalid private message ""
+                    + ""format. Message was not sent."");
+            }
+            final String target = part.substring(0, endOfNick);
+            final String command = part.substring(endOfNick + 1);
+            synchronized (this.irc)
+            {
+                this.irc.message(target, command);
+            }
+        }
+        else if (msg.startsWith(""/me ""))
+        {
+            final String command = message.substring(4);
+            synchronized (this.irc)
+            {
+                this.irc.act(source, command);
+            }
+        }
+        else if (msg.startsWith(""/join ""))
+        {
+            final String part = message.substring(6);
+            final String channel;
+            final String password;
+            int indexOfSep = part.indexOf(' ');
+            if (indexOfSep == -1)
+            {
+                channel = part;
+                password = """";
+            }
+            else
+            {
+                channel = part.substring(0, indexOfSep);
+                password = part.substring(indexOfSep + 1);
+            }
+            if (channel.matches(""[^,\\n\\r\\s\\a]+""))
+            {
+                synchronized (this.irc)
+                {
+                    this.irc.joinChannel(channel, password);
+                }
+            }
+        }
+        else
+        {
+            synchronized (this.irc)
+            {
+                this.irc.message(source, message);
+            }
+        }
+    }",False,False,"This method serves as an implementation of various commands in a chat room or with a contact. It checks the command message and performs the corresponding action, such as sending a private message, performing an action, or joining a channel. If the command is not recognized, it treats it as a normal message and sends it.",True,"The `command` method handles various commands received as messages in an IRC chat. It checks for specific command prefixes (""/msg"", ""/me"", ""/join"") and performs corresponding actions such as sending private messages, performing actions, or joining channels. If the command is not recognized, it treats the message as a normal chat message."
+32,"message(ChatRoomIrcImpl,String)",message chatroom message send an irc message param chatroom the chat room to send the message to param message the message to send ,Method,,net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+sendMessage(Message),"net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() com.ircclouds.irc.api.IRCApi+message(String,String) com.ircclouds.irc.api.IRCApi+message(String,String)",net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc,523,18,1,"/** 
+ * Send an IRC message.
+ * @param chatroom The chat room to send the message to.
+ * @param message The message to send.
+ */
+","/**
+     * Send an IRC message.
+     *
+     * @param chatroom The chat room to send the message to.
+     * @param message The message to send.
+     */
+    public void message(final ChatRoomIrcImpl chatroom, final String message)
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(""Not connected to an IRC server."");
+        }
+        final String target = chatroom.getIdentifier();
+        synchronized (this.irc)
+        {
+            this.irc.message(target, message);
+        }
+    }",False,False,"This method sends an IRC message to a specified chat room. It checks if the user is connected to an IRC server, throws an exception if not, and then sends the message to the chat room using the IRC library.",True,"This code defines a method called ""message"" that sends a message to an IRC chat room. It first checks if the user is connected to an IRC server, throws an exception if not, and then sends the message to the specified chat room using the IRC library."
+33,"message(Contact,Message)",message contact message send an irc message param contact the contact to send the message to param message the message to send ,Method,,"net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+sendInstantMessage(Contact,Message)","net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.service.protocol.Contact+getAddress() com.ircclouds.irc.api.IRCApi+message(String,String) com.ircclouds.irc.api.IRCApi+message(String,String) net.java.sip.communicator.service.protocol.Message+getContent() net.java.sip.communicator.service.protocol.Message+getContent() net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object,Throwable) net.java.sip.communicator.util.Logger+trace(Object,Throwable) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER,793,27,1,"/** 
+ * Send an IRC message.
+ * @param contact The contact to send the message to.
+ * @param message The message to send.
+ */
+","/**
+     * Send an IRC message.
+     *
+     * @param contact The contact to send the message to.
+     * @param message The message to send.
+     */
+    public void message(final Contact contact, final Message message)
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(""Not connected to an IRC server."");
+        }
+        final String target = contact.getAddress();
+        try
+        {
+            synchronized (this.irc)
+            {
+                this.irc.message(target, message.getContent());
+            }
+            LOGGER.trace(""Message delivered to server successfully."");
+        }
+        catch (RuntimeException e)
+        {
+            LOGGER.trace(""Failed to deliver message: "" + e.getMessage(), e);
+            throw e;
+        }
+    }",False,False,"This method sends an IRC message to a specific contact. It checks if the connection to the IRC server is established, throws an exception if not. Then it sends the message to the server and logs the result.",True,"This code defines a method called ""message"" that sends an IRC message to a specified contact. It first checks if the connection to the IRC server is established, throws an exception if not. Then, it sends the message content to the target contact's address using the IRC library, and logs the success or failure of the message delivery."
+34,"grant(ChatRoomIrcImpl,String,Mode)",grant chat room user address mode grant user permissions to specified user param chat room chat room to grant permissions for param user address user to grant permissions to param mode mode to grant ,Method,,net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+grantAdmin(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+grantMembership(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+grantModerator(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+grantOwnership(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+grantVoice(String),net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) com.ircclouds.irc.api.IRCApi+changeMode(String) com.ircclouds.irc.api.IRCApi+changeMode(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc,799,25,1,"/** 
+ * Grant user permissions to specified user.
+ * @param chatRoom chat room to grant permissions for
+ * @param userAddress user to grant permissions to
+ * @param mode mode to grant
+ */
+","/**
+     * Grant user permissions to specified user.
+     *
+     * @param chatRoom chat room to grant permissions for
+     * @param userAddress user to grant permissions to
+     * @param mode mode to grant
+     */
+    public void grant(final ChatRoomIrcImpl chatRoom, final String userAddress,
+        final Mode mode)
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(""Not connected to an IRC server."");
+        }
+        if (mode.getRole() == null)
+        {
+            throw new IllegalArgumentException(
+                ""This mode does not modify user permissions."");
+        }
+        synchronized (this.irc)
+        {
+            this.irc.changeMode(chatRoom.getIdentifier() + "" +""
+                + mode.getSymbol() + "" "" + userAddress);
+        }
+    }",True,True,"This method grants user permissions to a specified user in a chat room. It checks if the user is connected to an IRC server, and if the mode being granted modifies user permissions. It then changes the mode of the chat room for the specified user.",True,"This code defines a method called ""grant"" that grants user permissions to a specified chat room in an IRC server. It checks if the server is connected, verifies if the mode modifies user permissions, and then changes the mode for the specified user in the chat room."
+35,"revoke(ChatRoomIrcImpl,String,Mode)",revoke chat room user address mode revoke user permissions of chat room for user param chat room chat room param user address user param mode mode ,Method,,net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+revokeAdmin(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+revokeMembership(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+revokeModerator(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+revokeOwnership(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+revokeVoice(String),net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.IllegalStateException+IllegalStateException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) com.ircclouds.irc.api.IRCApi+changeMode(String) com.ircclouds.irc.api.IRCApi+changeMode(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+irc,747,25,1,"/** 
+ * Revoke user permissions of chat room for user.
+ * @param chatRoom chat room
+ * @param userAddress user
+ * @param mode mode
+ */
+","/**
+     * Revoke user permissions of chat room for user.
+     *
+     * @param chatRoom chat room
+     * @param userAddress user
+     * @param mode mode
+     */
+    public void revoke(final ChatRoomIrcImpl chatRoom,
+        final String userAddress, final Mode mode)
+    {
+        if (!isConnected())
+        {
+            throw new IllegalStateException(""Not connected to an IRC server."");
+        }
+        if (mode.getRole() == null)
+        {
+            throw new IllegalArgumentException(
+                ""This mode does not modify user permissions."");
+        }
+        synchronized (this.irc)
+        {
+            this.irc.changeMode(chatRoom.getIdentifier() + "" -""
+                + mode.getSymbol() + "" "" + userAddress);
+        }
+    }",True,True,"The function of this method is to revoke user permissions for a chat room. It checks if the user is connected to an IRC server, and if the mode being used is valid. It then changes the mode of the chat room to revoke the user's permissions.",True,"This code defines a method called ""revoke"" that is used to revoke user permissions for a specific chat room in an IRC (Internet Relay Chat) server. It checks if the server is connected, verifies if the provided mode can modify user permissions, and then changes the mode for the specified user in the chat room."
+36,"prepareChatRoom(ChatRoomIrcImpl,IRCChannel)",prepare chat room chat room channel prepare a chat room for initial opening param channel the irc channel which is the source of data param chat room the chatroom to prepare ,Method,ServerListener.onServerNumericMessage(ServerNumericMessage),,"com.ircclouds.irc.api.domain.IRCChannel+getTopic() com.ircclouds.irc.api.domain.IRCChannel+getTopic() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+updateSubject(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+updateSubject(String) com.ircclouds.irc.api.domain.IRCTopic+getValue() com.ircclouds.irc.api.domain.IRCTopic+getValue() com.ircclouds.irc.api.domain.IRCChannel+getUsers() com.ircclouds.irc.api.domain.IRCChannel+getUsers() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+ChatRoomMemberIrcImpl(ProtocolProviderServiceIrcImpl,ChatRoom,String,ChatRoomMemberRole) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.IRCChannel+getStatusesForUser(IRCUser) com.ircclouds.irc.api.domain.IRCChannel+getStatusesForUser(IRCUser) net.java.sip.communicator.impl.protocol.irc.IrcConnection+convertMemberMode(char) net.java.sip.communicator.impl.protocol.irc.IrcConnection+convertMemberMode(char) java.lang.Character+charValue() com.ircclouds.irc.api.domain.IRCUserStatus+getChanModeType() com.ircclouds.irc.api.domain.IRCUserStatus+getChanModeType() java.lang.Character+charValue() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+addRole(ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+addRole(ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+addChatRoomMember(String,ChatRoomMember) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+addChatRoomMember(String,ChatRoomMember) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() java.lang.String+equals(Object) net.java.sip.communicator.impl.protocol.irc.IdentityManager+getNick() net.java.sip.communicator.impl.protocol.irc.IdentityManager+getNick() java.lang.String+equals(Object) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+setLocalUser(ChatRoomMemberIrcImpl) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+setLocalUser(ChatRoomMemberIrcImpl) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getRole() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getRole() net.java.sip.communicator.service.protocol.event.ChatRoomLocalUserRoleChangeEvent+ChatRoomLocalUserRoleChangeEvent(ChatRoom,ChatRoomMemberRole,ChatRoomMemberRole,boolean) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getRole() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getRole() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireLocalUserRoleChangedEvent(ChatRoomLocalUserRoleChangeEvent) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireLocalUserRoleChangedEvent(ChatRoomLocalUserRoleChangeEvent)",net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+identity net.java.sip.communicator.impl.protocol.irc.IrcConnection+identity,1539,38,2,"/** 
+ * Prepare a chat room for initial opening.
+ * @param channel The IRC channel which is the source of data.
+ * @param chatRoom The chatroom to prepare.
+ */
+","/**
+     * Prepare a chat room for initial opening.
+     *
+     * @param channel The IRC channel which is the source of data.
+     * @param chatRoom The chatroom to prepare.
+     */
+    private void prepareChatRoom(final ChatRoomIrcImpl chatRoom,
+        final IRCChannel channel)
+    {
+        final IRCTopic topic = channel.getTopic();
+        chatRoom.updateSubject(topic.getValue());
+
+        for (IRCUser user : channel.getUsers())
+        {
+            ChatRoomMemberIrcImpl member =
+                new ChatRoomMemberIrcImpl(this.provider, chatRoom,
+                    user.getNick(), ChatRoomMemberRole.SILENT_MEMBER);
+            ChatRoomMemberRole role;
+            for (IRCUserStatus status : channel.getStatusesForUser(user))
+            {
+                role = convertMemberMode(status.getChanModeType().charValue());
+                member.addRole(role);
+            }
+            chatRoom.addChatRoomMember(member.getContactAddress(), member);
+            if (this.identity.getNick().equals(user.getNick()))
+            {
+                chatRoom.setLocalUser(member);
+                if (member.getRole() != ChatRoomMemberRole.SILENT_MEMBER)
+                {
+                    ChatRoomLocalUserRoleChangeEvent event =
+                        new ChatRoomLocalUserRoleChangeEvent(chatRoom,
+                            ChatRoomMemberRole.SILENT_MEMBER, member.getRole(),
+                            true);
+                    chatRoom.fireLocalUserRoleChangedEvent(event);
+                }
+            }
+        }
+    }",False,True,"The function of this method is to prepare a chat room for initial opening by updating the subject, adding chat room members, setting the local user, and firing events for local user role changes.",False,This code prepares a chat room by updating its subject with the topic from an IRC channel and adding members to the chat room based on the users in the channel. It also sets the local user as a member of the chat room and fires an event if the local user's role changes from a silent member.
+37,convertMemberMode(char),convert member mode mode symbol convert a member mode character to a chat room member role instance param mode symbol the member mode character return return the instance of chat room member role corresponding to themember mode character ,Method,"prepareChatRoom(ChatRoomIrcImpl,IRCChannel)",,,,402,11,10,"/** 
+ * Convert a member mode character to a ChatRoomMemberRole instance.
+ * @param modeSymbol The member mode character.
+ * @return Return the instance of ChatRoomMemberRole corresponding to themember mode character.
+ */
+","/**
+     * Convert a member mode character to a ChatRoomMemberRole instance.
+     *
+     * @param modeSymbol The member mode character.
+     * @return Return the instance of ChatRoomMemberRole corresponding to the
+     *         member mode character.
+     */
+    private static ChatRoomMemberRole convertMemberMode(final char modeSymbol)
+    {
+        return Mode.bySymbol(modeSymbol).getRole();
+    }",True,True,This method converts a member mode character to a ChatRoomMemberRole instance by using the Mode class to get the corresponding role.,False,This code defines a private static method called `convertMemberMode` that takes a character as input and returns an instance of `ChatRoomMemberRole`. The method uses the `Mode.bySymbol` method to retrieve the corresponding role based on the input character.
+38,calculateMaximumMessageSize(Contact),calculate maximum message size contact calculate maximum message size that can be transmitted param contact receiving contact return returns maximum message size ,Method,,net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+getMaxMessageSize(Contact),java.lang.StringBuilder+StringBuilder(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) net.java.sip.communicator.impl.protocol.irc.IdentityManager+getIdentityString() net.java.sip.communicator.impl.protocol.irc.IdentityManager+getIdentityString() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.service.protocol.Contact+getAddress() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+length() java.lang.StringBuilder+length(),net.java.sip.communicator.impl.protocol.irc.IrcConnection+identity net.java.sip.communicator.impl.protocol.irc.IrcConnection+identity net.java.sip.communicator.impl.protocol.irc.IrcConnection+IRC_PROTOCOL_MAXIMUM_MESSAGE_SIZE,546,15,1,"/** 
+ * Calculate maximum message size that can be transmitted.
+ * @param contact receiving contact
+ * @return returns maximum message size
+ */
+","/**
+     * Calculate maximum message size that can be transmitted.
+     *
+     * @param contact receiving contact
+     * @return returns maximum message size
+     */
+    public int calculateMaximumMessageSize(final Contact contact)
+    {
+        final StringBuilder builder = new StringBuilder("":"");
+        builder.append(this.identity.getIdentityString());
+        builder.append("" PRIVMSG "");
+        builder.append(contact.getAddress());
+        builder.append("" :"");
+        return IRC_PROTOCOL_MAXIMUM_MESSAGE_SIZE - builder.length();
+    }",False,False,This method calculates the maximum message size that can be transmitted in an IRC protocol. It takes a receiving contact as input and returns the maximum message size by subtracting the length of the message builder from the IRC protocol maximum message size.,True,"This code defines a method called ""calculateMaximumMessageSize"" that takes a Contact object as a parameter. It returns the maximum message size that can be transmitted in an IRC protocol by subtracting the length of a constructed string from a predefined maximum size constant."
+39,ServerListener,server listener a listener for server level messages any messages that are related to the server the connection that are not related to any chatroom in particular or that are personal message from user to local user ,MemberClass,,,"net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+ServerListener(IRCApi) java.lang.IllegalArgumentException+IllegalArgumentException(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+onServerNotice(ServerNotice) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) com.ircclouds.irc.api.domain.messages.AbstractNotice+getText() com.ircclouds.irc.api.domain.messages.AbstractNotice+getText() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+onServerNumericMessage(ServerNumericMessage) net.java.sip.communicator.util.Logger+isDebugEnabled() net.java.sip.communicator.util.Logger+isDebugEnabled() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getNumericCode() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getNumericCode() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getNumericCode() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getNumericCode() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() java.lang.Integer+intValue() java.lang.Integer+intValue() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) com.ircclouds.irc.api.state.IIRCState+getChannelByName(String) com.ircclouds.irc.api.state.IIRCState+getChannelByName(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+ChatRoomIrcImpl(String,ProtocolProviderServiceIrcImpl) java.util.Map+put(K,V) java.util.Map+put(K,V) com.ircclouds.irc.api.IRCApi+addListener(IMessageListener) com.ircclouds.irc.api.IRCApi+addListener(IMessageListener) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+ChatRoomListener(IRCApi,ChatRoomIrcImpl) net.java.sip.communicator.impl.protocol.irc.OperationSetMultiUserChatIrcImpl+openChatRoomWindow(ChatRoomIrcImpl) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getMUC() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getMUC() net.java.sip.communicator.impl.protocol.irc.OperationSetMultiUserChatIrcImpl+openChatRoomWindow(ChatRoomIrcImpl) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.impl.protocol.irc.IrcConnection+prepareChatRoom(ChatRoomIrcImpl,IRCChannel) net.java.sip.communicator.impl.protocol.irc.IrcConnection+prepareChatRoom(ChatRoomIrcImpl,IRCChannel) net.java.sip.communicator.service.protocol.AbstractOperationSetMultiUserChat+fireLocalUserPresenceEvent(ChatRoom,String,String) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getMUC() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getMUC() net.java.sip.communicator.service.protocol.AbstractOperationSetMultiUserChat+fireLocalUserPresenceEvent(ChatRoom,String,String) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) com.ircclouds.irc.api.domain.messages.ServerNumericMessage+asRaw() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+asRaw() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() java.lang.String+indexOf(int) java.lang.String+indexOf(int) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) java.lang.String+substring(int,int) java.lang.String+substring(int,int) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+MessageIrcImpl(String,String,String,String) net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findOrCreateContactByID(String) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findOrCreateContactByID(String) net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageDeliveryFailed(Message,Contact,int) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageDeliveryFailed(Message,Contact,int) com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+indexOf(int) java.lang.String+indexOf(int) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newAwayMessageFromIRC(String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newAwayMessageFromIRC(String) net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findOrCreateContactByID(String) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findOrCreateContactByID(String) net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageReceived(Message,Contact) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageReceived(Message,Contact) net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+onError(ErrorMessage) net.java.sip.communicator.util.Logger+isDebugEnabled() net.java.sip.communicator.util.Logger+isDebugEnabled() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) com.ircclouds.irc.api.domain.messages.ErrorMessage+getSource() com.ircclouds.irc.api.domain.messages.ErrorMessage+getSource() com.ircclouds.irc.api.domain.messages.ErrorMessage+getText() com.ircclouds.irc.api.domain.messages.ErrorMessage+getText() com.ircclouds.irc.api.state.IIRCState+isConnected() com.ircclouds.irc.api.state.IIRCState+isConnected() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+setCurrentRegistrationState(RegistrationState) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+setCurrentRegistrationState(RegistrationState) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+onUserPrivMessage(UserPrivMsg) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newMessageFromIRC(String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newMessageFromIRC(String) com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findOrCreateContactByID(String) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findOrCreateContactByID(String) net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageReceived(Message,Contact) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageReceived(Message,Contact) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+onUserNotice(UserNotice) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.UserNotice+getSource() com.ircclouds.irc.api.domain.messages.UserNotice+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findOrCreateContactByID(String) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findOrCreateContactByID(String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newNoticeFromIRC(Contact,String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newNoticeFromIRC(Contact,String) com.ircclouds.irc.api.domain.messages.AbstractNotice+getText() com.ircclouds.irc.api.domain.messages.AbstractNotice+getText() net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageReceived(Message,Contact) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageReceived(Message,Contact) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+onUserAction(UserActionMsg) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findContactByID(String) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getPersistentPresence() net.java.sip.communicator.impl.protocol.irc.OperationSetPersistentPresenceIrcImpl+findContactByID(String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newActionFromIRC(Contact,String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newActionFromIRC(Contact,String) com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageReceived(Message,Contact) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getBasicInstantMessaging() net.java.sip.communicator.impl.protocol.irc.OperationSetBasicInstantMessagingIrcImpl+fireMessageReceived(Message,Contact) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+onUserQuit(QuitMessage) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.QuitMessage+getSource() com.ircclouds.irc.api.domain.messages.QuitMessage+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() java.lang.String+equals(Object) java.lang.String+equals(Object) com.ircclouds.irc.api.state.IIRCState+getNickname() com.ircclouds.irc.api.state.IIRCState+getNickname() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) com.ircclouds.irc.api.IRCApi+deleteListener(IMessageListener) com.ircclouds.irc.api.IRCApi+deleteListener(IMessageListener)",net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+RPL_AWAY net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+RPL_LISTEND com.ircclouds.irc.api.domain.IRCServerNumerics+CHANNEL_NICKS_END_OF_LIST net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+ERR_NO_SUCH_NICK_CHANNEL com.ircclouds.irc.api.domain.IRCServerNumerics+NO_SUCH_NICK_CHANNEL net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+RPL_LISTEND net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceChangeEvent+LOCAL_USER_JOINED net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+ERR_NO_SUCH_NICK_CHANNEL net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.service.protocol.OperationSetBasicInstantMessaging+HTML_MIME_TYPE net.java.sip.communicator.service.protocol.OperationSetBasicInstantMessaging+DEFAULT_MIME_ENCODING net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.service.protocol.event.MessageDeliveryFailedEvent+OFFLINE_MESSAGES_NOT_SUPPORTED net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+RPL_AWAY net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.service.protocol.RegistrationState+CONNECTION_FAILED net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ServerListener+irc,13106,329,18,"/** 
+ * A listener for server-level messages (any messages that are related to the server, the connection, that are not related to any chatroom in particular) or that are personal message from user to local user.
+ */
+","/**
+     * A listener for server-level messages (any messages that are related to
+     * the server, the connection, that are not related to any chatroom in
+     * particular) or that are personal message from user to local user.
+     */
+    private final class ServerListener
+        extends VariousMessageListenerAdapter
+    {
+        /**
+         * IRC reply containing away message.
+         */
+        private static final int RPL_AWAY = 301;
+
+        /**
+         * IRC reply code for end of list.
+         */
+        private static final int RPL_LISTEND =
+            IRCServerNumerics.CHANNEL_NICKS_END_OF_LIST;
+
+        /**
+         * IRC error code for case of non-existing nick or channel name.
+         */
+        private static final int ERR_NO_SUCH_NICK_CHANNEL =
+            IRCServerNumerics.NO_SUCH_NICK_CHANNEL;
+
+        /**
+         * IRCApi instance.
+         */
+        private final IRCApi irc;
+
+        /**
+         * Constructor for Server Listener.
+         *
+         * @param irc IRCApi instance
+         */
+        private ServerListener(final IRCApi irc)
+        {
+            if (irc == null)
+            {
+                throw new IllegalArgumentException(
+                    ""irc instance cannot be null"");
+            }
+            this.irc = irc;
+        }
+
+        /**
+         * Print out server notices for debugging purposes and for simply
+         * keeping track of the connections.
+         *
+         * @param msg the server notice
+         */
+        @Override
+        public void onServerNotice(final ServerNotice msg)
+        {
+            LOGGER.debug(""NOTICE: "" + msg.getText());
+        }
+
+        /**
+         * Print out server numeric messages for debugging purposes and for
+         * simply keeping track of the connection.
+         *
+         * @param msg the numeric message
+         */
+        @Override
+        public void onServerNumericMessage(final ServerNumericMessage msg)
+        {
+            if (LOGGER.isDebugEnabled())
+            {
+                LOGGER.debug(""NUM MSG: "" + msg.getNumericCode() + "": ""
+                    + msg.getText());
+            }
+
+            final Integer code = msg.getNumericCode();
+            if (code == null)
+            {
+                LOGGER.debug(""No 'code' in numeric message event."");
+                return;
+            }
+
+            if (!IrcConnection.this.isConnected())
+            {
+                // Skip message handling until we're officially connected.
+                return;
+            }
+
+            switch (code.intValue())
+            {
+            case RPL_LISTEND:
+                // CHANNEL_NICKS_END_OF_LIST indicates the end of a nick list as
+                // you will receive when joining a channel. This is used as the
+                // indicator that we have joined a channel. Now we have to
+                // determine whether or not we already know about this
+                // particular join attempt. If not, we continue to inform Jitsi
+                // and to create a listener for this new chat room.
+                final String text = msg.getText();
+                final String channelName = text.substring(0, text.indexOf(' '));
+                final ChatRoomIrcImpl chatRoom;
+                final IRCChannel channel;
+                synchronized (IrcConnection.this.joined)
+                {
+                    // Synchronize the section that checks then adds a chat
+                    // room. This way we can be sure that there are no 2
+                    // simultaneous creation events.
+                    if (IrcConnection.this.joined.containsKey(channelName))
+                    {
+                        LOGGER.trace(""Chat room '"" + channelName
+                            + ""' join event was announced or already ""
+                            + ""finished. Stop handling this event."");
+                        break;
+                    }
+                    // We aren't currently attempting to join, so this join is
+                    // unannounced.
+                    LOGGER.trace(""Starting unannounced join of chat room '""
+                        + channelName);
+                    // Assuming that at the time that NICKS_END_OF_LIST is
+                    // propagated, the channel join event has been completely
+                    // handled by IRCApi.
+                    channel =
+                        IrcConnection.this.connectionState
+                            .getChannelByName(channelName);
+                    chatRoom = new ChatRoomIrcImpl(
+                        channelName, IrcConnection.this.provider);
+                    IrcConnection.this.joined.put(channelName, chatRoom);
+                }
+                this.irc.addListener(new ChatRoomListener(this.irc, chatRoom));
+                try
+                {
+                    IrcConnection.this.provider.getMUC().openChatRoomWindow(
+                        chatRoom);
+                }
+                catch (NullPointerException e)
+                {
+                    LOGGER.error(""failed to open chat room window"", e);
+                }
+                IrcConnection.this.prepareChatRoom(chatRoom, channel);
+                IrcConnection.this.provider.getMUC().fireLocalUserPresenceEvent(
+                    chatRoom,
+                    LocalUserChatRoomPresenceChangeEvent.LOCAL_USER_JOINED,
+                    null);
+                LOGGER.trace(""Unannounced join of chat room '"" + channelName
+                    + ""' completed."");
+                break;
+
+            case ERR_NO_SUCH_NICK_CHANNEL:
+                // TODO Check if target is Contact, then update contact presence
+                // status to off-line since the nick apparently does not exist
+                // anymore.
+                if (LOGGER.isTraceEnabled())
+                {
+                    LOGGER.trace(""Message did not get delivered: ""
+                        + msg.asRaw());
+                }
+                final String msgText = msg.getText();
+                final int endOfTargetIndex = msgText.indexOf(' ');
+                if (endOfTargetIndex == -1)
+                {
+                    LOGGER.trace(""Expected target nick in error message, but ""
+                        + ""it cannot be found. Stop parsing."");
+                    break;
+                }
+                final String targetNick =
+                    msgText.substring(0, endOfTargetIndex);
+                // Send blank text string as the message, since we don't know
+                // what the actual message was. (We cannot reliably relate the
+                // NOSUCHNICK reply to the exact message that caused the error.)
+                MessageIrcImpl message =
+                    new MessageIrcImpl(
+                        """",
+                        OperationSetBasicInstantMessaging.HTML_MIME_TYPE,
+                        OperationSetBasicInstantMessaging.DEFAULT_MIME_ENCODING,
+                        null);
+                final Contact to =
+                    IrcConnection.this.provider.getPersistentPresence()
+                        .findOrCreateContactByID(targetNick);
+                IrcConnection.this.provider
+                    .getBasicInstantMessaging()
+                    .fireMessageDeliveryFailed(
+                        message,
+                        to,
+                        MessageDeliveryFailedEvent
+                            .OFFLINE_MESSAGES_NOT_SUPPORTED);
+                break;
+
+            case RPL_AWAY:
+                final String rawAwayText = msg.getText();
+                final String awayUserNick =
+                    rawAwayText.substring(0, rawAwayText.indexOf(' '));
+                final String awayText =
+                    rawAwayText.substring(rawAwayText.indexOf(' ') + 2);
+                final MessageIrcImpl awayMessage =
+                    MessageIrcImpl.newAwayMessageFromIRC(awayText);
+                final Contact awayUser =
+                    IrcConnection.this.provider.getPersistentPresence()
+                        .findOrCreateContactByID(awayUserNick);
+                IrcConnection.this.provider.getBasicInstantMessaging()
+                    .fireMessageReceived(awayMessage, awayUser);
+                break;
+
+            default:
+                if (LOGGER.isTraceEnabled())
+                {
+                    LOGGER.trace(""This ServerNumericMessage ("" + code
+                        + "") will not be handled by the ServerListener."");
+                }
+                break;
+            }
+        }
+
+        /**
+         * Print out received errors for debugging purposes and may be for
+         * expected errors that can be acted upon.
+         *
+         * @param msg the error message
+         */
+        @Override
+        public void onError(final ErrorMessage msg)
+        {
+            if (LOGGER.isDebugEnabled())
+            {
+                LOGGER
+                    .debug(""ERROR: "" + msg.getSource() + "": "" + msg.getText());
+            }
+            if (IrcConnection.this.connectionState != null)
+            {
+                if (!IrcConnection.this.connectionState.isConnected())
+                {
+                    IrcConnection.this.provider
+                        .setCurrentRegistrationState(
+                            RegistrationState.CONNECTION_FAILED);
+                }
+            }
+        }
+
+        /**
+         * Upon receiving a private message from a user, deliver that to an
+         * instant messaging contact and create one if it does not exist. We can
+         * ignore normal chat rooms, since they each have their own
+         * ChatRoomListener for managing chat room operations.
+         *
+         * @param msg the private message
+         */
+        @Override
+        public void onUserPrivMessage(final UserPrivMsg msg)
+        {
+            final String user = msg.getSource().getNick();
+            final MessageIrcImpl message =
+                MessageIrcImpl.newMessageFromIRC(msg.getText());
+            final Contact from =
+                IrcConnection.this.provider.getPersistentPresence()
+                    .findOrCreateContactByID(user);
+            try
+            {
+                IrcConnection.this.provider.getBasicInstantMessaging()
+                    .fireMessageReceived(message, from);
+            }
+            catch (RuntimeException e)
+            {
+                // TODO remove once this is stable. Don't want to lose message
+                // when an accidental error occurs.
+                // It is likely that errors occurred because of some issues with
+                // MetaContactGroup for NonPersistent group, since this is an
+                // outstanding error.
+                LOGGER.error(
+                    ""Error occurred while delivering private message from user""
+                        + "" '"" + user + ""': "" + msg.getText(), e);
+            }
+        }
+
+        /**
+         * Upon receiving a user notice message from a user, deliver that to an
+         * instant messaging contact.
+         *
+         * @param msg user notice message
+         */
+        @Override
+        public void onUserNotice(final UserNotice msg)
+        {
+            final String user = msg.getSource().getNick();
+            final Contact from =
+                IrcConnection.this.provider.getPersistentPresence()
+                    .findOrCreateContactByID(user);
+            final MessageIrcImpl message =
+                MessageIrcImpl.newNoticeFromIRC(from, msg.getText());
+            IrcConnection.this.provider.getBasicInstantMessaging()
+                .fireMessageReceived(message, from);
+        }
+
+        /**
+         * Upon receiving a user action message from a user, deliver that to an
+         * instant messaging contact.
+         *
+         * @param msg user action message
+         */
+        @Override
+        public void onUserAction(final UserActionMsg msg)
+        {
+            final String user = msg.getSource().getNick();
+            final Contact from =
+                IrcConnection.this.provider.getPersistentPresence()
+                    .findContactByID(user);
+            final MessageIrcImpl message =
+                MessageIrcImpl.newActionFromIRC(from, msg.getText());
+            IrcConnection.this.provider.getBasicInstantMessaging()
+                .fireMessageReceived(message, from);
+        }
+
+        /**
+         * User quit messages.
+         *
+         * User quit messages only need to be handled in case quitting users,
+         * since that is the only clear signal of presence change we have.
+         *
+         * @param msg Quit message
+         */
+        @Override
+        public void onUserQuit(final QuitMessage msg)
+        {
+            final String user = msg.getSource().getNick();
+            if (user != null
+                && user
+                    .equals(IrcConnection.this.connectionState.getNickname()))
+            {
+                LOGGER.debug(""Local user's QUIT message received: removing ""
+                    + ""server listener."");
+                this.irc.deleteListener(this);
+                return;
+            }
+        }
+    }",False,False,"/** 
+ * A listener for server-level messages (any messages that are related to the server, the connection, that are not related to any chatroom in particular) or that are personal message from user to local user.
+ */
+",False,"/** 
+ * A listener for server-level messages (any messages that are related to the server, the connection, that are not related to any chatroom in particular) or that are personal message from user to local user.
+ */
+"
+40,ChatRoomListener,chat room listener a chat room listener a chat room listener is registered for each chat room that we join the chat room listener updates chat room data and fires events based on irc messages that report state changes for the specified channel author danny van heumen ,MemberClass,,,"net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+ChatRoomListener(IRCApi,ChatRoomIrcImpl) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onTopicChange(TopicMessage) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) com.ircclouds.irc.api.domain.messages.TopicMessage+getChannelName() com.ircclouds.irc.api.domain.messages.TopicMessage+getChannelName() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+updateSubject(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+updateSubject(String) com.ircclouds.irc.api.domain.IRCTopic+getValue() com.ircclouds.irc.api.domain.messages.TopicMessage+getTopic() com.ircclouds.irc.api.domain.messages.TopicMessage+getTopic() com.ircclouds.irc.api.domain.IRCTopic+getValue() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onChannelMode(ChannelModeMessage) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getChannelName() com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getChannelName() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processModeMessage(ChannelModeMessage) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processModeMessage(ChannelModeMessage) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onChannelJoin(ChanJoinMessage) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) com.ircclouds.irc.api.domain.messages.ChanJoinMessage+getChannelName() com.ircclouds.irc.api.domain.messages.ChanJoinMessage+getChannelName() com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.ChanJoinMessage+getSource() com.ircclouds.irc.api.domain.messages.ChanJoinMessage+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+ChatRoomMemberIrcImpl(ProtocolProviderServiceIrcImpl,ChatRoom,String,ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPresenceEvent(ChatRoomMember,ChatRoomMember,String,String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPresenceEvent(ChatRoomMember,ChatRoomMember,String,String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onChannelPart(ChanPartMessage) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) com.ircclouds.irc.api.domain.messages.ChanPartMessage+getChannelName() com.ircclouds.irc.api.domain.messages.ChanPartMessage+getChannelName() com.ircclouds.irc.api.domain.messages.ChanPartMessage+getSource() com.ircclouds.irc.api.domain.messages.ChanPartMessage+getSource() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(IRCUser) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(IRCUser) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+leaveChatRoom() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+leaveChatRoom() com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.ChanPartMessage+getSource() com.ircclouds.irc.api.domain.messages.ChanPartMessage+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPresenceEvent(ChatRoomMember,ChatRoomMember,String,String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPresenceEvent(ChatRoomMember,ChatRoomMember,String,String) com.ircclouds.irc.api.domain.messages.ChanPartMessage+getPartMsg() com.ircclouds.irc.api.domain.messages.ChanPartMessage+getPartMsg() net.java.sip.communicator.util.Logger+warn(Object,Throwable) net.java.sip.communicator.util.Logger+warn(Object,Throwable) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onServerNumericMessage(ServerNumericMessage) com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getNumericCode() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getNumericCode() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() com.ircclouds.irc.api.domain.messages.ServerNumericMessage+getText() java.lang.Integer+intValue() java.lang.Integer+intValue() java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+indexOf(String) java.lang.String+indexOf(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.util.Logger+warn(Object) net.java.sip.communicator.util.Logger+warn(Object) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+leaveChatRoom() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+leaveChatRoom() java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+indexOf(String) java.lang.String+indexOf(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+MessageIrcImpl(String,String,String,String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageDeliveryFailedEvent(int,String,Date,Message) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageDeliveryFailedEvent(int,String,Date,Message) java.util.Date+Date() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onChannelKick(ChannelKick) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) com.ircclouds.irc.api.domain.messages.ChannelPrivMsg+getChannelName() com.ircclouds.irc.api.domain.messages.ChannelPrivMsg+getChannelName() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.impl.protocol.irc.IrcConnection+isConnected() net.java.sip.communicator.util.Logger+error(Object) net.java.sip.communicator.util.Logger+error(Object) com.ircclouds.irc.api.domain.messages.ChannelKick+getKickedNickname() com.ircclouds.irc.api.domain.messages.ChannelKick+getKickedNickname() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPresenceEvent(ChatRoomMember,ChatRoomMember,String,String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPresenceEvent(ChatRoomMember,ChatRoomMember,String,String) com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(String) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) com.ircclouds.irc.api.IRCApi+deleteListener(IMessageListener) com.ircclouds.irc.api.IRCApi+deleteListener(IMessageListener) java.util.Map+remove(Object) java.util.Map+remove(Object) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.service.protocol.AbstractOperationSetMultiUserChat+fireLocalUserPresenceEvent(ChatRoom,String,String) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getMUC() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getMUC() net.java.sip.communicator.service.protocol.AbstractOperationSetMultiUserChat+fireLocalUserPresenceEvent(ChatRoom,String,String) com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onUserQuit(QuitMessage) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.QuitMessage+getSource() com.ircclouds.irc.api.domain.messages.QuitMessage+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() java.lang.String+equals(Object) java.lang.String+equals(Object) com.ircclouds.irc.api.state.IIRCState+getNickname() com.ircclouds.irc.api.state.IIRCState+getNickname() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) com.ircclouds.irc.api.IRCApi+deleteListener(IMessageListener) com.ircclouds.irc.api.IRCApi+deleteListener(IMessageListener) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPresenceEvent(ChatRoomMember,ChatRoomMember,String,String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPresenceEvent(ChatRoomMember,ChatRoomMember,String,String) com.ircclouds.irc.api.domain.messages.QuitMessage+getQuitMsg() com.ircclouds.irc.api.domain.messages.QuitMessage+getQuitMsg() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onNickChange(NickMessage) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.NickMessage+getSource() com.ircclouds.irc.api.domain.messages.NickMessage+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.NickMessage+getNewNick() com.ircclouds.irc.api.domain.messages.NickMessage+getNewNick() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+setName(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+setName(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+updateChatRoomMemberName(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+updateChatRoomMemberName(String) net.java.sip.communicator.service.protocol.event.ChatRoomMemberPropertyChangeEvent+ChatRoomMemberPropertyChangeEvent(ChatRoomMember,ChatRoom,String,Object,Object) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPropertyChangeEvent(ChatRoomMemberPropertyChangeEvent) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberPropertyChangeEvent(ChatRoomMemberPropertyChangeEvent) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onChannelMessage(ChannelPrivMsg) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) com.ircclouds.irc.api.domain.messages.ChannelPrivMsg+getChannelName() com.ircclouds.irc.api.domain.messages.ChannelPrivMsg+getChannelName() net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newMessageFromIRC(String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newMessageFromIRC(String) com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+ChatRoomMemberIrcImpl(ProtocolProviderServiceIrcImpl,ChatRoom,String,ChatRoomMemberRole) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) java.util.Date+Date() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onChannelAction(ChannelActionMsg) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) com.ircclouds.irc.api.domain.messages.ChannelPrivMsg+getChannelName() com.ircclouds.irc.api.domain.messages.ChannelPrivMsg+getChannelName() com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+ChatRoomMemberIrcImpl(ProtocolProviderServiceIrcImpl,ChatRoom,String,ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newActionFromIRC(ChatRoomMemberIrcImpl,String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newActionFromIRC(ChatRoomMemberIrcImpl,String) com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() com.ircclouds.irc.api.domain.messages.AbstractPrivMsg+getText() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) java.util.Date+Date() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+onChannelNotice(ChannelNotice) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) com.ircclouds.irc.api.domain.messages.ChannelNotice+getChannelName() com.ircclouds.irc.api.domain.messages.ChannelNotice+getChannelName() com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.messages.UserNotice+getSource() com.ircclouds.irc.api.domain.messages.UserNotice+getSource() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+ChatRoomMemberIrcImpl(ProtocolProviderServiceIrcImpl,ChatRoom,String,ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newNoticeFromIRC(ChatRoomMemberIrcImpl,String) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+newNoticeFromIRC(ChatRoomMemberIrcImpl,String) com.ircclouds.irc.api.domain.messages.AbstractNotice+getText() com.ircclouds.irc.api.domain.messages.AbstractNotice+getText() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) java.util.Date+Date() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+leaveChatRoom() com.ircclouds.irc.api.IRCApi+deleteListener(IMessageListener) com.ircclouds.irc.api.IRCApi+deleteListener(IMessageListener) java.util.Map+remove(Object) java.util.Map+remove(Object) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.service.protocol.AbstractOperationSetMultiUserChat+fireLocalUserPresenceEvent(ChatRoom,String,String) net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getMUC() net.java.sip.communicator.impl.protocol.irc.ProtocolProviderServiceIrcImpl+getMUC() net.java.sip.communicator.service.protocol.AbstractOperationSetMultiUserChat+fireLocalUserPresenceEvent(ChatRoom,String,String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processModeMessage(ChannelModeMessage) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+extractChatRoomMember(ChannelModeMessage) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+extractChatRoomMember(ChannelModeMessage) net.java.sip.communicator.impl.protocol.irc.ModeParser+ModeParser(String) com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getModeStr() com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getModeStr() net.java.sip.communicator.impl.protocol.irc.ModeParser+getModes() net.java.sip.communicator.impl.protocol.irc.ModeParser+getModes() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processRoleChange(ChatRoomMemberIrcImpl,ModeEntry) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processRoleChange(ChatRoomMemberIrcImpl,ModeEntry) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processLimitChange(ChatRoomMemberIrcImpl,ModeEntry) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processLimitChange(ChatRoomMemberIrcImpl,ModeEntry) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processBanChange(ChatRoomMemberIrcImpl,ModeEntry) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processBanChange(ChatRoomMemberIrcImpl,ModeEntry) net.java.sip.communicator.util.Logger+isInfoEnabled() net.java.sip.communicator.util.Logger+isInfoEnabled() net.java.sip.communicator.util.Logger+info(Object) net.java.sip.communicator.util.Logger+info(Object) net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getParams() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getParams() com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getModeStr() com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getModeStr() net.java.sip.communicator.util.Logger+isInfoEnabled() net.java.sip.communicator.util.Logger+isInfoEnabled() net.java.sip.communicator.util.Logger+info(Object) net.java.sip.communicator.util.Logger+info(Object) net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getModeStr() com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getModeStr() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processBanChange(ChatRoomMemberIrcImpl,ModeEntry) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+MessageIrcImpl(String,String,String,String) net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getParams() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getParams() java.lang.String+length() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() java.lang.String+length() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) java.util.Date+Date() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processRoleChange(ChatRoomMemberIrcImpl,ModeEntry) net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getParams() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getParams() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getRole() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getRole() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+addRole(ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+addRole(ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+removeRole(ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+removeRole(ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getRole() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getRole() net.java.sip.communicator.service.protocol.event.ChatRoomLocalUserRoleChangeEvent+ChatRoomLocalUserRoleChangeEvent(ChatRoom,ChatRoomMemberRole,ChatRoomMemberRole,boolean) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireLocalUserRoleChangedEvent(ChatRoomLocalUserRoleChangeEvent) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireLocalUserRoleChangedEvent(ChatRoomLocalUserRoleChangeEvent) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberRoleEvent(ChatRoomMember,ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMemberRoleEvent(ChatRoomMember,ChatRoomMemberRole) net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getName() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getName() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getMode() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getName() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getName() net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+MessageIrcImpl(String,String,String,String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) java.util.Date+Date() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+processLimitChange(ChatRoomMemberIrcImpl,ModeEntry) net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+isAdded() net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+MessageIrcImpl(String,String,String,String) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getParams() net.java.sip.communicator.impl.protocol.irc.ModeParser.ModeEntry+getParams() java.lang.String+length() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() java.lang.String+length() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.util.Logger+warn(Object,Throwable) net.java.sip.communicator.util.Logger+warn(Object,Throwable) net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+MessageIrcImpl(String,String,String,String) java.lang.String+length() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() java.lang.String+length() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+getContactAddress() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+fireMessageReceivedEvent(Message,ChatRoomMember,Date,int) java.util.Date+Date() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+extractChatRoomMember(ChannelModeMessage) com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getSource() com.ircclouds.irc.api.domain.messages.ChannelModeMessage+getSource() net.java.sip.communicator.impl.protocol.irc.ChatRoomMemberIrcImpl+ChatRoomMemberIrcImpl(ProtocolProviderServiceIrcImpl,ChatRoom,String,ChatRoomMemberRole) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getChatRoomMember(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isThisChatRoom(String) java.lang.String+equalsIgnoreCase(String) net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() net.java.sip.communicator.impl.protocol.irc.ChatRoomIrcImpl+getIdentifier() java.lang.String+equalsIgnoreCase(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(IRCUser) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(String) net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(String) com.ircclouds.irc.api.domain.IRCUser+getNick() com.ircclouds.irc.api.domain.IRCUser+getNick() net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+isMe(String) com.ircclouds.irc.api.state.IIRCState+getNickname() com.ircclouds.irc.api.state.IIRCState+getNickname() java.lang.String+equals(Object) java.lang.String+equals(Object)",net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+IRC_ERR_CANNOTSENDTOCHAN net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+IRC_ERR_NOTONCHANNEL net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMemberPresenceChangeEvent+MEMBER_JOINED net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMemberPresenceChangeEvent+MEMBER_LEFT net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+IRC_ERR_NOTONCHANNEL net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+IRC_ERR_CANNOTSENDTOCHAN net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMessageDeliveryFailedEvent+FORBIDDEN net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMemberPresenceChangeEvent+MEMBER_KICKED net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceChangeEvent+LOCAL_USER_KICKED net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMemberPresenceChangeEvent+MEMBER_QUIT net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMemberPropertyChangeEvent+MEMBER_NICKNAME net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMessageReceivedEvent+CONVERSATION_MESSAGE_RECEIVED net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMessageReceivedEvent+CONVERSATION_MESSAGE_RECEIVED net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMessageReceivedEvent+CONVERSATION_MESSAGE_RECEIVED net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+irc net.java.sip.communicator.impl.protocol.irc.IrcConnection+joined net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceChangeEvent+LOCAL_USER_LEFT net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+DEFAULT_MIME_TYPE net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+DEFAULT_MIME_ENCODING net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMessageReceivedEvent+SYSTEM_MESSAGE_RECEIVED net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+DEFAULT_MIME_TYPE net.java.sip.communicator.impl.protocol.irc.MessageIrcImpl+DEFAULT_MIME_ENCODING net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMessageReceivedEvent+SYSTEM_MESSAGE_RECEIVED net.java.sip.communicator.impl.protocol.irc.IrcConnection+LOGGER net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.service.protocol.event.ChatRoomMessageReceivedEvent+SYSTEM_MESSAGE_RECEIVED net.java.sip.communicator.impl.protocol.irc.IrcConnection+provider net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection.ChatRoomListener+chatroom net.java.sip.communicator.impl.protocol.irc.IrcConnection+connectionState,23539,653,18,"/** 
+ * A chat room listener. A chat room listener is registered for each chat room that we join. The chat room listener updates chat room data and fires events based on IRC messages that report state changes for the specified channel.
+ * @author Danny van Heumen
+ */
+","/**
+     * A chat room listener.
+     *
+     * A chat room listener is registered for each chat room that we join. The
+     * chat room listener updates chat room data and fires events based on IRC
+     * messages that report state changes for the specified channel.
+     *
+     * @author Danny van Heumen
+     *
+     */
+    private final class ChatRoomListener
+        extends VariousMessageListenerAdapter
+    {
+        /**
+         * IRC error code for case when user cannot send a message to the
+         * channel, for example when this channel is moderated and user does not
+         * have VOICE (+v).
+         */
+        private static final int IRC_ERR_CANNOTSENDTOCHAN = 404;
+
+        /**
+         * IRC error code for case where user is not joined to that channel.
+         */
+        private static final int IRC_ERR_NOTONCHANNEL = 442;
+
+        /**
+         * IRCApi instance.
+         */
+        private final IRCApi irc;
+
+        /**
+         * Chat room for which this listener is working.
+         */
+        private final ChatRoomIrcImpl chatroom;
+
+        /**
+         * Constructor. Instantiate listener for the provided chat room.
+         *
+         * @param irc IRCApi instance
+         * @param chatroom the chat room
+         */
+        private ChatRoomListener(final IRCApi irc,
+            final ChatRoomIrcImpl chatroom)
+        {
+            if (chatroom == null)
+            {
+                throw new IllegalArgumentException(""chatroom cannot be null"");
+            }
+            this.chatroom = chatroom;
+            if (irc == null)
+            {
+                throw new IllegalArgumentException(""irc cannot be null"");
+            }
+            this.irc = irc;
+        }
+
+        /**
+         * Event in case of topic change.
+         *
+         * @param msg topic change message
+         */
+        @Override
+        public void onTopicChange(final TopicMessage msg)
+        {
+            if (!isThisChatRoom(msg.getChannelName()))
+            {
+                return;
+            }
+
+            // FIXME Topic change event report message interprets HTML chars in
+            // channel name.
+            this.chatroom.updateSubject(msg.getTopic().getValue());
+        }
+
+        /**
+         * Event in case of channel mode changes.
+         *
+         * @param msg channel mode message
+         */
+        @Override
+        public void onChannelMode(final ChannelModeMessage msg)
+        {
+            if (!isThisChatRoom(msg.getChannelName()))
+            {
+                return;
+            }
+
+            processModeMessage(msg);
+        }
+
+        /**
+         * Event in case of channel join message.
+         *
+         * @param msg channel join message
+         */
+        @Override
+        public void onChannelJoin(final ChanJoinMessage msg)
+        {
+            if (!isThisChatRoom(msg.getChannelName()))
+            {
+                return;
+            }
+
+            final String user = msg.getSource().getNick();
+            final ChatRoomMemberIrcImpl member =
+                new ChatRoomMemberIrcImpl(IrcConnection.this.provider,
+                    this.chatroom, user, ChatRoomMemberRole.SILENT_MEMBER);
+            this.chatroom.fireMemberPresenceEvent(member, null,
+                ChatRoomMemberPresenceChangeEvent.MEMBER_JOINED, null);
+        }
+
+        /**
+         * Event in case of channel part.
+         *
+         * @param msg channel part message
+         */
+        @Override
+        public void onChannelPart(final ChanPartMessage msg)
+        {
+            if (!isThisChatRoom(msg.getChannelName()))
+            {
+                return;
+            }
+
+            final IRCUser user = msg.getSource();
+            if (isMe(user))
+            {
+                leaveChatRoom();
+                return;
+            }
+
+            final String userNick = msg.getSource().getNick();
+            final ChatRoomMember member =
+                this.chatroom.getChatRoomMember(userNick);
+            if (member != null)
+            {
+                // When the account has been disabled, the chat room may return
+                // null. If that is NOT the case, continue handling.
+                try
+                {
+                    this.chatroom.fireMemberPresenceEvent(member, null,
+                        ChatRoomMemberPresenceChangeEvent.MEMBER_LEFT,
+                        msg.getPartMsg());
+                }
+                catch (NullPointerException e)
+                {
+                    LOGGER.warn(
+                        ""This should not have happened. Please report this ""
+                            + ""as it is a bug."", e);
+                }
+            }
+        }
+
+        /**
+         * Some of the generic message are relevant to us, so keep an eye on
+         * general numeric messages.
+         *
+         * @param msg IRC server numeric message
+         */
+        public void onServerNumericMessage(final ServerNumericMessage msg)
+        {
+            final Integer code = msg.getNumericCode();
+            if (code == null)
+            {
+                return;
+            }
+            final String raw = msg.getText();
+            switch (code.intValue())
+            {
+            case IRC_ERR_NOTONCHANNEL:
+                final String channel = raw.substring(0, raw.indexOf("" ""));
+                if (isThisChatRoom(channel))
+                {
+                    LOGGER
+                        .warn(""Just discovered that we are no longer joined to ""
+                            + ""channel ""
+                            + channel
+                            + "". Leaving quietly. (This is most likely due to a""
+                            + "" bug in the implementation.)"");
+                    // If for some reason we missed the message that we aren't
+                    // joined (anymore) to this particular chat room, correct
+                    // our problem ASAP.
+                    leaveChatRoom();
+                }
+                break;
+
+            case IRC_ERR_CANNOTSENDTOCHAN:
+                final String cannotSendChannel =
+                    raw.substring(0, raw.indexOf("" ""));
+                if (isThisChatRoom(cannotSendChannel))
+                {
+                    final MessageIrcImpl message =
+                        new MessageIrcImpl("""", ""text/plain"", ""UTF-8"", null);
+                    this.chatroom.fireMessageDeliveryFailedEvent(
+                        ChatRoomMessageDeliveryFailedEvent.FORBIDDEN,
+                        ""This channel is moderated."", new Date(), message);
+                }
+                break;
+
+            default:
+                break;
+            }
+        }
+
+        /**
+         * Event in case of channel kick.
+         *
+         * @param msg channel kick message
+         */
+        @Override
+        public void onChannelKick(final ChannelKick msg)
+        {
+            if (!isThisChatRoom(msg.getChannelName()))
+            {
+                return;
+            }
+
+            if (!IrcConnection.this.isConnected())
+            {
+                LOGGER.error(""Not currently connected to IRC Server. ""
+                    + ""Aborting message handling."");
+                return;
+            }
+
+            final String kickedUser = msg.getKickedNickname();
+            final ChatRoomMember kickedMember =
+                this.chatroom.getChatRoomMember(kickedUser);
+            final String user = msg.getSource().getNick();
+            if (kickedMember != null)
+            {
+                ChatRoomMember kicker = this.chatroom.getChatRoomMember(user);
+                this.chatroom.fireMemberPresenceEvent(kickedMember, kicker,
+                    ChatRoomMemberPresenceChangeEvent.MEMBER_KICKED,
+                    msg.getText());
+            }
+            if (isMe(kickedUser))
+            {
+                LOGGER.debug(
+                    ""Local user is kicked. Removing chat room listener."");
+                this.irc.deleteListener(this);
+                IrcConnection.this.joined.remove(this.chatroom.getIdentifier());
+                IrcConnection.this.provider.getMUC().fireLocalUserPresenceEvent(
+                    this.chatroom,
+                    LocalUserChatRoomPresenceChangeEvent.LOCAL_USER_KICKED,
+                    msg.getText());
+            }
+        }
+
+        /**
+         * Event in case of user quit.
+         *
+         * @param msg user quit message
+         */
+        @Override
+        public void onUserQuit(final QuitMessage msg)
+        {
+            String user = msg.getSource().getNick();
+            if (user == null)
+            {
+                return;
+            }
+            if (user.equals(IrcConnection.this.connectionState.getNickname()))
+            {
+                LOGGER.debug(""Local user QUIT message received: removing chat ""
+                    + ""room listener."");
+                this.irc.deleteListener(this);
+                return;
+            }
+            final ChatRoomMember member = this.chatroom.getChatRoomMember(user);
+            if (member != null)
+            {
+                this.chatroom.fireMemberPresenceEvent(member, null,
+                    ChatRoomMemberPresenceChangeEvent.MEMBER_QUIT,
+                    msg.getQuitMsg());
+            }
+        }
+
+        /**
+         * Event in case of nick change.
+         *
+         * @param msg nick change message
+         */
+        @Override
+        public void onNickChange(final NickMessage msg)
+        {
+            if (msg == null)
+            {
+                return;
+            }
+
+            final String oldNick = msg.getSource().getNick();
+            final String newNick = msg.getNewNick();
+
+            final ChatRoomMemberIrcImpl member =
+                (ChatRoomMemberIrcImpl) this.chatroom
+                    .getChatRoomMember(oldNick);
+            if (member != null)
+            {
+                member.setName(newNick);
+                this.chatroom.updateChatRoomMemberName(oldNick);
+                ChatRoomMemberPropertyChangeEvent evt =
+                    new ChatRoomMemberPropertyChangeEvent(member,
+                        this.chatroom,
+                        ChatRoomMemberPropertyChangeEvent.MEMBER_NICKNAME,
+                        oldNick, newNick);
+                this.chatroom.fireMemberPropertyChangeEvent(evt);
+            }
+        }
+
+        /**
+         * Event in case of channel message arrival.
+         *
+         * @param msg channel message
+         */
+        @Override
+        public void onChannelMessage(final ChannelPrivMsg msg)
+        {
+            if (!isThisChatRoom(msg.getChannelName()))
+            {
+                return;
+            }
+
+            final MessageIrcImpl message =
+                MessageIrcImpl.newMessageFromIRC(msg.getText());
+            final ChatRoomMemberIrcImpl member =
+                new ChatRoomMemberIrcImpl(IrcConnection.this.provider,
+                    this.chatroom, msg.getSource().getNick(),
+                    ChatRoomMemberRole.MEMBER);
+            this.chatroom.fireMessageReceivedEvent(message, member, new Date(),
+                ChatRoomMessageReceivedEvent.CONVERSATION_MESSAGE_RECEIVED);
+        }
+
+        /**
+         * Event in case of channel action message arrival.
+         *
+         * @param msg channel action message
+         */
+        @Override
+        public void onChannelAction(final ChannelActionMsg msg)
+        {
+            if (!isThisChatRoom(msg.getChannelName()))
+            {
+                return;
+            }
+
+            String userNick = msg.getSource().getNick();
+            ChatRoomMemberIrcImpl member =
+                new ChatRoomMemberIrcImpl(IrcConnection.this.provider,
+                    this.chatroom, userNick, ChatRoomMemberRole.MEMBER);
+            MessageIrcImpl message =
+                MessageIrcImpl.newActionFromIRC(member, msg.getText());
+            this.chatroom.fireMessageReceivedEvent(message, member, new Date(),
+                ChatRoomMessageReceivedEvent.CONVERSATION_MESSAGE_RECEIVED);
+        }
+
+        /**
+         * Event in case of channel notice message arrival.
+         *
+         * @param msg channel notice message
+         */
+        @Override
+        public void onChannelNotice(final ChannelNotice msg)
+        {
+            if (!isThisChatRoom(msg.getChannelName()))
+            {
+                return;
+            }
+
+            final String userNick = msg.getSource().getNick();
+            final ChatRoomMemberIrcImpl member =
+                new ChatRoomMemberIrcImpl(IrcConnection.this.provider,
+                    this.chatroom, userNick, ChatRoomMemberRole.MEMBER);
+            final MessageIrcImpl message =
+                MessageIrcImpl.newNoticeFromIRC(member, msg.getText());
+            this.chatroom.fireMessageReceivedEvent(message, member, new Date(),
+                ChatRoomMessageReceivedEvent.CONVERSATION_MESSAGE_RECEIVED);
+        }
+
+        /**
+         * Leave this chat room.
+         */
+        private void leaveChatRoom()
+        {
+            this.irc.deleteListener(this);
+            IrcConnection.this.joined.remove(this.chatroom.getIdentifier());
+            LOGGER.debug(""Leaving chat room "" + this.chatroom.getIdentifier()
+                + "". Chat room listener removed."");
+            IrcConnection.this.provider.getMUC().fireLocalUserPresenceEvent(
+                this.chatroom,
+                LocalUserChatRoomPresenceChangeEvent.LOCAL_USER_LEFT, null);
+        }
+
+        /**
+         * Process mode changes.
+         *
+         * @param msg raw mode message
+         */
+        private void processModeMessage(final ChannelModeMessage msg)
+        {
+            final ChatRoomMemberIrcImpl source = extractChatRoomMember(msg);
+            final ModeParser parser = new ModeParser(msg.getModeStr());
+            for (ModeEntry mode : parser.getModes())
+            {
+                switch (mode.getMode())
+                {
+                case OWNER:
+                case OPERATOR:
+                case HALFOP:
+                case VOICE:
+                    processRoleChange(source, mode);
+                    break;
+                case LIMIT:
+                    processLimitChange(source, mode);
+                    break;
+                case BAN:
+                    processBanChange(source, mode);
+                    break;
+                case UNKNOWN:
+                    if (LOGGER.isInfoEnabled())
+                    {
+                        LOGGER.info(""Unknown mode: ""
+                            + (mode.isAdded() ? ""+"" : ""-"")
+                            + mode.getParams()[0] + "". Original mode string: '""
+                            + msg.getModeStr() + ""'"");
+                    }
+                    break;
+                default:
+                    if (LOGGER.isInfoEnabled())
+                    {
+                        LOGGER.info(""Unsupported mode '""
+                            + (mode.isAdded() ? ""+"" : ""-"") + mode.getMode()
+                            + ""' (from modestring '"" + msg.getModeStr() + ""')"");
+                    }
+                    break;
+                }
+            }
+        }
+
+        /**
+         * Process changes for ban patterns.
+         *
+         * @param sourceMember the originating member
+         * @param mode the ban mode change
+         */
+        private void processBanChange(final ChatRoomMemberIrcImpl sourceMember,
+            final ModeEntry mode)
+        {
+            final MessageIrcImpl banMessage =
+                new MessageIrcImpl(
+                    ""channel ban mask was ""
+                        + (mode.isAdded() ? ""added"" : ""removed"")
+                        + "": ""
+                        + mode.getParams()[0]
+                        + "" by ""
+                        + (sourceMember.getContactAddress().length() == 0
+                            ? ""server""
+                            : sourceMember.getContactAddress()),
+                    MessageIrcImpl.DEFAULT_MIME_TYPE,
+                    MessageIrcImpl.DEFAULT_MIME_ENCODING, null);
+            this.chatroom.fireMessageReceivedEvent(banMessage, sourceMember,
+                new Date(),
+                ChatRoomMessageReceivedEvent.SYSTEM_MESSAGE_RECEIVED);
+        }
+
+        /**
+         * Process mode changes resulting in role manipulation.
+         *
+         * @param sourceMember the originating member
+         * @param mode the mode change
+         */
+        private void processRoleChange(
+            final ChatRoomMemberIrcImpl sourceMember, final ModeEntry mode)
+        {
+            final String targetNick = mode.getParams()[0];
+            final ChatRoomMemberIrcImpl targetMember =
+                (ChatRoomMemberIrcImpl) this.chatroom
+                    .getChatRoomMember(targetNick);
+            final ChatRoomMemberRole originalRole = targetMember.getRole();
+            if (mode.isAdded())
+            {
+                targetMember.addRole(mode.getMode().getRole());
+            }
+            else
+            {
+                targetMember.removeRole(mode.getMode().getRole());
+            }
+            final ChatRoomMemberRole newRole = targetMember.getRole();
+            if (newRole != originalRole)
+            {
+                // Mode change actually caused a role change.
+                final ChatRoomLocalUserRoleChangeEvent event =
+                    new ChatRoomLocalUserRoleChangeEvent(this.chatroom,
+                        originalRole, newRole, false);
+                if (isMe(targetMember.getContactAddress()))
+                {
+                    this.chatroom.fireLocalUserRoleChangedEvent(event);
+                }
+                else
+                {
+                    this.chatroom.fireMemberRoleEvent(targetMember,
+                        newRole);
+                }
+            }
+            else
+            {
+                // Mode change did not cause an immediate role change.
+                // Display a system message for the mode change.
+                final String text =
+                    sourceMember.getName()
+                        + (mode.isAdded() ? "" gives ""
+                            + mode.getMode().name().toLowerCase()
+                            + "" to "" : "" removes ""
+                            + mode.getMode().name().toLowerCase()
+                            + "" from "") + targetMember.getName();
+                final MessageIrcImpl message =
+                    new MessageIrcImpl(text,
+                        MessageIrcImpl.DEFAULT_MIME_TYPE,
+                        MessageIrcImpl.DEFAULT_MIME_ENCODING, null);
+                this.chatroom
+                    .fireMessageReceivedEvent(
+                        message,
+                        sourceMember,
+                        new Date(),
+                        ChatRoomMessageReceivedEvent.SYSTEM_MESSAGE_RECEIVED);
+            }
+        }
+
+        /**
+         * Process mode change that represents a channel limit modification.
+         *
+         * @param sourceMember the originating member
+         * @param mode the limit mode change
+         */
+        private void processLimitChange(
+            final ChatRoomMemberIrcImpl sourceMember, final ModeEntry mode)
+        {
+            final MessageIrcImpl limitMessage;
+            if (mode.isAdded())
+            {
+                try
+                {
+                    limitMessage =
+                        new MessageIrcImpl(
+                            ""channel limit set to ""
+                                + Integer.parseInt(mode.getParams()[0])
+                                + "" by ""
+                                + (sourceMember.getContactAddress()
+                                        .length() == 0
+                                    ? ""server""
+                                    : sourceMember.getContactAddress()),
+                            ""text/plain"", ""UTF-8"", null);
+                }
+                catch (NumberFormatException e)
+                {
+                    LOGGER.warn(""server sent incorrect limit: ""
+                        + ""limit is not a number"", e);
+                    return;
+                }
+            }
+            else
+            {
+                // TODO ""server"" is now easily fakeable if someone
+                // calls himself server. There should be some other way
+                // to represent the server if a message comes from
+                // something other than a normal chat room member.
+                limitMessage =
+                    new MessageIrcImpl(
+                        ""channel limit removed by ""
+                            + (sourceMember.getContactAddress().length() == 0
+                                ? ""server""
+                                : sourceMember.getContactAddress()),
+                        ""text/plain"", ""UTF-8"", null);
+            }
+            this.chatroom.fireMessageReceivedEvent(limitMessage, sourceMember,
+                new Date(),
+                ChatRoomMessageReceivedEvent.SYSTEM_MESSAGE_RECEIVED);
+        }
+
+        /**
+         * Extract chat room member identifier from message.
+         *
+         * @param msg raw mode message
+         * @return returns member instance
+         */
+        private ChatRoomMemberIrcImpl extractChatRoomMember(
+            final ChannelModeMessage msg)
+        {
+            ChatRoomMemberIrcImpl member;
+            ISource source = msg.getSource();
+            if (source instanceof IRCServer)
+            {
+                // TODO Created chat room member with creepy empty contact ID.
+                // Interacting with this contact might screw up other sections
+                // of code which is not good. Is there a better way to represent
+                // an IRC server as a chat room member?
+                member =
+                    new ChatRoomMemberIrcImpl(IrcConnection.this.provider,
+                        this.chatroom, """", ChatRoomMemberRole.ADMINISTRATOR);
+            }
+            else if (source instanceof IRCUser)
+            {
+                String nick = ((IRCUser) source).getNick();
+                member =
+                    (ChatRoomMemberIrcImpl) this.chatroom
+                        .getChatRoomMember(nick);
+            }
+            else
+            {
+                throw new IllegalArgumentException(""Unknown source type: ""
+                    + source.getClass().getName());
+            }
+            return member;
+        }
+
+        /**
+         * Test whether this listener corresponds to the chat room.
+         *
+         * @param chatRoomName chat room name
+         * @return returns true if this listener applies, false otherwise
+         */
+        private boolean isThisChatRoom(final String chatRoomName)
+        {
+            return this.chatroom.getIdentifier().equalsIgnoreCase(chatRoomName);
+        }
+
+        /**
+         * Test whether the source user is this user.
+         *
+         * @param user the source user
+         * @return returns true if this use, or false otherwise
+         */
+        private boolean isMe(final IRCUser user)
+        {
+            return isMe(user.getNick());
+        }
+
+        /**
+         * Test whether the user nick is this user.
+         *
+         * @param name nick of the user
+         * @return returns true if so, false otherwise
+         */
+        private boolean isMe(final String name)
+        {
+            final String userNick =
+                IrcConnection.this.connectionState.getNickname();
+            if (userNick == null)
+            {
+                return false;
+            }
+            return userNick.equals(name);
+        }
+    }",False,True,"/** 
+ * A chat room listener. A chat room listener is registered for each chat room that we join. The chat room listener updates chat room data and fires events based on IRC messages that report state changes for the specified channel.
+ * @author Danny van Heumen
+ */
+",False,"/** 
+ * A chat room listener. A chat room listener is registered for each chat room that we join. The chat room listener updates chat room data and fires events based on IRC messages that report state changes for the specified channel.
+ * @author Danny van Heumen
+ */
+"

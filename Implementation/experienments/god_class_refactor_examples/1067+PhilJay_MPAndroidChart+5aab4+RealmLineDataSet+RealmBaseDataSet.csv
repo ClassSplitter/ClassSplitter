@@ -1,0 +1,149 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,mValues,m values ,Field,,,,,48,1,2,,private List<Entry> mValues = new ArrayList<>();,False,False,,False,
+2,mFillFormatter,m fill formatter ,Field,,,,,66,1,2,,private FillFormatter mFillFormatter = new DefaultFillFormatter();,False,False,,False,
+3,results,results ,Field,"RealmLineDataSet(RealmResults<T>,String,String)",,,,32,1,2,,private RealmResults<T> results;,True,True,,False,
+4,yValuesField,y values field ,Field,"RealmLineDataSet(RealmResults<T>,String,String)",,,,28,1,2,,private String yValuesField;,True,True,,False,
+5,xIndexField,x index field ,Field,"RealmLineDataSet(RealmResults<T>,String,String)",,,,27,1,2,,private String xIndexField;,True,True,,False,
+6,"RealmLineDataSet(RealmResults<T>,String,String)",realm line data set result y values field x index field ,Method,,,"java.util.List+add(E) java.util.List+add(E) com.github.mikephil.charting.data.Entry+Entry(float,int) com.github.mikephil.charting.data.realm.RealmLineDataSet+calcMinMax(int,int) com.github.mikephil.charting.data.realm.RealmLineDataSet+calcMinMax(int,int) java.util.List+size() java.util.List+size()",com.github.mikephil.charting.data.realm.RealmLineDataSet<T>+results com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet<T>+yValuesField com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField com.github.mikephil.charting.data.realm.RealmLineDataSet<T>+xIndexField com.github.mikephil.charting.data.realm.RealmLineDataSet+xIndexField com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+mValues com.github.mikephil.charting.data.realm.RealmLineDataSet+mValues,546,17,1,,"public RealmLineDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
+        super("""");
+        this.results = result;
+        this.yValuesField = yValuesField;
+        this.xIndexField = xIndexField;
+
+        results.sort(xIndexField, true);
+
+        for (T object : results) {
+
+            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+
+            mValues.add(new Entry(dynamicObject.getFloat(yValuesField), dynamicObject.getInt(xIndexField)));
+        }
+
+        calcMinMax(0, mValues.size());
+    }",False,False,"This method creates a RealmLineDataSet object by taking in a RealmResults object, a field for y values, and a field for x index. It sorts the results based on the x index field, creates Entry objects using the y values and x index field, and calculates the minimum and maximum values.",True,"This code defines a constructor for a RealmLineDataSet class that takes in a RealmResults object, a yValuesField string, and an xIndexField string. It sorts the results based on the xIndexField, then iterates through the results to create Entry objects with the yValuesField and xIndexField values, which are added to the mValues list. Finally, it calculates the minimum and maximum values of the mValues list."
+7,getCubicIntensity(),get cubic intensity ,Method,,,,,72,4,1,,"@Override
+    public float getCubicIntensity() {
+        return 0;
+    }",False,False,This method returns a float value representing the cubic intensity.,False,"The code snippet defines a method named ""getCubicIntensity"" that returns a float value. The method is overridden from a superclass or interface, and it currently returns a constant value of 0."
+8,isDrawCubicEnabled(),is draw cubic enabled ,Method,,,,,79,4,1,,"@Override
+    public boolean isDrawCubicEnabled() {
+        return false;
+    }",False,False,This method serves to determine whether the draw cubic feature is enabled or not. It returns a boolean value indicating whether the feature is enabled (true) or disabled (false).,False,"The code snippet is a method named ""isDrawCubicEnabled"" that returns a boolean value. It overrides a superclass method and always returns false, indicating that the cubic drawing feature is disabled."
+9,getCircleSize(),get circle size ,Method,,,,,69,4,1,,"@Override
+    public float getCircleSize() {
+        return 10;
+    }",False,False,"This method serves to return the size of a circle, which is a float value of 10.",False,"The code defines a method named ""getCircleSize"" that returns a float value of 10. This method is likely part of a class or interface that deals with circles and provides the size of the circle."
+10,getCircleColor(int),get circle color index ,Method,,,,android.graphics.Color+BLACK,86,4,1,,"@Override
+    public int getCircleColor(int index) {
+        return Color.BLACK;
+    }",False,False,This method returns the color of a circle at a given index. The color is always black.,False,"The code snippet is a method named ""getCircleColor"" that takes an integer parameter ""index"" and returns the color black. It is likely part of a class or interface that deals with circles and their colors."
+11,isDrawCirclesEnabled(),is draw circles enabled ,Method,,,,,80,4,1,,"@Override
+    public boolean isDrawCirclesEnabled() {
+        return true;
+    }",False,False,"This method serves to determine whether the drawing of circles is enabled or not. It returns a boolean value of true if the drawing of circles is enabled, and false otherwise.",False,"This code is implementing a method called ""isDrawCirclesEnabled"" which returns a boolean value. The method is overridden, indicating that it is implementing an interface or extending a superclass. The method always returns true, indicating that circles should be drawn."
+12,getCircleHoleColor(),get circle hole color ,Method,,,,android.graphics.Color+BLACK,81,4,1,,"@Override
+    public int getCircleHoleColor() {
+        return Color.BLACK;
+    }",False,False,"This method returns the color of the circle hole, which is always black.",False,"The code is implementing a method called ""getCircleHoleColor"" which returns the color black. This method is likely part of a larger class or interface that deals with circles and their properties."
+13,isDrawCircleHoleEnabled(),is draw circle hole enabled ,Method,,,,,84,4,1,,"@Override
+    public boolean isDrawCircleHoleEnabled() {
+        return false;
+    }",False,False,This method is used to determine whether the drawing of circle holes is enabled or not. It returns a boolean value indicating whether the feature is enabled (false) or not.,False,"The code is implementing a method called ""isDrawCircleHoleEnabled"" which returns a boolean value. In this specific implementation, the method always returns false, indicating that the drawing of circle holes is disabled."
+14,getDashPathEffect(),get dash path effect ,Method,,,,,84,4,1,,"@Override
+    public DashPathEffect getDashPathEffect() {
+        return null;
+    }",False,False,This method returns a DashPathEffect object.,False,"The code snippet is a method named `getDashPathEffect()` that returns a `DashPathEffect` object. However, in this implementation, it always returns `null`, indicating that no dash path effect is applied."
+15,isDashedLineEnabled(),is dashed line enabled ,Method,,,,,80,4,1,,"@Override
+    public boolean isDashedLineEnabled() {
+        return false;
+    }",False,False,"This method serves to determine whether the dashed line is enabled or not. It returns a boolean value of false, indicating that the dashed line is not enabled.",False,"The code snippet defines a method named ""isDashedLineEnabled"" that returns a boolean value. The method always returns false, indicating that dashed line is not enabled."
+16,getFillFormatter(),get fill formatter ,Method,,,,com.github.mikephil.charting.data.realm.RealmLineDataSet+mFillFormatter,92,4,1,,"@Override
+    public FillFormatter getFillFormatter() {
+        return mFillFormatter;
+    }",False,False,This method returns the FillFormatter object that is associated with the current instance of the class.,False,"This code is part of a Java class that overrides the `getFillFormatter()` method. The method returns an instance of the `FillFormatter` class, which is defined elsewhere in the code. The purpose of this method is to provide access to the `FillFormatter` object."
+17,getFillColor(),get fill color ,Method,,,,,65,4,1,,"@Override
+    public int getFillColor() {
+        return 0;
+    }",False,False,This method serves to return the fill color.,False,"The code snippet is implementing the method `getFillColor()` which returns an integer value. However, the code does not provide any logic or implementation details for determining the actual fill color, as it simply returns a constant value of 0."
+18,getFillAlpha(),get fill alpha ,Method,,,,,65,4,1,,"@Override
+    public int getFillAlpha() {
+        return 0;
+    }",False,False,"This method serves to return the fill alpha value, which is an integer. It overrides the superclass method and always returns 0.",False,"The code snippet is a method named `getFillAlpha()` that returns an integer value. It overrides a superclass method and always returns 0, indicating that the fill alpha (transparency) for a graphical element is completely transparent."
+19,getLineWidth(),get line width ,Method,,,,,67,4,1,,"@Override
+    public float getLineWidth() {
+        return 5;
+    }",False,False,This method returns a float value representing the line width.,False,"The code snippet defines a method named ""getLineWidth"" that returns a float value of 5. This method is likely part of a class or interface and is used to retrieve the width of a line."
+20,isDrawFilledEnabled(),is draw filled enabled ,Method,,,,,80,4,1,,"@Override
+    public boolean isDrawFilledEnabled() {
+        return false;
+    }",False,False,"The method ""isDrawFilledEnabled"" returns a boolean value indicating whether the draw filled feature is enabled or not. It always returns false.",False,"The code snippet defines a method named ""isDrawFilledEnabled"" that returns a boolean value. The method is overridden from a superclass or interface and always returns false, indicating that drawing filled shapes is not enabled."
+21,setDrawFilled(boolean),set draw filled enabled ,Method,,,,,65,4,1,,"@Override
+    public void setDrawFilled(boolean enabled) {
+
+    }",False,False,This method is used to set whether the drawing should be filled or not.,False,"The code contains a method named ""setDrawFilled"" that takes a boolean parameter. However, the method does not have any implementation or functionality specified within it."
+22,isVerticalHighlightIndicatorEnabled(),is vertical highlight indicator enabled ,Method,,,,,96,4,1,,"@Override
+    public boolean isVerticalHighlightIndicatorEnabled() {
+        return false;
+    }",False,False,This method serves to determine whether the vertical highlight indicator is enabled or not. It returns a boolean value indicating whether the indicator is enabled (true) or disabled (false).,False,"The code snippet defines a method named ""isVerticalHighlightIndicatorEnabled"" that returns a boolean value. The method is overridden to always return false, indicating that the vertical highlight indicator is disabled."
+23,isHorizontalHighlightIndicatorEnabled(),is horizontal highlight indicator enabled ,Method,,,,,98,4,1,,"@Override
+    public boolean isHorizontalHighlightIndicatorEnabled() {
+        return false;
+    }",False,False,This method serves to determine whether the horizontal highlight indicator is enabled or not. It returns a boolean value indicating whether the indicator is enabled (true) or disabled (false).,False,"The code snippet defines a method named ""isHorizontalHighlightIndicatorEnabled"" that returns a boolean value. The method is overridden to always return false, indicating that the horizontal highlight indicator is disabled."
+24,getHighlightLineWidth(),get highlight line width ,Method,,,,,76,4,1,,"@Override
+    public float getHighlightLineWidth() {
+        return 0;
+    }",False,False,This method returns the highlight line width as a float value.,False,The code snippet is a method named `getHighlightLineWidth()` that returns a float value of 0. It is likely used to retrieve the width of a highlight line in a graphical user interface or a similar application.
+25,getDashPathEffectHighlight(),get dash path effect highlight ,Method,,,,,93,4,1,,"@Override
+    public DashPathEffect getDashPathEffectHighlight() {
+        return null;
+    }",False,False,"This method returns a null value, indicating that it does not serve any specific function or purpose.",False,"The code snippet defines a method named ""getDashPathEffectHighlight"" that returns a DashPathEffect object. However, the implementation of the method is empty, as it always returns null."
+26,getHighLightColor(),get high light color ,Method,,,,,70,4,1,,"@Override
+    public int getHighLightColor() {
+        return 0;
+    }",False,False,This method serves to return an integer value representing the highlight color.,False,"The code snippet defines a method named ""getHighLightColor"" that returns an integer value. The method is marked with the ""@Override"" annotation, indicating that it overrides a method from a superclass or interface. However, the implementation of the method simply returns the value 0 without performing any specific functionality."
+27,getYMin(),get y min ,Method,,,,com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField,99,4,1,,"@Override
+    public float getYMin() {
+        return results.min(yValuesField).floatValue();
+    }",True,True,This method returns the minimum value of the yValuesField as a float.,False,The code is implementing a method called `getYMin()` which returns the minimum value of a collection of `yValuesField` as a float. It overrides an existing method and uses the `min()` function to find the minimum value.
+28,getYMax(),get y max ,Method,,,,com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField,99,4,1,,"@Override
+    public float getYMax() {
+        return results.max(yValuesField).floatValue();
+    }",True,True,This method returns the maximum value of the yValuesField as a float.,False,The code is implementing a method called `getYMax()` which returns the maximum value of a list of `yValues`. It uses the `max()` function from the `results` object to find the maximum value and then converts it to a float before returning it.
+29,getEntryCount(),get entry count ,Method,,,,com.github.mikephil.charting.data.realm.RealmLineDataSet+results,79,4,1,,"@Override
+    public int getEntryCount() {
+        return results.size();
+    }",True,True,"This method returns the number of entries in the ""results"" collection.",False,"The code defines a method named ""getEntryCount"" that returns the size of a collection called ""results"". This method is likely part of a class or interface implementation and is used to retrieve the number of entries in the ""results"" collection."
+30,"calcMinMax(int,int)",calc min max start end ,Method,"RealmLineDataSet(RealmResults<T>,String,String)",,,,65,4,1,,"@Override
+    public void calcMinMax(int start, int end) {
+
+    }",True,True,"This method overrides a function called ""calcMinMax"" and takes two integer parameters, ""start"" and ""end"". The function does not have a return type (void).",True,"The code contains a method named ""calcMinMax"" that takes two integer parameters, ""start"" and ""end"". However, the method does not have any implementation or functionality specified within it."
+31,getEntryForXIndex(int),get entry for x index x index ,Method,,,"java.lang.Object+Object() com.github.mikephil.charting.data.Entry+Entry(float,int)",com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+xIndexField com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField com.github.mikephil.charting.data.realm.RealmLineDataSet+xIndexField,253,6,1,,"@Override
+    public Entry getEntryForXIndex(int xIndex) {
+
+        DynamicRealmObject o = new DynamicRealmObject(results.where().equalTo(xIndexField, xIndex).findFirst());
+        return new Entry(o.getFloat(yValuesField), o.getInt(xIndexField));
+    }",False,True,"This method returns an Entry object for a given xIndex. It creates a DynamicRealmObject using the xIndex value, and then returns a new Entry object with the corresponding yValues and xIndex values from the DynamicRealmObject.",True,"The code defines a method called ""getEntryForXIndex"" that takes an integer parameter. It retrieves a DynamicRealmObject from a database based on the given xIndex value, and then creates and returns a new Entry object using the retrieved object's yValuesField and xIndexField values."
+32,getEntryForIndex(int),get entry for index index ,Method,,,java.util.List+get(int) java.util.List+get(int),com.github.mikephil.charting.data.realm.RealmLineDataSet+mValues,97,4,1,,"@Override
+    public Entry getEntryForIndex(int index) {
+        return mValues.get(index);
+    }",True,True,This method returns the entry at a specified index from a list of values.,True,"This code defines a method named ""getEntryForIndex"" that takes an integer index as input and returns an object of type ""Entry"". The method retrieves the entry at the specified index from a list named ""mValues"" and returns it."
+33,getEntryIndex(int),get entry index x index ,Method,,,,,76,4,1,,"@Override
+    public int getEntryIndex(int xIndex) {
+        return 0;
+    }",False,True,"This method returns the index of an entry based on the given xIndex. It always returns 0, indicating that the entry is not found or does not exist.",True,"The code contains a method named ""getEntryIndex"" that takes an integer parameter ""xIndex"" and returns an integer value. The method is overridden from a superclass or interface, but it always returns 0 regardless of the input value."
+34,getEntryIndex(Entry),get entry index e ,Method,,,java.util.List+indexOf(Object) java.util.List+indexOf(Object),com.github.mikephil.charting.data.realm.RealmLineDataSet+mValues,90,4,1,,"@Override
+    public int getEntryIndex(Entry e) {
+        return mValues.indexOf(e);
+    }",True,True,This method returns the index of the given entry in the list of values.,True,"The code is an implementation of a method called ""getEntryIndex"" that takes an Entry object as a parameter and returns the index of that object in a list called mValues. It uses the indexOf() method to find the index of the Entry object in the list."
+35,getYValForXIndex(int),get y val for x index x index ,Method,,,java.lang.Object+Object(),com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+xIndexField com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField,196,4,1,,"@Override
+    public float getYValForXIndex(int xIndex) {
+        return new DynamicRealmObject(results.where().greaterThanOrEqualTo(xIndexField, xIndex).findFirst()).getFloat(yValuesField);
+    }",True,True,"This method returns the float value of the ""yValuesField"" for the first DynamicRealmObject in the ""results"" where the value of ""xIndexField"" is greater than or equal to the given ""xIndex"".",True,"The code is an overridden method that returns the float value of a specific field in a DynamicRealmObject. It takes an integer parameter, searches for the first object in the results that has a field value greater than or equal to the parameter, and returns the float value of a specified field in that object."
+36,addEntry(Entry),add entry e ,Method,,,,,52,4,1,,"@Override
+    public void addEntry(Entry e) {
+
+    }",True,True,"This method serves as an override for the ""addEntry"" function. It takes an ""Entry"" object as a parameter and does not return anything.",True,"The code snippet represents a method called ""addEntry"" that takes an object of type ""Entry"" as a parameter. However, the method does not contain any implementation or logic inside its body."
+37,removeEntry(Entry),remove entry e ,Method,,,,,79,4,1,,"@Override
+    public boolean removeEntry(Entry e) {
+        return false;
+    }",True,True,"This method serves to remove an entry from a collection. It always returns false, indicating that the removal was not successful.",True,"The code contains a method named ""removeEntry"" that takes an object of type ""Entry"" as a parameter. It returns a boolean value indicating whether the removal of the entry was successful or not."

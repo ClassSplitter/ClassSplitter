@@ -1,0 +1,694 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,QHYBRID_COMMAND_CONTROL,qhybrid command control ,Field,,,,,79,1,25,,"public static final String QHYBRID_COMMAND_CONTROL = ""qhybrid_command_control"";",False,False,,False,
+2,QHYBRID_COMMAND_UNCONTROL,qhybrid command uncontrol ,Field,,,,,83,1,25,,"public static final String QHYBRID_COMMAND_UNCONTROL = ""qhybrid_command_uncontrol"";",False,False,,False,
+3,QHYBRID_COMMAND_SET,qhybrid command set ,Field,,,,,71,1,25,,"public static final String QHYBRID_COMMAND_SET = ""qhybrid_command_set"";",False,False,,False,
+4,QHYBRID_COMMAND_VIBRATE,qhybrid command vibrate ,Field,,,,,79,1,25,,"public static final String QHYBRID_COMMAND_VIBRATE = ""qhybrid_command_vibrate"";",False,False,,False,
+5,QHYBRID_COMMAND_UPDATE,qhybrid command update ,Field,,,,,77,1,25,,"public static final String QHYBRID_COMMAND_UPDATE = ""qhybrid_command_update"";",False,False,,False,
+6,QHYBRID_COMMAND_NOTIFICATION,qhybrid command notification ,Field,,,,,89,1,25,,"public static final String QHYBRID_COMMAND_NOTIFICATION = ""qhybrid_command_notification"";",False,False,,False,
+7,QHYBRID_COMMAND_UPDATE_SETTINGS,qhybrid command update settings ,Field,,,,,118,1,25,,"public static final String QHYBRID_COMMAND_UPDATE_SETTINGS = ""nodomain.freeyourgadget.gadgetbridge.Q_UPDATE_SETTINGS"";",False,False,,False,
+8,QHYBRID_COMMAND_OVERWRITE_BUTTONS,qhybrid command overwrite buttons ,Field,,,,,122,1,25,,"public static final String QHYBRID_COMMAND_OVERWRITE_BUTTONS = ""nodomain.freeyourgadget.gadgetbridge.Q_OVERWRITE_BUTTONS"";",False,False,,False,
+9,QHYBRID_ACTION_SET_ACTIVITY_HAND,qhybrid action set activity hand ,Field,,,,,121,1,25,,"public static final String QHYBRID_ACTION_SET_ACTIVITY_HAND = ""nodomain.freeyourgadget.gadgetbridge.Q_SET_ACTIVITY_HAND"";",False,False,,False,
+10,QHYBRID_EVENT_SETTINGS_UPDATED,qhybrid event settings updated ,Field,,,,,118,1,25,,"public static final String QHYBRID_EVENT_SETTINGS_UPDATED = ""nodomain.freeyourgadget.gadgetbridge.Q_SETTINGS_UPDATED"";",False,False,,False,
+11,QHYBRID_EVENT_FILE_UPLOADED,qhybrid event file uploaded ,Field,,,,,112,1,25,,"public static final String QHYBRID_EVENT_FILE_UPLOADED = ""nodomain.freeyourgadget.gadgetbridge.Q_FILE_UPLOADED"";",False,False,,False,
+12,QHYBRID_EVENT_BUTTON_PRESS,qhybrid event button press ,Field,,,,,112,1,25,,"public static final String QHYBRID_EVENT_BUTTON_PRESS = ""nodomain.freeyourgadget.gadgetbridge.Q_BUTTON_PRESSED"";",False,False,,False,
+13,ITEM_STEP_GOAL,item step goal ,Field,,,,,56,1,25,,"public static final String ITEM_STEP_GOAL = ""STEP_GOAL"";",False,False,,False,
+14,ITEM_STEP_COUNT,item step count ,Field,,,,,58,1,25,,"public static final String ITEM_STEP_COUNT = ""STEP_COUNT"";",False,False,,False,
+15,ITEM_VIBRATION_STRENGTH,item vibration strength ,Field,,,,,74,1,25,,"public static final String ITEM_VIBRATION_STRENGTH = ""VIBRATION_STRENGTH"";",False,False,,False,
+16,ITEM_ACTIVITY_POINT,item activity point ,Field,,,,,66,1,25,,"public static final String ITEM_ACTIVITY_POINT = ""ACTIVITY_POINT"";",False,False,,False,
+17,ITEM_EXTENDED_VIBRATION_SUPPORT,item extended vibration support ,Field,,,,,82,1,25,,"public static final String ITEM_EXTENDED_VIBRATION_SUPPORT = ""EXTENDED_VIBRATION"";",False,False,,False,
+18,ITEM_HAS_ACTIVITY_HAND,item has activity hand ,Field,,,,,72,1,25,,"public static final String ITEM_HAS_ACTIVITY_HAND = ""HAS_ACTIVITY_HAND"";",False,False,,False,
+19,ITEM_USE_ACTIVITY_HAND,item use activity hand ,Field,,,,,72,1,25,,"public static final String ITEM_USE_ACTIVITY_HAND = ""USE_ACTIVITY_HAND"";",False,False,,False,
+20,logger,logger ,Field,,,,,83,1,26,,private static final Logger logger = LoggerFactory.getLogger(QHybridSupport.class);,False,False,,False,
+21,helper,helper ,Field,,,,,35,1,2,,private PackageConfigHelper helper;,False,False,,False,
+22,searchDevice,search device ,Field,,,,,46,1,66,,private volatile boolean searchDevice = false;,False,False,,False,
+23,lastButtonIndex,last button index ,Field,handleButtonCharacteristic(BluetoothGattCharacteristic),,,,33,1,2,,private int lastButtonIndex = -1;,True,True,,False,
+24,responseFilters,response filters ,Field,,,,,73,1,18,,private final SparseArray<Request> responseFilters = new SparseArray<>();,True,True,,False,
+25,fileRequest,file request ,Field,queueWrite(Request),,,,35,1,2,,private Request fileRequest = null;,True,True,,False,
+26,timeOffset,time offset ,Field,,,,,24,1,2,,private long timeOffset;,False,False,,False,
+27,uploadFileRequest,upload file request ,Field,handleFileUploadCharacteristic(BluetoothGattCharacteristic),,,,44,1,2,,private UploadFileRequest uploadFileRequest;,True,True,,False,
+28,requestQueue,request queue ,Field,,,,,57,1,2,,private Queue<Request> requestQueue = new ArrayDeque<>();,True,True,,False,
+29,modelNumber,model number ,Field,,,,,27,1,2,,private String modelNumber;,False,False,,False,
+30,useActivityHand,use activity hand ,Field,"initializeDevice(TransactionBuilder) initializeDevice(TransactionBuilder) showNotificationsByAllActive(boolean) onReceive(Context,Intent)",,,,32,1,2,,private boolean useActivityHand;,False,False,,False,
+31,QHybridSupport(),q hybrid support ,Method,,,nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID) java.util.UUID+fromString(String) java.util.UUID+fromString(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID) java.util.UUID+fromString(String) java.util.UUID+fromString(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID) java.util.UUID+fromString(String) java.util.UUID+fromString(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID) java.util.UUID+fromString(String) java.util.UUID+fromString(String) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+fillResponseList() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+fillResponseList() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfigHelper+PackageConfigHelper(Context) nodomain.freeyourgadget.gadgetbridge.GBApplication+getContext() nodomain.freeyourgadget.gadgetbridge.GBApplication+getContext() nodomain.freeyourgadget.gadgetbridge.GBApplication+getContext() nodomain.freeyourgadget.gadgetbridge.GBApplication+getContext(),nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_COMMAND_CONTROL nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_COMMAND_UNCONTROL nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_COMMAND_SET nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_COMMAND_VIBRATE nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_COMMAND_UPDATE nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_COMMAND_NOTIFICATION nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_COMMAND_UPDATE_SETTINGS nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_COMMAND_OVERWRITE_BUTTONS nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+commandReceiver nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+helper nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_ACTION_SET_ACTIVITY_HAND nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+globalCommandReceiver,1322,23,1,,"public QHybridSupport() {
+        super(logger);
+        addSupportedService(UUID.fromString(""3dda0001-957f-7d4a-34a6-74696673696d""));
+        addSupportedService(UUID.fromString(""0000180a-0000-1000-8000-00805f9b34fb""));
+        addSupportedService(UUID.fromString(""00001800-0000-1000-8000-00805f9b34fb""));
+        addSupportedService(UUID.fromString(""0000180f-0000-1000-8000-00805f9b34fb""));
+        IntentFilter commandFilter = new IntentFilter(QHYBRID_COMMAND_CONTROL);
+        commandFilter.addAction(QHYBRID_COMMAND_UNCONTROL);
+        commandFilter.addAction(QHYBRID_COMMAND_SET);
+        commandFilter.addAction(QHYBRID_COMMAND_VIBRATE);
+        commandFilter.addAction(QHYBRID_COMMAND_UPDATE);
+        commandFilter.addAction(QHYBRID_COMMAND_NOTIFICATION);
+        commandFilter.addAction(QHYBRID_COMMAND_UPDATE_SETTINGS);
+        commandFilter.addAction(QHYBRID_COMMAND_OVERWRITE_BUTTONS);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(commandReceiver, commandFilter);
+        fillResponseList();
+
+        helper = new PackageConfigHelper(GBApplication.getContext());
+
+        IntentFilter globalFilter = new IntentFilter();
+        globalFilter.addAction(QHYBRID_ACTION_SET_ACTIVITY_HAND);
+        GBApplication.getContext().registerReceiver(globalCommandReceiver, globalFilter);
+    }",False,False,"The function of this method is to initialize a QHybridSupport object. It adds supported services, registers a command receiver, fills a response list, and registers a global command receiver.",False,"The code initializes a QHybridSupport object by adding supported services with specific UUIDs, registering a command receiver for various actions, and registering a global command receiver for a specific action. It also fills a response list and initializes a PackageConfigHelper object."
+32,supportsActivityHand(),supports activity hand ,Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(),nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+modelNumber,251,9,2,,"private boolean supportsActivityHand() {
+        switch (modelNumber) {
+            case ""HL.0.0"":
+                return false;
+            case ""HW.0.0"":
+                return true;
+        }
+        throw new UnsupportedOperationException();
+    }",False,False,"This method checks the model number and returns true if it is ""HW.0.0"", false if it is ""HL.0.0"", and throws an exception for any other model number.",False,"The code defines a private method called `supportsActivityHand()` that returns a boolean value. It checks the value of the `modelNumber` variable and returns `false` if it is ""HL.0.0"" and `true` if it is ""HW.0.0"". If the `modelNumber` does not match any of the cases, it throws an `UnsupportedOperationException`."
+33,supportsExtendedVibration(),supports extended vibration ,Method,onFindDevice(boolean),,java.lang.UnsupportedOperationException+UnsupportedOperationException(),nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+modelNumber,256,9,2,,"private boolean supportsExtendedVibration() {
+        switch (modelNumber) {
+            case ""HL.0.0"":
+                return false;
+            case ""HW.0.0"":
+                return true;
+        }
+        throw new UnsupportedOperationException();
+    }",False,False,"This method checks the model number and returns true if it is ""HW.0.0"", false if it is ""HL.0.0"", and throws an exception for any other model number.",False,"The code defines a private method called `supportsExtendedVibration()` that returns a boolean value. It checks the value of the `modelNumber` variable and returns `false` if it is ""HL.0.0"" and `true` if it is ""HW.0.0"". If the `modelNumber` does not match any of the cases, it throws an `UnsupportedOperationException`."
+34,fillResponseList(),fill response list ,Method,QHybridSupport(),,"java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Class+getSuperclass() java.lang.Class+getSuperclass() java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Class+newInstance() java.lang.Class+newInstance() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getStartSequence() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getStartSequence() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getStartSequence() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getStartSequence() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getStartSequence() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getStartSequence() java.lang.Class+getSimpleName() java.lang.Class+getSimpleName() java.lang.Class+getName() java.lang.Class+getName()",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+responseFilters,1215,25,2,,"private void fillResponseList() {
+        Class<? extends Request>[] classes = new Class[]{
+                BatteryLevelRequest.class,
+                GetStepGoalRequest.class,
+                GetVibrationStrengthRequest.class,
+                GetCurrentStepCountRequest.class,
+                OTAEnterRequest.class,
+                GoalTrackingGetRequest.class,
+                ActivityPointGetRequest.class,
+                GetCountdownSettingsRequest.class
+        };
+        for (Class<? extends Request> c : classes) {
+            try {
+                c.getSuperclass().getDeclaredMethod(""handleResponse"", BluetoothGattCharacteristic.class);
+                Request object = c.newInstance();
+                byte[] sequence = object.getStartSequence();
+                if (sequence.length > 1) {
+                    responseFilters.put((int) object.getStartSequence()[1], object);
+                    Log.d(""Service"", ""response filter "" + object.getStartSequence()[1] + "": "" + c.getSimpleName());
+                }
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException e) {
+                Log.d(""Service"", ""skipping class "" + c.getName());
+            }
+        }
+    }",True,True,"The function of the method ""fillResponseList"" is to populate a response filter map with objects of different request classes. It checks if each class has a method called ""handleResponse"" and if the start sequence of the object is longer than 1 byte. If these conditions are met, the object is added to the response filter map.",False,"The `fillResponseList()` method populates a response filter map by iterating through an array of request classes. It checks if each class has a method called ""handleResponse"" and if so, creates an instance of the class and adds it to the map based on a specific condition."
+35,getTimeOffset(),get time offset ,Method,initializeDevice(TransactionBuilder),,nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext(),nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+timeOffset,178,3,2,,"private void getTimeOffset() {
+        timeOffset = getContext().getSharedPreferences(getContext().getPackageName(), Context.MODE_PRIVATE).getInt(""QHYBRID_TIME_OFFSET"", 0);
+    }",False,False,This method retrieves the time offset value from the shared preferences of the current context and assigns it to the timeOffset variable.,False,The `getTimeOffset()` method retrieves the time offset value from the shared preferences of the current context. It assigns the retrieved value to the `timeOffset` variable.
+36,queueWrite(Request),queue write request ,Method,"queueWrite(Request) onFetchRecordedData(int) showNotificationsByAllActive(boolean) playNotification(PackageConfig) onSetTime() onTestNewFunction() overwriteButtons() backupFile(DownloadFileRequest) backupFile(DownloadFileRequest) setActivityHand(double) handleBasicCharacteristic(BluetoothGattCharacteristic) handleBasicCharacteristic(BluetoothGattCharacteristic) handleFileDownloadCharacteristic(BluetoothGattCharacteristic) setHands(short,short) vibrate(PlayNotificationRequest.VibrationType)",,"nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+TransactionBuilder(String) java.lang.Class+getSimpleName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getSimpleName() nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getRequestUUID() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getRequestUUID() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getRequestData() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getRequestData() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+expectsResponse() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+expectsResponse() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) java.util.Queue+remove() java.util.Queue+remove()",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+fileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+fileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue,468,11,2,,"private void queueWrite(Request request) {
+        new TransactionBuilder(request.getClass().getSimpleName()).write(getCharacteristic(request.getRequestUUID()), request.getRequestData()).queue(getQueue());
+        if (request instanceof FileRequest) this.fileRequest = request;
+
+        if (!request.expectsResponse()) {
+            try {
+                queueWrite(requestQueue.remove());
+            } catch (NoSuchElementException e) {
+            }
+        }
+    }",True,True,"The function of the method is to write a request to a transaction builder's queue, and if the request is a file request, assign it to the fileRequest variable. If the request does not expect a response, it recursively calls itself to write the next request in the requestQueue.",False,"The `queueWrite` method takes a `Request` object as a parameter and performs a series of operations on it. It creates a new `TransactionBuilder` object, writes data to a characteristic, and adds the transaction to a queue. If the request does not expect a response, it recursively calls `queueWrite` on the next request in the queue until there are no more requests left."
+37,initializeDevice(TransactionBuilder),initialize device builder ,Method,,,"nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+add(BtLEAction) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+add(BtLEAction) nodomain.freeyourgadget.gadgetbridge.service.btle.BtLEAction+BtLEAction(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.util.Prefs+getBoolean(String,boolean) nodomain.freeyourgadget.gadgetbridge.GBApplication+getPrefs() nodomain.freeyourgadget.gadgetbridge.GBApplication+getPrefs() nodomain.freeyourgadget.gadgetbridge.util.Prefs+getBoolean(String,boolean) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.model.GenericItem+GenericItem(String,String) java.lang.String+valueOf(boolean) java.lang.String+valueOf(boolean) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setNotificationIconConnected(int) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setNotificationIconConnected(int) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setNotificationIconDisconnected(int) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setNotificationIconDisconnected(int) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+notify(BluetoothGattCharacteristic,boolean) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+notify(BluetoothGattCharacteristic,boolean) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) java.util.UUID+fromString(String) java.util.UUID+fromString(String) java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetCurrentStepCountRequest+GetCurrentStepCountRequest() java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetVibrationStrengthRequest+GetVibrationStrengthRequest() java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ActivityPointGetRequest+ActivityPointGetRequest() java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+prepareSetTimeRequest() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+prepareSetTimeRequest() java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.AnimationRequest+AnimationRequest() java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.SetCurrentStepCountRequest+SetCurrentStepCountRequest(int) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+calculateNotificationProgress() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+calculateNotificationProgress() java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.SetCurrentStepCountRequest+SetCurrentStepCountRequest(int) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetStepGoalRequest+GetStepGoalRequest() nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+read(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+read(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) java.util.UUID+fromString(String) java.util.UUID+fromString(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) java.util.UUID+fromString(String) java.util.UUID+fromString(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) java.util.UUID+fromString(String) java.util.UUID+fromString(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) java.util.UUID+fromString(String) java.util.UUID+fromString(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getRequestUUID() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getRequestUUID() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getRequestData() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+getRequestData() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+getTimeOffset() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+getTimeOffset() nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+add(BtLEAction) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+add(BtLEAction) nodomain.freeyourgadget.gadgetbridge.service.btle.BtLEAction+BtLEAction(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext()",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+useActivityHand nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+useActivityHand nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+ITEM_USE_ACTIVITY_HAND nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+useActivityHand nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+useActivityHand nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue,2150,41,4,,"@Override
+    protected TransactionBuilder initializeDevice(TransactionBuilder builder) {
+        builder.add(new SetDeviceStateAction(getDevice(), GBDevice.State.INITIALIZING, getContext()));
+
+        this.useActivityHand = GBApplication.getPrefs().getBoolean(""QHYBRID_USE_ACTIVITY_HAND"", false);
+        getDevice().addDeviceInfo(new GenericItem(ITEM_USE_ACTIVITY_HAND, String.valueOf(this.useActivityHand)));
+
+        getDevice().setNotificationIconConnected(R.drawable.ic_notification_qhybrid);
+        getDevice().setNotificationIconDisconnected(R.drawable.ic_notification_disconnected_qhybrid);
+
+        for (int i = 2; i <= 7; i++)
+            builder.notify(getCharacteristic(UUID.fromString(""3dda000"" + i + ""-957f-7d4a-34a6-74696673696d"")), true);
+
+        requestQueue.add(new GetCurrentStepCountRequest());
+        requestQueue.add(new GetVibrationStrengthRequest());
+        requestQueue.add(new ActivityPointGetRequest());
+        requestQueue.add(prepareSetTimeRequest());
+        requestQueue.add(new AnimationRequest());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestQueue.add(new SetCurrentStepCountRequest((int) (999999 * calculateNotificationProgress())));
+        } else {
+            requestQueue.add(new SetCurrentStepCountRequest(0));
+        }
+
+        Request initialRequest = new GetStepGoalRequest();
+
+        builder
+                // .read(getCharacteristic(UUID.fromString(""00002a00-0000-1000-8000-00805f9b34fb"")))
+                .read(getCharacteristic(UUID.fromString(""00002a24-0000-1000-8000-00805f9b34fb"")))
+                .read(getCharacteristic(UUID.fromString(""00002a26-0000-1000-8000-00805f9b34fb"")))
+                .read(getCharacteristic(UUID.fromString(""00002a19-0000-1000-8000-00805f9b34fb"")))
+                .notify(getCharacteristic(UUID.fromString(""00002a19-0000-1000-8000-00805f9b34fb"")), true)
+                .write(getCharacteristic(initialRequest.getRequestUUID()), initialRequest.getRequestData());
+
+        getTimeOffset();
+
+        builder.add(new SetDeviceStateAction(getDevice(), GBDevice.State.INITIALIZED, getContext()));
+
+        return builder;
+    }",False,False,"This method initializes a device by setting its state, notification icons, and performing various requests such as getting step count, vibration strength, activity points, setting time, and animations. It also reads and writes characteristics of the device.",True,"This code is a method that initializes a device by performing various actions such as setting the device state, adding device information, setting notification icons, notifying characteristics, adding requests to a request queue, reading and writing characteristics, and getting the time offset. Finally, it sets the device state to initialized and returns the modified builder object."
+38,onFetchRecordedData(int),on fetch recorded data data types ,Method,,,java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.BatteryLevelRequest+BatteryLevelRequest() java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetCurrentStepCountRequest+GetCurrentStepCountRequest() java.util.Queue+add(E) java.util.Queue+add(E) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ListFilesRequest+ListFilesRequest() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ActivityPointGetRequest+ActivityPointGetRequest(),nodomain.freeyourgadget.gadgetbridge.model.RecordedDataTypes+TYPE_ACTIVITY nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue,374,9,1,,"@Override
+    public void onFetchRecordedData(int dataTypes) {
+        if ((dataTypes & RecordedDataTypes.TYPE_ACTIVITY) != 0) {
+            requestQueue.add(new BatteryLevelRequest());
+            requestQueue.add(new GetCurrentStepCountRequest());
+            requestQueue.add(new ListFilesRequest());
+            queueWrite(new ActivityPointGetRequest());
+        }
+    }",False,False,"This method is called when recorded data is fetched. If the data type includes activity, it adds requests for battery level, current step count, list of files, and activity point to the request queue.",True,"The `onFetchRecordedData` method is called when recorded data is fetched. If the fetched data includes activity data, it adds four different requests to a request queue: BatteryLevelRequest, GetCurrentStepCountRequest, ListFilesRequest, and ActivityPointGetRequest."
+39,onNotification(NotificationSpec),on notification notification spec ,Method,,,nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfigHelper+getSetting(String) nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfigHelper+getSetting(String) nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getRespectSilentMode() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getRespectSilentMode() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getHour() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getHour() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getMin() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getMin() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+showNotificationsByAllActive(boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+showNotificationsByAllActive(boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+playNotification(PackageConfig) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+playNotification(PackageConfig),nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+sourceAppId nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+sender nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+phoneNumber nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+sourceName nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+helper,944,22,1,,"@Override
+    public void onNotification(NotificationSpec notificationSpec) {
+        Log.d(""Service"", ""notif from "" + notificationSpec.sourceAppId + ""  "" + notificationSpec.sender + ""   "" + notificationSpec.phoneNumber);
+        //new Exception().printStackTrace();
+        String packageName = notificationSpec.sourceName;
+
+        PackageConfig config = helper.getSetting(packageName);
+        if (config == null) return;
+
+        Log.d(""Service"", ""handling notification"");
+
+        if (config.getRespectSilentMode()) {
+            int mode = ((AudioManager) getContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE)).getRingerMode();
+            if (mode == AudioManager.RINGER_MODE_SILENT) return;
+        }
+
+        boolean enforceActivityHandNotification = config.getHour() == -1 && config.getMin() == -1;
+
+        showNotificationsByAllActive(enforceActivityHandNotification);
+
+        playNotification(config);
+    }",False,False,"The function of this method is to handle incoming notifications. It logs information about the notification, checks if the notification should be respected in silent mode, shows the notification if it meets certain conditions, and plays a notification sound.",True,"This code is an implementation of the `onNotification` method, which is called when a notification is received. It logs information about the notification, checks if the notification should be handled based on the app's settings, and then shows the notification and plays a notification sound if applicable."
+40,onDeleteNotification(int),on delete notification id ,Method,,,nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridBaseSupport+onDeleteNotification(int) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+showNotificationsByAllActive(boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+showNotificationsByAllActive(boolean),,147,6,1,,"@Override
+    public void onDeleteNotification(int id) {
+        super.onDeleteNotification(id);
+
+        showNotificationsByAllActive(true);
+    }",False,False,"This method overrides the onDeleteNotification method. It calls the super method to delete a notification with the given id. Then, it calls the showNotificationsByAllActive method with the parameter true.",True,"The code overrides the `onDeleteNotification` method, which is called when a notification is deleted. It calls the superclass's `onDeleteNotification` method and then shows all active notifications."
+41,showNotificationsByAllActive(boolean),show notifications by all active enforce by notification ,Method,onNotification(NotificationSpec) onDeleteNotification(int),,"nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+calculateNotificationProgress() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+calculateNotificationProgress() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+showNotificationCountOnActivityHand(double) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+showNotificationCountOnActivityHand(double) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.PlayNotificationRequest+PlayNotificationRequest(VibrationType,int,int,int)",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+useActivityHand nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+useActivityHand,575,16,2,,"private void showNotificationsByAllActive(boolean enforceByNotification) {
+        if(!this.useActivityHand);
+        double progress = calculateNotificationProgress();
+        showNotificationCountOnActivityHand(progress);
+
+        if(enforceByNotification){
+            queueWrite(
+                    new PlayNotificationRequest(
+                            PlayNotificationRequest.VibrationType.NO_VIBE,
+                            -1,
+                            -1,
+                            (int) (progress * 180)
+                    )
+            );
+        }
+    }",False,False,This method shows notifications on the activity hand and optionally enforces them through a notification request.,False,"The `showNotificationsByAllActive` method is responsible for displaying notifications and optionally triggering a vibration. It calculates the progress of the notifications, shows the notification count on the activity hand, and if `enforceByNotification` is true, it queues a write request for playing a notification with a specific vibration duration based on the progress."
+42,calculateNotificationProgress(),calculate notification progress ,Method,showNotificationsByAllActive(boolean),,"nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfigHelper+getSettings() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfigHelper+getSettings() java.util.HashMap+put(K,V) java.util.HashMap+put(K,V) java.util.HashMap+keySet() java.util.HashMap+keySet() java.util.HashMap+get(Object) java.util.HashMap+get(Object) java.lang.String+equals(Object) nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getPackageName() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getPackageName() java.lang.String+equals(Object) java.util.HashMap+put(K,V) java.util.HashMap+put(K,V)",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+helper nodomain.freeyourgadget.gadgetbridge.externalevents.NotificationListener+notificationStack,749,20,2,,"private double calculateNotificationProgress() {
+        HashMap<PackageConfig, Boolean> configs = new HashMap<>(0);
+        for (PackageConfig config : helper.getSettings()) {
+            configs.put(config, false);
+        }
+
+        double notificationProgress = 0;
+
+        for (String notificationPackage : NotificationListener.notificationStack) {
+            for (PackageConfig packageConfig : configs.keySet()) {
+                if(configs.get(packageConfig)) continue;
+                if (packageConfig.getPackageName().equals(notificationPackage)) {
+                    notificationProgress += 0.25;
+                    configs.put(packageConfig, true);
+                }
+            }
+        }
+
+        return notificationProgress;
+    }",False,False,The function calculates the progress of notifications by iterating through a list of notification packages and checking if they match any package configurations. It returns the total progress as a double value.,False,"This code calculates the progress of notifications based on a list of package configurations. It iterates through the list of notification packages and checks if they match any of the package configurations. If a match is found, the notification progress is incremented by 0.25. The final progress is returned as a double value."
+43,showNotificationCountOnActivityHand(double),show notification count on activity hand progress ,Method,showNotificationsByAllActive(boolean),,nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+setActivityHand(double) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+setActivityHand(double),nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+useActivityHand,153,5,2,,"private void showNotificationCountOnActivityHand(double progress) {
+        if (useActivityHand) {
+            setActivityHand(progress);
+        }
+    }",False,False,"This method shows the notification count on the activity hand if the useActivityHand flag is true, by setting the activity hand to the given progress value.",False,"The method ""showNotificationCountOnActivityHand"" is a private method that takes a double parameter ""progress"". It checks if the variable ""useActivityHand"" is true and if so, it calls another method ""setActivityHand"" with the ""progress"" parameter."
+44,playNotification(PackageConfig),play notification config ,Method,onNotification(NotificationSpec),,"nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getMin() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getMin() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getHour() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getHour() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.PlayNotificationRequest+PlayNotificationRequest(VibrationType,int,int) nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getHour() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getHour() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getMin() nodomain.freeyourgadget.gadgetbridge.devices.qhybrid.PackageConfig+getMin()",,308,4,2,,"private void playNotification(PackageConfig config) {
+        if(config.getMin() == -1 && config.getHour() == -1 && config.getVibration() == PlayNotificationRequest.VibrationType.NO_VIBE) return;
+        queueWrite(new PlayNotificationRequest(config.getVibration(), config.getHour(), config.getMin()));
+    }",False,False,"The function of the method is to play a notification based on the provided PackageConfig object. If the configuration has specific values for hour, minute, and vibration, it creates a PlayNotificationRequest object and adds it to a queue for writing.",False,"The `playNotification` method checks if the given `config` object has specific values indicating that no notification should be played. If the conditions are not met, it creates a new `PlayNotificationRequest` object with the vibration, hour, and minute values from the `config` object and adds it to a write queue."
+45,onSetTime(),on set time ,Method,,,nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+prepareSetTimeRequest() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+prepareSetTimeRequest(),,90,4,1,,"@Override
+    public void onSetTime() {
+        queueWrite(prepareSetTimeRequest());
+    }",False,False,This method is an overridden function that is called when the time is set. It prepares a request to set the time and adds it to a queue for writing.,True,The code snippet is an implementation of the `onSetTime()` method. It overrides a method from a superclass or interface. It calls the `queueWrite()` method with the result of the `prepareSetTimeRequest()` method as an argument.
+46,prepareSetTimeRequest(),prepare set time request ,Method,initializeDevice(TransactionBuilder) onSetTime(),,"java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.util.GregorianCalendar+getTimeZone() java.util.GregorianCalendar+GregorianCalendar() java.util.GregorianCalendar+getTimeZone() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.SetTimeRequest+SetTimeRequest(int,short,short) java.util.TimeZone+getRawOffset() java.util.TimeZone+getRawOffset() java.util.TimeZone+getDSTSavings() java.util.TimeZone+getDSTSavings()",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+timeOffset,381,8,2,,"private SetTimeRequest prepareSetTimeRequest() {
+        long millis = System.currentTimeMillis();
+        TimeZone zone = new GregorianCalendar().getTimeZone();
+        return new SetTimeRequest(
+                (int) (millis / 1000 + timeOffset * 60),
+                (short) (millis % 1000),
+                (short) ((zone.getRawOffset() + zone.getDSTSavings()) / 60000));
+    }",False,False,"This method prepares a SetTimeRequest object by getting the current time in milliseconds, the current time zone, and calculating the time offset. It then returns the SetTimeRequest object.",False,"This code prepares a SetTimeRequest object by calculating the current time in milliseconds, obtaining the system's time zone, and setting the request's time offset based on the current time and time zone. The SetTimeRequest object is then returned."
+47,onFindDevice(boolean),on find device start ,Method,,,"nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+supportsExtendedVibration() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+supportsExtendedVibration() nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int) java.lang.Thread+start() java.lang.Thread+Thread(Runnable) +() +run()",nodomain.freeyourgadget.gadgetbridge.util.GB+INFO nodomain.freeyourgadget.gadgetbridge.util.GB+INFO nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+searchDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+searchDevice,1291,34,1,,"@Override
+    public void onFindDevice(boolean start) {
+        try {
+            if (start && !supportsExtendedVibration()) {
+                GB.toast(""Device does not support brr brr"", Toast.LENGTH_SHORT, GB.INFO);
+                return;
+            }
+        } catch (UnsupportedOperationException e) {
+            GB.toast(""Please contact dakhnod@gmail.com\n"", Toast.LENGTH_SHORT, GB.INFO);
+        }
+
+        if (start && searchDevice) return;
+
+        searchDevice = start;
+
+        if (start) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    VibrateRequest request = new VibrateRequest(false, (short) 4, (short) 1);
+                    BluetoothGattCharacteristic chara = getCharacteristic(request.getRequestUUID());
+                    int i = 0;
+                    while (searchDevice) {
+                        new TransactionBuilder(""findDevice#"" + i++).write(chara, request.getRequestData()).queue(getQueue());
+                        try {
+                            Thread.sleep(2500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
+        }
+    }",False,False,"This method is used to find a device. It checks if the device supports extended vibration, and if not, displays a toast message. It then sets a flag to indicate if the search for the device is ongoing. If the search is ongoing, it creates a new thread to send a vibration request to the device at regular intervals.",True,"This code defines a method called ""onFindDevice"" which is called when searching for a device. It checks if the device supports extended vibration, displays a toast message if it doesn't, and starts a thread to send a vibration request to the device at regular intervals until the search is stopped."
+48,onTestNewFunction(),on test new function ,Method,,,"java.lang.Math+random() java.lang.Math+random() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+setActivityHand(double) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+setActivityHand(double) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.PlayNotificationRequest+PlayNotificationRequest(VibrationType,int,int,int)",,397,13,1,,"@Override
+    public void onTestNewFunction() {
+        float random = (float)Math.random();
+        setActivityHand(random);
+        queueWrite(
+                new PlayNotificationRequest(
+                        PlayNotificationRequest.VibrationType.NO_VIBE,
+                        -1,
+                        -1,
+                        (int) (random * 180)
+                )
+        );
+    }",False,False,"This method generates a random float value, sets it as the activity hand, and queues a write request for a notification with specific parameters, including the random value multiplied by 180.",True,"The code is an overridden method that generates a random float value and sets it as the activity hand. It then creates a PlayNotificationRequest object with specific parameters, including the random value multiplied by 180, and adds it to a write queue."
+49,overwriteButtons(),overwrite buttons ,Method,,,"nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.UploadFileRequest+UploadFileRequest(short,byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request)",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+uploadFileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+uploadFileRequest,1196,10,2,,"private void overwriteButtons() {
+        uploadFileRequest = new UploadFileRequest((short) 0x0800, new byte[]{
+                (byte) 0x01, (byte) 0x00, (byte) 0x00, (byte) 0x03, (byte) 0x10, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x0C, (byte) 0x00, (byte) 0x00, (byte) 0x20, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x0C, (byte) 0x00, (byte) 0x00,
+                (byte) 0x30, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x0C, (byte) 0x00, (byte) 0x00, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x01, (byte) 0x0C, (byte) 0x2E, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x01,
+                (byte) 0x00, (byte) 0x06, (byte) 0x00, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x03, (byte) 0x00, (byte) 0x02, (byte) 0x01, (byte) 0x0F, (byte) 0x00, (byte) 0x8B, (byte) 0x00, (byte) 0x00, (byte) 0x93, (byte) 0x00, (byte) 0x01,
+                (byte) 0x08, (byte) 0x01, (byte) 0x14, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0xFE, (byte) 0x08, (byte) 0x00, (byte) 0x93, (byte) 0x00, (byte) 0x02, (byte) 0x01, (byte) 0x00, (byte) 0xBF, (byte) 0xD5, (byte) 0x54, (byte) 0xD1,
+                (byte) 0x00
+        });
+        queueWrite(uploadFileRequest);
+    }",True,True,"The function of the method ""overwriteButtons"" is to create a new UploadFileRequest object with specific byte values and then add it to a write queue.",False,The `overwriteButtons()` method creates a new `UploadFileRequest` object with a specific set of byte values and then adds it to a write queue. This method is likely used to send a file upload request to a server or device.
+50,backupFile(DownloadFileRequest),backup file request ,Method,handleFileDownloadCharacteristic(BluetoothGattCharacteristic),,"java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.File+mkdir() java.io.File+mkdir() java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.lang.Exception+Exception(String) java.io.File+getPath() java.io.File+getPath() org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) java.io.File+getPath() java.io.File+getPath() java.io.File+createNewFile() java.io.File+createNewFile() java.io.FileOutputStream+FileOutputStream(File) java.io.FileOutputStream+write(byte[]) java.io.FileOutputStream+write(byte[]) java.io.FileOutputStream+close() java.io.FileOutputStream+close() org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) java.io.FileOutputStream+FileOutputStream(String,boolean) java.io.FileOutputStream+write(byte[]) java.io.FileOutputStream+write(byte[]) java.lang.String+getBytes() java.lang.String+getBytes() java.io.FileOutputStream+close() java.io.FileOutputStream+close() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.EraseFileRequest+EraseFileRequest(short) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+DownloadFileRequest(short)",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+timeStamp nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+file nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+timeStamp nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+fileHandle nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+fileHandle nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+fileHandle,1111,28,2,,"private void backupFile(DownloadFileRequest request) {
+        try {
+            File f = new File(""/sdcard/qFiles/"");
+            if (!f.exists()) f.mkdir();
+
+            File file = new File(""/sdcard/qFiles/"" + request.timeStamp);
+            if (file.exists()) {
+                throw new Exception(""file "" + file.getPath() + "" exists"");
+            }
+            logger.debug(""Writing file "" + file.getPath());
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(request.file);
+            fos.close();
+            logger.debug(""file written."");
+
+            FileOutputStream fos2 = new FileOutputStream(""/sdcard/qFiles/steps"", true);
+            fos2.write((""file "" + request.timeStamp + "" cut\n\n"").getBytes());
+            fos2.close();
+
+            queueWrite(new EraseFileRequest((short) request.fileHandle));
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.fileHandle > 257) {
+                queueWrite(new DownloadFileRequest((short) (request.fileHandle - 1)));
+            }
+        }
+    }",False,False,,False,"The `backupFile` method creates a directory if it doesn't exist, then creates a new file with the given timestamp. It writes the contents of the `request.file` to the created file, appends a log message to another file, and finally queues a write request to erase the original file if no exceptions occur."
+51,"onCharacteristicRead(BluetoothGatt,BluetoothGattCharacteristic,int)",on characteristic read gatt characteristic status ,Method,,,"nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setModel(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setModel(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setName(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setName(String) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+getModelNameByModelNumber(String) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+getModelNameByModelNumber(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.model.GenericItem+GenericItem(String,String) java.lang.String+valueOf(boolean) java.lang.String+valueOf(boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+supportsExtendedVibration() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+supportsExtendedVibration() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.model.GenericItem+GenericItem(String,String) java.lang.String+valueOf(boolean) java.lang.String+valueOf(boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+supportsActivityHand() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+supportsActivityHand() nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.model.GenericItem+GenericItem(String,String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setFirmwareVersion(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setFirmwareVersion(String) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+checkFirmwareVersion(String) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+checkFirmwareVersion(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setBatteryLevel(short) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setBatteryLevel(short) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setBatteryThresholdPercent(short) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setBatteryThresholdPercent(short) nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventBatteryInfo+GBDeviceEventBatteryInfo() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getBatteryLevel() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getBatteryLevel() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+handleGBDeviceEvent(GBDeviceEventBatteryInfo) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+handleGBDeviceEvent(GBDeviceEventBatteryInfo)",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+modelNumber nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+modelNumber nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+modelNumber nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+ITEM_EXTENDED_VIBRATION_SUPPORT nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+ITEM_HAS_ACTIVITY_HAND nodomain.freeyourgadget.gadgetbridge.util.GB+INFO nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+ITEM_EXTENDED_VIBRATION_SUPPORT nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventBatteryInfo+level nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventBatteryInfo+state,2059,44,1,,"@Override
+    public boolean onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+        switch (characteristic.getUuid().toString()) {
+            case ""00002a00-0000-1000-8000-00805f9b34fb"": {
+                String deviceName = characteristic.getStringValue(0);
+                break;
+            }
+            case ""00002a24-0000-1000-8000-00805f9b34fb"": {
+                modelNumber = characteristic.getStringValue(0);
+                gbDevice.setModel(modelNumber);
+                gbDevice.setName(getModelNameByModelNumber(modelNumber));
+                try {
+                    gbDevice.addDeviceInfo(new GenericItem(ITEM_EXTENDED_VIBRATION_SUPPORT, String.valueOf(supportsExtendedVibration())));
+                    gbDevice.addDeviceInfo(new GenericItem(ITEM_HAS_ACTIVITY_HAND, String.valueOf(supportsActivityHand())));
+                } catch (UnsupportedOperationException e) {
+                    GB.toast(""Please contact dakhnod@gmail.com\n"", Toast.LENGTH_SHORT, GB.INFO);
+                    gbDevice.addDeviceInfo(new GenericItem(ITEM_EXTENDED_VIBRATION_SUPPORT, ""false""));
+                }
+                break;
+            }
+            case ""00002a26-0000-1000-8000-00805f9b34fb"": {
+                String firmwareVersion = characteristic.getStringValue(0);
+                gbDevice.setFirmwareVersion(firmwareVersion);
+
+                checkFirmwareVersion(firmwareVersion);
+
+                break;
+            }
+            case ""00002a19-0000-1000-8000-00805f9b34fb"": {
+                short level = characteristic.getValue()[0];
+                gbDevice.setBatteryLevel(level);
+
+                gbDevice.setBatteryThresholdPercent((short) 2);
+
+                GBDeviceEventBatteryInfo batteryInfo = new GBDeviceEventBatteryInfo();
+                batteryInfo.level = gbDevice.getBatteryLevel();
+                batteryInfo.state = BatteryState.BATTERY_NORMAL;
+                handleGBDeviceEvent(batteryInfo);
+                break;
+            }
+        }
+
+        return true;
+    }",False,False,This method is an override of the onCharacteristicRead method in the BluetoothGattCallback class. It is used to handle the reading of different characteristics from a Bluetooth device. The method uses a switch statement to determine the UUID of the characteristic being read and performs different actions based on the UUID. The method then returns true.,True,"This code is an implementation of the `onCharacteristicRead` method in a BluetoothGattCallback. It handles different characteristics read from a Bluetooth device and performs various actions based on the characteristic's UUID, such as setting the device's model, firmware version, battery level, and handling battery events."
+52,getModelNameByModelNumber(String),get model name by model number model number ,Method,"onCharacteristicRead(BluetoothGatt,BluetoothGattCharacteristic,int)",,,,265,9,2,,"private String getModelNameByModelNumber(String modelNumber) {
+        switch (modelNumber) {
+            case ""HW.0.0"":
+                return ""Q Commuter"";
+            case ""HL.0.0"":
+                return ""Q Activist"";
+        }
+        return ""unknwon Q"";
+    }",False,False,"This method takes a model number as input and returns the corresponding model name. If the model number is ""HW.0.0"", it returns ""Q Commuter"". If the model number is ""HL.0.0"", it returns ""Q Activist"". If the model number does not match any of these, it returns ""unknown Q"".",False,"The given code is a private method named ""getModelNameByModelNumber"" that takes a model number as input and returns the corresponding model name. It uses a switch statement to match the model number with predefined cases and returns the corresponding model name. If no match is found, it returns ""unknown Q""."
+53,checkFirmwareVersion(String),check firmware version firmware version ,Method,"onCharacteristicRead(BluetoothGatt,BluetoothGattCharacteristic,int)",,"nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+isFirmwareCompatible(String) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+isFirmwareCompatible(String) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setName(String) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setName(String)",nodomain.freeyourgadget.gadgetbridge.util.GB+ERROR,288,6,2,,"private void checkFirmwareVersion(String firmwareVersion) {
+        if (!isFirmwareCompatible(firmwareVersion)) {
+            GB.toast(""Firmware "" + firmwareVersion + "" not compatible"", Toast.LENGTH_LONG, GB.ERROR);
+            getDevice().setName(""incopatible firmware"");
+        }
+    }",False,True,"The function of the method is to check if the firmware version is compatible. If it is not compatible, it displays a toast message and sets the device name to ""incompatible firmware"".",False,"The code defines a private method called ""checkFirmwareVersion"" that takes a firmware version as input. It checks if the firmware version is compatible and if not, displays a toast message indicating the incompatibility and sets the device name to ""incompatible firmware""."
+54,isFirmwareCompatible(String),is firmware compatible firmware version ,Method,checkFirmwareVersion(String),,"java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) java.lang.String+substring(int,int) java.lang.String+substring(int,int)",,167,5,2,,"private boolean isFirmwareCompatible(String firmwareVersion) {
+        int major = Integer.parseInt(firmwareVersion.substring(6, 7));
+
+        return major == 1;
+    }",False,True,This method checks if the major version of a firmware is equal to 1. It takes a firmware version as input and returns a boolean value indicating compatibility.,False,"The given code is a private method named ""isFirmwareCompatible"" that takes a firmware version as input. It extracts the major version number from the firmware version and checks if it is equal to 1. It returns a boolean value indicating whether the firmware is compatible or not."
+55,"onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",on characteristic changed gatt characteristic ,Method,,,"nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+handleFileDownloadCharacteristic(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+handleFileDownloadCharacteristic(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+handleFileUploadCharacteristic(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+handleFileUploadCharacteristic(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+handleBasicCharacteristic(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+handleBasicCharacteristic(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+handleButtonCharacteristic(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+handleButtonCharacteristic(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setBatteryLevel(short) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setBatteryLevel(short) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setBatteryThresholdPercent(short) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setBatteryThresholdPercent(short) nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventBatteryInfo+GBDeviceEventBatteryInfo() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getBatteryLevel() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getBatteryLevel() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+handleGBDeviceEvent(GBDeviceEventBatteryInfo) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+handleGBDeviceEvent(GBDeviceEventBatteryInfo) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+arrayToString(byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+arrayToString(byte[]) java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.File+createNewFile() java.io.File+createNewFile() java.io.FileOutputStream+FileOutputStream(File,boolean) java.io.FileOutputStream+write(byte[]) java.io.FileOutputStream+write(byte[]) java.util.Date+toString() java.util.Date+Date() java.util.Date+toString() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+arrayToString(byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+arrayToString(byte[]) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventBatteryInfo+level nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventBatteryInfo+state,2180,46,1,,"@Override
+    public boolean onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+        switch (characteristic.getUuid().toString()) {
+            case ""3dda0004-957f-7d4a-34a6-74696673696d"":
+            case ""3dda0003-957f-7d4a-34a6-74696673696d"": {
+                return handleFileDownloadCharacteristic(characteristic);
+            }
+            case ""3dda0007-957f-7d4a-34a6-74696673696d"": {
+                return handleFileUploadCharacteristic(characteristic);
+            }
+            case ""3dda0002-957f-7d4a-34a6-74696673696d"": {
+                return handleBasicCharacteristic(characteristic);
+            }
+            case ""3dda0006-957f-7d4a-34a6-74696673696d"": {
+                return handleButtonCharacteristic(characteristic);
+            }
+            case ""00002a19-0000-1000-8000-00805f9b34fb"": {
+                short level = characteristic.getValue()[0];
+                gbDevice.setBatteryLevel(level);
+
+                gbDevice.setBatteryThresholdPercent((short) 2);
+
+                GBDeviceEventBatteryInfo batteryInfo = new GBDeviceEventBatteryInfo();
+                batteryInfo.level = gbDevice.getBatteryLevel();
+                batteryInfo.state = BatteryState.BATTERY_NORMAL;
+                handleGBDeviceEvent(batteryInfo);
+                break;
+            }
+            default: {
+                Log.d(""Service"", ""unknown shit on "" + characteristic.getUuid().toString() + "":  "" + arrayToString(characteristic.getValue()));
+                try {
+                    File charLog = new File(""/sdcard/qFiles/charLog.txt"");
+                    if (!charLog.exists()) {
+                        charLog.createNewFile();
+                    }
+
+                    FileOutputStream fos = new FileOutputStream(charLog, true);
+                    fos.write((new Date().toString() + "": "" + characteristic.getUuid().toString() + "": "" + arrayToString(characteristic.getValue())).getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+        return super.onCharacteristicChanged(gatt, characteristic);
+    }",False,True,"The function of this method is to handle changes in Bluetooth GATT characteristics. It checks the UUID of the characteristic and calls different handler methods based on the UUID. If the UUID is unknown, it logs the characteristic information to a file. Finally, it calls the superclass method to handle the characteristic change.",True,"This code is an implementation of the `onCharacteristicChanged` method in a BluetoothGattCallback. It handles different BluetoothGattCharacteristics based on their UUIDs, performing specific actions for each characteristic. If the UUID is unknown, it logs the characteristic's UUID and value to a file."
+56,setActivityHand(double),set activity hand progress ,Method,showNotificationCountOnActivityHand(double) onTestNewFunction(),,"nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.SetCurrentStepCountRequest+SetCurrentStepCountRequest(int) java.lang.Math+min(int,int) java.lang.Math+min(int,int)",,151,3,2,,"private void setActivityHand(double progress) {
+        queueWrite(new SetCurrentStepCountRequest(Math.min((int) (1000000 * progress), 999999)));
+    }",False,True,This method sets the activity's hand based on the progress value. It converts the progress value to a step count and sends a request to update the current step count.,False,"The code defines a private method called ""setActivityHand"" that takes a progress value as input. It then creates a new request object with the current step count, which is calculated based on the progress value. The step count is limited to a maximum value of 999,999."
+57,handleFileUploadCharacteristic(BluetoothGattCharacteristic),handle file upload characteristic characteristic ,Method,"onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",,"org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.UploadFileRequest+handleResponse(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.UploadFileRequest+handleResponse(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+TransactionBuilder(String) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext()",nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+uploadFileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+uploadFileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+uploadFileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.UploadFileRequest+state nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_EVENT_FILE_UPLOADED nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+uploadFileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.UploadFileRequest+packets nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+uploadFileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+uploadFileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.UploadFileRequest+packets nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_EVENT_FILE_UPLOADED nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+uploadFileRequest,1189,28,2,,"private boolean handleFileUploadCharacteristic(BluetoothGattCharacteristic characteristic) {
+        if (uploadFileRequest == null) {
+            logger.debug(""no uploadFileRequest to handle response"");
+            return true;
+        }
+
+        uploadFileRequest.handleResponse(characteristic);
+
+        switch (uploadFileRequest.state) {
+            case ERROR:
+                Intent fileIntent = new Intent(QHYBRID_EVENT_FILE_UPLOADED);
+                fileIntent.putExtra(""EXTRA_ERROR"", true);
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(fileIntent);
+                uploadFileRequest = null;
+                break;
+            case UPLOAD:
+                for (byte[] packet : this.uploadFileRequest.packets) {
+                    new TransactionBuilder(""File upload"").write(characteristic, packet).queue(getQueue());
+                }
+                break;
+            case UPLOADED:
+                fileIntent = new Intent(QHYBRID_EVENT_FILE_UPLOADED);
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(fileIntent);
+                uploadFileRequest = null;
+                break;
+        }
+        return true;
+    }",True,True,"This method handles the response from a file upload request. It checks the state of the request and performs different actions based on the state. If there is an error, it broadcasts an intent with an error flag. If the state is UPLOAD, it writes packets to the characteristic. If the state is UPLOADED, it broadcasts an intent.",True,"This code handles the response for a file upload request in a Bluetooth device. It checks the state of the upload request and performs different actions based on the state, such as broadcasting an error or sending the file packets for upload."
+58,handleButtonCharacteristic(BluetoothGattCharacteristic),handle button characteristic characteristic ,Method,"onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",,org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext(),nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+lastButtonIndex nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+lastButtonIndex nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+lastButtonIndex nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+QHYBRID_EVENT_BUTTON_PRESS,1223,30,2,,"private boolean handleButtonCharacteristic(BluetoothGattCharacteristic characteristic) {
+        byte[] value = characteristic.getValue();
+        if (value.length != 11) {
+            logger.debug(""wrong button message"");
+            return true;
+        }
+        int index = value[6] & 0xFF;
+        int button = value[8] >> 4 & 0xFF;
+
+        if (index != this.lastButtonIndex) {
+            lastButtonIndex = index;
+            logger.debug(""Button press on button "" + button);
+
+            Intent i = new Intent(QHYBRID_EVENT_BUTTON_PRESS);
+            i.putExtra(""BUTTON"", button);
+
+            //ByteBuffer buffer = ByteBuffer.allocate(16);
+            //buffer.put(new byte[]{0x01, 0x00, 0x08});
+            //buffer.put(value, 2, 8);
+            //buffer.put(new byte[]{(byte)0xFF, 0x05, 0x00, 0x01, 0x00});
+
+            //UploadFileRequest request = new UploadFileRequest((short)0, buffer.array());
+            //for(byte[] packet : request.packets){
+            //    new TransactionBuilder(""File upload"").write(getCharacteristic(UUID.fromString(""3dda0007-957f-7d4a-34a6-74696673696d"")), packet).queue(getQueue());
+            //}
+
+            getContext().sendBroadcast(i);
+        }
+        return true;
+    }",True,True,"This method handles a button characteristic received from a Bluetooth device. It checks the length of the characteristic value, extracts the index and button values, and broadcasts a button press event if the index is different from the last button index.",True,"This code handles a button press event received from a Bluetooth device. It checks the length of the received data, extracts the button index and button value, and broadcasts an intent with the button value if the button index has changed since the last event."
+59,handleBasicCharacteristic(BluetoothGattCharacteristic),handle basic characteristic characteristic ,Method,"onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",,"nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+resolveAnswer(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+resolveAnswer(BluetoothGattCharacteristic) java.lang.StringBuilder+StringBuilder(String) java.lang.String+valueOf(int) java.lang.String+valueOf(int) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.Class+getSimpleName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getSimpleName() nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+handleResponse(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+handleResponse(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.model.GenericItem+GenericItem(String,String) java.lang.String+valueOf(int) java.lang.String+valueOf(int) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.model.GenericItem+GenericItem(String,String) java.lang.String+valueOf(int) java.lang.String+valueOf(int) org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.File+mkdir() java.io.File+mkdir() java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.File+createNewFile() java.io.File+createNewFile() org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) java.io.File+getPath() java.io.File+getPath() java.io.FileOutputStream+FileOutputStream(File,boolean) java.io.FileOutputStream+write(byte[]) java.io.FileOutputStream+write(byte[]) java.lang.String+getBytes() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.String+getBytes() java.io.FileOutputStream+close() java.io.FileOutputStream+close() org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.model.GenericItem+GenericItem(String,String) java.lang.String+valueOf(int) java.lang.String+valueOf(int) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.OTAEraseRequest+OTAEraseRequest(int) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+addDeviceInfo(ItemWithDetails) nodomain.freeyourgadget.gadgetbridge.model.GenericItem+GenericItem(String,String) java.lang.String+valueOf(int) java.lang.String+valueOf(int) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) java.util.Queue+remove() java.util.Queue+remove() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext()",nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+ITEM_STEP_GOAL nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetStepGoalRequest+stepGoal nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetStepGoalRequest+stepGoal nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetVibrationStrengthRequest+strength nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetVibrationStrengthRequest+strength nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+ITEM_VIBRATION_STRENGTH nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetCurrentStepCountRequest+steps nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetCurrentStepCountRequest+steps nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+ITEM_STEP_COUNT nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetCurrentStepCountRequest+steps nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.GetCurrentStepCountRequest+steps nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.OTAEnterRequest+success nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.OTAEnterRequest+success nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+fileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+fileRequest nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+ITEM_ACTIVITY_POINT nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ActivityPointGetRequest+activityPoint nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ActivityPointGetRequest+activityPoint nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+requestQueue nodomain.freeyourgadget.gadgetbridge.devices.DeviceManager+ACTION_DEVICES_CHANGED,2865,55,2,,"private boolean handleBasicCharacteristic(BluetoothGattCharacteristic characteristic) {
+        byte[] values = characteristic.getValue();
+        Request request = resolveAnswer(characteristic);
+
+        if (request == null) {
+            StringBuilder valueString = new StringBuilder(String.valueOf(values[0]));
+            for (int i = 1; i < characteristic.getValue().length; i++) {
+                valueString.append("", "").append(values[i]);
+            }
+            Log.d(""Service"", ""unable to resolve "" + characteristic.getUuid().toString() + "": "" + valueString);
+            return true;
+        }
+        Log.d(""Service"", ""response: "" + request.getClass().getSimpleName());
+        request.handleResponse(characteristic);
+
+        if (request instanceof GetStepGoalRequest) {
+            gbDevice.addDeviceInfo(new GenericItem(ITEM_STEP_GOAL, String.valueOf(((GetStepGoalRequest) request).stepGoal)));
+        } else if (request instanceof GetVibrationStrengthRequest) {
+            int strength = ((GetVibrationStrengthRequest) request).strength;
+            gbDevice.addDeviceInfo(new GenericItem(ITEM_VIBRATION_STRENGTH, String.valueOf(strength)));
+        } else if (request instanceof GetCurrentStepCountRequest) {
+            int steps = ((GetCurrentStepCountRequest) request).steps;
+            logger.debug(""get current steps: "" + steps);
+            try {
+                File f = new File(""/sdcard/qFiles/"");
+                if (!f.exists()) f.mkdir();
+
+                File file = new File(""/sdcard/qFiles/steps"");
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                logger.debug(""Writing file "" + file.getPath());
+                FileOutputStream fos = new FileOutputStream(file, true);
+                fos.write((System.currentTimeMillis() + "": "" + steps + ""\n"").getBytes());
+                fos.close();
+                logger.debug(""file written."");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            gbDevice.addDeviceInfo(new GenericItem(ITEM_STEP_COUNT, String.valueOf(((GetCurrentStepCountRequest) request).steps)));
+        } else if (request instanceof OTAEnterRequest) {
+            if (((OTAEnterRequest) request).success) {
+                fileRequest = new OTAEraseRequest(1024 << 16);
+                queueWrite(fileRequest);
+            }
+        } else if (request instanceof ActivityPointGetRequest) {
+            gbDevice.addDeviceInfo(new GenericItem(ITEM_ACTIVITY_POINT, String.valueOf(((ActivityPointGetRequest) request).activityPoint)));
+        }
+        try {
+            queueWrite(requestQueue.remove());
+        } catch (NoSuchElementException e) {
+        }
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(new Intent(DeviceManager.ACTION_DEVICES_CHANGED));
+        return true;
+    }",True,True,"The function of this method is to handle a BluetoothGattCharacteristic by resolving its answer, logging any unresolved values, handling the response, and adding device information based on the type of request. It also removes the request from the queue, sends a broadcast, and returns true.",True,This code handles the response from a BluetoothGattCharacteristic by resolving the request type and performing specific actions based on the request type. It also writes the response to a file and broadcasts a device change event.
+60,handleFileDownloadCharacteristic(BluetoothGattCharacteristic),handle file download characteristic characteristic ,Method,"onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",,nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+handleResponse(BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.Request+handleResponse(BluetoothGattCharacteristic) org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+backupFile(DownloadFileRequest) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+backupFile(DownloadFileRequest) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+DownloadFileRequest(short),nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+fileRequest nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.FileRequest+completed nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.FileRequest+completed nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ListFilesRequest+fileCount nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ListFilesRequest+fileCount nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ListFilesRequest+size nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ListFilesRequest+size nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ListFilesRequest+fileCount nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.ListFilesRequest+fileCount nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.FileRequest+completed nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.FileRequest+completed nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+logger nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+fileHandle nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+fileHandle nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+size nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.DownloadFileRequest+size nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.EraseFileRequest+fileHandle nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.EraseFileRequest+fileHandle nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.EraseFileRequest+fileHandle nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.EraseFileRequest+fileHandle,1256,22,2,,"private boolean handleFileDownloadCharacteristic(BluetoothGattCharacteristic characteristic) {
+        Request request;
+        request = fileRequest;
+        request.handleResponse(characteristic);
+        if (request instanceof ListFilesRequest) {
+            if (((ListFilesRequest) request).completed) {
+                logger.debug(""File count: "" + ((ListFilesRequest) request).fileCount + ""  size: "" + ((ListFilesRequest) request).size);
+                if (((ListFilesRequest) request).fileCount == 0) return true;
+                // queueWrite(new DownloadFileRequest((short) (256 + ((ListFilesRequest) request).fileCount)));
+            }
+        } else if (request instanceof DownloadFileRequest) {
+            if (((FileRequest) request).completed) {
+                logger.debug(""file "" + ((DownloadFileRequest) request).fileHandle + "" completed: "" + ((DownloadFileRequest) request).size);
+                backupFile((DownloadFileRequest) request);
+            }
+        } else if (request instanceof EraseFileRequest) {
+            if (((EraseFileRequest) request).fileHandle > 257) {
+                queueWrite(new DownloadFileRequest((short) (((EraseFileRequest) request).fileHandle - 1)));
+            }
+        }
+        return true;
+    }",True,True,"The function handles the response from a BluetoothGattCharacteristic. It checks the type of request and performs different actions based on the request type. It also logs debug information and initiates a new request if necessary. Finally, it returns true.",True,"This code is a private method that handles a BluetoothGattCharacteristic for file download. It checks the type of request and performs different actions based on the request type, such as logging file count and size, backing up completed files, and queuing download requests for erasing files. The method always returns true."
+61,arrayToString(byte[]),array to string bytes ,Method,"onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic) onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",,"java.lang.StringBuilder+StringBuilder() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.StringBuilder+append(char) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+substring(int,int) java.lang.StringBuilder+substring(int,int) java.lang.StringBuilder+length() java.lang.StringBuilder+length()",,377,9,2,,"private String arrayToString(byte[] bytes) {
+        if (bytes.length == 0) return """";
+        StringBuilder s = new StringBuilder();
+        final String chars = ""0123456789ABCDEF"";
+        for (byte b : bytes) {
+            s.append(chars.charAt((b >> 4) & 0xF)).append(chars.charAt(b & 0xF)).append("" "");
+        }
+        return s.substring(0, s.length() - 1) + ""\n"";
+    }",True,True,"This method converts an array of bytes into a string representation, where each byte is converted to its hexadecimal value and separated by a space. The resulting string is returned.",False,The `arrayToString` method takes in a byte array and converts it into a string representation where each byte is represented by its hexadecimal value. The resulting string is returned with each byte separated by a space and ending with a newline character.
+62,resolveAnswer(BluetoothGattCharacteristic),resolve answer characteristic ,Method,handleBasicCharacteristic(BluetoothGattCharacteristic),,,nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+responseFilters,220,5,2,,"private Request resolveAnswer(BluetoothGattCharacteristic characteristic) {
+        byte[] values = characteristic.getValue();
+        if (values[0] != 3) return null;
+        return responseFilters.get(values[1]);
+    }",True,True,"This method takes a BluetoothGattCharacteristic as input and returns a Request object. It checks the first value of the byte array obtained from the characteristic. If it is not equal to 3, it returns null. Otherwise, it retrieves a Request object from a map using the second value of the byte array as the key.",True,"This code is a private method named ""resolveAnswer"" that takes a BluetoothGattCharacteristic as input. It retrieves the byte values from the characteristic and checks if the first value is not equal to 3. If it is not, it returns null. Otherwise, it retrieves a response filter from a map based on the second value and returns it."
+63,"setHands(short,short)",set hands hour minute ,Method,,,"nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.MoveHandsRequest+MoveHandsRequest(boolean,short,short,short)",,130,3,2,,"private void setHands(short hour, short minute) {
+        queueWrite(new MoveHandsRequest(false, minute, hour, (short) -1));
+    }",True,True,This method sets the hands of a clock to the specified hour and minute by creating a new MoveHandsRequest object and adding it to a write queue.,True,"The `setHands` method is a private method that takes in two parameters: `hour` and `minute`. It calls the `queueWrite` method with a new `MoveHandsRequest` object, passing in `false` for a boolean parameter, `minute` and `hour` for short parameters, and `-1` for another short parameter."
+64,vibrate(PlayNotificationRequest.VibrationType),vibrate vibration ,Method,,,"nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.QHybridSupport+queueWrite(Request) nodomain.freeyourgadget.gadgetbridge.service.devices.qhybrid.requests.PlayNotificationRequest+PlayNotificationRequest(VibrationType,int,int)",,145,3,2,,"private void vibrate(PlayNotificationRequest.VibrationType vibration) {
+        queueWrite(new PlayNotificationRequest(vibration, -1, -1));
+    }",True,True,"The function of the method is to vibrate the device based on the specified vibration type. It does this by creating a new PlayNotificationRequest object with the given vibration type and default values for other parameters, and then adding it to a write queue.",True,"The code defines a private method named ""vibrate"" that takes a parameter of type ""PlayNotificationRequest.VibrationType"". This method is responsible for queuing a write operation with a new instance of ""PlayNotificationRequest"" using the provided vibration type, and default values for two other parameters."
+65,globalCommandReceiver,global command receiver ,Field,,,,,1138,27,18,,"private final BroadcastReceiver globalCommandReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case QHYBRID_ACTION_SET_ACTIVITY_HAND: {
+                    try {
+                        Object extra = intent.getExtras().get(""EXTRA_PROGRESS"");
+                        float progress = (float) extra;
+                        setActivityHand(progress);
+
+                        queueWrite(
+                                new PlayNotificationRequest(
+                                        PlayNotificationRequest.VibrationType.NO_VIBE,
+                                        -1,
+                                        -1,
+                                        (int) (progress * 180)
+                                )
+                        );
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.debug(""trash extra should be number 0.0-1.0"");
+                    }
+                    break;
+                }
+            }
+        }
+    };",False,False,,False,
+66,commandReceiver,command receiver ,Field,,,,,3189,68,18,,"private final BroadcastReceiver commandReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            PackageConfig config = extras == null ? null : (PackageConfig) intent.getExtras().get(""CONFIG"");
+            switch (intent.getAction()) {
+                case QHYBRID_COMMAND_CONTROL: {
+                    Log.d(""Service"", ""sending control request"");
+                    queueWrite(new RequestHandControlRequest());
+                    if (config != null) {
+                        setHands(config.getHour(), config.getMin());
+                    } else {
+                        setHands((short) 0, (short) 0);
+                    }
+                    break;
+                }
+                case QHYBRID_COMMAND_UNCONTROL: {
+                    queueWrite(new ReleaseHandsControlRequest());
+                    break;
+                }
+                case QHYBRID_COMMAND_SET: {
+                    setHands(config.getHour(), config.getMin());
+
+                    break;
+                }
+                case QHYBRID_COMMAND_VIBRATE: {
+                    vibrate(config.getVibration());
+                    break;
+                }
+                case QHYBRID_COMMAND_NOTIFICATION: {
+                    queueWrite(new PlayNotificationRequest(config.getVibration(), config.getHour(), config.getMin()));
+                    break;
+                }
+                case QHYBRID_COMMAND_UPDATE: {
+                    getTimeOffset();
+                    onSetTime();
+                    break;
+                }
+                case QHYBRID_COMMAND_UPDATE_SETTINGS: {
+                    String newSetting = intent.getStringExtra(""EXTRA_SETTING"");
+                    switch (newSetting) {
+                        case ITEM_VIBRATION_STRENGTH: {
+                            queueWrite(new SetVibrationStrengthRequest(Short.parseShort(gbDevice.getDeviceInfo(ITEM_VIBRATION_STRENGTH).getDetails())));
+                            // queueWrite(new VibrateRequest(false, (short)4, (short)1));
+                            break;
+                        }
+                        case ITEM_STEP_GOAL: {
+                            queueWrite(new SetStepGoalRequest(Integer.parseInt(gbDevice.getDeviceInfo(ITEM_STEP_GOAL).getDetails())));
+                            break;
+                        }
+                        case ITEM_USE_ACTIVITY_HAND: {
+                            QHybridSupport.this.useActivityHand = gbDevice.getDeviceInfo(ITEM_USE_ACTIVITY_HAND).getDetails().equals(""true"");
+                            GBApplication.getPrefs().getPreferences().edit().putBoolean(""QHYBRID_USE_ACTIVITY_HAND"", useActivityHand).apply();
+                            break;
+                        }
+                    }
+
+                    LocalBroadcastManager.getInstance(getContext()).sendBroadcast(new Intent(QHYBRID_EVENT_SETTINGS_UPDATED));
+                    break;
+                }
+                case QHYBRID_COMMAND_OVERWRITE_BUTTONS: {
+                    overwriteButtons();
+                    break;
+                }
+            }
+        }
+    };",False,False,,False,

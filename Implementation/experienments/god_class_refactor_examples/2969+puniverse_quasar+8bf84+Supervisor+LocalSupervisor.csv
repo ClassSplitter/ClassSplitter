@@ -1,0 +1,518 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,LOG,log ,Field,,,,,76,1,26,,private static final Logger LOG = LoggerFactory.getLogger(Supervisor.class);,True,True,,False,
+2,restartStrategy,restart strategy ,Field,,,,,46,1,18,,private final RestartStrategy restartStrategy;,True,True,,False,
+3,childSpec,child spec ,Field,,,,,34,1,2,,private List<ChildSpec> childSpec;,True,True,,False,
+4,children,children ,Field,,,,,70,1,18,,private final List<ChildEntry> children = new ArrayList<ChildEntry>();,True,True,,False,
+5,childrenById,children by id ,Field,,,,,109,1,18,,"private final ConcurrentMap<Object, ChildEntry> childrenById = new ConcurrentHashMapV8<Object, ChildEntry>();",True,True,,False,
+6,"Supervisor(Strand,String,MailboxConfig,RestartStrategy,Initializer)",supervisor strand name mailbox config restart strategy initializer ,Method,,,,co.paralleluniverse.actors.behaviors.Supervisor+restartStrategy co.paralleluniverse.actors.behaviors.Supervisor+restartStrategy co.paralleluniverse.actors.behaviors.Supervisor+childSpec co.paralleluniverse.actors.behaviors.Supervisor+childSpec,276,5,1,,"public Supervisor(Strand strand, String name, MailboxConfig mailboxConfig, RestartStrategy restartStrategy, Initializer initializer) {
+        super(name, initializer, strand, mailboxConfig);
+        this.restartStrategy = restartStrategy;
+        this.childSpec = null;
+    }",True,True,"The function of this method is to create a Supervisor object with the given parameters, including a Strand, a name, a MailboxConfig, a RestartStrategy, and an Initializer. It also sets the restartStrategy to the given restartStrategy and the childSpec to null.",False,"The code defines a constructor for a Supervisor class that takes in a Strand, a name, a MailboxConfig, a RestartStrategy, and an Initializer as parameters. It initializes the superclass with the given parameters and sets the restartStrategy and childSpec variables to null."
+7,"Supervisor(Strand,String,MailboxConfig,RestartStrategy,List<ChildSpec>)",supervisor strand name mailbox config restart strategy child spec ,Method,,,,co.paralleluniverse.actors.behaviors.Supervisor+restartStrategy co.paralleluniverse.actors.behaviors.Supervisor+restartStrategy co.paralleluniverse.actors.behaviors.Supervisor+childSpec co.paralleluniverse.actors.behaviors.Supervisor+childSpec,276,5,1,,"public Supervisor(Strand strand, String name, MailboxConfig mailboxConfig, RestartStrategy restartStrategy, List<ChildSpec> childSpec) {
+        super(name, null, strand, mailboxConfig);
+        this.restartStrategy = restartStrategy;
+        this.childSpec = childSpec;
+    }",True,True,"The function of this method is to create a Supervisor object with the given parameters, including a Strand, name, MailboxConfig, RestartStrategy, and a List of ChildSpec objects. It also sets the restartStrategy and childSpec properties of the Supervisor object.",False,"This code defines a constructor for a Supervisor class. It takes in parameters such as a Strand, name, MailboxConfig, RestartStrategy, and a List of ChildSpec objects. It initializes the superclass with the given parameters and assigns the restartStrategy and childSpec values to the corresponding instance variables."
+8,"Supervisor(Strand,String,MailboxConfig,RestartStrategy,ChildSpec)",supervisor strand name mailbox config restart strategy child spec ,Method,,,java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]),,225,3,1,,"public Supervisor(Strand strand, String name, MailboxConfig mailboxConfig, RestartStrategy restartStrategy, ChildSpec... childSpec) {
+        this(strand, name, mailboxConfig, restartStrategy, Arrays.asList(childSpec));
+    }",False,False,"The function of this method is to create a Supervisor object with the specified parameters, including a Strand, a name, a MailboxConfig, a RestartStrategy, and a variable number of ChildSpec objects.",False,"The code snippet shows a constructor method for a Supervisor class in Java. It takes in parameters such as a Strand object, a name, a MailboxConfig object, a RestartStrategy object, and an array of ChildSpec objects. It then calls another constructor of the same class, passing the parameters as arguments after converting the array to a list."
+9,"Supervisor(Strand,String,MailboxConfig,RestartStrategy)",supervisor strand name mailbox config restart strategy ,Method,,,,,195,3,1,,"public Supervisor(Strand strand, String name, MailboxConfig mailboxConfig, RestartStrategy restartStrategy) {
+        this(strand, name, mailboxConfig, restartStrategy, (Initializer) null);
+    }",True,True,"The function of this method is to create a Supervisor object with the given parameters, including a Strand, a name, a MailboxConfig, and a RestartStrategy. It also calls another constructor with an additional parameter of type Initializer.",False,"The code snippet shows a constructor method for a class called Supervisor. It takes in parameters such as a Strand object, a name, a MailboxConfig object, and a RestartStrategy object. It also calls another constructor method with an additional parameter of type Initializer."
+10,"Supervisor(String,MailboxConfig,RestartStrategy)",supervisor name mailbox config restart strategy ,Method,,,,,178,3,1,,"public Supervisor(String name, MailboxConfig mailboxConfig, RestartStrategy restartStrategy) {
+        this(null, name, mailboxConfig, restartStrategy, (Initializer) null);
+    }",True,True,"The function of the method is to create a Supervisor object with the given name, mailbox configuration, and restart strategy. It calls another constructor with additional parameters set to null.",False,"The code snippet shows a constructor method for a class called Supervisor. It takes in parameters such as name, mailbox configuration, and restart strategy. It initializes the Supervisor object by calling another constructor with additional parameters and a null initializer."
+11,"Supervisor(String,RestartStrategy)",supervisor name restart strategy ,Method,,,,,140,3,1,,"public Supervisor(String name, RestartStrategy restartStrategy) {
+        this(null, name, null, restartStrategy, (Initializer) null);
+    }",True,True,"The function of the method is to create a Supervisor object with the given name and restart strategy, and initialize other parameters with default values.",False,"The code snippet shows a constructor method for a class called Supervisor. It takes two parameters: a String name and a RestartStrategy object. It initializes the Supervisor object by calling another constructor with additional parameters, passing null values for some of them."
+12,"Supervisor(String,MailboxConfig,RestartStrategy,Initializer)",supervisor name mailbox config restart strategy initializer ,Method,,,,,196,3,1,,"public Supervisor(String name, MailboxConfig mailboxConfig, RestartStrategy restartStrategy, Initializer initializer) {
+        this(null, name, mailboxConfig, restartStrategy, initializer);
+    }",True,True,"The function of this method is to create a Supervisor object with the given parameters, including a name, mailbox configuration, restart strategy, and initializer.",False,"The code snippet shows a constructor method for a class called Supervisor. It takes in parameters such as name, mailbox configuration, restart strategy, and initializer. It initializes the Supervisor object by calling another constructor with a null parameter and the provided arguments."
+13,"Supervisor(String,RestartStrategy,Initializer)",supervisor name restart strategy initializer ,Method,,,,,158,3,1,,"public Supervisor(String name, RestartStrategy restartStrategy, Initializer initializer) {
+        this(null, name, null, restartStrategy, initializer);
+    }",True,True,"The function of the method is to create a Supervisor object with a specified name, restart strategy, and initializer.",False,"The code snippet shows a constructor method for a class called Supervisor. It takes three parameters: name (a string), restartStrategy (an object of type RestartStrategy), and initializer (an object of type Initializer). The constructor initializes the Supervisor object with the given parameters."
+14,Supervisor(RestartStrategy),supervisor restart strategy ,Method,,,,,127,3,1,,"public Supervisor(RestartStrategy restartStrategy) {
+        this(null, null, null, restartStrategy, (Initializer) null);
+    }",True,True,The function of the method is to create a Supervisor object with a specified RestartStrategy.,False,The code snippet shows a constructor method for a class called Supervisor. It takes a RestartStrategy object as a parameter and initializes the class with null values for other parameters. The purpose of this constructor is to create an instance of the Supervisor class with a specified restart strategy.
+15,"Supervisor(String,MailboxConfig,RestartStrategy,List<ChildSpec>)",supervisor name mailbox config restart strategy child spec ,Method,,,,,196,3,1,,"public Supervisor(String name, MailboxConfig mailboxConfig, RestartStrategy restartStrategy, List<ChildSpec> childSpec) {
+        this(null, name, mailboxConfig, restartStrategy, childSpec);
+    }",False,True,"The function of this method is to create a Supervisor object with the given parameters, including a name, mailbox configuration, restart strategy, and a list of child specifications.",False,"The code snippet shows a constructor method for a class called Supervisor. It takes in parameters such as name, mailbox configuration, restart strategy, and a list of child specifications. The constructor initializes the Supervisor object by calling another constructor with a null parameter and the provided arguments."
+16,"Supervisor(String,MailboxConfig,RestartStrategy,ChildSpec)",supervisor name mailbox config restart strategy child spec ,Method,,,,,193,3,1,,"public Supervisor(String name, MailboxConfig mailboxConfig, RestartStrategy restartStrategy, ChildSpec... childSpec) {
+        this(null, name, mailboxConfig, restartStrategy, childSpec);
+    }",False,True,"This method is a constructor for the Supervisor class. It takes in parameters such as name, mailbox configuration, restart strategy, and child specifications, and initializes the Supervisor object with these values.",False,"The code snippet shows a constructor method for a class called Supervisor. It takes in parameters such as name, mailbox configuration, restart strategy, and an array of child specifications. It initializes the Supervisor object by calling another constructor with additional parameters."
+17,"Supervisor(String,RestartStrategy,List<ChildSpec>)",supervisor name restart strategy child spec ,Method,,,,,158,3,1,,"public Supervisor(String name, RestartStrategy restartStrategy, List<ChildSpec> childSpec) {
+        this(null, name, null, restartStrategy, childSpec);
+    }",True,True,"The function of the method is to create a Supervisor object with the given name, restart strategy, and child specifications.",False,"The code snippet shows a constructor method for a class called Supervisor. It takes in parameters such as name, restart strategy, and a list of child specifications. It initializes the Supervisor object by calling another constructor with additional parameters."
+18,"Supervisor(String,RestartStrategy,ChildSpec)",supervisor name restart strategy child spec ,Method,,,,,155,3,1,,"public Supervisor(String name, RestartStrategy restartStrategy, ChildSpec... childSpec) {
+        this(null, name, null, restartStrategy, childSpec);
+    }",False,True,"This method is a constructor for the Supervisor class. It takes in a name, a restart strategy, and an array of child specifications. It calls another constructor with additional parameters.",False,"The code snippet shows a constructor method for a class called Supervisor. It takes in parameters such as name, restartStrategy, and childSpec, and initializes the Supervisor object with these values. The constructor also calls another constructor within the class, passing additional parameters."
+19,"Supervisor(RestartStrategy,List<ChildSpec>)",supervisor restart strategy child spec ,Method,,,,,145,3,1,,"public Supervisor(RestartStrategy restartStrategy, List<ChildSpec> childSpec) {
+        this(null, null, null, restartStrategy, childSpec);
+    }",True,True,The function of this method is to create a Supervisor object with a specified RestartStrategy and a List of ChildSpec objects.,False,The code snippet shows a constructor method for a class called Supervisor. It takes a RestartStrategy object and a List of ChildSpec objects as parameters. The constructor initializes the Supervisor object with null values for three other parameters and assigns the provided restartStrategy and childSpec values.
+20,"Supervisor(RestartStrategy,ChildSpec)",supervisor restart strategy child spec ,Method,,,,,142,3,1,,"public Supervisor(RestartStrategy restartStrategy, ChildSpec... childSpec) {
+        this(null, null, null, restartStrategy, childSpec);
+    }",False,True,The function of the method is to create a Supervisor object with a specified RestartStrategy and ChildSpec parameters.,False,The code snippet shows a constructor method for a class called Supervisor. It takes a RestartStrategy object and an array of ChildSpec objects as parameters. It initializes the Supervisor object with null values for three other parameters and assigns the provided restart strategy and child specifications.
+21,getChild(Object),get child name ,Method,,,co.paralleluniverse.actors.behaviors.Supervisor+findEntryById(Object) co.paralleluniverse.actors.behaviors.Supervisor+findEntryById(Object),,231,6,1,,"public <Message, V> LocalActor<Message, V> getChild(Object name) {
+        final ChildEntry child = findEntryById(name);
+        if (child == null)
+            return null;
+        return (LocalActor<Message, V>) child.actor;
+    }",False,True,"This method returns a LocalActor object based on the given name. It searches for a ChildEntry with the same name and returns the associated actor. If no entry is found, it returns null.",False,"The given code is a method named `getChild` that takes an object `name` as input and returns a `LocalActor` object. It searches for a child entry with the given `name` and if found, it returns the corresponding actor; otherwise, it returns null."
+22,log(),log ,Method,,,,co.paralleluniverse.actors.behaviors.Supervisor+LOG,61,4,1,,"@Override
+    public Logger log() {
+        return LOG;
+    }",True,True,"The method ""log"" returns the Logger object ""LOG"".",False,"The code snippet defines an overridden method named ""log()"" that returns a Logger object. The method is expected to return the LOG instance, which is likely used for logging purposes in the codebase."
+23,init(),init ,Method,,,co.paralleluniverse.actors.behaviors.BasicGenBehavior+getInitializer() co.paralleluniverse.actors.behaviors.BasicGenBehavior+getInitializer() co.paralleluniverse.actors.behaviors.Initializer+init() co.paralleluniverse.actors.behaviors.BasicGenBehavior+getInitializer() co.paralleluniverse.actors.behaviors.BasicGenBehavior+getInitializer() co.paralleluniverse.actors.behaviors.Initializer+init() co.paralleluniverse.actors.behaviors.BasicGenBehavior+getInitializer() co.paralleluniverse.actors.behaviors.BasicGenBehavior+getInitializer() java.lang.IllegalStateException+IllegalStateException(String) java.lang.Object+equals(Object) java.lang.Object+equals(Object) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.IllegalStateException+IllegalStateException(String) co.paralleluniverse.actors.behaviors.Supervisor+addChild(ChildSpec) co.paralleluniverse.actors.behaviors.Supervisor+addChild(ChildSpec) java.lang.AssertionError+AssertionError(Object),co.paralleluniverse.actors.behaviors.Supervisor+childSpec co.paralleluniverse.actors.behaviors.Supervisor+childSpec co.paralleluniverse.actors.behaviors.Supervisor+childSpec co.paralleluniverse.actors.behaviors.Supervisor+childSpec,872,21,4,,"@Override
+    protected void init() throws SuspendExecution {
+        if (getInitializer() != null)
+            getInitializer().init();
+        else {
+            if (childSpec != null) {
+                try {
+                    if (getInitializer() != null)
+                        throw new IllegalStateException(""Cannot provide a supervisor with both a child-spec list as well as an initializer"");
+                    if (!Supervisor.class.equals(this.getClass()))
+                        throw new IllegalStateException(""Cannot provide a subclassed supervisor with a child-spec list"");
+
+                    for (ChildSpec cs : childSpec)
+                        addChild(cs);
+                    this.childSpec = null;
+                } catch (InterruptedException e) {
+                    throw new AssertionError(e);
+                }
+            }
+        }
+    }",True,True,"The function of this method is to initialize a supervisor and its child processes. If an initializer is provided, it is called. If not, the method checks if there is a child-spec list and adds the child processes to the supervisor.",False,"The `init()` method is overridden to initialize a supervisor. If an initializer is provided, it is called. Otherwise, if a child-spec list is provided, the method checks if the supervisor is a subclass and adds each child spec to the supervisor."
+24,onStart(),on start ,Method,,,co.paralleluniverse.actors.LocalActor+toString() co.paralleluniverse.actors.LocalActor+toString() co.paralleluniverse.actors.behaviors.BasicGenBehavior+onStart(),co.paralleluniverse.actors.behaviors.Supervisor+LOG,284,8,4,,"@Override
+    protected void onStart() throws InterruptedException, SuspendExecution {
+        if (LOG.isInfoEnabled()) {
+            //org.apache.logging.log4j.ThreadContext.push(this.toString());
+            MDC.put(""self"", this.toString());
+        }
+        super.onStart();
+    }",True,True,This method is called when the activity is starting. It logs information and sets the MDC context with the current object's information before calling the superclass's onStart method.,False,"This code is an overridden method called ""onStart"" that is executed when a certain event occurs. It first checks if logging is enabled, and if so, it adds the current object's string representation to the Mapped Diagnostic Context (MDC). Finally, it calls the superclass's onStart method."
+25,handleMessage(Object),handle message m1 ,Method,,,co.paralleluniverse.actors.behaviors.Supervisor+addChild(ChildSpec) co.paralleluniverse.actors.behaviors.Supervisor+addChild(ChildSpec),,527,14,20,,"@Override
+    protected final void handleMessage(Object m1) throws InterruptedException, SuspendExecution {
+        if (m1 instanceof GenRequestMessage) {
+            final GenRequestMessage req = (GenRequestMessage) m1;
+            try {
+                if (m1 instanceof AddChildMessage) {
+                    final AddChildMessage m = (AddChildMessage) m1;
+                    reply(m, addChild(m.info));
+                }
+            } catch (Exception e) {
+                replyError(req, e);
+            }
+        }
+    }",True,True,"The function of this method is to handle messages received by the object. If the message is an instance of GenRequestMessage, it checks if it is also an instance of AddChildMessage. If it is, it calls the addChild method and replies with the result. If there is an exception, it replies with an error.",False,"The code is a method that handles messages. It checks if the message is of type GenRequestMessage and if it is, it further checks if it is of type AddChildMessage. If it is, it calls the addChild method and replies with the result. If any exception occurs, it replies with an error message."
+26,onTerminate(Throwable),on terminate cause ,Method,,,co.paralleluniverse.actors.behaviors.BasicGenBehavior+onTerminate(Throwable) co.paralleluniverse.actors.behaviors.Supervisor+shutdownChildren() co.paralleluniverse.actors.behaviors.Supervisor+shutdownChildren() java.util.Map+clear() java.util.Map+clear() java.util.List+clear() java.util.List+clear(),co.paralleluniverse.actors.behaviors.Supervisor+childrenById co.paralleluniverse.actors.behaviors.Supervisor+children co.paralleluniverse.actors.behaviors.Supervisor+LOG,368,13,4,,"@Override
+    protected void onTerminate(Throwable cause) throws SuspendExecution, InterruptedException {
+        super.onTerminate(cause);
+
+        shutdownChildren();
+        childrenById.clear();
+        children.clear();
+
+        if (LOG.isInfoEnabled()) {
+            //org.apache.logging.log4j.ThreadContext.pop();
+            MDC.remove(""self"");
+        }
+    }",True,True,"This method is called when the application is terminating. It performs cleanup tasks such as shutting down children processes, clearing child process data, and removing logging context information.",False,"The given code is an overridden method that is called when the application terminates. It performs several tasks such as shutting down child processes, clearing child-related data structures, and removing a specific value from the Mapped Diagnostic Context (MDC) if the logging level is set to INFO."
+27,addChild1(ChildSpec),add child1 spec ,Method,,,"co.paralleluniverse.actors.behaviors.Supervisor+findEntry(LocalActor) co.paralleluniverse.actors.behaviors.Supervisor+findEntry(LocalActor) co.paralleluniverse.actors.behaviors.SupervisorException+SupervisorException(String) co.paralleluniverse.actors.behaviors.ChildSpec+getId() co.paralleluniverse.actors.behaviors.ChildSpec+getId() co.paralleluniverse.actors.ActorImpl+getName() co.paralleluniverse.actors.ActorImpl+getName() co.paralleluniverse.actors.behaviors.Supervisor+findEntryById(Object) co.paralleluniverse.actors.behaviors.Supervisor+findEntryById(Object) co.paralleluniverse.actors.behaviors.SupervisorException+SupervisorException(String) co.paralleluniverse.actors.behaviors.ChildEntry+ChildEntry(ChildSpec,LocalActor<?,?>) java.util.List+add(E) java.util.List+add(E) java.util.Map+put(K,V) java.util.Map+put(K,V)",co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.behaviors.ChildSpec+builder co.paralleluniverse.actors.behaviors.ChildSpec+builder co.paralleluniverse.actors.behaviors.Supervisor+children co.paralleluniverse.actors.behaviors.Supervisor+childrenById,842,19,2,,"private ChildEntry addChild1(ChildSpec spec) {
+        LOG.debug(""Adding child {}"", spec);
+        LocalActor actor = null;
+        if (spec.builder instanceof LocalActor) {
+            actor = (LocalActor) spec.builder;
+            if (findEntry(actor) != null)
+                throw new SupervisorException(""Supervisor "" + this + "" already supervises actor "" + actor);
+        }
+        Object id = spec.getId();
+        if (id == null && actor != null)
+            id = actor.getName();
+        if (id != null && findEntryById(id) != null)
+            throw new SupervisorException(""Supervisor "" + this + "" already supervises an actor by the name "" + id);
+        final ChildEntry child = new ChildEntry(spec, actor);
+        children.add(child);
+        if (id != null)
+            childrenById.put(id, child);
+        return child;
+    }",True,True,This method adds a child to a supervisor. It checks if the child already exists and throws an exception if it does. It also assigns an ID to the child if it doesn't already have one. The method returns the added child.,False,"This code defines a private method called `addChild1` that adds a child to a supervisor. It checks if the child already exists and throws an exception if it does. It then creates a new child entry, adds it to the supervisor's children list, and returns the child entry."
+28,addChild(ChildSpec),add child spec ,Method,,,"co.paralleluniverse.actors.LocalActor+isInActor() co.paralleluniverse.actors.LocalActor+isInActor() co.paralleluniverse.actors.behaviors.Supervisor+addChild1(ChildSpec) co.paralleluniverse.actors.behaviors.Supervisor+addChild1(ChildSpec) co.paralleluniverse.actors.behaviors.Supervisor+start(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+start(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+start(ChildEntry,LocalActor) co.paralleluniverse.actors.behaviors.Supervisor+start(ChildEntry,LocalActor) co.paralleluniverse.actors.behaviors.AddChildMessage+AddChildMessage(Actor,Object,ChildSpec) co.paralleluniverse.actors.behaviors.RequestReplyHelper+from() co.paralleluniverse.actors.behaviors.RequestReplyHelper+from() co.paralleluniverse.actors.behaviors.GenValueResponseMessage+getValue() co.paralleluniverse.actors.behaviors.GenValueResponseMessage+getValue()",co.paralleluniverse.actors.behaviors.ChildSpec+builder co.paralleluniverse.actors.behaviors.ChildSpec+builder,641,16,17,,"public final Actor addChild(ChildSpec spec) throws SuspendExecution, InterruptedException {
+        if (isInActor()) {
+            final ChildEntry child = addChild1(spec);
+
+            final LocalActor actor = spec.builder instanceof LocalActor ? (LocalActor) spec.builder : null;
+            if (actor == null)
+                start(child);
+            else
+                start(child, actor);
+
+            return actor;
+        } else {
+            final GenResponseMessage res = call(this, new AddChildMessage(RequestReplyHelper.from(), null, spec));
+            return ((GenValueResponseMessage<Actor>) res).getValue();
+        }
+    }",True,True,"This method adds a child actor to the current actor. If the current actor is local, it starts the child actor and returns it. If the current actor is remote, it sends a message to the current actor to add the child actor and returns the added child actor.",True,"The `addChild` method adds a child actor to the current actor. If the current actor is already running, it creates and starts the child actor. If the current actor is not running, it sends a message to the current actor to add the child actor and returns the added child actor."
+29,"removeChild(Object,boolean)",remove child id terminate ,Method,,,"co.paralleluniverse.actors.LocalActor+isInActor() co.paralleluniverse.actors.LocalActor+isInActor() co.paralleluniverse.actors.behaviors.Supervisor+findEntryById(Object) co.paralleluniverse.actors.behaviors.Supervisor+findEntryById(Object) co.paralleluniverse.actors.behaviors.Supervisor+unwatch(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+unwatch(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+shutdownChild(ChildEntry,boolean) co.paralleluniverse.actors.behaviors.Supervisor+shutdownChild(ChildEntry,boolean) co.paralleluniverse.actors.behaviors.Supervisor+unwatch(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+unwatch(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+removeChild(ChildEntry,Iterator<ChildEntry>) co.paralleluniverse.actors.behaviors.Supervisor+removeChild(ChildEntry,Iterator<ChildEntry>) co.paralleluniverse.actors.behaviors.RemoveChildMessage+RemoveChildMessage(Actor,Object,Object,boolean) co.paralleluniverse.actors.behaviors.RequestReplyHelper+from() co.paralleluniverse.actors.behaviors.RequestReplyHelper+from() co.paralleluniverse.actors.behaviors.GenValueResponseMessage+getValue() co.paralleluniverse.actors.behaviors.GenValueResponseMessage+getValue()",co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.behaviors.Supervisor+LOG,894,26,17,,"public final boolean removeChild(Object id, boolean terminate) throws SuspendExecution, InterruptedException {
+        if (isInActor()) {
+            final ChildEntry child = findEntryById(id);
+            if (child == null) {
+                LOG.warn(""Child {} not found"", id);
+                return false;
+            }
+
+            LOG.debug(""Removing child {}"", child);
+            if (child.actor != null) {
+                unwatch(child);
+
+                if (terminate)
+                    shutdownChild(child, false);
+                else
+                    unwatch(child);
+            }
+
+            removeChild(child, null);
+
+            return true;
+        } else {
+            final GenResponseMessage res = call(this, new RemoveChildMessage(RequestReplyHelper.from(), null, id, terminate));
+            return ((GenValueResponseMessage<Boolean>) res).getValue();
+        }
+    }",True,True,"The function of this method is to remove a child from an actor. It takes an ID and a boolean flag as parameters, and if the actor is currently running, it removes the child and returns true. If the actor is not running, it sends a message to the actor to remove the child and returns the response.",True,"This code defines a method called `removeChild` that is used to remove a child object from an actor. If the method is called within an actor, it directly removes the child and returns `true`. If called outside of an actor, it sends a message to the actor to remove the child and returns the response."
+30,"removeChild(ChildEntry,Iterator<ChildEntry>)",remove child child iter ,Method,,,java.util.Map+remove(Object) java.util.Map+remove(Object) java.util.Iterator+remove() java.util.Iterator+remove() java.util.List+remove(Object) java.util.List+remove(Object),co.paralleluniverse.actors.behaviors.Supervisor+childrenById co.paralleluniverse.actors.behaviors.Supervisor+children,272,8,2,,"private void removeChild(ChildEntry child, Iterator<ChildEntry> iter) {
+        if (child.info.getId() != null)
+            childrenById.remove(child.info.getId());
+        if (iter != null)
+            iter.remove();
+        else
+            children.remove(child);
+    }",True,True,"This method removes a child entry from a collection. It removes the child entry from a map if it has an ID, removes it from an iterator if provided, otherwise removes it from a list.",True,"The `removeChild` method removes a given `ChildEntry` object from a collection. It first checks if the `ChildEntry` has a non-null ID and removes it from a map if so. Then, it removes the `ChildEntry` from either an iterator or a list, depending on the availability of the iterator."
+31,handleLifecycleMessage(LifecycleMessage),handle lifecycle message m ,Method,,,co.paralleluniverse.actors.ExitMessage+getWatch() co.paralleluniverse.actors.ExitMessage+getWatch() co.paralleluniverse.actors.behaviors.Supervisor+findEntry(LocalActor) co.paralleluniverse.actors.behaviors.Supervisor+findEntry(LocalActor) co.paralleluniverse.actors.behaviors.BasicGenBehavior+shutdown() co.paralleluniverse.actors.behaviors.BasicGenBehavior+shutdown() co.paralleluniverse.strands.Strand+interrupt() co.paralleluniverse.actors.LocalActor+getStrand() co.paralleluniverse.actors.LocalActor+getStrand() co.paralleluniverse.strands.Strand+interrupt() co.paralleluniverse.actors.behaviors.BasicGenBehavior+handleLifecycleMessage(LifecycleMessage),co.paralleluniverse.actors.ExitMessage+actor co.paralleluniverse.actors.ExitMessage+actor co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.ExitMessage+cause co.paralleluniverse.actors.behaviors.Supervisor+restartStrategy co.paralleluniverse.actors.ExitMessage+cause co.paralleluniverse.actors.behaviors.Supervisor+LOG,1067,26,20,,"@Override
+    protected final void handleLifecycleMessage(LifecycleMessage m) {
+        boolean handled = false;
+        try {
+            if (m instanceof ExitMessage) {
+                final ExitMessage death = (ExitMessage) m;
+                if (death.getWatch() != null && death.actor instanceof LocalActor) {
+                    final LocalActor actor = (LocalActor) death.actor;
+                    final ChildEntry child = findEntry(actor);
+
+                    if (child != null) {
+                        LOG.info(""Detected child death: "" + child + "". cause: "", death.cause);
+                        if (!restartStrategy.onChildDeath(this, child, death.cause)) {
+                            LOG.info(""Supervisor {} giving up."", this);
+                            shutdown();
+                        }
+                        handled = true;
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            getStrand().interrupt();
+        }
+        if (!handled)
+            super.handleLifecycleMessage(m);
+    }",True,True,"This method handles a lifecycle message. If the message is an ExitMessage and the actor is a LocalActor, it finds the corresponding child entry and checks if it needs to be restarted. If not, it shuts down the supervisor. If the message is not handled, it calls the superclass method to handle the message.",False,"This code is an overridden method that handles a specific type of lifecycle message. It checks if the message is an ExitMessage and if so, it processes the death of a child actor and determines whether to restart the child or shut down the supervisor. If the message is not handled, it delegates the handling to the superclass."
+32,"tryRestart(ChildEntry,Throwable,long,Iterator<ChildEntry>)",try restart child cause now it ,Method,,,"co.paralleluniverse.actors.LocalActor+verifyInActor() co.paralleluniverse.actors.LocalActor+verifyInActor() co.paralleluniverse.actors.behaviors.Supervisor+shutdownChild(ChildEntry,boolean) co.paralleluniverse.actors.behaviors.Supervisor+shutdownChild(ChildEntry,boolean) co.paralleluniverse.actors.behaviors.Supervisor+start(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+start(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+shutdownChild(ChildEntry,boolean) co.paralleluniverse.actors.behaviors.Supervisor+shutdownChild(ChildEntry,boolean) co.paralleluniverse.actors.behaviors.Supervisor+removeChild(ChildEntry,Iterator<ChildEntry>) co.paralleluniverse.actors.behaviors.Supervisor+removeChild(ChildEntry,Iterator<ChildEntry>) java.lang.AssertionError+AssertionError()",co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.behaviors.Supervisor+LOG,1382,29,2,,"private boolean tryRestart(ChildEntry child, Throwable cause, long now, Iterator<ChildEntry> it) throws InterruptedException {
+        verifyInActor();
+        switch (child.info.mode) {
+            case TRANSIENT:
+                if (cause == null)
+                    return true;
+            // fall through
+            case PERMANENT:
+                LOG.info(""Supervisor trying to restart child {}. (cause: {})"", child, cause);
+                final Actor actor = child.actor;
+                shutdownChild(child, true);
+                child.restartHistory.addRestart(now);
+                final int numRestarts = child.restartHistory.numRestarts(now - child.info.unit.toMillis(child.info.duration));
+                if (LOG.isDebugEnabled())
+                    LOG.debug(""Child {} has been restarted {} times in the last {} {}s"", child, numRestarts, child.info.duration, child.info.unit);
+                if (numRestarts > child.info.maxRestarts) {
+                    LOG.info(this + "": too many restarts for child {}. Giving up."", actor);
+                    return false;
+                }
+                start(child);
+                return true;
+            case TEMPORARY:
+                shutdownChild(child, false);
+                removeChild(child, it);
+                return true;
+            default:
+                throw new AssertionError();
+        }
+    }",True,True,"The function of this method is to try restarting a child actor based on its mode. It performs different actions depending on whether the mode is TRANSIENT, PERMANENT, or TEMPORARY. It also keeps track of the number of restarts and determines if the maximum number of restarts has been reached.",True,"The `tryRestart` method is a private method that is part of a supervisor actor's code. It is responsible for restarting child actors based on their mode (transient, permanent, or temporary) and the number of restarts they have experienced. It returns a boolean value indicating whether the restart was successful or not."
+33,start(ChildEntry),start child ,Method,,,"co.paralleluniverse.actors.LocalActor+isDone() co.paralleluniverse.actors.LocalActor+isDone() java.lang.IllegalStateException+IllegalStateException(String) co.paralleluniverse.actors.ActorImpl+getName() co.paralleluniverse.actors.ActorImpl+getName() co.paralleluniverse.actors.ActorImpl+setName(Object) co.paralleluniverse.actors.ActorImpl+setName(Object) co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.LocalActor+setMonitor(ActorMonitor) co.paralleluniverse.actors.LocalActor+setMonitor(ActorMonitor) co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.ActorMonitor+addRestart() co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.LocalActor+getMonitor() co.paralleluniverse.actors.ActorMonitor+addRestart() co.paralleluniverse.actors.behaviors.Supervisor+start(ChildEntry,LocalActor) co.paralleluniverse.actors.behaviors.Supervisor+start(ChildEntry,LocalActor)",co.paralleluniverse.actors.behaviors.Supervisor+LOG,729,18,2,,"private LocalActor start(ChildEntry child) {
+        final LocalActor old = child.actor;
+        if (old != null && !old.isDone())
+            throw new IllegalStateException(""Actor "" + child.actor + "" cannot be restarted because it is not dead"");
+
+        final LocalActor actor = child.info.builder.build();
+        if (actor.getName() == null && child.info.id != null)
+            actor.setName(child.info.id);
+
+        LOG.info(""{} starting child {}"", this, actor);
+
+        if (old != null && actor.getMonitor() == null && old.getMonitor() != null)
+            actor.setMonitor(old.getMonitor());
+        if (actor.getMonitor() != null)
+            actor.getMonitor().addRestart();
+
+        return start(child, actor);
+    }",True,True,"The function of this method is to start a child actor. It checks if the child actor is already running and throws an exception if it is not dead. It then creates a new instance of the child actor and sets its name if it is not already set. It logs the start of the child actor. If the previous child actor had a monitor, it sets the new child actor's monitor to the same monitor. Finally, it calls another method to start the child actor and returns the new child actor.",True,The `start` method is used to start a new `LocalActor` by creating an instance of it using the provided `ChildEntry` information. It checks if the previous actor is still running and throws an exception if it is not dead. It also sets the name of the actor if it is not already set and updates the monitor if necessary before returning the started actor.
+34,"start(ChildEntry,LocalActor)",start child actor ,Method,,,"co.paralleluniverse.actors.LocalActor+getStrand() co.paralleluniverse.actors.LocalActor+getStrand() co.paralleluniverse.actors.LocalActor+getStrand() co.paralleluniverse.actors.LocalActor+getStrand() co.paralleluniverse.actors.behaviors.Supervisor+createStrandForActor(Strand,LocalActor) co.paralleluniverse.actors.behaviors.Supervisor+createStrandForActor(Strand,LocalActor) co.paralleluniverse.actors.LocalActor+watch(Actor) co.paralleluniverse.actors.LocalActor+watch(Actor) co.paralleluniverse.strands.Strand+start() co.paralleluniverse.strands.Strand+start()",co.paralleluniverse.actors.behaviors.Supervisor+LOG,551,17,2,,"private LocalActor start(ChildEntry child, LocalActor actor) {
+        final Strand strand;
+        if (actor.getStrand() != null)
+            strand = actor.getStrand();
+        else
+            strand = createStrandForActor(child.actor != null ? child.actor.getStrand() : null, actor);
+
+        child.actor = actor;
+        child.watch = watch(actor);
+
+        try {
+            strand.start();
+        } catch (IllegalThreadStateException e) {
+            LOG.info(""Child {} has already been started."", actor);
+        }
+        return actor;
+    }",True,True,"This method starts a local actor on a specific strand. It checks if the actor already has a strand, and if not, creates a new strand for the actor. It then sets the actor and watches it. Finally, it starts the strand and returns the actor.",True,"This code defines a private method called ""start"" that takes a ChildEntry object and a LocalActor object as parameters. It creates a Strand object based on the actor's existing strand or creates a new one if it doesn't have one. It then sets the child's actor and watch properties, starts the strand, and returns the actor."
+35,"shutdownChild(ChildEntry,boolean)",shutdown child child before restart ,Method,,,co.paralleluniverse.actors.behaviors.Supervisor+unwatch(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+unwatch(ChildEntry) co.paralleluniverse.actors.ActorImpl+sendOrInterrupt(Object) co.paralleluniverse.actors.ActorImpl+sendOrInterrupt(Object) co.paralleluniverse.actors.ShutdownMessage+ShutdownMessage(Actor) co.paralleluniverse.actors.behaviors.Supervisor+joinChild(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+joinChild(ChildEntry),co.paralleluniverse.actors.behaviors.Supervisor+LOG,624,17,2,,"private void shutdownChild(ChildEntry child, boolean beforeRestart) throws InterruptedException {
+        if (child.actor != null) {
+            unwatch(child);
+            if (!child.actor.isDone()) {
+                LOG.info(""{} shutting down child {}"", this, child.actor);
+                ((ActorImpl) child.actor).sendOrInterrupt(new ShutdownMessage(this));
+            }
+            try {
+                joinChild(child);
+            } finally {
+                if (!beforeRestart) {
+                    child.actor.stopMonitor();
+                    child.actor = null;
+                }
+            }
+        }
+    }",True,True,"This method shuts down a child actor by unwatching it, sending a shutdown message, joining the child, and stopping its monitor. If called before a restart, it also sets the child actor to null.",True,"The `shutdownChild` method is responsible for shutting down a child actor. It first checks if the child actor is not null, then unregisters it and sends a shutdown message. It then waits for the child actor to finish processing, and if it is not before a restart, it stops monitoring the child actor and sets it to null."
+36,shutdownChildren(),shutdown children ,Method,,,co.paralleluniverse.actors.behaviors.Supervisor+unwatch(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+unwatch(ChildEntry) co.paralleluniverse.actors.ActorImpl+sendOrInterrupt(Object) co.paralleluniverse.actors.ActorImpl+sendOrInterrupt(Object) co.paralleluniverse.actors.ShutdownMessage+ShutdownMessage(Actor) co.paralleluniverse.actors.behaviors.Supervisor+joinChild(ChildEntry) co.paralleluniverse.actors.behaviors.Supervisor+joinChild(ChildEntry),co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.behaviors.Supervisor+children co.paralleluniverse.actors.behaviors.Supervisor+children,758,21,2,,"private void shutdownChildren() throws InterruptedException {
+        LOG.info(""{} shutting down all children."", this);
+        for (ChildEntry child : children) {
+            if (child.actor != null) {
+                unwatch(child);
+                ((ActorImpl) child.actor).sendOrInterrupt(new ShutdownMessage(this));
+            }
+        }
+
+        for (ChildEntry child : children) {
+            if (child.actor != null) {
+                try {
+                    joinChild(child);
+                    if (child.actor != null)
+                        child.actor.stopMonitor(); // must be done after join to avoid a race with the actor
+                } finally {
+                    child.actor = null;
+                }
+            }
+        }
+    }",True,True,"The function of this method is to shut down all the children actors. It iterates through the list of children actors, unwatching them and sending a shutdown message. Then it joins each child actor, stops monitoring it, and sets the child actor to null.",True,"The `shutdownChildren()` method is responsible for shutting down all child actors. It iterates over the list of child actors, unwatching them, sending a shutdown message, and then joining and stopping each child actor. Finally, it sets the child actor to null."
+37,joinChild(ChildEntry),join child child ,Method,,,java.lang.Throwable+getCause() java.lang.Throwable+getCause() java.lang.Throwable+getCause() java.lang.Throwable+getCause(),co.paralleluniverse.actors.behaviors.Supervisor+LOG java.util.concurrent.TimeUnit+MILLISECONDS co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.behaviors.Supervisor+LOG java.util.concurrent.TimeUnit+MILLISECONDS co.paralleluniverse.actors.behaviors.Supervisor+LOG co.paralleluniverse.actors.behaviors.Supervisor+LOG,1457,34,2,,"private boolean joinChild(ChildEntry child) throws InterruptedException {
+        LOG.debug(""Joining child {}"", child);
+        if (child.actor != null) {
+            try {
+                child.actor.join(child.info.shutdownDeadline, TimeUnit.MILLISECONDS);
+                LOG.debug(""Child {} terminated normally"", child.actor);
+                return true;
+            } catch (ExecutionException ex) {
+                LOG.info(""Child {} terminated with exception {}"", child.actor, ex.getCause());
+                return true;
+            } catch (TimeoutException ex) {
+                LOG.warn(""Child {} shutdown timeout. Interrupting..."", child.actor);
+                // is this the best we can do?
+                child.actor.getStrand().interrupt();
+
+                try {
+                    child.actor.join(child.info.shutdownDeadline, TimeUnit.MILLISECONDS);
+                    return true;
+                } catch (ExecutionException e) {
+                    LOG.info(""Child {} terminated with exception {}"", child.actor, ex.getCause());
+                    return true;
+                } catch (TimeoutException e) {
+                    LOG.warn(""Child {} could not shut down..."", child.actor);
+
+                    child.actor.stopMonitor();
+                    child.actor.unregister();
+                    child.actor = null;
+
+                    return false;
+                }
+            }
+        } else
+            return true;
+    }",True,True,"This method joins a child actor, waits for it to terminate, and handles any exceptions that may occur during the termination process. It returns true if the child actor terminates normally, and false if it fails to shut down.",True,"The `joinChild` method is used to join a child actor, specified by the `ChildEntry` parameter, and handle any exceptions that may occur during the process. It first attempts to join the child actor and returns true if it terminates normally or with an exception. If a timeout occurs, it interrupts the child actor, retries joining, and returns false if it still fails to shut down."
+38,unwatch(ChildEntry),unwatch child ,Method,,,"co.paralleluniverse.actors.LocalActor+unwatch(Actor,Object) co.paralleluniverse.actors.LocalActor+unwatch(Actor,Object)",,193,6,2,,"private void unwatch(ChildEntry child) {
+        if (child.actor != null && child.watch != null) {
+            unwatch(child.actor, child.watch);
+            child.watch = null;
+        }
+    }",True,True,"The function of this method is to unwatch a child entry by checking if the child has an actor and a watch, then calling another method to unwatch the actor and setting the watch to null.",True,"The `unwatch` method takes a `ChildEntry` object as a parameter and checks if it has a non-null `actor` and `watch` property. If both properties are not null, it calls another method `unwatch` with the `actor` and `watch` as arguments, and sets the `watch` property to null afterwards."
+39,"createStrandForActor(Strand,LocalActor)",create strand for actor old strand actor ,Method,,,"co.paralleluniverse.strands.Strand+clone(Strand,SuspendableCallable<?>) co.paralleluniverse.strands.Strand+clone(Strand,SuspendableCallable<?>) co.paralleluniverse.fibers.Fiber+Fiber(SuspendableCallable<V>) co.paralleluniverse.actors.LocalActor+setStrand(Strand) co.paralleluniverse.actors.LocalActor+setStrand(Strand)",,300,9,2,,"private Strand createStrandForActor(Strand oldStrand, LocalActor actor) {
+        final Strand strand;
+        if (oldStrand != null)
+            strand = Strand.clone(oldStrand, actor);
+        else
+            strand = new Fiber(actor);
+        actor.setStrand(strand);
+        return strand;
+    }",True,True,"This method creates a new Strand object for a given LocalActor. If the oldStrand is not null, it clones the oldStrand with the actor. Otherwise, it creates a new Fiber with the actor. Finally, it sets the actor's strand and returns the strand.",True,"This code defines a private method called ""createStrandForActor"" that takes in a ""oldStrand"" and a ""LocalActor"" object as parameters. It creates a new ""Strand"" object by either cloning the ""oldStrand"" with the given ""actor"" or creating a new ""Fiber"" object with the ""actor"". Finally, it sets the ""strand"" for the ""actor"" and returns the ""strand""."
+40,findEntry(LocalActor),find entry actor ,Method,,,co.paralleluniverse.actors.ActorImpl+getName() co.paralleluniverse.actors.ActorImpl+getName() co.paralleluniverse.actors.behaviors.Supervisor+findEntryById(Object) co.paralleluniverse.actors.behaviors.Supervisor+findEntryById(Object) co.paralleluniverse.actors.ActorImpl+getName() co.paralleluniverse.actors.ActorImpl+getName(),co.paralleluniverse.actors.behaviors.Supervisor+children,370,12,2,,"private ChildEntry findEntry(LocalActor actor) {
+        if (actor.getName() != null) {
+            ChildEntry child = findEntryById(actor.getName());
+            if (child != null)
+                return child;
+        }
+        for (ChildEntry child : children) {
+            if (child.actor == actor)
+                return child;
+        }
+        return null;
+    }",True,True,"This method finds and returns a ChildEntry object based on the given LocalActor object. It first checks if the actor has a name and tries to find a matching ChildEntry by name. If not found, it searches for a ChildEntry with the same actor object. If no match is found, it returns null.",True,"The given code is a private method named ""findEntry"" that takes a ""LocalActor"" object as a parameter. It searches for a matching entry in a list of ""ChildEntry"" objects based on the actor's name or reference. If a match is found, it returns the corresponding ""ChildEntry"" object; otherwise, it returns null."
+41,findEntryById(Object),find entry by id name ,Method,,,java.util.Map+get(Object) java.util.Map+get(Object),co.paralleluniverse.actors.behaviors.Supervisor+childrenById,92,3,2,,"private ChildEntry findEntryById(Object name) {
+        return childrenById.get(name);
+    }",True,True,The function of the method is to find and return a ChildEntry object based on the given name parameter.,True,"The code defines a private method named ""findEntryById"" that takes an object as input and returns a ChildEntry object. It retrieves the ChildEntry object associated with the given name from a map called ""childrenById"" and returns it."
+42,now(),now ,Method,,,java.lang.System+nanoTime() java.lang.System+nanoTime(),,70,3,2,,"private long now() {
+        return System.nanoTime() / 1000000;
+    }",True,True,The function of the method is to return the current time in milliseconds using the System.nanoTime() method.,True,"The code defines a private method named ""now()"" that returns the current time in milliseconds. It achieves this by dividing the value returned by System.nanoTime() (which represents the current time in nanoseconds) by 1000000."
+43,ChildMode,child mode ,Field,,,,,21,1,1,,public enum ChildMode,False,False,,False,
+44,RestartStrategy,restart strategy ,Field,,,,,27,1,1,,public enum RestartStrategy,False,False,,False,
+45,"onChildDeath(Supervisor,ChildEntry,Throwable)",on child death supervisor child cause ,Method,,,"co.paralleluniverse.actors.behaviors.Supervisor+tryRestart(ChildEntry,Throwable,long,Iterator<ChildEntry>) co.paralleluniverse.actors.behaviors.Supervisor+tryRestart(ChildEntry,Throwable,long,Iterator<ChildEntry>) co.paralleluniverse.actors.behaviors.Supervisor+now() co.paralleluniverse.actors.behaviors.Supervisor+now() co.paralleluniverse.actors.behaviors.Supervisor+shutdownChildren() co.paralleluniverse.actors.behaviors.Supervisor+shutdownChildren() java.util.List+iterator() java.util.List+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() co.paralleluniverse.actors.behaviors.Supervisor+tryRestart(ChildEntry,Throwable,long,Iterator<ChildEntry>) co.paralleluniverse.actors.behaviors.Supervisor+tryRestart(ChildEntry,Throwable,long,Iterator<ChildEntry>) co.paralleluniverse.actors.behaviors.Supervisor+now() co.paralleluniverse.actors.behaviors.Supervisor+now() java.util.List+iterator() java.util.List+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() co.paralleluniverse.actors.behaviors.Supervisor+tryRestart(ChildEntry,Throwable,long,Iterator<ChildEntry>) co.paralleluniverse.actors.behaviors.Supervisor+tryRestart(ChildEntry,Throwable,long,Iterator<ChildEntry>) co.paralleluniverse.actors.behaviors.Supervisor+now() co.paralleluniverse.actors.behaviors.Supervisor+now()",co.paralleluniverse.actors.behaviors.Supervisor+children co.paralleluniverse.actors.behaviors.Supervisor+children,174,4,0,,"@Override
+            boolean onChildDeath(Supervisor supervisor, ChildEntry child, Throwable cause) throws InterruptedException {
+                return false;
+            }",False,False,"The function of the method is to handle the death of a child process in a supervisor process. It takes the supervisor, child entry, and cause of death as parameters, and returns false.",False,"The code snippet shows an overridden method called ""onChildDeath"" that takes in a supervisor, child entry, and a throwable cause as parameters. It returns a boolean value indicating whether the method execution was successful or not."
+46,"onChildDeath(Supervisor,ChildEntry,Throwable)",on child death supervisor child cause ,Method,,,,,228,4,0,,"@Override
+            boolean onChildDeath(Supervisor supervisor, ChildEntry child, Throwable cause) throws InterruptedException {
+                return supervisor.tryRestart(child, cause, supervisor.now(), null);
+            }",False,False,"The function of the method is to handle the death of a child process in a supervisor. It attempts to restart the child process with the given supervisor, child entry, cause of death, current time, and null value.",False,"The code snippet shows an overridden method called ""onChildDeath"" that takes a supervisor, child entry, and a throwable cause as parameters. It attempts to restart the child process using the supervisor's ""tryRestart"" method and returns a boolean value indicating the success of the restart operation."
+47,"onChildDeath(Supervisor,ChildEntry,Throwable)",on child death supervisor child cause ,Method,,,,,504,10,0,,"@Override
+            boolean onChildDeath(Supervisor supervisor, ChildEntry child, Throwable cause) throws InterruptedException {
+                supervisor.shutdownChildren();
+                for (Iterator<ChildEntry> it = supervisor.children.iterator(); it.hasNext();) {
+                    final ChildEntry c = it.next();
+                    if (!supervisor.tryRestart(c, cause, supervisor.now(), it))
+                        return false;
+                }
+                return true;
+            }",False,False,"This method is used to handle the death of a child process in a supervisor. It shuts down all the children processes and tries to restart them if possible. It returns true if all children are successfully restarted, otherwise false.",False,"This code is an overridden method that is called when a child process controlled by a supervisor dies. It shuts down all the children processes, then attempts to restart each child process. If any child process fails to restart, the method returns false; otherwise, it returns true."
+48,"onChildDeath(Supervisor,ChildEntry,Throwable)",on child death supervisor child cause ,Method,,,,,580,13,0,,"@Override
+            boolean onChildDeath(Supervisor supervisor, ChildEntry child, Throwable cause) throws InterruptedException {
+                boolean found = false;
+                for (Iterator<ChildEntry> it = supervisor.children.iterator(); it.hasNext();) {
+                    final ChildEntry c = it.next();
+                    if (c == child)
+                        found = true;
+
+                    if (found && !supervisor.tryRestart(c, cause, supervisor.now(), it))
+                        return false;
+                }
+                return true;
+            }",False,False,"The function of this method is to handle the death of a child process in a supervisor. It iterates through the list of children, checks if the child is found, and attempts to restart the child if it is found. It returns true if all children are successfully restarted, and false otherwise.",False,"This code is an overridden method that handles the death of a child process in a supervisor. It iterates through the supervisor's list of children, attempts to restart any child that was found after the specified child, and returns true if all restart attempts were successful."
+49,"onChildDeath(Supervisor,ChildEntry,Throwable)",on child death supervisor child cause ,Method,,,,,116,1,1024,,"abstract boolean onChildDeath(Supervisor supervisor, ChildEntry child, Throwable cause) throws InterruptedException;",False,False,"This method serves to handle the death of a child process in a supervisor process. It takes the supervisor, child entry, and cause of death as parameters, and returns a boolean value. It may also throw an InterruptedException.",False,"The code contains an abstract method called ""onChildDeath"" which takes in a Supervisor object, a ChildEntry object, and a Throwable object as parameters. It returns a boolean value and can throw an InterruptedException. The purpose of this method is to handle the death of a child process and provide a response based on the given parameters."
+50,info,info ,Field,,,,,21,1,16,,final ChildSpec info;,False,False,,False,
+51,"AddChildMessage(Actor,Object,ChildSpec)",add child message from id info ,Method,,,,co.paralleluniverse.actors.behaviors.AddChildMessage+info co.paralleluniverse.actors.behaviors.AddChildMessage+info,132,4,1,,"public AddChildMessage(Actor from, Object id, ChildSpec info) {
+            super(from, id);
+            this.info = info;
+        }",False,False,"The function of the method is to create an ""AddChildMessage"" object with the specified ""Actor"" sender, ""Object"" id, and ""ChildSpec"" information.",False,"The code defines a constructor for the class AddChildMessage, which takes an Actor object, an id object, and a ChildSpec object as parameters. It initializes the superclass with the from and id parameters, and assigns the info parameter to the instance variable info."
+52,name,name ,Field,,,,,18,1,16,,final Object name;,False,False,,False,
+53,terminate,terminate ,Field,,,,,24,1,16,,final boolean terminate;,False,False,,False,
+54,"RemoveChildMessage(Actor,Object,Object,boolean)",remove child message from id name terminate ,Method,,,,co.paralleluniverse.actors.behaviors.RemoveChildMessage+name co.paralleluniverse.actors.behaviors.RemoveChildMessage+name co.paralleluniverse.actors.behaviors.RemoveChildMessage+terminate co.paralleluniverse.actors.behaviors.RemoveChildMessage+terminate,191,5,1,,"public RemoveChildMessage(Actor from, Object id, Object name, boolean terminate) {
+            super(from, id);
+            this.name = name;
+            this.terminate = terminate;
+        }",False,False,"The function of the method is to create a message object for removing a child actor. It takes the sender actor, child actor's ID, name, and a boolean flag indicating whether to terminate the child actor.",False,"The code defines a constructor for a RemoveChildMessage class that takes an Actor object, an id object, a name object, and a boolean value as parameters. It initializes the name and terminate variables with the corresponding parameter values."
+55,id,id ,Field,"ChildSpec(Object,ChildMode,int,long,TimeUnit,long,ActorBuilder<?,?>)",,,,16,1,16,,final Object id;,False,False,,False,
+56,builder,builder ,Field,"ChildSpec(Object,ChildMode,int,long,TimeUnit,long,ActorBuilder<?,?>)",,,,33,1,16,,"final ActorBuilder<?, ?> builder;",False,False,,False,
+57,mode,mode ,Field,"ChildSpec(Object,ChildMode,int,long,TimeUnit,long,ActorBuilder<?,?>)",,,,21,1,16,,final ChildMode mode;,False,False,,False,
+58,maxRestarts,max restarts ,Field,"ChildSpec(Object,ChildMode,int,long,TimeUnit,long,ActorBuilder<?,?>)",,,,22,1,16,,final int maxRestarts;,False,False,,False,
+59,duration,duration ,Field,"ChildSpec(Object,ChildMode,int,long,TimeUnit,long,ActorBuilder<?,?>)",,,,20,1,16,,final long duration;,False,False,,False,
+60,unit,unit ,Field,"ChildSpec(Object,ChildMode,int,long,TimeUnit,long,ActorBuilder<?,?>)",,,,20,1,16,,final TimeUnit unit;,False,False,,False,
+61,shutdownDeadline,shutdown deadline ,Field,"ChildSpec(Object,ChildMode,int,long,TimeUnit,long,ActorBuilder<?,?>)",,,,28,1,16,,final long shutdownDeadline;,False,False,,False,
+62,"ChildSpec(Object,ChildMode,int,long,TimeUnit,long,ActorBuilder<?,?>)",child spec id mode max restarts duration unit shutdown deadline builder ,Method,,,,co.paralleluniverse.actors.behaviors.ChildSpec+id co.paralleluniverse.actors.behaviors.ChildSpec+id co.paralleluniverse.actors.behaviors.ChildSpec+builder co.paralleluniverse.actors.behaviors.ChildSpec+builder co.paralleluniverse.actors.behaviors.ChildSpec+mode co.paralleluniverse.actors.behaviors.ChildSpec+mode co.paralleluniverse.actors.behaviors.ChildSpec+maxRestarts co.paralleluniverse.actors.behaviors.ChildSpec+maxRestarts co.paralleluniverse.actors.behaviors.ChildSpec+duration co.paralleluniverse.actors.behaviors.ChildSpec+duration co.paralleluniverse.actors.behaviors.ChildSpec+unit co.paralleluniverse.actors.behaviors.ChildSpec+unit co.paralleluniverse.actors.behaviors.ChildSpec+shutdownDeadline co.paralleluniverse.actors.behaviors.ChildSpec+shutdownDeadline,411,9,1,,"public ChildSpec(Object id, ChildMode mode, int maxRestarts, long duration, TimeUnit unit, long shutdownDeadline, ActorBuilder<?, ?> builder) {
+            this.id = id;
+            this.builder = builder;
+            this.mode = mode;
+            this.maxRestarts = maxRestarts;
+            this.duration = duration;
+            this.unit = unit;
+            this.shutdownDeadline = shutdownDeadline;
+        }",False,False,This method serves to initialize the ChildSpec object with the provided parameters.,False,"The code defines a constructor for a ChildSpec object, which takes in various parameters such as id, mode, maxRestarts, duration, unit, shutdownDeadline, and builder. It initializes the object's fields with the corresponding parameter values."
+63,getId(),get id ,Method,,co.paralleluniverse.actors.behaviors.Supervisor+addChild1(ChildSpec),,co.paralleluniverse.actors.behaviors.ChildSpec+id,56,3,1,,"public Object getId() {
+            return id;
+        }",False,False,"This method returns the value of the ""id"" object.",False,"The code contains a method named ""getId"" that returns an object. It is not specified what type of object is returned, but it is likely related to the identifier of something within the code."
+64,getBuilder(),get builder ,Method,,,,co.paralleluniverse.actors.behaviors.ChildSpec+builder,78,3,1,,"public ActorBuilder<?, ?> getBuilder() {
+            return builder;
+        }",False,False,"The method ""getBuilder"" returns an instance of the ActorBuilder class, with generic type parameters that are not specified.",False,"The code defines a method named ""getBuilder"" that returns an instance of the ""ActorBuilder"" class. The method has a wildcard type parameter and can be used to retrieve the builder object for creating actors."
+65,getMode(),get mode ,Method,,,,co.paralleluniverse.actors.behaviors.ChildSpec+mode,63,3,1,,"public ChildMode getMode() {
+            return mode;
+        }",False,False,"The function of the given method is to return the value of the variable ""mode"" of type ChildMode.",False,"The code contains a method named ""getMode"" that returns an object of type ""ChildMode"". It is used to retrieve the current mode of a child."
+66,getMaxRestarts(),get max restarts ,Method,,,,co.paralleluniverse.actors.behaviors.ChildSpec+maxRestarts,71,3,1,,"public int getMaxRestarts() {
+            return maxRestarts;
+        }",False,False,"The function of the given method is to return the value of the variable ""maxRestarts"" as an integer.",False,"The code contains a method named ""getMaxRestarts"" which returns an integer value. This method is used to retrieve the maximum number of restarts allowed."
+67,getDuration(),get duration ,Method,,,,co.paralleluniverse.actors.behaviors.ChildSpec+duration,66,3,1,,"public long getDuration() {
+            return duration;
+        }",False,False,"The function of the method is to retrieve and return the value of the variable ""duration"" as a long data type.",False,"The code contains a method named ""getDuration"" which returns a long value. It is likely used to retrieve the duration of something, but without further context, it is difficult to determine the exact purpose or functionality of this method."
+68,getDurationUnit(),get duration unit ,Method,,,,co.paralleluniverse.actors.behaviors.ChildSpec+unit,70,3,1,,"public TimeUnit getDurationUnit() {
+            return unit;
+        }",False,False,"The method ""getDurationUnit"" returns the value of the variable ""unit"" which represents the unit of time used for measuring duration.",False,"The code defines a method named ""getDurationUnit"" that returns the value of a variable named ""unit"" of type TimeUnit. This method is used to retrieve the duration unit associated with the current instance."
+69,getShutdownDeadline(),get shutdown deadline ,Method,,,,co.paralleluniverse.actors.behaviors.ChildSpec+shutdownDeadline,82,3,1,,"public long getShutdownDeadline() {
+            return shutdownDeadline;
+        }",False,False,"The function of the given method is to retrieve the value of the variable ""shutdownDeadline"" and return it as a long data type.",False,"The code contains a method named ""getShutdownDeadline"" which returns a long value representing the shutdown deadline. This method does not take any parameters and simply returns the value of the ""shutdownDeadline"" variable."
+70,toString(),to string ,Method,,,,co.paralleluniverse.actors.behaviors.ChildSpec+builder co.paralleluniverse.actors.behaviors.ChildSpec+mode co.paralleluniverse.actors.behaviors.ChildSpec+maxRestarts co.paralleluniverse.actors.behaviors.ChildSpec+duration co.paralleluniverse.actors.behaviors.ChildSpec+unit co.paralleluniverse.actors.behaviors.ChildSpec+shutdownDeadline co.paralleluniverse.actors.behaviors.ChildEntry+info co.paralleluniverse.actors.behaviors.ChildEntry+actor,263,4,1,,"@Override
+        public String toString() {
+            return ""ActorInfo{"" + ""builder: "" + builder + "", mode: "" + mode + "", maxRestarts: "" + maxRestarts + "", duration: "" + duration + "", unit: "" + unit + "", shutdownDeadline: "" + shutdownDeadline + '}';
+        }",False,False,"This method overrides the default toString() method and returns a formatted string representation of the ActorInfo object, including its builder, mode, maxRestarts, duration, unit, and shutdownDeadline attributes.",False,"The code snippet shows the implementation of the `toString()` method in a class called `ActorInfo`. This method returns a string representation of the object, including the values of its builder, mode, maxRestarts, duration, unit, and shutdownDeadline attributes."
+71,info,info ,Field,,,,,21,1,16,,final ChildSpec info;,False,False,,False,
+72,restartHistory,restart history ,Field,,,,,36,1,16,,final RestartHistory restartHistory;,False,False,,False,
+73,watch,watch ,Field,,,,,13,1,0,,Object watch;,False,False,,False,
+74,actor,actor ,Field,,,,,32,1,64,,"volatile LocalActor<?, ?> actor;",False,False,,False,
+75,ChildEntry(ChildSpec),child entry info ,Method,,,,,75,3,1,,"public ChildEntry(ChildSpec info) {
+            this(info, null);
+        }",False,False,This method is a constructor for the ChildEntry class. It takes a ChildSpec object as a parameter and initializes the ChildEntry object with the given ChildSpec object and a null value for another parameter.,False,"The code defines a constructor method called ""ChildEntry"" that takes a parameter of type ""ChildSpec"". It initializes an instance of ""ChildEntry"" with the given ""ChildSpec"" object and a null value for another parameter."
+76,"ChildEntry(ChildSpec,LocalActor<?,?>)",child entry info actor ,Method,,,co.paralleluniverse.actors.behaviors.RestartHistory+RestartHistory(int),co.paralleluniverse.actors.behaviors.ChildEntry+info co.paralleluniverse.actors.behaviors.ChildEntry+info co.paralleluniverse.actors.behaviors.ChildEntry+restartHistory co.paralleluniverse.actors.behaviors.ChildEntry+restartHistory co.paralleluniverse.actors.behaviors.ChildSpec+maxRestarts co.paralleluniverse.actors.behaviors.ChildEntry+actor co.paralleluniverse.actors.behaviors.ChildEntry+actor,208,6,1,,"public ChildEntry(ChildSpec info, LocalActor<?, ?> actor) {
+            this.info = info;
+            this.restartHistory = new RestartHistory(info.maxRestarts + 1);
+
+            this.actor = actor;
+        }",False,False,The function of the method is to create a new ChildEntry object with the given ChildSpec info and LocalActor actor. It also initializes the restartHistory with a new RestartHistory object based on the maxRestarts value from the info object.,False,"The code defines a constructor for the ChildEntry class that takes a ChildSpec object and a LocalActor object as parameters. It initializes the info and restartHistory variables using the values from the ChildSpec object, and assigns the actor parameter to the actor variable."
+77,toString(),to string ,Method,,,,,131,4,1,,"@Override
+        public String toString() {
+            return ""ActorEntry{"" + ""info="" + info + "" actor="" + actor + '}';
+        }",False,False,"This method overrides the default toString() method and returns a string representation of an ActorEntry object, including the values of its info and actor attributes.",False,"The code snippet shows the implementation of the `toString()` method in a class called `ActorEntry`. This method returns a string representation of the object, which includes the values of the `info` and `actor` variables."
+78,restarts,restarts ,Field,,,,,30,1,18,,private final long[] restarts;,False,False,,False,
+79,index,index ,Field,,,,,18,1,2,,private int index;,False,False,,False,
+80,RestartHistory(int),restart history window size ,Method,,,,co.paralleluniverse.actors.behaviors.RestartHistory+restarts co.paralleluniverse.actors.behaviors.RestartHistory+restarts co.paralleluniverse.actors.behaviors.RestartHistory+index co.paralleluniverse.actors.behaviors.RestartHistory+index,127,4,1,,"public RestartHistory(int windowSize) {
+            this.restarts = new long[windowSize];
+            this.index = 0;
+        }",False,False,"The function of the method is to initialize an array called ""restarts"" with a specified size and set the index to 0.",False,The code defines a constructor for the RestartHistory class that takes an integer parameter called windowSize. It initializes an array called restarts with the size specified by windowSize and sets the index variable to 0.
+81,addRestart(long),add restart now ,Method,,,co.paralleluniverse.actors.behaviors.RestartHistory+mod(int) co.paralleluniverse.actors.behaviors.RestartHistory+mod(int),co.paralleluniverse.actors.behaviors.RestartHistory+restarts co.paralleluniverse.actors.behaviors.RestartHistory+index co.paralleluniverse.actors.behaviors.RestartHistory+index co.paralleluniverse.actors.behaviors.RestartHistory+index,115,4,1,,"public void addRestart(long now) {
+            restarts[index] = now;
+            index = mod(index + 1);
+        }",False,False,This method adds a restart time to an array and updates the index to the next position in a circular manner.,False,"The code defines a method called ""addRestart"" that takes a long parameter ""now"". It assigns the value of ""now"" to an array called ""restarts"" at the current index, and then updates the index by incrementing it by 1 (with a modulo operation to ensure it stays within the array bounds)."
+82,numRestarts(long),num restarts since ,Method,,,co.paralleluniverse.actors.behaviors.RestartHistory+mod(int) co.paralleluniverse.actors.behaviors.RestartHistory+mod(int) co.paralleluniverse.actors.behaviors.RestartHistory+mod(int) co.paralleluniverse.actors.behaviors.RestartHistory+mod(int),co.paralleluniverse.actors.behaviors.RestartHistory+index co.paralleluniverse.actors.behaviors.RestartHistory+index co.paralleluniverse.actors.behaviors.RestartHistory+restarts co.paralleluniverse.actors.behaviors.RestartHistory+restarts co.paralleluniverse.actors.behaviors.RestartHistory+index,414,11,1,,"public int numRestarts(long since) {
+            int count = 0;
+            for (int i = mod(index - 1); i != index; i = mod(i - 1)) {
+                if (restarts[i] < since) // || restarts[i] == 0L is implied
+                    break;
+                count++;
+            }
+            if (restarts[index] >= since) // || restarts[i] == 0L is implied
+                count++;
+            return count;
+        }",False,False,"This method counts the number of restarts that have occurred since a given time. It iterates through an array of restart times, starting from the most recent restart and moving backwards. It stops counting when it reaches a restart time that is earlier than the given time. Finally, it checks if the current restart time is equal to or later than the given time and increments the count accordingly. The method returns the total count of restarts.",False,"The `numRestarts` method returns the number of restarts that have occurred since a given timestamp. It iterates through the `restarts` array in reverse order, counting the number of restarts that are greater than or equal to the given timestamp. The count is incremented by 1 if the restart at the current index is also greater than or equal to the timestamp."
+83,mod(int),mod i ,Method,,,,co.paralleluniverse.actors.behaviors.RestartHistory+restarts co.paralleluniverse.actors.behaviors.RestartHistory+restarts co.paralleluniverse.actors.behaviors.RestartHistory+restarts,332,8,2,,"private int mod(int i) {
+            // could be made fast by forcing restarts.length to be a power of two, but for now, we don't need this to be fast.
+            if (i >= restarts.length)
+                return i - restarts.length;
+            if (i < 0)
+                return i + restarts.length;
+            return i;
+        }",False,False,"The function ""mod"" returns the modulus of an integer ""i"" with respect to the length of the ""restarts"" array. If ""i"" is greater than or equal to the length of ""restarts"", it subtracts the length. If ""i"" is negative, it adds the length. Otherwise, it returns ""i"" as is.",False,"The `mod` method takes an integer `i` and returns the modulus of `i` with respect to the length of the `restarts` array. If `i` is greater than or equal to the length of `restarts`, it subtracts the length from `i`. If `i` is negative, it adds the length to `i`. Otherwise, it returns `i` as is."

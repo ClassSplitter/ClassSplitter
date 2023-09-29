@@ -1,0 +1,1048 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,CLUSTER,cluster ,Field,,,,,67,1,26,,"private static final String CLUSTER = ""cluster-foo.googleapis.com"";",False,False,,False,
+2,AUTHORITY,authority ,Field,,,,,57,1,26,,"private static final String AUTHORITY = ""api.google.com"";",False,False,,False,
+3,EDS_SERVICE_NAME,eds service name ,Field,,,,,72,1,26,,"private static final String EDS_SERVICE_NAME = ""service.googleapis.com"";",False,False,,False,
+4,LRS_SERVER_NAME,lrs server name ,Field,,,,,67,1,26,,"private static final String LRS_SERVER_NAME = ""lrs.googleapis.com"";",False,False,,False,
+5,locality1,locality1 ,Field,,,,,104,2,18,,"private final Locality locality1 =
+      new Locality(""test-region-1"", ""test-zone-1"", ""test-subzone-1"");",False,False,,False,
+6,locality2,locality2 ,Field,,,,,104,2,18,,"private final Locality locality2 =
+      new Locality(""test-region-2"", ""test-zone-2"", ""test-subzone-2"");",False,False,,False,
+7,locality3,locality3 ,Field,,,,,104,2,18,,"private final Locality locality3 =
+      new Locality(""test-region-3"", ""test-zone-3"", ""test-subzone-3"");",False,False,,False,
+8,syncContext,sync context ,Field,,,,,264,7,18,,"private final SynchronizationContext syncContext = new SynchronizationContext(
+      new Thread.UncaughtExceptionHandler() {
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+          throw new AssertionError(e);
+        }
+      });",False,False,,False,
+9,fakeClock,fake clock ,Field,,,,,52,1,18,,private final FakeClock fakeClock = new FakeClock();,False,False,,False,
+10,registry,registry ,Field,,,,,73,1,18,,private final LoadBalancerRegistry registry = new LoadBalancerRegistry();,False,False,,False,
+11,roundRobin,round robin ,Field,,,,,120,2,18,,"private final PolicySelection roundRobin =
+      new PolicySelection(new FakeLoadBalancerProvider(""round_robin""), null);",False,False,,False,
+12,weightedTarget,weighted target ,Field,,,,,138,2,18,,"private final PolicySelection weightedTarget =
+      new PolicySelection(new FakeLoadBalancerProvider(WEIGHTED_TARGET_POLICY_NAME), null);",False,False,,False,
+13,downstreamBalancers,downstream balancers ,Field,,,,,77,1,18,,private final List<FakeLoadBalancer> downstreamBalancers = new ArrayList<>();,True,True,,False,
+14,xdsClient,xds client ,Field,,,,,60,1,18,,private final FakeXdsClient xdsClient = new FakeXdsClient();,False,False,,False,
+15,xdsClientPool,xds client pool ,Field,,,,,302,13,18,,"private final ObjectPool<XdsClient> xdsClientPool = new ObjectPool<XdsClient>() {
+    @Override
+    public XdsClient getObject() {
+      xdsClientRefs++;
+      return xdsClient;
+    }
+
+    @Override
+    public XdsClient returnObject(Object object) {
+      xdsClientRefs--;
+      return null;
+    }
+  };",False,False,,False,
+16,helper,helper ,Field,,,,,56,1,2,,private LoadBalancer.Helper helper = new FakeLbHelper();,False,False,,False,
+17,mockRandom,mock random ,Field,,,,,44,2,2,,"@Mock
+  private ThreadSafeRandom mockRandom;",True,True,,False,
+18,xdsClientRefs,xds client refs ,Field,,,,,26,1,2,,private int xdsClientRefs;,False,False,,False,
+19,currentState,current state ,Field,,,,,39,1,2,,private ConnectivityState currentState;,False,False,,False,
+20,currentPicker,current picker ,Field,,,,,39,1,2,,private SubchannelPicker currentPicker;,False,False,,False,
+21,loadBalancer,load balancer ,Field,,,,,38,1,2,,private EdsLoadBalancer2 loadBalancer;,False,False,,False,
+22,setUp(),set up ,Method,,,"+() +getOrCreate(String,String)",,1122,27,1,,"@Before
+  public void setUp() {
+    MockitoAnnotations.initMocks(this);
+
+    CallCounterProvider callCounterProvider = new CallCounterProvider() {
+      @Override
+      public AtomicLong getOrCreate(String cluster, @Nullable String edsServiceName) {
+        return new AtomicLong();
+      }
+    };
+
+    registry.register(new FakeLoadBalancerProvider(PRIORITY_POLICY_NAME));
+    registry.register(new FakeLoadBalancerProvider(LRS_POLICY_NAME));
+    loadBalancer = new EdsLoadBalancer2(helper, registry, mockRandom);
+    loadBalancer.handleResolvedAddresses(
+        ResolvedAddresses.newBuilder()
+            .setAddresses(Collections.<EquivalentAddressGroup>emptyList())
+            .setAttributes(
+                Attributes.newBuilder()
+                    .set(XdsAttributes.XDS_CLIENT_POOL, xdsClientPool)
+                    .set(XdsAttributes.CALL_COUNTER_PROVIDER, callCounterProvider)
+                    .build())
+            .setLoadBalancingPolicyConfig(
+                new EdsConfig(
+                    CLUSTER, EDS_SERVICE_NAME, LRS_SERVER_NAME, null, weightedTarget, roundRobin))
+            .build());
+  }",False,False,"The function of the given method is to set up the necessary objects and configurations for the EdsLoadBalancer2 class. It initializes the MockitoAnnotations, creates a CallCounterProvider object, registers FakeLoadBalancerProvider objects, and sets up the load balancer with the necessary attributes and configurations.",False,"The code is a setup method that initializes a Mockito mock, creates a CallCounterProvider object, registers two FakeLoadBalancerProvider objects, and initializes an EdsLoadBalancer2 object with the necessary attributes and configurations."
+23,tearDown(),tear down ,Method,,,io.grpc.xds.EdsLoadBalancer2+shutdown() io.grpc.xds.EdsLoadBalancer2+shutdown(),io.grpc.xds.EdsLoadBalancer2Test+loadBalancer io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchers io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+xdsClientRefs io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers,253,8,1,,"@After
+  public void tearDown() {
+    loadBalancer.shutdown();
+    assertThat(xdsClient.watchers).isEmpty();
+    assertThat(xdsClient.clusterStats).isEmpty();
+    assertThat(xdsClientRefs).isEqualTo(0);
+    assertThat(downstreamBalancers).isEmpty();
+  }",False,False,"This method is used to clean up resources and perform assertions after each test. It shuts down the load balancer, checks that certain lists and counters are empty, and verifies that the number of references to the xdsClient is zero.",False,"The `tearDown` method is executed after each test and is responsible for cleaning up resources. It shuts down the `loadBalancer`, verifies that certain lists and counters are empty, and ensures that the number of `xdsClientRefs` is zero."
+24,receiveFirstEndpointResource(),receive first endpoint resource ,Method,,,"io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString()",io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test+locality3 io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+name io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+config io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+priorities io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+childConfigs io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+childConfigs io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality3 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality3 io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test+locality3,3964,69,1,,"@Test
+  public void receiveFirstEndpointResource() {
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    EquivalentAddressGroup endpoint2 = makeAddress(""endpoint-addr-2"");
+    EquivalentAddressGroup endpoint3 = makeAddress(""endpoint-addr-3"");
+    EquivalentAddressGroup endpoint4 = makeAddress(""endpoint-addr-4"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 70, ImmutableMap.of(endpoint1, true, endpoint2, true));
+    LocalityLbEndpoints localityLbEndpoints2 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint3, true));
+    LocalityLbEndpoints localityLbEndpoints3 =
+        buildLocalityLbEndpoints(2, 20, Collections.singletonMap(endpoint4, true));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME,
+        ImmutableMap.of(
+            locality1, localityLbEndpoints1,
+            locality2, localityLbEndpoints2,
+            locality3, localityLbEndpoints3));
+    assertThat(downstreamBalancers).hasSize(1);
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    assertThat(childBalancer.name).isEqualTo(PRIORITY_POLICY_NAME);
+    PriorityLbConfig config = (PriorityLbConfig) childBalancer.config;
+    assertThat(config.priorities).containsExactly(""priority1"", ""priority2"");
+    PolicySelection child1 = config.childConfigs.get(""priority1"");
+    assertThat(child1.getProvider().getPolicyName()).isEqualTo(WEIGHTED_TARGET_POLICY_NAME);
+    WeightedTargetConfig childConfig1 = (WeightedTargetConfig) child1.getConfig();
+    assertThat(childConfig1.targets).hasSize(2);
+    WeightedPolicySelection target1 = childConfig1.targets.get(locality1.toString());
+    assertThat(target1.weight).isEqualTo(70);
+    assertThat(target1.policySelection.getProvider().getPolicyName()).isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) target1.policySelection.getConfig(), CLUSTER, EDS_SERVICE_NAME,
+        LRS_SERVER_NAME, locality1, ""round_robin"");
+    WeightedPolicySelection target2 = childConfig1.targets.get(locality2.toString());
+    assertThat(target2.weight).isEqualTo(10);
+    assertThat(target2.policySelection.getProvider().getPolicyName()).isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) target2.policySelection.getConfig(), CLUSTER, EDS_SERVICE_NAME,
+        LRS_SERVER_NAME, locality2, ""round_robin"");
+
+    PolicySelection child2 = config.childConfigs.get(""priority2"");
+    assertThat(child2.getProvider().getPolicyName()).isEqualTo(WEIGHTED_TARGET_POLICY_NAME);
+    WeightedTargetConfig childConfig2 = (WeightedTargetConfig) child2.getConfig();
+    assertThat(childConfig2.targets).hasSize(1);
+    WeightedPolicySelection target3 = childConfig2.targets.get(locality3.toString());
+    assertThat(target3.weight).isEqualTo(20);
+    assertThat(target3.policySelection.getProvider().getPolicyName()).isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) target3.policySelection.getConfig(), CLUSTER, EDS_SERVICE_NAME,
+        LRS_SERVER_NAME, locality3, ""round_robin"");
+
+    List<EquivalentAddressGroup> priorityAddr1 =
+        AddressFilter.filter(childBalancer.addresses, ""priority1"");
+    assertThat(priorityAddr1).hasSize(3);
+    assertAddressesEqual(
+        Arrays.asList(endpoint1, endpoint2, endpoint3),
+        priorityAddr1);
+    assertAddressesEqual(
+        Arrays.asList(endpoint1, endpoint2),
+        AddressFilter.filter(priorityAddr1, locality1.toString()));
+    assertAddressesEqual(
+        Collections.singletonList(endpoint3),
+        AddressFilter.filter(priorityAddr1, locality2.toString()));
+
+    List<EquivalentAddressGroup> priorityAddr2 =
+        AddressFilter.filter(childBalancer.addresses, ""priority2"");
+    assertThat(priorityAddr2).hasSize(1);
+    assertAddressesEqual(Collections.singletonList(endpoint4), priorityAddr2);
+    assertAddressesEqual(
+        Collections.singletonList(endpoint4),
+        AddressFilter.filter(priorityAddr2, locality3.toString()));
+  }",False,False,"The function receives endpoint resources and builds locality load balancing endpoints. It then delivers the cluster load assignment to the xdsClient. It asserts the size of downstreamBalancers and checks the configuration of childBalancer and its targets. Finally, it filters and asserts the addresses for each priority.",False,"The code is a unit test that verifies the behavior of a method called `receiveFirstEndpointResource`. It sets up a mock environment and asserts various conditions on the output of the method, including the size and contents of certain data structures."
+25,endpointResourceUpdated(),endpoint resource updated ,Method,,,"io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString()",io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+name io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+config io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+priorities io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+childConfigs io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+config io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+priorities io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+childConfigs io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test+locality2,3077,55,1,,"@Test
+  public void endpointResourceUpdated() {
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint1, true));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME, ImmutableMap.of(locality1, localityLbEndpoints1));
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+
+    assertThat(childBalancer.name).isEqualTo(PRIORITY_POLICY_NAME);
+    PriorityLbConfig config = (PriorityLbConfig) childBalancer.config;
+    assertThat(config.priorities).containsExactly(""priority1"");
+    PolicySelection child = config.childConfigs.get(""priority1"");
+    assertThat(child.getProvider().getPolicyName()).isEqualTo(WEIGHTED_TARGET_POLICY_NAME);
+    WeightedTargetConfig childConfig = (WeightedTargetConfig) child.getConfig();
+    assertThat(childConfig.targets).hasSize(1);
+    WeightedPolicySelection target = childConfig.targets.get(locality1.toString());
+    assertThat(target.weight).isEqualTo(10);
+    assertThat(target.policySelection.getProvider().getPolicyName()).isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) target.policySelection.getConfig(), CLUSTER, EDS_SERVICE_NAME,
+        LRS_SERVER_NAME, locality1, ""round_robin"");
+
+    List<EquivalentAddressGroup> priorityAddr =
+        AddressFilter.filter(childBalancer.addresses, ""priority1"");
+    assertThat(priorityAddr).hasSize(1);
+    assertAddressesEqual(Collections.singletonList(endpoint1), priorityAddr);
+    assertAddressesEqual(
+        Collections.singletonList(endpoint1),
+        AddressFilter.filter(priorityAddr, locality1.toString()));
+
+    EquivalentAddressGroup endpoint2 = makeAddress(""endpoint-addr-2"");
+    LocalityLbEndpoints localityLbEndpoints2 =
+        buildLocalityLbEndpoints(1, 30, Collections.singletonMap(endpoint2, true));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME, ImmutableMap.of(locality2, localityLbEndpoints2));
+
+    config = (PriorityLbConfig) childBalancer.config;
+    assertThat(config.priorities).containsExactly(""priority1"");
+    child = config.childConfigs.get(""priority1"");
+    assertThat(child.getProvider().getPolicyName()).isEqualTo(WEIGHTED_TARGET_POLICY_NAME);
+    childConfig = (WeightedTargetConfig) child.getConfig();
+    assertThat(childConfig.targets).hasSize(1);
+    target = childConfig.targets.get(locality2.toString());
+    assertThat(target.weight).isEqualTo(30);
+    assertThat(target.policySelection.getProvider().getPolicyName()).isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) target.policySelection.getConfig(), CLUSTER, EDS_SERVICE_NAME,
+        LRS_SERVER_NAME, locality2, ""round_robin"");
+
+    priorityAddr = AddressFilter.filter(childBalancer.addresses, ""priority1"");
+    assertThat(priorityAddr).hasSize(1);
+    assertAddressesEqual(Collections.singletonList(endpoint2), priorityAddr);
+    assertAddressesEqual(
+        Collections.singletonList(endpoint2),
+        AddressFilter.filter(priorityAddr, locality2.toString()));
+  }",False,False,"The function of the given method is to test the behavior of the ""endpointResourceUpdated"" method. It sets up test data, calls the method being tested, and asserts the expected results.",False,The code is a unit test for the `endpointResourceUpdated` method. It verifies that the `childBalancer` object is correctly updated with new endpoint addresses and weights when the `xdsClient` delivers a cluster load assignment. It also checks that the `childBalancer` object is correctly filtered based on priorities and localities.
+26,endpointResourceNeverExist(),endpoint resource never exist ,Method,,,io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverResourceNotFound(String) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverResourceNotFound(String) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+getCode() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getCode() io.grpc.Status+getDescription() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getDescription(),io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME,472,9,1,,"@Test
+  public void endpointResourceNeverExist() {
+    xdsClient.deliverResourceNotFound(EDS_SERVICE_NAME);
+    assertThat(currentState).isEqualTo(ConnectivityState.TRANSIENT_FAILURE);
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().getCode()).isEqualTo(Code.UNAVAILABLE);
+    assertThat(result.getStatus().getDescription())
+        .isEqualTo(""Resource "" + EDS_SERVICE_NAME + "" is unavailable"");
+  }",False,False,This method is a test method that checks if an endpoint resource does not exist. It simulates a resource not found scenario and verifies that the current state is set to TRANSIENT_FAILURE. It also verifies that the pick result status code is UNAVAILABLE and the status description matches the expected message.,False,"The code is a test method that verifies the behavior when an endpoint resource does not exist. It simulates a resource not found error and checks that the current state is set to TRANSIENT_FAILURE, and the resulting status code and description indicate that the resource is unavailable."
+27,endpointResourceRemoved(),endpoint resource removed ,Method,,,io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverResourceNotFound(String) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverResourceNotFound(String) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+getCode() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getCode() io.grpc.Status+getDescription() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getDescription(),io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME,711,14,1,,"@Test
+  public void endpointResourceRemoved() {
+    deliverSimpleClusterLoadAssignment(EDS_SERVICE_NAME);
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    assertThat(childBalancer.shutdown).isFalse();
+
+    xdsClient.deliverResourceNotFound(EDS_SERVICE_NAME);
+    assertThat(childBalancer.shutdown).isTrue();
+    assertThat(currentState).isEqualTo(ConnectivityState.TRANSIENT_FAILURE);
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().getCode()).isEqualTo(Code.UNAVAILABLE);
+    assertThat(result.getStatus().getDescription())
+        .isEqualTo(""Resource "" + EDS_SERVICE_NAME + "" is unavailable"");
+  }",False,False,"The function of the given method is to test the behavior of the endpointResourceRemoved() method. It verifies that when the EDS service name is not found, the childBalancer is shutdown, the currentState is set to TRANSIENT_FAILURE, and the result status code is set to UNAVAILABLE with the corresponding description.",False,"The code is a unit test for a method called `endpointResourceRemoved()`. It verifies that when a resource is not found, the child balancer is shut down, the current state is set to transient failure, and the pick result returns an unavailable status with a specific description."
+28,handleEndpointResource_ignoreUnhealthyEndpoints(),handleendpointresource ignoreunhealthyendpoints ,Method,,,"io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+keySet() java.util.Map+keySet() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString()",io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+config io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+childConfigs io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test+locality1,1247,23,1,,"@Test
+  public void handleEndpointResource_ignoreUnhealthyEndpoints() {
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    EquivalentAddressGroup endpoint2 = makeAddress(""endpoint-addr-2"");
+    LocalityLbEndpoints localityLbEndpoints =
+        buildLocalityLbEndpoints(1, 10, ImmutableMap.of(endpoint1, false, endpoint2, true));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME, Collections.singletonMap(locality1, localityLbEndpoints));
+
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    PriorityLbConfig config = (PriorityLbConfig) childBalancer.config;
+    PolicySelection child = config.childConfigs.get(""priority1"");
+    WeightedTargetConfig childConfig = (WeightedTargetConfig) child.getConfig();
+    assertThat(childConfig.targets.keySet()).containsExactly(locality1.toString());
+
+    List<EquivalentAddressGroup> priorityAddr =
+        AddressFilter.filter(childBalancer.addresses, ""priority1"");
+    assertThat(priorityAddr).hasSize(1);
+    assertAddressesEqual(Collections.singletonList(endpoint2), priorityAddr);
+    assertAddressesEqual(
+        Collections.singletonList(endpoint2),
+        AddressFilter.filter(priorityAddr, locality1.toString()));
+  }",False,False,"The function of the given method is to test the behavior of the ""handleEndpointResource_ignoreUnhealthyEndpoints"" method. It sets up the necessary data and conditions, and then asserts the expected results using various assertions.",False,The code is a unit test for a method called `handleEndpointResource_ignoreUnhealthyEndpoints()`. It tests the behavior of filtering out unhealthy endpoints from a list of locality load balancer endpoints. The test verifies that only healthy endpoints are included in the filtered list.
+29,handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints(),handleendpointresource ignorelocalitieswithnohealthyendpoints ,Method,,,"io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+keySet() java.util.Map+keySet() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString()",io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+config io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+childConfigs io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test+locality2,1418,26,1,,"@Test
+  public void handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints() {
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    EquivalentAddressGroup endpoint2 = makeAddress(""endpoint-addr-2"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint1, false));
+    LocalityLbEndpoints localityLbEndpoints2 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint2, true));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME,
+        ImmutableMap.of(locality1, localityLbEndpoints1, locality2, localityLbEndpoints2));
+
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    PriorityLbConfig config = (PriorityLbConfig) childBalancer.config;
+    PolicySelection child = config.childConfigs.get(""priority1"");
+    WeightedTargetConfig childConfig = (WeightedTargetConfig) child.getConfig();
+    assertThat(childConfig.targets.keySet()).containsExactly(locality2.toString());
+
+    List<EquivalentAddressGroup> priorityAddr =
+        AddressFilter.filter(childBalancer.addresses, ""priority1"");
+    assertThat(priorityAddr).hasSize(1);
+    assertAddressesEqual(Collections.singletonList(endpoint2), priorityAddr);
+    assertAddressesEqual(
+        Collections.singletonList(endpoint2),
+        AddressFilter.filter(priorityAddr, locality2.toString()));
+  }",False,False,"The function of the given method is to test the behavior of the ""handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints"" method. It sets up the necessary data and asserts the expected results.",False,"The code is a unit test for a method called `handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints()`. It sets up some test data related to endpoint addresses and locality load balancing, and then asserts that the expected addresses are filtered correctly based on the provided conditions."
+30,handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints(),handleendpointresource ignoreprioritieswithnohealthyendpoints ,Method,,,"io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.AddressFilter+filter(List<EquivalentAddressGroup>,String) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString()",io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+config io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+priorities io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test+locality2,1251,24,1,,"@Test
+  public void handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints() {
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    EquivalentAddressGroup endpoint2 = makeAddress(""endpoint-addr-2"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint1, false));
+    LocalityLbEndpoints localityLbEndpoints2 =
+        buildLocalityLbEndpoints(2, 10, Collections.singletonMap(endpoint2, true));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME,
+        ImmutableMap.of(locality1, localityLbEndpoints1, locality2, localityLbEndpoints2));
+
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    PriorityLbConfig config = (PriorityLbConfig) childBalancer.config;
+    assertThat(config.priorities).containsExactly(""priority2"");
+
+    List<EquivalentAddressGroup> priorityAddr =
+        AddressFilter.filter(childBalancer.addresses, ""priority2"");
+    assertThat(priorityAddr).hasSize(1);
+    assertAddressesEqual(Collections.singletonList(endpoint2), priorityAddr);
+    assertAddressesEqual(
+        Collections.singletonList(endpoint2),
+        AddressFilter.filter(priorityAddr, locality2.toString()));
+  }",False,False,"The function of the given method is to test the behavior of the ""handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints"" method. It sets up the necessary data and conditions, and then asserts the expected results using various assertions.",False,The code is a unit test for a method called `handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints()`. It sets up two `LocalityLbEndpoints` objects with different health statuses and delivers them to an `xdsClient`. It then verifies that the `PriorityLbConfig` of a child balancer is correctly updated and that the filtered addresses match the expected results.
+31,handleEndpointResource_errorIfNoUsableEndpoints(),handleendpointresource errorifnousableendpoints ,Method,,,"io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.Status+getCode() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getCode() io.grpc.Status+getDescription() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getDescription()",io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker,1093,20,1,,"@Test
+  public void handleEndpointResource_errorIfNoUsableEndpoints() {
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    EquivalentAddressGroup endpoint2 = makeAddress(""endpoint-addr-2"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint1, false));
+    LocalityLbEndpoints localityLbEndpoints2 =
+        buildLocalityLbEndpoints(2, 10, Collections.singletonMap(endpoint2, false));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME,
+        ImmutableMap.of(locality1, localityLbEndpoints1, locality2, localityLbEndpoints2));
+
+    assertThat(downstreamBalancers).isEmpty();
+    assertThat(currentState).isEqualTo(ConnectivityState.TRANSIENT_FAILURE);
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().isOk()).isFalse();
+    assertThat(result.getStatus().getCode()).isEqualTo(Code.UNAVAILABLE);
+    assertThat(result.getStatus().getDescription())
+        .isEqualTo(""No usable priority/locality/endpoint"");
+  }",False,False,"The function of this method is to test the behavior of the ""handleEndpointResource"" method when there are no usable endpoints available. It sets up the necessary objects and conditions, and then asserts that the expected behavior occurs.",False,"The code is a unit test for a method called `handleEndpointResource_errorIfNoUsableEndpoints()`. It sets up two `LocalityLbEndpoints` objects with corresponding `EquivalentAddressGroup` endpoints and delivers them to an `xdsClient`. It then asserts that the `downstreamBalancers` list is empty, the `currentState` is `ConnectivityState.TRANSIENT_FAILURE`, and the `currentPicker` returns a `PickResult` with an unavailable status and a description of ""No usable priority/locality/endpoint""."
+32,handleEndpointResource_shutDownExistingChildLbPoliciesIfNoUsableEndpoints(),handleendpointresource shutdownexistingchildlbpoliciesifnousableendpoints ,Method,,,"io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.Status+getCode() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getCode() io.grpc.Status+getDescription() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getDescription()",io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker,1079,20,1,,"@Test
+  public void handleEndpointResource_shutDownExistingChildLbPoliciesIfNoUsableEndpoints() {
+    deliverSimpleClusterLoadAssignment(EDS_SERVICE_NAME);
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    assertThat(childBalancer.shutdown).isFalse();
+
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint1, false));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME, Collections.singletonMap(locality1, localityLbEndpoints1));
+
+    assertThat(childBalancer.shutdown).isTrue();
+    assertThat(currentState).isEqualTo(ConnectivityState.TRANSIENT_FAILURE);
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().isOk()).isFalse();
+    assertThat(result.getStatus().getCode()).isEqualTo(Code.UNAVAILABLE);
+    assertThat(result.getStatus().getDescription())
+        .isEqualTo(""No usable priority/locality/endpoint"");
+  }",False,False,"The function of the method is to test the behavior of the ""handleEndpointResource_shutDownExistingChildLbPoliciesIfNoUsableEndpoints"" method. It verifies that when there are no usable endpoints, the child load balancer policies are shut down and the appropriate status codes and descriptions are returned.",False,"The code is a unit test for a method called `handleEndpointResource_shutDownExistingChildLbPoliciesIfNoUsableEndpoints()`. It tests the behavior of shutting down child load balancer policies if there are no usable endpoints available. It verifies that the child balancer is shut down, the current state is set to transient failure, and a pick result with an unavailable status is returned."
+33,handleDrops(),handle drops ,Method,,,,,3191,54,1,,"@Test
+  public void handleDrops() {
+    FakeLoadBalancerProvider fakeRoundRobinProvider = new FakeLoadBalancerProvider(""round_robin"");
+    PolicySelection fakeRoundRobinSelection = new PolicySelection(fakeRoundRobinProvider, null);
+    PolicySelection weightedTargetSelection = prepareRealDownstreamLbPolicies();
+    loadBalancer.handleResolvedAddresses(
+        ResolvedAddresses.newBuilder()
+            .setAddresses(Collections.<EquivalentAddressGroup>emptyList())
+            .setAttributes(
+                Attributes.newBuilder().set(XdsAttributes.XDS_CLIENT_POOL, xdsClientPool).build())
+            .setLoadBalancingPolicyConfig(
+                new EdsConfig(CLUSTER, EDS_SERVICE_NAME, LRS_SERVER_NAME, null,
+                    weightedTargetSelection, fakeRoundRobinSelection))
+            .build());
+    when(mockRandom.nextInt(anyInt())).thenReturn(499_999, 999_999, 1_000_000);
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint1, true));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME,
+        Collections.singletonList(new DropOverload(""throttle"", 500_000)),
+        Collections.singletonMap(locality1, localityLbEndpoints1));
+    assertThat(downstreamBalancers).hasSize(1);  // one leaf balancer
+    FakeLoadBalancer leafBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    assertThat(leafBalancer.name).isEqualTo(""round_robin"");
+    assertAddressesEqual(Collections.singletonList(makeAddress(""endpoint-addr-1"")),
+        leafBalancer.addresses);
+    Subchannel subchannel = leafBalancer.helper.createSubchannel(
+        CreateSubchannelArgs.newBuilder().setAddresses(leafBalancer.addresses).build());
+    leafBalancer.deliverSubchannelState(subchannel, ConnectivityState.READY);
+    assertThat(currentState).isEqualTo(ConnectivityState.READY);
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().isOk()).isFalse();
+    assertThat(result.getStatus().getCode()).isEqualTo(Code.UNAVAILABLE);
+    assertThat(result.getStatus().getDescription()).isEqualTo(""Dropped: throttle"");
+    assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).categorizedDrops.get(""throttle""))
+        .isEqualTo(1);
+
+    //  Dynamically update drop policies.
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME,
+        Collections.singletonList(new DropOverload(""lb"", 1_000_000)),
+        Collections.singletonMap(locality1, localityLbEndpoints1));
+    result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().isOk()).isFalse();
+    assertThat(result.getStatus().getCode()).isEqualTo(Code.UNAVAILABLE);
+    assertThat(result.getStatus().getDescription()).isEqualTo(""Dropped: lb"");
+    assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).categorizedDrops.get(""lb""))
+        .isEqualTo(1);
+
+    result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().isOk()).isTrue();
+    assertThat(result.getSubchannel()).isSameInstanceAs(subchannel);
+  }",True,True,"The function of the method is to test the behavior of the ""handleDrops"" method in a load balancer. It sets up fake load balancer providers and policies, handles resolved addresses, delivers cluster load assignments with drop policies, and asserts the expected behavior and results.",False,The code is a unit test for a method called `handleDrops()`. It sets up a fake load balancer and prepares the necessary configurations. It then simulates the delivery of cluster load assignments with drop policies and verifies the behavior of the load balancer when picking subchannels.
+34,maxConcurrentRequests_appliedByLbConfig_enableCircuitBreaking(),maxconcurrentrequests appliedbylbconfig enablecircuitbreaking ,Method,,,io.grpc.xds.EdsLoadBalancer2Test+subtest_maxConcurrentRequests_appliedByLbConfig(boolean) io.grpc.xds.EdsLoadBalancer2Test+subtest_maxConcurrentRequests_appliedByLbConfig(boolean),io.grpc.xds.EdsLoadBalancer2+enableCircuitBreaking io.grpc.xds.EdsLoadBalancer2+enableCircuitBreaking io.grpc.xds.EdsLoadBalancer2+enableCircuitBreaking,359,7,1,,"@Test
+  public void maxConcurrentRequests_appliedByLbConfig_enableCircuitBreaking() {
+    boolean originalEnableCircuitBreaking = EdsLoadBalancer2.enableCircuitBreaking;
+    EdsLoadBalancer2.enableCircuitBreaking = true;
+    subtest_maxConcurrentRequests_appliedByLbConfig(true);
+    EdsLoadBalancer2.enableCircuitBreaking = originalEnableCircuitBreaking;
+  }",True,True,"The function of the method is to enable circuit breaking for the EdsLoadBalancer2 class by setting the enableCircuitBreaking variable to true, running a subtest, and then restoring the original value of enableCircuitBreaking.",False,"The code is a test method that sets the value of a static variable `enableCircuitBreaking` in the `EdsLoadBalancer2` class to `true`, calls another method `subtest_maxConcurrentRequests_appliedByLbConfig` with a `true` argument, and then restores the original value of `enableCircuitBreaking` after the test is completed."
+35,maxConcurrentRequests_appliedByLbConfig_circuitBreakingDisabledByDefault(),maxconcurrentrequests appliedbylbconfig circuitbreakingdisabledbydefault ,Method,,,io.grpc.xds.EdsLoadBalancer2Test+subtest_maxConcurrentRequests_appliedByLbConfig(boolean) io.grpc.xds.EdsLoadBalancer2Test+subtest_maxConcurrentRequests_appliedByLbConfig(boolean),,160,4,1,,"@Test
+  public void maxConcurrentRequests_appliedByLbConfig_circuitBreakingDisabledByDefault() {
+    subtest_maxConcurrentRequests_appliedByLbConfig(false);
+  }",True,True,"The function of the given method is to test the behavior of the ""maxConcurrentRequests"" feature when it is applied by the ""LbConfig"" and to verify that circuit breaking is disabled by default.",False,The code is a test method that verifies that the maximum number of concurrent requests applied by the load balancer configuration is disabled by default. It calls the `subtest_maxConcurrentRequests_appliedByLbConfig` method with a `false` parameter to perform the test.
+36,subtest_maxConcurrentRequests_appliedByLbConfig(boolean),subtest maxconcurrentrequests appliedbylbconfig enable circuit breaking ,Method,maxConcurrentRequests_appliedByLbConfig_enableCircuitBreaking() maxConcurrentRequests_appliedByLbConfig_circuitBreakingDisabledByDefault(),,"io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+FakeLoadBalancerProvider(String) io.grpc.internal.ServiceConfigUtil.PolicySelection+PolicySelection(LoadBalancerProvider,Object) io.grpc.xds.EdsLoadBalancer2Test+prepareRealDownstreamLbPolicies() io.grpc.xds.EdsLoadBalancer2Test+prepareRealDownstreamLbPolicies() io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.Attributes.Builder+build() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes+newBuilder() io.grpc.Attributes+newBuilder() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes.Builder+build() io.grpc.xds.EdsLoadBalancerProvider.EdsConfig+EdsConfig(String,String,String,Long,PolicySelection,PolicySelection) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.LoadBalancer.Helper+createSubchannel(CreateSubchannelArgs) io.grpc.LoadBalancer.Helper+createSubchannel(CreateSubchannelArgs) io.grpc.LoadBalancer.CreateSubchannelArgs.Builder+build() io.grpc.LoadBalancer.CreateSubchannelArgs.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.CreateSubchannelArgs+newBuilder() io.grpc.LoadBalancer.CreateSubchannelArgs+newBuilder() io.grpc.LoadBalancer.CreateSubchannelArgs.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.CreateSubchannelArgs.Builder+build() io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+deliverSubchannelState(Subchannel,ConnectivityState) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+deliverSubchannelState(Subchannel,ConnectivityState) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getStreamTracerFactory() io.grpc.LoadBalancer.PickResult+getStreamTracerFactory() io.grpc.LoadBalancer.PickResult+getStreamTracerFactory() io.grpc.LoadBalancer.PickResult+getStreamTracerFactory() io.grpc.ClientStreamTracer.Factory+newClientStreamTracer(StreamInfo,Metadata) io.grpc.ClientStreamTracer.Factory+newClientStreamTracer(StreamInfo,Metadata) io.grpc.ClientStreamTracer.StreamInfo.Builder+build() io.grpc.ClientStreamTracer.StreamInfo+newBuilder() io.grpc.ClientStreamTracer.StreamInfo+newBuilder() io.grpc.ClientStreamTracer.StreamInfo.Builder+build() io.grpc.Metadata+Metadata() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.Status+getCode() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getCode() io.grpc.Status+getDescription() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getDescription() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getSubchannel() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.Attributes.Builder+build() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes+newBuilder() io.grpc.Attributes+newBuilder() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes.Builder+build() io.grpc.xds.EdsLoadBalancerProvider.EdsConfig+EdsConfig(String,String,String,Long,PolicySelection,PolicySelection) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getSubchannel() java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object)",io.grpc.xds.EdsLoadBalancer2Test+loadBalancer io.grpc.xds.XdsAttributes+XDS_CLIENT_POOL io.grpc.xds.EdsLoadBalancer2Test+xdsClientPool io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+name io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+helper io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+loadBalancer io.grpc.xds.XdsAttributes+XDS_CLIENT_POOL io.grpc.xds.EdsLoadBalancer2Test+xdsClientPool io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops,4287,73,2,,"private void subtest_maxConcurrentRequests_appliedByLbConfig(boolean enableCircuitBreaking) {
+    long maxConcurrentRequests = 100L;
+    FakeLoadBalancerProvider fakeRoundRobinProvider = new FakeLoadBalancerProvider(""round_robin"");
+    PolicySelection fakeRoundRobinSelection = new PolicySelection(fakeRoundRobinProvider, null);
+    PolicySelection weightedTargetSelection = prepareRealDownstreamLbPolicies();
+    loadBalancer.handleResolvedAddresses(
+        ResolvedAddresses.newBuilder()
+            .setAddresses(Collections.<EquivalentAddressGroup>emptyList())
+            .setAttributes(
+                Attributes.newBuilder().set(XdsAttributes.XDS_CLIENT_POOL, xdsClientPool).build())
+            .setLoadBalancingPolicyConfig(
+                new EdsConfig(CLUSTER, EDS_SERVICE_NAME, LRS_SERVER_NAME, maxConcurrentRequests,
+                    weightedTargetSelection, fakeRoundRobinSelection))
+            .build());
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint1, true));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME, Collections.singletonMap(locality1, localityLbEndpoints1));
+    assertThat(downstreamBalancers).hasSize(1);  // one leaf balancer
+    FakeLoadBalancer leafBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    assertThat(leafBalancer.name).isEqualTo(""round_robin"");
+    assertAddressesEqual(Collections.singletonList(makeAddress(""endpoint-addr-1"")),
+        leafBalancer.addresses);
+    Subchannel subchannel = leafBalancer.helper.createSubchannel(
+        CreateSubchannelArgs.newBuilder().setAddresses(leafBalancer.addresses).build());
+    leafBalancer.deliverSubchannelState(subchannel, ConnectivityState.READY);
+    assertThat(currentState).isEqualTo(ConnectivityState.READY);
+    for (int i = 0; i < maxConcurrentRequests; i++) {
+      PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+      assertThat(result.getStatus().isOk()).isTrue();
+      assertThat(result.getSubchannel()).isSameInstanceAs(subchannel);
+      assertThat(result.getStreamTracerFactory()).isNotNull();
+      ClientStreamTracer.Factory streamTracerFactory = result.getStreamTracerFactory();
+      streamTracerFactory.newClientStreamTracer(ClientStreamTracer.StreamInfo.newBuilder().build(),
+          new Metadata());
+    }
+    assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).totalDrops).isEqualTo(0L);
+
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    if (enableCircuitBreaking) {
+      assertThat(result.getStatus().isOk()).isFalse();
+      assertThat(result.getStatus().getCode()).isEqualTo(Code.UNAVAILABLE);
+      assertThat(result.getStatus().getDescription())
+          .isEqualTo(""Cluster max concurrent requests limit exceeded"");
+      assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).totalDrops).isEqualTo(1L);
+    } else {
+      assertThat(result.getStatus().isOk()).isTrue();
+      assertThat(result.getSubchannel()).isSameInstanceAs(subchannel);
+      assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).totalDrops).isEqualTo(0L);
+    }
+
+    // Dynamically increment circuit breakers max_concurrent_requests threshold.
+    maxConcurrentRequests = 101L;
+    loadBalancer.handleResolvedAddresses(
+        ResolvedAddresses.newBuilder()
+            .setAddresses(Collections.<EquivalentAddressGroup>emptyList())
+            .setAttributes(
+                Attributes.newBuilder().set(XdsAttributes.XDS_CLIENT_POOL, xdsClientPool).build())
+            .setLoadBalancingPolicyConfig(
+                new EdsConfig(CLUSTER, EDS_SERVICE_NAME, LRS_SERVER_NAME, maxConcurrentRequests,
+                    weightedTargetSelection, fakeRoundRobinSelection))
+            .build());
+
+    result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().isOk()).isTrue();
+    assertThat(result.getSubchannel()).isSameInstanceAs(subchannel);
+    if (enableCircuitBreaking) {
+      assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).totalDrops).isEqualTo(1L);
+    } else {
+      assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).totalDrops).isEqualTo(0L);
+    }
+  }",True,True,The function serves to test the behavior of a load balancer when the maximum number of concurrent requests is applied by the load balancer configuration. It verifies that the load balancer correctly handles the changes in the maximum concurrent requests threshold and tracks the number of dropped requests.,False,"The code is a test method that verifies the behavior of a load balancer when the maximum number of concurrent requests is applied. It sets up a fake load balancer, delivers endpoint information, creates a subchannel, and then tests the load balancer's behavior when picking a subchannel based on the maximum concurrent requests limit. The test also checks the behavior when the limit is dynamically incremented."
+37,maxConcurrentRequests_appliedWithDefaultValue_enableCircuitBreaking(),maxconcurrentrequests appliedwithdefaultvalue enablecircuitbreaking ,Method,,,io.grpc.xds.EdsLoadBalancer2Test+subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean) io.grpc.xds.EdsLoadBalancer2Test+subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean),io.grpc.xds.EdsLoadBalancer2+enableCircuitBreaking io.grpc.xds.EdsLoadBalancer2+enableCircuitBreaking io.grpc.xds.EdsLoadBalancer2+enableCircuitBreaking,371,7,1,,"@Test
+  public void maxConcurrentRequests_appliedWithDefaultValue_enableCircuitBreaking() {
+    boolean originalEnableCircuitBreaking = EdsLoadBalancer2.enableCircuitBreaking;
+    EdsLoadBalancer2.enableCircuitBreaking = true;
+    subtest_maxConcurrentRequests_appliedWithDefaultValue(true);
+    EdsLoadBalancer2.enableCircuitBreaking = originalEnableCircuitBreaking;
+  }",True,True,"The function of this method is to test the behavior of the ""maxConcurrentRequests"" feature when it is applied with a default value, and to enable circuit breaking during the test.",False,"The code is a test method that enables circuit breaking, calls another method with a true parameter, and then restores the original value of the circuit breaking flag. It is used to test the behavior of the `subtest_maxConcurrentRequests_appliedWithDefaultValue` method when circuit breaking is enabled."
+38,maxConcurrentRequests_appliedWithDefaultValue_circuitBreakingDisabledByDefault(),maxconcurrentrequests appliedwithdefaultvalue circuitbreakingdisabledbydefault ,Method,,,io.grpc.xds.EdsLoadBalancer2Test+subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean) io.grpc.xds.EdsLoadBalancer2Test+subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean),,172,4,1,,"@Test
+  public void maxConcurrentRequests_appliedWithDefaultValue_circuitBreakingDisabledByDefault() {
+    subtest_maxConcurrentRequests_appliedWithDefaultValue(false);
+  }",True,True,"The function of the given method is to test the behavior of the ""maxConcurrentRequests"" feature when it is applied with a default value. It also verifies that the circuit breaking functionality is disabled by default.",False,"The code is a test method that verifies that when the `maxConcurrentRequests` parameter is applied with its default value, the circuit breaking feature is disabled by default. It calls another method `subtest_maxConcurrentRequests_appliedWithDefaultValue` to perform the actual test."
+39,subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean),subtest maxconcurrentrequests appliedwithdefaultvalue enable circuit breaking ,Method,maxConcurrentRequests_appliedWithDefaultValue_enableCircuitBreaking() maxConcurrentRequests_appliedWithDefaultValue_circuitBreakingDisabledByDefault(),,"io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+FakeLoadBalancerProvider(String) io.grpc.internal.ServiceConfigUtil.PolicySelection+PolicySelection(LoadBalancerProvider,Object) io.grpc.xds.EdsLoadBalancer2Test+prepareRealDownstreamLbPolicies() io.grpc.xds.EdsLoadBalancer2Test+prepareRealDownstreamLbPolicies() io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.Attributes.Builder+build() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes+newBuilder() io.grpc.Attributes+newBuilder() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes.Builder+build() io.grpc.xds.EdsLoadBalancerProvider.EdsConfig+EdsConfig(String,String,String,Long,PolicySelection,PolicySelection) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) io.grpc.xds.EdsLoadBalancer2Test+assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.LoadBalancer.Helper+createSubchannel(CreateSubchannelArgs) io.grpc.LoadBalancer.Helper+createSubchannel(CreateSubchannelArgs) io.grpc.LoadBalancer.CreateSubchannelArgs.Builder+build() io.grpc.LoadBalancer.CreateSubchannelArgs.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.CreateSubchannelArgs+newBuilder() io.grpc.LoadBalancer.CreateSubchannelArgs+newBuilder() io.grpc.LoadBalancer.CreateSubchannelArgs.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.CreateSubchannelArgs.Builder+build() io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+deliverSubchannelState(Subchannel,ConnectivityState) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+deliverSubchannelState(Subchannel,ConnectivityState) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getStreamTracerFactory() io.grpc.LoadBalancer.PickResult+getStreamTracerFactory() io.grpc.LoadBalancer.PickResult+getStreamTracerFactory() io.grpc.LoadBalancer.PickResult+getStreamTracerFactory() io.grpc.ClientStreamTracer.Factory+newClientStreamTracer(StreamInfo,Metadata) io.grpc.ClientStreamTracer.Factory+newClientStreamTracer(StreamInfo,Metadata) io.grpc.ClientStreamTracer.StreamInfo.Builder+build() io.grpc.ClientStreamTracer.StreamInfo+newBuilder() io.grpc.ClientStreamTracer.StreamInfo+newBuilder() io.grpc.ClientStreamTracer.StreamInfo.Builder+build() io.grpc.Metadata+Metadata() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.Status+getCode() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getCode() io.grpc.Status+getDescription() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getDescription() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getSubchannel() java.util.Map+get(Object) java.util.Map+get(Object)",io.grpc.xds.EdsLoadBalancer2Test+loadBalancer io.grpc.xds.XdsAttributes+XDS_CLIENT_POOL io.grpc.xds.EdsLoadBalancer2Test+xdsClientPool io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+name io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+helper io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2+DEFAULT_PER_CLUSTER_MAX_CONCURRENT_REQUESTS io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops,3223,52,2,,"private void subtest_maxConcurrentRequests_appliedWithDefaultValue(
+      boolean enableCircuitBreaking) {
+    FakeLoadBalancerProvider fakeRoundRobinProvider = new FakeLoadBalancerProvider(""round_robin"");
+    PolicySelection fakeRoundRobinSelection = new PolicySelection(fakeRoundRobinProvider, null);
+    PolicySelection weightedTargetSelection = prepareRealDownstreamLbPolicies();
+    loadBalancer.handleResolvedAddresses(
+        ResolvedAddresses.newBuilder()
+            .setAddresses(Collections.<EquivalentAddressGroup>emptyList())
+            .setAttributes(
+                Attributes.newBuilder().set(XdsAttributes.XDS_CLIENT_POOL, xdsClientPool).build())
+            .setLoadBalancingPolicyConfig(
+                new EdsConfig(CLUSTER, EDS_SERVICE_NAME, LRS_SERVER_NAME, null,
+                    weightedTargetSelection, fakeRoundRobinSelection))
+            .build());
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint1, true));
+    xdsClient.deliverClusterLoadAssignment(
+        EDS_SERVICE_NAME, Collections.singletonMap(locality1, localityLbEndpoints1));
+    assertThat(downstreamBalancers).hasSize(1);  // one leaf balancer
+    FakeLoadBalancer leafBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    assertThat(leafBalancer.name).isEqualTo(""round_robin"");
+    assertAddressesEqual(Collections.singletonList(makeAddress(""endpoint-addr-1"")),
+        leafBalancer.addresses);
+    Subchannel subchannel = leafBalancer.helper.createSubchannel(
+        CreateSubchannelArgs.newBuilder().setAddresses(leafBalancer.addresses).build());
+    leafBalancer.deliverSubchannelState(subchannel, ConnectivityState.READY);
+    assertThat(currentState).isEqualTo(ConnectivityState.READY);
+    for (int i = 0; i < EdsLoadBalancer2.DEFAULT_PER_CLUSTER_MAX_CONCURRENT_REQUESTS; i++) {
+      PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+      assertThat(result.getStatus().isOk()).isTrue();
+      assertThat(result.getSubchannel()).isSameInstanceAs(subchannel);
+      assertThat(result.getStreamTracerFactory()).isNotNull();
+      ClientStreamTracer.Factory streamTracerFactory = result.getStreamTracerFactory();
+      streamTracerFactory.newClientStreamTracer(ClientStreamTracer.StreamInfo.newBuilder().build(),
+          new Metadata());
+    }
+    assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).totalDrops).isEqualTo(0L);
+
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    if (enableCircuitBreaking) {
+      assertThat(result.getStatus().isOk()).isFalse();
+      assertThat(result.getStatus().getCode()).isEqualTo(Code.UNAVAILABLE);
+      assertThat(result.getStatus().getDescription())
+          .isEqualTo(""Cluster max concurrent requests limit exceeded"");
+      assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).totalDrops).isEqualTo(1L);
+    } else {
+      assertThat(result.getStatus().isOk()).isTrue();
+      assertThat(result.getSubchannel()).isSameInstanceAs(subchannel);
+      assertThat(xdsClient.clusterStats.get(EDS_SERVICE_NAME).totalDrops).isEqualTo(0L);
+    }
+  }",True,True,"The function of this method is to test the behavior of a load balancer when the maximum number of concurrent requests is applied with a default value. It sets up the necessary configurations, creates a subchannel, and verifies the behavior of the load balancer based on the value of the enableCircuitBreaking parameter.",False,"The code is a test method that verifies the behavior of a load balancer in handling concurrent requests. It sets up a fake load balancer with a round-robin policy and a real downstream load balancer, and then simulates the delivery of endpoint addresses. It checks if the load balancer correctly handles the maximum concurrent requests limit and drops requests accordingly."
+40,configUpdate_changeEdsServiceName_afterChildPolicyReady_switchGracefully(),configupdate changeedsservicename afterchildpolicyready switchgracefully ,Method,,,"io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+deliverSubchannelState(Subchannel,ConnectivityState) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+deliverSubchannelState(Subchannel,ConnectivityState) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.Attributes.Builder+build() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes+newBuilder() io.grpc.Attributes+newBuilder() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes.Builder+build() io.grpc.xds.EdsLoadBalancerProvider.EdsConfig+EdsConfig(String,String,String,Long,PolicySelection,PolicySelection) io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) java.util.List+get(int) java.util.List+get(int) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+deliverSubchannelState(Subchannel,ConnectivityState) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+deliverSubchannelState(Subchannel,ConnectivityState) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.PickResult+getSubchannel() io.grpc.LoadBalancer.PickResult+getSubchannel()",io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test+loadBalancer io.grpc.xds.XdsAttributes+XDS_CLIENT_POOL io.grpc.xds.EdsLoadBalancer2Test+xdsClientPool io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+weightedTarget io.grpc.xds.EdsLoadBalancer2Test+roundRobin io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown io.grpc.xds.EdsLoadBalancer2Test+currentPicker,1923,32,1,,"@Test
+  public void configUpdate_changeEdsServiceName_afterChildPolicyReady_switchGracefully() {
+    deliverSimpleClusterLoadAssignment(EDS_SERVICE_NAME);  // downstream LB polices instantiated
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    Subchannel subchannel1 = mock(Subchannel.class);
+    childBalancer.deliverSubchannelState(subchannel1, ConnectivityState.READY);
+    assertThat(currentState).isEqualTo(ConnectivityState.READY);
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getSubchannel()).isSameInstanceAs(subchannel1);
+
+    String newEdsServiceName = ""service-foo.googleapis.com"";
+    loadBalancer.handleResolvedAddresses(
+        ResolvedAddresses.newBuilder()
+            .setAddresses(Collections.<EquivalentAddressGroup>emptyList())
+            .setAttributes(
+                Attributes.newBuilder().set(XdsAttributes.XDS_CLIENT_POOL, xdsClientPool).build())
+            .setLoadBalancingPolicyConfig(
+                new EdsConfig(CLUSTER, newEdsServiceName, LRS_SERVER_NAME, null, weightedTarget,
+                    roundRobin))
+            .build());
+    deliverSimpleClusterLoadAssignment(newEdsServiceName);  // instantiate the new subtree
+    assertThat(downstreamBalancers).hasSize(2);
+    FakeLoadBalancer newChildBalancer = downstreamBalancers.get(1);
+    assertThat(currentState).isEqualTo(ConnectivityState.READY);
+    result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getSubchannel()).isSameInstanceAs(subchannel1);
+    Subchannel subchannel2 = mock(Subchannel.class);
+    newChildBalancer.deliverSubchannelState(subchannel2, ConnectivityState.READY);
+    assertThat(childBalancer.shutdown).isTrue();
+    result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getSubchannel()).isSameInstanceAs(subchannel2);
+  }",False,False,"The function of this method is to test the behavior of a load balancer when the EDS service name is changed after the child policy is ready, and to ensure that the switch to the new service name is done gracefully.",False,"This code is a test method that verifies the behavior of a load balancer when the EDS (Endpoint Discovery Service) service name is changed. It simulates the scenario where the load balancer switches gracefully to a new subtree after the child policy is ready, and ensures that the correct subchannels are picked based on the current state."
+41,configUpdate_changeEndpointPickingPolicy(),configupdate changeendpointpickingpolicy ,Method,,,"io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+FakeLoadBalancerProvider(String) io.grpc.internal.ServiceConfigUtil.PolicySelection+PolicySelection(LoadBalancerProvider,Object) io.grpc.xds.EdsLoadBalancer2Test+prepareRealDownstreamLbPolicies() io.grpc.xds.EdsLoadBalancer2Test+prepareRealDownstreamLbPolicies() io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.Attributes.Builder+build() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes+newBuilder() io.grpc.Attributes+newBuilder() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes.Builder+build() io.grpc.xds.EdsLoadBalancerProvider.EdsConfig+EdsConfig(String,String,String,Long,PolicySelection,PolicySelection) io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+FakeLoadBalancerProvider(String) io.grpc.internal.ServiceConfigUtil.PolicySelection+PolicySelection(LoadBalancerProvider,Object) io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.xds.EdsLoadBalancer2+handleResolvedAddresses(ResolvedAddresses) io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses+newBuilder() io.grpc.LoadBalancer.ResolvedAddresses.Builder+setAddresses(List<EquivalentAddressGroup>) io.grpc.Attributes.Builder+build() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes+newBuilder() io.grpc.Attributes+newBuilder() io.grpc.Attributes.Builder+set(Key<T>,T) io.grpc.Attributes.Builder+build() io.grpc.xds.EdsLoadBalancerProvider.EdsConfig+EdsConfig(String,String,String,Long,PolicySelection,PolicySelection)",io.grpc.xds.EdsLoadBalancer2Test+loadBalancer io.grpc.xds.XdsAttributes+XDS_CLIENT_POOL io.grpc.xds.EdsLoadBalancer2Test+xdsClientPool io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+name io.grpc.xds.EdsLoadBalancer2Test+loadBalancer io.grpc.xds.XdsAttributes+XDS_CLIENT_POOL io.grpc.xds.EdsLoadBalancer2Test+xdsClientPool io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+weightedTarget io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+name,1912,32,1,,"@Test
+  public void configUpdate_changeEndpointPickingPolicy() {
+    FakeLoadBalancerProvider fakeRoundRobinProvider = new FakeLoadBalancerProvider(""round_robin"");
+    PolicySelection fakeRoundRobinSelection = new PolicySelection(fakeRoundRobinProvider, null);
+    PolicySelection weightedTargetSelection = prepareRealDownstreamLbPolicies();
+    loadBalancer.handleResolvedAddresses(
+        ResolvedAddresses.newBuilder()
+            .setAddresses(Collections.<EquivalentAddressGroup>emptyList())
+            .setAttributes(
+                Attributes.newBuilder().set(XdsAttributes.XDS_CLIENT_POOL, xdsClientPool).build())
+            .setLoadBalancingPolicyConfig(
+                new EdsConfig(CLUSTER, EDS_SERVICE_NAME, LRS_SERVER_NAME, null,
+                    weightedTargetSelection, fakeRoundRobinSelection))
+            .build());
+    deliverSimpleClusterLoadAssignment(EDS_SERVICE_NAME);  // downstream LB policies instantiated
+    FakeLoadBalancer leafBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    assertThat(leafBalancer.name).isEqualTo(""round_robin"");
+    FakeLoadBalancerProvider fakePickFirstProvider = new FakeLoadBalancerProvider(""pick_first"");
+    PolicySelection fakePickFirstSelection =
+        new PolicySelection(fakePickFirstProvider, null);
+    loadBalancer.handleResolvedAddresses(ResolvedAddresses.newBuilder()
+        .setAddresses(Collections.<EquivalentAddressGroup>emptyList())
+        .setAttributes(
+            Attributes.newBuilder().set(XdsAttributes.XDS_CLIENT_POOL, xdsClientPool).build())
+        .setLoadBalancingPolicyConfig(
+            new EdsConfig(CLUSTER, EDS_SERVICE_NAME, LRS_SERVER_NAME, null, weightedTarget,
+                fakePickFirstSelection))
+        .build());
+    assertThat(leafBalancer.shutdown).isTrue();
+    leafBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    assertThat(leafBalancer.name).isEqualTo(""pick_first"");
+  }",True,False,"The function of the method is to test the behavior of a load balancer when the endpoint picking policy is changed from ""round_robin"" to ""pick_first"".",False,The code is a unit test for a load balancer configuration update. It sets up different load balancing policies (round-robin and pick-first) and verifies that the load balancer correctly switches between them based on the configuration update.
+42,endpointDiscoveryError_beforeChildPolicyInstantiated_propagateToUpstream(),endpointdiscoveryerror beforechildpolicyinstantiated propagatetoupstream ,Method,,,io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverError(Status) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverError(Status) io.grpc.Status+withDescription(String) io.grpc.Status+withDescription(String) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.Status+getCode() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getCode() io.grpc.Status+getDescription() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getDescription(),io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.Status+UNAUTHENTICATED io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker,567,9,1,,"@Test
+  public void endpointDiscoveryError_beforeChildPolicyInstantiated_propagateToUpstream() {
+    xdsClient.deliverError(Status.UNAUTHENTICATED.withDescription(""permission denied""));
+    assertThat(currentState).isEqualTo(ConnectivityState.TRANSIENT_FAILURE);
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().isOk()).isFalse();
+    assertThat(result.getStatus().getCode()).isEqualTo(Code.UNAUTHENTICATED);
+    assertThat(result.getStatus().getDescription()).isEqualTo(""permission denied"");
+  }",False,False,This method is a unit test that verifies if an error is propagated to the upstream when an endpoint discovery error occurs before the child policy is instantiated. It checks if the current state is set to TRANSIENT_FAILURE and if the error status is correctly propagated.,False,"This code is a unit test that verifies the behavior of a method called `endpointDiscoveryError_beforeChildPolicyInstantiated_propagateToUpstream()`. It tests that when an error is delivered to the `xdsClient`, the current state should be set to `TRANSIENT_FAILURE` and the resulting `PickResult` should have an `UNAUTHENTICATED` status with a description of ""permission denied""."
+43,endpointDiscoveryError_afterChildPolicyInstantiated_keepUsingCurrentEndpoints(),endpointdiscoveryerror afterchildpolicyinstantiated keepusingcurrentendpoints ,Method,,,io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverError(Status) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverError(Status) io.grpc.Status+withDescription(String) io.grpc.Status+withDescription(String) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk(),io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.Status+UNAVAILABLE io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown,583,11,1,,"@Test
+  public void endpointDiscoveryError_afterChildPolicyInstantiated_keepUsingCurrentEndpoints() {
+    deliverSimpleClusterLoadAssignment(EDS_SERVICE_NAME);
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+    xdsClient.deliverError(Status.UNAVAILABLE.withDescription(""not found""));
+
+    assertThat(currentState).isEqualTo(ConnectivityState.CONNECTING);
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().isOk()).isTrue();
+    assertThat(childBalancer.shutdown).isFalse();
+  }",False,False,"This method is a test case that verifies the behavior of the ""endpointDiscoveryError_afterChildPolicyInstantiated_keepUsingCurrentEndpoints"" function. It simulates an error in endpoint discovery and checks if the current state is connecting, if a subchannel is picked successfully, and if the child balancer is not shut down.",False,"The code is a unit test that verifies the behavior of a method called `endpointDiscoveryError_afterChildPolicyInstantiated_keepUsingCurrentEndpoints()`. It tests that when an error occurs during endpoint discovery, the current endpoints are still used and the child balancer is not shut down."
+44,nameResolutionError_beforeChildPolicyInstantiated_returnErrorPickerToUpstream(),nameresolutionerror beforechildpolicyinstantiated returnerrorpickertoupstream ,Method,,,io.grpc.xds.EdsLoadBalancer2+handleNameResolutionError(Status) io.grpc.xds.EdsLoadBalancer2+handleNameResolutionError(Status) io.grpc.Status+withDescription(String) io.grpc.Status+withDescription(String) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.SubchannelPicker+pickSubchannel(PickSubchannelArgs) io.grpc.Status+isOk() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+isOk() io.grpc.Status+getCode() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getCode() io.grpc.Status+getDescription() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.LoadBalancer.PickResult+getStatus() io.grpc.Status+getDescription(),io.grpc.xds.EdsLoadBalancer2Test+loadBalancer io.grpc.Status+UNIMPLEMENTED io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker,568,9,1,,"@Test
+  public void nameResolutionError_beforeChildPolicyInstantiated_returnErrorPickerToUpstream() {
+    loadBalancer.handleNameResolutionError(Status.UNIMPLEMENTED.withDescription(""not found""));
+    assertThat(currentState).isEqualTo(ConnectivityState.TRANSIENT_FAILURE);
+    PickResult result = currentPicker.pickSubchannel(mock(PickSubchannelArgs.class));
+    assertThat(result.getStatus().isOk()).isFalse();
+    assertThat(result.getStatus().getCode()).isEqualTo(Code.UNIMPLEMENTED);
+    assertThat(result.getStatus().getDescription()).isEqualTo(""not found"");
+  }",False,False,"The function of this method is to test the behavior of the load balancer when a name resolution error occurs before the child policy is instantiated. It verifies that the load balancer returns an error picker to the upstream, sets the current state to transient failure, and checks the status and description of the pick result.",False,"This code is a unit test that verifies the behavior of a method called ""nameResolutionError_beforeChildPolicyInstantiated"". It tests whether the method correctly handles a name resolution error by setting the current state to TRANSIENT_FAILURE and returning an error picker with the appropriate status and description."
+45,nameResolutionError_afterChildPolicyInstantiated_propagateToDownstream(),nameresolutionerror afterchildpolicyinstantiated propagatetodownstream ,Method,,,io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2Test+deliverSimpleClusterLoadAssignment(String) io.grpc.xds.EdsLoadBalancer2+handleNameResolutionError(Status) io.grpc.xds.EdsLoadBalancer2+handleNameResolutionError(Status) io.grpc.Status+withDescription(String) io.grpc.Status+withDescription(String) io.grpc.Status+getCode() io.grpc.Status+getCode() io.grpc.Status+getDescription() io.grpc.Status+getDescription(),io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test+loadBalancer io.grpc.Status+UNAVAILABLE io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+upstreamError io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+upstreamError,540,11,1,,"@Test
+  public void nameResolutionError_afterChildPolicyInstantiated_propagateToDownstream() {
+    deliverSimpleClusterLoadAssignment(EDS_SERVICE_NAME);
+    FakeLoadBalancer childBalancer = Iterables.getOnlyElement(downstreamBalancers);
+
+    loadBalancer.handleNameResolutionError(
+        Status.UNAVAILABLE.withDescription(""cannot reach server""));
+    assertThat(childBalancer.upstreamError.getCode()).isEqualTo(Code.UNAVAILABLE);
+    assertThat(childBalancer.upstreamError.getDescription())
+        .isEqualTo(""cannot reach server"");
+  }",False,False,"The function of the method is to test whether a name resolution error is propagated to downstream balancers after a child policy is instantiated. It does this by delivering a simple cluster load assignment, getting the child balancer, and then calling the handleNameResolutionError method with a specific status and description. Finally, it asserts that the child balancer's upstream error code and description match the expected values.",False,"This code is a unit test that verifies the behavior of a method called `nameResolutionError_afterChildPolicyInstantiated_propagateToDownstream()`. It sets up a fake load balancer, delivers a cluster load assignment, and then simulates a name resolution error. The test checks if the error is propagated correctly to the downstream balancer."
+46,generatePriorityLbConfig(),generate priority lb config ,Method,,,"java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) io.grpc.xds.EdsLoadBalancer2+generatePriorityLbConfig(String,String,String,PolicySelection,PolicySelection,LoadBalancerRegistry,Map<Integer,Map<Locality,Integer>>) io.grpc.xds.EdsLoadBalancer2+generatePriorityLbConfig(String,String,String,PolicySelection,PolicySelection,LoadBalancerRegistry,Map<Integer,Map<Locality,Integer>>) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig()",io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test+locality3 io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+weightedTarget io.grpc.xds.EdsLoadBalancer2Test+roundRobin io.grpc.xds.EdsLoadBalancer2Test+registry io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+childConfigs io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+priorities io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+childConfigs io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.PriorityLoadBalancerProvider.PriorityLbConfig+childConfigs io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality3 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality3,2506,39,1,,"@Test
+  public void generatePriorityLbConfig() {
+    Map<Integer, Map<Locality, Integer>> prioritizedLocalityWeights = new HashMap<>();
+    prioritizedLocalityWeights.put(1, ImmutableMap.of(locality1, 20, locality2, 50));
+    prioritizedLocalityWeights.put(2, ImmutableMap.of(locality3, 30));
+    PriorityLbConfig config =
+        EdsLoadBalancer2.generatePriorityLbConfig(
+            CLUSTER, EDS_SERVICE_NAME, LRS_SERVER_NAME, weightedTarget, roundRobin, registry,
+            prioritizedLocalityWeights);
+    assertThat(config.childConfigs).hasSize(2);
+    assertThat(config.priorities).containsExactly(""priority1"", ""priority2"");
+    PolicySelection child1 = config.childConfigs.get(""priority1"");
+    assertThat(child1.getProvider().getPolicyName()).isEqualTo(WEIGHTED_TARGET_POLICY_NAME);
+    WeightedTargetConfig weightedTargetConfig1 = (WeightedTargetConfig) child1.getConfig();
+    assertThat(weightedTargetConfig1.targets).hasSize(2);
+    WeightedPolicySelection childTarget1 = weightedTargetConfig1.targets.get(locality1.toString());
+    assertThat(childTarget1.weight).isEqualTo(20);
+    assertThat(childTarget1.policySelection.getProvider().getPolicyName())
+        .isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) childTarget1.policySelection.getConfig(), CLUSTER,
+        EDS_SERVICE_NAME, LRS_SERVER_NAME, locality1, ""round_robin"");
+    WeightedPolicySelection childTarget2 = weightedTargetConfig1.targets.get(locality2.toString());
+    assertThat(childTarget2.weight).isEqualTo(50);
+    assertThat(childTarget2.policySelection.getProvider().getPolicyName())
+        .isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) childTarget2.policySelection.getConfig(), CLUSTER,
+        EDS_SERVICE_NAME, LRS_SERVER_NAME, locality2, ""round_robin"");
+
+    PolicySelection child2 = config.childConfigs.get(""priority2"");
+    assertThat(child2.getProvider().getPolicyName()).isEqualTo(WEIGHTED_TARGET_POLICY_NAME);
+    WeightedTargetConfig weightedTargetConfig2 = (WeightedTargetConfig) child2.getConfig();
+    assertThat(weightedTargetConfig2.targets).hasSize(1);
+    WeightedPolicySelection childTarget3 = weightedTargetConfig2.targets.get(locality3.toString());
+    assertThat(childTarget3.weight).isEqualTo(30);
+    assertThat(childTarget3.policySelection.getProvider().getPolicyName())
+        .isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) childTarget3.policySelection.getConfig(), CLUSTER,
+        EDS_SERVICE_NAME, LRS_SERVER_NAME, locality3, ""round_robin"");
+  }",False,False,"The function generates a priority load balancing configuration for a given set of locality weights. It creates a map of priority configurations, each containing a weighted target configuration with specific weights for each locality.",False,"The code is a unit test for the `generatePriorityLbConfig` method. It creates a map of locality weights, generates a priority load balancing configuration using the method, and asserts that the generated configuration has the expected properties and child configurations based on the input weights."
+47,generateWeightedTargetLbConfig_withLrsPolicy(),generateweightedtargetlbconfig withlrspolicy ,Method,,,"io.grpc.xds.EdsLoadBalancer2+generateWeightedTargetLbConfig(String,String,String,PolicySelection,LoadBalancerRegistry,Map<Locality,Integer>) io.grpc.xds.EdsLoadBalancer2+generateWeightedTargetLbConfig(String,String,String,PolicySelection,LoadBalancerRegistry,Map<Locality,Integer>) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.xds.EdsLoadBalancer2Test+assertLrsConfig(LrsConfig,String,String,String,Locality,String) io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig() io.grpc.internal.ServiceConfigUtil.PolicySelection+getConfig()",io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+roundRobin io.grpc.xds.EdsLoadBalancer2Test+registry io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+LRS_SERVER_NAME io.grpc.xds.EdsLoadBalancer2Test+locality2,1139,19,1,,"@Test
+  public void generateWeightedTargetLbConfig_withLrsPolicy() {
+    Map<Locality, Integer> localityWeights = ImmutableMap.of(locality1, 30, locality2, 40);
+    WeightedTargetConfig config =
+        EdsLoadBalancer2.generateWeightedTargetLbConfig(
+            CLUSTER, EDS_SERVICE_NAME, LRS_SERVER_NAME, roundRobin, registry, localityWeights);
+    assertThat(config.targets).hasSize(2);
+    WeightedPolicySelection target1 = config.targets.get(locality1.toString());
+    assertThat(target1.weight).isEqualTo(30);
+    assertThat(target1.policySelection.getProvider().getPolicyName()).isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) target1.policySelection.getConfig(), CLUSTER, EDS_SERVICE_NAME,
+        LRS_SERVER_NAME, locality1, ""round_robin"");
+
+    WeightedPolicySelection target2 = config.targets.get(locality2.toString());
+    assertThat(target2.weight).isEqualTo(40);
+    assertThat(target2.policySelection.getProvider().getPolicyName()).isEqualTo(LRS_POLICY_NAME);
+    assertLrsConfig((LrsConfig) target2.policySelection.getConfig(), CLUSTER, EDS_SERVICE_NAME,
+        LRS_SERVER_NAME, locality2, ""round_robin"");
+  }",False,False,"The function generates a weighted target load balancing configuration with the LRS policy. It takes a map of locality weights, and returns a configuration object with targets and their corresponding weights and policies.",False,"The code is a unit test for the method `generateWeightedTargetLbConfig_withLrsPolicy()`. It verifies that the method correctly generates a weighted target configuration for a load balancer, based on the provided locality weights and LRS policy. It checks that the generated configuration contains the expected targets with their corresponding weights and LRS policy configurations."
+48,generateWeightedTargetLbConfig_withoutLrsPolicy(),generateweightedtargetlbconfig withoutlrspolicy ,Method,,,"io.grpc.xds.EdsLoadBalancer2+generateWeightedTargetLbConfig(String,String,String,PolicySelection,LoadBalancerRegistry,Map<Locality,Integer>) io.grpc.xds.EdsLoadBalancer2+generateWeightedTargetLbConfig(String,String,String,PolicySelection,LoadBalancerRegistry,Map<Locality,Integer>) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName() java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.xds.EnvoyProtoData.Locality+toString() io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName()",io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.EdsLoadBalancer2Test+CLUSTER io.grpc.xds.EdsLoadBalancer2Test+EDS_SERVICE_NAME io.grpc.xds.EdsLoadBalancer2Test+roundRobin io.grpc.xds.EdsLoadBalancer2Test+registry io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality1 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedTargetConfig+targets io.grpc.xds.EdsLoadBalancer2Test+locality2 io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+weight io.grpc.xds.WeightedTargetLoadBalancerProvider.WeightedPolicySelection+policySelection,831,15,1,,"@Test
+  public void generateWeightedTargetLbConfig_withoutLrsPolicy() {
+    Map<Locality, Integer> localityWeights = ImmutableMap.of(locality1, 30, locality2, 40);
+    WeightedTargetConfig config =
+        EdsLoadBalancer2.generateWeightedTargetLbConfig(
+            CLUSTER, EDS_SERVICE_NAME, null, roundRobin, registry, localityWeights);
+    assertThat(config.targets).hasSize(2);
+    WeightedPolicySelection target1 = config.targets.get(locality1.toString());
+    assertThat(target1.weight).isEqualTo(30);
+    assertThat(target1.policySelection.getProvider().getPolicyName()).isEqualTo(""round_robin"");
+
+    WeightedPolicySelection target2 = config.targets.get(locality2.toString());
+    assertThat(target2.weight).isEqualTo(40);
+    assertThat(target2.policySelection.getProvider().getPolicyName()).isEqualTo(""round_robin"");
+  }",False,False,"The function generates a weighted target load balancing configuration without a least request load balancing policy. It creates a configuration with two targets, each with a specified weight and a round-robin policy.",False,"The code is a unit test for the `generateWeightedTargetLbConfig` method. It verifies that the method correctly generates a weighted target configuration for a load balancer, based on the provided locality weights and policy selection. The test checks that the generated configuration contains the expected targets with their corresponding weights and policy names."
+49,deliverSimpleClusterLoadAssignment(String),deliver simple cluster load assignment resource name ,Method,endpointResourceRemoved() handleEndpointResource_shutDownExistingChildLbPoliciesIfNoUsableEndpoints() configUpdate_changeEdsServiceName_afterChildPolicyReady_switchGracefully() configUpdate_changeEdsServiceName_afterChildPolicyReady_switchGracefully() configUpdate_changeEndpointPickingPolicy() endpointDiscoveryError_afterChildPolicyInstantiated_keepUsingCurrentEndpoints() nameResolutionError_afterChildPolicyInstantiated_propagateToDownstream(),,"io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+makeAddress(String) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) io.grpc.xds.EdsLoadBalancer2Test+buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) java.util.Collections+singletonMap(K,V) java.util.Collections+singletonMap(K,V)",io.grpc.xds.EdsLoadBalancer2Test+xdsClient io.grpc.xds.EdsLoadBalancer2Test+locality1,410,8,2,,"private void deliverSimpleClusterLoadAssignment(String resourceName) {
+    EquivalentAddressGroup endpoint1 = makeAddress(""endpoint-addr-1"");
+    LocalityLbEndpoints localityLbEndpoints1 =
+        buildLocalityLbEndpoints(1, 10, Collections.singletonMap(endpoint1, true));
+    xdsClient.deliverClusterLoadAssignment(
+        resourceName,
+        Collections.singletonMap(locality1, localityLbEndpoints1));
+  }",False,False,"This method delivers a simple cluster load assignment to the xdsClient. It creates an endpoint, builds locality load endpoints, and delivers the cluster load assignment with the given resource name and locality.",False,"The code defines a private method called `deliverSimpleClusterLoadAssignment` that takes a `resourceName` as a parameter. It creates an `EquivalentAddressGroup` and a `LocalityLbEndpoints` object, and then calls the `deliverClusterLoadAssignment` method of the `xdsClient` object with the `resourceName` and a map containing the `locality1` and `localityLbEndpoints1` objects."
+50,prepareRealDownstreamLbPolicies(),prepare real downstream lb policies prepare the lb registry with real lb policy implementations for downstream lb policies ,Method,subtest_maxConcurrentRequests_appliedByLbConfig(boolean) subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean) configUpdate_changeEndpointPickingPolicy(),,"io.grpc.LoadBalancerRegistry+deregister(LoadBalancerProvider) io.grpc.LoadBalancerRegistry+deregister(LoadBalancerProvider) io.grpc.LoadBalancerRegistry+getProvider(String) io.grpc.LoadBalancerRegistry+getProvider(String) io.grpc.LoadBalancerRegistry+register(LoadBalancerProvider) io.grpc.LoadBalancerRegistry+register(LoadBalancerProvider) io.grpc.xds.PriorityLoadBalancerProvider+PriorityLoadBalancerProvider() io.grpc.LoadBalancerRegistry+deregister(LoadBalancerProvider) io.grpc.LoadBalancerRegistry+deregister(LoadBalancerProvider) io.grpc.LoadBalancerRegistry+getProvider(String) io.grpc.LoadBalancerRegistry+getProvider(String) io.grpc.LoadBalancerRegistry+register(LoadBalancerProvider) io.grpc.LoadBalancerRegistry+register(LoadBalancerProvider) io.grpc.xds.LrsLoadBalancerProvider+LrsLoadBalancerProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+PolicySelection(LoadBalancerProvider,Object) io.grpc.xds.WeightedTargetLoadBalancerProvider+WeightedTargetLoadBalancerProvider()",io.grpc.xds.EdsLoadBalancer2Test+registry io.grpc.xds.EdsLoadBalancer2Test+registry io.grpc.xds.EdsLoadBalancer2Test+registry io.grpc.xds.EdsLoadBalancer2Test+registry io.grpc.xds.EdsLoadBalancer2Test+registry io.grpc.xds.EdsLoadBalancer2Test+registry,565,11,2,"/** 
+ * Prepare the LB registry with real LB policy implementations for downstream LB policies.
+ */
+","/**
+   * Prepare the LB registry with real LB policy implementations for downstream LB policies.
+   */
+  private PolicySelection prepareRealDownstreamLbPolicies() {
+    registry.deregister(registry.getProvider(PRIORITY_POLICY_NAME));
+    registry.register(new PriorityLoadBalancerProvider());
+    registry.deregister(registry.getProvider(LRS_POLICY_NAME));
+    registry.register(new LrsLoadBalancerProvider());
+    // weighted_target LB policy is not required to be in the registry
+    return new PolicySelection(new WeightedTargetLoadBalancerProvider(), null);
+  }",False,False,"This method prepares the LB registry by adding real LB policy implementations for downstream LB policies. It deregisters existing providers for priority and LRS policies, and registers new providers for priority and LRS policies. It also adds a new provider for the weighted_target LB policy. The method returns a PolicySelection object with the new provider for the weighted_target LB policy.",False,"This code prepares the load balancing (LB) registry by replacing the existing LB policies with real LB policy implementations for downstream LB policies. It deregisters the existing priority and LRS policies, and registers new implementations for these policies. Additionally, it returns a new LB policy selection that includes a weighted target LB policy."
+51,"assertLrsConfig(LrsConfig,String,String,String,Locality,String)",assert lrs config config cluster eds service name lrs server name locality child policy ,Method,receiveFirstEndpointResource() receiveFirstEndpointResource() receiveFirstEndpointResource() endpointResourceUpdated() endpointResourceUpdated() generatePriorityLbConfig() generatePriorityLbConfig() generatePriorityLbConfig() generateWeightedTargetLbConfig_withLrsPolicy() generateWeightedTargetLbConfig_withLrsPolicy(),,io.grpc.LoadBalancerProvider+getPolicyName() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.internal.ServiceConfigUtil.PolicySelection+getProvider() io.grpc.LoadBalancerProvider+getPolicyName(),io.grpc.xds.LrsLoadBalancerProvider.LrsConfig+clusterName io.grpc.xds.LrsLoadBalancerProvider.LrsConfig+edsServiceName io.grpc.xds.LrsLoadBalancerProvider.LrsConfig+lrsServerName io.grpc.xds.LrsLoadBalancerProvider.LrsConfig+locality io.grpc.xds.LrsLoadBalancerProvider.LrsConfig+childPolicy,497,9,10,,"private static void assertLrsConfig(
+      LrsConfig config, String cluster, String edsServiceName, String lrsServerName,
+      Locality locality, String childPolicy) {
+    assertThat(config.clusterName).isEqualTo(cluster);
+    assertThat(config.edsServiceName).isEqualTo(edsServiceName);
+    assertThat(config.lrsServerName).isEqualTo(lrsServerName);
+    assertThat(config.locality).isEqualTo(locality);
+    assertThat(config.childPolicy.getProvider().getPolicyName()).isEqualTo(childPolicy);
+  }",False,False,"The function of this method is to assert that the given LrsConfig object has specific values for its clusterName, edsServiceName, lrsServerName, locality, and childPolicy.",False,"The code defines a private static method named `assertLrsConfig` that takes in several parameters. It uses assertions to compare the values of the `config` object's properties with the provided arguments, ensuring that they match."
+52,"assertAddressesEqual(List<EquivalentAddressGroup>,List<EquivalentAddressGroup>)",assert addresses equal expected actual asserts two list of ea gs contains same addresses regardless of attributes ,Method,receiveFirstEndpointResource() receiveFirstEndpointResource() receiveFirstEndpointResource() receiveFirstEndpointResource() receiveFirstEndpointResource() endpointResourceUpdated() endpointResourceUpdated() endpointResourceUpdated() endpointResourceUpdated() handleEndpointResource_ignoreUnhealthyEndpoints() handleEndpointResource_ignoreUnhealthyEndpoints() handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints() handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints() handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints() handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints() subtest_maxConcurrentRequests_appliedByLbConfig(boolean) subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean),,java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() io.grpc.EquivalentAddressGroup+getAddresses() java.util.List+get(int) java.util.List+get(int) io.grpc.EquivalentAddressGroup+getAddresses() io.grpc.EquivalentAddressGroup+getAddresses() java.util.List+get(int) java.util.List+get(int) io.grpc.EquivalentAddressGroup+getAddresses(),,414,8,10,"/** 
+ * Asserts two list of EAGs contains same addresses, regardless of attributes. 
+ */
+","/** Asserts two list of EAGs contains same addresses, regardless of attributes. */
+  private static void assertAddressesEqual(
+      List<EquivalentAddressGroup> expected, List<EquivalentAddressGroup> actual) {
+    assertThat(actual.size()).isEqualTo(expected.size());
+    for (int i = 0; i < actual.size(); i++) {
+      assertThat(actual.get(i).getAddresses()).isEqualTo(expected.get(i).getAddresses());
+    }
+  }",False,False,"The function of the method is to assert that two lists of EquivalentAddressGroup objects have the same addresses, regardless of their attributes. It compares the size of the lists and then iterates through each element to compare the addresses.",False,"The code defines a private static method named ""assertAddressesEqual"" that compares two lists of EquivalentAddressGroup objects. It asserts that the size of the actual list is equal to the expected list, and then iterates through each element to compare the addresses of the EquivalentAddressGroup objects."
+53,"buildLocalityLbEndpoints(int,int,Map<EquivalentAddressGroup,Boolean>)",build locality lb endpoints priority locality weight managed endpoints ,Method,receiveFirstEndpointResource() receiveFirstEndpointResource() receiveFirstEndpointResource() endpointResourceUpdated() endpointResourceUpdated() handleEndpointResource_ignoreUnhealthyEndpoints() handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints() handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints() handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints() handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints() handleEndpointResource_errorIfNoUsableEndpoints() handleEndpointResource_errorIfNoUsableEndpoints() handleEndpointResource_shutDownExistingChildLbPoliciesIfNoUsableEndpoints() subtest_maxConcurrentRequests_appliedByLbConfig(boolean) subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean) deliverSimpleClusterLoadAssignment(String),,"java.util.Map+keySet() java.util.Map+keySet() java.util.Map+get(Object) java.util.Map+get(Object) java.util.List+add(E) java.util.List+add(E) io.grpc.xds.EnvoyProtoData.LbEndpoint+LbEndpoint(EquivalentAddressGroup,int,boolean) io.grpc.xds.EnvoyProtoData.LocalityLbEndpoints+LocalityLbEndpoints(List<LbEndpoint>,int,int)",,478,9,10,,"private static LocalityLbEndpoints buildLocalityLbEndpoints(
+      int priority, int localityWeight, Map<EquivalentAddressGroup, Boolean> managedEndpoints) {
+    List<LbEndpoint> endpoints = new ArrayList<>();
+    for (EquivalentAddressGroup addr : managedEndpoints.keySet()) {
+      boolean status = managedEndpoints.get(addr);
+      endpoints.add(new LbEndpoint(addr, 100 /* used */, status));
+    }
+    return new LocalityLbEndpoints(endpoints, localityWeight, priority);
+  }",False,False,"This method builds a list of locality load balancer endpoints based on the given priority, locality weight, and a map of managed endpoints. It creates a new list of LB endpoints by iterating over the map and adding each endpoint to the list. Finally, it returns a new instance of LocalityLbEndpoints with the created list, locality weight, and priority.",False,"This code defines a private static method called `buildLocalityLbEndpoints` that takes in a priority, locality weight, and a map of managed endpoints. It creates a list of `LbEndpoint` objects based on the given map, with each endpoint having an address, a usage value of 100, and a status. Finally, it returns a new `LocalityLbEndpoints` object initialized with the created endpoints, locality weight, and priority."
+54,makeAddress(String),make address name ,Method,receiveFirstEndpointResource() receiveFirstEndpointResource() receiveFirstEndpointResource() receiveFirstEndpointResource() endpointResourceUpdated() endpointResourceUpdated() handleEndpointResource_ignoreUnhealthyEndpoints() handleEndpointResource_ignoreUnhealthyEndpoints() handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints() handleEndpointResource_ignoreLocalitiesWithNoHealthyEndpoints() handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints() handleEndpointResource_ignorePrioritiesWithNoHealthyEndpoints() handleEndpointResource_errorIfNoUsableEndpoints() handleEndpointResource_errorIfNoUsableEndpoints() handleEndpointResource_shutDownExistingChildLbPoliciesIfNoUsableEndpoints() subtest_maxConcurrentRequests_appliedByLbConfig(boolean) subtest_maxConcurrentRequests_appliedByLbConfig(boolean) subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean) subtest_maxConcurrentRequests_appliedWithDefaultValue(boolean) deliverSimpleClusterLoadAssignment(String),,+FakeSocketAddress(String),+name,795,33,10,,"private static EquivalentAddressGroup makeAddress(final String name) {
+    class FakeSocketAddress extends SocketAddress {
+      private final String name;
+
+      private FakeSocketAddress(String name) {
+        this.name = name;
+      }
+
+      @Override
+      public int hashCode() {
+        return Objects.hash(name);
+      }
+
+      @Override
+      public boolean equals(Object o) {
+        if (this == o) {
+          return true;
+        }
+        if (!(o instanceof FakeSocketAddress)) {
+          return false;
+        }
+        FakeSocketAddress that = (FakeSocketAddress) o;
+        return Objects.equals(name, that.name);
+      }
+
+      @Override
+      public String toString() {
+        return name;
+      }
+    }
+
+    return new EquivalentAddressGroup(new FakeSocketAddress(name));
+  }",False,False,"The function creates a new `EquivalentAddressGroup` object with a `FakeSocketAddress` object as its parameter. The `FakeSocketAddress` class extends `SocketAddress` and overrides methods such as `hashCode()`, `equals()`, and `toString()`.",False,"The code defines a private method called `makeAddress` that creates an `EquivalentAddressGroup` object. It does this by creating a nested class called `FakeSocketAddress` that extends `SocketAddress` and overrides the `hashCode()`, `equals()`, and `toString()` methods. The `makeAddress` method then creates an instance of `FakeSocketAddress` and passes it to the `EquivalentAddressGroup` constructor."
+55,name,name ,Field,,,,,26,1,18,,private final String name;,False,False,,False,
+56,FakeSocketAddress(String),fake socket address name ,Method,,,,+name +name,74,3,2,,"private FakeSocketAddress(String name) {
+        this.name = name;
+      }",False,False,"This method serves as a constructor for the FakeSocketAddress class, taking a String parameter ""name"" and assigning it to the instance variable ""name"".",False,"The code defines a private constructor for the FakeSocketAddress class that takes a name parameter. It assigns the value of the name parameter to the instance variable ""name"". This constructor is likely used to create instances of the FakeSocketAddress class with a specific name."
+57,hashCode(),hash code ,Method,,,java.util.Objects+hash(Object[]) java.util.Objects+hash(Object[]),+name,82,4,1,,"@Override
+      public int hashCode() {
+        return Objects.hash(name);
+      }",False,False,"This method overrides the default hashCode() method. It calculates the hash code of the ""name"" attribute using the Objects.hash() method and returns it as an integer.",False,The code overrides the default `hashCode()` method and calculates the hash code based on the `name` attribute of the object. This allows for efficient storage and retrieval of objects in hash-based data structures like HashMaps.
+58,equals(Object),equals o ,Method,,,"java.util.Objects+equals(Object,Object) java.util.Objects+equals(Object,Object)",+name +name,302,11,1,,"@Override
+      public boolean equals(Object o) {
+        if (this == o) {
+          return true;
+        }
+        if (!(o instanceof FakeSocketAddress)) {
+          return false;
+        }
+        FakeSocketAddress that = (FakeSocketAddress) o;
+        return Objects.equals(name, that.name);
+      }",False,False,"This method overrides the equals() method to compare two objects. It checks if the objects are the same, if they are not of the same class, and then compares their names using the Objects.equals() method. It returns true if the names are equal, and false otherwise.",False,"The code is implementing the `equals` method, which is used to compare two objects for equality. It checks if the two objects are the same instance, then checks if the given object is an instance of `FakeSocketAddress`, and finally compares the `name` attribute of both objects for equality."
+59,toString(),to string ,Method,,,,+name,71,4,1,,"@Override
+      public String toString() {
+        return name;
+      }",False,False,The method serves to override the default toString() method and returns the name of the object as a string.,False,"The code overrides the `toString()` method, which is a built-in method in Java. It returns the value of the `name` variable as a string, allowing the object to be represented as a string when it is printed or converted to a string."
+60,FakeXdsClient,fake xds client ,MemberClass,,,"io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+shutdown() io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchEdsResource(String,EdsResourceWatcher) java.util.Map+put(K,V) java.util.Map+put(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+cancelEdsResourceWatch(String,EdsResourceWatcher) java.util.Map+remove(Object) java.util.Map+remove(Object) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+addClientStats(String,String) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+FakeLoadStatsStore() java.util.Map+put(K,V) java.util.Map+put(K,V) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+removeClientStats(String,String) java.util.Map+remove(Object) java.util.Map+remove(Object) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,List<DropOverload>,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,List<DropOverload>,Map<Locality,LocalityLbEndpoints>) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverClusterLoadAssignment(String,List<DropOverload>,Map<Locality,LocalityLbEndpoints>) io.grpc.SynchronizationContext+execute(Runnable) io.grpc.SynchronizationContext+execute(Runnable) +() +run() java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) io.grpc.xds.XdsClient.EdsUpdate.Builder+setClusterName(String) io.grpc.xds.XdsClient.EdsUpdate+newBuilder() io.grpc.xds.XdsClient.EdsUpdate+newBuilder() io.grpc.xds.XdsClient.EdsUpdate.Builder+setClusterName(String) io.grpc.xds.XdsClient.EdsUpdate.Builder+addDropPolicy(DropOverload) io.grpc.xds.XdsClient.EdsUpdate.Builder+addDropPolicy(DropOverload) java.util.Map+keySet() java.util.Map+keySet() io.grpc.xds.XdsClient.EdsUpdate.Builder+addLocalityLbEndpoints(Locality,LocalityLbEndpoints) io.grpc.xds.XdsClient.EdsUpdate.Builder+addLocalityLbEndpoints(Locality,LocalityLbEndpoints) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.XdsClient.EdsResourceWatcher+onChanged(EdsUpdate) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.XdsClient.EdsResourceWatcher+onChanged(EdsUpdate) io.grpc.xds.XdsClient.EdsUpdate.Builder+build() io.grpc.xds.XdsClient.EdsUpdate.Builder+build() io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverResourceNotFound(String) io.grpc.SynchronizationContext+execute(Runnable) io.grpc.SynchronizationContext+execute(Runnable) +() +run() java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) io.grpc.xds.XdsClient.ResourceWatcher+onResourceDoesNotExist(String) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.XdsClient.ResourceWatcher+onResourceDoesNotExist(String) io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+deliverError(Status) io.grpc.SynchronizationContext+execute(Runnable) io.grpc.SynchronizationContext+execute(Runnable) +() +run() java.util.Map+values() java.util.Map+values() io.grpc.xds.XdsClient.ResourceWatcher+onError(Status) io.grpc.xds.XdsClient.ResourceWatcher+onError(Status)",io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchers io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchers io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchers io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+clusterStats io.grpc.xds.EdsLoadBalancer2Test+syncContext io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchers io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchers io.grpc.xds.EdsLoadBalancer2Test+syncContext io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchers io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchers io.grpc.xds.EdsLoadBalancer2Test+syncContext io.grpc.xds.EdsLoadBalancer2Test.FakeXdsClient+watchers,2604,79,18,,"private final class FakeXdsClient extends XdsClient {
+    private final Map<String, EdsResourceWatcher> watchers = new HashMap<>();
+    private final Map<String, FakeLoadStatsStore> clusterStats = new HashMap<>();
+
+    @Override
+    void shutdown() {
+      // no-op
+    }
+
+    @Override
+    void watchEdsResource(String resourceName, EdsResourceWatcher watcher) {
+      watchers.put(resourceName, watcher);
+    }
+
+    @Override
+    void cancelEdsResourceWatch(String resourceName, EdsResourceWatcher watcher) {
+      watchers.remove(resourceName);
+    }
+
+    @Override
+    LoadStatsStore addClientStats(String clusterName, @Nullable String clusterServiceName) {
+      FakeLoadStatsStore stats = new FakeLoadStatsStore();
+      clusterStats.put(clusterServiceName, stats);
+      return stats;
+    }
+
+    @Override
+    void removeClientStats(String clusterName, @Nullable String clusterServiceName) {
+      clusterStats.remove(clusterServiceName);
+    }
+
+    void deliverClusterLoadAssignment(
+        String resource, Map<Locality, LocalityLbEndpoints> localityLbEndpointsMap) {
+      deliverClusterLoadAssignment(
+          resource, Collections.<DropOverload>emptyList(), localityLbEndpointsMap);
+    }
+
+    void deliverClusterLoadAssignment(
+        final String resource, final List<DropOverload> dropOverloads,
+        final Map<Locality, LocalityLbEndpoints> localityLbEndpointsMap) {
+      syncContext.execute(new Runnable() {
+        @Override
+        public void run() {
+          if (watchers.containsKey(resource)) {
+            EdsUpdate.Builder builder  = EdsUpdate.newBuilder().setClusterName(resource);
+            for (DropOverload dropOverload : dropOverloads) {
+              builder.addDropPolicy(dropOverload);
+            }
+            for (Locality locality : localityLbEndpointsMap.keySet()) {
+              builder.addLocalityLbEndpoints(locality, localityLbEndpointsMap.get(locality));
+            }
+            watchers.get(resource).onChanged(builder.build());
+          }
+        }
+      });
+    }
+
+    void deliverResourceNotFound(final String resource) {
+      syncContext.execute(new Runnable() {
+        @Override
+        public void run() {
+          if (watchers.containsKey(resource)) {
+            watchers.get(resource).onResourceDoesNotExist(resource);
+          }
+        }
+      });
+    }
+
+    void deliverError(final Status error) {
+      syncContext.execute(new Runnable() {
+        @Override
+        public void run() {
+          for (EdsResourceWatcher watcher : watchers.values()) {
+            watcher.onError(error);
+          }
+        }
+      });
+    }
+  }",False,False,,False,
+61,FakeLoadStatsStore,fake load stats store ,MemberClass,,,"io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+generateLoadReport() java.lang.UnsupportedOperationException+UnsupportedOperationException(String) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+addLocality(Locality) io.grpc.xds.ClientLoadCounter+ClientLoadCounter() io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+removeLocality(Locality) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+recordDroppedRequest(String) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+get(Object) java.util.Map+get(Object) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+recordDroppedRequest()",io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+categorizedDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+categorizedDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+categorizedDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+categorizedDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+categorizedDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops io.grpc.xds.EdsLoadBalancer2Test.FakeLoadStatsStore+totalDrops,901,34,26,,"private static final class FakeLoadStatsStore implements LoadStatsStore {
+    private final Map<String, Long> categorizedDrops = new HashMap<>();
+    private int totalDrops;
+
+    @Override
+    public ClusterStats generateLoadReport() {
+      throw new UnsupportedOperationException(""should not be called"");
+    }
+
+    @Override
+    public ClientLoadCounter addLocality(Locality locality) {
+      return new ClientLoadCounter();
+    }
+
+    @Override
+    public void removeLocality(Locality locality) {
+      // no-op
+    }
+
+    @Override
+    public void recordDroppedRequest(String category) {
+      if (!categorizedDrops.containsKey(category)) {
+        categorizedDrops.put(category, 1L);
+      } else {
+        categorizedDrops.put(category, categorizedDrops.get(category) + 1L);
+      }
+      totalDrops++;
+    }
+
+    @Override
+    public void recordDroppedRequest() {
+      totalDrops++;
+    }
+  }",False,False,,False,
+62,FakeLoadBalancerProvider,fake load balancer provider ,MemberClass,,,"io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+FakeLoadBalancerProvider(String) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+newLoadBalancer(Helper) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+FakeLoadBalancer(String,Helper) java.util.List+add(E) java.util.List+add(E) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+isAvailable() io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+getPriority() io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+getPolicyName()",io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+policyName io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+policyName io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+policyName io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancerProvider+policyName,671,29,18,,"private final class FakeLoadBalancerProvider extends LoadBalancerProvider {
+    private final String policyName;
+
+    FakeLoadBalancerProvider(String policyName) {
+      this.policyName = policyName;
+    }
+
+    @Override
+    public LoadBalancer newLoadBalancer(Helper helper) {
+      FakeLoadBalancer balancer = new FakeLoadBalancer(policyName, helper);
+      downstreamBalancers.add(balancer);
+      return balancer;
+    }
+
+    @Override
+    public boolean isAvailable() {
+      return true;
+    }
+
+    @Override
+    public int getPriority() {
+      return 0;  // doesn't matter
+    }
+
+    @Override
+    public String getPolicyName() {
+      return policyName;
+    }
+  }",False,False,,False,
+63,FakeLoadBalancer,fake load balancer ,MemberClass,,,"io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+FakeLoadBalancer(String,Helper) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+handleResolvedAddresses(ResolvedAddresses) io.grpc.LoadBalancer.ResolvedAddresses+getAddresses() io.grpc.LoadBalancer.ResolvedAddresses+getAddresses() io.grpc.LoadBalancer.ResolvedAddresses+getLoadBalancingPolicyConfig() io.grpc.LoadBalancer.ResolvedAddresses+getLoadBalancingPolicyConfig() io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+handleNameResolutionError(Status) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown() java.util.List+remove(Object) java.util.List+remove(Object) io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+deliverSubchannelState(Subchannel,ConnectivityState) +() +pickSubchannel(PickSubchannelArgs) io.grpc.LoadBalancer.PickResult+withSubchannel(Subchannel) io.grpc.LoadBalancer.PickResult+withSubchannel(Subchannel) io.grpc.LoadBalancer.Helper+updateBalancingState(ConnectivityState,SubchannelPicker) io.grpc.LoadBalancer.Helper+updateBalancingState(ConnectivityState,SubchannelPicker)",io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+name io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+helper io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+config io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+upstreamError io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+name io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+helper io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+addresses io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+config io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+upstreamError io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+shutdown io.grpc.xds.EdsLoadBalancer2Test+downstreamBalancers io.grpc.xds.EdsLoadBalancer2Test.FakeLoadBalancer+helper,1181,40,18,,"private final class FakeLoadBalancer extends LoadBalancer {
+    private final String name;
+    private final Helper helper;
+    private List<EquivalentAddressGroup> addresses;
+    private Object config;
+    private Status upstreamError;
+    private boolean shutdown;
+
+    FakeLoadBalancer(String name, Helper helper) {
+      this.name = name;
+      this.helper = helper;
+    }
+
+    @Override
+    public void handleResolvedAddresses(ResolvedAddresses resolvedAddresses) {
+      addresses = resolvedAddresses.getAddresses();
+      config = resolvedAddresses.getLoadBalancingPolicyConfig();
+    }
+
+    @Override
+    public void handleNameResolutionError(Status error) {
+      upstreamError = error;
+    }
+
+    @Override
+    public void shutdown() {
+      shutdown = true;
+      downstreamBalancers.remove(this);
+    }
+
+    void deliverSubchannelState(final Subchannel subchannel, ConnectivityState state) {
+      SubchannelPicker picker = new SubchannelPicker() {
+        @Override
+        public PickResult pickSubchannel(PickSubchannelArgs args) {
+          return PickResult.withSubchannel(subchannel);
+        }
+      };
+      helper.updateBalancingState(state, picker);
+    }
+  }",False,False,,False,
+64,FakeLbHelper,fake lb helper ,MemberClass,,,"io.grpc.xds.EdsLoadBalancer2Test.FakeLbHelper+updateBalancingState(ConnectivityState,SubchannelPicker) io.grpc.xds.EdsLoadBalancer2Test.FakeLbHelper+createSubchannel(CreateSubchannelArgs) io.grpc.xds.EdsLoadBalancer2Test.FakeLbHelper+getSynchronizationContext() io.grpc.xds.EdsLoadBalancer2Test.FakeLbHelper+getScheduledExecutorService() io.grpc.internal.FakeClock+getScheduledExecutorService() io.grpc.internal.FakeClock+getScheduledExecutorService() io.grpc.xds.EdsLoadBalancer2Test.FakeLbHelper+createOobChannel(EquivalentAddressGroup,String) java.lang.UnsupportedOperationException+UnsupportedOperationException(String) io.grpc.xds.EdsLoadBalancer2Test.FakeLbHelper+getNameResolverFactory() java.lang.UnsupportedOperationException+UnsupportedOperationException(String) io.grpc.xds.EdsLoadBalancer2Test.FakeLbHelper+getAuthority()",io.grpc.xds.EdsLoadBalancer2Test+currentState io.grpc.xds.EdsLoadBalancer2Test+currentPicker io.grpc.xds.EdsLoadBalancer2Test+syncContext io.grpc.xds.EdsLoadBalancer2Test+fakeClock io.grpc.xds.EdsLoadBalancer2Test+AUTHORITY,1083,40,18,,"private final class FakeLbHelper extends LoadBalancer.Helper {
+
+    @Override
+    public void updateBalancingState(
+        @Nonnull ConnectivityState newState, @Nonnull SubchannelPicker newPicker) {
+      currentState = newState;
+      currentPicker = newPicker;
+    }
+
+    @Override
+    public Subchannel createSubchannel(CreateSubchannelArgs args) {
+      return mock(Subchannel.class);
+    }
+
+    @Override
+    public SynchronizationContext getSynchronizationContext() {
+      return syncContext;
+    }
+
+    @Override
+    public ScheduledExecutorService getScheduledExecutorService() {
+      return fakeClock.getScheduledExecutorService();
+    }
+
+    @Override
+    public ManagedChannel createOobChannel(EquivalentAddressGroup eag, String authority) {
+      throw new UnsupportedOperationException(""should not be called"");
+    }
+
+    @Deprecated
+    @Override
+    public NameResolver.Factory getNameResolverFactory() {
+      throw new UnsupportedOperationException(""should not be called"");
+    }
+
+    @Override
+    public String getAuthority() {
+      return AUTHORITY;
+    }
+  }",False,False,,False,
