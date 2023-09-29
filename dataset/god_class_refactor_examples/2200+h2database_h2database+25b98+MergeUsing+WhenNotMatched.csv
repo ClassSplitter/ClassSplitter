@@ -1,0 +1,330 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,targetTable,target table ,Field,"MergeUsing(Session,TableFilter) setTargetTable(Table)",,,,26,1,2,,private Table targetTable;,False,False,,False,
+2,targetTableFilter,target table filter ,Field,"MergeUsing(Session,TableFilter) setTargetTableFilter(TableFilter)",,,,38,1,2,,private TableFilter targetTableFilter;,False,False,,False,
+3,columns,columns ,Field,,,,,25,1,2,,private Column[] columns;,False,False,,False,
+4,valuesExpressionList,values expression list ,Field,,,,,87,1,18,,private final ArrayList<Expression[]> valuesExpressionList = Utils.newSmallArrayList();,False,False,,False,
+5,query,query ,Field,setQuery(Query),,,,20,1,2,,private Query query;,False,False,,False,
+6,sourceTableFilter,source table filter ,Field,setSourceTableFilter(TableFilter),,,,38,1,2,,private TableFilter sourceTableFilter;,False,False,,False,
+7,onCondition,on condition ,Field,setOnCondition(Expression),,,,31,1,2,,private Expression onCondition;,False,False,,False,
+8,updateCommand,update command ,Field,setUpdateCommand(Update),,,,29,1,2,,private Update updateCommand;,True,True,,False,
+9,deleteCommand,delete command ,Field,setDeleteCommand(Delete),,,,29,1,2,,private Delete deleteCommand;,True,True,,False,
+10,insertCommand,insert command ,Field,setInsertCommand(Insert),,,,29,1,2,,private Insert insertCommand;,True,True,,False,
+11,queryAlias,query alias ,Field,setQueryAlias(String) getQueryAlias(),,,,26,1,2,,private String queryAlias;,False,False,,False,
+12,countUpdatedRows,count updated rows ,Field,,,,,29,1,2,,private int countUpdatedRows;,False,False,,False,
+13,targetMatchQuery,target match query ,Field,,,,,32,1,2,,private Select targetMatchQuery;,False,False,,False,
+14,targetRowidsRemembered,target rowids remembered ,Field,,,,,79,1,18,,"private final HashMap<Value, Integer> targetRowidsRemembered = new HashMap<>();",False,False,,False,
+15,updatedKeys,updated keys ,Field,,,,,58,1,18,,private final HashSet<Long> updatedKeys = new HashSet<>();,True,True,,False,
+16,sourceQueryRowNumber,source query row number ,Field,,,,,33,1,2,,private int sourceQueryRowNumber;,False,False,,False,
+17,"MergeUsing(Session,TableFilter)",merge using session target table filter ,Method,,,org.h2.table.TableFilter+getTable() org.h2.table.TableFilter+getTable(),org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetTableFilter,206,5,1,,"public MergeUsing(Session session, TableFilter targetTableFilter) {
+        super(session);
+        this.targetTable = targetTableFilter.getTable();
+        this.targetTableFilter = targetTableFilter;
+    }",False,False,"The function of the method is to initialize the MergeUsing object by setting the session and targetTableFilter variables, and retrieving the targetTable from the targetTableFilter.",False,"The code defines a constructor for the class ""MergeUsing"" that takes a ""Session"" object and a ""TableFilter"" object as parameters. It initializes the ""targetTable"" and ""targetTableFilter"" variables with the corresponding values from the ""TableFilter"" object."
+18,update(),update ,Method,,,"java.util.HashMap+clear() java.util.HashMap+clear() org.h2.table.TableFilter+startQuery(Session) org.h2.table.TableFilter+startQuery(Session) org.h2.table.TableFilter+reset() org.h2.table.TableFilter+reset() org.h2.table.TableFilter+startQuery(Session) org.h2.table.TableFilter+startQuery(Session) org.h2.table.TableFilter+reset() org.h2.table.TableFilter+reset() org.h2.command.dml.MergeUsing+checkRights() org.h2.command.dml.MergeUsing+checkRights() org.h2.command.Prepared+setCurrentRowNumber(int) org.h2.command.Prepared+setCurrentRowNumber(int) java.util.HashSet+clear() java.util.HashSet+clear() org.h2.command.dml.Query+query(int) org.h2.command.dml.Query+query(int) org.h2.table.Table+fire(Session,int,boolean) org.h2.table.Table+fire(Session,int,boolean) org.h2.command.dml.MergeUsing+evaluateTriggerMasks() org.h2.command.dml.MergeUsing+evaluateTriggerMasks() org.h2.table.Table+lock(Session,boolean,boolean) org.h2.table.Table+lock(Session,boolean,boolean) org.h2.result.ResultInterface+next() org.h2.result.ResultInterface+next() org.h2.result.ResultInterface+currentRow() org.h2.result.ResultInterface+currentRow() org.h2.result.RowImpl+RowImpl(Value[],int) org.h2.command.Prepared+setCurrentRowNumber(int) org.h2.command.Prepared+setCurrentRowNumber(int) org.h2.command.dml.MergeUsing+merge(Row) org.h2.command.dml.MergeUsing+merge(Row) org.h2.result.ResultInterface+close() org.h2.result.ResultInterface+close() org.h2.table.Table+fire(Session,int,boolean) org.h2.table.Table+fire(Session,int,boolean) org.h2.command.dml.MergeUsing+evaluateTriggerMasks() org.h2.command.dml.MergeUsing+evaluateTriggerMasks()",org.h2.command.dml.MergeUsing+countUpdatedRows org.h2.command.dml.MergeUsing+targetRowidsRemembered org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+sourceQueryRowNumber org.h2.command.dml.MergeUsing+updatedKeys org.h2.command.dml.MergeUsing+query org.h2.command.dml.MergeUsing+targetTable org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+sourceQueryRowNumber org.h2.command.dml.MergeUsing+sourceQueryRowNumber org.h2.command.dml.MergeUsing+targetTable org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+countUpdatedRows,1242,38,1,,"@Override
+    public int update() {
+        countUpdatedRows = 0;
+
+        // clear list of source table keys & rowids we have processed already
+        targetRowidsRemembered.clear();
+
+        if (targetTableFilter != null) {
+            targetTableFilter.startQuery(session);
+            targetTableFilter.reset();
+        }
+
+        if (sourceTableFilter != null) {
+            sourceTableFilter.startQuery(session);
+            sourceTableFilter.reset();
+        }
+
+        sourceQueryRowNumber = 0;
+        checkRights();
+        setCurrentRowNumber(0);
+        // Just to be sure
+        updatedKeys.clear();
+        // process source select query data for row creation
+        ResultInterface rows = query.query(0);
+        targetTable.fire(session, evaluateTriggerMasks(), true);
+        targetTable.lock(session, true, false);
+        while (rows.next()) {
+            sourceQueryRowNumber++;
+            Value[] sourceRowValues = rows.currentRow();
+            Row sourceRow = new RowImpl(sourceRowValues, 0);
+            setCurrentRowNumber(sourceQueryRowNumber);
+
+            merge(sourceRow);
+        }
+        rows.close();
+        targetTable.fire(session, evaluateTriggerMasks(), false);
+        return countUpdatedRows;
+    }",False,False,"The function of this method is to update rows in a target table based on a source select query. It clears the list of processed rows, starts and resets filters for the target and source tables, checks rights, processes the source select query data, merges the source rows with the target table, and returns the number of updated rows.",False,"This code represents an update operation on a target table using data from a source table. It retrieves rows from the source table, creates new rows in the target table based on the retrieved data, and updates the count of updated rows. The code also handles triggers and locking for the target table."
+19,evaluateTriggerMasks(),evaluate trigger masks ,Method,update() update(),,,org.h2.command.dml.MergeUsing+insertCommand org.h2.api.Trigger+INSERT org.h2.command.dml.MergeUsing+updateCommand org.h2.api.Trigger+UPDATE org.h2.command.dml.MergeUsing+deleteCommand org.h2.api.Trigger+DELETE,339,13,2,,"private int evaluateTriggerMasks() {
+        int masks = 0;
+        if (insertCommand != null) {
+            masks |= Trigger.INSERT;
+        }
+        if (updateCommand != null) {
+            masks |= Trigger.UPDATE;
+        }
+        if (deleteCommand != null) {
+            masks |= Trigger.DELETE;
+        }
+        return masks;
+    }",False,False,"This method evaluates the trigger masks by checking if certain commands are not null, and then setting the corresponding bits in the masks variable using bitwise OR. It returns the final masks value.",False,This code evaluates the trigger masks by checking if certain commands are not null and setting the corresponding bits in the masks variable. It then returns the final masks value.
+20,checkRights(),check rights ,Method,update(),,"org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.table.TableFilter+getTable() org.h2.table.TableFilter+getTable()",org.h2.command.dml.MergeUsing+insertCommand org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.engine.Right+INSERT org.h2.command.dml.MergeUsing+updateCommand org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.engine.Right+UPDATE org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.engine.Right+DELETE org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.engine.Right+SELECT org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.engine.Right+SELECT,585,16,2,,"private void checkRights() {
+        if (insertCommand != null) {
+            session.getUser().checkRight(targetTable, Right.INSERT);
+        }
+        if (updateCommand != null) {
+            session.getUser().checkRight(targetTable, Right.UPDATE);
+        }
+        if (deleteCommand != null) {
+            session.getUser().checkRight(targetTable, Right.DELETE);
+        }
+
+        // check the underlying tables
+        session.getUser().checkRight(targetTable, Right.SELECT);
+        session.getUser().checkRight(sourceTableFilter.getTable(),
+                Right.SELECT);
+    }",False,False,"The function of this method is to check the user's rights for inserting, updating, and deleting data in the target table. It also checks the user's rights for selecting data from the target table and the source table filter.",True,"The `checkRights()` method checks the user's rights for various operations (insert, update, delete, and select) on the target and source tables. It calls the `checkRight()` method on the user object for each operation and table, ensuring that the user has the necessary permissions before executing the corresponding commands."
+21,merge(Row),merge source row merge the given row param source row the row ,Method,update(),,org.h2.table.TableFilter+set(Row) org.h2.table.TableFilter+set(Row) org.h2.command.dml.MergeUsing+isTargetRowFound() org.h2.command.dml.MergeUsing+isTargetRowFound() org.h2.command.dml.Update+update() org.h2.command.dml.Update+update() org.h2.command.dml.Delete+update() org.h2.command.dml.Delete+update() java.util.HashSet+clear() java.util.HashSet+clear() org.h2.command.dml.Insert+update() org.h2.command.dml.Insert+update(),org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+countUpdatedRows org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+countUpdatedRows org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+updatedKeys org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+countUpdatedRows org.h2.command.dml.MergeUsing+insertCommand,772,24,4,"/** 
+ * Merge the given row.
+ * @param sourceRow the row
+ */
+","/**
+     * Merge the given row.
+     *
+     * @param sourceRow the row
+     */
+    protected void merge(Row sourceRow) {
+        // put the column values into the table filter
+        sourceTableFilter.set(sourceRow);
+        if (isTargetRowFound()) {
+            if (updateCommand != null) {
+                countUpdatedRows += updateCommand.update();
+            }
+            // under oracle rules these updates & delete combinations are
+            // allowed together
+            if (deleteCommand != null) {
+                countUpdatedRows += deleteCommand.update();
+                updatedKeys.clear();
+            }
+        } else {
+            if (insertCommand != null) {
+                countUpdatedRows += insertCommand.update();
+            }
+        }
+    }",False,False,"The function of this method is to merge a given row into a table. It sets the column values of the source row into a table filter, checks if the target row is found, and performs update, delete, or insert operations accordingly.",True,"The `merge` method takes a `Row` object as input and performs a merge operation on it. It checks if the target row exists, and if so, updates it using an update command. If the target row does not exist, it inserts a new row using an insert command. The method keeps track of the number of updated rows."
+22,isTargetRowFound(),is target row found ,Method,merge(Row),,"org.h2.command.dml.Query+query(int) org.h2.command.dml.Query+query(int) org.h2.result.ResultInterface+next() org.h2.result.ResultInterface+next() org.h2.result.ResultInterface+currentRow() org.h2.result.ResultInterface+currentRow() java.util.HashMap+get(Object) java.util.HashMap+get(Object) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.table.TableFilter+getTable() org.h2.table.TableFilter+getTable() java.util.HashMap+put(K,V) java.util.HashMap+put(K,V)",org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+targetRowidsRemembered org.h2.api.ErrorCode+DUPLICATE_KEY_1 org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetRowidsRemembered org.h2.command.dml.MergeUsing+sourceQueryRowNumber,1270,25,2,,"private boolean isTargetRowFound() {
+        boolean matched = false;
+        try (ResultInterface rows = targetMatchQuery.query(0)) {
+            while (rows.next()) {
+                Value targetRowId = rows.currentRow()[0];
+                Integer number = targetRowidsRemembered.get(targetRowId);
+                // throw and exception if we have processed this _ROWID_ before...
+                if (number != null) {
+                    throw DbException.get(ErrorCode.DUPLICATE_KEY_1,
+                            ""Merge using ON column expression, "" +
+                            ""duplicate _ROWID_ target record already updated, deleted or inserted:_ROWID_=""
+                                    + targetRowId + "":in:""
+                                    + targetTableFilter.getTable()
+                                    + "":conflicting source row number:""
+                                    + number);
+                }
+                // remember the source column values we have used before (they
+                // are the effective ON clause keys
+                // and should not be repeated
+                targetRowidsRemembered.put(targetRowId, sourceQueryRowNumber);
+                matched = true;
+            }
+        }
+        return matched;
+    }",False,False,"This method checks if a target row is found by querying a target match query. It iterates through the result rows and checks if the target row ID has been processed before. If it has, it throws an exception. Otherwise, it remembers the source query row number and sets the ""matched"" variable to true. Finally, it returns the value of ""matched"".",True,"This code defines a private method called `isTargetRowFound()` that checks if a target row is found in a database table. It queries the table using a specified query and iterates through the result set. If a duplicate target row is found, it throws an exception, otherwise it remembers the source column values used and returns a boolean indicating if a match was found."
+23,getPlanSQL(),get plan sql ,Method,,,org.h2.util.StatementBuilder+StatementBuilder(String) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.schema.SchemaObjectBase+getSQL() org.h2.schema.SchemaObjectBase+getSQL() org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+appendExceptFirst(String) org.h2.util.StatementBuilder+appendExceptFirst(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.table.Column+getSQL() org.h2.table.Column+getSQL() org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) java.util.ArrayList+isEmpty() java.util.ArrayList+isEmpty() org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+resetCount() org.h2.util.StatementBuilder+resetCount() org.h2.util.StatementBuilder+appendExceptFirst(String) org.h2.util.StatementBuilder+appendExceptFirst(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.expression.Expression+getSQL() org.h2.expression.Expression+getSQL() org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.command.Prepared+getPlanSQL() org.h2.command.Prepared+getPlanSQL() org.h2.util.StatementBuilder+toString() org.h2.util.StatementBuilder+toString(),org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+columns org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+query,1112,33,1,,"@Override
+    public String getPlanSQL() {
+        StatementBuilder buff = new StatementBuilder(""MERGE INTO "");
+        buff.append(targetTable.getSQL()).append('(');
+        for (Column c : columns) {
+            buff.appendExceptFirst("", "");
+            buff.append(c.getSQL());
+        }
+        buff.append(')').append('\n');
+        if (!valuesExpressionList.isEmpty()) {
+            buff.append(""VALUES "");
+            int row = 0;
+            for (Expression[] expr : valuesExpressionList) {
+                if (row++ > 0) {
+                    buff.append("", "");
+                }
+                buff.append('(');
+                buff.resetCount();
+                for (Expression e : expr) {
+                    buff.appendExceptFirst("", "");
+                    if (e == null) {
+                        buff.append(""DEFAULT"");
+                    } else {
+                        buff.append(e.getSQL());
+                    }
+                }
+                buff.append(')');
+            }
+        } else {
+            buff.append(query.getPlanSQL());
+        }
+        return buff.toString();
+    }",False,False,"The function of this method is to generate a SQL statement for a merge operation. It constructs the SQL statement by appending the target table, columns, and values to a statement builder object, and then returns the resulting SQL string.",False,"This code defines a method called `getPlanSQL()` that generates a SQL statement for a merge operation. It constructs the statement by appending table names, column names, and values to a `StatementBuilder` object. If there are no values provided, it appends the SQL statement generated by a query object."
+24,prepare(),prepare ,Method,,,"org.h2.expression.Expression+addFilterConditions(TableFilter,boolean) org.h2.expression.Expression+addFilterConditions(TableFilter,boolean) org.h2.expression.Expression+addFilterConditions(TableFilter,boolean) org.h2.expression.Expression+addFilterConditions(TableFilter,boolean) org.h2.expression.Expression+mapColumns(ColumnResolver,int,int) org.h2.expression.Expression+mapColumns(ColumnResolver,int,int) org.h2.expression.Expression+mapColumns(ColumnResolver,int,int) org.h2.expression.Expression+mapColumns(ColumnResolver,int,int) org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+createIndexConditions(Session,TableFilter) org.h2.expression.Expression+createIndexConditions(Session,TableFilter) org.h2.expression.Expression+createIndexConditions(Session,TableFilter) org.h2.expression.Expression+createIndexConditions(Session,TableFilter) java.util.ArrayList+isEmpty() java.util.ArrayList+isEmpty() java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.table.Table+getColumns() org.h2.table.Table+getColumns() java.util.ArrayList+isEmpty() java.util.ArrayList+isEmpty() org.h2.message.DbException+get(int) org.h2.message.DbException+get(int) org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+optimize(Session) org.h2.command.Prepared+prepare() org.h2.command.Prepared+prepare() org.h2.table.TableFilter+doneWithIndexConditions() org.h2.table.TableFilter+doneWithIndexConditions() org.h2.command.dml.Update+setSourceTableFilter(TableFilter) org.h2.command.dml.Update+setSourceTableFilter(TableFilter) org.h2.command.dml.Update+setCondition(Expression) org.h2.command.dml.Update+setCondition(Expression) org.h2.command.dml.MergeUsing+appendOnCondition(Update) org.h2.command.dml.MergeUsing+appendOnCondition(Update) org.h2.command.dml.Update+prepare() org.h2.command.dml.Update+prepare() org.h2.command.dml.Delete+setSourceTableFilter(TableFilter) org.h2.command.dml.Delete+setSourceTableFilter(TableFilter) org.h2.command.dml.Delete+setCondition(Expression) org.h2.command.dml.Delete+setCondition(Expression) org.h2.command.dml.MergeUsing+appendOnCondition(Delete) org.h2.command.dml.MergeUsing+appendOnCondition(Delete) org.h2.command.dml.Delete+prepare() org.h2.command.dml.Delete+prepare() org.h2.command.dml.Update+setUpdatedKeysCollector(HashSet<Long>) org.h2.command.dml.Update+setUpdatedKeysCollector(HashSet<Long>) org.h2.command.dml.Delete+setKeysFilter(HashSet<Long>) org.h2.command.dml.Delete+setKeysFilter(HashSet<Long>) org.h2.command.dml.Insert+setSourceTableFilter(TableFilter) org.h2.command.dml.Insert+setSourceTableFilter(TableFilter) org.h2.command.dml.Insert+prepare() org.h2.command.dml.Insert+prepare() org.h2.command.dml.Select+Select(Session) java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.expression.ExpressionColumn+ExpressionColumn(Database,String,String,String) org.h2.engine.Session+getDatabase() org.h2.engine.Session+getDatabase() org.h2.engine.DbObjectBase+getName() org.h2.schema.SchemaObjectBase+getSchema() org.h2.schema.SchemaObjectBase+getSchema() org.h2.engine.DbObjectBase+getName() org.h2.table.TableFilter+getTableAlias() org.h2.table.TableFilter+getTableAlias() org.h2.command.dml.Select+setExpressions(ArrayList<Expression>) org.h2.command.dml.Select+setExpressions(ArrayList<Expression>) org.h2.command.dml.Select+addTableFilter(TableFilter,boolean) org.h2.command.dml.Select+addTableFilter(TableFilter,boolean) org.h2.command.dml.Select+addCondition(Expression) org.h2.command.dml.Select+addCondition(Expression) org.h2.command.dml.Select+init() org.h2.command.dml.Select+init() org.h2.command.dml.Select+prepare() org.h2.command.dml.Select+prepare()",org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.expression.Expression+MAP_INITIAL org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+targetTableFilter org.h2.expression.Expression+MAP_INITIAL org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+onCondition org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+onCondition org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+onCondition org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+columns org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+columns org.h2.command.dml.MergeUsing+columns org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+columns org.h2.api.ErrorCode+COLUMN_COUNT_DOES_NOT_MATCH org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+query org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updatedKeys org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+updatedKeys org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.Prepared+session org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+targetMatchQuery,3110,73,1,,"@Override
+    public void prepare() {
+        onCondition.addFilterConditions(sourceTableFilter, true);
+        onCondition.addFilterConditions(targetTableFilter, true);
+
+        onCondition.mapColumns(sourceTableFilter, 2, Expression.MAP_INITIAL);
+        onCondition.mapColumns(targetTableFilter, 1, Expression.MAP_INITIAL);
+
+        // only do the optimize now - before we have already gathered the
+        // unoptimized column data
+        onCondition = onCondition.optimize(session);
+        onCondition.createIndexConditions(session, sourceTableFilter);
+        onCondition.createIndexConditions(session, targetTableFilter);
+
+        if (columns == null) {
+            if (!valuesExpressionList.isEmpty()
+                    && valuesExpressionList.get(0).length == 0) {
+                // special case where table is used as a sequence
+                columns = new Column[0];
+            } else {
+                columns = targetTable.getColumns();
+            }
+        }
+        if (!valuesExpressionList.isEmpty()) {
+            for (Expression[] expr : valuesExpressionList) {
+                if (expr.length != columns.length) {
+                    throw DbException
+                            .get(ErrorCode.COLUMN_COUNT_DOES_NOT_MATCH);
+                }
+                for (int i = 0; i < expr.length; i++) {
+                    Expression e = expr[i];
+                    if (e != null) {
+                        expr[i] = e.optimize(session);
+                    }
+                }
+            }
+        } else {
+            query.prepare();
+        }
+
+        // Prepare each of the sub-commands ready to aid in the MERGE
+        // collaboration
+        targetTableFilter.doneWithIndexConditions();
+        if (updateCommand != null) {
+            updateCommand.setSourceTableFilter(sourceTableFilter);
+            updateCommand.setCondition(appendOnCondition(updateCommand));
+            updateCommand.prepare();
+        }
+        if (deleteCommand != null) {
+            deleteCommand.setSourceTableFilter(sourceTableFilter);
+            deleteCommand.setCondition(appendOnCondition(deleteCommand));
+            deleteCommand.prepare();
+            if (updateCommand != null) {
+                updateCommand.setUpdatedKeysCollector(updatedKeys);
+                deleteCommand.setKeysFilter(updatedKeys);
+            }
+        }
+        if (insertCommand != null) {
+            insertCommand.setSourceTableFilter(sourceTableFilter);
+            insertCommand.prepare();
+        }
+
+        // setup the targetMatchQuery - for detecting if the target row exists
+        targetMatchQuery = new Select(session);
+        ArrayList<Expression> expressions = new ArrayList<>(1);
+        expressions.add(new ExpressionColumn(session.getDatabase(), targetTable.getSchema().getName(),
+                targetTableFilter.getTableAlias(), ""_ROWID_""));
+        targetMatchQuery.setExpressions(expressions);
+        targetMatchQuery.addTableFilter(targetTableFilter, true);
+        targetMatchQuery.addCondition(onCondition);
+        targetMatchQuery.init();
+        targetMatchQuery.prepare();
+    }",False,False,"The function of this method is to prepare the merge command by setting up various conditions, optimizing the on condition, creating index conditions, preparing sub-commands for merge collaboration, and setting up the targetMatchQuery to detect if the target row exists.",True,"The `prepare()` method is part of a larger code that handles the preparation of a MERGE statement in a database. It performs various tasks such as adding filter conditions, mapping columns, optimizing conditions, creating index conditions, preparing sub-commands, and setting up a target match query."
+25,appendOnCondition(Update),append on condition update command ,Method,prepare(),,"org.h2.command.dml.Update+getCondition() org.h2.command.dml.Update+getCondition() org.h2.expression.ConditionAndOr+ConditionAndOr(int,Expression,Expression) org.h2.command.dml.Update+getCondition() org.h2.command.dml.Update+getCondition()",org.h2.command.dml.MergeUsing+onCondition org.h2.expression.ConditionAndOr+AND org.h2.command.dml.MergeUsing+onCondition,274,7,2,,"private Expression appendOnCondition(Update updateCommand) {
+        if (updateCommand.getCondition() == null) {
+            return onCondition;
+        }
+        return new ConditionAndOr(ConditionAndOr.AND,
+                updateCommand.getCondition(), onCondition);
+    }",True,True,"This method appends a condition to an update command. If the update command has no condition, it returns the existing condition. Otherwise, it creates a new condition by combining the update command's condition with the existing condition using an AND operator.",True,"The method ""appendOnCondition"" takes an ""Update"" object as input and returns an ""Expression"" object. If the condition of the update command is null, it returns the existing ""onCondition"" object. Otherwise, it creates a new ""ConditionAndOr"" object with the condition of the update command combined with the existing ""onCondition"" using the ""AND"" operator."
+26,appendOnCondition(Delete),append on condition delete command ,Method,prepare(),,"org.h2.command.dml.Delete+getCondition() org.h2.command.dml.Delete+getCondition() org.h2.expression.ConditionAndOr+ConditionAndOr(int,Expression,Expression) org.h2.command.dml.Delete+getCondition() org.h2.command.dml.Delete+getCondition()",org.h2.command.dml.MergeUsing+onCondition org.h2.expression.ConditionAndOr+AND org.h2.command.dml.MergeUsing+onCondition,274,7,2,,"private Expression appendOnCondition(Delete deleteCommand) {
+        if (deleteCommand.getCondition() == null) {
+            return onCondition;
+        }
+        return new ConditionAndOr(ConditionAndOr.AND,
+                deleteCommand.getCondition(), onCondition);
+    }",True,True,"This method appends a condition to a delete command. If the delete command has no condition, it returns the existing condition. Otherwise, it creates a new condition by combining the delete command's condition with the existing condition using an AND operator.",True,"The method ""appendOnCondition"" takes a ""Delete"" object as input and returns an ""Expression"" object. If the ""Delete"" object has no condition, it returns the existing ""onCondition"" object. Otherwise, it creates a new ""ConditionAndOr"" object with the condition from the ""Delete"" object and the existing ""onCondition"" object, using the logical operator ""AND""."
+27,setSourceTableFilter(TableFilter),set source table filter source table filter ,Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int) org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+sourceTableFilter,123,3,1,,"public void setSourceTableFilter(TableFilter sourceTableFilter) {
+        this.sourceTableFilter = sourceTableFilter;
+    }",False,False,This method sets the source table filter for a given object.,False,"The code defines a method called ""setSourceTableFilter"" which takes a parameter of type ""TableFilter"" and assigns it to the instance variable ""sourceTableFilter"" of the current object. This method is used to set the filter for a source table in a Java program."
+28,getSourceTableFilter(),get source table filter ,Method,,,,org.h2.command.dml.MergeUsing+sourceTableFilter,83,3,1,,"public TableFilter getSourceTableFilter() {
+        return sourceTableFilter;
+    }",False,False,This method returns the source table filter.,False,The code defines a method named `getSourceTableFilter()` that returns an object of type `TableFilter`. This method is used to retrieve the source table filter.
+29,setOnCondition(Expression),set on condition condition ,Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+onCondition,94,3,1,,"public void setOnCondition(Expression condition) {
+        this.onCondition = condition;
+    }",False,False,"This method sets the value of the ""onCondition"" variable to the provided ""condition"" expression.",False,"The code defines a method called ""setOnCondition"" that takes an Expression object as a parameter and assigns it to the ""onCondition"" variable of the current object. This method is used to set the condition for a specific action or behavior."
+30,getOnCondition(),get on condition ,Method,,,,org.h2.command.dml.MergeUsing+onCondition,70,3,1,,"public Expression getOnCondition() {
+        return onCondition;
+    }",False,False,"The method ""getOnCondition"" returns the value of the variable ""onCondition"", which is of type ""Expression"".",False,"The code defines a method named ""getOnCondition"" which returns an object of type ""Expression"". This method is likely used to retrieve the value of the ""onCondition"" variable, which is a reference to an Expression object."
+31,getUpdateCommand(),get update command ,Method,,,,org.h2.command.dml.MergeUsing+updateCommand,72,3,1,,"public Prepared getUpdateCommand() {
+        return updateCommand;
+    }",True,True,"The method ""getUpdateCommand"" returns the value of the variable ""updateCommand"".",False,"The code contains a method named ""getUpdateCommand"" which returns a Prepared object. This method is responsible for retrieving the update command used in the code."
+32,setUpdateCommand(Update),set update command update command ,Method,,org.h2.command.Parser+parseWhenMatched(MergeUsing),,org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand,102,3,1,,"public void setUpdateCommand(Update updateCommand) {
+        this.updateCommand = updateCommand;
+    }",True,True,This method sets the update command for a specific object.,False,"The code defines a method named ""setUpdateCommand"" that takes an argument of type ""Update"" and assigns it to the instance variable ""updateCommand"". This method is used to set the update command for a specific object."
+33,getDeleteCommand(),get delete command ,Method,,,,org.h2.command.dml.MergeUsing+deleteCommand,72,3,1,,"public Prepared getDeleteCommand() {
+        return deleteCommand;
+    }",True,True,"The method ""getDeleteCommand"" returns the value of the ""deleteCommand"" variable, which is of type ""Prepared"".",False,"The code contains a method named ""getDeleteCommand"" which returns an object of type ""Prepared"". This method is responsible for retrieving the delete command."
+34,setDeleteCommand(Delete),set delete command delete command ,Method,,org.h2.command.Parser+parseWhenMatched(MergeUsing),,org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+deleteCommand,102,3,1,,"public void setDeleteCommand(Delete deleteCommand) {
+        this.deleteCommand = deleteCommand;
+    }",True,True,This method sets the delete command for an object.,False,"The code defines a method named ""setDeleteCommand"" that takes a parameter of type ""Delete"" and assigns it to the instance variable ""deleteCommand"". This method is used to set the delete command for a specific object."
+35,getInsertCommand(),get insert command ,Method,,,,org.h2.command.dml.MergeUsing+insertCommand,70,3,1,,"public Insert getInsertCommand() {
+        return insertCommand;
+    }",True,True,"The method ""getInsertCommand"" returns the value of the ""insertCommand"" variable.",False,"The code contains a method named ""getInsertCommand"" which returns an object of type ""Insert"". This method is responsible for retrieving the insert command used for inserting data into a database."
+36,setInsertCommand(Insert),set insert command insert command ,Method,,org.h2.command.Parser+parseWhenNotMatched(MergeUsing),,org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+insertCommand,102,3,1,,"public void setInsertCommand(Insert insertCommand) {
+        this.insertCommand = insertCommand;
+    }",True,True,This method sets the insert command for a specific object.,False,
+37,setQueryAlias(String),set query alias alias ,Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+queryAlias org.h2.command.dml.MergeUsing+queryAlias,81,4,1,,"public void setQueryAlias(String alias) {
+        this.queryAlias = alias;
+
+    }",False,False,This method sets the value of the queryAlias variable to the provided alias value.,False,"The code defines a method named ""setQueryAlias"" that takes a string parameter ""alias"" and sets it as the value of the ""queryAlias"" variable in the current object. This method is used to assign an alias to a query."
+38,getQueryAlias(),get query alias ,Method,,,,org.h2.command.dml.MergeUsing+queryAlias org.h2.command.dml.MergeUsing+queryAlias,70,4,1,,"public String getQueryAlias() {
+        return this.queryAlias;
+
+    }",False,False,The function of the method is to retrieve and return the value of the queryAlias variable as a String.,False,"The code defines a method named ""getQueryAlias"" that returns a string value. It retrieves the value of the ""queryAlias"" variable and returns it."
+39,getQuery(),get query ,Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int) org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+query,53,3,1,,"public Query getQuery() {
+        return query;
+    }",False,False,This method returns the value of the query.,False,"The code defines a method named ""getQuery"" that returns a Query object. It is a simple getter method that retrieves the value of the query variable and returns it."
+40,setQuery(Query),set query query ,Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int) org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+query org.h2.command.dml.MergeUsing+query,69,3,1,,"public void setQuery(Query query) {
+        this.query = query;
+    }",False,False,"This method sets the value of the ""query"" variable to the value passed as a parameter.",False,"The code defines a method named ""setQuery"" that takes a parameter of type ""Query"". This method assigns the value of the parameter to the ""query"" instance variable of the class."
+41,setTargetTableFilter(TableFilter),set target table filter target table filter ,Method,,,,org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetTableFilter,123,3,1,,"public void setTargetTableFilter(TableFilter targetTableFilter) {
+        this.targetTableFilter = targetTableFilter;
+    }",False,False,This method sets the target table filter for a specific object.,False,"The code defines a method called ""setTargetTableFilter"" which takes a parameter of type ""TableFilter"" and assigns it to the instance variable ""targetTableFilter"" of the current object. This method is used to set the filter for a target table in a Java program."
+42,getTargetTableFilter(),get target table filter ,Method,,org.h2.command.Parser+parseWhenMatched(MergeUsing) org.h2.command.Parser+parseWhenMatched(MergeUsing),,org.h2.command.dml.MergeUsing+targetTableFilter,83,3,1,,"public TableFilter getTargetTableFilter() {
+        return targetTableFilter;
+    }",False,False,"The method ""getTargetTableFilter"" returns the value of the variable ""targetTableFilter"", which is of type ""TableFilter"".",False,"The code defines a method named ""getTargetTableFilter"" which returns an object of type ""TableFilter"". This method is used to retrieve the target table filter object."
+43,getTargetTable(),get target table ,Method,,org.h2.command.Parser+parseWhenNotMatched(MergeUsing) org.h2.command.Parser+parseWhenNotMatched(MergeUsing),,org.h2.command.dml.MergeUsing+targetTable,65,3,1,,"public Table getTargetTable() {
+        return targetTable;
+    }",False,False,The function of the method is to return the value of the targetTable variable.,False,"The code defines a method named ""getTargetTable"" that returns a Table object. This method is used to retrieve the value of the targetTable variable."
+44,setTargetTable(Table),set target table target table ,Method,,,,org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+targetTable,93,3,1,,"public void setTargetTable(Table targetTable) {
+        this.targetTable = targetTable;
+    }",False,False,This method sets the value of the targetTable variable to the value passed as a parameter.,False,"The code defines a method named ""setTargetTable"" that takes a parameter of type ""Table"". This method assigns the value of the parameter to the ""targetTable"" variable of the current object."
+45,isTransactional(),is transactional ,Method,,,,,75,4,1,,"@Override
+    public boolean isTransactional() {
+        return true;
+    }",False,False,"This method serves to determine whether the object is transactional or not. It returns a boolean value of true if the object is transactional, and false otherwise.",False,"The code snippet defines a method named ""isTransactional"" that returns a boolean value. The method is marked with the ""@Override"" annotation, indicating that it overrides a method from a superclass or interface. The method always returns ""true"", implying that the object implementing this method supports transactions."
+46,queryMeta(),query meta ,Method,,,,,77,4,1,,"@Override
+    public ResultInterface queryMeta() {
+        return null;
+    }",False,False,"The method ""queryMeta"" is a public method that overrides a superclass method. It returns an object of type ""ResultInterface"" and always returns null.",False,"The code snippet defines a method named `queryMeta` that returns an object of type `ResultInterface`. The method is annotated with `@Override`, indicating that it overrides a method from a superclass or interface. The method implementation simply returns `null`, indicating that it does not provide any meaningful result."
+47,getType(),get type ,Method,,,,org.h2.command.CommandInterface+MERGE,81,4,1,,"@Override
+    public int getType() {
+        return CommandInterface.MERGE;
+    }",False,False,"The function of the method is to return the value of the constant ""MERGE"" from the CommandInterface class as an integer.",False,"The code snippet defines a method called `getType()` that returns an integer value. The method is annotated with `@Override`, indicating that it overrides a method from a superclass or interface. The method returns the constant value `CommandInterface.MERGE`, which likely represents the type of a merge command."

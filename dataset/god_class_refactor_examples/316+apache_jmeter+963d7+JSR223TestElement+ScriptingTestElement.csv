@@ -1,0 +1,302 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,LazyHolder,lazy holder initialization on demand holder pattern ,MemberClass,,,javax.script.ScriptEngineManager+ScriptEngineManager(),org.apache.jmeter.util.JSR223TestElement.LazyHolder+INSTANCE,188,6,10,"/** 
+ * Initialization On Demand Holder pattern
+ */
+","/**
+     * Initialization On Demand Holder pattern
+     */
+    private static class LazyHolder {
+        public static final ScriptEngineManager INSTANCE = new ScriptEngineManager();
+    }",False,False,"/** 
+ * Initialization On Demand Holder pattern
+ */
+",False,"/** 
+ * Initialization On Demand Holder pattern
+ */
+"
+2,getInstance(),get instance return script engine manager singleton ,Method,getScriptEngine(),,,org.apache.jmeter.util.JSR223TestElement.LazyHolder+INSTANCE,156,6,9,"/** 
+ * @return ScriptEngineManager singleton
+ */
+","/**
+     * @return ScriptEngineManager singleton
+     */
+    public static ScriptEngineManager getInstance() {
+            return LazyHolder.INSTANCE;
+    }",False,False,This method serves as a way to obtain the singleton instance of the ScriptEngineManager class.,False,"The code defines a method named `getInstance()` that returns an instance of the `ScriptEngineManager` class. It is implemented using the lazy initialization holder class idiom, ensuring that the instance is created only when it is first accessed. The method is a singleton, meaning that it always returns the same instance of `ScriptEngineManager`."
+3,serialVersionUID,serial version uid ,Field,,,,,50,1,26,,private static final long serialVersionUID = 233L;,False,False,,False,
+4,parameters,parameters ,Field,,,,,26,1,2,,private String parameters;,True,True,,False,
+5,filename,filename ,Field,,,,,24,1,2,,private String filename;,True,True,,False,
+6,script,script ,Field,,,,,22,1,2,,private String script;,True,True,,False,
+7,scriptLanguage,script language ,Field,,,,,30,1,2,,private String scriptLanguage;,True,True,,False,
+8,cacheKey,cache key ,Field,setCacheKey(String),,,,29,1,2,,"private String cacheKey = """";",False,False,,False,
+9,compiledScriptsCache,compiled scripts cache cache of compiled scripts ,Field,,,,,343,7,26,"/** 
+ * Cache of compiled scripts
+ */
+","/**
+     * Cache of compiled scripts
+     */
+    @SuppressWarnings(""unchecked"") // LRUMap does not support generics (yet)
+    private static final Map<String, CompiledScript> compiledScriptsCache = 
+            Collections.synchronizedMap(
+                    new LRUMap(JMeterUtils.getPropDefault(""jsr223.compiled_scripts_cache_size"", 100)));",False,False,"/** 
+ * Cache of compiled scripts
+ */
+",False,"/** 
+ * Cache of compiled scripts
+ */
+"
+10,JSR223TestElement(),js r223 test element ,Method,,,org.apache.jmeter.util.JSR223TestElement+init() org.apache.jmeter.util.JSR223TestElement+init(),,67,4,1,,"public JSR223TestElement() {
+        super();
+        init();
+    }",False,False,"The function of the given method is to create a new instance of the JSR223TestElement class, call the constructor of its superclass, and then initialize the object by calling the init() method.",False,"The code snippet defines a constructor for a class named ""JSR223TestElement"". The constructor calls the ""init()"" method, which likely initializes some variables or sets up the object's initial state."
+11,init(),init ,Method,JSR223TestElement() readResolve() clone(),,,org.apache.jmeter.util.JSR223TestElement+parameters org.apache.jmeter.util.JSR223TestElement+filename org.apache.jmeter.util.JSR223TestElement+script org.apache.jmeter.util.JSR223TestElement+scriptLanguage org.apache.jmeter.util.JSR223TestElement+cacheKey,173,7,2,,"private void init() {
+        parameters=""""; // ensure variables are not null
+        filename="""";
+        script="""";
+        scriptLanguage="""";
+        cacheKey = """";
+    }",False,False,"The function of the method is to initialize the variables parameters, filename, script, scriptLanguage, and cacheKey by setting them to empty strings, ensuring they are not null.",True,The `init()` method initializes several variables by assigning empty values to them. This ensures that the variables are not null and can be used later in the code.
+12,readResolve(),read resolve ,Method,,,org.apache.jmeter.util.JSR223TestElement+init() org.apache.jmeter.util.JSR223TestElement+init(),,75,4,4,,"protected Object readResolve() {
+        init();
+        return this;
+    }",False,False,The function of the method is to initialize the object and return itself.,True,The `readResolve()` method is a protected method that is used during deserialization to ensure that the object being deserialized is properly initialized. It calls the `init()` method to perform any necessary initialization tasks and then returns the deserialized object.
+13,clone(),clone ,Method,,,org.apache.jmeter.testelement.AbstractTestElement+clone() org.apache.jmeter.util.JSR223TestElement+init() org.apache.jmeter.util.JSR223TestElement+init(),,143,6,1,,"@Override
+    public Object clone() {
+        JSR223TestElement o = (JSR223TestElement) super.clone();
+        o.init();
+       return o;
+    }",False,False,"This method overrides the clone() method from the Object class. It creates a new instance of JSR223TestElement, initializes it, and returns the new instance.",True,"The code overrides the `clone()` method to create a deep copy of the `JSR223TestElement` object. It first calls the `clone()` method of the superclass to copy the object, then initializes the copied object using the `init()` method, and finally returns the copied object."
+14,getScriptEngine(),get script engine ,Method,,org.apache.jmeter.assertions.JSR223Assertion+getResult(SampleResult) org.apache.jmeter.extractor.JSR223PostProcessor+process() org.apache.jmeter.modifiers.JSR223PreProcessor+process() org.apache.jmeter.timers.JSR223Timer+delay() org.apache.jmeter.visualizers.JSR223Listener+sampleOccurred(SampleEvent) org.apache.jmeter.protocol.java.sampler.JSR223Sampler+sample(Entry),org.apache.jmeter.util.JSR223TestElement+getScriptLanguage() org.apache.jmeter.util.JSR223TestElement+getScriptLanguage() javax.script.ScriptEngineManager+getEngineByName(String) org.apache.jmeter.util.JSR223TestElement+getInstance() org.apache.jmeter.util.JSR223TestElement+getInstance() javax.script.ScriptEngineManager+getEngineByName(String) javax.script.ScriptException+ScriptException(String),,344,10,4,,"protected ScriptEngine getScriptEngine() throws ScriptException {
+        final String lang = getScriptLanguage();
+
+        ScriptEngine scriptEngine = getInstance().getEngineByName(lang);
+        if (scriptEngine == null) {
+            throw new ScriptException(""Cannot find engine named: ""+lang);
+        }
+
+        return scriptEngine;
+    }",False,False,"This method returns a ScriptEngine object based on the script language obtained from getScriptLanguage(). If the engine is not found, it throws a ScriptException.",True,"The code defines a protected method named ""getScriptEngine"" that returns a ScriptEngine object. It first retrieves the script language and then attempts to get the corresponding ScriptEngine instance. If the instance is not found, it throws a ScriptException with an appropriate error message."
+15,populateBindings(Bindings),populate bindings bindings populate variables to be passed to scripts param bindings bindings ,Method,"processFileOrScript(ScriptEngine,Bindings)",,"org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.util.JSR223TestElement+getFilename() org.apache.jmeter.util.JSR223TestElement+getFilename() org.apache.jmeter.util.JSR223TestElement+getParameters() org.apache.jmeter.util.JSR223TestElement+getParameters() org.apache.jorphan.logging.LoggingManager+getLoggerForShortName(String) org.apache.jorphan.logging.LoggingManager+getLoggerForShortName(String) java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jorphan.util.JOrphanUtils+split(String,String) org.apache.jorphan.util.JOrphanUtils+split(String,String) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.threads.JMeterContextService+getContext() org.apache.jmeter.threads.JMeterContextService+getContext() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.threads.JMeterContext+getVariables() org.apache.jmeter.threads.JMeterContext+getVariables() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.util.JMeterUtils+getJMeterProperties() org.apache.jmeter.util.JMeterUtils+getJMeterProperties() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.threads.JMeterContext+getCurrentSampler() org.apache.jmeter.threads.JMeterContext+getCurrentSampler() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.threads.JMeterContext+getPreviousResult() org.apache.jmeter.threads.JMeterContext+getPreviousResult() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object)",java.lang.System+out,1375,32,4,"/** 
+ * Populate variables to be passed to scripts
+ * @param bindings Bindings
+ */
+","/**
+     * Populate variables to be passed to scripts
+     * @param bindings Bindings
+     */
+    protected void populateBindings(Bindings bindings) {
+        final String label = getName();
+        final String fileName = getFilename();
+        final String scriptParameters = getParameters();
+        // Use actual class name for log
+        final Logger logger = LoggingManager.getLoggerForShortName(getClass().getName());
+        bindings.put(""log"", logger);
+        bindings.put(""Label"", label);
+        bindings.put(""FileName"", fileName);
+        bindings.put(""Parameters"", scriptParameters);
+        String [] args=JOrphanUtils.split(scriptParameters, "" "");//$NON-NLS-1$
+        bindings.put(""args"", args);
+        // Add variables for access to context and variables
+        JMeterContext jmctx = JMeterContextService.getContext();
+        bindings.put(""ctx"", jmctx);
+        JMeterVariables vars = jmctx.getVariables();
+        bindings.put(""vars"", vars);
+        Properties props = JMeterUtils.getJMeterProperties();
+        bindings.put(""props"", props);
+        // For use in debugging:
+        bindings.put(""OUT"", System.out);
+
+        // Most subclasses will need these:
+        Sampler sampler = jmctx.getCurrentSampler();
+        bindings.put(""sampler"", sampler);
+        SampleResult prev = jmctx.getPreviousResult();
+        bindings.put(""prev"", prev);
+    }",False,False,"This method populates variables to be passed to scripts. It sets values for ""log"", ""Label"", ""FileName"", ""Parameters"", ""args"", ""ctx"", ""vars"", ""props"", and ""OUT"". It also sets values for ""sampler"" and ""prev"" which are commonly used in subclasses.",True,"The method ""populateBindings"" is used to populate variables that will be passed to scripts. It sets various variables such as label, filename, script parameters, logger, context, variables, properties, and sampler for use in the scripts."
+16,"processFileOrScript(ScriptEngine,Bindings)",process file or script script engine bindings this method will run inline script or file script with special behaviour for file script if script engine implements compilable script will be compiled and cached if not if will be run param script engine script engine param bindings link bindings might be null return object returned by script throws io exception throws script exception ,Method,,org.apache.jmeter.assertions.JSR223Assertion+getResult(SampleResult) org.apache.jmeter.extractor.JSR223PostProcessor+process() org.apache.jmeter.modifiers.JSR223PreProcessor+process() org.apache.jmeter.timers.JSR223Timer+delay() org.apache.jmeter.visualizers.JSR223Listener+sampleOccurred(SampleEvent) org.apache.jmeter.protocol.java.sampler.JSR223Sampler+sample(Entry),"javax.script.ScriptEngine+createBindings() javax.script.ScriptEngine+createBindings() org.apache.jmeter.util.JSR223TestElement+populateBindings(Bindings) org.apache.jmeter.util.JSR223TestElement+populateBindings(Bindings) java.io.File+File(String) org.apache.jmeter.util.JSR223TestElement+getFilename() org.apache.jmeter.util.JSR223TestElement+getFilename() java.lang.String+equals(Object) java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() java.lang.String+equals(Object) org.apache.jmeter.util.JSR223TestElement+getFilename() org.apache.jmeter.util.JSR223TestElement+getFilename() java.io.File+exists() java.io.File+exists() java.io.File+canRead() java.io.File+canRead() org.apache.jmeter.util.JSR223TestElement+getScriptLanguage() org.apache.jmeter.util.JSR223TestElement+getScriptLanguage() java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.File+lastModified() java.io.File+lastModified() java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.io.BufferedReader+BufferedReader(Reader,int) java.io.FileReader+FileReader(File) java.io.File+length() java.io.File+length() javax.script.Compilable+compile(Reader) javax.script.Compilable+compile(Reader) java.util.Map+put(K,V) java.util.Map+put(K,V) javax.script.CompiledScript+eval(Bindings) javax.script.CompiledScript+eval(Bindings) java.io.BufferedReader+BufferedReader(Reader,int) java.io.FileReader+FileReader(File) java.io.File+length() java.io.File+length() javax.script.ScriptEngine+eval(Reader,Bindings) javax.script.ScriptEngine+eval(Reader,Bindings) javax.script.ScriptException+ScriptException(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.util.JSR223TestElement+getScript() org.apache.jmeter.util.JSR223TestElement+getScript() java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) javax.script.Compilable+compile(String) javax.script.Compilable+compile(String) org.apache.jmeter.util.JSR223TestElement+getScript() org.apache.jmeter.util.JSR223TestElement+getScript() java.util.Map+put(K,V) java.util.Map+put(K,V) javax.script.CompiledScript+eval(Bindings) javax.script.CompiledScript+eval(Bindings) javax.script.ScriptEngine+eval(String,Bindings) javax.script.ScriptEngine+eval(String,Bindings) org.apache.jmeter.util.JSR223TestElement+getScript() org.apache.jmeter.util.JSR223TestElement+getScript() javax.script.ScriptException+ScriptException(String) org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.testelement.AbstractTestElement+getName()",org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+cacheKey org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+cacheKey org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+cacheKey org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+cacheKey,4188,80,4,"/** 
+ * This method will run inline script or file script with special behaviour for file script: - If ScriptEngine implements Compilable script will be compiled and cached - If not if will be run
+ * @param scriptEngine ScriptEngine
+ * @param bindings {@link Bindings} might be null
+ * @return Object returned by script
+ * @throws IOException
+ * @throws ScriptException
+ */
+","/**
+     * This method will run inline script or file script with special behaviour for file script:
+     * - If ScriptEngine implements Compilable script will be compiled and cached
+     * - If not if will be run
+     * @param scriptEngine ScriptEngine
+     * @param bindings {@link Bindings} might be null
+     * @return Object returned by script
+     * @throws IOException
+     * @throws ScriptException
+     */
+    protected Object processFileOrScript(ScriptEngine scriptEngine, Bindings bindings) throws IOException, ScriptException {
+        if (bindings == null) {
+            bindings = scriptEngine.createBindings();
+        }
+        populateBindings(bindings);
+        File scriptFile = new File(getFilename()); 
+        // Hack as in bsh-2.0b5.jar BshScriptEngine implements Compilable but throws new Error
+        boolean supportsCompilable = scriptEngine instanceof Compilable 
+                && !(scriptEngine.getClass().getName().equals(""bsh.engine.BshScriptEngine""));
+        if (!StringUtils.isEmpty(getFilename())) {
+            if (scriptFile.exists() && scriptFile.canRead()) {
+                BufferedReader fileReader = null;
+                try {
+                    if (supportsCompilable) {
+                        String cacheKey = 
+                                getScriptLanguage()+""#""+
+                                scriptFile.getAbsolutePath()+""#""+
+                                        scriptFile.lastModified();
+                        CompiledScript compiledScript = 
+                                compiledScriptsCache.get(cacheKey);
+                        if (compiledScript==null) {
+                            synchronized (compiledScriptsCache) {
+                                compiledScript = 
+                                        compiledScriptsCache.get(cacheKey);
+                                if (compiledScript==null) {
+                                    // TODO Charset ?
+                                    fileReader = new BufferedReader(new FileReader(scriptFile), 
+                                            (int)scriptFile.length()); 
+                                    compiledScript = 
+                                            ((Compilable) scriptEngine).compile(fileReader);
+                                    compiledScriptsCache.put(cacheKey, compiledScript);
+                                }
+                            }
+                        }
+                        return compiledScript.eval(bindings);
+                    } else {
+                        // TODO Charset ?
+                        fileReader = new BufferedReader(new FileReader(scriptFile), 
+                                (int)scriptFile.length()); 
+                        return scriptEngine.eval(fileReader, bindings);                    
+                    }
+                } finally {
+                    IOUtils.closeQuietly(fileReader);
+                }
+            }  else {
+                throw new ScriptException(""Script file '""+scriptFile.getAbsolutePath()+""' does not exist or is unreadable for element:""+getName());
+            }
+        } else if (!StringUtils.isEmpty(getScript())){
+            if (supportsCompilable && !StringUtils.isEmpty(cacheKey)) {
+                CompiledScript compiledScript = 
+                        compiledScriptsCache.get(cacheKey);
+                if (compiledScript==null) {
+                    synchronized (compiledScriptsCache) {
+                        compiledScript = 
+                                compiledScriptsCache.get(cacheKey);
+                        if (compiledScript==null) {
+                            compiledScript = 
+                                    ((Compilable) scriptEngine).compile(getScript());
+                            compiledScriptsCache.put(cacheKey, compiledScript);
+                        }
+                    }
+                }
+                return compiledScript.eval(bindings);
+            } else {
+                return scriptEngine.eval(getScript(), bindings);
+            }
+        } else {
+            throw new ScriptException(""Both script file and script text are empty for element:""+getName());            
+        }
+    }",False,False,"The function of this method is to run an inline script or a script from a file using a given ScriptEngine. If the ScriptEngine implements Compilable, the script will be compiled and cached. If not, it will be run directly. The method takes a ScriptEngine and optional Bindings as parameters, and returns the object returned by the script. It may throw IOException or ScriptException.",True,"This code defines a method called `processFileOrScript` that runs an inline script or a script from a file using a given `ScriptEngine`. If the `ScriptEngine` implements `Compilable`, the script is compiled and cached for future use. The method returns the object returned by the script."
+17,getScript(),get script return the script test bean version must be overridden for subclasses that don t implement test bean otherwise the clone method won t work return the script to execute ,Method,"processFileOrScript(ScriptEngine,Bindings) processFileOrScript(ScriptEngine,Bindings) processFileOrScript(ScriptEngine,Bindings)",org.apache.jmeter.protocol.java.sampler.JSR223Sampler+sample(Entry),,org.apache.jmeter.util.JSR223TestElement+script,279,10,1,"/** 
+ * Return the script (TestBean version). Must be overridden for subclasses that don't implement TestBean otherwise the clone() method won't work.
+ * @return the script to execute
+ */
+","/**
+     * Return the script (TestBean version).
+     * Must be overridden for subclasses that don't implement TestBean
+     * otherwise the clone() method won't work.
+     *
+     * @return the script to execute
+     */
+    public String getScript(){
+        return script;
+    }",True,True,"This method returns the script to execute in the TestBean version. It must be overridden for subclasses that do not implement TestBean, otherwise the clone() method will not work.",False,"This code defines a method named ""getScript"" that returns a string representing a script. It is recommended to override this method in subclasses that do not implement the ""TestBean"" interface to ensure the ""clone()"" method works correctly."
+18,setScript(String),set script s set the script test bean version must be overridden for subclasses that don t implement test bean otherwise the clone method won t work param s the script to execute may be blank ,Method,,,,org.apache.jmeter.util.JSR223TestElement+script,293,10,1,"/** 
+ * Set the script (TestBean version). Must be overridden for subclasses that don't implement TestBean otherwise the clone() method won't work.
+ * @param s the script to execute (may be blank)
+ */
+","/**
+     * Set the script (TestBean version).
+     * Must be overridden for subclasses that don't implement TestBean
+     * otherwise the clone() method won't work.
+     *
+     * @param s the script to execute (may be blank)
+     */
+    public void setScript(String s){
+        script=s;
+    }",True,True,This method sets the script to be executed in a TestBean. It must be overridden in subclasses that do not implement TestBean to ensure the clone() method works correctly.,False,"This code defines a method called ""setScript"" that sets the value of a variable called ""script"" to the provided string. It is recommended to override this method in subclasses that do not implement TestBean in order to ensure the proper functionality of the clone() method."
+19,getParameters(),get parameters ,Method,populateBindings(Bindings),,,org.apache.jmeter.util.JSR223TestElement+parameters,64,3,1,,"public String getParameters() {
+        return parameters;
+    }",True,True,"This method returns the value of the ""parameters"" variable as a string.",False,"The code contains a method named ""getParameters"" which returns a string value. It is likely used to retrieve the parameters of something, but without further context, it is difficult to determine its exact purpose."
+20,setParameters(String),set parameters s ,Method,,,,org.apache.jmeter.util.JSR223TestElement+parameters,67,3,1,,"public void setParameters(String s) {
+        parameters = s;
+    }",True,True,"This method sets the value of the ""parameters"" variable to the value of the input string ""s"".",False,"The code defines a method named ""setParameters"" that takes a string parameter. This method assigns the value of the parameter to the ""parameters"" variable."
+21,getFilename(),get filename ,Method,"populateBindings(Bindings) processFileOrScript(ScriptEngine,Bindings)",org.apache.jmeter.protocol.java.sampler.JSR223Sampler+sample(Entry),,org.apache.jmeter.util.JSR223TestElement+filename,60,3,1,,"public String getFilename() {
+        return filename;
+    }",True,True,"This method returns the value of the variable ""filename"" as a string.",False,"The code contains a method named ""getFilename"" which returns a string value. This method is used to retrieve the filename associated with the current object or instance."
+22,setFilename(String),set filename s ,Method,,,,org.apache.jmeter.util.JSR223TestElement+filename,63,3,1,,"public void setFilename(String s) {
+        filename = s;
+    }",True,True,"This method sets the value of the variable ""filename"" to the value of the input string ""s"".",False,"The code defines a method named ""setFilename"" that takes a string parameter. This method sets the value of a variable named ""filename"" to the provided string."
+23,getScriptLanguage(),get script language ,Method,"getScriptEngine() processFileOrScript(ScriptEngine,Bindings)",,,org.apache.jmeter.util.JSR223TestElement+scriptLanguage,72,3,1,,"public String getScriptLanguage() {
+        return scriptLanguage;
+    }",True,True,This method returns the value of the scriptLanguage variable.,False,"The given code is a method named ""getScriptLanguage"" that returns a string value. It retrieves and returns the value of the variable ""scriptLanguage""."
+24,setScriptLanguage(String),set script language s ,Method,,,,org.apache.jmeter.util.JSR223TestElement+scriptLanguage,75,3,1,,"public void setScriptLanguage(String s) {
+        scriptLanguage = s;
+    }",True,True,This method sets the value of the scriptLanguage variable to the input string.,False,"The code defines a method named ""setScriptLanguage"" that takes a string parameter. This method sets the value of a variable called ""scriptLanguage"" to the provided string."
+25,getCacheKey(),get cache key return the cache key ,Method,,,,org.apache.jmeter.util.JSR223TestElement+cacheKey,104,6,1,"/** 
+ * @return the cacheKey
+ */
+","/**
+     * @return the cacheKey
+     */
+    public String getCacheKey() {
+        return cacheKey;
+    }",False,False,This method serves to retrieve the value of the cacheKey variable.,False,"The given code is a method named ""getCacheKey()"" that returns a String value. It is used to retrieve the cache key associated with an object."
+26,setCacheKey(String),set cache key cache key param cache key the cache key to set ,Method,,,,org.apache.jmeter.util.JSR223TestElement+cacheKey org.apache.jmeter.util.JSR223TestElement+cacheKey,141,6,1,"/** 
+ * @param cacheKey the cacheKey to set
+ */
+","/**
+     * @param cacheKey the cacheKey to set
+     */
+    public void setCacheKey(String cacheKey) {
+        this.cacheKey = cacheKey;
+    }",False,False,This method sets the cache key for an object.,False,"The given code is a method named ""setCacheKey"" that takes a string parameter called ""cacheKey"" and sets it as the value of the instance variable ""cacheKey"" in the current object. It does not return any value."
+27,testStarted(),test started see org apache jmeter testelement test state listener test started ,Method,,,,,139,6,1,"/** 
+ * @see org.apache.jmeter.testelement.TestStateListener#testStarted()
+ */
+","/**
+     * @see org.apache.jmeter.testelement.TestStateListener#testStarted()
+     */
+    public void testStarted() {
+        // NOOP
+    }",False,False,This method serves as a testStarted function in the TestStateListener interface. It does nothing (NOOP).,False,"The code snippet defines a method named ""testStarted"" that belongs to a class implementing the ""TestStateListener"" interface. The method does not perform any operations and is essentially a no-operation (NOOP) method."
+28,testStarted(String),test started host see org apache jmeter testelement test state listener test started java lang string ,Method,,,,,169,6,1,"/** 
+ * @see org.apache.jmeter.testelement.TestStateListener#testStarted(java.lang.String)
+ */
+","/**
+     * @see org.apache.jmeter.testelement.TestStateListener#testStarted(java.lang.String)
+     */
+    public void testStarted(String host) {
+        // NOOP   
+    }",False,False,This method serves as a testStarted function that takes a host parameter and does nothing (NOOP).,False,"The code snippet defines a method named ""testStarted"" that takes a String parameter called ""host"". The method does not perform any operations and is annotated with a reference to the ""testStarted"" method in the ""org.apache.jmeter.testelement.TestStateListener"" class."
+29,testEnded(),test ended see org apache jmeter testelement test state listener test ended ,Method,,,org.apache.jmeter.util.JSR223TestElement+testEnded(String) org.apache.jmeter.util.JSR223TestElement+testEnded(String),,142,6,1,"/** 
+ * @see org.apache.jmeter.testelement.TestStateListener#testEnded()
+ */
+","/**
+     * @see org.apache.jmeter.testelement.TestStateListener#testEnded()
+     */
+    public void testEnded() {
+        testEnded("""");
+    }",False,False,"The method ""testEnded()"" is a public void method that calls another method ""testEnded(String)"" with an empty string as an argument.",True,"The code snippet is a method named ""testEnded"" that belongs to a class implementing the ""TestStateListener"" interface. It overrides the ""testEnded"" method and calls another version of the method with an empty string parameter. The purpose of this method is to handle the end of a test."
+30,testEnded(String),test ended host see org apache jmeter testelement test state listener test ended java lang string ,Method,testEnded(),,java.util.Map+clear() java.util.Map+clear(),org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache,184,6,1,"/** 
+ * @see org.apache.jmeter.testelement.TestStateListener#testEnded(java.lang.String)
+ */
+","/**
+     * @see org.apache.jmeter.testelement.TestStateListener#testEnded(java.lang.String)
+     */
+    public void testEnded(String host) {
+        compiledScriptsCache.clear();
+    }",False,False,The function of this method is to clear the compiledScriptsCache when a test ends.,True,"The code is a method named ""testEnded"" that is part of a class implementing the ""TestStateListener"" interface. It takes a String parameter ""host"" and clears the ""compiledScriptsCache"" object. This method is likely called when a test ends and is responsible for cleaning up any resources related to compiled scripts."

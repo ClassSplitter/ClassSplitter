@@ -1,0 +1,260 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,OnCompositionLoadedListener,on composition loaded listener ,MemberClass,,,com.airbnb.lottie.LottieComposition.OnCompositionLoadedListener+onCompositionLoaded(LottieComposition),,111,3,1,,"public interface OnCompositionLoadedListener {
+    void onCompositionLoaded(LottieComposition composition);
+  }",False,False,,False,
+2,Cancellable,cancellable ,MemberClass,,,com.airbnb.lottie.LottieComposition.Cancellable+cancel(),,46,3,0,,"interface Cancellable {
+    void cancel();
+  }",False,False,,False,
+3,MAX_PIXELS,max pixels the largest bitmap drawing cache can be is 8 294 400 bytes there are 4 bytes per pixel leaving 2 3 m pixels available reduce the number a little bit for safety hopefully this can be hardware accelerated someday ,Field,,,,,299,8,26,"/** 
+ * The largest bitmap drawing cache can be is 8,294,400 bytes. There are 4 bytes per pixel leaving ~2.3M pixels available. Reduce the number a little bit for safety. <p> Hopefully this can be hardware accelerated someday.
+ */
+","/**
+   * The largest bitmap drawing cache can be is 8,294,400 bytes. There are 4 bytes per pixel
+   * leaving ~2.3M pixels available.
+   * Reduce the number a little bit for safety.
+   * <p>
+   * Hopefully this can be hardware accelerated someday.
+   */
+  private static final int MAX_PIXELS = 1000;",False,False,"/** 
+ * The largest bitmap drawing cache can be is 8,294,400 bytes. There are 4 bytes per pixel leaving ~2.3M pixels available. Reduce the number a little bit for safety. <p> Hopefully this can be hardware accelerated someday.
+ */
+",False,"/** 
+ * The largest bitmap drawing cache can be is 8,294,400 bytes. There are 4 bytes per pixel leaving ~2.3M pixels available. Reduce the number a little bit for safety. <p> Hopefully this can be hardware accelerated someday.
+ */
+"
+4,"fromAssetFileName(Context,String,OnCompositionLoadedListener)",from asset file name context file name loaded listener loads a composition from a file stored in assets ,Method,,"com.airbnb.lottie.LottieAnimationView+setAnimation(String,CacheStrategy) com.airbnb.lottie.samples.AnimationFragment+onActivityResult(int,int,Intent) com.airbnb.lottie.samples.LottieFontViewGroup+init() com.airbnb.lottie.samples.LottieFontViewGroup+onKeyUp(int,KeyEvent)","java.lang.IllegalStateException+IllegalStateException(String,Throwable) com.airbnb.lottie.LottieComposition+fromInputStream(Context,InputStream,OnCompositionLoadedListener) com.airbnb.lottie.LottieComposition+fromInputStream(Context,InputStream,OnCompositionLoadedListener)",,460,13,9,"/** 
+ * Loads a composition from a file stored in /assets.
+ */
+","/**
+   * Loads a composition from a file stored in /assets.
+   */
+  public static Cancellable fromAssetFileName(Context context, String fileName,
+      OnCompositionLoadedListener loadedListener) {
+    InputStream stream;
+    try {
+      stream = context.getAssets().open(fileName);
+    } catch (IOException e) {
+      throw new IllegalStateException(""Unable to find file "" + fileName, e);
+    }
+    return fromInputStream(context, stream, loadedListener);
+  }",True,True,"This method loads a composition from a file stored in the /assets directory. It takes a Context, a file name, and a listener as parameters. It opens the file as an InputStream and then calls another method to load the composition from the InputStream.",True,"This code defines a method called ""fromAssetFileName"" that loads a composition from a file stored in the /assets directory of the Android application. It takes a Context object, a file name, and a listener as parameters, and returns a Cancellable object. The method opens the file as an InputStream and then calls another method called ""fromInputStream"" to process the stream and load the composition."
+5,"fromInputStream(Context,InputStream,OnCompositionLoadedListener)",from input stream context stream loaded listener loads a composition from an arbitrary input stream ex from input stream context new file input stream file path composition ,Method,"fromAssetFileName(Context,String,OnCompositionLoadedListener)",com.airbnb.lottie.samples.AnimationFragment+onFileLoaded(Uri),"com.airbnb.lottie.LottieComposition.FileCompositionLoader+FileCompositionLoader(Resources,OnCompositionLoadedListener)",,456,12,9,"/** 
+ * Loads a composition from an arbitrary input stream. <p> ex: fromInputStream(context, new FileInputStream(filePath), (composition) -> {});
+ */
+","/**
+   * Loads a composition from an arbitrary input stream.
+   * <p>
+   * ex: fromInputStream(context, new FileInputStream(filePath), (composition) -> {});
+   */
+  public static Cancellable fromInputStream(Context context, InputStream stream,
+      OnCompositionLoadedListener loadedListener) {
+    FileCompositionLoader loader =
+        new FileCompositionLoader(context.getResources(), loadedListener);
+    loader.execute(stream);
+    return loader;
+  }",True,True,"This method loads a composition from an input stream. It takes a context, an input stream, and a listener as parameters. It creates a FileCompositionLoader, executes it with the input stream, and returns the loader.",True,"The code defines a static method ""fromInputStream"" that loads a composition from an input stream. It takes a context, an input stream, and a listener as parameters, and returns a cancellable object. The method internally creates a FileCompositionLoader and executes it with the provided input stream."
+6,"fromFileSync(Context,String)",from file sync context file name ,Method,,"com.airbnb.lottie.LottieTest+testAnimation(MainActivity,String,String,float[])","java.lang.IllegalStateException+IllegalStateException(String,Throwable) com.airbnb.lottie.LottieComposition+fromInputStream(Resources,InputStream) com.airbnb.lottie.LottieComposition+fromInputStream(Resources,InputStream)",,329,9,8,,"static LottieComposition fromFileSync(Context context, String fileName) {
+    InputStream file;
+    try {
+      file = context.getAssets().open(fileName);
+    } catch (IOException e) {
+      throw new IllegalStateException(""Unable to find file "" + fileName, e);
+    }
+    return fromInputStream(context.getResources(), file);
+  }",False,True,This method takes a context and a file name as input. It tries to open the file using the context's assets and returns a LottieComposition object by reading the file as an input stream.,True,The given code is a static method that takes a context and a file name as input parameters. It opens the specified file from the assets folder of the context and returns a LottieComposition object by passing the file input stream to another method called fromInputStream().
+7,"fromJson(Resources,JSONObject,OnCompositionLoadedListener)",from json res json loaded listener loads a composition from a raw json object this is useful for animations loaded from the network ,Method,,"com.airbnb.lottie.LottieAnimationView+setAnimation(JSONObject) com.airbnb.lottie.samples.AnimationFragment+onResponse(Call,Response)","com.airbnb.lottie.LottieComposition.JsonCompositionLoader+JsonCompositionLoader(Resources,OnCompositionLoadedListener)",,371,10,9,"/** 
+ * Loads a composition from a raw json object. This is useful for animations loaded from the network.
+ */
+","/**
+   * Loads a composition from a raw json object. This is useful for animations loaded from the
+   * network.
+   */
+  public static Cancellable fromJson(Resources res, JSONObject json,
+      OnCompositionLoadedListener loadedListener) {
+    JsonCompositionLoader loader = new JsonCompositionLoader(res, loadedListener);
+    loader.execute(json);
+    return loader;
+  }",True,True,"The function of this method is to load a composition from a raw JSON object. It takes a Resources object, a JSONObject, and an OnCompositionLoadedListener as parameters. It creates a JsonCompositionLoader, executes it with the given JSON object, and returns the loader.",True,"This code defines a static method called ""fromJson"" that takes a Resources object, a JSONObject, and an OnCompositionLoadedListener as parameters. It creates a JsonCompositionLoader object, executes it with the given JSONObject, and returns the loader. This method is used to load a composition from a raw JSON object, typically for animations loaded from the network."
+8,"fromInputStream(Resources,InputStream)",from input stream res file ,Method,"fromFileSync(Context,String) FileCompositionLoader.doInBackground(InputStream)",,"java.io.InputStream+available() java.io.InputStream+available() java.io.InputStream+read(byte[]) java.io.InputStream+read(byte[]) java.io.InputStream+close() java.io.InputStream+close() java.lang.String+String(byte[],String) com.airbnb.lottie.LottieComposition+fromJsonSync(Resources,JSONObject) com.airbnb.lottie.LottieComposition+fromJsonSync(Resources,JSONObject) java.lang.IllegalStateException+IllegalStateException(String,Throwable) java.lang.IllegalStateException+IllegalStateException(String,Throwable)",,654,18,8,,"@SuppressWarnings(""WeakerAccess"")
+  static LottieComposition fromInputStream(Resources res, InputStream file) {
+    try {
+      int size = file.available();
+      byte[] buffer = new byte[size];
+      //noinspection ResultOfMethodCallIgnored
+      file.read(buffer);
+      file.close();
+      String json = new String(buffer, ""UTF-8"");
+
+      JSONObject jsonObject = new JSONObject(json);
+      return LottieComposition.fromJsonSync(res, jsonObject);
+    } catch (IOException e) {
+      throw new IllegalStateException(""Unable to find file."", e);
+    } catch (JSONException e) {
+      throw new IllegalStateException(""Unable to load JSON."", e);
+    }
+  }",True,True,"This method reads a JSON file from an input stream, converts it to a string, creates a JSON object from the string, and returns a LottieComposition object using the JSON object. It handles exceptions for file not found and invalid JSON.",True,"This code defines a static method called `fromInputStream` that takes a `Resources` object and an `InputStream` object as parameters. It reads the contents of the input stream into a byte array, converts it to a JSON string, creates a `JSONObject` from the string, and returns a `LottieComposition` object by calling a method `fromJsonSync` with the `Resources` object and the `JSONObject` as arguments."
+9,"fromJsonSync(Resources,JSONObject)",from json sync res json ,Method,"fromInputStream(Resources,InputStream) JsonCompositionLoader.doInBackground(JSONObject)",,"com.airbnb.lottie.LottieComposition+LottieComposition(Resources) java.lang.Math+max(int,int) java.lang.Math+max(int,int) java.lang.Math+max(int,int) java.lang.Math+max(int,int) com.airbnb.lottie.Layer+Layer(JSONObject,LottieComposition) com.airbnb.lottie.LottieComposition+addLayer(LottieComposition,Layer) com.airbnb.lottie.LottieComposition+addLayer(LottieComposition,Layer) com.airbnb.lottie.LottieComposition+parsePrecomps(LottieComposition,JSONArray) com.airbnb.lottie.LottieComposition+parsePrecomps(LottieComposition,JSONArray) com.airbnb.lottie.LottieComposition+parseImages(LottieComposition,JSONArray) com.airbnb.lottie.LottieComposition+parseImages(LottieComposition,JSONArray)",com.airbnb.lottie.LottieComposition+scale com.airbnb.lottie.LottieComposition+scale com.airbnb.lottie.LottieComposition+MAX_PIXELS com.airbnb.lottie.LottieComposition+MAX_PIXELS com.airbnb.lottie.LottieComposition+scale com.airbnb.lottie.LottieComposition+bounds com.airbnb.lottie.LottieComposition+startFrame com.airbnb.lottie.LottieComposition+endFrame com.airbnb.lottie.LottieComposition+frameRate,1292,34,8,,"@SuppressWarnings(""WeakerAccess"")
+  static LottieComposition fromJsonSync(Resources res, JSONObject json) {
+    LottieComposition composition = new LottieComposition(res);
+
+    int width = json.optInt(""w"", -1);
+    int height = json.optInt(""h"", -1);
+    if (width != -1 && height != -1) {
+      int scaledWidth = (int) (width * composition.scale);
+      int scaledHeight = (int) (height * composition.scale);
+      if (Math.max(scaledWidth, scaledHeight) > MAX_PIXELS) {
+        float factor = (float) MAX_PIXELS / (float) Math.max(scaledWidth, scaledHeight);
+        scaledWidth *= factor;
+        scaledHeight *= factor;
+        composition.scale *= factor;
+      }
+      composition.bounds = new Rect(0, 0, scaledWidth, scaledHeight);
+    }
+
+    composition.startFrame = json.optLong(""ip"", 0);
+    composition.endFrame = json.optLong(""op"", 0);
+    composition.frameRate = json.optInt(""fr"", 0);
+
+    JSONArray jsonLayers = json.optJSONArray(""layers"");
+    for (int i = 0; i < jsonLayers.length(); i++) {
+      Layer layer = new Layer(jsonLayers.optJSONObject(i), composition);
+      addLayer(composition, layer);
+    }
+
+    JSONArray assetsJson = json.optJSONArray(""assets"");
+    parsePrecomps(composition, assetsJson);
+    parseImages(composition, assetsJson);
+
+    return composition;
+  }",True,True,"This method parses a JSON object and creates a LottieComposition object. It sets the width, height, bounds, start frame, end frame, frame rate, layers, and assets of the composition based on the JSON data.",True,"This code defines a static method called `fromJsonSync` that takes a `Resources` object and a `JSONObject` as parameters. It creates a `LottieComposition` object, sets its properties based on the values in the JSON, creates and adds layers to the composition, and parses precomps and images from the JSON. Finally, it returns the created `LottieComposition` object."
+10,"parsePrecomps(LottieComposition,JSONArray)",parse precomps composition assets json ,Method,"fromJsonSync(Resources,JSONObject)",,"com.airbnb.lottie.Layer+Layer(JSONObject,LottieComposition) com.airbnb.lottie.Layer+getId() com.airbnb.lottie.Layer+getId() java.util.List+add(E) java.util.List+add(E) java.util.Map+put(K,V) java.util.Map+put(K,V)",com.airbnb.lottie.LottieComposition+precomps,756,18,10,,"private static void parsePrecomps(LottieComposition composition, JSONArray assetsJson) {
+    for (int i = 0; i < assetsJson.length(); i++) {
+      JSONObject assetJson = assetsJson.optJSONObject(i);
+      JSONArray layersJson = assetJson.optJSONArray(""layers"");
+      if (layersJson == null) {
+        continue;
+      }
+      List<Layer> layers = new ArrayList<>(layersJson.length());
+      LongSparseArray<Layer> layerMap = new LongSparseArray<>();
+      for (int j = 0; j < layersJson.length(); j++) {
+        Layer layer = new Layer(layersJson.optJSONObject(j), composition);
+        layerMap.put(layer.getId(), layer);
+        layers.add(layer);
+      }
+      String id = assetJson.optString(""id"");
+      composition.precomps.put(id, layers);
+    }
+  }",True,True,"This method parses a JSON array of assets and creates layers for each asset. It then adds the layers to a precomps map in the LottieComposition object, using the asset's ID as the key.",True,"This code parses a JSON array of assets and creates a list of layers for each asset. It then adds the list of layers to a precomps map in the LottieComposition object, using the asset's ID as the key."
+11,"parseImages(LottieComposition,JSONArray)",parse images composition assets json ,Method,"fromJsonSync(Resources,JSONObject)",,"com.airbnb.lottie.ImageAsset+ImageAsset(JSONObject) java.util.Map+put(K,V) java.util.Map+put(K,V) com.airbnb.lottie.ImageAsset+getId() com.airbnb.lottie.ImageAsset+getId()",com.airbnb.lottie.LottieComposition+images,369,10,10,,"private static void parseImages(LottieComposition composition, JSONArray assetsJson) {
+    for (int i = 0; i < assetsJson.length(); i++) {
+      JSONObject assetJson = assetsJson.optJSONObject(i);
+      if (!assetJson.has(""p"")) {
+        continue;
+      }
+      ImageAsset image = new ImageAsset(assetJson);
+      composition.images.put(image.getId(), image);
+    }
+  }",True,True,"This method parses a JSON array of assets and adds any assets with a ""p"" key to the images map of a LottieComposition object.",True,"The given code is a private static method named ""parseImages"" that takes a LottieComposition object and a JSONArray object as parameters. It iterates through the JSONArray and checks if each element has a key ""p"" in its JSONObject. If it does, it creates an ImageAsset object using the JSONObject and adds it to the images map of the LottieComposition object."
+12,"addLayer(LottieComposition,Layer)",add layer composition layer ,Method,"fromJsonSync(Resources,JSONObject)",,java.util.List+add(E) java.util.List+add(E) com.airbnb.lottie.Layer+getId() com.airbnb.lottie.Layer+getId(),com.airbnb.lottie.LottieComposition+layers com.airbnb.lottie.LottieComposition+layerMap,165,4,10,,"private static void addLayer(LottieComposition composition, Layer layer) {
+    composition.layers.add(layer);
+    composition.layerMap.put(layer.getId(), layer);
+  }",False,True,This method adds a layer to a LottieComposition object by adding it to the layers list and mapping it to its ID in the layerMap.,True,"The code defines a private static method called ""addLayer"" that takes in a LottieComposition object and a Layer object as parameters. This method adds the given layer to the layers list of the composition and also maps the layer's ID to the layer object in the layerMap of the composition."
+13,precomps,precomps ,Field,,,,,66,1,18,,"private final Map<String, List<Layer>> precomps = new HashMap<>();",False,False,,False,
+14,images,images ,Field,,,,,63,1,18,,"private final Map<String, ImageAsset> images = new HashMap<>();",False,False,,False,
+15,layerMap,layer map ,Field,,,,,72,1,18,,private final LongSparseArray<Layer> layerMap = new LongSparseArray<>();,False,False,,False,
+16,layers,layers ,Field,,,,,53,1,18,,private final List<Layer> layers = new ArrayList<>();,False,False,,False,
+17,bounds,bounds ,Field,,,,,20,1,2,,private Rect bounds;,False,False,,False,
+18,startFrame,start frame ,Field,,,,,24,1,2,,private long startFrame;,False,False,,False,
+19,endFrame,end frame ,Field,,,,,22,1,2,,private long endFrame;,False,False,,False,
+20,frameRate,frame rate ,Field,,,,,22,1,2,,private int frameRate;,False,False,,False,
+21,scale,scale ,Field,,,,,20,1,2,,private float scale;,False,False,,False,
+22,LottieComposition(Resources),lottie composition res ,Method,,,,com.airbnb.lottie.LottieComposition+scale,91,3,2,,"private LottieComposition(Resources res) {
+    scale = res.getDisplayMetrics().density;
+  }",False,False,This method sets the scale value based on the density of the display metrics obtained from the given resources.,True,"The code defines a private constructor for the LottieComposition class that takes a Resources object as a parameter. It retrieves the display density from the Resources object and assigns it to the ""scale"" variable."
+23,layerModelForId(long),layer model for id id ,Method,,com.airbnb.lottie.L+toString(String) com.airbnb.lottie.L+toString(String) com.airbnb.lottie.L+toString(String),,com.airbnb.lottie.LottieComposition+layerMap,65,3,0,,"Layer layerModelForId(long id) {
+    return layerMap.get(id);
+  }",False,False,This method returns the layer object associated with the given id from the layerMap.,True,"The given code defines a method named ""layerModelForId"" that takes a long integer as input and returns a Layer object. It retrieves the Layer object associated with the given ID from a map called ""layerMap"" and returns it."
+24,getBounds(),get bounds ,Method,,"com.airbnb.lottie.L+Layer(JSONObject,LottieComposition) com.airbnb.lottie.L+LayerView(Layer,LottieComposition,Callback,CanvasPool) com.airbnb.lottie.LottieDrawable+setComposition(LottieComposition) com.airbnb.lottie.LottieDrawable+setComposition(LottieComposition) com.airbnb.lottie.LottieDrawable+draw(Canvas) com.airbnb.lottie.LottieDrawable+getIntrinsicWidth() com.airbnb.lottie.LottieDrawable+getIntrinsicHeight()",,com.airbnb.lottie.LottieComposition+bounds,82,3,1,,"@SuppressWarnings(""WeakerAccess"") public Rect getBounds() {
+    return bounds;
+  }",False,False,"This method returns the value of the variable ""bounds"" and is annotated with ""@SuppressWarnings(""WeakerAccess"")"" to suppress warnings about weaker access.",True,"This code defines a public method named ""getBounds"" that returns a Rect object. The method is annotated with ""@SuppressWarnings(""WeakerAccess"")"" to suppress any warnings related to weaker access."
+25,getDuration(),get duration ,Method,getDurationFrames(),com.airbnb.lottie.LottieAnimationView+getDuration() com.airbnb.lottie.LottieDrawable+setSpeed(float),,com.airbnb.lottie.LottieComposition+endFrame com.airbnb.lottie.LottieComposition+startFrame com.airbnb.lottie.LottieComposition+frameRate,175,4,1,,"@SuppressWarnings(""WeakerAccess"") public long getDuration() {
+    long frameDuration = endFrame - startFrame;
+    return (long) (frameDuration / (float) frameRate * 1000);
+  }",False,False,"This method calculates the duration of a frame in milliseconds based on the start frame, end frame, and frame rate. It returns the calculated duration as a long value.",True,"The code defines a public method named ""getDuration"" that calculates the duration of a frame in milliseconds. It takes the difference between the end and start frames, divides it by the frame rate, and multiplies it by 1000 to convert it to milliseconds. The method is annotated with ""@SuppressWarnings(""WeakerAccess"")"" to suppress any warnings related to weaker access."
+26,getEndFrame(),get end frame ,Method,,"com.airbnb.lottie.L+Layer(JSONObject,LottieComposition) com.airbnb.lottie.L+Layer(JSONObject,LottieComposition)",,com.airbnb.lottie.LottieComposition+endFrame,45,3,0,,"long getEndFrame() {
+    return endFrame;
+  }",False,False,"The function of the given method is to return the value of the variable ""endFrame"" as a long data type.",True,"The given code snippet contains a method named ""getEndFrame"" that returns a long value representing the end frame. It does not take any parameters and simply returns the value of the ""endFrame"" variable."
+27,getLayers(),get layers ,Method,,com.airbnb.lottie.LottieDrawable+buildLayersForComposition(LottieComposition) com.airbnb.lottie.LottieDrawable+buildLayersForComposition(LottieComposition) com.airbnb.lottie.LottieDrawable+buildLayersForComposition(LottieComposition) com.airbnb.lottie.LottieDrawable+buildLayersForComposition(LottieComposition),,com.airbnb.lottie.LottieComposition+layers,48,3,0,,"List<Layer> getLayers() {
+    return layers;
+  }",False,False,This method returns a List of Layer objects.,True,"The code defines a method named ""getLayers"" that returns a List of Layer objects. It retrieves and returns the layers stored in the ""layers"" variable."
+28,getPrecomps(String),get precomps id ,Method,,com.airbnb.lottie.L+setupPreCompLayer(),java.util.Map+get(Object) java.util.Map+get(Object),com.airbnb.lottie.LottieComposition+precomps,81,4,0,,"@Nullable
+  List<Layer> getPrecomps(String id) {
+    return precomps.get(id);
+  }",False,False,"This method returns a list of Layer objects, which are obtained from a map called precomps using the provided id as the key. The method can return null if no list is found for the given id.",True,"This code defines a method named ""getPrecomps"" that takes a string parameter ""id"" and returns a list of ""Layer"" objects. The method retrieves the list of precomps associated with the given ""id"" from a map named ""precomps"" and returns it. The method can return null if no precomps are found for the given ""id""."
+29,hasImages(),has images ,Method,,com.airbnb.lottie.L+drawBitmapIfNeeded(Canvas),java.util.Map+isEmpty() java.util.Map+isEmpty(),com.airbnb.lottie.LottieComposition+images,55,3,0,,"boolean hasImages() {
+    return !images.isEmpty();
+  }",False,False,"This method checks if the ""images"" collection is empty and returns a boolean value indicating whether there are any images present or not.",True,"The code defines a method named ""hasImages"" that checks if a collection named ""images"" is empty or not. It returns a boolean value indicating whether there are any images present in the collection or not."
+30,getImages(),get images ,Method,,com.airbnb.lottie.LottieDrawable+getImageAssetBitmapManager(),,com.airbnb.lottie.LottieComposition+images,60,3,0,,"Map<String, ImageAsset> getImages() {
+    return images;
+  }",False,False,This method returns a map of string keys to image assets.,True,"This code defines a method named ""getImages"" that returns a Map object containing String keys and ImageAsset values. The method retrieves and returns the images stored in the ""images"" variable."
+31,getDurationFrames(),get duration frames ,Method,,"com.airbnb.lottie.Keyframe+getStartProgress() com.airbnb.lottie.Keyframe+getEndProgress() com.airbnb.lottie.L+Layer(JSONObject,LottieComposition) com.airbnb.lottie.L+Layer(JSONObject,LottieComposition)",com.airbnb.lottie.LottieComposition+getDuration() com.airbnb.lottie.LottieComposition+getDuration(),com.airbnb.lottie.LottieComposition+frameRate,85,3,0,,"float getDurationFrames() {
+    return getDuration() * (float) frameRate / 1000f;
+  }",False,False,This method calculates the duration of a video in frames by multiplying the duration in milliseconds with the frame rate and dividing it by 1000. The result is returned as a float value.,True,"The code defines a method named ""getDurationFrames"" that calculates the duration of a video in frames. It does this by multiplying the duration of the video (in milliseconds) by the frame rate and dividing it by 1000. The result is returned as a float value."
+32,getScale(),get scale ,Method,,"null+AnimatablePathValue(Object,LottieComposition) null+getScale() com.airbnb.lottie.L+Layer(JSONObject,LottieComposition) com.airbnb.lottie.L+Layer(JSONObject,LottieComposition) com.airbnb.lottie.L+Layer(JSONObject,LottieComposition) com.airbnb.lottie.L+Layer(JSONObject,LottieComposition) com.airbnb.lottie.LottieDrawable+PathKeyframe(JSONObject,LottieComposition,AnimatableValue<PointF,?>) com.airbnb.lottie.LottieDrawable+PathKeyframe(JSONObject,LottieComposition,AnimatableValue<PointF,?>) com.airbnb.lottie.LottieDrawable+PathKeyframe(JSONObject,LottieComposition,AnimatableValue<PointF,?>)",,com.airbnb.lottie.LottieComposition+scale,47,3,1,,"public float getScale() {
+    return scale;
+  }",False,False,This method returns the value of the scale variable as a float.,True,"The code contains a method named ""getScale"" that returns a float value. It retrieves the value of the ""scale"" variable and returns it."
+33,toString(),to string ,Method,,,java.lang.StringBuilder+StringBuilder(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) com.airbnb.lottie.Layer+toString(String) com.airbnb.lottie.Layer+toString(String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString(),com.airbnb.lottie.LottieComposition+layers,216,7,1,,"@Override public String toString() {
+    final StringBuilder sb = new StringBuilder(""LottieComposition:\n"");
+    for (Layer layer : layers) {
+      sb.append(layer.toString(""\t""));
+    }
+    return sb.toString();
+  }",False,False,"This method overrides the default toString() method and returns a string representation of the LottieComposition object. It includes the string representation of each layer in the composition, indented with a tab character.",False,The code defines an overridden `toString()` method that returns a string representation of a `LottieComposition` object. It iterates through each `Layer` in the `layers` list and appends their string representation to a `StringBuilder` with a tab indentation. The final string is then returned.
+34,FileCompositionLoader,file composition loader ,MemberClass,,,"com.airbnb.lottie.LottieComposition.FileCompositionLoader+FileCompositionLoader(Resources,OnCompositionLoadedListener) com.airbnb.lottie.LottieComposition.FileCompositionLoader+doInBackground(InputStream[]) com.airbnb.lottie.LottieComposition+fromInputStream(Resources,InputStream) com.airbnb.lottie.LottieComposition+fromInputStream(Resources,InputStream) com.airbnb.lottie.LottieComposition.FileCompositionLoader+onPostExecute(LottieComposition) com.airbnb.lottie.LottieComposition.OnCompositionLoadedListener+onCompositionLoaded(LottieComposition) com.airbnb.lottie.LottieComposition.OnCompositionLoadedListener+onCompositionLoaded(LottieComposition)",com.airbnb.lottie.LottieComposition.FileCompositionLoader+res com.airbnb.lottie.LottieComposition.FileCompositionLoader+loadedListener com.airbnb.lottie.LottieComposition.FileCompositionLoader+res com.airbnb.lottie.LottieComposition.FileCompositionLoader+loadedListener com.airbnb.lottie.LottieComposition.FileCompositionLoader+res com.airbnb.lottie.LottieComposition.FileCompositionLoader+loadedListener,630,20,26,,"private static final class FileCompositionLoader extends CompositionLoader<InputStream> {
+
+    private final Resources res;
+    private final OnCompositionLoadedListener loadedListener;
+
+    FileCompositionLoader(Resources res, OnCompositionLoadedListener loadedListener) {
+      this.res = res;
+      this.loadedListener = loadedListener;
+    }
+
+    @Override
+    protected LottieComposition doInBackground(InputStream... params) {
+      return fromInputStream(res, params[0]);
+    }
+
+    @Override
+    protected void onPostExecute(LottieComposition composition) {
+      loadedListener.onCompositionLoaded(composition);
+    }
+  }",False,False,,False,
+35,JsonCompositionLoader,json composition loader ,MemberClass,,,"com.airbnb.lottie.LottieComposition.JsonCompositionLoader+JsonCompositionLoader(Resources,OnCompositionLoadedListener) com.airbnb.lottie.LottieComposition.JsonCompositionLoader+doInBackground(JSONObject[]) com.airbnb.lottie.LottieComposition+fromJsonSync(Resources,JSONObject) com.airbnb.lottie.LottieComposition+fromJsonSync(Resources,JSONObject) com.airbnb.lottie.LottieComposition.JsonCompositionLoader+onPostExecute(LottieComposition) com.airbnb.lottie.LottieComposition.OnCompositionLoadedListener+onCompositionLoaded(LottieComposition) com.airbnb.lottie.LottieComposition.OnCompositionLoadedListener+onCompositionLoaded(LottieComposition)",com.airbnb.lottie.LottieComposition.JsonCompositionLoader+res com.airbnb.lottie.LottieComposition.JsonCompositionLoader+loadedListener com.airbnb.lottie.LottieComposition.JsonCompositionLoader+res com.airbnb.lottie.LottieComposition.JsonCompositionLoader+loadedListener com.airbnb.lottie.LottieComposition.JsonCompositionLoader+res com.airbnb.lottie.LottieComposition.JsonCompositionLoader+loadedListener,625,20,26,,"private static final class JsonCompositionLoader extends CompositionLoader<JSONObject> {
+
+    private final Resources res;
+    private final OnCompositionLoadedListener loadedListener;
+
+    JsonCompositionLoader(Resources res, OnCompositionLoadedListener loadedListener) {
+      this.res = res;
+      this.loadedListener = loadedListener;
+    }
+
+    @Override
+    protected LottieComposition doInBackground(JSONObject... params) {
+      return fromJsonSync(res, params[0]);
+    }
+
+    @Override
+    protected void onPostExecute(LottieComposition composition) {
+      loadedListener.onCompositionLoaded(composition);
+    }
+  }",False,False,,False,
+36,CompositionLoader,composition loader ,MemberClass,,,com.airbnb.lottie.LottieComposition.CompositionLoader+cancel() com.airbnb.lottie.LottieComposition.CompositionLoader+cancel() com.airbnb.lottie.LottieComposition.CompositionLoader+cancel(),,211,8,1034,,"private abstract static class CompositionLoader<Params>
+      extends AsyncTask<Params, Void, LottieComposition>
+      implements Cancellable {
+
+    @Override public void cancel() {
+      cancel(true);
+    }
+  }",False,False,,False,

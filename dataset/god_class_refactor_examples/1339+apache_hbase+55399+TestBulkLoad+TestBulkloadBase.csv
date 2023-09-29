@@ -1,0 +1,265 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,CLASS_RULE,class rule ,Field,,,,,119,3,25,,"@ClassRule
+  public static final HBaseClassTestRule CLASS_RULE =
+      HBaseClassTestRule.forClass(TestBulkLoad.class);",False,False,,False,
+2,testFolder,test folder ,Field,,,,,78,2,9,,"@ClassRule
+  public static TemporaryFolder testFolder = new TemporaryFolder();",True,True,,False,
+3,TEST_UTIL,test util ,Field,,,,,73,1,10,,private static HBaseTestingUtility TEST_UTIL = new HBaseTestingUtility();,True,True,,False,
+4,log,log ,Field,,,,,40,1,18,,private final WAL log = mock(WAL.class);,True,True,,False,
+5,conf,conf ,Field,,,,,63,1,18,,private final Configuration conf = HBaseConfiguration.create();,True,True,,False,
+6,random,random ,Field,,,,,43,1,18,,private final Random random = new Random();,True,True,,False,
+7,randomBytes,random bytes ,Field,,,,,49,1,18,,private final byte[] randomBytes = new byte[100];,True,True,,False,
+8,family1,family1 ,Field,,,,,56,1,18,,"private final byte[] family1 = Bytes.toBytes(""family1"");",False,False,,False,
+9,family2,family2 ,Field,,,,,56,1,18,,"private final byte[] family2 = Bytes.toBytes(""family2"");",True,True,,False,
+10,family3,family3 ,Field,,,,,56,1,18,,"private final byte[] family3 = Bytes.toBytes(""family3"");",True,True,,False,
+11,name,name ,Field,,,,,46,2,1,,"@Rule
+  public TestName name = new TestName();",True,True,,False,
+12,before(),before ,Method,,,java.util.Random+nextBytes(byte[]) java.util.Random+nextBytes(byte[]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+random org.apache.hadoop.hbase.regionserver.TestBulkLoad+randomBytes,158,5,1,,"@Before
+  public void before() throws IOException {
+    random.nextBytes(randomBytes);
+    // Mockito.when(log.append(htd, info, key, edits, inMemstore));
+  }",True,True,"This method is a setup method that is executed before each test case. It generates random bytes using the ""random"" object and assigns them to the ""randomBytes"" array.",False,The code snippet is a `@Before` method that is executed before each test case. It generates random bytes using the `random` object and assigns them to the `randomBytes` array. There is a commented out line that suggests the use of Mockito to stub a method call.
+13,verifyBulkLoadEvent(),verify bulk load event ,Method,,,"org.apache.hadoop.hbase.TableName+valueOf(String,String) org.apache.hadoop.hbase.TableName+valueOf(String,String) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.util.Pair+getFirst() java.util.List+get(int) java.util.List+get(int) org.apache.hadoop.hbase.util.Pair+getFirst() org.apache.hadoop.hbase.util.Pair+getSecond() java.util.List+get(int) java.util.List+get(int) org.apache.hadoop.hbase.util.Pair+getSecond() java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEdit(byte[],byte[],byte[],List<String>) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEdit(byte[],byte[],byte[],List<String>) org.apache.hadoop.hbase.TableName+toBytes() org.apache.hadoop.hbase.TableName+toBytes() +answer(InvocationOnMock)",org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+log org.apache.hadoop.hbase.wal.WALEdit+BULK_LOAD,1209,27,1,,"@Test
+  public void verifyBulkLoadEvent() throws IOException {
+    TableName tableName = TableName.valueOf(""test"", ""test"");
+    List<Pair<byte[], String>> familyPaths = withFamilyPathsFor(family1);
+    byte[] familyName = familyPaths.get(0).getFirst();
+    String storeFileName = familyPaths.get(0).getSecond();
+    storeFileName = (new Path(storeFileName)).getName();
+    List<String> storeFileNames = new ArrayList<>();
+    storeFileNames.add(storeFileName);
+    when(log.appendMarker(any(), any(),
+      argThat(bulkLogWalEdit(WALEdit.BULK_LOAD, tableName.toBytes(), familyName, storeFileNames))))
+        .thenAnswer(new Answer() {
+          @Override
+          public Object answer(InvocationOnMock invocation) {
+            WALKeyImpl walKey = invocation.getArgument(1);
+            MultiVersionConcurrencyControl mvcc = walKey.getMvcc();
+            if (mvcc != null) {
+              MultiVersionConcurrencyControl.WriteEntry we = mvcc.begin();
+              walKey.setWriteEntry(we);
+            }
+            return 01L;
+          }
+        });
+    testRegionWithFamiliesAndSpecifiedTableName(tableName, family1)
+        .bulkLoadHFiles(familyPaths, false, null);
+    verify(log).sync(anyLong());
+  }",False,False,The function of this method is to verify the bulk load event by appending a marker to the log. It also sets the write entry for the WAL key and syncs the log.,True,"This code is a unit test that verifies the behavior of a bulk load event in HBase. It creates a mock object for the log, sets up expectations for the appendMarker method, and then calls the bulkLoadHFiles method on a test region with specified table name and family paths. Finally, it verifies that the log's sync method is called with a long argument."
+14,bulkHLogShouldThrowNoErrorAndWriteMarkerWithBlankInput(),bulk h log should throw no error and write marker with blank input ,Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1,184,4,1,,"@Test
+  public void bulkHLogShouldThrowNoErrorAndWriteMarkerWithBlankInput() throws IOException {
+    testRegionWithFamilies(family1).bulkLoadHFiles(new ArrayList<>(),false, null);
+  }",False,False,The function of the given method is to test the behavior of the bulkLoadHFiles method when it is called with a blank input. It ensures that no errors are thrown and a marker is written.,True,"The code is a test method that verifies the behavior of the `bulkLoadHFiles` method in a region with a specific family. It tests the case where the input list of HFiles is empty, and expects the method to execute without throwing any errors and write a marker."
+15,shouldBulkLoadSingleFamilyHLog(),should bulk load single family h log ,Method,,,"org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) +answer(InvocationOnMock)",org.apache.hadoop.hbase.regionserver.TestBulkLoad+log org.apache.hadoop.hbase.wal.WALEdit+BULK_LOAD,785,18,1,,"@Test
+  public void shouldBulkLoadSingleFamilyHLog() throws IOException {
+    when(log.appendMarker(any(),
+            any(), argThat(bulkLogWalEditType(WALEdit.BULK_LOAD)))).thenAnswer(new Answer() {
+              @Override
+              public Object answer(InvocationOnMock invocation) {
+                WALKeyImpl walKey = invocation.getArgument(1);
+                MultiVersionConcurrencyControl mvcc = walKey.getMvcc();
+                if (mvcc != null) {
+                  MultiVersionConcurrencyControl.WriteEntry we = mvcc.begin();
+                  walKey.setWriteEntry(we);
+                }
+                return 01L;
+              }
+    });
+    testRegionWithFamilies(family1).bulkLoadHFiles(withFamilyPathsFor(family1), false, null);
+    verify(log).sync(anyLong());
+  }",False,False,The function of the given method is to test the bulk loading of a single family HLog. It verifies that the log is appended with the correct marker and that the log is synchronized.,True,This code is a unit test for a method called `shouldBulkLoadSingleFamilyHLog()`. It mocks the behavior of a log and verifies that the `bulkLoadHFiles()` method is called with the correct parameters.
+16,shouldBulkLoadManyFamilyHLog(),should bulk load many family h log ,Method,,,"org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) +answer(InvocationOnMock)",org.apache.hadoop.hbase.regionserver.TestBulkLoad+log org.apache.hadoop.hbase.wal.WALEdit+BULK_LOAD,821,19,1,,"@Test
+  public void shouldBulkLoadManyFamilyHLog() throws IOException {
+    when(log.appendMarker(any(),
+            any(), argThat(bulkLogWalEditType(WALEdit.BULK_LOAD)))).thenAnswer(new Answer() {
+              @Override
+              public Object answer(InvocationOnMock invocation) {
+                WALKeyImpl walKey = invocation.getArgument(1);
+                MultiVersionConcurrencyControl mvcc = walKey.getMvcc();
+                if (mvcc != null) {
+                  MultiVersionConcurrencyControl.WriteEntry we = mvcc.begin();
+                  walKey.setWriteEntry(we);
+                }
+                return 01L;
+              }
+            });
+    testRegionWithFamilies(family1, family2).bulkLoadHFiles(withFamilyPathsFor(family1, family2),
+            false, null);
+    verify(log).sync(anyLong());
+  }",False,False,The function of the method is to test the bulk loading of HLog files for multiple families in a region. It verifies that the log is appended with the correct marker and syncs the log.,True,"This code is a unit test that verifies the behavior of a method called `bulkLoadManyFamilyHLog()`. The method sets up a mock object to simulate appending a marker to a log, and then calls the `bulkLoadHFiles()` method with some parameters. Finally, it verifies that the `sync()` method of the log object is called with a specific argument."
+17,shouldBulkLoadManyFamilyHLogEvenWhenTableNameNamespaceSpecified(),should bulk load many family h log even when table name namespace specified ,Method,,,"org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) +answer(InvocationOnMock)",org.apache.hadoop.hbase.regionserver.TestBulkLoad+log org.apache.hadoop.hbase.wal.WALEdit+BULK_LOAD,938,20,1,,"@Test
+  public void shouldBulkLoadManyFamilyHLogEvenWhenTableNameNamespaceSpecified() throws IOException {
+    when(log.appendMarker(any(),
+            any(), argThat(bulkLogWalEditType(WALEdit.BULK_LOAD)))).thenAnswer(new Answer() {
+              @Override
+              public Object answer(InvocationOnMock invocation) {
+                WALKeyImpl walKey = invocation.getArgument(1);
+                MultiVersionConcurrencyControl mvcc = walKey.getMvcc();
+                if (mvcc != null) {
+                  MultiVersionConcurrencyControl.WriteEntry we = mvcc.begin();
+                  walKey.setWriteEntry(we);
+                }
+                return 01L;
+              }
+    });
+    TableName tableName = TableName.valueOf(""test"", ""test"");
+    testRegionWithFamiliesAndSpecifiedTableName(tableName, family1, family2)
+        .bulkLoadHFiles(withFamilyPathsFor(family1, family2), false, null);
+    verify(log).sync(anyLong());
+  }",False,False,The function of the given method is to test the ability to bulk load many family HLog even when a table name namespace is specified.,True,This code is a unit test that verifies the behavior of the `bulkLoadHFiles` method in a specific scenario. It mocks the behavior of the `appendMarker` method and checks if the `sync` method is called with the expected argument. The test is focused on ensuring that the `bulkLoadHFiles` method can handle a specified table name and multiple families.
+18,shouldCrashIfBulkLoadFamiliesNotInTable(),should crash if bulk load families not in table ,Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family2,235,5,1,,"@Test(expected = DoNotRetryIOException.class)
+  public void shouldCrashIfBulkLoadFamiliesNotInTable() throws IOException {
+    testRegionWithFamilies(family1).bulkLoadHFiles(withFamilyPathsFor(family1, family2), false,
+      null);
+  }",False,False,The function of the method is to test if the bulk load operation will crash if the families specified in the HFiles are not present in the table.,True,"The code is a test method that verifies if a specific exception, DoNotRetryIOException, is thrown when attempting to bulk load HFiles into a region. The method expects the bulkLoadHFiles() method to throw this exception if the families specified in the HFiles are not present in the table."
+19,shouldCrashIfBulkLoadMultiFamiliesNotInTable(),should crash if bulk load multi families not in table ,Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family2 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family3,249,5,1,,"@Test(expected = DoNotRetryIOException.class)
+  public void shouldCrashIfBulkLoadMultiFamiliesNotInTable() throws IOException {
+    testRegionWithFamilies(family1).bulkLoadHFiles(withFamilyPathsFor(family1, family2, family3),
+      false, null);
+  }",False,False,The function of the method is to test if the bulk load of multiple families that are not present in the table will cause a crash.,True,"The code is a test method that verifies if a bulk load operation throws a DoNotRetryIOException when attempting to load HFiles for families that do not exist in the table. The method calls the bulkLoadHFiles() function with the HFile paths for three families (family1, family2, and family3) and expects it to throw the specified exception."
+20,bulkHLogShouldThrowErrorWhenFamilySpecifiedAndHFileExistsButNotInTableDescriptor(),bulk h log should throw error when family specified and h file exists but not in table descriptor ,Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1,260,5,1,,"@Test(expected = DoNotRetryIOException.class)
+  public void bulkHLogShouldThrowErrorWhenFamilySpecifiedAndHFileExistsButNotInTableDescriptor()
+      throws IOException {
+    testRegionWithFamilies().bulkLoadHFiles(withFamilyPathsFor(family1), false, null);
+  }",False,False,"The function of the method is to test that an error is thrown when bulk loading HFiles into a table, and the specified family exists in the HFile but not in the table descriptor.",True,The code is a JUnit test method that verifies the behavior of the `bulkLoadHFiles` method. It expects the method to throw a `DoNotRetryIOException` when a specific condition is met. The method is called on a test region with specified families and file paths.
+21,shouldThrowErrorIfBadFamilySpecifiedAsFamilyPath(),should throw error if bad family specified as family path ,Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withInvalidColumnFamilyButProperHFileLocation(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withInvalidColumnFamilyButProperHFileLocation(byte[]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1,278,6,1,,"@Test(expected = DoNotRetryIOException.class)
+  public void shouldThrowErrorIfBadFamilySpecifiedAsFamilyPath() throws IOException {
+    testRegionWithFamilies()
+        .bulkLoadHFiles(asList(withInvalidColumnFamilyButProperHFileLocation(family1)),
+            false, null);
+  }",False,False,The function of the given method is to test if an error is thrown when a bad family is specified as the family path during the bulk loading of HFiles in a region.,True,The code is a test method that verifies if an error is thrown when a bad column family is specified as a family path during a bulk load of HFiles. The method uses the `bulkLoadHFiles` function and expects it to throw a `DoNotRetryIOException` exception.
+22,shouldThrowErrorIfHFileDoesNotExist(),should throw error if h file does not exist ,Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1,275,5,1,,"@Test(expected = FileNotFoundException.class)
+  public void shouldThrowErrorIfHFileDoesNotExist() throws IOException {
+    List<Pair<byte[], String>> list = asList(withMissingHFileForFamily(family1));
+    testRegionWithFamilies(family1).bulkLoadHFiles(list, false, null);
+  }",False,False,The function of the given method is to test if an error is thrown when a specific HFile does not exist during the bulk loading of HFiles into a region with families.,True,"The code is a JUnit test method that verifies if an error is thrown when attempting to bulk load HFiles into a region. It expects a FileNotFoundException to be thrown if the HFile for a specific family does not exist. The method uses a list of pairs containing byte arrays and strings to simulate the HFiles, and then calls the bulkLoadHFiles method with the list as a parameter."
+23,shouldThrowErrorIfMultiHFileDoesNotExist(),should throw error if multi h file does not exist ,Method,,,java.util.List+addAll(Collection) java.util.List+addAll(Collection) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) java.util.List+addAll(Collection) java.util.List+addAll(Collection) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family2 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family2,386,7,1,,"@Test(expected = FileNotFoundException.class)
+  public void shouldThrowErrorIfMultiHFileDoesNotExist() throws IOException {
+    List<Pair<byte[], String>> list = new ArrayList<>();
+    list.addAll(asList(withMissingHFileForFamily(family1)));
+    list.addAll(asList(withMissingHFileForFamily(family2)));
+    testRegionWithFamilies(family1, family2).bulkLoadHFiles(list, false, null);
+  }",False,False,"The function of the method is to test if an error is thrown when a multi-HFile does not exist. It creates a list of pairs, adds missing HFiles for two families to the list, and then calls the bulkLoadHFiles method with the list as a parameter.",True,"The code is a JUnit test method that expects a FileNotFoundException to be thrown. It creates a list of pairs containing byte arrays and strings, adds elements to the list using the withMissingHFileForFamily method, and then calls the bulkLoadHFiles method on a test region with families, passing in the list as a parameter."
+24,withMissingHFileForFamily(byte[]),with missing h file for family family ,Method,shouldThrowErrorIfHFileDoesNotExist() shouldThrowErrorIfMultiHFileDoesNotExist() shouldThrowErrorIfMultiHFileDoesNotExist(),,org.apache.hadoop.hbase.regionserver.TestBulkLoad+getNotExistFilePath() org.apache.hadoop.hbase.regionserver.TestBulkLoad+getNotExistFilePath(),,129,3,2,,"private Pair<byte[], String> withMissingHFileForFamily(byte[] family) {
+    return new Pair<>(family, getNotExistFilePath());
+  }",True,True,"This method returns a Pair object containing a byte array and a String. The byte array represents a family, and the String represents the file path that does not exist.",False,The given code is a private method that takes a byte array representing a family and returns a Pair object containing the family byte array and a string representing a file path that does not exist. The method is used to generate a Pair object with a missing HFile for a given family.
+25,getNotExistFilePath(),get not exist file path ,Method,,,java.lang.Object+Object() org.apache.hadoop.hbase.HBaseCommonTestingUtility+getDataTestDir() org.apache.hadoop.hbase.HBaseCommonTestingUtility+getDataTestDir(),org.apache.hadoop.hbase.regionserver.TestBulkLoad+TEST_UTIL,149,4,2,,"private String getNotExistFilePath() {
+    Path path = new Path(TEST_UTIL.getDataTestDir(), ""does_not_exist"");
+    return path.toUri().getPath();
+  }",True,True,This method returns the path of a file that does not exist.,False,"The code defines a private method named ""getNotExistFilePath"" that returns the path of a file that does not exist. It creates a new Path object using a test directory and a file name that does not exist, and then returns the path as a string."
+26,withInvalidColumnFamilyButProperHFileLocation(byte[]),with invalid column family but proper h file location family ,Method,shouldThrowErrorIfBadFamilySpecifiedAsFamilyPath(),,org.apache.hadoop.hbase.regionserver.TestBulkLoad+createHFileForFamilies(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+createHFileForFamilies(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+getNotExistFilePath() org.apache.hadoop.hbase.regionserver.TestBulkLoad+getNotExistFilePath(),,232,5,2,,"private Pair<byte[], String> withInvalidColumnFamilyButProperHFileLocation(byte[] family)
+      throws IOException {
+    createHFileForFamilies(family);
+    return new Pair<>(new byte[]{0x00, 0x01, 0x02}, getNotExistFilePath());
+  }",True,True,"This method creates an HFile for a given column family, even if the column family is invalid. It then returns a pair containing the HFile data and the file path of the HFile.",False,This code is a private method that creates an HFile for a given column family and returns a Pair object containing the HFile data and a file path that does not exist. It throws an IOException if there is an error during the process.
+27,"testRegionWithFamiliesAndSpecifiedTableName(TableName,byte[])",test region with families and specified table name table name families ,Method,,,"org.apache.hadoop.hbase.client.RegionInfoBuilder+build() org.apache.hadoop.hbase.client.RegionInfoBuilder+newBuilder(TableName) org.apache.hadoop.hbase.client.RegionInfoBuilder+newBuilder(TableName) org.apache.hadoop.hbase.client.RegionInfoBuilder+build() org.apache.hadoop.hbase.client.TableDescriptorBuilder+newBuilder(TableName) org.apache.hadoop.hbase.client.TableDescriptorBuilder+newBuilder(TableName) org.apache.hadoop.hbase.client.TableDescriptorBuilder+setColumnFamily(ColumnFamilyDescriptor) org.apache.hadoop.hbase.client.TableDescriptorBuilder+setColumnFamily(ColumnFamilyDescriptor) org.apache.hadoop.hbase.client.ColumnFamilyDescriptorBuilder+of(byte[]) org.apache.hadoop.hbase.client.ColumnFamilyDescriptorBuilder+of(byte[]) org.apache.hadoop.hbase.regionserver.ChunkCreator+initialize(int,boolean,long,float,float,HeapMemoryManager,float) org.apache.hadoop.hbase.regionserver.ChunkCreator+initialize(int,boolean,long,float,float,HeapMemoryManager,float) java.lang.Object+Object() org.apache.hadoop.hbase.client.TableDescriptorBuilder+build() org.apache.hadoop.hbase.client.TableDescriptorBuilder+build()",org.apache.hadoop.hbase.regionserver.MemStoreLAB+CHUNK_SIZE_DEFAULT org.apache.hadoop.hbase.regionserver.MemStoreLAB+INDEX_CHUNK_SIZE_PERCENTAGE_DEFAULT org.apache.hadoop.hbase.regionserver.TestBulkLoad+testFolder org.apache.hadoop.hbase.regionserver.TestBulkLoad+conf org.apache.hadoop.hbase.regionserver.TestBulkLoad+log,728,14,2,,"private HRegion testRegionWithFamiliesAndSpecifiedTableName(TableName tableName,
+    byte[]... families) throws IOException {
+    RegionInfo hRegionInfo = RegionInfoBuilder.newBuilder(tableName).build();
+    TableDescriptorBuilder builder = TableDescriptorBuilder.newBuilder(tableName);
+
+    for (byte[] family : families) {
+      builder.setColumnFamily(ColumnFamilyDescriptorBuilder.of(family));
+    }
+    ChunkCreator.initialize(MemStoreLAB.CHUNK_SIZE_DEFAULT, false, 0, 0,
+      0, null, MemStoreLAB.INDEX_CHUNK_SIZE_PERCENTAGE_DEFAULT);
+    // TODO We need a way to do this without creating files
+    return HRegion.createHRegion(hRegionInfo, new Path(testFolder.newFolder().toURI()), conf,
+      builder.build(), log);
+  }",False,True,"The function creates a test HRegion with specified table name and column families. It initializes the region with the given families, and returns the created HRegion object.",False,"This code defines a private method named `testRegionWithFamiliesAndSpecifiedTableName` that creates and returns an HRegion object. The method takes a TableName and variable number of byte arrays representing column families as input. It builds a TableDescriptor with the specified column families, initializes a ChunkCreator, and then creates an HRegion using the provided parameters."
+28,testRegionWithFamilies(byte[]),test region with families families ,Method,,,"org.apache.hadoop.hbase.TableName+valueOf(byte[]) org.apache.hadoop.hbase.TableName+valueOf(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamiliesAndSpecifiedTableName(TableName,byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamiliesAndSpecifiedTableName(TableName,byte[][])",org.apache.hadoop.hbase.regionserver.TestBulkLoad+name,227,4,2,,"private HRegion testRegionWithFamilies(byte[]... families) throws IOException {
+    TableName tableName = TableName.valueOf(name.getMethodName());
+    return testRegionWithFamiliesAndSpecifiedTableName(tableName, families);
+  }",False,True,The function of this method is to create a test HRegion with specified families and a specified table name. It returns the created HRegion.,False,"The code defines a private method called ""testRegionWithFamilies"" that takes a variable number of byte arrays as input. It throws an IOException and returns an HRegion object. The method creates a TableName object using the name of the current test method and then calls another method ""testRegionWithFamiliesAndSpecifiedTableName"" with the TableName and the input byte arrays to get the HRegion object."
+29,getBlankFamilyPaths(),get blank family paths ,Method,withFamilyPathsFor(byte[]),,,,91,3,2,,"private List<Pair<byte[], String>> getBlankFamilyPaths(){
+    return new ArrayList<>();
+  }",True,True,"This method returns an empty list of pairs, where each pair consists of a byte array and a string.",False,"The code defines a private method named ""getBlankFamilyPaths"" that returns a list of pairs. Each pair consists of a byte array and a string. The method simply creates and returns an empty ArrayList of pairs."
+30,withFamilyPathsFor(byte[]),with family paths for families ,Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+getBlankFamilyPaths() org.apache.hadoop.hbase.regionserver.TestBulkLoad+getBlankFamilyPaths() java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.regionserver.TestBulkLoad+createHFileForFamilies(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+createHFileForFamilies(byte[]),,308,7,2,,"private List<Pair<byte[], String>> withFamilyPathsFor(byte[]... families) throws IOException {
+    List<Pair<byte[], String>> familyPaths = getBlankFamilyPaths();
+    for (byte[] family : families) {
+      familyPaths.add(new Pair<>(family, createHFileForFamilies(family)));
+    }
+    return familyPaths;
+  }",False,True,"This method takes in an array of byte arrays as input. It creates a list of pairs, where each pair consists of a byte array and a string. It then iterates over the input byte arrays, creating a new pair for each one and adding it to the list. Finally, it returns the list.",False,"The given code is a private method that takes an array of byte arrays as input and returns a list of pairs. Each pair consists of a byte array and a string. The method iterates over the input array and adds a new pair to the list for each element, where the byte array is the element itself and the string is obtained by calling the method ""createHFileForFamilies"" with the element as an argument."
+31,createHFileForFamilies(byte[]),create h file for families family ,Method,withInvalidColumnFamilyButProperHFileLocation(byte[]),,org.apache.hadoop.hbase.io.hfile.HFile+getWriterFactoryNoCache(Configuration) org.apache.hadoop.hbase.io.hfile.HFile+getWriterFactoryNoCache(Configuration) java.io.FileOutputStream+FileOutputStream(File) org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+withOutputStream(FSDataOutputStream) org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+withOutputStream(FSDataOutputStream) org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+withFileContext(HFileContext) org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+withFileContext(HFileContext) org.apache.hadoop.hbase.io.hfile.HFileContextBuilder+build() org.apache.hadoop.hbase.io.hfile.HFileContextBuilder+HFileContextBuilder() org.apache.hadoop.hbase.io.hfile.HFileContextBuilder+build() org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+create() org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+create() org.apache.hadoop.hbase.regionserver.CellSink+append(Cell) org.apache.hadoop.hbase.regionserver.CellSink+append(Cell) org.apache.hadoop.hbase.KeyValue+KeyValue(byte[]) org.apache.hadoop.hbase.ExtendedCellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.ExtendedCellBuilderFactory+create(CellBuilderType) java.io.Closeable+close() java.io.Closeable+close() java.io.File+getAbsolutePath() java.io.File+getAbsoluteFile() java.io.File+getAbsoluteFile() java.io.File+getAbsolutePath(),org.apache.hadoop.hbase.regionserver.TestBulkLoad+conf org.apache.hadoop.hbase.regionserver.TestBulkLoad+testFolder org.apache.hadoop.hbase.regionserver.TestBulkLoad+randomBytes org.apache.hadoop.hbase.regionserver.TestBulkLoad+randomBytes org.apache.hadoop.hbase.KeyValue+Type org.apache.hadoop.hbase.regionserver.TestBulkLoad+randomBytes,1019,26,2,,"private String createHFileForFamilies(byte[] family) throws IOException {
+    HFile.WriterFactory hFileFactory = HFile.getWriterFactoryNoCache(conf);
+    // TODO We need a way to do this without creating files
+    File hFileLocation = testFolder.newFile();
+    FSDataOutputStream out = new FSDataOutputStream(new FileOutputStream(hFileLocation), null);
+    try {
+      hFileFactory.withOutputStream(out);
+      hFileFactory.withFileContext(new HFileContextBuilder().build());
+      HFile.Writer writer = hFileFactory.create();
+      try {
+        writer.append(new KeyValue(ExtendedCellBuilderFactory.create(CellBuilderType.DEEP_COPY)
+          .setRow(randomBytes)
+          .setFamily(family)
+          .setQualifier(randomBytes)
+          .setTimestamp(0L)
+          .setType(KeyValue.Type.Put.getCode())
+          .setValue(randomBytes)
+          .build()));
+      } finally {
+        writer.close();
+      }
+    } finally {
+      out.close();
+    }
+    return hFileLocation.getAbsoluteFile().getAbsolutePath();
+  }",True,True,This method creates an HFile for a given family by writing a KeyValue to the file. The HFile is created using a WriterFactory and the file is written to a specified location. The absolute path of the created file is returned.,False,This code creates an HFile (HBase file format) for a given family by writing a single KeyValue entry to the file. The HFile is created using the HFile.WriterFactory and the file is written to a temporary location. The absolute path of the created file is returned as a string.
+32,bulkLogWalEditType(byte[]),bulk log wal edit type type bytes ,Method,shouldBulkLoadSingleFamilyHLog() shouldBulkLoadManyFamilyHLog() shouldBulkLoadManyFamilyHLogEvenWhenTableNameNamespaceSpecified(),,org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+WalMatcher(byte[]),,112,3,10,,"private static Matcher<WALEdit> bulkLogWalEditType(byte[] typeBytes) {
+    return new WalMatcher(typeBytes);
+  }",True,True,"The function of the given method is to create and return a new instance of the WalMatcher class, which is a Matcher<WALEdit> object, using the provided typeBytes as a parameter.",False,"The code defines a private static method named ""bulkLogWalEditType"" that returns a Matcher object. The method takes a byte array as a parameter and creates a new instance of the WalMatcher class, passing the byte array to its constructor."
+33,"bulkLogWalEdit(byte[],byte[],byte[],List<String>)",bulk log wal edit type bytes table name family name store file names ,Method,verifyBulkLoadEvent(),,"org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+WalMatcher(byte[],byte[],byte[],List<String>)",,219,4,10,,"private static Matcher<WALEdit> bulkLogWalEdit(byte[] typeBytes, byte[] tableName,
+      byte[] familyName, List<String> storeFileNames) {
+    return new WalMatcher(typeBytes, tableName, familyName, storeFileNames);
+  }",True,True,"The function of the method is to create and return a new instance of the WalMatcher class, passing the provided parameters to its constructor.",False,"The code defines a private static method named ""bulkLogWalEdit"" that returns a Matcher object. This method takes in four parameters: typeBytes, tableName, familyName, and storeFileNames. It creates and returns a new instance of the WalMatcher class with the provided parameters."
+34,WalMatcher,wal matcher ,MemberClass,,,"org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+WalMatcher(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+WalMatcher(byte[],byte[],byte[],List<String>) org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+matchesSafely(WALEdit) java.util.Arrays+equals(byte[],byte[]) java.util.Arrays+equals(byte[],byte[]) org.apache.hadoop.hbase.CellUtil+cloneQualifier(Cell) org.apache.hadoop.hbase.CellUtil+cloneQualifier(Cell) java.util.ArrayList+get(int) org.apache.hadoop.hbase.wal.WALEdit+getCells() org.apache.hadoop.hbase.wal.WALEdit+getCells() java.util.ArrayList+get(int) org.apache.hadoop.hbase.wal.WALEdit+getBulkLoadDescriptor(Cell) org.apache.hadoop.hbase.wal.WALEdit+getBulkLoadDescriptor(Cell) java.util.ArrayList+get(int) org.apache.hadoop.hbase.wal.WALEdit+getCells() org.apache.hadoop.hbase.wal.WALEdit+getCells() java.util.ArrayList+get(int) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.shaded.protobuf.ProtobufUtil+toTableName(TableName) org.apache.hadoop.hbase.shaded.protobuf.ProtobufUtil+toTableName(TableName) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+toBytes(ByteBuffer) org.apache.hadoop.hbase.util.Bytes+toBytes(ByteBuffer) java.util.List+size() java.util.List+size() org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+describeTo(Description)",org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+typeBytes org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+tableName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+familyName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+storeFileNames org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+typeBytes org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+tableName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+familyName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+storeFileNames org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+typeBytes org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+tableName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+tableName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+storeFileNames org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+familyName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+familyName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+storeFileNames,1560,50,10,,"private static class WalMatcher extends TypeSafeMatcher<WALEdit> {
+    private final byte[] typeBytes;
+    private final byte[] tableName;
+    private final byte[] familyName;
+    private final List<String> storeFileNames;
+
+    public WalMatcher(byte[] typeBytes) {
+      this(typeBytes, null, null, null);
+    }
+
+    public WalMatcher(byte[] typeBytes, byte[] tableName, byte[] familyName,
+        List<String> storeFileNames) {
+      this.typeBytes = typeBytes;
+      this.tableName = tableName;
+      this.familyName = familyName;
+      this.storeFileNames = storeFileNames;
+    }
+
+    @Override
+    protected boolean matchesSafely(WALEdit item) {
+      assertTrue(Arrays.equals(CellUtil.cloneQualifier(item.getCells().get(0)), typeBytes));
+      BulkLoadDescriptor desc;
+      try {
+        desc = WALEdit.getBulkLoadDescriptor(item.getCells().get(0));
+      } catch (IOException e) {
+        return false;
+      }
+      assertNotNull(desc);
+
+      if (tableName != null) {
+        assertTrue(Bytes.equals(ProtobufUtil.toTableName(desc.getTableName()).getName(),
+          tableName));
+      }
+
+      if(storeFileNames != null) {
+        int index=0;
+        StoreDescriptor store = desc.getStores(0);
+        assertTrue(Bytes.equals(store.getFamilyName().toByteArray(), familyName));
+        assertTrue(Bytes.equals(Bytes.toBytes(store.getStoreHomeDir()), familyName));
+        assertEquals(storeFileNames.size(), store.getStoreFileCount());
+      }
+
+      return true;
+    }
+
+    @Override
+    public void describeTo(Description description) {
+
+    }
+  }",False,True,,False,

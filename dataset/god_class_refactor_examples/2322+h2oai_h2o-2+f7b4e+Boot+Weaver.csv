@@ -1,0 +1,405 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,_init, init ,Field,,,,,31,1,25,,public static final Boot _init;,False,False,,False,
+2,_jarHash, jarhash ,Field,Boot() Boot() Boot(),,,,29,1,17,,public final byte[] _jarHash;,False,False,,False,
+3,_h2oJar, h2ojar ,Field,,,,,30,1,18,,private final ZipFile _h2oJar;,False,False,,False,
+4,_parentDir, parentdir ,Field,,,,,30,1,18,,private final File _parentDir;,False,False,,False,
+5,_pool, pool ,Field,,,,,24,1,2,,private ClassPool _pool;,True,True,,False,
+6,_serBases, serbases ,Field,,,,,28,1,2,,private CtClass[] _serBases;,True,True,,False,
+7,_enum, enum ,Field,,,,,22,1,2,,private CtClass _enum;,True,True,,False,
+8,x,x ,Field,,,,,21,1,10,,private static enum x,False,False,,False,
+9,_x, x ,Field,,,,,48,1,10,,"@SuppressWarnings(""unused"") private static x _x;",False,False,,False,
+10,fromJar(),from jar ,Method,boot(String[]) getResource2(String),water.hdfs.Hdfs+initialize(),,H2OInit.Boot+_h2oJar,52,1,1,,public boolean fromJar() { return _h2oJar != null; },False,False,"This method checks if the variable ""_h2oJar"" is not null and returns a boolean value indicating whether it is from a jar or not.",False,"The code defines a method named ""fromJar"" which returns a boolean value. It checks if the variable ""_h2oJar"" is not null and returns true if it is not null, indicating that the code is being executed from a JAR file."
+11,getMD5(InputStream),get m d5 is ,Method,Boot(),,"java.security.MessageDigest+getInstance(String) java.security.MessageDigest+getInstance(String) java.io.InputStream+read(byte[]) java.io.InputStream+read(byte[]) java.security.MessageDigest+update(byte[],int,int) java.security.MessageDigest+update(byte[],int,int) java.security.MessageDigest+digest() java.security.MessageDigest+digest() java.lang.RuntimeException+RuntimeException(Throwable) java.io.InputStream+close() java.io.InputStream+close()",,430,13,2,,"private byte[] getMD5(InputStream is) throws IOException {
+    try {
+      MessageDigest md5 = MessageDigest.getInstance(""MD5"");
+      byte[] buf = new byte[4096];
+      int pos;
+      while( (pos = is.read(buf)) > 0 ) md5.update(buf, 0, pos);
+      return md5.digest();
+    } catch( NoSuchAlgorithmException e ) {
+      throw new RuntimeException(e);
+    } finally {
+      try { is.close(); } catch( IOException e ) { }
+    }
+  }",False,False,"This method takes an InputStream as input and returns a byte array. It reads the data from the InputStream in chunks, updates a MessageDigest object with the data, and finally returns the digest of the data as a byte array.",True,"This code defines a private method named ""getMD5"" that takes an InputStream as input and returns a byte array. It calculates the MD5 hash of the data read from the InputStream using a buffer and updates the MessageDigest object. Finally, it closes the InputStream and returns the MD5 hash as a byte array."
+12,Boot(),boot ,Method,,,"java.net.URL+getPath() java.security.CodeSource+getLocation() java.security.ProtectionDomain+getCodeSource() java.lang.Class+getProtectionDomain() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getProtectionDomain() java.security.ProtectionDomain+getCodeSource() java.security.CodeSource+getLocation() java.net.URL+getPath() java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.net.URLDecoder+decode(String,String) java.net.URLDecoder+decode(String,String) java.io.FileInputStream+FileInputStream(String) H2OInit.Boot+getMD5(InputStream) H2OInit.Boot+getMD5(InputStream) java.io.InputStream+close() java.io.InputStream+close() java.util.zip.ZipFile+ZipFile(String) java.io.File+createTempFile(String,String) java.io.File+createTempFile(String,String) java.io.File+delete() java.io.File+delete() java.io.IOException+IOException(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.File+mkdir() java.io.File+mkdir() java.io.IOException+IOException(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.File+deleteOnExit() java.io.File+deleteOnExit() java.util.Arrays+fill(byte[],byte) java.util.Arrays+fill(byte[],byte) java.io.File+File(String) javassist.ClassPool+getDefault() javassist.ClassPool+getDefault()",H2OInit.Boot+_jarHash H2OInit.Boot+_jarHash H2OInit.Boot+_jarHash H2OInit.Boot+_jarHash H2OInit.Boot+_jarHash H2OInit.Boot+_jarHash H2OInit.Boot+_h2oJar H2OInit.Boot+_parentDir H2OInit.Boot+_pool,987,24,2,,"private Boot() throws IOException {
+    final String ownJar = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+    ZipFile jar = null;
+    File dir = null;
+    if( ownJar.endsWith("".jar"") ) { // do nothing if not run from jar
+      String path = URLDecoder.decode(ownJar, ""UTF-8"");
+      InputStream is = new FileInputStream(path);
+      this._jarHash = getMD5(is);
+      is.close();
+
+      jar = new ZipFile(path);
+      dir = File.createTempFile(""h2o-temp-"", """");
+      if( !dir.delete() ) throw new IOException(""Failed to remove tmp file: "" + dir.getAbsolutePath());
+      if( !dir.mkdir() )  throw new IOException(""Failed to create tmp dir: ""  + dir.getAbsolutePath());
+      dir.deleteOnExit();
+    } else {
+      this._jarHash = new byte[16];
+      Arrays.fill(this._jarHash, (byte)0xFF);
+    }
+    _h2oJar = jar;
+    _parentDir = (dir==null) ? new File(""."") : dir;
+    // javassist support for rewriting class files
+    _pool = ClassPool.getDefault();
+  }",False,False,"The function of this method is to initialize the Boot class. It sets the value of the _jarHash variable based on the MD5 hash of the jar file, creates a ZipFile object for the jar file, creates a temporary directory, and sets the values of _h2oJar, _parentDir, and _pool variables.",False,"The code is a private constructor that initializes variables used for reading and manipulating a JAR file. It checks if the code is being run from a JAR file, and if so, it retrieves the MD5 hash of the JAR file, creates a temporary directory, and sets up a ZipFile object for the JAR file. If not run from a JAR file, it sets a default value for the JAR hash and uses the current directory as the parent directory."
+13,main(String[]),main args ,Method,,water.ValueArray+main(String[]) test.SeparateVM+main(String[]),H2OInit.Boot+boot(String[]) H2OInit.Boot+boot(String[]),H2OInit.Boot+_init,78,1,9,,public static void main(String[] args) throws Exception {  _init.boot(args); },False,False,The main method serves as the entry point for the program. It calls the _init.boot method and passes the command line arguments. It also throws an Exception.,False,"The code contains a main method that calls a boot method from the _init class, passing the command line arguments. The boot method is expected to handle any exceptions that may occur during its execution."
+14,_systemLoader, systemloader ,Field,,,,,37,1,2,,private URLClassLoader _systemLoader;,False,False,,False,
+15,_addUrl, addurl ,Field,,,,,23,1,2,,private Method _addUrl;,False,False,,False,
+16,boot(String[]),boot args ,Method,main(String[]),,"H2OInit.Boot+fromJar() H2OInit.Boot+fromJar() java.lang.ClassLoader+getSystemClassLoader() java.lang.ClassLoader+getSystemClassLoader() java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.reflect.Method+setAccessible(boolean) java.lang.reflect.Method+setAccessible(boolean) H2OInit.Boot+extractInternalFiles() H2OInit.Boot+extractInternalFiles() H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) H2OInit.Boot+addInternalJars(String) java.lang.String+equals(Object) java.lang.String+equals(Object) java.util.Arrays+copyOfRange(T[],int,int) java.util.Arrays+copyOfRange(T[],int,int) H2OInit.Boot+loadClass(String,boolean) H2OInit.Boot+loadClass(String,boolean) java.lang.Class+getMethod(String,Class[]) java.lang.Class+getMethod(String,Class[])",H2OInit.Boot+_systemLoader H2OInit.Boot+_addUrl H2OInit.Boot+_addUrl,1020,27,2,,"private void boot( String[] args ) throws Exception {
+    if( fromJar() ) {
+      _systemLoader = (URLClassLoader)getSystemClassLoader();
+      _addUrl = URLClassLoader.class.getDeclaredMethod(""addURL"", URL.class);
+      _addUrl.setAccessible(true);
+
+      // Make all the embedded jars visible to the custom class loader
+      extractInternalFiles(); // Extract e.g. SIGAR's .dll & .so files
+      addInternalJars(""apache"");
+      addInternalJars(""gson"");
+      addInternalJars(""junit"");
+      addInternalJars(""jama"");
+      addInternalJars(""poi"");
+      addInternalJars(""s3"");
+    }
+
+    // Figure out the correct main class to call
+    String mainClass = ""water.H2O""; // Default mainClass
+    if( args.length >= 2 && args[0].equals(""-mainClass"") ) {
+      mainClass = args[1];    // Swap out for requested main
+      args = Arrays.copyOfRange(args, 2, args.length);
+    }
+
+    // Call ""main""!
+    Class h2oclazz = loadClass(mainClass,true);
+    h2oclazz.getMethod(""main"",String[].class).invoke(null,(Object)args);
+  }",False,False,"The function of this method is to boot the application. It first checks if the application is running from a JAR file. If it is, it sets up the system loader and makes embedded jars visible to the custom class loader. Then, it determines the correct main class to call based on the command line arguments. Finally, it loads the main class and invokes its ""main"" method with the remaining command line arguments.",False,"The `boot` method is responsible for initializing the application. It first checks if the application is running from a JAR file and if so, it extracts and adds internal JAR files to the classpath. Then, it determines the main class to call based on the command line arguments and invokes the `main` method of that class with the remaining arguments."
+17,internalFile(String),internal file name returns an external file for the internal file name ,Method,addInternalJars(String) extractInternalFiles(),,"java.io.File+File(File,String)",H2OInit.Boot+_parentDir,138,2,1,"/** 
+ * Returns an external File for the internal file name. 
+ */
+","/** Returns an external File for the internal file name. */
+  public File internalFile(String name) { return new File(_parentDir, name); }",False,False,This method returns an external File object for a given internal file name by creating a new File object with the parent directory and the specified name.,False,"The given code defines a method named ""internalFile"" that takes a string parameter ""name"" and returns a File object. This method is used to create an external File object by combining the parent directory and the provided file name."
+18,addInternalJars(String),add internal jars name add a jar to the system classloader ,Method,boot(String[]) boot(String[]) boot(String[]) boot(String[]) boot(String[]) boot(String[]),water.hdfs.Hdfs+initialize(),H2OInit.Boot+addExternalJars(File) H2OInit.Boot+addExternalJars(File) H2OInit.Boot+internalFile(String) H2OInit.Boot+internalFile(String),,212,4,1,"/** 
+ * Add a jar to the system classloader 
+ */
+","/** Add a jar to the system classloader */
+  public void addInternalJars(String name) throws IllegalAccessException, InvocationTargetException, MalformedURLException {
+    addExternalJars(internalFile(name));
+  }",False,False,"This method adds a jar file to the system classloader by calling another method to add external jars using the internal file name. It can throw exceptions for illegal access, invocation target, and malformed URL.",True,"The given code snippet defines a method called ""addInternalJars"" that takes a string parameter ""name"". This method is responsible for adding a jar file to the system classloader by invoking another method called ""addExternalJars"" with the internal file corresponding to the given name. It throws three exceptions: IllegalAccessException, InvocationTargetException, and MalformedURLException."
+19,addExternalJars(File),add external jars file adds all jars in given directory to the classpath ,Method,addInternalJars(String),,,,476,9,1,"/** 
+ * Adds all jars in given directory to the classpath. 
+ */
+","/** Adds all jars in given directory to the classpath. */
+  public void addExternalJars(File file) throws IllegalAccessException, InvocationTargetException, MalformedURLException {
+    assert file.exists() : ""Unable to find external file: "" + file.getAbsolutePath();
+    if( file.isDirectory() ) {
+      for( File f : file.listFiles() ) addExternalJars(f);
+    } else if( file.getName().endsWith("".jar"") ) {
+      _addUrl.invoke(_systemLoader, file.toURI().toURL());
+    }
+  }",False,False,"This method adds all jars in a given directory to the classpath. It recursively checks if the given file is a directory, and if so, it adds all jars in that directory to the classpath. If the given file is a jar file, it adds it to the classpath.",True,"This code defines a method called ""addExternalJars"" that takes a file as input and adds all the jar files in the given directory to the classpath. It recursively checks for jar files in subdirectories as well. If the file is not a directory and has a "".jar"" extension, it uses reflection to invoke a private method ""_addUrl"" on the system class loader to add the jar file to the classpath."
+20,extractInternalFiles(),extract internal files extracts the libraries from the jar file to given local path ,Method,boot(String[]),,"java.util.zip.ZipFile+entries() java.util.zip.ZipFile+entries() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() java.util.zip.ZipEntry+getName() java.util.zip.ZipEntry+getName() H2OInit.Boot+internalFile(String) H2OInit.Boot+internalFile(String) java.io.File+mkdirs() java.io.File+getParentFile() java.io.File+getParentFile() java.io.File+mkdirs() java.util.zip.ZipEntry+isDirectory() java.util.zip.ZipEntry+isDirectory() java.io.BufferedInputStream+BufferedInputStream(InputStream) java.util.zip.ZipFile+getInputStream(ZipEntry) java.util.zip.ZipFile+getInputStream(ZipEntry) java.io.BufferedOutputStream+BufferedOutputStream(OutputStream) java.io.FileOutputStream+FileOutputStream(File) java.io.FilterInputStream+read(byte[]) java.io.FilterInputStream+read(byte[]) java.io.BufferedOutputStream+write(byte[],int,int) java.io.BufferedOutputStream+write(byte[],int,int) java.io.BufferedOutputStream+flush() java.io.BufferedOutputStream+flush() java.io.FilterOutputStream+close() java.io.FilterOutputStream+close() java.io.BufferedInputStream+close() java.io.BufferedInputStream+close() java.io.PrintStream+println(String) java.io.PrintStream+println(String)",H2OInit.Boot+_h2oJar H2OInit.Boot+_h2oJar java.lang.System+err,1089,27,2,"/** 
+ * Extracts the libraries from the jar file to given local path.   
+ */
+","/** Extracts the libraries from the jar file to given local path.   */
+  private void extractInternalFiles() {
+    Enumeration entries = _h2oJar.entries();
+    while( entries.hasMoreElements() ) {
+      ZipEntry e = (ZipEntry) entries.nextElement();
+      String name = e.getName();
+      File out = internalFile(name);
+      out.getParentFile().mkdirs();
+      if( e.isDirectory() ) continue; // mkdirs() will handle these
+
+      // extract the entry
+      try {
+        BufferedInputStream  is = new BufferedInputStream (_h2oJar.getInputStream(e));
+        BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(out));
+        int read;
+        byte[] buffer = new byte[4096];
+        while( (read = is.read(buffer)) != -1 ) os.write(buffer,0,read);
+        os.flush();
+        os.close();
+        is.close();
+      } catch( FileNotFoundException ex ) {
+        // Expected FNF if 2 H2O instances are attempting to unpack in the same directory
+      } catch( IOException ex ) {
+        System.err.println(""Unable to extract file ""+name+"" because ""+ex);
+      }
+    }
+  }",False,False,The function of this method is to extract the libraries from a jar file and save them to a specified local path.,True,"The code defines a private method called `extractInternalFiles()` that extracts libraries from a jar file to a specified local path. It iterates through the entries in the jar file, creates the necessary directories, and extracts each file using buffered input and output streams. Any exceptions that occur during the extraction process are caught and handled accordingly."
+21,getResource2(String),get resource2 uri ,Method,,water.api.Console+loadContent(String) water.api.RequestServer+getResource(String),H2OInit.Boot+fromJar() H2OInit.Boot+fromJar() java.net.URLClassLoader+getResourceAsStream(String) java.net.URLClassLoader+getResourceAsStream(String) java.io.FileInputStream+FileInputStream(File) java.io.File+File(String),H2OInit.Boot+_systemLoader,360,11,1,,"public InputStream getResource2(String uri) {
+    if( fromJar() ) {
+      return _systemLoader.getResourceAsStream(""resources""+uri);
+    } else { // to allow us to read things not only from the loader
+      try {
+        return new FileInputStream(new File(""lib/resources""+uri));
+      } catch (FileNotFoundException e) {
+        return null;
+      }
+    }
+  }",False,False,"This method returns an InputStream for a given resource URI. If the resource is in a JAR file, it retrieves it using the system loader. Otherwise, it tries to read it from a file in the ""lib/resources"" directory.",True,"The code defines a method named ""getResource2"" that takes a string parameter ""uri"". If the method is called from a JAR file, it returns an input stream for a resource file located in the ""resources"" directory. Otherwise, it returns an input stream for a resource file located in the ""lib/resources"" directory by creating a FileInputStream object."
+22,"loadClass(String,boolean)",load class name resolve ,Method,boot(String[]),,"H2OInit.Boot+loadClass2(String,boolean) H2OInit.Boot+loadClass2(String,boolean) java.lang.ClassLoader+resolveClass(Class) java.lang.ClassLoader+resolveClass(Class)",,277,5,33,,"public synchronized Class loadClass( String name, boolean resolve ) throws ClassNotFoundException {
+    Class z = loadClass2(name,resolve);      // Do all the work in here
+    if( resolve ) resolveClass(z);           // Resolve here instead in the work method
+    return z;
+  }",False,False,"The function of this method is to load a class and optionally resolve it. It calls another method, loadClass2, to do the actual work of loading the class. If the resolve parameter is true, it resolves the class before returning it.",False,"The code defines a synchronized method called ""loadClass"" that takes a class name and a boolean flag as parameters. It calls another method called ""loadClass2"" to load the class and then resolves the class if the ""resolve"" flag is true. The method returns the loaded class."
+23,"loadClass2(String,boolean)",load class2 name resolve ,Method,"loadClass(String,boolean)",,java.lang.ClassLoader+findLoadedClass(String) java.lang.ClassLoader+findLoadedClass(String) H2OInit.Boot+javassistLoadClass(String) H2OInit.Boot+javassistLoadClass(String) java.lang.ClassLoader+loadClass(String) java.lang.ClassLoader+getParent() java.lang.ClassLoader+getParent() java.lang.ClassLoader+loadClass(String),,429,9,18,,"private final Class loadClass2( String name, boolean resolve ) throws ClassNotFoundException {
+    Class z = findLoadedClass(name); // Look for pre-existing class
+    if( z != null ) return z;
+    z = javassistLoadClass(name);    // Try the Happy Class Loader
+    if( z != null ) return z;
+    z = getParent().loadClass(name); // Try the parent loader.  Probably the System loader.
+    if( z != null ) return z;
+    return z;
+  }",False,False,"This method is used to load a class by name. It first checks if the class is already loaded, then tries to load it using a specific class loader, and finally tries to load it using the parent class loader. If the class is not found, it throws a ClassNotFoundException.",False,"The code defines a private method called `loadClass2` that takes a class name and a boolean flag as input. It attempts to load the class using three different loaders: first, it checks if the class is already loaded, then it tries to load it using a specific class loader called `javassistLoadClass`, and finally, it falls back to the parent loader if the class is still not found. The method returns the loaded class or null if it cannot be found."
+24,javassistLoadClass(String),javassist load class name ,Method,"loadClass2(String,boolean)",,"javassist.ClassPool+get(String) javassist.ClassPool+get(String) javassist.CtClass+getPackageName() javassist.CtClass+getPackageName() java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) javassist.ClassPool+get(String) javassist.ClassPool+get(String) javassist.ClassPool+get(String) javassist.ClassPool+get(String) javassist.CtClass+toClass(ClassLoader,ProtectionDomain) javassist.CtClass+toClass(ClassLoader,ProtectionDomain) javassist.CtClass+subclassOf(CtClass) javassist.CtClass+subclassOf(CtClass) H2OInit.Boot+javassistLoadClass(CtClass) H2OInit.Boot+javassistLoadClass(CtClass) javassist.ClassPool+get(String) javassist.ClassPool+get(String) javassist.CtClass+subclassOf(CtClass) javassist.CtClass+subclassOf(CtClass) H2OInit.Boot+javassistLoadClass(CtClass) H2OInit.Boot+javassistLoadClass(CtClass) javassist.CtClass+toClass(ClassLoader,ProtectionDomain) javassist.CtClass+toClass(ClassLoader,ProtectionDomain) java.lang.RuntimeException+RuntimeException(Throwable)",H2OInit.Boot+_pool H2OInit.Boot+_serBases H2OInit.Boot+_serBases H2OInit.Boot+_pool H2OInit.Boot+_pool H2OInit.Boot+_serBases H2OInit.Boot+_serBases H2OInit.Boot+_enum H2OInit.Boot+_enum H2OInit.Boot+_pool H2OInit.Boot+_enum H2OInit.Boot+_enum,1297,32,33,,"public synchronized Class javassistLoadClass( String name ) {
+    try {
+      CtClass cc = _pool.get(name); // Full Name Lookup
+      if( cc == null ) return null; // Oops?  Try the system loader, but expected to work
+      String pack = cc.getPackageName();
+      if( !pack.startsWith(""water"") &&
+          !pack.startsWith(""hex"") &&
+          !pack.startsWith(""test"") &&
+          !pack.startsWith(""org.junit"") &&
+          true ) return null; // Not in my package
+
+      // We need the base classes before we can ask ""subclassOf""
+      if( _serBases == null ) {
+        _serBases = new CtClass[] {
+            _pool.get(""water.Iced""),
+            _pool.get(""water.DTask""),
+        };
+        for( CtClass c : _serBases ) c.toClass(this, null);
+      }
+      for( CtClass base : _serBases )
+        if( cc != base && cc.subclassOf(base) )
+          return javassistLoadClass(cc);
+      if( _enum == null ) _enum = _pool.get(""java.lang.Enum"");
+      if( cc != _enum && cc.subclassOf(_enum) )
+        return javassistLoadClass(cc);
+      return cc.toClass(this, null);
+    } catch( NotFoundException nfe ) {
+      return null;              // Not found?  Use the normal loader then
+    } catch( CannotCompileException cce ) { // Expected to compile
+      throw new RuntimeException(cce);
+    }
+  }",True,True,"This method is used to load a class using the Javassist library. It checks if the class is in a specific package and if it is a subclass of certain base classes or the Enum class. If the class is found, it is returned; otherwise, null is returned.",True,"This code defines a synchronized method called `javassistLoadClass` that takes a class name as input. It uses the Javassist library to dynamically load and return the class object corresponding to the given name, but only if the class belongs to specific packages or is a subclass of certain base classes. If the class is not found or cannot be compiled, it returns null or throws a runtime exception, respectively."
+25,javassistLoadClass(CtClass),javassist load class cc ,Method,javassistLoadClass(String) javassistLoadClass(String) javassistLoadClass(CtClass) javassistLoadClass(CtClass),,javassist.CtClass+getSuperclass() javassist.CtClass+getSuperclass() javassist.CtClass+isFrozen() javassist.CtClass+isFrozen() H2OInit.Boot+javassistLoadClass(CtClass) H2OInit.Boot+javassistLoadClass(CtClass) javassist.CtClass+getDeclaredFields() javassist.CtClass+getDeclaredFields() javassist.CtField+getType() javassist.CtField+getType() javassist.CtClass+isFrozen() javassist.CtClass+isFrozen() javassist.CtClass+subclassOf(CtClass) javassist.CtClass+subclassOf(CtClass) H2OInit.Boot+javassistLoadClass(CtClass) H2OInit.Boot+javassistLoadClass(CtClass) H2OInit.Boot+addSerializationMethods(CtClass) H2OInit.Boot+addSerializationMethods(CtClass),H2OInit.Boot+_enum H2OInit.Boot+_enum H2OInit.Boot+_enum,706,14,33,,"public synchronized Class javassistLoadClass( CtClass cc ) throws NotFoundException, CannotCompileException {
+    // Serialize parent class first
+    CtClass scc = cc.getSuperclass(); // See if the super is already done
+    if( !scc.isFrozen() && scc != _enum ) // Super not done?
+      javassistLoadClass(scc);        // Recursively serialize
+
+    // Serialize enums first, since we need the raw_enum function for this class
+    for( CtField ctf : cc.getDeclaredFields() ) {
+      CtClass base = ctf.getType();
+      if( base != _enum && base != cc && !base.isFrozen() && base.subclassOf(_enum) )
+        javassistLoadClass(base); // Recursively serialize
+    }
+    return addSerializationMethods(cc);
+  }",False,True,"The function of the given method is to load a class using the Javassist library. It serializes the parent class first, then serializes the enums, and finally adds serialization methods to the class.",True,This code is a method called `javassistLoadClass` that serializes a given `CtClass` object and its superclass recursively. It also serializes any enum fields of the class before adding serialization methods and returning the modified `CtClass` object.
+26,"hasExisting(String,String,CtBehavior)",has existing methname methsig ccms ,Method,,,java.lang.String+equals(Object) javassist.CtMember+getName() javassist.CtMember+getName() java.lang.String+equals(Object) java.lang.String+equals(Object) javassist.CtBehavior+getSignature() javassist.CtBehavior+getSignature() java.lang.String+equals(Object),,285,7,10,,"private static boolean hasExisting( String methname, String methsig, CtBehavior ccms[] ) throws NotFoundException {
+    for( CtBehavior cm : ccms )
+      if( cm.getName     ().equals(methname) &&
+          cm.getSignature().equals(methsig ) )
+        return true;
+    return false;
+  }",False,True,"The function of this method is to check if there is an existing method with a given name and signature in an array of CtBehaviors. It returns true if such a method exists, and false otherwise.",False,"The given code is a private static method named ""hasExisting"" that takes in three parameters: a method name, a method signature, and an array of CtBehavior objects. It iterates through the array and checks if any of the CtBehavior objects have the same name and signature as the given method name and method signature. If a match is found, it returns true; otherwise, it returns false."
+27,addSerializationMethods(CtClass),add serialization methods cc ,Method,javassistLoadClass(CtClass),,"javassist.CtClass+subclassOf(CtClass) javassist.CtClass+subclassOf(CtClass) H2OInit.Boot+exposeRawEnumArray(CtClass) H2OInit.Boot+exposeRawEnumArray(CtClass) javassist.CtClass+setModifiers(int) javassist.CtClass+setModifiers(int) javassist.Modifier+setPublic(int) javassist.Modifier+setPublic(int) javassist.CtClass+getModifiers() javassist.CtClass+getModifiers() H2OInit.Boot+ensureSerMethods(CtClass) H2OInit.Boot+ensureSerMethods(CtClass) H2OInit.Boot+ensureNullaryCtor(CtClass) H2OInit.Boot+ensureNullaryCtor(CtClass) H2OInit.Boot+ensureNewInstance(CtClass) H2OInit.Boot+ensureNewInstance(CtClass) javassist.CtClass+toClass(ClassLoader,ProtectionDomain) javassist.CtClass+toClass(ClassLoader,ProtectionDomain)",H2OInit.Boot+_enum,373,11,0,,"Class addSerializationMethods( CtClass cc ) throws CannotCompileException, NotFoundException {
+    if( cc.subclassOf(_enum) ) {
+      exposeRawEnumArray(cc);
+    } else {
+      cc.setModifiers(javassist.Modifier.setPublic(cc.getModifiers()));
+      ensureSerMethods(cc);
+      ensureNullaryCtor(cc);
+      ensureNewInstance(cc);
+    }
+    return cc.toClass(this, null);
+  }",True,True,"The function of the given method is to add serialization methods to a given class. If the class is a subclass of _enum, it exposes the raw enum array. Otherwise, it sets the class modifiers to public, ensures serialization methods, ensures a nullary constructor, and ensures a new instance. Finally, it returns the modified class.",True,"The given code is a method named ""addSerializationMethods"" that takes a CtClass object as a parameter. It checks if the CtClass object is a subclass of _enum, and if so, it calls the ""exposeRawEnumArray"" method. If not, it modifies the CtClass object to set its modifiers as public, and then calls three other methods: ""ensureSerMethods"", ""ensureNullaryCtor"", and ""ensureNewInstance"". Finally, it returns the modified CtClass object as a Class object."
+28,exposeRawEnumArray(CtClass),expose raw enum array cc ,Method,addSerializationMethods(CtClass),,"javassist.CtClass+getField(String) javassist.CtClass+getField(String) javassist.CtClass+getField(String) javassist.CtClass+getField(String) javassist.CtClass+getName() javassist.CtClass+getName() javassist.CtField+getName() javassist.CtField+getName() javassist.CtClass+addMethod(CtMethod) javassist.CtClass+addMethod(CtMethod) javassist.CtNewMethod+make(String,CtClass) javassist.CtNewMethod+make(String,CtClass) java.io.PrintStream+println(String) java.io.PrintStream+println(String) javassist.CtClass+getName() javassist.CtClass+getName() java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String)",java.lang.System+out java.lang.System+out java.lang.System+out,740,18,2,,"private void exposeRawEnumArray(CtClass cc) throws NotFoundException, CannotCompileException {
+      CtField field;
+      try {
+        field = cc.getField(""$VALUES"");
+      } catch( NotFoundException nfe ) {
+        // Eclipse apparently stores this in a different place.
+        field = cc.getField(""ENUM$VALUES"");
+      }
+      String body = ""static ""+cc.getName()+"" raw_enum(int i) { return i==255?null:""+field.getName()+""[i]; } "";
+      try {
+        cc.addMethod(CtNewMethod.make(body,cc));
+      } catch( CannotCompileException ce ) {
+        System.out.println(""--- Compilation failure while compiler raw_enum for ""+cc.getName());
+        System.out.println(body);
+        System.out.println(""------"");
+        throw ce;
+      }
+  }",True,True,"The function of this method is to expose the raw enum array of a given CtClass object. It retrieves the field ""$VALUES"" or ""ENUM$VALUES"" from the CtClass object, and then adds a new method to the CtClass object that returns the raw enum value at a given index.",False,"This code defines a private method called `exposeRawEnumArray` that takes a `CtClass` object as a parameter. The method retrieves a field named ""$VALUES"" or ""ENUM$VALUES"" from the `CtClass` object and creates a new method called ""raw_enum"" with a body that returns an element from the retrieved field based on the given index. If there is a compilation failure, an exception is thrown."
+29,ensureNewInstance(CtClass),ensure new instance cc ,Method,addSerializationMethods(CtClass),,"javassist.CtClass+getDeclaredMethods() javassist.CtClass+getDeclaredMethods() H2OInit.Boot+hasExisting(String,String,CtBehavior[]) H2OInit.Boot+hasExisting(String,String,CtBehavior[]) javassist.CtClass+addMethod(CtMethod) javassist.CtClass+addMethod(CtMethod) javassist.CtNewMethod+make(String,CtClass) javassist.CtNewMethod+make(String,CtClass) javassist.CtClass+getName() javassist.CtClass+getName()",,384,9,2,,"private void ensureNewInstance(CtClass cc) throws NotFoundException, CannotCompileException {
+    CtMethod ccms[] = cc.getDeclaredMethods();
+    if( !hasExisting(""newInstance"", ""()Lwater/Freezable;"", ccms) ) {
+      cc.addMethod(CtNewMethod.make(
+          ""public water.Freezable newInstance() {\n"" +
+          ""    return new "" +cc.getName()+""();\n"" +
+          ""}"", cc));
+    }
+  }",False,True,"This method ensures that the given CtClass does not already have a method named ""newInstance"" with the signature ""()Lwater/Freezable;"". If it does not have such a method, it adds a new method to the CtClass that returns a new instance of the CtClass.",False,"The code is a private method that ensures the presence of a method named ""newInstance"" in a given CtClass object. If the method does not exist, it adds a new method to the CtClass object that returns a new instance of the class. The method throws NotFoundException and CannotCompileException."
+30,ensureNullaryCtor(CtClass),ensure nullary ctor cc ,Method,addSerializationMethods(CtClass),,"javassist.CtClass+getSimpleName() javassist.CtClass+getSimpleName() H2OInit.Boot+hasExisting(String,String,CtBehavior[]) H2OInit.Boot+hasExisting(String,String,CtBehavior[]) javassist.CtClass+getDeclaredConstructors() javassist.CtClass+getDeclaredConstructors() javassist.CtClass+addConstructor(CtConstructor) javassist.CtClass+addConstructor(CtConstructor) javassist.CtNewConstructor+make(String,CtClass) javassist.CtNewConstructor+make(String,CtClass) javassist.CtClass+getConstructor(String) javassist.CtClass+getConstructor(String) javassist.CtBehavior+setModifiers(int) javassist.CtBehavior+setModifiers(int) javassist.Modifier+setPublic(int) javassist.Modifier+setPublic(int) javassist.CtBehavior+getModifiers() javassist.CtBehavior+getModifiers()",,506,11,2,,"private void ensureNullaryCtor(CtClass cc) throws NotFoundException, CannotCompileException {
+    // Build a null-ary constructor if needed
+    String clzname = cc.getSimpleName();
+    if( !hasExisting(clzname,""()V"",cc.getDeclaredConstructors()) ) {
+      String body = ""public ""+clzname+""() { }"";
+      cc.addConstructor(CtNewConstructor.make(body,cc));
+    } else {
+      CtConstructor ctor = cc.getConstructor(""()V"");
+      ctor.setModifiers(javassist.Modifier.setPublic(ctor.getModifiers()));
+    }
+  }",True,True,"This method ensures that a given class has a nullary constructor. If the class does not have a nullary constructor, it adds one. If the class already has a nullary constructor, it sets the constructor's access modifier to public.",False,"This code ensures that a given class has a nullary (parameterless) constructor. If the class does not have a nullary constructor, it adds one to the class using the `CtNewConstructor.make()` method. If the class already has a nullary constructor, it sets the constructor's modifiers to public."
+31,ensureSerMethods(CtClass),ensure ser methods cc ,Method,addSerializationMethods(CtClass),,"javassist.CtClass+getDeclaredMethods() javassist.CtClass+getDeclaredMethods() H2OInit.Boot+hasExisting(String,String,CtBehavior[]) H2OInit.Boot+hasExisting(String,String,CtBehavior[]) H2OInit.Boot+hasExisting(String,String,CtBehavior[]) H2OInit.Boot+hasExisting(String,String,CtBehavior[]) java.lang.Error+Error(String) javassist.CtClass+getName() javassist.CtClass+getName() javassist.CtClass+getDeclaredFields() javassist.CtClass+getDeclaredFields() javassist.CtClass+getSuperclass() javassist.CtClass+getSuperclass() H2OInit.Boot+make_body(CtClass,CtField[],boolean,String,String,String,String,String,String) H2OInit.Boot+make_body(CtClass,CtField[],boolean,String,String,String,String,String,String) H2OInit.Boot+make_body(CtClass,CtField[],boolean,String,String,String,String,String,String) H2OInit.Boot+make_body(CtClass,CtField[],boolean,String,String,String,String,String,String)",H2OInit.Boot+_serBases,2449,60,2,,"private void ensureSerMethods(CtClass cc) throws NotFoundException, CannotCompileException {
+    // Check for having ""read"" and ""write"".  Either All or None of read & write
+    // must be defined.  Note that I use getDeclaredMethods which returns only
+    // the local methods.  The singular getDeclaredMethod searches for a
+    // specific method *up into superclasses*, which will trigger premature
+    // loading of those superclasses.
+    CtMethod ccms[] = cc.getDeclaredMethods();
+    boolean w = hasExisting(""write"", ""(Lwater/AutoBuffer;)Lwater/AutoBuffer;"", ccms);
+    boolean r = hasExisting(""read"", ""(Lwater/AutoBuffer;)Lwater/Freezable;"", ccms);
+    if( w && r ) return;
+    if( w || r )
+      throw new Error(cc.getName() +"" must implement both "" +
+      		""read(AutoBuffer) and write(AutoBuffer) or neither"");
+
+    // Add the serialization methods: read, write.
+    CtField ctfs[] = cc.getDeclaredFields();
+
+    // We cannot call Iced.xxx, as these methods always throw a
+    // RuntimeException (to make sure we noisely fail instead of silently
+    // fail).  But we DO need to call the super-chain of serialization methods
+    // - except for DTask.
+    boolean callsuper = true;
+    for( CtClass base : _serBases )
+      if( cc.getSuperclass() == base ) callsuper = false;
+
+    // Running example is:
+    //   class Crunk extends DTask {
+    //     int _x;  int _xs[];  double _d;
+    //   }
+
+    // Build a write method that looks something like this:
+    //     public AutoBuffer write( AutoBuffer s ) {
+    //       s.put4(_x);
+    //       s.putA4(_xs);
+    //       s.put8d(_d);
+    //     }
+    make_body(cc,ctfs,callsuper,
+              ""public water.AutoBuffer write(water.AutoBuffer ab) {\n"",
+              ""  super.write(ab);\n"",
+              ""  ab.put%z(%s);\n"",
+              ""  ab.putEnum(%s);\n"",
+              ""  ab.put%z(%s);\n"",
+              ""  return ab;\n"" +
+              ""}"");
+
+    // Build a read method that looks something like this:
+    //     public T read( AutoBuffer s ) {
+    //       _x = s.get4();
+    //       _xs = s.getA4();
+    //       _d = s.get8d();
+    //     }
+    make_body(cc,ctfs,callsuper,
+              ""public water.Freezable read(water.AutoBuffer s) {\n"",
+              ""  super.read(s);\n"",
+              ""  %s = s.get%z();\n"",
+              ""  %s = %c.raw_enum(s.get1());\n"",
+              ""  %s = (%C)s.get%z(%c.class);\n"",
+              ""  return this;\n"" +
+              ""}"");
+  }",True,True,"The function of this method is to ensure that a given class has both ""read"" and ""write"" methods defined, or neither of them. If only one of them is defined, an error is thrown. If both methods are missing, the method adds the ""read"" and ""write"" methods to the class.",False,"The code ensures that a given class has both ""read"" and ""write"" methods defined, with specific signatures, and throws an error if either one is missing. If the methods are missing, the code adds the ""read"" and ""write"" methods to the class, using the provided field information, and also calls the super-chain of serialization methods if necessary."
+32,"make_body(CtClass,CtField[],boolean,String,String,String,String,String,String)",make body cc ctfs callsuper header supers prims enums freezables trailer ,Method,ensureSerMethods(CtClass) ensureSerMethods(CtClass),,"java.lang.StringBuilder+StringBuilder() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) javassist.CtField+getModifiers() javassist.CtField+getModifiers() javassist.Modifier+isTransient(int) javassist.Modifier+isTransient(int) javassist.Modifier+isStatic(int) javassist.Modifier+isStatic(int) java.lang.String+equals(Object) javassist.CtField+getName() javassist.CtField+getName() java.lang.String+equals(Object) javassist.CtField+getType() javassist.CtField+getType() javassist.CtClass+isArray() javassist.CtClass+isArray() javassist.CtClass+getComponentType() javassist.CtClass+getComponentType() H2OInit.Boot+ftype(CtClass,String) H2OInit.Boot+ftype(CtClass,String) javassist.CtField+getSignature() javassist.CtField+getSignature() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) H2OInit.Boot+subsub(StringBuilder,String,String) H2OInit.Boot+subsub(StringBuilder,String,String) H2OInit.Boot+subsub(StringBuilder,String,String) H2OInit.Boot+subsub(StringBuilder,String,String) javassist.CtField+getName() javassist.CtField+getName() H2OInit.Boot+subsub(StringBuilder,String,String) H2OInit.Boot+subsub(StringBuilder,String,String) java.lang.String+replace(char,char) javassist.CtClass+getName() javassist.CtClass+getName() java.lang.String+replace(char,char) H2OInit.Boot+subsub(StringBuilder,String,String) H2OInit.Boot+subsub(StringBuilder,String,String) java.lang.String+replace(char,char) javassist.CtClass+getName() javassist.CtField+getType() javassist.CtField+getType() javassist.CtClass+getName() java.lang.String+replace(char,char) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() java.io.PrintStream+println(String) java.io.PrintStream+println(String) javassist.CtClass+getName() javassist.CtClass+getName() javassist.CtClass+addMethod(CtMethod) javassist.CtClass+addMethod(CtMethod) javassist.CtNewMethod+make(String,CtClass) javassist.CtNewMethod+make(String,CtClass) java.io.PrintStream+println(String) java.io.PrintStream+println(String) javassist.CtClass+getName() javassist.CtClass+getName() java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String)",H2OInit.Boot+FLDSZ1 java.lang.System+out java.lang.System+out java.lang.System+out java.lang.System+out,2130,53,18,,"private final void make_body(CtClass cc, CtField[] ctfs, boolean callsuper,
+                               String header,
+                               String supers,
+                               String prims,
+                               String enums,
+                               String freezables,
+                               String trailer
+                               ) throws CannotCompileException, NotFoundException {
+    StringBuilder sb = new StringBuilder();
+    sb.append(header);
+    if( callsuper ) sb.append(supers);
+    boolean debug_print = false;
+    for( CtField ctf : ctfs ) {
+      int mods = ctf.getModifiers();
+      if( javassist.Modifier.isTransient(mods) || javassist.Modifier.isStatic(mods) ) {
+        debug_print |= ctf.getName().equals(""DEBUG_WEAVER"");
+        continue;  // Only serialize not-transient instance fields (not static)
+      }
+      CtClass base = ctf.getType();
+      while( base.isArray() ) base = base.getComponentType();
+
+      int ftype = ftype(cc, ctf.getSignature() );   // Field type encoding
+      if( ftype%20 == 9 ) {
+        sb.append(freezables);
+      } else if( ftype%20 == 10 ) { // Enums
+        sb.append(enums);
+      } else {
+        sb.append(prims);
+      }
+
+      String z = FLDSZ1[ftype % 20];
+      for(int i = 0; i < ftype / 20; ++i ) z = 'A'+z;
+      subsub(sb, ""%z"", z);                                         // %z ==> short type name
+      subsub(sb, ""%s"", ctf.getName());                             // %s ==> field name
+      subsub(sb, ""%c"", base.getName().replace('$', '.'));          // %c ==> base class name
+      subsub(sb, ""%C"", ctf.getType().getName().replace('$', '.')); // %C ==> full class name
+
+    }
+    sb.append(trailer);
+    String body = sb.toString();
+    if( debug_print ) {
+      System.out.println(cc.getName()+"" ""+body);
+    }
+
+    try {
+      cc.addMethod(CtNewMethod.make(body,cc));
+    } catch( CannotCompileException ce ) {
+      System.out.println(""--- Compilation failure while compiler serializers for ""+cc.getName());
+      System.out.println(body);
+      System.out.println(""------"");
+      throw ce;
+    }
+  }",True,True,"The function of this method is to generate a body of code for a method in a given class. The generated code includes serialization logic for non-transient instance fields, based on their types. The generated code is then added as a new method to the class.",True,
+33,FLDSZ1,flds z1 ,Field,,,,,133,3,26,,"static private final String[] FLDSZ1 = {
+    ""Z"",""1"",""2"",""2"",""4"",""4f"",""8"",""8d"",""Str"","""",""Enum"" // prims, String, Freezable, Enum
+  };",True,True,,False,
+34,"ftype(CtClass,String)",ftype ct sig ,Method,"make_body(CtClass,CtField[],boolean,String,String,String,String,String,String) ftype(CtClass,String)",,"java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+replace(char,char) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+length() java.lang.String+length() java.lang.String+replace(char,char) javassist.ClassPool+get(String) javassist.ClassPool+get(String) javassist.CtClass+subtypeOf(CtClass) javassist.CtClass+subtypeOf(CtClass) javassist.ClassPool+get(String) javassist.ClassPool+get(String) javassist.CtClass+subtypeOf(CtClass) javassist.CtClass+subtypeOf(CtClass) javassist.ClassPool+get(String) javassist.ClassPool+get(String) H2OInit.Boot+ftype(CtClass,String) H2OInit.Boot+ftype(CtClass,String) java.lang.String+substring(int) java.lang.String+substring(int) H2OInit.Boot+barf(CtClass,String) H2OInit.Boot+barf(CtClass,String)",H2OInit.Boot+_pool H2OInit.Boot+_pool H2OInit.Boot+_pool,884,23,2,,"private int ftype( CtClass ct, String sig ) throws NotFoundException {
+    switch( sig.charAt(0) ) {
+    case 'Z': return 0;         // Booleans: I could compress these more
+    case 'B': return 1;         // Primitives
+    case 'C': return 2;
+    case 'S': return 3;
+    case 'I': return 4;
+    case 'F': return 5;
+    case 'J': return 6;
+    case 'D': return 7;
+    case 'L':                   // Handled classes
+      if( sig.equals(""Ljava/lang/String;"") ) return 8;
+
+      String clz = sig.substring(1,sig.length()-1).replace('/', '.');
+      CtClass argClass = _pool.get(clz);
+      if( argClass.subtypeOf(_pool.get(""water.Freezable"")) ) return 9;
+      if( argClass.subtypeOf(_pool.get(""java.lang.Enum"")) ) return 10;
+      break;
+    case '[':                   // Arrays
+      return ftype(ct, sig.substring(1))+20; // Same as prims, plus 20
+    }
+    throw barf(ct, sig);
+  }",True,True,"The function ftype determines the type of a given CtClass object based on its signature. It returns an integer value that represents the type, ranging from 0 to 29.",False,"This code defines a private method called `ftype` that takes a `CtClass` object and a `String` signature as input. It determines the type of the given signature and returns an integer value based on the type. The method handles various types including booleans, primitives, classes, and arrays."
+35,"subsub(StringBuilder,String,String)",subsub sb s1 s2 ,Method,"make_body(CtClass,CtField[],boolean,String,String,String,String,String,String) make_body(CtClass,CtField[],boolean,String,String,String,String,String,String) make_body(CtClass,CtField[],boolean,String,String,String,String,String,String) make_body(CtClass,CtField[],boolean,String,String,String,String,String,String)",,"java.lang.StringBuilder+indexOf(String) java.lang.StringBuilder+indexOf(String) java.lang.StringBuilder+replace(int,int,String) java.lang.StringBuilder+replace(int,int,String)",,153,4,10,,"static private void subsub( StringBuilder sb, String s1, String s2 ) {
+    int idx;
+    while( (idx=sb.indexOf(s1)) != -1 ) sb.replace(idx,idx+2,s2);
+  }",True,True,The function of the method is to replace all occurrences of a given substring (s1) with another substring (s2) in a StringBuilder object (sb).,False,"The code defines a static method named ""subsub"" that takes in a StringBuilder object and two strings as parameters. It replaces all occurrences of the first string (s1) in the StringBuilder object with the second string (s2) using the ""replace"" method."
+36,"barf(CtClass,String)",barf ct sig ,Method,"ftype(CtClass,String)",,java.lang.Error+Error(String) javassist.CtClass+getSimpleName() javassist.CtClass+getSimpleName(),,141,3,10,,"private static Error barf( CtClass ct, String sig ) {
+    return new Error(ct.getSimpleName()+"".""+sig+"": Serialization not implemented"");
+  }",True,True,The function of the given method is to create and return an Error object with a specific message that indicates that serialization is not implemented for a given CtClass and signature.,False,"The code defines a private static method named ""barf"" that takes a CtClass object and a String as parameters. It creates and returns an Error object with a message indicating that serialization is not implemented for the given CtClass and method signature."

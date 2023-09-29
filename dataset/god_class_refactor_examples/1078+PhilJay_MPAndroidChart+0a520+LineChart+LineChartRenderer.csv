@@ -1,0 +1,565 @@
+index,name,document,type,inner invocations,external invocations,calls,visits,length,lines,modifier,commit,full text,moved,removed,gpt text,gpt response,code summary
+1,mHighlightWidth,m highlight width the width of the highlighning line ,Field,,,,,83,2,4,"/** 
+ * the width of the highlighning line 
+ */
+","/** the width of the highlighning line */
+    protected float mHighlightWidth = 3f;",False,False,"/** 
+ * the width of the highlighning line 
+ */
+",False,"/** 
+ * the width of the highlighning line 
+ */
+"
+2,mCirclePaintInner,m circle paint inner paint for the inner circle of the value indicators ,Field,,,,,96,2,4,"/** 
+ * paint for the inner circle of the value indicators 
+ */
+","/** paint for the inner circle of the value indicators */
+    protected Paint mCirclePaintInner;",True,True,"/** 
+ * paint for the inner circle of the value indicators 
+ */
+",False,"/** 
+ * paint for the inner circle of the value indicators 
+ */
+"
+3,mFillFormatter,m fill formatter ,Field,,,,,37,1,2,,private FillFormatter mFillFormatter;,False,False,,False,
+4,LineChart(Context),line chart context ,Method,,,,,65,3,1,,"public LineChart(Context context) {
+        super(context);
+    }",False,False,The function of the method is to create a LineChart object and initialize it with the given context.,True,The code defines a constructor method for a LineChart class in Java. The constructor takes a Context object as a parameter and calls the superclass constructor. It is used to initialize an instance of the LineChart class.
+5,"LineChart(Context,AttributeSet)",line chart context attrs ,Method,,,,,92,3,1,,"public LineChart(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }",False,False,This method is a constructor for a LineChart class. It takes a Context and AttributeSet as parameters and calls the constructor of its superclass with these parameters.,True,The code defines a constructor method for a LineChart class in Java. It takes a Context and AttributeSet as parameters and calls the constructor of its superclass.
+6,"LineChart(Context,AttributeSet,int)",line chart context attrs def style ,Method,,,,,116,3,1,,"public LineChart(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }",False,False,"This method is a constructor for a LineChart object. It takes in a Context, AttributeSet, and int as parameters, and calls the constructor of its superclass with these parameters.",True,"The code defines a constructor method for a LineChart class in Java. It takes three parameters: a Context object, an AttributeSet object, and an integer value for the default style. The purpose of this constructor is to initialize the LineChart object with the provided attributes and style."
+7,init(),init ,Method,,,"com.github.mikephil.charting.charts.BarLineChartBase+init() com.github.mikephil.charting.charts.LineChart.DefaultFillFormatter+DefaultFillFormatter() android.graphics.Paint+Paint(int) android.graphics.Paint+setStyle(Style) android.graphics.Paint+setStyle(Style) android.graphics.Paint+setColor(int) android.graphics.Paint+setColor(int) android.graphics.Paint+Paint(int) android.graphics.Paint+setStyle(Style) android.graphics.Paint+setStyle(Style) android.graphics.Paint+setStrokeWidth(float) android.graphics.Paint+setStrokeWidth(float) android.graphics.Paint+setColor(int) android.graphics.Paint+setColor(int) android.graphics.Color+rgb(int,int,int) android.graphics.Color+rgb(int,int,int)",com.github.mikephil.charting.charts.LineChart+mFillFormatter com.github.mikephil.charting.charts.LineChart+mCirclePaintInner android.graphics.Paint+ANTI_ALIAS_FLAG com.github.mikephil.charting.charts.LineChart+mCirclePaintInner android.graphics.Paint.Style+FILL com.github.mikephil.charting.charts.LineChart+mCirclePaintInner android.graphics.Color+WHITE com.github.mikephil.charting.charts.Chart+mHighlightPaint android.graphics.Paint+ANTI_ALIAS_FLAG com.github.mikephil.charting.charts.Chart+mHighlightPaint android.graphics.Paint.Style+STROKE com.github.mikephil.charting.charts.Chart+mHighlightPaint com.github.mikephil.charting.charts.Chart+mHighlightPaint,504,15,4,,"@Override
+    protected void init() {
+        super.init();
+
+        mFillFormatter = new DefaultFillFormatter();
+
+        mCirclePaintInner = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mCirclePaintInner.setStyle(Paint.Style.FILL);
+        mCirclePaintInner.setColor(Color.WHITE);
+
+        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mHighlightPaint.setStyle(Paint.Style.STROKE);
+        mHighlightPaint.setStrokeWidth(2f);
+        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
+    }",False,False,"The function of the method is to initialize various variables and objects used in the class, such as the fill formatter, circle paint, and highlight paint.",True,"The `init()` method initializes various properties and objects used in the code. It sets up a fill formatter, a paint object for drawing circles, and a paint object for highlighting. The highlight paint is set to have a stroke width of 2 pixels and a color of RGB(255, 187, 115)."
+8,calcMinMax(boolean),calc min max fixed values ,Method,,,com.github.mikephil.charting.charts.BarLineChartBase+calcMinMax(boolean) com.github.mikephil.charting.data.ChartData+getYValCount() com.github.mikephil.charting.data.ChartData+getYValCount(),com.github.mikephil.charting.charts.Chart+mDeltaX com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.Chart+mDeltaX,409,13,4,,"@Override
+    protected void calcMinMax(boolean fixedValues) {
+        super.calcMinMax(fixedValues);
+
+        // // if there is only one value in the chart
+        // if (mOriginalData.getYValCount() == 1
+        // || mOriginalData.getYValCount() <= mOriginalData.getDataSetCount()) {
+        // mDeltaX = 1;
+        // }
+
+        if (mDeltaX == 0 && mData.getYValCount() > 0)
+            mDeltaX = 1;
+    }",False,False,"This method calculates the minimum and maximum values for the chart. If there is only one value or the number of values is less than or equal to the number of data sets, the deltaX value is set to 1. If deltaX is 0 and there are values in the data, deltaX is set to 1.",True,"The method `calcMinMax` is overridden to calculate the minimum and maximum values for the chart. It checks if the `mDeltaX` value is zero and if the chart data has at least one value, then sets `mDeltaX` to 1. This ensures that the `mDeltaX` value is always at least 1 to avoid any division by zero errors."
+9,drawHighlights(),draw highlights ,Method,,,"com.github.mikephil.charting.data.ChartData+getDataSetByIndex(int) com.github.mikephil.charting.data.ChartData+getDataSetByIndex(int) com.github.mikephil.charting.utils.Highlight+getDataSetIndex() com.github.mikephil.charting.utils.Highlight+getDataSetIndex() android.graphics.Paint+setColor(int) android.graphics.Paint+setColor(int) com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet+getHighLightColor() com.github.mikephil.charting.data.BarLineScatterCandleRadarDataSet+getHighLightColor() com.github.mikephil.charting.utils.Highlight+getXIndex() com.github.mikephil.charting.utils.Highlight+getXIndex() com.github.mikephil.charting.data.DataSet+getYValForXIndex(int) com.github.mikephil.charting.data.DataSet+getYValForXIndex(int) com.github.mikephil.charting.renderer.Transformer+pointValuesToPixel(float[]) com.github.mikephil.charting.renderer.Transformer+pointValuesToPixel(float[]) android.graphics.Canvas+drawLines(float[],Paint) android.graphics.Canvas+drawLines(float[],Paint)",com.github.mikephil.charting.charts.Chart+mIndicesToHightlight com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.Chart+mIndicesToHightlight com.github.mikephil.charting.charts.Chart+mHighlightPaint com.github.mikephil.charting.charts.Chart+mIndicesToHightlight com.github.mikephil.charting.charts.Chart+mDeltaX com.github.mikephil.charting.charts.Chart+mPhaseX com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.Chart+mYChartMax com.github.mikephil.charting.charts.Chart+mYChartMin com.github.mikephil.charting.charts.Chart+mDeltaX com.github.mikephil.charting.charts.Chart+mTrans com.github.mikephil.charting.charts.Chart+mDrawCanvas com.github.mikephil.charting.charts.Chart+mHighlightPaint,1014,31,4,,"@Override
+    protected void drawHighlights() {
+
+        for (int i = 0; i < mIndicesToHightlight.length; i++) {
+
+            LineDataSet set = mData.getDataSetByIndex(mIndicesToHightlight[i]
+                    .getDataSetIndex());
+
+            if (set == null)
+                continue;
+
+            mHighlightPaint.setColor(set.getHighLightColor());
+
+            int xIndex = mIndicesToHightlight[i].getXIndex(); // get the
+                                                              // x-position
+
+            if (xIndex > mDeltaX * mPhaseX)
+                continue;
+
+            float y = set.getYValForXIndex(xIndex) * mPhaseY; // get the
+                                                              // y-position
+
+            float[] pts = new float[] {
+                    xIndex, mYChartMax, xIndex, mYChartMin, 0, y, mDeltaX, y
+            };
+
+            mTrans.pointValuesToPixel(pts);
+            // draw the highlight lines
+            mDrawCanvas.drawLines(pts, mHighlightPaint);
+        }
+    }",True,True,"This method is used to draw highlight lines on a chart. It loops through a list of indices to highlight, gets the corresponding data set, sets the highlight color, calculates the x and y positions, converts them to pixel values, and finally draws the highlight lines on the canvas.",True,"This code is a method that is responsible for drawing highlight lines on a chart. It iterates through a list of indices, retrieves the corresponding data set, and then calculates the x and y positions for each index. Finally, it draws the highlight lines on a canvas."
+10,CPoint,c point class needed for saving the points when drawing cubic lines author philipp jahoda ,MemberClass,,,"com.github.mikephil.charting.charts.LineChart.CPoint+CPoint(float,float)",com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.LineChart.CPoint+dx com.github.mikephil.charting.charts.LineChart.CPoint+dy com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+y,436,21,4,"/** 
+ * Class needed for saving the points when drawing cubic-lines.
+ * @author Philipp Jahoda
+ */
+","/**
+     * Class needed for saving the points when drawing cubic-lines.
+     * 
+     * @author Philipp Jahoda
+     */
+    protected class CPoint {
+
+        public float x = 0f;
+        public float y = 0f;
+
+        /** x-axis distance */
+        public float dx = 0f;
+
+        /** y-axis distance */
+        public float dy = 0f;
+
+        public CPoint(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+    }",False,True,"/** 
+ * Class needed for saving the points when drawing cubic-lines.
+ * @author Philipp Jahoda
+ */
+",False,"/** 
+ * Class needed for saving the points when drawing cubic-lines.
+ * @author Philipp Jahoda
+ */
+"
+11,drawDataSet(int),draw data set index ,Method,,,"java.util.ArrayList+get(int) com.github.mikephil.charting.data.ChartData+getDataSets() com.github.mikephil.charting.data.ChartData+getDataSets() java.util.ArrayList+get(int) com.github.mikephil.charting.data.DataSet+getYVals() com.github.mikephil.charting.data.DataSet+getYVals() java.util.ArrayList+size() java.util.ArrayList+size() android.graphics.Paint+setStrokeWidth(float) android.graphics.Paint+setStrokeWidth(float) com.github.mikephil.charting.data.LineRadarDataSet+getLineWidth() com.github.mikephil.charting.data.LineRadarDataSet+getLineWidth() android.graphics.Paint+setPathEffect(PathEffect) android.graphics.Paint+setPathEffect(PathEffect) com.github.mikephil.charting.data.LineDataSet+getDashPathEffect() com.github.mikephil.charting.data.LineDataSet+getDashPathEffect() com.github.mikephil.charting.data.LineDataSet+isDrawCubicEnabled() com.github.mikephil.charting.data.LineDataSet+isDrawCubicEnabled() com.github.mikephil.charting.charts.LineChart+drawCubic(LineDataSet,ArrayList<Entry>) com.github.mikephil.charting.charts.LineChart+drawCubic(LineDataSet,ArrayList<Entry>) com.github.mikephil.charting.charts.LineChart+drawLinear(LineDataSet,ArrayList<Entry>) com.github.mikephil.charting.charts.LineChart+drawLinear(LineDataSet,ArrayList<Entry>) android.graphics.Paint+setPathEffect(PathEffect) android.graphics.Paint+setPathEffect(PathEffect)",com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mRenderPaint,645,23,4,,"@Override
+    protected void drawDataSet(int index) {
+
+        LineDataSet dataSet = mData.getDataSets().get(index);
+        ArrayList<Entry> entries = dataSet.getYVals();
+
+        if (entries.size() < 1)
+            return;
+
+        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+        mRenderPaint.setPathEffect(dataSet.getDashPathEffect());
+
+        // if drawing cubic lines is enabled
+        if (dataSet.isDrawCubicEnabled()) {
+            drawCubic(dataSet, entries);
+
+            // draw normal (straight) lines
+        } else {
+            drawLinear(dataSet, entries);
+        }
+
+        mRenderPaint.setPathEffect(null);
+    }",False,False,"The function of this method is to draw a data set on a graph. It retrieves the data set at the specified index, gets the entries for that data set, and then determines whether to draw cubic lines or straight lines based on the data set's settings. Finally, it sets the appropriate path effect and draws the lines.",True,"This code is a method that is responsible for drawing a data set in a line chart. It retrieves the data set and its entries, sets the paint properties, and then either draws cubic lines or straight lines based on the data set's configuration. Finally, it resets the paint properties."
+12,"drawCubic(LineDataSet,ArrayList<Entry>)",draw cubic data set entries ,Method,drawDataSet(int),,"android.graphics.Paint+setColor(int) android.graphics.Paint+setColor(int) com.github.mikephil.charting.data.DataSet+getColor() com.github.mikephil.charting.data.DataSet+getColor() com.github.mikephil.charting.data.LineDataSet+getCubicIntensity() com.github.mikephil.charting.data.LineDataSet+getCubicIntensity() android.graphics.Path+Path() java.util.ArrayList+ArrayList() java.util.ArrayList+add(E) java.util.ArrayList+add(E) com.github.mikephil.charting.charts.LineChart.CPoint+CPoint(float,float) com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getVal() com.github.mikephil.charting.data.Entry+getVal() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+get(int) android.graphics.Path+moveTo(float,float) android.graphics.Path+moveTo(float,float) java.util.ArrayList+get(int) java.util.ArrayList+get(int) android.graphics.Path+cubicTo(float,float,float,float,float,float) android.graphics.Path+cubicTo(float,float,float,float,float,float) com.github.mikephil.charting.data.LineRadarDataSet+isDrawFilledEnabled() com.github.mikephil.charting.data.LineRadarDataSet+isDrawFilledEnabled() com.github.mikephil.charting.charts.LineChart+drawCubicFill(LineDataSet,Path) com.github.mikephil.charting.charts.LineChart+drawCubicFill(LineDataSet,Path) android.graphics.Paint+setStyle(Style) android.graphics.Paint+setStyle(Style) com.github.mikephil.charting.renderer.Transformer+pathValueToPixel(Path) com.github.mikephil.charting.renderer.Transformer+pathValueToPixel(Path) android.graphics.Canvas+drawPath(Path,Paint) android.graphics.Canvas+drawPath(Path,Paint)",com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mPhaseX com.github.mikephil.charting.charts.LineChart.CPoint+dx com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+dy com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.LineChart.CPoint+dx com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+dy com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.LineChart.CPoint+dx com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+dy com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+dx com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.LineChart.CPoint+dy com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+dx com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.LineChart.CPoint+dy com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.LineChart.CPoint+x com.github.mikephil.charting.charts.LineChart.CPoint+y com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.Chart+mRenderPaint android.graphics.Paint.Style+STROKE com.github.mikephil.charting.charts.Chart+mTrans com.github.mikephil.charting.charts.Chart+mDrawCanvas com.github.mikephil.charting.charts.Chart+mRenderPaint,2272,64,4,,"protected void drawCubic(LineDataSet dataSet, ArrayList<Entry> entries)
+    {
+        // get the color that is specified for this position from the
+        // DataSet
+        mRenderPaint.setColor(dataSet.getColor());
+
+        float intensity = dataSet.getCubicIntensity();
+
+        // the path for the cubic-spline
+        Path spline = new Path();
+
+        ArrayList<CPoint> points = new ArrayList<CPoint>();
+
+        for (Entry e : entries) {
+            if (e != null)
+                points.add(new CPoint(e.getXIndex(), e.getVal()));
+        }
+
+        if (points.size() > 1) {
+            for (int j = 0; j < points.size() * mPhaseX; j++) {
+
+                CPoint point = points.get(j);
+
+                if (j == 0) {
+                    CPoint next = points.get(j + 1);
+                    point.dx = ((next.x - point.x) * intensity);
+                    point.dy = ((next.y - point.y) * intensity);
+                }
+                else if (j == points.size() - 1) {
+                    CPoint prev = points.get(j - 1);
+                    point.dx = ((point.x - prev.x) * intensity);
+                    point.dy = ((point.y - prev.y) * intensity);
+                }
+                else {
+                    CPoint next = points.get(j + 1);
+                    CPoint prev = points.get(j - 1);
+                    point.dx = ((next.x - prev.x) * intensity);
+                    point.dy = ((next.y - prev.y) * intensity);
+                }
+
+                // create the cubic-spline path
+                if (j == 0) {
+                    spline.moveTo(point.x, point.y * mPhaseY);
+                }
+                else {
+                    CPoint prev = points.get(j - 1);
+                    spline.cubicTo(prev.x + prev.dx, (prev.y + prev.dy) * mPhaseY, point.x
+                            - point.dx,
+                            (point.y - point.dy) * mPhaseY, point.x, point.y * mPhaseY);
+                }
+            }
+        }
+
+        // if filled is enabled, close the path
+        if (dataSet.isDrawFilledEnabled()) {
+            drawCubicFill(dataSet, spline);
+        } else {
+            mRenderPaint.setStyle(Paint.Style.STROKE);
+        }
+
+        mTrans.pathValueToPixel(spline);
+
+        mDrawCanvas.drawPath(spline, mRenderPaint);
+    }",False,True,"This method is used to draw a cubic spline curve on a canvas. It takes a LineDataSet object and an ArrayList of Entry objects as parameters. It calculates the control points for the cubic spline curve based on the entries, and then draws the curve on the canvas. If the LineDataSet has the drawFilledEnabled property set to true, it also fills the area under the curve.",True,"This code is a method that draws a cubic spline based on a given dataset and a list of entries. It calculates the control points for the spline and creates a path to draw it. If the dataset has the ""drawFilledEnabled"" flag set to true, it also fills the area under the spline."
+13,"drawCubicFill(LineDataSet,Path)",draw cubic fill data set spline ,Method,"drawCubic(LineDataSet,ArrayList<Entry>)",,"com.github.mikephil.charting.utils.FillFormatter+getFillLinePosition(LineDataSet,LineData,float,float) com.github.mikephil.charting.utils.FillFormatter+getFillLinePosition(LineDataSet,LineData,float,float) android.graphics.Path+lineTo(float,float) android.graphics.Path+lineTo(float,float) android.graphics.Path+lineTo(float,float) android.graphics.Path+lineTo(float,float) android.graphics.Path+close() android.graphics.Path+close() android.graphics.Paint+setStyle(Style) android.graphics.Paint+setStyle(Style)",com.github.mikephil.charting.charts.LineChart+mFillFormatter com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.Chart+mYChartMax com.github.mikephil.charting.charts.Chart+mYChartMin com.github.mikephil.charting.charts.Chart+mDeltaX com.github.mikephil.charting.charts.Chart+mPhaseX com.github.mikephil.charting.charts.Chart+mRenderPaint android.graphics.Paint.Style+FILL,358,11,4,,"protected void drawCubicFill(LineDataSet dataSet, Path spline)
+    {
+        float fillMin = mFillFormatter
+                .getFillLinePosition(dataSet, mData, mYChartMax, mYChartMin);
+
+        spline.lineTo((mDeltaX + 1) * mPhaseX, fillMin);
+        spline.lineTo(0, fillMin);
+        spline.close();
+
+        mRenderPaint.setStyle(Paint.Style.FILL);
+    }",False,True,"This method is used to draw a cubic fill for a LineDataSet by calculating the fill position, adding points to the spline, closing the spline, and setting the paint style to fill.",True,"The code defines a protected method called ""drawCubicFill"" that takes a LineDataSet object and a Path object as parameters. It calculates the fill position based on the data set, chart maximum and minimum values, and then draws a cubic fill shape using the calculated position and other points. The rendered shape is filled with a specified paint style."
+14,"drawLinear(LineDataSet,ArrayList<Entry>)",draw linear data set entries ,Method,drawDataSet(int),,"android.graphics.Paint+setStyle(Style) android.graphics.Paint+setStyle(Style) com.github.mikephil.charting.data.DataSet+getColors() com.github.mikephil.charting.data.DataSet+getColors() java.util.ArrayList+size() com.github.mikephil.charting.data.DataSet+getColors() com.github.mikephil.charting.data.DataSet+getColors() java.util.ArrayList+size() com.github.mikephil.charting.renderer.Transformer+generateTransformedValuesLineScatter(ArrayList<? extends Entry>,float) com.github.mikephil.charting.renderer.Transformer+generateTransformedValuesLineScatter(ArrayList<? extends Entry>,float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentRight(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentRight(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentLeft(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentLeft(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentTop(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentTop(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentBottom(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentBottom(float) android.graphics.Paint+setColor(int) android.graphics.Paint+setColor(int) com.github.mikephil.charting.data.DataSet+getColor(int) com.github.mikephil.charting.data.DataSet+getColor(int) android.graphics.Canvas+drawLine(float,float,float,float,Paint) android.graphics.Canvas+drawLine(float,float,float,float,Paint) android.graphics.Paint+setColor(int) android.graphics.Paint+setColor(int) com.github.mikephil.charting.data.DataSet+getColor() com.github.mikephil.charting.data.DataSet+getColor() com.github.mikephil.charting.charts.LineChart+generateLinePath(ArrayList<Entry>) com.github.mikephil.charting.charts.LineChart+generateLinePath(ArrayList<Entry>) com.github.mikephil.charting.renderer.Transformer+pathValueToPixel(Path) com.github.mikephil.charting.renderer.Transformer+pathValueToPixel(Path) android.graphics.Canvas+drawPath(Path,Paint) android.graphics.Canvas+drawPath(Path,Paint) android.graphics.Paint+setPathEffect(PathEffect) android.graphics.Paint+setPathEffect(PathEffect) com.github.mikephil.charting.data.LineRadarDataSet+isDrawFilledEnabled() com.github.mikephil.charting.data.LineRadarDataSet+isDrawFilledEnabled() java.util.ArrayList+size() java.util.ArrayList+size() com.github.mikephil.charting.charts.LineChart+drawLinearFill(LineDataSet,ArrayList<Entry>) com.github.mikephil.charting.charts.LineChart+drawLinearFill(LineDataSet,ArrayList<Entry>)",com.github.mikephil.charting.charts.Chart+mRenderPaint android.graphics.Paint.Style+STROKE com.github.mikephil.charting.charts.Chart+mTrans com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.Chart+mPhaseX com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mDrawCanvas com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mTrans com.github.mikephil.charting.charts.Chart+mDrawCanvas com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mRenderPaint,1596,45,4,,"protected void drawLinear(LineDataSet dataSet, ArrayList<Entry> entries)
+    {
+        mRenderPaint.setStyle(Paint.Style.STROKE);
+
+        // more than 1 color
+        if (dataSet.getColors() == null || dataSet.getColors().size() > 1) {
+
+            float[] valuePoints = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
+
+            for (int j = 0; j < (valuePoints.length - 2) * mPhaseX; j += 2) {
+
+                if (isOffContentRight(valuePoints[j]))
+                    break;
+
+                // make sure the lines don't do shitty things outside
+                // bounds
+                if (j != 0 && isOffContentLeft(valuePoints[j - 1])
+                        && isOffContentTop(valuePoints[j + 1])
+                        && isOffContentBottom(valuePoints[j + 1]))
+                    continue;
+
+                // get the color that is set for this line-segment
+                mRenderPaint.setColor(dataSet.getColor(j / 2));
+
+                mDrawCanvas.drawLine(valuePoints[j], valuePoints[j + 1],
+                        valuePoints[j + 2], valuePoints[j + 3], mRenderPaint);
+            }
+
+        } else { // only one color per dataset
+
+            mRenderPaint.setColor(dataSet.getColor());
+
+            Path line = generateLinePath(entries);
+            mTrans.pathValueToPixel(line);
+
+            mDrawCanvas.drawPath(line, mRenderPaint);
+        }
+
+        mRenderPaint.setPathEffect(null);
+
+        // if drawing filled is enabled
+        if (dataSet.isDrawFilledEnabled() && entries.size() > 0) {
+            drawLinearFill(dataSet, entries);
+        }
+    }",True,True,"This method is used to draw a line chart. It takes a LineDataSet object and an ArrayList of Entry objects as parameters. It sets the style of the paint used for drawing the lines, and then checks if there are multiple colors for the dataset. If there are, it loops through the transformed values and draws lines between them. If there is only one color, it generates a path and draws it. Finally, it checks if drawing filled is enabled and calls another method to draw the filled area under the line.",True,"This code is a method that is used to draw a line chart. It takes a LineDataSet object and an ArrayList of Entry objects as parameters. It first sets the style of the paint used for drawing, then checks if there are multiple colors for the line segments or just one color. If there are multiple colors, it iterates through the value points and draws each line segment with the corresponding color. If there is only one color, it generates a line path and draws it with the specified color. Finally, it checks if drawing filled is enabled and if so, calls another method to draw the filled area under the line."
+15,"drawLinearFill(LineDataSet,ArrayList<Entry>)",draw linear fill data set entries ,Method,"drawLinear(LineDataSet,ArrayList<Entry>)",,"android.graphics.Paint+setStyle(Style) android.graphics.Paint+setStyle(Style) android.graphics.Paint+setColor(int) android.graphics.Paint+setColor(int) com.github.mikephil.charting.data.LineRadarDataSet+getFillColor() com.github.mikephil.charting.data.LineRadarDataSet+getFillColor() android.graphics.Paint+setAlpha(int) android.graphics.Paint+setAlpha(int) com.github.mikephil.charting.data.LineRadarDataSet+getFillAlpha() com.github.mikephil.charting.data.LineRadarDataSet+getFillAlpha() com.github.mikephil.charting.charts.LineChart+generateFilledPath(ArrayList<Entry>,float) com.github.mikephil.charting.charts.LineChart+generateFilledPath(ArrayList<Entry>,float) com.github.mikephil.charting.utils.FillFormatter+getFillLinePosition(LineDataSet,LineData,float,float) com.github.mikephil.charting.utils.FillFormatter+getFillLinePosition(LineDataSet,LineData,float,float) com.github.mikephil.charting.renderer.Transformer+pathValueToPixel(Path) com.github.mikephil.charting.renderer.Transformer+pathValueToPixel(Path) android.graphics.Canvas+drawPath(Path,Paint) android.graphics.Canvas+drawPath(Path,Paint) android.graphics.Paint+setAlpha(int) android.graphics.Paint+setAlpha(int)",com.github.mikephil.charting.charts.Chart+mRenderPaint android.graphics.Paint.Style+FILL com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.LineChart+mFillFormatter com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.Chart+mYChartMax com.github.mikephil.charting.charts.Chart+mYChartMin com.github.mikephil.charting.charts.Chart+mTrans com.github.mikephil.charting.charts.Chart+mDrawCanvas com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mRenderPaint,874,26,4,,"protected void drawLinearFill(LineDataSet dataSet, ArrayList<Entry> entries)
+    {
+        // mDrawCanvas.drawVertices(VertexMode.TRIANGLE_STRIP,
+        // valuePoints.length, valuePoints, 0,
+        // null, 0, null, 0, null, 0, 0, paint);
+
+        mRenderPaint.setStyle(Paint.Style.FILL);
+
+        mRenderPaint.setColor(dataSet.getFillColor());
+        // filled is drawn with less alpha
+        mRenderPaint.setAlpha(dataSet.getFillAlpha());
+
+        // mRenderPaint.setShader(dataSet.getShader());
+
+        Path filled = generateFilledPath(entries,
+                mFillFormatter.getFillLinePosition(dataSet, mData, mYChartMax,
+                        mYChartMin));
+
+        mTrans.pathValueToPixel(filled);
+
+        mDrawCanvas.drawPath(filled, mRenderPaint);
+
+        // restore alpha
+        mRenderPaint.setAlpha(255);
+        // mRenderPaint.setShader(null);
+    }",True,True,"This method is used to draw a linear fill for a LineDataSet. It sets the paint style to fill, sets the fill color and alpha, generates a filled path based on the entries, converts the path values to pixels, and finally draws the filled path on the canvas.",True,"This code is a method called ""drawLinearFill"" that is used to draw a filled area on a chart. It takes a LineDataSet object and an ArrayList of Entry objects as parameters, and uses them to generate a filled path that is then drawn on a canvas."
+16,"generateFilledPath(ArrayList<Entry>,float)",generate filled path entries fill min generates the path that is used for filled drawing param entries return ,Method,"drawLinearFill(LineDataSet,ArrayList<Entry>)",,"android.graphics.Path+Path() android.graphics.Path+moveTo(float,float) android.graphics.Path+moveTo(float,float) com.github.mikephil.charting.data.Entry+getXIndex() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getVal() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.Entry+getVal() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) android.graphics.Path+lineTo(float,float) android.graphics.Path+lineTo(float,float) com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getVal() com.github.mikephil.charting.data.Entry+getVal() android.graphics.Path+lineTo(float,float) android.graphics.Path+lineTo(float,float) com.github.mikephil.charting.data.Entry+getXIndex() java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+size() java.util.ArrayList+size() com.github.mikephil.charting.data.Entry+getXIndex() android.graphics.Path+lineTo(float,float) android.graphics.Path+lineTo(float,float) com.github.mikephil.charting.data.Entry+getXIndex() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.Entry+getXIndex() android.graphics.Path+close() android.graphics.Path+close()",com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.Chart+mPhaseX com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.Chart+mPhaseX,751,25,2,"/** 
+ * Generates the path that is used for filled drawing.
+ * @param entries
+ * @return
+ */
+","/**
+     * Generates the path that is used for filled drawing.
+     * 
+     * @param entries
+     * @return
+     */
+    private Path generateFilledPath(ArrayList<Entry> entries, float fillMin) {
+
+        Path filled = new Path();
+        filled.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * mPhaseY);
+
+        // create a new path
+        for (int x = 1; x < entries.size() * mPhaseX; x++) {
+
+            Entry e = entries.get(x);
+            filled.lineTo(e.getXIndex(), e.getVal() * mPhaseY);
+        }
+
+        // close up
+        filled.lineTo(entries.get((int) ((entries.size() - 1) * mPhaseX)).getXIndex(), fillMin);
+        filled.lineTo(entries.get(0).getXIndex(), fillMin);
+        filled.close();
+
+        return filled;
+    }",True,True,"This method generates a filled path for drawing. It takes an ArrayList of Entry objects and a fillMin value as parameters. It creates a new Path object, moves to the first entry's coordinates, and then creates a line to each subsequent entry's coordinates. Finally, it closes the path and returns it.",False,This code generates a filled path for drawing by iterating through a list of entries and creating a path based on their x and y values. The path is then closed and returned.
+17,generateLinePath(ArrayList<Entry>),generate line path entries generates the path that is used for drawing a single line param entries return ,Method,"drawLinear(LineDataSet,ArrayList<Entry>)",,"android.graphics.Path+Path() android.graphics.Path+moveTo(float,float) android.graphics.Path+moveTo(float,float) com.github.mikephil.charting.data.Entry+getXIndex() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getVal() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.Entry+getVal() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) android.graphics.Path+lineTo(float,float) android.graphics.Path+lineTo(float,float) com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getVal() com.github.mikephil.charting.data.Entry+getVal()",com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.Chart+mPhaseX com.github.mikephil.charting.charts.Chart+mPhaseY,531,20,2,"/** 
+ * Generates the path that is used for drawing a single line.
+ * @param entries
+ * @return
+ */
+","/**
+     * Generates the path that is used for drawing a single line.
+     * 
+     * @param entries
+     * @return
+     */
+    private Path generateLinePath(ArrayList<Entry> entries) {
+
+        Path line = new Path();
+        line.moveTo(entries.get(0).getXIndex(), entries.get(0).getVal() * mPhaseY);
+
+        // create a new path
+        for (int x = 1; x < entries.size() * mPhaseX; x++) {
+
+            Entry e = entries.get(x);
+            line.lineTo(e.getXIndex(), e.getVal() * mPhaseY);
+        }
+
+        return line;
+    }",True,True,This method generates a path for drawing a single line. It takes an ArrayList of Entry objects as input and returns a Path object. The path is created by moving to the starting point and then creating a line to each subsequent point in the ArrayList.,False,"This code generates a path for drawing a single line based on a list of entries. It starts by moving to the first entry's position, then creates a new path by iterating through the remaining entries and adding line segments to the path. The resulting path is returned."
+18,drawValues(),draw values ,Method,,,"com.github.mikephil.charting.data.ChartData+getYValCount() com.github.mikephil.charting.data.ChartData+getYValCount() com.github.mikephil.charting.renderer.Transformer+getScaleX() com.github.mikephil.charting.renderer.Transformer+getScaleX() com.github.mikephil.charting.data.ChartData+getDataSets() com.github.mikephil.charting.data.ChartData+getDataSets() com.github.mikephil.charting.data.ChartData+getDataSetCount() com.github.mikephil.charting.data.ChartData+getDataSetCount() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.LineDataSet+getCircleSize() com.github.mikephil.charting.data.LineDataSet+getCircleSize() com.github.mikephil.charting.data.LineDataSet+isDrawCirclesEnabled() com.github.mikephil.charting.data.LineDataSet+isDrawCirclesEnabled() com.github.mikephil.charting.data.DataSet+getYVals() com.github.mikephil.charting.data.DataSet+getYVals() com.github.mikephil.charting.renderer.Transformer+generateTransformedValuesLineScatter(ArrayList<? extends Entry>,float) com.github.mikephil.charting.renderer.Transformer+generateTransformedValuesLineScatter(ArrayList<? extends Entry>,float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentRight(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentRight(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentLeft(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentLeft(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentTop(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentTop(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentBottom(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentBottom(float) com.github.mikephil.charting.data.Entry+getVal() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.Entry+getVal() android.graphics.Canvas+drawText(String,float,float,Paint) android.graphics.Canvas+drawText(String,float,float,Paint) com.github.mikephil.charting.utils.ValueFormatter+getFormattedValue(float) com.github.mikephil.charting.utils.ValueFormatter+getFormattedValue(float) android.graphics.Canvas+drawText(String,float,float,Paint) android.graphics.Canvas+drawText(String,float,float,Paint) com.github.mikephil.charting.utils.ValueFormatter+getFormattedValue(float) com.github.mikephil.charting.utils.ValueFormatter+getFormattedValue(float)",com.github.mikephil.charting.charts.Chart+mDrawYValues com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.BarLineChartBase+mMaxVisibleCount com.github.mikephil.charting.charts.Chart+mTrans com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.Chart+mTrans com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.Chart+mPhaseX com.github.mikephil.charting.charts.Chart+mDrawUnitInChart com.github.mikephil.charting.charts.Chart+mDrawCanvas com.github.mikephil.charting.charts.Chart+mValueFormatter com.github.mikephil.charting.charts.Chart+mUnit com.github.mikephil.charting.charts.Chart+mValuePaint com.github.mikephil.charting.charts.Chart+mDrawCanvas com.github.mikephil.charting.charts.Chart+mValueFormatter com.github.mikephil.charting.charts.Chart+mValuePaint,1799,49,4,,"@Override
+    protected void drawValues() {
+
+        // if values are drawn
+        if (mDrawYValues && mData.getYValCount() < mMaxVisibleCount * mTrans.getScaleX()) {
+
+            ArrayList<LineDataSet> dataSets = mData.getDataSets();
+
+            for (int i = 0; i < mData.getDataSetCount(); i++) {
+
+                LineDataSet dataSet = dataSets.get(i);
+
+                // make sure the values do not interfear with the circles
+                int valOffset = (int) (dataSet.getCircleSize() * 1.75f);
+
+                if (!dataSet.isDrawCirclesEnabled())
+                    valOffset = valOffset / 2;
+
+                ArrayList<Entry> entries = dataSet.getYVals();
+
+                float[] positions = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
+
+                for (int j = 0; j < positions.length * mPhaseX; j += 2) {
+
+                    if (isOffContentRight(positions[j]))
+                        break;
+
+                    if (isOffContentLeft(positions[j]) || isOffContentTop(positions[j + 1])
+                            || isOffContentBottom(positions[j + 1]))
+                        continue;
+
+                    float val = entries.get(j / 2).getVal();
+
+                    if (mDrawUnitInChart) {
+
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val) + mUnit,
+                                positions[j],
+                                positions[j + 1]
+                                        - valOffset, mValuePaint);
+                    } else {
+
+                        mDrawCanvas.drawText(mValueFormatter.getFormattedValue(val), positions[j],
+                                positions[j + 1] - valOffset,
+                                mValuePaint);
+                    }
+                }
+            }
+        }
+    }",True,True,"This method is used to draw the values on a chart. It checks if the values should be drawn, calculates the positions of the values, and then draws the values on the chart canvas.",True,"This code is a method that is responsible for drawing values on a line chart. It checks if values should be drawn based on certain conditions, and then iterates through the data sets to calculate the positions of the values and draw them on the chart canvas."
+19,drawAdditional(),draw additional draws the circle value indicators ,Method,,,"android.graphics.Paint+setStyle(Style) android.graphics.Paint+setStyle(Style) com.github.mikephil.charting.data.ChartData+getDataSets() com.github.mikephil.charting.data.ChartData+getDataSets() com.github.mikephil.charting.data.ChartData+getDataSetCount() com.github.mikephil.charting.data.ChartData+getDataSetCount() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.LineDataSet+isDrawCirclesEnabled() com.github.mikephil.charting.data.LineDataSet+isDrawCirclesEnabled() com.github.mikephil.charting.data.DataSet+getYVals() com.github.mikephil.charting.data.DataSet+getYVals() com.github.mikephil.charting.renderer.Transformer+generateTransformedValuesLineScatter(ArrayList<? extends Entry>,float) com.github.mikephil.charting.renderer.Transformer+generateTransformedValuesLineScatter(ArrayList<? extends Entry>,float) android.graphics.Paint+setColor(int) android.graphics.Paint+setColor(int) com.github.mikephil.charting.data.LineDataSet+getCircleColor(int) com.github.mikephil.charting.data.LineDataSet+getCircleColor(int) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentRight(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentRight(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentLeft(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentLeft(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentTop(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentTop(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentBottom(float) com.github.mikephil.charting.charts.BarLineChartBase+isOffContentBottom(float) android.graphics.Canvas+drawCircle(float,float,float,Paint) android.graphics.Canvas+drawCircle(float,float,float,Paint) com.github.mikephil.charting.data.LineDataSet+getCircleSize() com.github.mikephil.charting.data.LineDataSet+getCircleSize() android.graphics.Canvas+drawCircle(float,float,float,Paint) android.graphics.Canvas+drawCircle(float,float,float,Paint) com.github.mikephil.charting.data.LineDataSet+getCircleSize() com.github.mikephil.charting.data.LineDataSet+getCircleSize()",com.github.mikephil.charting.charts.Chart+mRenderPaint android.graphics.Paint.Style+FILL com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.Chart+mData com.github.mikephil.charting.charts.Chart+mTrans com.github.mikephil.charting.charts.Chart+mPhaseY com.github.mikephil.charting.charts.Chart+mPhaseX com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mDrawCanvas com.github.mikephil.charting.charts.Chart+mRenderPaint com.github.mikephil.charting.charts.Chart+mDrawCanvas com.github.mikephil.charting.charts.LineChart+mCirclePaintInner,1729,48,4,"/** 
+ * draws the circle value indicators
+ */
+","/**
+     * draws the circle value indicators
+     */
+    @Override
+    protected void drawAdditional() {
+
+        mRenderPaint.setStyle(Paint.Style.FILL);
+
+        ArrayList<LineDataSet> dataSets = mData.getDataSets();
+
+        for (int i = 0; i < mData.getDataSetCount(); i++) {
+
+            LineDataSet dataSet = dataSets.get(i);
+
+            // if drawing circles is enabled for this dataset
+            if (dataSet.isDrawCirclesEnabled()) {
+
+                ArrayList<Entry> entries = dataSet.getYVals();
+
+                float[] positions = mTrans.generateTransformedValuesLineScatter(entries, mPhaseY);
+
+                for (int j = 0; j < positions.length * mPhaseX; j += 2) {
+
+                    // Set the color for the currently drawn value. If the index
+                    // is
+                    // out of bounds, reuse colors.
+                    mRenderPaint.setColor(dataSet.getCircleColor(j / 2));
+
+                    if (isOffContentRight(positions[j]))
+                        break;
+
+                    // make sure the circles don't do shitty things outside
+                    // bounds
+                    if (isOffContentLeft(positions[j]) ||
+                            isOffContentTop(positions[j + 1])
+                            || isOffContentBottom(positions[j + 1]))
+                        continue;
+
+                    mDrawCanvas.drawCircle(positions[j], positions[j + 1], dataSet.getCircleSize(),
+                            mRenderPaint);
+                    mDrawCanvas.drawCircle(positions[j], positions[j + 1],
+                            dataSet.getCircleSize() / 2f,
+                            mCirclePaintInner);
+                }
+            } // else do nothing
+
+        }
+    }",False,False,"This method is used to draw circle value indicators on a chart. It loops through the data sets and checks if drawing circles is enabled for each data set. If it is enabled, it retrieves the entries and transforms their positions. It then sets the color for each value and draws circles at the transformed positions.",True,"This code is a method that is responsible for drawing circle value indicators on a chart. It iterates through the data sets and checks if circles should be drawn for each data set. If circles are enabled, it retrieves the positions of the entries and draws circles at those positions with the specified colors and sizes."
+20,setHighlightLineWidth(float),set highlight line width width set the width of the highlightning lines default 3f param width ,Method,,,,com.github.mikephil.charting.charts.LineChart+mHighlightWidth,191,8,1,"/** 
+ * set the width of the highlightning lines, default 3f
+ * @param width
+ */
+","/**
+     * set the width of the highlightning lines, default 3f
+     * 
+     * @param width
+     */
+    public void setHighlightLineWidth(float width) {
+        mHighlightWidth = width;
+    }",False,False,"This method sets the width of the highlighting lines. The default width is 3f. The method takes a float parameter called ""width"" and assigns it to the variable ""mHighlightWidth"".",True,"This code defines a method called ""setHighlightLineWidth"" that sets the width of the highlighting lines. The method takes a float parameter called ""width"" and assigns it to the variable ""mHighlightWidth"". The default value for the width is 3f."
+21,getHighlightLineWidth(),get highlight line width returns the width of the highlightning line default 3f return ,Method,,,,com.github.mikephil.charting.charts.LineChart+mHighlightWidth,178,8,1,"/** 
+ * returns the width of the highlightning line, default 3f
+ * @return
+ */
+","/**
+     * returns the width of the highlightning line, default 3f
+     * 
+     * @return
+     */
+    public float getHighlightLineWidth() {
+        return mHighlightWidth;
+    }",False,False,"This method returns the width of the highlighting line, which is set to a default value of 3f.",True,"This code defines a method called ""getHighlightLineWidth"" that returns the width of a highlighting line. The default width is set to 3f."
+22,"setPaint(Paint,int)",set paint p which ,Method,,,"com.github.mikephil.charting.charts.BarLineChartBase+setPaint(Paint,int)",com.github.mikephil.charting.charts.Chart+PAINT_CIRCLES_INNER com.github.mikephil.charting.charts.LineChart+mCirclePaintInner,232,10,1,,"@Override
+    public void setPaint(Paint p, int which) {
+        super.setPaint(p, which);
+
+        switch (which) {
+            case PAINT_CIRCLES_INNER:
+                mCirclePaintInner = p;
+                break;
+        }
+    }",False,False,This method is used to set the paint for drawing circles. It takes a Paint object and an integer as parameters. The integer is used to determine which paint to set.,True,"This code is an overridden method that sets a specific paint object based on the given ""which"" parameter. In this case, if the ""which"" parameter is equal to PAINT_CIRCLES_INNER, the method assigns the given paint object to the mCirclePaintInner variable."
+23,getPaint(int),get paint which ,Method,,,com.github.mikephil.charting.charts.BarLineChartBase+getPaint(int),com.github.mikephil.charting.charts.Chart+PAINT_CIRCLES_INNER com.github.mikephil.charting.charts.LineChart+mCirclePaintInner,278,13,1,,"@Override
+    public Paint getPaint(int which) {
+        Paint p = super.getPaint(which);
+        if (p != null)
+            return p;
+
+        switch (which) {
+            case PAINT_CIRCLES_INNER:
+                return mCirclePaintInner;
+        }
+
+        return null;
+    }",False,False,"This method returns a specific paint object based on the input parameter ""which"". If the paint object is not found, it returns null.",True,"This code overrides the `getPaint` method and returns a specific `Paint` object based on the provided `which` parameter. If the `Paint` object is not found, it returns `null`."
+24,setFillFormatter(FillFormatter),set fill formatter formatter sets a custom fill formatter to the chart that handles the position of the filled line for each data set set this to null to use the default logic param formatter ,Method,,,com.github.mikephil.charting.charts.LineChart.DefaultFillFormatter+DefaultFillFormatter(),com.github.mikephil.charting.charts.LineChart+mFillFormatter,391,13,1,"/** 
+ * Sets a custom FillFormatter to the chart that handles the position of the filled-line for each DataSet. Set this to null to use the default logic.
+ * @param formatter
+ */
+","/**
+     * Sets a custom FillFormatter to the chart that handles the position of the
+     * filled-line for each DataSet. Set this to null to use the default logic.
+     * 
+     * @param formatter
+     */
+    public void setFillFormatter(FillFormatter formatter) {
+
+        if (formatter == null)
+            formatter = new DefaultFillFormatter();
+
+        mFillFormatter = formatter;
+    }",False,False,"This method sets a custom FillFormatter for the chart to handle the position of the filled-line for each DataSet. If the formatter is null, it uses the default logic.",True,"The code defines a method called ""setFillFormatter"" which sets a custom FillFormatter for a chart. If the provided formatter is null, it creates a new DefaultFillFormatter object. The method then assigns the provided or created formatter to the mFillFormatter variable."
+25,DefaultFillFormatter,default fill formatter default formatter that calculates the position of the filled line author philipp jahoda ,MemberClass,,,"com.github.mikephil.charting.charts.LineChart.DefaultFillFormatter+getFillLinePosition(LineDataSet,LineData,float,float) com.github.mikephil.charting.data.DataSet+getYMax() com.github.mikephil.charting.data.DataSet+getYMax() com.github.mikephil.charting.data.DataSet+getYMin() com.github.mikephil.charting.data.DataSet+getYMin() com.github.mikephil.charting.data.ChartData+getYMax() com.github.mikephil.charting.data.ChartData+getYMax() com.github.mikephil.charting.data.ChartData+getYMin() com.github.mikephil.charting.data.ChartData+getYMin() com.github.mikephil.charting.data.DataSet+getYMin() com.github.mikephil.charting.data.DataSet+getYMin()",com.github.mikephil.charting.charts.BarLineChartBase+mStartAtZero,1056,40,2,"/** 
+ * Default formatter that calculates the position of the filled line.
+ * @author Philipp Jahoda
+ */
+","/**
+     * Default formatter that calculates the position of the filled line.
+     * 
+     * @author Philipp Jahoda
+     */
+    private class DefaultFillFormatter implements FillFormatter {
+
+        @Override
+        public float getFillLinePosition(LineDataSet dataSet, LineData data,
+                float chartMaxY, float chartMinY) {
+
+            float fillMin = 0f;
+
+            if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
+                fillMin = 0f;
+            } else {
+
+                if (!mStartAtZero) {
+
+                    float max, min;
+
+                    if (data.getYMax() > 0)
+                        max = 0f;
+                    else
+                        max = chartMaxY;
+                    if (data.getYMin() < 0)
+                        min = 0f;
+                    else
+                        min = chartMinY;
+
+                    fillMin = dataSet.getYMin() >= 0 ? min : max;
+                } else {
+                    fillMin = 0f;
+                }
+
+            }
+
+            return fillMin;
+        }
+    }",False,False,"/** 
+ * Default formatter that calculates the position of the filled line.
+ * @author Philipp Jahoda
+ */
+",False,"/** 
+ * Default formatter that calculates the position of the filled line.
+ * @author Philipp Jahoda
+ */
+"
