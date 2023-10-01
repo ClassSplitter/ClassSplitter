@@ -18,7 +18,7 @@ import show_result as sr
 from baseline1 import Baseline1
 from baseline2 import Baseline2
 from baseline3 import Baseline3
-from approach import Cluster, ClusterByStep, ClusterSeparate
+from cluster import Cluster, ClusterByStep, ClusterSeparate
 from god_class import GodClass, DictHandler
 from lda import LDAHandler
 

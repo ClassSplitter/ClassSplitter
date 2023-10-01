@@ -1,4 +1,4 @@
-from approach import Member, Group, GroupInterface
+from cluster import Member, Group, GroupInterface
 from god_class import GodClass
 import pandas as pd
 import matplotlib.pyplot as plt

@@ -140,7 +140,10 @@ class GodClass:
         return int(self.data.at[self.data.iloc[0].name, 'index'])
 
     def get_last_index(self):
-        return int(self.data.at[self.data.iloc[0].name, 'last index'])
+        try:
+            return int(self.data.at[self.data.iloc[0].name, 'last index'])
+        except KeyError:
+            return int(self.data_path.split('/')[-1].split('+')[0])
 
     def get_url(self):
         return str(self.data.at[self.data.iloc[0].name, 'url'])
