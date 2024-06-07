@@ -1,0 +1,1294 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,commit,full text,moved,removed
+1,TASK_MANAGER_LOCATION_INFO,Field,"""","""","""","""",76,1,4848,97,26,,"private static final String TASK_MANAGER_LOCATION_INFO = ""Unknown location"";",False,False
+2,TestScaleType,Field,"""","""","""","""",26,1,4930,99,2,,private enum TestScaleType,False,False
+3,"acknowledgeCheckpoint(CheckpointCoordinator,ExecutionGraph,ExecutionJobVertex,long)",Method,"testSuccessfulCheckpointsArePersistedToCompletedCheckpointStore(List<TestingVertex>)""","""","org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getMaxParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getMaxParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() java.util.List+size() java.util.List+size() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getJobVertexId() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getJobVertexId() java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.messages.checkpoint.AcknowledgeCheckpoint+AcknowledgeCheckpoint(JobID,ExecutionAttemptID,long,CheckpointMetrics,TaskStateSnapshot) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.checkpoint.CheckpointMetrics+CheckpointMetrics() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String)""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TASK_MANAGER_LOCATION_INFO""",1374,27,5056,105,10,,"private static void acknowledgeCheckpoint(
+            CheckpointCoordinator coordinator,
+            ExecutionGraph executionGraph,
+            ExecutionJobVertex jobVertex,
+            long checkpointId)
+            throws Exception {
+        final List<KeyGroupRange> partitions =
+                StateAssignmentOperation.createKeyGroupPartitions(
+                        jobVertex.getMaxParallelism(), jobVertex.getParallelism());
+        for (int partitionIdx = 0; partitionIdx < partitions.size(); partitionIdx++) {
+            TaskStateSnapshot subtaskState =
+                    mockSubtaskState(
+                            jobVertex.getJobVertexId(), partitionIdx, partitions.get(partitionIdx));
+            final AcknowledgeCheckpoint acknowledgeCheckpoint =
+                    new AcknowledgeCheckpoint(
+                            executionGraph.getJobID(),
+                            jobVertex
+                                    .getTaskVertices()[partitionIdx]
+                                    .getCurrentExecutionAttempt()
+                                    .getAttemptId(),
+                            checkpointId,
+                            new CheckpointMetrics(),
+                            subtaskState);
+            coordinator.receiveAcknowledgeMessage(
+                    acknowledgeCheckpoint, TASK_MANAGER_LOCATION_INFO);
+        }
+    }",False,False
+4,createExecutionGraph(List<TestingVertex>),Method,"testSuccessfulCheckpointsArePersistedToCompletedCheckpointStore(List<TestingVertex>) testRestoreLatestCheckpointedState(List<TestingVertex>,Collection<CompletedCheckpoint>)""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getId() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getId() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getParallelism() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getParallelism() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getMaxParallelism() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getMaxParallelism() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build()""","""",510,10,6436,133,10,,"private static ExecutionGraph createExecutionGraph(List<TestingVertex> vertices)
+            throws Exception {
+        final CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder builder =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder();
+        for (TestingVertex vertex : vertices) {
+            builder.addJobVertex(
+                    vertex.getId(), vertex.getParallelism(), vertex.getMaxParallelism());
+        }
+        return builder.build();
+    }",False,False
+5,TestingVertex,MemberClass,"""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+TestingVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getId() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getParallelism() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getMaxParallelism()""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+id org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+parallelism org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+maxParallelism org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+id org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+parallelism org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+maxParallelism org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+id org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+parallelism org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+maxParallelism""",617,24,-1,-1,10,,"private static class TestingVertex {
+
+        private final JobVertexID id;
+        private final int parallelism;
+        private final int maxParallelism;
+
+        private TestingVertex(JobVertexID id, int parallelism, int maxParallelism) {
+            this.id = id;
+            this.parallelism = parallelism;
+            this.maxParallelism = maxParallelism;
+        }
+
+        public JobVertexID getId() {
+            return id;
+        }
+
+        public int getParallelism() {
+            return parallelism;
+        }
+
+        public int getMaxParallelism() {
+            return maxParallelism;
+        }
+    }",False,False
+6,manuallyTriggeredScheduledExecutor,Field,"""","""","""","""",78,1,7575,169,2,,private ManuallyTriggeredScheduledExecutor manuallyTriggeredScheduledExecutor;,False,False
+7,tmpFolder,Field,"""","""","""","""",63,1,7659,171,1,,@Rule public TemporaryFolder tmpFolder = new TemporaryFolder();,False,False
+8,thrown,Field,"""","""","""","""",65,1,7728,173,1,,@Rule public ExpectedException thrown = ExpectedException.none();,False,False
+9,setUp(),Method,"""","""","org.apache.flink.util.concurrent.ManuallyTriggeredScheduledExecutor+ManuallyTriggeredScheduledExecutor()""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor""",143,4,7799,176,1,,"@Before
+    public void setUp() throws Exception {
+        manuallyTriggeredScheduledExecutor = new ManuallyTriggeredScheduledExecutor();
+    }",False,False
+10,testRestoreLatestCheckpointedState(),Method,"""","""","java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+TestingVertex(JobVertexID,int,int) org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+TestingVertex(JobVertexID,int,int) org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoreLatestCheckpointedState(List<TestingVertex>,Collection<CompletedCheckpoint>) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoreLatestCheckpointedState(List<TestingVertex>,Collection<CompletedCheckpoint>) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testSuccessfulCheckpointsArePersistedToCompletedCheckpointStore(List<TestingVertex>) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testSuccessfulCheckpointsArePersistedToCompletedCheckpointStore(List<TestingVertex>)""","""",617,14,7948,185,1,"/** 
+ * Tests that the checkpointed partitioned and non-partitioned state is assigned properly to the {@link Execution} upon recovery.
+ */
+","/**
+     * Tests that the checkpointed partitioned and non-partitioned state is assigned properly to the
+     * {@link Execution} upon recovery.
+     */
+    @Test
+    public void testRestoreLatestCheckpointedState() throws Exception {
+        final List<TestingVertex> vertices =
+                Arrays.asList(
+                        new TestingVertex(new JobVertexID(), 3, 42),
+                        new TestingVertex(new JobVertexID(), 2, 13));
+        testRestoreLatestCheckpointedState(
+                vertices,
+                testSuccessfulCheckpointsArePersistedToCompletedCheckpointStore(vertices));
+    }",False,False
+11,testSuccessfulCheckpointsArePersistedToCompletedCheckpointStore(List<TestingVertex>),Method,"testRestoreLatestCheckpointedState()""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+createExecutionGraph(List<TestingVertex>) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+createExecutionGraph(List<TestingVertex>) org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+EmbeddedCompletedCheckpointStore() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+triggerCheckpoint(boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+triggerCheckpoint(boolean) org.apache.flink.util.concurrent.ManuallyTriggeredScheduledExecutor+triggerAll() org.apache.flink.util.concurrent.ManuallyTriggeredScheduledExecutor+triggerAll() java.util.Objects+requireNonNull(T) java.util.Objects+requireNonNull(T) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getId() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest.TestingVertex+getId() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+acknowledgeCheckpoint(CheckpointCoordinator,ExecutionGraph,ExecutionJobVertex,long) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+acknowledgeCheckpoint(CheckpointCoordinator,ExecutionGraph,ExecutionJobVertex,long) java.util.List+size() java.util.List+size() org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+shutdown(JobStatus,CheckpointsCleaner) org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+shutdown(JobStatus,CheckpointsCleaner) org.apache.flink.runtime.checkpoint.CheckpointsCleaner+CheckpointsCleaner() org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+getAllCheckpoints() org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+getAllCheckpoints()""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor""",1817,39,8571,195,2,,"private Collection<CompletedCheckpoint>
+            testSuccessfulCheckpointsArePersistedToCompletedCheckpointStore(
+                    List<TestingVertex> vertices) throws Exception {
+        final ExecutionGraph executionGraph = createExecutionGraph(vertices);
+        final EmbeddedCompletedCheckpointStore store = new EmbeddedCompletedCheckpointStore();
+
+        // set up the coordinator and validate the initial state
+        final CheckpointCoordinator coordinator =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(executionGraph)
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .setCompletedCheckpointStore(store)
+                        .build();
+
+        // trigger the checkpoint
+        coordinator.triggerCheckpoint(false);
+        manuallyTriggeredScheduledExecutor.triggerAll();
+
+        // we should have a single pending checkpoint
+        assertEquals(1, coordinator.getPendingCheckpoints().size());
+        final long checkpointId =
+                Iterables.getOnlyElement(coordinator.getPendingCheckpoints().keySet());
+
+        // acknowledge checkpoints from all vertex partitions
+        for (TestingVertex vertex : vertices) {
+            final ExecutionJobVertex executionVertex =
+                    Objects.requireNonNull(executionGraph.getJobVertex(vertex.getId()));
+            acknowledgeCheckpoint(coordinator, executionGraph, executionVertex, checkpointId);
+        }
+
+        final List<CompletedCheckpoint> completedCheckpoints =
+                coordinator.getSuccessfulCheckpoints();
+        assertEquals(1, completedCheckpoints.size());
+
+        // shutdown the store
+        store.shutdown(JobStatus.SUSPENDED, new CheckpointsCleaner());
+
+        return store.getAllCheckpoints();
+    }",False,False
+12,"testRestoreLatestCheckpointedState(List<TestingVertex>,Collection<CompletedCheckpoint>)",Method,"testRestoreLatestCheckpointedState()""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+createExecutionGraph(List<TestingVertex>) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+createExecutionGraph(List<TestingVertex>) org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+EmbeddedCompletedCheckpointStore(int,Collection<CompletedCheckpoint>) java.util.Collection+size() java.util.Collection+size() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() java.util.stream.Stream+map(Function) java.util.Collection+stream() java.util.Collection+stream() java.util.stream.Stream+map(Function) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) java.util.stream.Collectors+toSet() java.util.stream.Collectors+toSet() java.util.Map+values() org.apache.flink.runtime.checkpoint.CompletedCheckpoint+getOperatorStates() org.apache.flink.runtime.checkpoint.CompletedCheckpoint+getOperatorStates() java.util.Map+values() org.apache.flink.runtime.checkpoint.OperatorState+getStates() org.apache.flink.runtime.checkpoint.OperatorState+getStates() org.apache.flink.runtime.checkpoint.CompletedCheckpoint+getCheckpointID() org.apache.flink.runtime.checkpoint.CompletedCheckpoint+getCheckpointID()""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor""",1987,40,10394,235,2,,"private void testRestoreLatestCheckpointedState(
+            List<TestingVertex> vertices, Collection<CompletedCheckpoint> completedCheckpoints)
+            throws Exception {
+        final ExecutionGraph executionGraph = createExecutionGraph(vertices);
+        final EmbeddedCompletedCheckpointStore store =
+                new EmbeddedCompletedCheckpointStore(
+                        completedCheckpoints.size(), completedCheckpoints);
+
+        // set up the coordinator and validate the initial state
+        final CheckpointCoordinator coordinator =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(executionGraph)
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .setCompletedCheckpointStore(store)
+                        .build();
+
+        final Set<ExecutionJobVertex> executionVertices =
+                vertices.stream()
+                        .map(TestingVertex::getId)
+                        .map(executionGraph::getJobVertex)
+                        .collect(Collectors.toSet());
+        assertTrue(coordinator.restoreLatestCheckpointedStateToAll(executionVertices, false));
+
+        // validate that all shared states are registered again after the recovery.
+        for (CompletedCheckpoint completedCheckpoint : completedCheckpoints) {
+            for (OperatorState taskState : completedCheckpoint.getOperatorStates().values()) {
+                for (OperatorSubtaskState subtaskState : taskState.getStates()) {
+                    verify(subtaskState, times(2))
+                            .registerSharedStates(
+                                    any(SharedStateRegistry.class),
+                                    eq(completedCheckpoint.getCheckpointID()));
+                }
+            }
+        }
+
+        // verify the restored state
+        for (ExecutionJobVertex executionVertex : executionVertices) {
+            verifyStateRestore(executionVertex);
+        }
+    }",False,False
+13,testRestoreLatestCheckpointedStateScaleIn(),Method,"""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoreLatestCheckpointedStateWithChangingParallelism(boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoreLatestCheckpointedStateWithChangingParallelism(boolean)""","""",164,4,12387,277,1,,"@Test
+    public void testRestoreLatestCheckpointedStateScaleIn() throws Exception {
+        testRestoreLatestCheckpointedStateWithChangingParallelism(false);
+    }",False,False
+14,testRestoreLatestCheckpointedStateScaleOut(),Method,"""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoreLatestCheckpointedStateWithChangingParallelism(boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoreLatestCheckpointedStateWithChangingParallelism(boolean)""","""",164,4,12557,282,1,,"@Test
+    public void testRestoreLatestCheckpointedStateScaleOut() throws Exception {
+        testRestoreLatestCheckpointedStateWithChangingParallelism(true);
+    }",False,False
+15,testRestoreLatestCheckpointedStateWithChangingParallelism(boolean),Method,"testRestoreLatestCheckpointedStateScaleIn() testRestoreLatestCheckpointedStateScaleOut()""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+EmbeddedCompletedCheckpointStore() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+triggerCheckpoint(boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+triggerCheckpoint(boolean) org.apache.flink.util.concurrent.ManuallyTriggeredScheduledExecutor+triggerAll() org.apache.flink.util.concurrent.ManuallyTriggeredScheduledExecutor+triggerAll() org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setInputChannelState(StateObjectCollection<InputChannelStateHandle>) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setInputChannelState(StateObjectCollection<InputChannelStateHandle>) org.apache.flink.runtime.checkpoint.StateObjectCollection+singleton(T) org.apache.flink.runtime.checkpoint.StateObjectCollection+singleton(T) java.util.Random+Random() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+TaskStateSnapshot() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.messages.checkpoint.AcknowledgeCheckpoint+AcknowledgeCheckpoint(JobID,ExecutionAttemptID,long,CheckpointMetrics,TaskStateSnapshot) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.checkpoint.CheckpointMetrics+CheckpointMetrics() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+build() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+build() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+TaskStateSnapshot() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.messages.checkpoint.AcknowledgeCheckpoint+AcknowledgeCheckpoint(JobID,ExecutionAttemptID,long,CheckpointMetrics,TaskStateSnapshot) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.checkpoint.CheckpointMetrics+CheckpointMetrics() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) java.util.List+size() java.util.List+size() org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() java.util.Set+add(E) java.util.Set+add(E) java.util.Set+add(E) java.util.Set+add(E) org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getOperatorIDs() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getOperatorIDs() java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getRestoreCheckpointId() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getRestoreCheckpointId() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedKeyedState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedKeyedState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawKeyedState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawKeyedState() java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E)""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TASK_MANAGER_LOCATION_INFO org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TASK_MANAGER_LOCATION_INFO org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor""",10858,205,12727,290,2,"/** 
+ * Tests the checkpoint restoration with changing parallelism of job vertex with partitioned state.
+ */
+","/**
+     * Tests the checkpoint restoration with changing parallelism of job vertex with partitioned
+     * state.
+     */
+    private void testRestoreLatestCheckpointedStateWithChangingParallelism(boolean scaleOut)
+            throws Exception {
+        final JobVertexID jobVertexID1 = new JobVertexID();
+        final JobVertexID jobVertexID2 = new JobVertexID();
+        int parallelism1 = 3;
+        int parallelism2 = scaleOut ? 2 : 13;
+
+        int maxParallelism1 = 42;
+        int maxParallelism2 = 13;
+
+        int newParallelism2 = scaleOut ? 13 : 2;
+
+        CompletedCheckpointStore completedCheckpointStore = new EmbeddedCompletedCheckpointStore();
+
+        final ExecutionGraph graph =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder()
+                        .addJobVertex(jobVertexID1, parallelism1, maxParallelism1)
+                        .addJobVertex(jobVertexID2, parallelism2, maxParallelism2)
+                        .build();
+
+        final ExecutionJobVertex jobVertex1 = graph.getJobVertex(jobVertexID1);
+        final ExecutionJobVertex jobVertex2 = graph.getJobVertex(jobVertexID2);
+
+        // set up the coordinator and validate the initial state
+        CheckpointCoordinator coord =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(graph)
+                        .setCompletedCheckpointStore(completedCheckpointStore)
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .build();
+
+        // trigger the checkpoint
+        coord.triggerCheckpoint(false);
+        manuallyTriggeredScheduledExecutor.triggerAll();
+
+        assertEquals(1, coord.getPendingCheckpoints().size());
+        long checkpointId = Iterables.getOnlyElement(coord.getPendingCheckpoints().keySet());
+
+        List<KeyGroupRange> keyGroupPartitions1 =
+                StateAssignmentOperation.createKeyGroupPartitions(maxParallelism1, parallelism1);
+        List<KeyGroupRange> keyGroupPartitions2 =
+                StateAssignmentOperation.createKeyGroupPartitions(maxParallelism2, parallelism2);
+
+        // vertex 1
+        for (int index = 0; index < jobVertex1.getParallelism(); index++) {
+            OperatorStateHandle opStateBackend =
+                    generatePartitionableStateHandle(jobVertexID1, index, 2, 8, false);
+            KeyGroupsStateHandle keyedStateBackend =
+                    generateKeyGroupState(jobVertexID1, keyGroupPartitions1.get(index), false);
+            KeyGroupsStateHandle keyedStateRaw =
+                    generateKeyGroupState(jobVertexID1, keyGroupPartitions1.get(index), true);
+            OperatorSubtaskState operatorSubtaskState =
+                    OperatorSubtaskState.builder()
+                            .setManagedOperatorState(opStateBackend)
+                            .setManagedKeyedState(keyedStateBackend)
+                            .setRawKeyedState(keyedStateRaw)
+                            .setInputChannelState(
+                                    StateObjectCollection.singleton(
+                                            createNewInputChannelStateHandle(3, new Random())))
+                            .build();
+            TaskStateSnapshot taskOperatorSubtaskStates = new TaskStateSnapshot();
+            taskOperatorSubtaskStates.putSubtaskStateByOperatorID(
+                    OperatorID.fromJobVertexID(jobVertexID1), operatorSubtaskState);
+
+            AcknowledgeCheckpoint acknowledgeCheckpoint =
+                    new AcknowledgeCheckpoint(
+                            graph.getJobID(),
+                            jobVertex1
+                                    .getTaskVertices()[index]
+                                    .getCurrentExecutionAttempt()
+                                    .getAttemptId(),
+                            checkpointId,
+                            new CheckpointMetrics(),
+                            taskOperatorSubtaskStates);
+
+            coord.receiveAcknowledgeMessage(acknowledgeCheckpoint, TASK_MANAGER_LOCATION_INFO);
+        }
+
+        // vertex 2
+        final List<ChainedStateHandle<OperatorStateHandle>> expectedOpStatesBackend =
+                new ArrayList<>(jobVertex2.getParallelism());
+        final List<ChainedStateHandle<OperatorStateHandle>> expectedOpStatesRaw =
+                new ArrayList<>(jobVertex2.getParallelism());
+        for (int index = 0; index < jobVertex2.getParallelism(); index++) {
+            KeyGroupsStateHandle keyedStateBackend =
+                    generateKeyGroupState(jobVertexID2, keyGroupPartitions2.get(index), false);
+            KeyGroupsStateHandle keyedStateRaw =
+                    generateKeyGroupState(jobVertexID2, keyGroupPartitions2.get(index), true);
+            OperatorStateHandle opStateBackend =
+                    generatePartitionableStateHandle(jobVertexID2, index, 2, 8, false);
+            OperatorStateHandle opStateRaw =
+                    generatePartitionableStateHandle(jobVertexID2, index, 2, 8, true);
+            expectedOpStatesBackend.add(new ChainedStateHandle<>(singletonList(opStateBackend)));
+            expectedOpStatesRaw.add(new ChainedStateHandle<>(singletonList(opStateRaw)));
+
+            OperatorSubtaskState operatorSubtaskState =
+                    OperatorSubtaskState.builder()
+                            .setManagedOperatorState(opStateBackend)
+                            .setRawOperatorState(opStateRaw)
+                            .setManagedKeyedState(keyedStateBackend)
+                            .setRawKeyedState(keyedStateRaw)
+                            .build();
+            TaskStateSnapshot taskOperatorSubtaskStates = new TaskStateSnapshot();
+            taskOperatorSubtaskStates.putSubtaskStateByOperatorID(
+                    OperatorID.fromJobVertexID(jobVertexID2), operatorSubtaskState);
+
+            AcknowledgeCheckpoint acknowledgeCheckpoint =
+                    new AcknowledgeCheckpoint(
+                            graph.getJobID(),
+                            jobVertex2
+                                    .getTaskVertices()[index]
+                                    .getCurrentExecutionAttempt()
+                                    .getAttemptId(),
+                            checkpointId,
+                            new CheckpointMetrics(),
+                            taskOperatorSubtaskStates);
+
+            coord.receiveAcknowledgeMessage(acknowledgeCheckpoint, TASK_MANAGER_LOCATION_INFO);
+        }
+
+        List<CompletedCheckpoint> completedCheckpoints = coord.getSuccessfulCheckpoints();
+
+        assertEquals(1, completedCheckpoints.size());
+
+        List<KeyGroupRange> newKeyGroupPartitions2 =
+                StateAssignmentOperation.createKeyGroupPartitions(maxParallelism2, newParallelism2);
+
+        // rescale vertex 2
+        final ExecutionGraph newGraph =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder()
+                        .addJobVertex(jobVertexID1, parallelism1, maxParallelism1)
+                        .addJobVertex(jobVertexID2, newParallelism2, maxParallelism2)
+                        .build();
+
+        final ExecutionJobVertex newJobVertex1 = newGraph.getJobVertex(jobVertexID1);
+        final ExecutionJobVertex newJobVertex2 = newGraph.getJobVertex(jobVertexID2);
+
+        // set up the coordinator and validate the initial state
+        CheckpointCoordinator newCoord =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(newGraph)
+                        .setCompletedCheckpointStore(completedCheckpointStore)
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .build();
+
+        Set<ExecutionJobVertex> tasks = new HashSet<>();
+        tasks.add(newJobVertex1);
+        tasks.add(newJobVertex2);
+        assertTrue(newCoord.restoreLatestCheckpointedStateToAll(tasks, false));
+
+        // verify the restored state
+        verifyStateRestore(jobVertexID1, newJobVertex1, keyGroupPartitions1);
+        List<List<Collection<OperatorStateHandle>>> actualOpStatesBackend =
+                new ArrayList<>(newJobVertex2.getParallelism());
+        List<List<Collection<OperatorStateHandle>>> actualOpStatesRaw =
+                new ArrayList<>(newJobVertex2.getParallelism());
+        for (int i = 0; i < newJobVertex2.getParallelism(); i++) {
+
+            List<OperatorIDPair> operatorIDs = newJobVertex2.getOperatorIDs();
+
+            KeyGroupsStateHandle originalKeyedStateBackend =
+                    generateKeyGroupState(jobVertexID2, newKeyGroupPartitions2.get(i), false);
+            KeyGroupsStateHandle originalKeyedStateRaw =
+                    generateKeyGroupState(jobVertexID2, newKeyGroupPartitions2.get(i), true);
+
+            JobManagerTaskRestore taskRestore =
+                    newJobVertex2
+                            .getTaskVertices()[i]
+                            .getCurrentExecutionAttempt()
+                            .getTaskRestore();
+            Assert.assertEquals(1L, taskRestore.getRestoreCheckpointId());
+            TaskStateSnapshot taskStateHandles = taskRestore.getTaskStateSnapshot();
+
+            final int headOpIndex = operatorIDs.size() - 1;
+            List<Collection<OperatorStateHandle>> allParallelManagedOpStates =
+                    new ArrayList<>(operatorIDs.size());
+            List<Collection<OperatorStateHandle>> allParallelRawOpStates =
+                    new ArrayList<>(operatorIDs.size());
+
+            for (int idx = 0; idx < operatorIDs.size(); ++idx) {
+                OperatorID operatorID = operatorIDs.get(idx).getGeneratedOperatorID();
+                OperatorSubtaskState opState =
+                        taskStateHandles.getSubtaskStateByOperatorID(operatorID);
+                Collection<OperatorStateHandle> opStateBackend = opState.getManagedOperatorState();
+                Collection<OperatorStateHandle> opStateRaw = opState.getRawOperatorState();
+                allParallelManagedOpStates.add(opStateBackend);
+                allParallelRawOpStates.add(opStateRaw);
+                if (idx == headOpIndex) {
+                    Collection<KeyedStateHandle> keyedStateBackend = opState.getManagedKeyedState();
+                    Collection<KeyedStateHandle> keyGroupStateRaw = opState.getRawKeyedState();
+                    compareKeyedState(singletonList(originalKeyedStateBackend), keyedStateBackend);
+                    compareKeyedState(singletonList(originalKeyedStateRaw), keyGroupStateRaw);
+                }
+            }
+            actualOpStatesBackend.add(allParallelManagedOpStates);
+            actualOpStatesRaw.add(allParallelRawOpStates);
+        }
+
+        comparePartitionableState(expectedOpStatesBackend, actualOpStatesBackend);
+        comparePartitionableState(expectedOpStatesRaw, actualOpStatesRaw);
+    }",False,False
+16,testRestoreLatestCheckpointFailureWhenMaxParallelismChanges(),Method,"""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+EmbeddedCompletedCheckpointStore() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+triggerCheckpoint(boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+triggerCheckpoint(boolean) org.apache.flink.util.concurrent.ManuallyTriggeredScheduledExecutor+triggerAll() org.apache.flink.util.concurrent.ManuallyTriggeredScheduledExecutor+triggerAll() org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+build() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+build() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+TaskStateSnapshot() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.messages.checkpoint.AcknowledgeCheckpoint+AcknowledgeCheckpoint(JobID,ExecutionAttemptID,long,CheckpointMetrics,TaskStateSnapshot) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.checkpoint.CheckpointMetrics+CheckpointMetrics() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+build() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(KeyedStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+build() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+TaskStateSnapshot() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.messages.checkpoint.AcknowledgeCheckpoint+AcknowledgeCheckpoint(JobID,ExecutionAttemptID,long,CheckpointMetrics,TaskStateSnapshot) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.checkpoint.CheckpointMetrics+CheckpointMetrics() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) java.util.List+size() java.util.List+size() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() java.util.Set+add(E) java.util.Set+add(E) java.util.Set+add(E) java.util.Set+add(E)""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TASK_MANAGER_LOCATION_INFO org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TASK_MANAGER_LOCATION_INFO org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor""",5980,120,23591,499,1,"/** 
+ * Tests that the checkpoint restoration fails if the max parallelism of the job vertices has changed.
+ * @throws Exception
+ */
+","/**
+     * Tests that the checkpoint restoration fails if the max parallelism of the job vertices has
+     * changed.
+     *
+     * @throws Exception
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testRestoreLatestCheckpointFailureWhenMaxParallelismChanges() throws Exception {
+        final JobVertexID jobVertexID1 = new JobVertexID();
+        final JobVertexID jobVertexID2 = new JobVertexID();
+        int parallelism1 = 3;
+        int parallelism2 = 2;
+        int maxParallelism1 = 42;
+        int maxParallelism2 = 13;
+
+        CompletedCheckpointStore completedCheckpointStore = new EmbeddedCompletedCheckpointStore();
+
+        ExecutionGraph graph =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder()
+                        .addJobVertex(jobVertexID1, parallelism1, maxParallelism1)
+                        .addJobVertex(jobVertexID2, parallelism2, maxParallelism2)
+                        .build();
+        ExecutionJobVertex jobVertex1 = graph.getJobVertex(jobVertexID1);
+        ExecutionJobVertex jobVertex2 = graph.getJobVertex(jobVertexID2);
+
+        // set up the coordinator and validate the initial state
+        CheckpointCoordinator coord =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(graph)
+                        .setCompletedCheckpointStore(completedCheckpointStore)
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .build();
+
+        // trigger the checkpoint
+        coord.triggerCheckpoint(false);
+        manuallyTriggeredScheduledExecutor.triggerAll();
+
+        assertEquals(1, coord.getPendingCheckpoints().size());
+        long checkpointId = Iterables.getOnlyElement(coord.getPendingCheckpoints().keySet());
+
+        List<KeyGroupRange> keyGroupPartitions1 =
+                StateAssignmentOperation.createKeyGroupPartitions(maxParallelism1, parallelism1);
+        List<KeyGroupRange> keyGroupPartitions2 =
+                StateAssignmentOperation.createKeyGroupPartitions(maxParallelism2, parallelism2);
+
+        for (int index = 0; index < jobVertex1.getParallelism(); index++) {
+            KeyGroupsStateHandle keyGroupState =
+                    generateKeyGroupState(jobVertexID1, keyGroupPartitions1.get(index), false);
+            OperatorSubtaskState operatorSubtaskState =
+                    OperatorSubtaskState.builder().setManagedKeyedState(keyGroupState).build();
+            TaskStateSnapshot taskOperatorSubtaskStates = new TaskStateSnapshot();
+            taskOperatorSubtaskStates.putSubtaskStateByOperatorID(
+                    OperatorID.fromJobVertexID(jobVertexID1), operatorSubtaskState);
+            AcknowledgeCheckpoint acknowledgeCheckpoint =
+                    new AcknowledgeCheckpoint(
+                            graph.getJobID(),
+                            jobVertex1
+                                    .getTaskVertices()[index]
+                                    .getCurrentExecutionAttempt()
+                                    .getAttemptId(),
+                            checkpointId,
+                            new CheckpointMetrics(),
+                            taskOperatorSubtaskStates);
+
+            coord.receiveAcknowledgeMessage(acknowledgeCheckpoint, TASK_MANAGER_LOCATION_INFO);
+        }
+
+        for (int index = 0; index < jobVertex2.getParallelism(); index++) {
+            KeyGroupsStateHandle keyGroupState =
+                    generateKeyGroupState(jobVertexID2, keyGroupPartitions2.get(index), false);
+            OperatorSubtaskState operatorSubtaskState =
+                    OperatorSubtaskState.builder().setManagedKeyedState(keyGroupState).build();
+            TaskStateSnapshot taskOperatorSubtaskStates = new TaskStateSnapshot();
+            taskOperatorSubtaskStates.putSubtaskStateByOperatorID(
+                    OperatorID.fromJobVertexID(jobVertexID2), operatorSubtaskState);
+            AcknowledgeCheckpoint acknowledgeCheckpoint =
+                    new AcknowledgeCheckpoint(
+                            graph.getJobID(),
+                            jobVertex2
+                                    .getTaskVertices()[index]
+                                    .getCurrentExecutionAttempt()
+                                    .getAttemptId(),
+                            checkpointId,
+                            new CheckpointMetrics(),
+                            taskOperatorSubtaskStates);
+
+            coord.receiveAcknowledgeMessage(acknowledgeCheckpoint, TASK_MANAGER_LOCATION_INFO);
+        }
+
+        List<CompletedCheckpoint> completedCheckpoints = coord.getSuccessfulCheckpoints();
+
+        assertEquals(1, completedCheckpoints.size());
+
+        int newMaxParallelism1 = 20;
+        int newMaxParallelism2 = 42;
+
+        ExecutionGraph newGraph =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder()
+                        .addJobVertex(jobVertexID1, parallelism1, newMaxParallelism1)
+                        .addJobVertex(jobVertexID2, parallelism2, newMaxParallelism2)
+                        .build();
+
+        ExecutionJobVertex newJobVertex1 = newGraph.getJobVertex(jobVertexID1);
+        ExecutionJobVertex newJobVertex2 = newGraph.getJobVertex(jobVertexID2);
+
+        // set up the coordinator and validate the initial state
+        CheckpointCoordinator newCoord =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(newGraph)
+                        .setCompletedCheckpointStore(completedCheckpointStore)
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .build();
+
+        Set<ExecutionJobVertex> tasks = new HashSet<>();
+        tasks.add(newJobVertex1);
+        tasks.add(newJobVertex2);
+        assertTrue(newCoord.restoreLatestCheckpointedStateToAll(tasks, false));
+
+        fail(""The restoration should have failed because the max parallelism changed."");
+    }",False,False
+17,testStateRecoveryWhenTopologyChangeOut(),Method,"""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testStateRecoveryWithTopologyChange(TestScaleType) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testStateRecoveryWithTopologyChange(TestScaleType)""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TestScaleType""",168,4,29577,614,1,,"@Test
+    public void testStateRecoveryWhenTopologyChangeOut() throws Exception {
+        testStateRecoveryWithTopologyChange(TestScaleType.INCREASE_PARALLELISM);
+    }",False,False
+18,testStateRecoveryWhenTopologyChangeIn(),Method,"""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testStateRecoveryWithTopologyChange(TestScaleType) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testStateRecoveryWithTopologyChange(TestScaleType)""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TestScaleType""",167,4,29751,619,1,,"@Test
+    public void testStateRecoveryWhenTopologyChangeIn() throws Exception {
+        testStateRecoveryWithTopologyChange(TestScaleType.DECREASE_PARALLELISM);
+    }",False,False
+19,testStateRecoveryWhenTopologyChange(),Method,"""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testStateRecoveryWithTopologyChange(TestScaleType) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testStateRecoveryWithTopologyChange(TestScaleType)""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TestScaleType""",161,4,29924,624,1,,"@Test
+    public void testStateRecoveryWhenTopologyChange() throws Exception {
+        testStateRecoveryWithTopologyChange(TestScaleType.SAME_PARALLELISM);
+    }",False,False
+20,generateIDPair(),Method,"testStateRecoveryWithTopologyChange(TestScaleType) testStateRecoveryWithTopologyChange(TestScaleType) testStateRecoveryWithTopologyChange(TestScaleType) testStateRecoveryWithTopologyChange(TestScaleType) testStateRecoveryWithTopologyChange(TestScaleType) testStateRecoveryWithTopologyChange(TestScaleType)""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID)""","""",251,5,30091,628,10,,"private static Tuple2<JobVertexID, OperatorID> generateIDPair() {
+        JobVertexID jobVertexID = new JobVertexID();
+        OperatorID operatorID = OperatorID.fromJobVertexID(jobVertexID);
+        return new Tuple2<>(jobVertexID, operatorID);
+    }",False,False
+21,testStateRecoveryWithTopologyChange(TestScaleType),Method,"testStateRecoveryWhenTopologyChangeOut() testStateRecoveryWhenTopologyChangeIn() testStateRecoveryWhenTopologyChange()""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.apache.flink.runtime.checkpoint.OperatorState+OperatorState(OperatorID,int,int) java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.flink.runtime.checkpoint.OperatorState+getParallelism() org.apache.flink.runtime.checkpoint.OperatorState+getParallelism() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(StateObjectCollection<OperatorStateHandle>) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(StateObjectCollection<OperatorStateHandle>) org.apache.flink.runtime.checkpoint.OperatorState+putState(int,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.OperatorState+putState(int,OperatorSubtaskState) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.apache.flink.runtime.checkpoint.OperatorState+OperatorState(OperatorID,int,int) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) org.apache.flink.runtime.checkpoint.OperatorState+getParallelism() org.apache.flink.runtime.checkpoint.OperatorState+getParallelism() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.util.AbstractID+equals(Object) org.apache.flink.util.AbstractID+equals(Object) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(StateObjectCollection<KeyedStateHandle>) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedKeyedState(StateObjectCollection<KeyedStateHandle>) java.util.List+get(int) java.util.List+get(int) org.apache.flink.util.AbstractID+equals(Object) org.apache.flink.util.AbstractID+equals(Object) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawKeyedState(StateObjectCollection<KeyedStateHandle>) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawKeyedState(StateObjectCollection<KeyedStateHandle>) java.util.List+get(int) java.util.List+get(int) java.util.List+add(E) java.util.List+add(E) org.apache.flink.runtime.state.ChainedStateHandle+wrapSingleHandle(T) org.apache.flink.runtime.state.ChainedStateHandle+wrapSingleHandle(T) java.util.List+add(E) java.util.List+add(E) org.apache.flink.runtime.state.ChainedStateHandle+wrapSingleHandle(T) org.apache.flink.runtime.state.ChainedStateHandle+wrapSingleHandle(T) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+build() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setRawOperatorState(OperatorStateHandle) org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+build() org.apache.flink.runtime.checkpoint.OperatorState+putState(int,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.OperatorState+putState(int,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+generateIDPair() org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int,List<OperatorIDPair>,boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int,List<OperatorIDPair>,boolean) java.util.stream.Stream+of(T) java.util.stream.Stream+of(T) org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) java.util.stream.Collectors+toList() java.util.stream.Collectors+toList() java.util.stream.Stream+of(T) java.util.stream.Stream+of(T) org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) java.util.stream.Collectors+toList() java.util.stream.Collectors+toList() org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) java.util.Set+add(E) java.util.Set+add(E) java.util.Set+add(E) java.util.Set+add(E) org.apache.flink.runtime.checkpoint.CompletedCheckpoint+CompletedCheckpoint(JobID,long,long,long,Map<OperatorID,OperatorState>,Collection<MasterState>,CheckpointProperties,CompletedCheckpointStorageLocation) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() org.apache.flink.runtime.checkpoint.CheckpointProperties+forCheckpoint(CheckpointRetentionPolicy) org.apache.flink.runtime.checkpoint.CheckpointProperties+forCheckpoint(CheckpointRetentionPolicy) org.apache.flink.runtime.state.testutils.TestCompletedCheckpointStorageLocation+TestCompletedCheckpointStorageLocation() org.apache.flink.runtime.state.SharedStateRegistryFactory+create(Executor,Collection<CompletedCheckpoint>) org.apache.flink.runtime.state.SharedStateRegistryFactory+create(Executor,Collection<CompletedCheckpoint>) org.apache.flink.util.concurrent.Executors+directExecutor() org.apache.flink.util.concurrent.Executors+directExecutor() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+storeFor(SharedStateRegistry,Runnable,CompletedCheckpoint[]) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+storeFor(SharedStateRegistry,Runnable,CompletedCheckpoint[]) org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getOperatorIDs() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getOperatorIDs() org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getRestoreCheckpointId() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getRestoreCheckpointId() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.List+get(int) java.util.List+get(int) java.util.List+size() java.util.List+size() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedKeyedState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedKeyedState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawKeyedState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawKeyedState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() java.util.Collection+size() java.util.Collection+size() org.apache.flink.runtime.testutils.CommonTestUtils+isStreamContentEqual(InputStream,InputStream) org.apache.flink.runtime.testutils.CommonTestUtils+isStreamContentEqual(InputStream,InputStream) org.apache.flink.runtime.state.OperatorStateHandle+openInputStream() org.apache.flink.runtime.state.OperatorStateHandle+openInputStream() java.util.Iterator+next() java.util.Collection+iterator() java.util.Collection+iterator() java.util.Iterator+next() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() java.util.Collection+size() java.util.Collection+size() org.apache.flink.runtime.testutils.CommonTestUtils+isStreamContentEqual(InputStream,InputStream) org.apache.flink.runtime.testutils.CommonTestUtils+isStreamContentEqual(InputStream,InputStream) org.apache.flink.runtime.state.OperatorStateHandle+openInputStream() org.apache.flink.runtime.state.OperatorStateHandle+openInputStream() java.util.Iterator+next() java.util.Collection+iterator() java.util.Collection+iterator() java.util.Iterator+next() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() java.util.Collection+size() java.util.Collection+size() org.apache.flink.runtime.testutils.CommonTestUtils+isStreamContentEqual(InputStream,InputStream) org.apache.flink.runtime.testutils.CommonTestUtils+isStreamContentEqual(InputStream,InputStream) org.apache.flink.runtime.state.OperatorStateHandle+openInputStream() org.apache.flink.runtime.state.OperatorStateHandle+openInputStream() java.util.Iterator+next() java.util.Collection+iterator() java.util.Collection+iterator() java.util.Iterator+next() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() java.util.Collection+size() java.util.Collection+size() org.apache.flink.runtime.testutils.CommonTestUtils+isStreamContentEqual(InputStream,InputStream) org.apache.flink.runtime.testutils.CommonTestUtils+isStreamContentEqual(InputStream,InputStream) org.apache.flink.runtime.state.OperatorStateHandle+openInputStream() org.apache.flink.runtime.state.OperatorStateHandle+openInputStream() java.util.Iterator+next() java.util.Collection+iterator() java.util.Collection+iterator() java.util.Iterator+next() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getOperatorIDs() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getOperatorIDs() org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getRestoreCheckpointId() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getRestoreCheckpointId() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.List+add(E) java.util.List+add(E) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() java.util.List+add(E) java.util.List+add(E) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.List+get(int) java.util.List+get(int) java.util.List+size() java.util.List+size() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedKeyedState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedKeyedState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawKeyedState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawKeyedState() java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int)""","org.apache.flink.api.java.tuple.Tuple2+f1 org.apache.flink.api.java.tuple.Tuple2+f1 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f1 org.apache.flink.api.java.tuple.Tuple2+f1 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TestScaleType org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TestScaleType org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f1 org.apache.flink.api.java.tuple.Tuple2+f1 org.apache.flink.api.java.tuple.Tuple2+f1 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f1 org.apache.flink.api.java.tuple.Tuple2+f1 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.runtime.state.SharedStateRegistry+DEFAULT_FACTORY org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0 org.apache.flink.api.java.tuple.Tuple2+f0""",15249,311,30348,642,1,"/** 
+ * old topology. [operator1,operator2] * parallelism1 -> [operator3,operator4] * parallelism2 <p>new topology <p>[operator5,operator1,operator3] * newParallelism1 -> [operator3, operator6]  newParallelism2
+ */
+","/**
+     * old topology. [operator1,operator2] * parallelism1 -> [operator3,operator4] * parallelism2
+     *
+     * <p>new topology
+     *
+     * <p>[operator5,operator1,operator3] * newParallelism1 -> [operator3, operator6] *
+     * newParallelism2
+     */
+    public void testStateRecoveryWithTopologyChange(TestScaleType scaleType) throws Exception {
+
+        /*
+         * Old topology
+         * CHAIN(op1 -> op2) * parallelism1 -> CHAIN(op3 -> op4) * parallelism2
+         */
+        Tuple2<JobVertexID, OperatorID> id1 = generateIDPair();
+        Tuple2<JobVertexID, OperatorID> id2 = generateIDPair();
+        int parallelism1 = 10;
+        int maxParallelism1 = 64;
+
+        Tuple2<JobVertexID, OperatorID> id3 = generateIDPair();
+        Tuple2<JobVertexID, OperatorID> id4 = generateIDPair();
+        int parallelism2 = 10;
+        int maxParallelism2 = 64;
+
+        List<KeyGroupRange> keyGroupPartitions2 =
+                StateAssignmentOperation.createKeyGroupPartitions(maxParallelism2, parallelism2);
+
+        Map<OperatorID, OperatorState> operatorStates = new HashMap<>();
+
+        // prepare vertex1 state
+        for (Tuple2<JobVertexID, OperatorID> id : Arrays.asList(id1, id2)) {
+            OperatorState taskState = new OperatorState(id.f1, parallelism1, maxParallelism1);
+            operatorStates.put(id.f1, taskState);
+            for (int index = 0; index < taskState.getParallelism(); index++) {
+                OperatorSubtaskState subtaskState =
+                        OperatorSubtaskState.builder()
+                                .setManagedOperatorState(
+                                        generatePartitionableStateHandle(id.f0, index, 2, 8, false))
+                                .setRawOperatorState(
+                                        generatePartitionableStateHandle(id.f0, index, 2, 8, true))
+                                .build();
+                taskState.putState(index, subtaskState);
+            }
+        }
+
+        List<List<ChainedStateHandle<OperatorStateHandle>>> expectedManagedOperatorStates =
+                new ArrayList<>();
+        List<List<ChainedStateHandle<OperatorStateHandle>>> expectedRawOperatorStates =
+                new ArrayList<>();
+        // prepare vertex2 state
+        for (Tuple2<JobVertexID, OperatorID> id : Arrays.asList(id3, id4)) {
+            OperatorState operatorState = new OperatorState(id.f1, parallelism2, maxParallelism2);
+            operatorStates.put(id.f1, operatorState);
+            List<ChainedStateHandle<OperatorStateHandle>> expectedManagedOperatorState =
+                    new ArrayList<>();
+            List<ChainedStateHandle<OperatorStateHandle>> expectedRawOperatorState =
+                    new ArrayList<>();
+            expectedManagedOperatorStates.add(expectedManagedOperatorState);
+            expectedRawOperatorStates.add(expectedRawOperatorState);
+
+            for (int index = 0; index < operatorState.getParallelism(); index++) {
+                final OperatorSubtaskState.Builder stateBuilder = OperatorSubtaskState.builder();
+                OperatorStateHandle subManagedOperatorState =
+                        generateChainedPartitionableStateHandle(id.f0, index, 2, 8, false).get(0);
+                OperatorStateHandle subRawOperatorState =
+                        generateChainedPartitionableStateHandle(id.f0, index, 2, 8, true).get(0);
+                if (id.f0.equals(id3.f0)) {
+                    stateBuilder.setManagedKeyedState(
+                            generateKeyGroupState(id.f0, keyGroupPartitions2.get(index), false));
+                }
+                if (id.f0.equals(id3.f0)) {
+                    stateBuilder.setRawKeyedState(
+                            generateKeyGroupState(id.f0, keyGroupPartitions2.get(index), true));
+                }
+
+                expectedManagedOperatorState.add(
+                        ChainedStateHandle.wrapSingleHandle(subManagedOperatorState));
+                expectedRawOperatorState.add(
+                        ChainedStateHandle.wrapSingleHandle(subRawOperatorState));
+
+                OperatorSubtaskState subtaskState =
+                        stateBuilder
+                                .setManagedOperatorState(subManagedOperatorState)
+                                .setRawOperatorState(subRawOperatorState)
+                                .build();
+                operatorState.putState(index, subtaskState);
+            }
+        }
+
+        /*
+         * New topology
+         * CHAIN(op5 -> op1 -> op2) * newParallelism1 -> CHAIN(op3 -> op6) * newParallelism2
+         */
+        Tuple2<JobVertexID, OperatorID> id5 = generateIDPair();
+        int newParallelism1 = 10;
+
+        Tuple2<JobVertexID, OperatorID> id6 = generateIDPair();
+        int newParallelism2 = parallelism2;
+
+        if (scaleType == TestScaleType.INCREASE_PARALLELISM) {
+            newParallelism2 = 20;
+        } else if (scaleType == TestScaleType.DECREASE_PARALLELISM) {
+            newParallelism2 = 8;
+        }
+
+        List<KeyGroupRange> newKeyGroupPartitions2 =
+                StateAssignmentOperation.createKeyGroupPartitions(maxParallelism2, newParallelism2);
+
+        ExecutionGraph newGraph =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder()
+                        .addJobVertex(
+                                id5.f0,
+                                newParallelism1,
+                                maxParallelism1,
+                                Stream.of(id2.f1, id1.f1, id5.f1)
+                                        .map(OperatorIDPair::generatedIDOnly)
+                                        .collect(Collectors.toList()),
+                                true)
+                        .addJobVertex(
+                                id3.f0,
+                                newParallelism2,
+                                maxParallelism2,
+                                Stream.of(id6.f1, id3.f1)
+                                        .map(OperatorIDPair::generatedIDOnly)
+                                        .collect(Collectors.toList()),
+                                true)
+                        .build();
+
+        ExecutionJobVertex newJobVertex1 = newGraph.getJobVertex(id5.f0);
+        ExecutionJobVertex newJobVertex2 = newGraph.getJobVertex(id3.f0);
+
+        Set<ExecutionJobVertex> tasks = new HashSet<>();
+
+        tasks.add(newJobVertex1);
+        tasks.add(newJobVertex2);
+
+        CompletedCheckpoint completedCheckpoint =
+                new CompletedCheckpoint(
+                        newGraph.getJobID(),
+                        2,
+                        System.currentTimeMillis(),
+                        System.currentTimeMillis() + 3000,
+                        operatorStates,
+                        Collections.<MasterState>emptyList(),
+                        CheckpointProperties.forCheckpoint(
+                                CheckpointRetentionPolicy.NEVER_RETAIN_AFTER_TERMINATION),
+                        new TestCompletedCheckpointStorageLocation());
+
+        // set up the coordinator and validate the initial state
+        SharedStateRegistry sharedStateRegistry =
+                SharedStateRegistry.DEFAULT_FACTORY.create(Executors.directExecutor(), emptyList());
+        CheckpointCoordinator coord =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(newGraph)
+                        .setCompletedCheckpointStore(
+                                storeFor(sharedStateRegistry, () -> {}, completedCheckpoint))
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .build();
+
+        coord.restoreLatestCheckpointedStateToAll(tasks, true);
+
+        for (int i = 0; i < newJobVertex1.getParallelism(); i++) {
+
+            final List<OperatorIDPair> operatorIDs = newJobVertex1.getOperatorIDs();
+
+            JobManagerTaskRestore taskRestore =
+                    newJobVertex1
+                            .getTaskVertices()[i]
+                            .getCurrentExecutionAttempt()
+                            .getTaskRestore();
+            Assert.assertEquals(2L, taskRestore.getRestoreCheckpointId());
+            TaskStateSnapshot stateSnapshot = taskRestore.getTaskStateSnapshot();
+
+            OperatorSubtaskState headOpState =
+                    stateSnapshot.getSubtaskStateByOperatorID(
+                            operatorIDs.get(operatorIDs.size() - 1).getGeneratedOperatorID());
+            assertTrue(headOpState.getManagedKeyedState().isEmpty());
+            assertTrue(headOpState.getRawKeyedState().isEmpty());
+
+            // operator5
+            {
+                int operatorIndexInChain = 2;
+                OperatorSubtaskState opState =
+                        stateSnapshot.getSubtaskStateByOperatorID(
+                                operatorIDs.get(operatorIndexInChain).getGeneratedOperatorID());
+
+                assertTrue(opState.getManagedOperatorState().isEmpty());
+                assertTrue(opState.getRawOperatorState().isEmpty());
+            }
+            // operator1
+            {
+                int operatorIndexInChain = 1;
+                OperatorSubtaskState opState =
+                        stateSnapshot.getSubtaskStateByOperatorID(
+                                operatorIDs.get(operatorIndexInChain).getGeneratedOperatorID());
+
+                OperatorStateHandle expectedManagedOpState =
+                        generatePartitionableStateHandle(id1.f0, i, 2, 8, false);
+                OperatorStateHandle expectedRawOpState =
+                        generatePartitionableStateHandle(id1.f0, i, 2, 8, true);
+
+                Collection<OperatorStateHandle> managedOperatorState =
+                        opState.getManagedOperatorState();
+                assertEquals(1, managedOperatorState.size());
+                assertTrue(
+                        CommonTestUtils.isStreamContentEqual(
+                                expectedManagedOpState.openInputStream(),
+                                managedOperatorState.iterator().next().openInputStream()));
+
+                Collection<OperatorStateHandle> rawOperatorState = opState.getRawOperatorState();
+                assertEquals(1, rawOperatorState.size());
+                assertTrue(
+                        CommonTestUtils.isStreamContentEqual(
+                                expectedRawOpState.openInputStream(),
+                                rawOperatorState.iterator().next().openInputStream()));
+            }
+            // operator2
+            {
+                int operatorIndexInChain = 0;
+                OperatorSubtaskState opState =
+                        stateSnapshot.getSubtaskStateByOperatorID(
+                                operatorIDs.get(operatorIndexInChain).getGeneratedOperatorID());
+
+                OperatorStateHandle expectedManagedOpState =
+                        generatePartitionableStateHandle(id2.f0, i, 2, 8, false);
+                OperatorStateHandle expectedRawOpState =
+                        generatePartitionableStateHandle(id2.f0, i, 2, 8, true);
+
+                Collection<OperatorStateHandle> managedOperatorState =
+                        opState.getManagedOperatorState();
+                assertEquals(1, managedOperatorState.size());
+                assertTrue(
+                        CommonTestUtils.isStreamContentEqual(
+                                expectedManagedOpState.openInputStream(),
+                                managedOperatorState.iterator().next().openInputStream()));
+
+                Collection<OperatorStateHandle> rawOperatorState = opState.getRawOperatorState();
+                assertEquals(1, rawOperatorState.size());
+                assertTrue(
+                        CommonTestUtils.isStreamContentEqual(
+                                expectedRawOpState.openInputStream(),
+                                rawOperatorState.iterator().next().openInputStream()));
+            }
+        }
+
+        List<List<Collection<OperatorStateHandle>>> actualManagedOperatorStates =
+                new ArrayList<>(newJobVertex2.getParallelism());
+        List<List<Collection<OperatorStateHandle>>> actualRawOperatorStates =
+                new ArrayList<>(newJobVertex2.getParallelism());
+
+        for (int i = 0; i < newJobVertex2.getParallelism(); i++) {
+
+            final List<OperatorIDPair> operatorIDs = newJobVertex2.getOperatorIDs();
+
+            JobManagerTaskRestore taskRestore =
+                    newJobVertex2
+                            .getTaskVertices()[i]
+                            .getCurrentExecutionAttempt()
+                            .getTaskRestore();
+            Assert.assertEquals(2L, taskRestore.getRestoreCheckpointId());
+            TaskStateSnapshot stateSnapshot = taskRestore.getTaskStateSnapshot();
+
+            // operator 3
+            {
+                int operatorIndexInChain = 1;
+                OperatorSubtaskState opState =
+                        stateSnapshot.getSubtaskStateByOperatorID(
+                                operatorIDs.get(operatorIndexInChain).getGeneratedOperatorID());
+
+                List<Collection<OperatorStateHandle>> actualSubManagedOperatorState =
+                        new ArrayList<>(1);
+                actualSubManagedOperatorState.add(opState.getManagedOperatorState());
+
+                List<Collection<OperatorStateHandle>> actualSubRawOperatorState =
+                        new ArrayList<>(1);
+                actualSubRawOperatorState.add(opState.getRawOperatorState());
+
+                actualManagedOperatorStates.add(actualSubManagedOperatorState);
+                actualRawOperatorStates.add(actualSubRawOperatorState);
+            }
+
+            // operator 6
+            {
+                int operatorIndexInChain = 0;
+                OperatorSubtaskState opState =
+                        stateSnapshot.getSubtaskStateByOperatorID(
+                                operatorIDs.get(operatorIndexInChain).getGeneratedOperatorID());
+                assertTrue(opState.getManagedOperatorState().isEmpty());
+                assertTrue(opState.getRawOperatorState().isEmpty());
+            }
+
+            KeyGroupsStateHandle originalKeyedStateBackend =
+                    generateKeyGroupState(id3.f0, newKeyGroupPartitions2.get(i), false);
+            KeyGroupsStateHandle originalKeyedStateRaw =
+                    generateKeyGroupState(id3.f0, newKeyGroupPartitions2.get(i), true);
+
+            OperatorSubtaskState headOpState =
+                    stateSnapshot.getSubtaskStateByOperatorID(
+                            operatorIDs.get(operatorIDs.size() - 1).getGeneratedOperatorID());
+
+            Collection<KeyedStateHandle> keyedStateBackend = headOpState.getManagedKeyedState();
+            Collection<KeyedStateHandle> keyGroupStateRaw = headOpState.getRawKeyedState();
+
+            compareKeyedState(singletonList(originalKeyedStateBackend), keyedStateBackend);
+            compareKeyedState(singletonList(originalKeyedStateRaw), keyGroupStateRaw);
+        }
+
+        comparePartitionableState(
+                expectedManagedOperatorStates.get(0), actualManagedOperatorStates);
+        comparePartitionableState(expectedRawOperatorStates.get(0), actualRawOperatorStates);
+    }",False,False
+22,"storeFor(SharedStateRegistry,Runnable,CompletedCheckpoint)",Method,"""","""","org.apache.flink.runtime.checkpoint.StandaloneCompletedCheckpointStore+StandaloneCompletedCheckpointStore(int) org.apache.flink.runtime.checkpoint.CheckpointsCleaner+CheckpointsCleaner() org.apache.flink.runtime.checkpoint.StandaloneCompletedCheckpointStore+addCheckpointAndSubsumeOldestOne(CompletedCheckpoint,CheckpointsCleaner,Runnable) org.apache.flink.runtime.checkpoint.StandaloneCompletedCheckpointStore+addCheckpointAndSubsumeOldestOne(CompletedCheckpoint,CheckpointsCleaner,Runnable)""","""",643,14,45603,946,8,,"static CompletedCheckpointStore storeFor(
+            SharedStateRegistry sharedStateRegistry,
+            Runnable postCleanupAction,
+            CompletedCheckpoint... checkpoints)
+            throws Exception {
+        StandaloneCompletedCheckpointStore store =
+                new StandaloneCompletedCheckpointStore(checkpoints.length);
+        CheckpointsCleaner checkpointsCleaner = new CheckpointsCleaner();
+        for (final CompletedCheckpoint checkpoint : checkpoints) {
+            store.addCheckpointAndSubsumeOldestOne(
+                    checkpoint, checkpointsCleaner, postCleanupAction);
+        }
+        return store;
+    }",False,False
+23,testRestoreLatestCheckpointedStateWithoutInFlightData(),Method,"""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+EmbeddedCompletedCheckpointStore() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+build() org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCheckpointCoordinatorConfiguration(CheckpointCoordinatorConfiguration) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCheckpointCoordinatorConfiguration(CheckpointCoordinatorConfiguration) org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+build() org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+setCheckpointIdOfIgnoredInFlightData(long) org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+CheckpointCoordinatorConfigurationBuilder() org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+setCheckpointIdOfIgnoredInFlightData(long) org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+triggerCheckpoint(boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+triggerCheckpoint(boolean) org.apache.flink.util.concurrent.ManuallyTriggeredScheduledExecutor+triggerAll() org.apache.flink.util.concurrent.ManuallyTriggeredScheduledExecutor+triggerAll() org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) org.apache.flink.runtime.checkpoint.StateAssignmentOperation+createKeyGroupPartitions(int,int) java.util.Random+Random() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(StateObjectCollection<OperatorStateHandle>) org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+builder() org.apache.flink.runtime.checkpoint.OperatorSubtaskState.Builder+setManagedOperatorState(StateObjectCollection<OperatorStateHandle>) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) org.apache.flink.runtime.checkpoint.StateObjectCollection+singleton(T) org.apache.flink.runtime.checkpoint.StateObjectCollection+singleton(T) org.apache.flink.runtime.checkpoint.StateObjectCollection+singleton(T) org.apache.flink.runtime.checkpoint.StateObjectCollection+singleton(T) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+TaskStateSnapshot() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+putSubtaskStateByOperatorID(OperatorID,OperatorSubtaskState) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.messages.checkpoint.AcknowledgeCheckpoint+AcknowledgeCheckpoint(JobID,ExecutionAttemptID,long,CheckpointMetrics,TaskStateSnapshot) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getAttemptId() org.apache.flink.runtime.checkpoint.CheckpointMetrics+CheckpointMetrics() org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinator+receiveAcknowledgeMessage(AcknowledgeCheckpoint,String) java.util.Set+add(E) java.util.Set+add(E) org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getParallelism() org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getRestoreCheckpointId() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getRestoreCheckpointId() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.checkpoint.TaskStateSnapshot+getSubtaskStateByOperatorID(OperatorID) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.jobgraph.OperatorID+fromJobVertexID(JobVertexID) org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getInputChannelState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getInputChannelState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getResultSubpartitionState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getResultSubpartitionState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawOperatorState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawKeyedState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getRawKeyedState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.OperatorSubtaskState+getManagedOperatorState() org.apache.flink.runtime.checkpoint.StateObjectCollection+isEmpty()""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+TASK_MANAGER_LOCATION_INFO""",5733,109,46252,962,1,,"@Test
+    public void testRestoreLatestCheckpointedStateWithoutInFlightData() throws Exception {
+        // given: Operator with not empty states.
+        final JobVertexID jobVertexID = new JobVertexID();
+        int parallelism1 = 3;
+        int maxParallelism1 = 42;
+
+        CompletedCheckpointStore completedCheckpointStore = new EmbeddedCompletedCheckpointStore();
+
+        final ExecutionGraph graph =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder()
+                        .addJobVertex(jobVertexID, parallelism1, maxParallelism1)
+                        .build();
+
+        final ExecutionJobVertex jobVertex = graph.getJobVertex(jobVertexID);
+
+        // set up the coordinator and validate the initial state
+        CheckpointCoordinator coord =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(graph)
+                        .setCompletedCheckpointStore(completedCheckpointStore)
+                        .setCheckpointCoordinatorConfiguration(
+                                new CheckpointCoordinatorConfigurationBuilder()
+                                        .setCheckpointIdOfIgnoredInFlightData(1)
+                                        .build())
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .build();
+
+        // trigger the checkpoint
+        coord.triggerCheckpoint(false);
+        manuallyTriggeredScheduledExecutor.triggerAll();
+
+        assertEquals(1, coord.getPendingCheckpoints().size());
+        long checkpointId = Iterables.getOnlyElement(coord.getPendingCheckpoints().keySet());
+
+        List<KeyGroupRange> keyGroupPartitions1 =
+                StateAssignmentOperation.createKeyGroupPartitions(maxParallelism1, parallelism1);
+
+        Random random = new Random();
+        // fill the states and complete the checkpoint.
+        for (int index = 0; index < jobVertex.getParallelism(); index++) {
+            OperatorSubtaskState operatorSubtaskState =
+                    OperatorSubtaskState.builder()
+                            .setManagedOperatorState(
+                                    generatePartitionableStateHandle(
+                                            jobVertexID, index, 2, 8, false))
+                            .setRawOperatorState(
+                                    generatePartitionableStateHandle(
+                                            jobVertexID, index, 2, 8, true))
+                            .setManagedKeyedState(
+                                    generateKeyGroupState(
+                                            jobVertexID, keyGroupPartitions1.get(index), false))
+                            .setRawKeyedState(
+                                    generateKeyGroupState(
+                                            jobVertexID, keyGroupPartitions1.get(index), true))
+                            .setInputChannelState(
+                                    StateObjectCollection.singleton(
+                                            createNewInputChannelStateHandle(3, random)))
+                            .setResultSubpartitionState(
+                                    StateObjectCollection.singleton(
+                                            createNewResultSubpartitionStateHandle(3, random)))
+                            .build();
+            TaskStateSnapshot taskOperatorSubtaskStates = new TaskStateSnapshot();
+            taskOperatorSubtaskStates.putSubtaskStateByOperatorID(
+                    OperatorID.fromJobVertexID(jobVertexID), operatorSubtaskState);
+
+            AcknowledgeCheckpoint acknowledgeCheckpoint =
+                    new AcknowledgeCheckpoint(
+                            graph.getJobID(),
+                            jobVertex
+                                    .getTaskVertices()[index]
+                                    .getCurrentExecutionAttempt()
+                                    .getAttemptId(),
+                            checkpointId,
+                            new CheckpointMetrics(),
+                            taskOperatorSubtaskStates);
+
+            coord.receiveAcknowledgeMessage(acknowledgeCheckpoint, TASK_MANAGER_LOCATION_INFO);
+        }
+
+        assertEquals(1, coord.getSuccessfulCheckpoints().size());
+
+        // when: Restore latest checkpoint without in-flight data.
+        Set<ExecutionJobVertex> tasks = new HashSet<>();
+        tasks.add(jobVertex);
+        assertTrue(coord.restoreLatestCheckpointedStateToAll(tasks, false));
+
+        // then: All states should be restored successfully except InputChannel and
+        // ResultSubpartition which should be ignored.
+        verifyStateRestore(jobVertexID, jobVertex, keyGroupPartitions1);
+        for (int i = 0; i < jobVertex.getParallelism(); i++) {
+            JobManagerTaskRestore taskRestore =
+                    jobVertex.getTaskVertices()[i].getCurrentExecutionAttempt().getTaskRestore();
+            Assert.assertEquals(1L, taskRestore.getRestoreCheckpointId());
+            TaskStateSnapshot stateSnapshot = taskRestore.getTaskStateSnapshot();
+
+            OperatorSubtaskState operatorState =
+                    stateSnapshot.getSubtaskStateByOperatorID(
+                            OperatorID.fromJobVertexID(jobVertexID));
+
+            assertTrue(operatorState.getInputChannelState().isEmpty());
+            assertTrue(operatorState.getResultSubpartitionState().isEmpty());
+
+            assertFalse(operatorState.getRawOperatorState().isEmpty());
+            assertFalse(operatorState.getManagedOperatorState().isEmpty());
+            assertFalse(operatorState.getRawKeyedState().isEmpty());
+            assertFalse(operatorState.getManagedOperatorState().isEmpty());
+        }
+    }",False,False
+24,testRestoreFinishedStateWithoutInFlightData(),Method,"""","""","org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.jobgraph.OperatorID+OperatorID() org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int,List<OperatorIDPair>,boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int,List<OperatorIDPair>,boolean) org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+EmbeddedCompletedCheckpointStore() java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.FullyFinishedOperatorState+FullyFinishedOperatorState(OperatorID,int,int) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.CompletedCheckpoint+CompletedCheckpoint(JobID,long,long,long,Map<OperatorID,OperatorState>,Collection<MasterState>,CheckpointProperties,CompletedCheckpointStorageLocation) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.util.Collections+emptyList() java.util.Collections+emptyList() org.apache.flink.runtime.checkpoint.CheckpointProperties+forCheckpoint(CheckpointRetentionPolicy) org.apache.flink.runtime.checkpoint.CheckpointProperties+forCheckpoint(CheckpointRetentionPolicy) org.apache.flink.runtime.state.testutils.TestCompletedCheckpointStorageLocation+TestCompletedCheckpointStorageLocation() org.apache.flink.runtime.checkpoint.CompletedCheckpointStore+addCheckpointAndSubsumeOldestOne(CompletedCheckpoint,CheckpointsCleaner,Runnable) org.apache.flink.runtime.checkpoint.CompletedCheckpointStore+addCheckpointAndSubsumeOldestOne(CompletedCheckpoint,CheckpointsCleaner,Runnable) org.apache.flink.runtime.checkpoint.CheckpointsCleaner+CheckpointsCleaner() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCheckpointCoordinatorConfiguration(CheckpointCoordinatorConfiguration) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCheckpointCoordinatorConfiguration(CheckpointCoordinatorConfiguration) org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+build() org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+setCheckpointIdOfIgnoredInFlightData(long) org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+CheckpointCoordinatorConfigurationBuilder() org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+setCheckpointIdOfIgnoredInFlightData(long) org.apache.flink.runtime.jobgraph.tasks.CheckpointCoordinatorConfiguration.CheckpointCoordinatorConfigurationBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) java.util.Collections+singleton(T) java.util.Collections+singleton(T) org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionJobVertex+getTaskVertices() org.apache.flink.runtime.executiongraph.ExecutionVertex+getCurrentExecutionAttempt() org.apache.flink.runtime.executiongraph.Execution+getTaskRestore() org.apache.flink.runtime.checkpoint.JobManagerTaskRestore+getTaskStateSnapshot() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+isTaskDeployedAsFinished() org.apache.flink.runtime.checkpoint.TaskStateSnapshot+isTaskDeployedAsFinished()""","""",2543,48,51991,1072,1,,"@Test
+    public void testRestoreFinishedStateWithoutInFlightData() throws Exception {
+        // given: Operator with not empty states.
+        OperatorIDPair op1 = OperatorIDPair.generatedIDOnly(new OperatorID());
+        final JobVertexID jobVertexID = new JobVertexID();
+        ExecutionGraph graph =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder()
+                        .addJobVertex(jobVertexID, 1, 1, singletonList(op1), true)
+                        .build();
+
+        CompletedCheckpointStore completedCheckpointStore = new EmbeddedCompletedCheckpointStore();
+        Map<OperatorID, OperatorState> operatorStates = new HashMap<>();
+        operatorStates.put(
+                op1.getGeneratedOperatorID(),
+                new FullyFinishedOperatorState(op1.getGeneratedOperatorID(), 1, 1));
+        CompletedCheckpoint completedCheckpoint =
+                new CompletedCheckpoint(
+                        graph.getJobID(),
+                        2,
+                        System.currentTimeMillis(),
+                        System.currentTimeMillis() + 3000,
+                        operatorStates,
+                        Collections.emptyList(),
+                        CheckpointProperties.forCheckpoint(
+                                CheckpointRetentionPolicy.NEVER_RETAIN_AFTER_TERMINATION),
+                        new TestCompletedCheckpointStorageLocation());
+        completedCheckpointStore.addCheckpointAndSubsumeOldestOne(
+                completedCheckpoint, new CheckpointsCleaner(), () -> {});
+
+        CheckpointCoordinator coord =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(graph)
+                        .setCheckpointCoordinatorConfiguration(
+                                new CheckpointCoordinatorConfigurationBuilder()
+                                        .setCheckpointIdOfIgnoredInFlightData(2)
+                                        .build())
+                        .setCompletedCheckpointStore(completedCheckpointStore)
+                        .build();
+
+        ExecutionJobVertex vertex = graph.getJobVertex(jobVertexID);
+        coord.restoreInitialCheckpointIfPresent(Collections.singleton(vertex));
+        TaskStateSnapshot restoredState =
+                vertex.getTaskVertices()[0]
+                        .getCurrentExecutionAttempt()
+                        .getTaskRestore()
+                        .getTaskStateSnapshot();
+        assertTrue(restoredState.isTaskDeployedAsFinished());
+    }",False,False
+25,testRestoringPartiallyFinishedChainsFailsWithoutUidHash(),Method,"""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoringPartiallyFinishedChainsFails(boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoringPartiallyFinishedChainsFails(boolean)""","""",516,8,54540,1121,1,,"@Test
+    public void testRestoringPartiallyFinishedChainsFailsWithoutUidHash() throws Exception {
+        // If useUidHash is set to false, the operator states would still be keyed with the
+        // generated ID, which simulates the case of restoring a checkpoint taken after jobs
+        // started. The checker should still be able to access the stored state correctly, otherwise
+        // it would mark op1 as running and pass the check wrongly.
+        testRestoringPartiallyFinishedChainsFails(false);
+    }",True,True
+26,testRestoringPartiallyFinishedChainsFailsWithUidHash(),Method,"""","""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoringPartiallyFinishedChainsFails(boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testRestoringPartiallyFinishedChainsFails(boolean)""","""",158,4,55062,1130,1,,"@Test
+    public void testRestoringPartiallyFinishedChainsFailsWithUidHash() throws Exception {
+        testRestoringPartiallyFinishedChainsFails(true);
+    }",True,True
+27,testRestoringPartiallyFinishedChainsFails(boolean),Method,"testRestoringPartiallyFinishedChainsFailsWithoutUidHash() testRestoringPartiallyFinishedChainsFailsWithUidHash()""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.OperatorIDPair+of(OperatorID,OperatorID) org.apache.flink.runtime.OperatorIDPair+of(OperatorID,OperatorID) org.apache.flink.runtime.jobgraph.OperatorID+OperatorID() org.apache.flink.runtime.jobgraph.OperatorID+OperatorID() org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.jobgraph.OperatorID+OperatorID() org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.jobgraph.OperatorID+OperatorID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int,List<OperatorIDPair>,boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertexID,int,int,List<OperatorIDPair>,boolean) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Optional+get() org.apache.flink.runtime.OperatorIDPair+getUserDefinedOperatorID() org.apache.flink.runtime.OperatorIDPair+getUserDefinedOperatorID() java.util.Optional+get() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.FullyFinishedOperatorState+FullyFinishedOperatorState(OperatorID,int,int) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.OperatorState+OperatorState(OperatorID,int,int) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+EmbeddedCompletedCheckpointStore() org.apache.flink.runtime.checkpoint.CompletedCheckpointStore+addCheckpointAndSubsumeOldestOne(CompletedCheckpoint,CheckpointsCleaner,Runnable) org.apache.flink.runtime.checkpoint.CompletedCheckpointStore+addCheckpointAndSubsumeOldestOne(CompletedCheckpoint,CheckpointsCleaner,Runnable) org.apache.flink.runtime.checkpoint.CompletedCheckpoint+CompletedCheckpoint(JobID,long,long,long,Map<OperatorID,OperatorState>,Collection<MasterState>,CheckpointProperties,CompletedCheckpointStorageLocation) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.util.Collections+emptyList() java.util.Collections+emptyList() org.apache.flink.runtime.checkpoint.CheckpointProperties+forCheckpoint(CheckpointRetentionPolicy) org.apache.flink.runtime.checkpoint.CheckpointProperties+forCheckpoint(CheckpointRetentionPolicy) org.apache.flink.runtime.state.testutils.TestCompletedCheckpointStorageLocation+TestCompletedCheckpointStorageLocation() org.apache.flink.runtime.checkpoint.CheckpointsCleaner+CheckpointsCleaner() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() java.util.Set+add(E) java.util.Set+add(E) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID)""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+thrown org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+thrown""",2870,56,55226,1134,2,,"private void testRestoringPartiallyFinishedChainsFails(boolean useUidHash) throws Exception {
+        final JobVertexID jobVertexID1 = new JobVertexID();
+        final JobVertexID jobVertexID2 = new JobVertexID();
+        // The op1 has uidHash set.
+        OperatorIDPair op1 = OperatorIDPair.of(new OperatorID(), new OperatorID());
+        OperatorIDPair op2 = OperatorIDPair.generatedIDOnly(new OperatorID());
+        OperatorIDPair op3 = OperatorIDPair.generatedIDOnly(new OperatorID());
+
+        final ExecutionGraph graph =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder()
+                        .addJobVertex(jobVertexID2, 1, 1, singletonList(op3), true)
+                        .addJobVertex(jobVertexID1, 1, 1, Arrays.asList(op1, op2), true)
+                        .build();
+
+        Map<OperatorID, OperatorState> operatorStates = new HashMap<>();
+        operatorStates.put(
+                useUidHash ? op1.getUserDefinedOperatorID().get() : op1.getGeneratedOperatorID(),
+                new FullyFinishedOperatorState(op1.getGeneratedOperatorID(), 1, 1));
+        operatorStates.put(
+                op2.getGeneratedOperatorID(),
+                new OperatorState(op2.getGeneratedOperatorID(), 1, 1));
+        CompletedCheckpointStore store = new EmbeddedCompletedCheckpointStore();
+        store.addCheckpointAndSubsumeOldestOne(
+                new CompletedCheckpoint(
+                        graph.getJobID(),
+                        2,
+                        System.currentTimeMillis(),
+                        System.currentTimeMillis() + 3000,
+                        operatorStates,
+                        Collections.emptyList(),
+                        CheckpointProperties.forCheckpoint(
+                                CheckpointRetentionPolicy.NEVER_RETAIN_AFTER_TERMINATION),
+                        new TestCompletedCheckpointStorageLocation()),
+                new CheckpointsCleaner(),
+                () -> {});
+
+        // set up the coordinator and validate the initial state
+        CheckpointCoordinator coord =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(graph)
+                        .setCompletedCheckpointStore(store)
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .build();
+
+        Set<ExecutionJobVertex> vertices = new HashSet<>();
+        vertices.add(graph.getJobVertex(jobVertexID1));
+
+        thrown.expect(FlinkRuntimeException.class);
+        thrown.expectMessage(
+                ""Can not restore vertex ""
+                        + ""anon(""
+                        + jobVertexID1
+                        + "")""
+                        + "" which contain mixed operator finished state: [ALL_RUNNING, FULLY_FINISHED]"");
+        coord.restoreInitialCheckpointIfPresent(vertices);
+    }",True,True
+28,testAddingRunningOperatorBeforeFinishedOneFails(),Method,"""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID()""","""",909,20,58102,1192,1,,"@Test
+    public void testAddingRunningOperatorBeforeFinishedOneFails() throws Exception {
+        JobVertexID jobVertexID2 = new JobVertexID();
+
+        testAddingOperatorsBeforePartiallyOrFullyFinishedOne(
+                new JobVertexID(),
+                ""vert1"",
+                VertexFinishedState.ALL_RUNNING,
+                jobVertexID2,
+                ""vert2"",
+                VertexFinishedState.FULLY_FINISHED,
+                new DistributionPattern[] {DistributionPattern.ALL_TO_ALL},
+                FlinkRuntimeException.class,
+                ""Illegal JobGraph modification. Cannot run a program with fully finished vertices""
+                        + "" predeceased with the ones not fully finished. Task vertex vert2""
+                        + ""(""
+                        + jobVertexID2
+                        + "")""
+                        + "" has a predecessor not fully finished"");
+    }",False,False
+29,testAddingPartiallyFinishedOperatorBeforeFinishedOneFails(),Method,"""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID()""","""",926,20,59017,1213,1,,"@Test
+    public void testAddingPartiallyFinishedOperatorBeforeFinishedOneFails() throws Exception {
+        JobVertexID jobVertexID2 = new JobVertexID();
+
+        testAddingOperatorsBeforePartiallyOrFullyFinishedOne(
+                new JobVertexID(),
+                ""vert1"",
+                VertexFinishedState.PARTIALLY_FINISHED,
+                jobVertexID2,
+                ""vert2"",
+                VertexFinishedState.FULLY_FINISHED,
+                new DistributionPattern[] {DistributionPattern.ALL_TO_ALL},
+                FlinkRuntimeException.class,
+                ""Illegal JobGraph modification. Cannot run a program with fully finished vertices""
+                        + "" predeceased with the ones not fully finished. Task vertex vert2""
+                        + ""(""
+                        + jobVertexID2
+                        + "")""
+                        + "" has a predecessor not fully finished"");
+    }",True,True
+30,testAddingAllRunningOperatorBeforePartiallyFinishedOneWithAllToAllFails(),Method,"""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID()""","""",1021,22,59949,1234,1,,"@Test
+    public void testAddingAllRunningOperatorBeforePartiallyFinishedOneWithAllToAllFails()
+            throws Exception {
+        JobVertexID jobVertexID2 = new JobVertexID();
+
+        testAddingOperatorsBeforePartiallyOrFullyFinishedOne(
+                new JobVertexID(),
+                ""vert1"",
+                VertexFinishedState.ALL_RUNNING,
+                jobVertexID2,
+                ""vert2"",
+                VertexFinishedState.PARTIALLY_FINISHED,
+                new DistributionPattern[] {DistributionPattern.ALL_TO_ALL},
+                FlinkRuntimeException.class,
+                ""Illegal JobGraph modification. Cannot run a program with partially finished vertices""
+                        + "" predeceased with running or partially finished ones and connected via the ALL_TO_ALL edges. ""
+                        + ""Task vertex vert2""
+                        + ""(""
+                        + jobVertexID2
+                        + "")""
+                        + "" has a all running predecessor"");
+    }",True,True
+31,testAddingPartiallyFinishedOperatorBeforePartiallyFinishedOneWithAllToAllFails(),Method,"""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID()""","""",1042,22,60976,1257,1,,"@Test
+    public void testAddingPartiallyFinishedOperatorBeforePartiallyFinishedOneWithAllToAllFails()
+            throws Exception {
+        JobVertexID jobVertexID2 = new JobVertexID();
+
+        testAddingOperatorsBeforePartiallyOrFullyFinishedOne(
+                new JobVertexID(),
+                ""vert1"",
+                VertexFinishedState.PARTIALLY_FINISHED,
+                jobVertexID2,
+                ""vert2"",
+                VertexFinishedState.PARTIALLY_FINISHED,
+                new DistributionPattern[] {DistributionPattern.ALL_TO_ALL},
+                FlinkRuntimeException.class,
+                ""Illegal JobGraph modification. Cannot run a program with partially finished vertices""
+                        + "" predeceased with running or partially finished ones and connected via the ALL_TO_ALL edges. ""
+                        + ""Task vertex vert2""
+                        + ""(""
+                        + jobVertexID2
+                        + "")""
+                        + "" has a partially finished predecessor"");
+    }",True,True
+32,testAddingPartiallyFinishedOperatorBeforePartiallyFinishedOneWithPointwiseAndAllToAllFails(),Method,"""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID()""","""",1143,25,62024,1280,1,,"@Test
+    public void
+            testAddingPartiallyFinishedOperatorBeforePartiallyFinishedOneWithPointwiseAndAllToAllFails()
+                    throws Exception {
+        JobVertexID jobVertexID2 = new JobVertexID();
+
+        testAddingOperatorsBeforePartiallyOrFullyFinishedOne(
+                new JobVertexID(),
+                ""vert1"",
+                VertexFinishedState.PARTIALLY_FINISHED,
+                jobVertexID2,
+                ""vert2"",
+                VertexFinishedState.PARTIALLY_FINISHED,
+                new DistributionPattern[] {
+                    DistributionPattern.POINTWISE, DistributionPattern.ALL_TO_ALL
+                },
+                FlinkRuntimeException.class,
+                ""Illegal JobGraph modification. Cannot run a program with partially finished vertices""
+                        + "" predeceased with running or partially finished ones and connected via the ALL_TO_ALL edges. ""
+                        + ""Task vertex vert2""
+                        + ""(""
+                        + jobVertexID2
+                        + "")""
+                        + "" has a partially finished predecessor"");
+    }",True,True
+33,testAddingAllRunningOperatorBeforePartiallyFinishedOneFails(),Method,"""","""","org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) org.apache.flink.runtime.jobgraph.JobVertexID+JobVertexID()""","""",939,21,63173,1306,1,,"@Test
+    public void testAddingAllRunningOperatorBeforePartiallyFinishedOneFails() throws Exception {
+        JobVertexID jobVertexID2 = new JobVertexID();
+
+        testAddingOperatorsBeforePartiallyOrFullyFinishedOne(
+                new JobVertexID(),
+                ""vert1"",
+                VertexFinishedState.ALL_RUNNING,
+                jobVertexID2,
+                ""vert2"",
+                VertexFinishedState.PARTIALLY_FINISHED,
+                new DistributionPattern[] {DistributionPattern.POINTWISE},
+                FlinkRuntimeException.class,
+                ""Illegal JobGraph modification. Cannot run a program with partially finished vertices""
+                        + "" predeceased with all running ones. ""
+                        + ""Task vertex vert2""
+                        + ""(""
+                        + jobVertexID2
+                        + "")""
+                        + "" has a all running predecessor"");
+    }",True,True
+34,"testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String)",Method,"testAddingRunningOperatorBeforeFinishedOneFails() testAddingPartiallyFinishedOperatorBeforeFinishedOneFails() testAddingAllRunningOperatorBeforePartiallyFinishedOneWithAllToAllFails() testAddingPartiallyFinishedOperatorBeforePartiallyFinishedOneWithAllToAllFails() testAddingPartiallyFinishedOperatorBeforePartiallyFinishedOneWithPointwiseAndAllToAllFails() testAddingAllRunningOperatorBeforePartiallyFinishedOneFails()""","""","org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.jobgraph.OperatorID+OperatorID() org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.OperatorIDPair+generatedIDOnly(OperatorID) org.apache.flink.runtime.jobgraph.OperatorID+OperatorID() org.apache.flink.runtime.jobgraph.JobVertex+JobVertex(String,JobVertexID,List<OperatorIDPair>) org.apache.flink.runtime.jobgraph.JobVertex+JobVertex(String,JobVertexID,List<OperatorIDPair>) org.apache.flink.runtime.jobgraph.JobVertex+setInvokableClass(Class<? extends TaskInvokable>) org.apache.flink.runtime.jobgraph.JobVertex+setInvokableClass(Class<? extends TaskInvokable>) org.apache.flink.runtime.jobgraph.JobVertex+setInvokableClass(Class<? extends TaskInvokable>) org.apache.flink.runtime.jobgraph.JobVertex+setInvokableClass(Class<? extends TaskInvokable>) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+setDistributionPattern(DistributionPattern) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertex,boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertex,boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+CheckpointExecutionGraphBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertex,boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+addJobVertex(JobVertex,boolean) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder+setDistributionPattern(DistributionPattern) org.apache.flink.runtime.jobgraph.JobVertex+connectNewDataSetAsInput(JobVertex,DistributionPattern,ResultPartitionType) org.apache.flink.runtime.jobgraph.JobVertex+connectNewDataSetAsInput(JobVertex,DistributionPattern,ResultPartitionType) java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+createOperatorState(OperatorID,VertexFinishedState) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+createOperatorState(OperatorID,VertexFinishedState) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+createOperatorState(OperatorID,VertexFinishedState) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+createOperatorState(OperatorID,VertexFinishedState) org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.OperatorIDPair+getGeneratedOperatorID() org.apache.flink.runtime.checkpoint.EmbeddedCompletedCheckpointStore+EmbeddedCompletedCheckpointStore() org.apache.flink.runtime.checkpoint.CompletedCheckpointStore+addCheckpointAndSubsumeOldestOne(CompletedCheckpoint,CheckpointsCleaner,Runnable) org.apache.flink.runtime.checkpoint.CompletedCheckpointStore+addCheckpointAndSubsumeOldestOne(CompletedCheckpoint,CheckpointsCleaner,Runnable) org.apache.flink.runtime.checkpoint.CompletedCheckpoint+CompletedCheckpoint(JobID,long,long,long,Map<OperatorID,OperatorState>,Collection<MasterState>,CheckpointProperties,CompletedCheckpointStorageLocation) org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() org.apache.flink.runtime.executiongraph.AccessExecutionGraph+getJobID() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.util.Collections+emptyList() java.util.Collections+emptyList() org.apache.flink.runtime.checkpoint.CheckpointProperties+forCheckpoint(CheckpointRetentionPolicy) org.apache.flink.runtime.checkpoint.CheckpointProperties+forCheckpoint(CheckpointRetentionPolicy) org.apache.flink.runtime.state.testutils.TestCompletedCheckpointStorageLocation+TestCompletedCheckpointStorageLocation() org.apache.flink.runtime.checkpoint.CheckpointsCleaner+CheckpointsCleaner() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+CheckpointCoordinatorBuilder() org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setExecutionGraph(ExecutionGraph) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setCompletedCheckpointStore(CompletedCheckpointStore) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+setTimer(ScheduledExecutor) org.apache.flink.runtime.checkpoint.CheckpointCoordinatorTestingUtils.CheckpointCoordinatorBuilder+build() java.util.Set+add(E) java.util.Set+add(E) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.jobgraph.JobVertex+getID() org.apache.flink.runtime.jobgraph.JobVertex+getID() java.util.Set+add(E) java.util.Set+add(E) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.executiongraph.ExecutionGraph+getJobVertex(JobVertexID) org.apache.flink.runtime.jobgraph.JobVertex+getID() org.apache.flink.runtime.jobgraph.JobVertex+getID()""","org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+manuallyTriggeredScheduledExecutor org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+thrown org.apache.flink.runtime.checkpoint.CheckpointCoordinatorRestoringTest+thrown""",3430,71,64118,1327,2,,"private void testAddingOperatorsBeforePartiallyOrFullyFinishedOne(
+            JobVertexID firstVertexId,
+            String firstVertexName,
+            VertexFinishedState firstOperatorFinishedState,
+            JobVertexID secondVertexId,
+            String secondVertexName,
+            VertexFinishedState secondOperatorFinishedState,
+            DistributionPattern[] distributionPatterns,
+            Class<? extends Throwable> expectedExceptionalClass,
+            String expectedMessage)
+            throws Exception {
+        OperatorIDPair op1 = OperatorIDPair.generatedIDOnly(new OperatorID());
+        OperatorIDPair op2 = OperatorIDPair.generatedIDOnly(new OperatorID());
+        JobVertex vertex1 = new JobVertex(firstVertexName, firstVertexId, singletonList(op1));
+        JobVertex vertex2 = new JobVertex(secondVertexName, secondVertexId, singletonList(op2));
+        vertex1.setInvokableClass(NoOpInvokable.class);
+        vertex2.setInvokableClass(NoOpInvokable.class);
+
+        final ExecutionGraph graph =
+                new CheckpointCoordinatorTestingUtils.CheckpointExecutionGraphBuilder()
+                        .addJobVertex(vertex1, true)
+                        .addJobVertex(vertex2, false)
+                        .setDistributionPattern(distributionPatterns[0])
+                        .build();
+
+        // Adds the additional edges
+        for (int i = 1; i < distributionPatterns.length; ++i) {
+            vertex2.connectNewDataSetAsInput(
+                    vertex1, distributionPatterns[i], ResultPartitionType.PIPELINED);
+        }
+
+        Map<OperatorID, OperatorState> operatorStates = new HashMap<>();
+        operatorStates.put(
+                op1.getGeneratedOperatorID(),
+                createOperatorState(op1.getGeneratedOperatorID(), firstOperatorFinishedState));
+        operatorStates.put(
+                op2.getGeneratedOperatorID(),
+                createOperatorState(op2.getGeneratedOperatorID(), secondOperatorFinishedState));
+
+        CompletedCheckpointStore store = new EmbeddedCompletedCheckpointStore();
+        store.addCheckpointAndSubsumeOldestOne(
+                new CompletedCheckpoint(
+                        graph.getJobID(),
+                        2,
+                        System.currentTimeMillis(),
+                        System.currentTimeMillis() + 3000,
+                        operatorStates,
+                        Collections.emptyList(),
+                        CheckpointProperties.forCheckpoint(
+                                CheckpointRetentionPolicy.NEVER_RETAIN_AFTER_TERMINATION),
+                        new TestCompletedCheckpointStorageLocation()),
+                new CheckpointsCleaner(),
+                () -> {});
+
+        // set up the coordinator and validate the initial state
+        CheckpointCoordinator coord =
+                new CheckpointCoordinatorBuilder()
+                        .setExecutionGraph(graph)
+                        .setCompletedCheckpointStore(store)
+                        .setTimer(manuallyTriggeredScheduledExecutor)
+                        .build();
+
+        Set<ExecutionJobVertex> vertices = new HashSet<>();
+        vertices.add(graph.getJobVertex(vertex1.getID()));
+        vertices.add(graph.getJobVertex(vertex2.getID()));
+
+        thrown.expect(expectedExceptionalClass);
+        thrown.expectMessage(expectedMessage);
+
+        coord.restoreInitialCheckpointIfPresent(vertices);
+    }",False,False
+35,"createOperatorState(OperatorID,VertexFinishedState)",Method,"testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String) testAddingOperatorsBeforePartiallyOrFullyFinishedOne(JobVertexID,String,VertexFinishedState,JobVertexID,String,VertexFinishedState,DistributionPattern[],Class<? extends Throwable>,String)""","""","org.apache.flink.runtime.checkpoint.OperatorState+OperatorState(OperatorID,int,int) org.apache.flink.runtime.checkpoint.OperatorState+OperatorState(OperatorID,int,int) org.apache.flink.runtime.checkpoint.OperatorState+putState(int,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.OperatorState+putState(int,OperatorSubtaskState) org.apache.flink.runtime.checkpoint.FullyFinishedOperatorState+FullyFinishedOperatorState(OperatorID,int,int) java.lang.UnsupportedOperationException+UnsupportedOperationException(String)""","org.apache.flink.runtime.checkpoint.FinishedOperatorSubtaskState+INSTANCE""",752,16,67554,1399,2,,"private OperatorState createOperatorState(
+            OperatorID operatorId, VertexFinishedState finishedState) {
+        switch (finishedState) {
+            case ALL_RUNNING:
+                return new OperatorState(operatorId, 2, 2);
+            case PARTIALLY_FINISHED:
+                OperatorState operatorState = new OperatorState(operatorId, 2, 2);
+                operatorState.putState(0, FinishedOperatorSubtaskState.INSTANCE);
+                return operatorState;
+            case FULLY_FINISHED:
+                return new FullyFinishedOperatorState(operatorId, 2, 2);
+            default:
+                throw new UnsupportedOperationException(
+                        ""Not supported finished state: "" + finishedState);
+        }
+    }",True,True

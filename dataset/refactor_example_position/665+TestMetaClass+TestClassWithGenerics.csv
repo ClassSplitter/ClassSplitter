@@ -1,0 +1,307 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,commit,full text,moved,removed
+1,primitiveReturnPrimitiveParam(int),Method,"""","""","""","""",70,4,1196,34,1,,"public int primitiveReturnPrimitiveParam(int foo)
+	{
+		return 1337;
+	}",True,True
+2,voidReturnPrimitiveParam(int),Method,"""","""","""","""",51,3,1269,39,1,,"public void voidReturnPrimitiveParam(int foo)
+	{
+	}",True,True
+3,voidReturnNoParams(),Method,"""","""","""","""",38,3,1323,43,1,,"public void voidReturnNoParams()
+	{
+	}",True,True
+4,objectReturnObjectParam(String),Method,"""","""","""","""",100,4,1364,47,1,,"public String objectReturnObjectParam(String foo)
+	{
+		return ""When the daylight weighs a tonne"";
+	}",True,True
+5,arrayReturnArrayParam(int[]),Method,"""","""","""","""",111,4,1467,52,1,,"public String[] arrayReturnArrayParam(int[] foo)
+	{
+		return new String[] { ""and all my friends are gone"" };
+	}",True,True
+6,"genericReturnAndParams(T,java.lang.String)",Method,"""","""","""","""",123,4,1581,57,9,,"public static <T extends java.lang.Object> T genericReturnAndParams(T object, java.lang.String string)
+	{
+		return null;
+	}",False,False
+7,genericReturnDeclaredOnClass(),Method,"""","""","""","""",60,4,1707,62,1,,"public K genericReturnDeclaredOnClass()
+	{
+		return null;
+	}",True,True
+8,genericParamTypeWildcard(Class<?>[]),Method,"""","""","""","""",65,3,1771,67,1,,"public void genericParamTypeWildcard(Class<?>[] fooClasses)
+	{
+	}",True,True
+9,genericReturnTypeWildcard(),Method,"""","""","""","""",66,4,1840,71,1,,"public Class<?>[] genericReturnTypeWildcard()
+	{
+		return null;
+	}",True,True
+10,TestMetaClass(),Method,"""","""","""","""",29,4,1930,77,1,,"public TestMetaClass()
+	{
+
+	}",False,False
+11,testGetMemberFromSignature1(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredMethod(String,Class[]) org.adoptopenjdk.jitwatch.model.MetaMethod+MetaMethod(Method,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) java.util.List+add(E) java.util.List+add(E) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",945,28,1962,83,1,,"@Test
+	public void testGetMemberFromSignature1() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""primitiveReturnPrimitiveParam"";
+
+		Method method = getClass().getDeclaredMethod(testMethodName, new Class[] { int.class });
+
+		MetaMethod testMethod = new MetaMethod(method, metaClass);
+
+		metaClass.addMember(testMethod);
+
+		String testRetType = ""int"";
+
+		List<String> paramList = new ArrayList<>();
+		paramList.add(""int"");
+
+		IMetaMember result = metaClass.getMemberForSignature(MemberSignatureParts.fromParts(metaClass.getFullyQualifiedName(),
+				testMethodName, testRetType, paramList));
+
+		assertNotNull(result);
+		assertEquals(testMethod.toString(), result.toString());
+	}",False,False
+12,testGetMemberFromSignature2(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredMethod(String,Class[]) org.adoptopenjdk.jitwatch.model.MetaMethod+MetaMethod(Method,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) java.util.List+add(E) java.util.List+add(E) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",951,28,2910,112,1,,"@Test
+	public void testGetMemberFromSignature2() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""voidReturnPrimitiveParam"";
+
+		Method method = getClass().getDeclaredMethod(testMethodName, new Class[] { int.class });
+
+		MetaMethod testMethod = new MetaMethod(method, metaClass);
+
+		metaClass.addMember(testMethod);
+
+		String testRetType = S_TYPE_NAME_VOID;
+
+		List<String> paramList = new ArrayList<>();
+		paramList.add(""int"");
+
+		IMetaMember result = metaClass.getMemberForSignature(MemberSignatureParts.fromParts(metaClass.getFullyQualifiedName(),
+				testMethodName, testRetType, paramList));
+
+		assertNotNull(result);
+		assertEquals(testMethod.toString(), result.toString());
+	}",False,False
+13,testGetMemberFromSignature3(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredMethod(String,Class[]) org.adoptopenjdk.jitwatch.model.MetaMethod+MetaMethod(Method,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",907,26,3864,141,1,,"@Test
+	public void testGetMemberFromSignature3() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""voidReturnNoParams"";
+
+		Method method = getClass().getDeclaredMethod(testMethodName, new Class[0]);
+
+		MetaMethod testMethod = new MetaMethod(method, metaClass);
+
+		metaClass.addMember(testMethod);
+
+		String testRetType = S_TYPE_NAME_VOID;
+		List<String> paramList = new ArrayList<>();
+
+		IMetaMember result = metaClass.getMemberForSignature(MemberSignatureParts.fromParts(metaClass.getFullyQualifiedName(),
+				testMethodName, testRetType, paramList));
+
+		assertNotNull(result);
+		assertEquals(testMethod.toString(), result.toString());
+	}",False,False
+14,testGetMemberFromSignature4(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredMethod(String,Class[]) org.adoptopenjdk.jitwatch.model.MetaMethod+MetaMethod(Method,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) java.util.List+add(E) java.util.List+add(E) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",978,28,4774,168,1,,"@Test
+	public void testGetMemberFromSignature4() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""objectReturnObjectParam"";
+
+		Method method = getClass().getDeclaredMethod(testMethodName, new Class[] { java.lang.String.class });
+
+		MetaMethod testMethod = new MetaMethod(method, metaClass);
+
+		metaClass.addMember(testMethod);
+
+		String testRetType = ""java.lang.String"";
+
+		List<String> paramList = new ArrayList<>();
+		paramList.add(""java.lang.String"");
+
+		IMetaMember result = metaClass.getMemberForSignature(MemberSignatureParts.fromParts(metaClass.getFullyQualifiedName(),
+				testMethodName, testRetType, paramList));
+
+		assertNotNull(result);
+		assertEquals(testMethod.toString(), result.toString());
+	}",False,False
+15,testGetMemberFromSignature5(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredMethod(String,Class[]) org.adoptopenjdk.jitwatch.model.MetaMethod+MetaMethod(Method,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) java.util.List+add(E) java.util.List+add(E) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",954,28,5755,197,1,,"@Test
+	public void testGetMemberFromSignature5() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""arrayReturnArrayParam"";
+
+		Method method = getClass().getDeclaredMethod(testMethodName, new Class[] { int[].class });
+
+		MetaMethod testMethod = new MetaMethod(method, metaClass);
+
+		metaClass.addMember(testMethod);
+
+		String testRetType = ""[Ljava.lang.String;"";
+
+		List<String> paramList = new ArrayList<>();
+		paramList.add(""[I"");
+
+		IMetaMember result = metaClass.getMemberForSignature(MemberSignatureParts.fromParts(metaClass.getFullyQualifiedName(),
+				testMethodName, testRetType, paramList));
+
+		assertNotNull(result);
+		assertEquals(testMethod.toString(), result.toString());
+	}",False,False
+16,testGetMemberFromSignature6(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredConstructor(Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredConstructor(Class[]) org.adoptopenjdk.jitwatch.model.MetaConstructor+MetaConstructor(Constructor<?>,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromParts(String,String,String,List<String>) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaConstructor+toString() org.adoptopenjdk.jitwatch.model.MetaConstructor+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",931,26,6712,226,1,,"@Test
+	public void testGetMemberFromSignature6() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""<init>"";
+
+		Constructor<?> constructor = getClass().getDeclaredConstructor(new Class[0]);
+
+		MetaConstructor testConstructor = new MetaConstructor(constructor, metaClass);
+
+		metaClass.addMember(testConstructor);
+
+		String testRetType = getClass().getName();
+		List<String> paramList = new ArrayList<>();
+
+		IMetaMember result = metaClass.getMemberForSignature(MemberSignatureParts.fromParts(metaClass.getFullyQualifiedName(),
+				testMethodName, testRetType, paramList));
+
+		assertNotNull(result);
+		assertEquals(testConstructor.toString(), result.toString());
+	}",False,False
+17,testRegressionGenericSubstitution(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredMethod(String,Class[]) org.adoptopenjdk.jitwatch.model.MetaMethod+MetaMethod(Method,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromBytecodeSignature(String,String) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromBytecodeSignature(String,String) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",929,24,7646,253,1,,"@Test
+	public void testRegressionGenericSubstitution() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""genericReturnAndParams"";
+
+		Method method = getClass().getDeclaredMethod(testMethodName, new Class[] { Object.class, String.class });
+
+		MetaMethod testMethod = new MetaMethod(method, metaClass);
+
+		metaClass.addMember(testMethod);
+
+		IMetaMember result = metaClass.getMemberForSignature(MemberSignatureParts.fromBytecodeSignature(
+				metaClass.getFullyQualifiedName(),
+				""public static <T extends java.lang.Object> T genericReturnAndParams(T, java.lang.String);""));
+
+		assertNotNull(result);
+		assertEquals(testMethod.toString(), result.toString());
+	}",False,False
+18,testRegressionGenericDeclaredAtClassLevel(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredMethod(String,Class[]) org.adoptopenjdk.jitwatch.model.MetaMethod+MetaMethod(Method,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromBytecodeSignature(String,String) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromBytecodeSignature(String,String) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.bytecode.ClassBC+ClassBC(String) java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.bytecode.ClassBC+addGenericsMapping(String,String) org.adoptopenjdk.jitwatch.model.bytecode.ClassBC+addGenericsMapping(String,String) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+setClassBC(ClassBC) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+setClassBC(ClassBC) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaMethod+toString() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",1058,31,8578,278,1,,"@Test
+	public void testRegressionGenericDeclaredAtClassLevel() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""genericReturnDeclaredOnClass"";
+
+		Method method = getClass().getDeclaredMethod(testMethodName, new Class[0]);
+
+		MetaMethod testMethod = new MetaMethod(method, metaClass);
+
+		metaClass.addMember(testMethod);
+
+		MemberSignatureParts msp = MemberSignatureParts.fromBytecodeSignature(metaClass.getFullyQualifiedName(),
+				""public K genericReturnDeclaredOnClass();"");
+		
+		ClassBC classBytecode = new ClassBC(getClass().getName());
+		
+		classBytecode.addGenericsMapping(""K"", ""java.lang.Object"");
+
+		msp.setClassBC(classBytecode);
+		
+		IMetaMember result = metaClass.getMemberForSignature(msp);
+
+		assertNotNull(result);
+		assertEquals(testMethod.toString(), result.toString());
+	}",False,False
+19,testRegressionGenericWildcardReturnType(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredMethod(String,Class[]) org.adoptopenjdk.jitwatch.model.MetaMethod+MetaMethod(Method,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromBytecodeSignature(String,String) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromBytecodeSignature(String,String) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaMethod+toString() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",908,25,9640,310,1,,"@Test
+	public void testRegressionGenericWildcardReturnType() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""genericReturnTypeWildcard"";
+
+		Method method = getClass().getDeclaredMethod(testMethodName, new Class[0]);
+
+		MetaMethod testMethod = new MetaMethod(method, metaClass);
+
+		metaClass.addMember(testMethod);
+
+		MemberSignatureParts msp = MemberSignatureParts.fromBytecodeSignature(metaClass.getFullyQualifiedName(),
+				""public java.lang.Class<?>[] genericReturnTypeWildcard();"");
+			
+		IMetaMember result = metaClass.getMemberForSignature(msp);
+
+		assertNotNull(result);
+		assertEquals(testMethod.toString(), result.toString());
+	}",False,False
+20,testRegressionGenericWildcardParamType(),Method,"""","""","java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.adoptopenjdk.jitwatch.model.MetaPackage+MetaPackage(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getPackageName(String) org.adoptopenjdk.jitwatch.model.MetaClass+MetaClass(MetaPackage,String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) org.adoptopenjdk.jitwatch.util.StringUtil+getUnqualifiedClassName(String) java.lang.Class+getDeclaredMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getDeclaredMethod(String,Class[]) org.adoptopenjdk.jitwatch.model.MetaMethod+MetaMethod(Method,MetaClass) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MetaClass+addMember(IMetaMember) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromBytecodeSignature(String,String) org.adoptopenjdk.jitwatch.model.MemberSignatureParts+fromBytecodeSignature(String,String) org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getFullyQualifiedName() org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaClass+getMemberForSignature(MemberSignatureParts) org.adoptopenjdk.jitwatch.model.MetaMethod+toString() org.adoptopenjdk.jitwatch.model.MetaMethod+toString() java.lang.Object+toString() java.lang.Object+toString()""","""",925,25,10552,336,1,,"@Test
+	public void testRegressionGenericWildcardParamType() throws NoSuchMethodException, SecurityException
+	{
+		String thisClassName = getClass().getName();
+
+		MetaPackage metaPackage = new MetaPackage(StringUtil.getPackageName(thisClassName));
+
+		MetaClass metaClass = new MetaClass(metaPackage, StringUtil.getUnqualifiedClassName(thisClassName));
+
+		String testMethodName = ""genericParamTypeWildcard"";
+
+		Method method = getClass().getDeclaredMethod(testMethodName, new Class[]{Class[].class});
+
+		MetaMethod testMethod = new MetaMethod(method, metaClass);
+
+		metaClass.addMember(testMethod);
+
+		MemberSignatureParts msp = MemberSignatureParts.fromBytecodeSignature(metaClass.getFullyQualifiedName(),
+				""public void genericParamTypeWildcard(java.lang.Class<?>[]);"");
+					
+		IMetaMember result = metaClass.getMemberForSignature(msp);
+
+		assertNotNull(result);
+		assertEquals(testMethod.toString(), result.toString());
+	}",False,False

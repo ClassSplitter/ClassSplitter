@@ -1,0 +1,189 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,commit,full text,moved,removed
+1,httpClient,Field,"BaseOAuthFlow(ConfigRepository,HttpClient,Supplier<String>)""","""","""","""",36,1,991,31,18,,private final HttpClient httpClient;,False,False
+2,configRepository,Field,"BaseOAuthFlow(ConfigRepository,HttpClient,Supplier<String>)""","""","""","""",48,1,1030,32,18,,private final ConfigRepository configRepository;,True,True
+3,stateSupplier,Field,"BaseOAuthFlow(ConfigRepository,HttpClient,Supplier<String>)""","""","""","""",45,1,1081,33,18,,private final Supplier<String> stateSupplier;,False,False
+4,BaseOAuthFlow(ConfigRepository),Method,"""","""","java.net.http.HttpClient.Builder+build() java.net.http.HttpClient.Builder+version(Version) java.net.http.HttpClient+newBuilder() java.net.http.HttpClient+newBuilder() java.net.http.HttpClient.Builder+version(Version) java.net.http.HttpClient.Builder+build() io.airbyte.oauth.BaseOAuthFlow+generateRandomState()""","java.net.http.HttpClient.Version+HTTP_1_1""",184,3,1130,35,1,,"public BaseOAuthFlow(ConfigRepository configRepository) {
+    this(configRepository, HttpClient.newBuilder().version(Version.HTTP_1_1).build(), BaseOAuthFlow::generateRandomState);
+  }",False,False
+5,"BaseOAuthFlow(ConfigRepository,HttpClient,Supplier<String>)",Method,"""","""","""","io.airbyte.oauth.BaseOAuthFlow+configRepository io.airbyte.oauth.BaseOAuthFlow+configRepository io.airbyte.oauth.BaseOAuthFlow+httpClient io.airbyte.oauth.BaseOAuthFlow+httpClient io.airbyte.oauth.BaseOAuthFlow+stateSupplier io.airbyte.oauth.BaseOAuthFlow+stateSupplier""",236,5,1318,39,1,,"public BaseOAuthFlow(ConfigRepository configRepository, HttpClient httpClient, Supplier<String> stateSupplier) {
+    this.configRepository = configRepository;
+    this.httpClient = httpClient;
+    this.stateSupplier = stateSupplier;
+  }",False,False
+6,"getSourceConsentUrl(UUID,UUID,String)",Method,"""","io.airbyte.oauth.flows.google.GoogleAnalyticsOAuthFlowTest+testGetSourceConsentUrl() io.airbyte.oauth.flows.google.GoogleAdsOAuthFlowIntegrationTest+testFullGoogleOAuthFlow() io.airbyte.oauth.flows.google.GoogleAnalyticsOAuthFlowIntegrationTest+testFullGoogleOAuthFlow() io.airbyte.oauth.flows.google.GoogleSearchConsoleOAuthFlowIntegrationTest+testFullGoogleOAuthFlow() io.airbyte.oauth.flows.FacebookMarketingOAuthFlowIntegrationTest+testFullGoogleOAuthFlow()""","io.airbyte.oauth.BaseOAuthFlow+getSourceOAuthParamConfig(UUID,UUID) io.airbyte.oauth.BaseOAuthFlow+getSourceOAuthParamConfig(UUID,UUID) io.airbyte.oauth.BaseOAuthFlow+formatConsentUrl(UUID,String,String) io.airbyte.oauth.BaseOAuthFlow+formatConsentUrl(UUID,String,String) io.airbyte.oauth.BaseOAuthFlow+getClientIdUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+getClientIdUnsafe(JsonNode)""","""",355,5,1558,46,1,,"@Override
+  public String getSourceConsentUrl(UUID workspaceId, UUID sourceDefinitionId, String redirectUrl) throws IOException, ConfigNotFoundException {
+    final JsonNode oAuthParamConfig = getSourceOAuthParamConfig(workspaceId, sourceDefinitionId);
+    return formatConsentUrl(sourceDefinitionId, getClientIdUnsafe(oAuthParamConfig), redirectUrl);
+  }",False,False
+7,"getDestinationConsentUrl(UUID,UUID,String)",Method,"""","io.airbyte.oauth.flows.google.GoogleAnalyticsOAuthFlowTest+testGetDestinationConsentUrl()""","io.airbyte.oauth.BaseOAuthFlow+getDestinationOAuthParamConfig(UUID,UUID) io.airbyte.oauth.BaseOAuthFlow+getDestinationOAuthParamConfig(UUID,UUID) io.airbyte.oauth.BaseOAuthFlow+formatConsentUrl(UUID,String,String) io.airbyte.oauth.BaseOAuthFlow+formatConsentUrl(UUID,String,String) io.airbyte.oauth.BaseOAuthFlow+getClientIdUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+getClientIdUnsafe(JsonNode)""","""",386,6,1917,52,1,,"@Override
+  public String getDestinationConsentUrl(UUID workspaceId, UUID destinationDefinitionId, String redirectUrl)
+      throws IOException, ConfigNotFoundException {
+    final JsonNode oAuthParamConfig = getDestinationOAuthParamConfig(workspaceId, destinationDefinitionId);
+    return formatConsentUrl(destinationDefinitionId, getClientIdUnsafe(oAuthParamConfig), redirectUrl);
+  }",False,False
+8,"formatConsentUrl(UUID,String,String)",Method,"getSourceConsentUrl(UUID,UUID,String) getDestinationConsentUrl(UUID,UUID,String)""","""","""","""",344,6,2307,63,1028,"/** 
+ * Depending on the OAuth flow implementation, the URL to grant user's consent may differ, especially in the query parameters to be provided. This function should generate such consent URL accordingly.
+ */
+","/**
+   * Depending on the OAuth flow implementation, the URL to grant user's consent may differ,
+   * especially in the query parameters to be provided. This function should generate such consent URL
+   * accordingly.
+   */
+  protected abstract String formatConsentUrl(UUID definitionId, String clientId, String redirectUrl) throws IOException;",False,False
+9,generateRandomState(),Method,"""","""","""","""",101,3,2655,65,10,,"private static String generateRandomState() {
+    return RandomStringUtils.randomAlphanumeric(7);
+  }",False,False
+10,getState(),Method,"""","io.airbyte.oauth.flows.FacebookMarketingOAuthFlow+formatConsentUrl(UUID,String,String) io.airbyte.oauth.flows.google.GoogleOAuthFlow+formatConsentUrl(UUID,String,String)""","java.util.function.Supplier+get() java.util.function.Supplier+get()""","io.airbyte.oauth.BaseOAuthFlow+stateSupplier""",138,6,2760,72,4,"/** 
+ * Generate a string to use as state in the OAuth process.
+ */
+","/**
+   * Generate a string to use as state in the OAuth process.
+   */
+  protected String getState() {
+    return stateSupplier.get();
+  }",False,False
+11,"completeSourceOAuth(UUID,UUID,Map<String,Object>,String)",Method,"""","io.airbyte.oauth.flows.FacebookMarketingOAuthFlowTest+testCompleteSourceOAuth() io.airbyte.oauth.flows.google.GoogleAdsOAuthFlowTest+testCompleteSourceOAuth() io.airbyte.oauth.flows.google.GoogleAnalyticsOAuthFlowTest+testCompleteSourceOAuth() io.airbyte.oauth.flows.google.GoogleSearchConsoleOAuthFlowTest+testCompleteSourceOAuth() io.airbyte.oauth.flows.google.GoogleAdsOAuthFlowIntegrationTest+testFullGoogleOAuthFlow() io.airbyte.oauth.flows.google.GoogleAnalyticsOAuthFlowIntegrationTest+testFullGoogleOAuthFlow() io.airbyte.oauth.flows.google.GoogleSearchConsoleOAuthFlowIntegrationTest+testFullGoogleOAuthFlow() io.airbyte.oauth.flows.FacebookMarketingOAuthFlowIntegrationTest+testFullGoogleOAuthFlow()""","io.airbyte.oauth.BaseOAuthFlow+getSourceOAuthParamConfig(UUID,UUID) io.airbyte.oauth.BaseOAuthFlow+getSourceOAuthParamConfig(UUID,UUID) io.airbyte.oauth.BaseOAuthFlow+completeOAuthFlow(String,String,String,String) io.airbyte.oauth.BaseOAuthFlow+completeOAuthFlow(String,String,String,String) io.airbyte.oauth.BaseOAuthFlow+getClientIdUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+getClientIdUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+getClientSecretUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+getClientSecretUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+extractCodeParameter(Map<String,Object>) io.airbyte.oauth.BaseOAuthFlow+extractCodeParameter(Map<String,Object>)""","""",497,10,2902,77,1,,"@Override
+  public Map<String, Object> completeSourceOAuth(UUID workspaceId, UUID sourceDefinitionId, Map<String, Object> queryParams, String redirectUrl)
+      throws IOException, ConfigNotFoundException {
+    final JsonNode oAuthParamConfig = getSourceOAuthParamConfig(workspaceId, sourceDefinitionId);
+    return completeOAuthFlow(
+        getClientIdUnsafe(oAuthParamConfig),
+        getClientSecretUnsafe(oAuthParamConfig),
+        extractCodeParameter(queryParams),
+        redirectUrl);
+  }",False,False
+12,"completeDestinationOAuth(UUID,UUID,Map<String,Object>,String)",Method,"""","io.airbyte.oauth.flows.FacebookMarketingOAuthFlowTest+testCompleteDestinationOAuth() io.airbyte.oauth.flows.google.GoogleAdsOAuthFlowTest+testCompleteDestinationOAuth() io.airbyte.oauth.flows.google.GoogleAnalyticsOAuthFlowTest+testCompleteDestinationOAuth() io.airbyte.oauth.flows.google.GoogleSearchConsoleOAuthFlowTest+testCompleteDestinationOAuth()""","io.airbyte.oauth.BaseOAuthFlow+getDestinationOAuthParamConfig(UUID,UUID) io.airbyte.oauth.BaseOAuthFlow+getDestinationOAuthParamConfig(UUID,UUID) io.airbyte.oauth.BaseOAuthFlow+completeOAuthFlow(String,String,String,String) io.airbyte.oauth.BaseOAuthFlow+completeOAuthFlow(String,String,String,String) io.airbyte.oauth.BaseOAuthFlow+getClientIdUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+getClientIdUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+getClientSecretUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+getClientSecretUnsafe(JsonNode) io.airbyte.oauth.BaseOAuthFlow+extractCodeParameter(Map<String,Object>) io.airbyte.oauth.BaseOAuthFlow+extractCodeParameter(Map<String,Object>)""","""",679,13,3403,88,1,,"@Override
+  public Map<String, Object> completeDestinationOAuth(UUID workspaceId,
+                                                      UUID destinationDefinitionId,
+                                                      Map<String, Object> queryParams,
+                                                      String redirectUrl)
+      throws IOException, ConfigNotFoundException {
+    final JsonNode oAuthParamConfig = getDestinationOAuthParamConfig(workspaceId, destinationDefinitionId);
+    return completeOAuthFlow(
+        getClientIdUnsafe(oAuthParamConfig),
+        getClientSecretUnsafe(oAuthParamConfig),
+        extractCodeParameter(queryParams),
+        redirectUrl);
+  }",False,False
+13,"completeOAuthFlow(String,String,String,String)",Method,"completeSourceOAuth(UUID,UUID,Map<String,Object>,String) completeDestinationOAuth(UUID,UUID,Map<String,Object>,String)""","""","java.net.http.HttpRequest.Builder+build() java.net.http.HttpRequest.Builder+header(String,String) java.net.http.HttpRequest.Builder+uri(URI) java.net.http.HttpRequest.Builder+POST(BodyPublisher) java.net.http.HttpRequest+newBuilder() java.net.http.HttpRequest+newBuilder() java.net.http.HttpRequest.Builder+POST(BodyPublisher) java.net.http.HttpRequest.BodyPublishers+ofString(String) java.net.http.HttpRequest.BodyPublishers+ofString(String) io.airbyte.oauth.BaseOAuthFlow+toUrlEncodedString(Map<String,String>) io.airbyte.oauth.BaseOAuthFlow+toUrlEncodedString(Map<String,String>) io.airbyte.oauth.BaseOAuthFlow+getAccessTokenQueryParameters(String,String,String,String) io.airbyte.oauth.BaseOAuthFlow+getAccessTokenQueryParameters(String,String,String,String) java.net.http.HttpRequest.Builder+uri(URI) java.net.URI+create(String) java.net.URI+create(String) io.airbyte.oauth.BaseOAuthFlow+getAccessTokenUrl() io.airbyte.oauth.BaseOAuthFlow+getAccessTokenUrl() java.net.http.HttpRequest.Builder+header(String,String) java.net.http.HttpRequest.Builder+build() java.net.http.HttpClient+send(HttpRequest,BodyHandler) java.net.http.HttpClient+send(HttpRequest,BodyHandler) java.net.http.HttpResponse.BodyHandlers+ofString() java.net.http.HttpResponse.BodyHandlers+ofString() io.airbyte.oauth.BaseOAuthFlow+extractRefreshToken(JsonNode) io.airbyte.oauth.BaseOAuthFlow+extractRefreshToken(JsonNode) io.airbyte.commons.json.Jsons+deserialize(String) io.airbyte.commons.json.Jsons+deserialize(String) java.net.http.HttpResponse+body() java.net.http.HttpResponse+body() java.io.IOException+IOException(String,Throwable)""","io.airbyte.oauth.BaseOAuthFlow+httpClient""",844,14,4086,101,2,,"private Map<String, Object> completeOAuthFlow(String clientId, String clientSecret, String authCode, String redirectUrl) throws IOException {
+    final HttpRequest request = HttpRequest.newBuilder()
+        .POST(HttpRequest.BodyPublishers.ofString(toUrlEncodedString(getAccessTokenQueryParameters(clientId, clientSecret, authCode, redirectUrl))))
+        .uri(URI.create(getAccessTokenUrl()))
+        .header(""Content-Type"", ""application/x-www-form-urlencoded"")
+        .build();
+    // TODO: Handle error response to report better messages
+    try {
+      final HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());;
+      return extractRefreshToken(Jsons.deserialize(response.body()));
+    } catch (InterruptedException e) {
+      throw new IOException(""Failed to complete OAuth flow"", e);
+    }
+  }",False,False
+14,"extractCodeParameter(Map<String,Object>)",Method,"completeSourceOAuth(UUID,UUID,Map<String,Object>,String) completeDestinationOAuth(UUID,UUID,Map<String,Object>,String)""","""","""","""",384,6,4934,121,1028,"/** 
+ * Once the user is redirected after getting their consent, the API should redirect them to a specific redirection URL along with query parameters. This function should parse and extract the code from these query parameters in order to continue the OAuth Flow.
+ */
+","/**
+   * Once the user is redirected after getting their consent, the API should redirect them to a
+   * specific redirection URL along with query parameters. This function should parse and extract the
+   * code from these query parameters in order to continue the OAuth Flow.
+   */
+  protected abstract String extractCodeParameter(Map<String, Object> queryParams) throws IOException;",False,False
+15,getAccessTokenUrl(),Method,"completeOAuthFlow(String,String,String,String)""","""","""","""",120,4,5322,126,1028,"/** 
+ * Returns the URL where to retrieve the access token from.
+ */
+","/**
+   * Returns the URL where to retrieve the access token from.
+   */
+  protected abstract String getAccessTokenUrl();",False,False
+16,"getAccessTokenQueryParameters(String,String,String,String)",Method,"completeOAuthFlow(String,String,String,String)""","""","""","""",216,4,5446,131,1028,"/** 
+ * Query parameters to provide the access token url with.
+ */
+","/**
+   * Query parameters to provide the access token url with.
+   */
+  protected abstract Map<String, String> getAccessTokenQueryParameters(String clientId, String clientSecret, String authCode, String redirectUrl);",False,False
+17,extractRefreshToken(JsonNode),Method,"completeOAuthFlow(String,String,String,String)""","""","""","""",288,5,5666,137,1028,"/** 
+ * Once the auth code is exchange for a refresh token, the oauth flow implementation can extract and returns the values of fields to be used in the connector's configurations.
+ */
+","/**
+   * Once the auth code is exchange for a refresh token, the oauth flow implementation can extract and
+   * returns the values of fields to be used in the connector's configurations.
+   */
+  protected abstract Map<String, Object> extractRefreshToken(JsonNode data) throws IOException;",False,False
+18,"getSourceOAuthParamConfig(UUID,UUID)",Method,"getSourceConsentUrl(UUID,UUID,String) completeSourceOAuth(UUID,UUID,Map<String,Object>,String)""","""","io.airbyte.oauth.MoreOAuthParameters+getSourceOAuthParameter(Stream<SourceOAuthParameter>,UUID,UUID) io.airbyte.oauth.MoreOAuthParameters+getSourceOAuthParameter(Stream<SourceOAuthParameter>,UUID,UUID) io.airbyte.config.persistence.ConfigRepository+listSourceOAuthParam() io.airbyte.config.persistence.ConfigRepository+listSourceOAuthParam() io.airbyte.config.persistence.ConfigNotFoundException+ConfigNotFoundException(String,String) java.io.IOException+IOException(String,Throwable)""","io.airbyte.oauth.BaseOAuthFlow+configRepository""",657,13,5958,139,2,,"private JsonNode getSourceOAuthParamConfig(UUID workspaceId, UUID sourceDefinitionId) throws IOException, ConfigNotFoundException {
+    try {
+      final Optional<SourceOAuthParameter> param = MoreOAuthParameters.getSourceOAuthParameter(
+          configRepository.listSourceOAuthParam().stream(), workspaceId, sourceDefinitionId);
+      if (param.isPresent()) {
+        return param.get().getConfiguration();
+      } else {
+        throw new ConfigNotFoundException(ConfigSchema.SOURCE_OAUTH_PARAM, ""Undefined OAuth Parameter."");
+      }
+    } catch (JsonValidationException e) {
+      throw new IOException(""Failed to load OAuth Parameters"", e);
+    }
+  }",True,True
+19,"getDestinationOAuthParamConfig(UUID,UUID)",Method,"getDestinationConsentUrl(UUID,UUID,String) completeDestinationOAuth(UUID,UUID,Map<String,Object>,String)""","""","io.airbyte.oauth.MoreOAuthParameters+getDestinationOAuthParameter(Stream<DestinationOAuthParameter>,UUID,UUID) io.airbyte.oauth.MoreOAuthParameters+getDestinationOAuthParameter(Stream<DestinationOAuthParameter>,UUID,UUID) io.airbyte.config.persistence.ConfigRepository+listDestinationOAuthParam() io.airbyte.config.persistence.ConfigRepository+listDestinationOAuthParam() io.airbyte.config.persistence.ConfigNotFoundException+ConfigNotFoundException(String,String) java.io.IOException+IOException(String,Throwable)""","io.airbyte.oauth.BaseOAuthFlow+configRepository""",692,13,6619,153,2,,"private JsonNode getDestinationOAuthParamConfig(UUID workspaceId, UUID destinationDefinitionId) throws IOException, ConfigNotFoundException {
+    try {
+      final Optional<DestinationOAuthParameter> param = MoreOAuthParameters.getDestinationOAuthParameter(
+          configRepository.listDestinationOAuthParam().stream(), workspaceId, destinationDefinitionId);
+      if (param.isPresent()) {
+        return param.get().getConfiguration();
+      } else {
+        throw new ConfigNotFoundException(ConfigSchema.DESTINATION_OAUTH_PARAM, ""Undefined OAuth Parameter."");
+      }
+    } catch (JsonValidationException e) {
+      throw new IOException(""Failed to load OAuth Parameters"", e);
+    }
+  }",True,True
+20,urlEncode(String),Method,"toUrlEncodedString(Map<String,String>)""","""","java.net.URLEncoder+encode(String,Charset) java.net.URLEncoder+encode(String,Charset) java.lang.RuntimeException+RuntimeException(Throwable)""","java.nio.charset.StandardCharsets+UTF_8""",187,7,7315,167,10,,"private static String urlEncode(String s) {
+    try {
+      return URLEncoder.encode(s, StandardCharsets.UTF_8);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }",False,False
+21,getClientIdUnsafe(JsonNode),Method,"getSourceConsentUrl(UUID,UUID,String) getDestinationConsentUrl(UUID,UUID,String) completeSourceOAuth(UUID,UUID,Map<String,Object>,String) completeDestinationOAuth(UUID,UUID,Map<String,Object>,String)""","""","java.lang.IllegalArgumentException+IllegalArgumentException(String)""","""",451,13,7506,181,4,"/** 
+ * Throws an exception if the client ID cannot be extracted. Subclasses should override this to parse the config differently.
+ * @return
+ */
+","/**
+   * Throws an exception if the client ID cannot be extracted. Subclasses should override this to
+   * parse the config differently.
+   *
+   * @return
+   */
+  protected String getClientIdUnsafe(JsonNode oauthConfig) {
+    if (oauthConfig.get(""client_id"") != null) {
+      return oauthConfig.get(""client_id"").asText();
+    } else {
+      throw new IllegalArgumentException(""Undefined parameter 'client_id' necessary for the OAuth Flow."");
+    }
+  }",True,True
+22,getClientSecretUnsafe(JsonNode),Method,"completeSourceOAuth(UUID,UUID,Map<String,Object>,String) completeDestinationOAuth(UUID,UUID,Map<String,Object>,String)""","""","java.lang.IllegalArgumentException+IllegalArgumentException(String)""","""",471,13,7961,195,4,"/** 
+ * Throws an exception if the client secret cannot be extracted. Subclasses should override this to parse the config differently.
+ * @return
+ */
+","/**
+   * Throws an exception if the client secret cannot be extracted. Subclasses should override this to
+   * parse the config differently.
+   *
+   * @return
+   */
+  protected String getClientSecretUnsafe(JsonNode oauthConfig) {
+    if (oauthConfig.get(""client_secret"") != null) {
+      return oauthConfig.get(""client_secret"").asText();
+    } else {
+      throw new IllegalArgumentException(""Undefined parameter 'client_secret' necessary for the OAuth Flow."");
+    }
+  }",True,True
+23,"toUrlEncodedString(Map<String,String>)",Method,"completeOAuthFlow(String,String,String,String)""","""","java.lang.StringBuilder+StringBuilder() java.util.Map+entrySet() java.util.Map+entrySet() java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(Object) java.lang.StringBuilder+append(Object) io.airbyte.oauth.BaseOAuthFlow+urlEncode(String) io.airbyte.oauth.BaseOAuthFlow+urlEncode(String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString()""","""",356,10,8436,203,10,,"private static String toUrlEncodedString(Map<String, String> body) {
+    final StringBuilder result = new StringBuilder();
+    for (var entry : body.entrySet()) {
+      if (result.length() > 0) {
+        result.append(""&"");
+      }
+      result.append(entry.getKey()).append(""="").append(urlEncode(entry.getValue()));
+    }
+    return result.toString();
+  }",False,False

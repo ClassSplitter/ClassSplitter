@@ -1,0 +1,487 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,commit,full text,moved,removed
+1,TAG,Field,"""","""","""","""",55,1,2905,74,25,,"public static final String TAG = ""AllEpisodesFragment"";",False,False
+2,EVENTS,Field,"""","""","""","""",171,3,2966,76,26,,"private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE |
+            EventDistributor.UNREAD_ITEMS_UPDATE |
+            EventDistributor.PLAYER_STATUS_UPDATE;",True,True
+3,EPISODES_PER_PAGE,Field,"""","""","""","""",49,1,3143,80,26,,private static final int EPISODES_PER_PAGE = 150;,False,False
+4,VISIBLE_EPISODES_SCROLL_THRESHOLD,Field,"""","""","""","""",63,1,3197,81,26,,private static final int VISIBLE_EPISODES_SCROLL_THRESHOLD = 5;,False,False
+5,DEFAULT_PREF_NAME,Field,"""","""","""","""",74,1,3266,83,26,,"private static final String DEFAULT_PREF_NAME = ""PrefAllEpisodesFragment"";",True,True
+6,PREF_SCROLL_POSITION,Field,"""","""","""","""",69,1,3345,84,26,,"private static final String PREF_SCROLL_POSITION = ""scroll_position"";",True,True
+7,PREF_SCROLL_OFFSET,Field,"""","""","""","""",65,1,3419,85,26,,"private static final String PREF_SCROLL_OFFSET = ""scroll_offset"";",True,True
+8,page,Field,"""","""","""","""",28,1,3490,87,10,,private static int page = 1;,False,False
+9,recyclerView,Field,"""","""","""","""",26,1,3524,89,0,,RecyclerView recyclerView;,True,True
+10,listAdapter,Field,"""","""","""","""",38,1,3555,90,0,,AllEpisodesRecycleAdapter listAdapter;,True,True
+11,progLoading,Field,"""","""","""","""",32,1,3598,91,2,,private ProgressBar progLoading;,True,True
+12,emptyView,Field,"""","""","""","""",27,1,3635,92,0,,EmptyViewHandler emptyView;,True,True
+13,episodes,Field,"""","""","""","""",57,2,3668,95,0,,"@NonNull
+    List<FeedItem> episodes = new ArrayList<>();",True,True
+14,downloaderList,Field,"""","""","""","""",73,2,3730,97,2,,"@NonNull
+    private List<Downloader> downloaderList = new ArrayList<>();",True,True
+15,isUpdatingFeeds,Field,"""","""","""","""",32,1,3809,99,2,,private boolean isUpdatingFeeds;,True,True
+16,isMenuInvalidationAllowed,Field,"""","de.danoeh.antennapod.fragment.EpisodesFragment+EpisodesPagerAdapter.setPrimaryItem(ViewGroup,int,Object)""","""","""",42,1,3846,100,0,,boolean isMenuInvalidationAllowed = false;,True,True
+17,disposable,Field,"""","""","""","""",32,1,3894,102,4,,protected Disposable disposable;,True,True
+18,layoutManager,Field,"""","""","""","""",42,1,3931,103,2,,private LinearLayoutManager layoutManager;,True,True
+19,txtvInformation,Field,"""","""","""","""",35,1,3978,104,4,,protected TextView txtvInformation;,True,True
+20,feedItemFilter,Field,"""","""","""","""",70,1,4018,105,10,,"private static FeedItemFilter feedItemFilter = new FeedItemFilter("""");",False,False
+21,showOnlyNewEpisodes(),Method,"onPrepareOptionsMenu(Menu) onPrepareOptionsMenu(Menu)""","""","""","""",59,3,4094,107,0,,"boolean showOnlyNewEpisodes() {
+        return false;
+    }",False,False
+22,getPrefName(),Method,"saveScrollPosition() restoreScrollPosition()""","""","""","de.danoeh.antennapod.fragment.AllEpisodesFragment+DEFAULT_PREF_NAME""",62,3,4159,111,0,,"String getPrefName() {
+        return DEFAULT_PREF_NAME;
+    }",False,False
+23,onStart(),Method,"""","""","de.danoeh.antennapod.core.feed.EventDistributor+register(EventListener) de.danoeh.antennapod.core.feed.EventDistributor+getInstance() de.danoeh.antennapod.core.feed.EventDistributor+getInstance() de.danoeh.antennapod.core.feed.EventDistributor+register(EventListener) de.danoeh.antennapod.fragment.AllEpisodesFragment+loadItems() de.danoeh.antennapod.fragment.AllEpisodesFragment+loadItems()""","de.danoeh.antennapod.fragment.AllEpisodesFragment+contentUpdate""",232,8,4227,116,1,,"@Override
+    public void onStart() {
+        super.onStart();
+        setHasOptionsMenu(true);
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
+        loadItems();
+    }",True,True
+24,onResume(),Method,"""","""","""","de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView""",116,5,4465,125,1,,"@Override
+    public void onResume() {
+        super.onResume();
+        registerForContextMenu(recyclerView);
+    }",True,True
+25,onPause(),Method,"""","""","de.danoeh.antennapod.fragment.AllEpisodesFragment+saveScrollPosition() de.danoeh.antennapod.fragment.AllEpisodesFragment+saveScrollPosition()""","de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView""",146,6,4587,131,1,,"@Override
+    public void onPause() {
+        super.onPause();
+        saveScrollPosition();
+        unregisterForContextMenu(recyclerView);
+    }",True,True
+26,onStop(),Method,"""","""","de.danoeh.antennapod.core.feed.EventDistributor+unregister(EventListener) de.danoeh.antennapod.core.feed.EventDistributor+getInstance() de.danoeh.antennapod.core.feed.EventDistributor+getInstance() de.danoeh.antennapod.core.feed.EventDistributor+unregister(EventListener)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+contentUpdate de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable""",258,9,4739,138,1,,"@Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+        EventDistributor.getInstance().unregister(contentUpdate);
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }",True,True
+27,saveScrollPosition(),Method,"onPause()""","""","android.view.View+getTop() android.view.View+getTop() de.danoeh.antennapod.fragment.AllEpisodesFragment+getPrefName() de.danoeh.antennapod.fragment.AllEpisodesFragment+getPrefName() android.content.SharedPreferences+edit() android.content.SharedPreferences+edit() android.content.SharedPreferences.Editor+putInt(String,int) android.content.SharedPreferences.Editor+putInt(String,int) android.content.SharedPreferences.Editor+putFloat(String,float) android.content.SharedPreferences.Editor+putFloat(String,float) android.content.SharedPreferences.Editor+commit() android.content.SharedPreferences.Editor+commit()""","de.danoeh.antennapod.fragment.AllEpisodesFragment+layoutManager de.danoeh.antennapod.fragment.AllEpisodesFragment+layoutManager android.content.Context+MODE_PRIVATE de.danoeh.antennapod.fragment.AllEpisodesFragment+PREF_SCROLL_POSITION de.danoeh.antennapod.fragment.AllEpisodesFragment+PREF_SCROLL_OFFSET""",650,16,5003,147,2,,"private void saveScrollPosition() {
+        int firstItem = layoutManager.findFirstVisibleItemPosition();
+        View firstItemView = layoutManager.findViewByPosition(firstItem);
+        float topOffset;
+        if (firstItemView == null) {
+            topOffset = 0;
+        } else {
+            topOffset = firstItemView.getTop();
+        }
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(PREF_SCROLL_POSITION, firstItem);
+        editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
+        editor.commit();
+    }",True,True
+28,restoreScrollPosition(),Method,"onFragmentLoaded(List<FeedItem>)""","""","de.danoeh.antennapod.fragment.AllEpisodesFragment+getPrefName() de.danoeh.antennapod.fragment.AllEpisodesFragment+getPrefName() android.content.SharedPreferences+getInt(String,int) android.content.SharedPreferences+getInt(String,int) android.content.SharedPreferences+getFloat(String,float) android.content.SharedPreferences+getFloat(String,float) android.content.SharedPreferences+edit() android.content.SharedPreferences+edit() android.content.SharedPreferences.Editor+putInt(String,int) android.content.SharedPreferences.Editor+putInt(String,int) android.content.SharedPreferences.Editor+putFloat(String,float) android.content.SharedPreferences.Editor+putFloat(String,float) android.content.SharedPreferences.Editor+commit() android.content.SharedPreferences.Editor+commit()""","android.content.Context+MODE_PRIVATE de.danoeh.antennapod.fragment.AllEpisodesFragment+PREF_SCROLL_POSITION de.danoeh.antennapod.fragment.AllEpisodesFragment+PREF_SCROLL_OFFSET de.danoeh.antennapod.fragment.AllEpisodesFragment+layoutManager de.danoeh.antennapod.fragment.AllEpisodesFragment+PREF_SCROLL_POSITION de.danoeh.antennapod.fragment.AllEpisodesFragment+PREF_SCROLL_OFFSET""",645,13,5659,164,2,,"private void restoreScrollPosition() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE);
+        int position = prefs.getInt(PREF_SCROLL_POSITION, 0);
+        float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
+        if (position > 0 || offset > 0) {
+            layoutManager.scrollToPositionWithOffset(position, (int) offset);
+            // restore once, then forget
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(PREF_SCROLL_POSITION, 0);
+            editor.putFloat(PREF_SCROLL_OFFSET, 0.0f);
+            editor.commit();
+        }
+    }",True,True
+29,updateRefreshMenuItemChecker,Field,"""","""","""","""",188,2,6310,178,18,,"private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
+            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();",True,True
+30,"onCreateOptionsMenu(Menu,MenuInflater)",Method,"""","""","android.view.MenuInflater+inflate(int,Menu) android.view.MenuInflater+inflate(int,Menu) android.view.Menu+findItem(int) android.view.Menu+findItem(int) de.danoeh.antennapod.menuhandler.MenuItemUtils+adjustTextColor(Context,SearchView) de.danoeh.antennapod.menuhandler.MenuItemUtils+adjustTextColor(Context,SearchView) +onQueryTextSubmit(String)""","""",1093,27,6504,182,1,,"@Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!isAdded()) {
+            return;
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.episodes, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+        MenuItemUtils.adjustTextColor(getActivity(), sv);
+        sv.setQueryHint(getString(R.string.search_hint));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                ((MainActivity) requireActivity()).loadChildFragment(SearchFragment.newInstance(s));
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
+    }",False,False
+31,onPrepareOptionsMenu(Menu),Method,"""","""","android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.MenuItem+setVisible(boolean) android.view.MenuItem+setVisible(boolean) de.danoeh.antennapod.fragment.AllEpisodesFragment+showOnlyNewEpisodes() de.danoeh.antennapod.fragment.AllEpisodesFragment+showOnlyNewEpisodes() java.util.List+isEmpty() java.util.List+isEmpty() android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.MenuItem+setVisible(boolean) android.view.MenuItem+setVisible(boolean) de.danoeh.antennapod.fragment.AllEpisodesFragment+showOnlyNewEpisodes() de.danoeh.antennapod.fragment.AllEpisodesFragment+showOnlyNewEpisodes() java.util.List+isEmpty() java.util.List+isEmpty()""","de.danoeh.antennapod.fragment.AllEpisodesFragment+episodes de.danoeh.antennapod.fragment.AllEpisodesFragment+episodes""",529,12,7603,210,1,,"@Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem markAllRead = menu.findItem(R.id.mark_all_read_item);
+        if (markAllRead != null) {
+            markAllRead.setVisible(!showOnlyNewEpisodes() && !episodes.isEmpty());
+        }
+        MenuItem removeAllNewFlags = menu.findItem(R.id.remove_all_new_flags_item);
+        if (removeAllNewFlags != null) {
+            removeAllNewFlags.setVisible(showOnlyNewEpisodes() && !episodes.isEmpty());
+        }
+    }",True,True
+32,onOptionsItemSelected(MenuItem),Method,"""","""","android.view.MenuItem+getItemId() android.view.MenuItem+getItemId() de.danoeh.antennapod.activity.MainActivity+getFeeds() de.danoeh.antennapod.activity.MainActivity+getFeeds() de.danoeh.antennapod.core.storage.DBTasks+refreshAllFeeds(Context,List<Feed>) de.danoeh.antennapod.core.storage.DBTasks+refreshAllFeeds(Context,List<Feed>) de.danoeh.antennapod.core.dialog.ConfirmationDialog+ConfirmationDialog(Context,int,int) +onConfirmButtonPressed(DialogInterface)""","""",2291,49,8138,223,1,,"@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (!super.onOptionsItemSelected(item)) {
+            switch (item.getItemId()) {
+                case R.id.refresh_item:
+                    List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
+                    if (feeds != null) {
+                        DBTasks.refreshAllFeeds(getActivity(), feeds);
+                    }
+                    return true;
+                case R.id.mark_all_read_item:
+                    ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
+                            R.string.mark_all_read_label,
+                            R.string.mark_all_read_confirmation_msg) {
+
+                        @Override
+                        public void onConfirmButtonPressed(DialogInterface dialog) {
+                            dialog.dismiss();
+                            DBWriter.markAllItemsRead();
+                            Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    markAllReadConfirmationDialog.createNewDialog().show();
+                    return true;
+                case R.id.remove_all_new_flags_item:
+                    ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
+                            R.string.remove_all_new_flags_label,
+                            R.string.remove_all_new_flags_confirmation_msg) {
+
+                        @Override
+                        public void onConfirmButtonPressed(DialogInterface dialog) {
+                            dialog.dismiss();
+                            DBWriter.removeAllNewFlags();
+                            Toast.makeText(getActivity(), R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    removeAllNewFlagsConfirmationDialog.createNewDialog().show();
+                    return true;
+                case R.id.filter_items:
+                    showFilterDialog();
+                    return true;
+                default:
+                    return false;
+            }
+        } else {
+            return true;
+        }
+
+    }",False,False
+33,onContextItemSelected(MenuItem),Method,"""","""","android.util.Log+d(String,String) android.util.Log+d(String,String) android.view.MenuItem+getItemId() android.view.MenuItem+getItemId() de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter+getSelectedItem() de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter+getSelectedItem() android.util.Log+i(String,String) android.util.Log+i(String,String) de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter+getSelectedItem() de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter+getSelectedItem() android.view.MenuItem+getItemId() android.view.MenuItem+getItemId() de.danoeh.antennapod.fragment.AllEpisodesFragment+removeNewFlagWithUndo(FeedItem) de.danoeh.antennapod.fragment.AllEpisodesFragment+removeNewFlagWithUndo(FeedItem) de.danoeh.antennapod.menuhandler.FeedItemMenuHandler+onMenuItemClicked(Context,int,FeedItem) de.danoeh.antennapod.menuhandler.FeedItemMenuHandler+onMenuItemClicked(Context,int,FeedItem) android.view.MenuItem+getItemId() android.view.MenuItem+getItemId()""","de.danoeh.antennapod.fragment.AllEpisodesFragment+TAG de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter de.danoeh.antennapod.fragment.AllEpisodesFragment+TAG de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter""",1319,31,10435,273,1,,"@Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Log.d(TAG, ""onContextItemSelected() called with: "" + ""item = ["" + item + ""]"");
+        if (!getUserVisibleHint()) {
+            return false;
+        }
+        if (!isVisible()) {
+            return false;
+        }
+        if (item.getItemId() == R.id.share_item) {
+            return true; // avoids that the position is reset when we need it in the submenu
+        }
+
+        if (listAdapter.getSelectedItem() == null) {
+            Log.i(TAG, ""Selected item or listAdapter was null, ignoring selection"");
+            return super.onContextItemSelected(item);
+        }
+        FeedItem selectedItem = listAdapter.getSelectedItem();
+
+        // Remove new flag contains UI logic specific to All/New/FavoriteSegments,
+        // e.g., Undo with Snackbar,
+        // and is handled by this class rather than the generic FeedItemMenuHandler
+        // Undo is useful for Remove new flag, given there is no UI to undo it otherwise,
+        // i.e., there is context menu item for Mark as new
+        if (R.id.remove_new_flag_item == item.getItemId()) {
+            removeNewFlagWithUndo(selectedItem);
+            return true;
+        }
+
+        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+    }",True,True
+34,"onCreateView(LayoutInflater,ViewGroup,Bundle)",Method,"""","""","android.view.LayoutInflater+inflate(XmlPullParser,ViewGroup,boolean) android.view.LayoutInflater+inflate(XmlPullParser,ViewGroup,boolean) android.view.View+findViewById(int) android.view.View+findViewById(int) java.lang.Object+Object() android.view.View+findViewById(int) android.view.View+findViewById(int) java.lang.Object+Object() +onScrolled(RecyclerView,int,int)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+txtvInformation de.danoeh.antennapod.fragment.AllEpisodesFragment+layoutManager de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView android.R.id+list de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView de.danoeh.antennapod.fragment.AllEpisodesFragment+layoutManager de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView android.view.View+GONE de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView +previousTotalEpisodes +isLoading""",3206,71,11760,306,1,,"@NonNull
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View root = inflater.inflate(R.layout.all_episodes_fragment, container, false);
+        txtvInformation = root.findViewById(R.id.txtvInformation);
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView = root.findViewById(android.R.id.list);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setVisibility(View.GONE);
+
+        RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator) {
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+        }
+
+        /* Add a scroll listener to the recycler view that loads more items,
+           when the user scrolled to the bottom of the list */
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            /* Total number of episodes after last load */
+            private int previousTotalEpisodes = 0;
+
+            /* True if loading more episodes is still in progress */
+            private boolean isLoading = true;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int deltaX, int deltaY) {
+                super.onScrolled(recyclerView, deltaX, deltaY);
+
+                int visibleEpisodeCount = recyclerView.getChildCount();
+                int totalEpisodeCount = recyclerView.getLayoutManager().getItemCount();
+                int firstVisibleEpisode = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+
+                /* Determine if loading more episodes has finished */
+                if (isLoading) {
+                    if (totalEpisodeCount > previousTotalEpisodes) {
+                        isLoading = false;
+                        previousTotalEpisodes = totalEpisodeCount;
+                    }
+                }
+
+                /* Determine if the user scrolled to the bottom and loading more episodes is not already in progress */
+                if (!isLoading && (totalEpisodeCount - visibleEpisodeCount)
+                        <= (firstVisibleEpisode + VISIBLE_EPISODES_SCROLL_THRESHOLD)) {
+
+                    /* The end of the list has been reached. Load more data. */
+                    page++;
+                    loadMoreItems();
+                    isLoading = true;
+                }
+            }
+        });
+
+        progLoading = root.findViewById(R.id.progLoading);
+        progLoading.setVisibility(View.VISIBLE);
+
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.attachToRecyclerView(recyclerView);
+        emptyView.setIcon(R.attr.feed);
+        emptyView.setTitle(R.string.no_all_episodes_head_label);
+        emptyView.setMessage(R.string.no_all_episodes_label);
+
+        createRecycleAdapter(recyclerView, emptyView);
+        emptyView.hide();
+
+        return root;
+    }",False,False
+35,onFragmentLoaded(List<FeedItem>),Method,"""","""","java.util.List+size() java.util.List+size() de.danoeh.antennapod.fragment.AllEpisodesFragment+createRecycleAdapter(RecyclerView,EmptyViewHandler) de.danoeh.antennapod.fragment.AllEpisodesFragment+createRecycleAdapter(RecyclerView,EmptyViewHandler) de.danoeh.antennapod.core.feed.FeedItemFilter+getValues() de.danoeh.antennapod.core.feed.FeedItemFilter+getValues() android.widget.TextView+setText(CharSequence) android.widget.TextView+setText(CharSequence) android.view.View+setVisibility(int) android.view.View+setVisibility(int) android.view.View+setVisibility(int) android.view.View+setVisibility(int) de.danoeh.antennapod.fragment.AllEpisodesFragment+restoreScrollPosition() de.danoeh.antennapod.fragment.AllEpisodesFragment+restoreScrollPosition()""","de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter de.danoeh.antennapod.fragment.AllEpisodesFragment+recyclerView de.danoeh.antennapod.fragment.AllEpisodesFragment+emptyView de.danoeh.antennapod.fragment.AllEpisodesFragment+feedItemFilter de.danoeh.antennapod.fragment.AllEpisodesFragment+txtvInformation de.danoeh.antennapod.fragment.AllEpisodesFragment+txtvInformation de.danoeh.antennapod.fragment.AllEpisodesFragment+txtvInformation android.view.View+VISIBLE de.danoeh.antennapod.fragment.AllEpisodesFragment+txtvInformation android.view.View+GONE""",638,18,14972,376,4,,"protected void onFragmentLoaded(List<FeedItem> episodes) {
+        listAdapter.notifyDataSetChanged();
+
+        if (episodes.size() == 0) {
+            createRecycleAdapter(recyclerView, emptyView);
+        }
+
+        if (feedItemFilter.getValues().length > 0) {
+            txtvInformation.setText(""{fa-info-circle} "" + this.getString(R.string.filtered_label));
+            Iconify.addIcons(txtvInformation);
+            txtvInformation.setVisibility(View.VISIBLE);
+        } else {
+            txtvInformation.setVisibility(View.GONE);
+        }
+
+        restoreScrollPosition();
+        requireActivity().invalidateOptionsMenu();
+    }",False,False
+36,"createRecycleAdapter(RecyclerView,EmptyViewHandler)",Method,"onFragmentLoaded(List<FeedItem>)""","""","de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter+AllEpisodesRecycleAdapter(MainActivity,ItemAccess,boolean) de.danoeh.antennapod.fragment.AllEpisodesFragment+showOnlyNewEpisodes() de.danoeh.antennapod.fragment.AllEpisodesFragment+showOnlyNewEpisodes() de.danoeh.antennapod.view.EmptyViewHandler+updateAdapter(Adapter) de.danoeh.antennapod.view.EmptyViewHandler+updateAdapter(Adapter)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter de.danoeh.antennapod.fragment.AllEpisodesFragment+itemAccess de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter""",570,11,15616,399,2,"/** 
+ * Currently, we need to recreate the list adapter in order to be able to undo last item via the snackbar. See #3084 for details.
+ */
+","/**
+     * Currently, we need to recreate the list adapter in order to be able to undo last item via the
+     * snackbar. See #3084 for details.
+     */
+    private void createRecycleAdapter(RecyclerView recyclerView, EmptyViewHandler emptyViewHandler) {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess, showOnlyNewEpisodes());
+        listAdapter.setHasStableIds(true);
+        recyclerView.setAdapter(listAdapter);
+        emptyViewHandler.updateAdapter(listAdapter);
+    }",True,True
+37,itemAccess,Field,"""","""","""","""",1707,53,16192,407,18,,"private final AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
+
+        @Override
+        public int getCount() {
+            return episodes.size();
+        }
+
+        @Override
+        public FeedItem getItem(int position) {
+            if (0 <= position && position < episodes.size()) {
+                return episodes.get(position);
+            }
+            return null;
+        }
+
+        @Override
+        public LongList getItemsIds() {
+            LongList ids = new LongList(episodes.size());
+            for (FeedItem episode : episodes) {
+                ids.add(episode.getId());
+            }
+            return ids;
+        }
+
+        @Override
+        public int getItemDownloadProgressPercent(FeedItem item) {
+            for (Downloader downloader : downloaderList) {
+                DownloadRequest downloadRequest = downloader.getDownloadRequest();
+                if (downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                        && downloadRequest.getFeedfileId() == item.getMedia().getId()) {
+                    return downloadRequest.getProgressPercent();
+                }
+            }
+            return 0;
+        }
+
+        @Override
+        public boolean isInQueue(FeedItem item) {
+            return item != null && item.isTagged(FeedItem.TAG_QUEUE);
+        }
+
+        @Override
+        public LongList getQueueIds() {
+            LongList queueIds = new LongList();
+            for (FeedItem item : episodes) {
+                if (item.isTagged(FeedItem.TAG_QUEUE)) {
+                    queueIds.add(item.getId());
+                }
+            }
+            return queueIds;
+        }
+
+    };",True,True
+38,onEventMainThread(FeedItemEvent),Method,"""","""","android.util.Log+d(String,String) android.util.Log+d(String,String) de.danoeh.antennapod.core.util.FeedItemUtil+indexOfItemWithId(List<FeedItem>,long) de.danoeh.antennapod.core.util.FeedItemUtil+indexOfItemWithId(List<FeedItem>,long) de.danoeh.antennapod.core.feed.FeedComponent+getId() de.danoeh.antennapod.core.feed.FeedComponent+getId() java.util.List+remove(int) java.util.List+remove(int) de.danoeh.antennapod.fragment.AllEpisodesFragment+shouldUpdatedItemRemainInList(FeedItem) de.danoeh.antennapod.fragment.AllEpisodesFragment+shouldUpdatedItemRemainInList(FeedItem) java.util.List+add(int,E) java.util.List+add(int,E)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+TAG de.danoeh.antennapod.core.event.FeedItemEvent+items de.danoeh.antennapod.fragment.AllEpisodesFragment+episodes de.danoeh.antennapod.fragment.AllEpisodesFragment+episodes de.danoeh.antennapod.fragment.AllEpisodesFragment+episodes de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter""",659,16,17905,462,1,,"@Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, ""onEventMainThread() called with: "" + ""event = ["" + event + ""]"");
+        for (FeedItem item : event.items) {
+            int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
+            if (pos >= 0) {
+                episodes.remove(pos);
+                if (shouldUpdatedItemRemainInList(item)) {
+                    episodes.add(pos, item);
+                    listAdapter.notifyItemChanged(pos);
+                } else {
+                    listAdapter.notifyItemRemoved(pos);
+                }
+            }
+        }
+    }",True,True
+39,shouldUpdatedItemRemainInList(FeedItem),Method,"onEventMainThread(FeedItemEvent)""","""","""","""",91,3,18570,478,4,,"protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
+        return true;
+    }",True,True
+40,onEventMainThread(DownloadEvent),Method,"""","""","android.util.Log+d(String,String) android.util.Log+d(String,String) de.danoeh.antennapod.core.util.FeedItemUtil+indexOfItemWithMediaId(List<FeedItem>,long) de.danoeh.antennapod.core.util.FeedItemUtil+indexOfItemWithMediaId(List<FeedItem>,long)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+TAG de.danoeh.antennapod.core.event.DownloadEvent+update de.danoeh.antennapod.fragment.AllEpisodesFragment+downloaderList de.danoeh.antennapod.core.event.DownloaderUpdate+downloaders de.danoeh.antennapod.fragment.AllEpisodesFragment+isMenuInvalidationAllowed de.danoeh.antennapod.fragment.AllEpisodesFragment+isUpdatingFeeds de.danoeh.antennapod.core.event.DownloaderUpdate+feedIds de.danoeh.antennapod.core.event.DownloaderUpdate+mediaIds de.danoeh.antennapod.core.event.DownloaderUpdate+mediaIds de.danoeh.antennapod.fragment.AllEpisodesFragment+episodes de.danoeh.antennapod.fragment.AllEpisodesFragment+listAdapter""",755,17,18667,483,1,,"@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, ""onEventMainThread() called with: "" + ""event = ["" + event + ""]"");
+        DownloaderUpdate update = event.update;
+        downloaderList = update.downloaders;
+        if (isMenuInvalidationAllowed && isUpdatingFeeds != update.feedIds.length > 0) {
+            requireActivity().invalidateOptionsMenu();
+        }
+        if (update.mediaIds.length > 0) {
+            for (long mediaId : update.mediaIds) {
+                int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
+                if (pos >= 0) {
+                    listAdapter.notifyItemChanged(pos);
+                }
+            }
+        }
+    }",True,True
+41,contentUpdate,Field,"""","""","""","""",460,11,19428,500,18,,"private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+        @Override
+        public void update(EventDistributor eventDistributor, Integer arg) {
+            if ((arg & EVENTS) != 0) {
+                loadItems();
+                if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+                    requireActivity().invalidateOptionsMenu();
+                }
+            }
+        }
+    };",True,True
+42,loadItems(),Method,"onStart()""","de.danoeh.antennapod.fragment.FavoriteEpisodesFragment+onEvent(FavoritesEvent)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+loadData()""","de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable""",521,13,19894,512,0,,"void loadItems() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(this::loadData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    progLoading.setVisibility(View.GONE);
+                    episodes = data;
+                    onFragmentLoaded(episodes);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }",True,True
+43,loadMoreItems(),Method,"""","""","de.danoeh.antennapod.fragment.AllEpisodesFragment+loadMoreData()""","de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable""",535,13,20421,526,0,,"void loadMoreItems() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(this::loadMoreData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    progLoading.setVisibility(View.GONE);
+                    episodes.addAll(data);
+                    onFragmentLoaded(episodes);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }",False,False
+44,loadData(),Method,"""","""","de.danoeh.antennapod.core.feed.FeedItemFilter+filter(List<FeedItem>) de.danoeh.antennapod.core.feed.FeedItemFilter+filter(List<FeedItem>) de.danoeh.antennapod.core.storage.DBReader+getRecentlyPublishedEpisodes(int,int) de.danoeh.antennapod.core.storage.DBReader+getRecentlyPublishedEpisodes(int,int)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+feedItemFilter de.danoeh.antennapod.fragment.AllEpisodesFragment+page de.danoeh.antennapod.fragment.AllEpisodesFragment+EPISODES_PER_PAGE""",153,4,20962,541,0,,"@NonNull
+    List<FeedItem> loadData() {
+        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE));
+    }",False,False
+45,loadMoreData(),Method,"""","""","de.danoeh.antennapod.core.feed.FeedItemFilter+filter(List<FeedItem>) de.danoeh.antennapod.core.feed.FeedItemFilter+filter(List<FeedItem>) de.danoeh.antennapod.core.storage.DBReader+getRecentlyPublishedEpisodes(int,int) de.danoeh.antennapod.core.storage.DBReader+getRecentlyPublishedEpisodes(int,int)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+feedItemFilter de.danoeh.antennapod.fragment.AllEpisodesFragment+page de.danoeh.antennapod.fragment.AllEpisodesFragment+EPISODES_PER_PAGE de.danoeh.antennapod.fragment.AllEpisodesFragment+EPISODES_PER_PAGE""",166,3,21121,545,0,,"List<FeedItem> loadMoreData() {
+        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE));
+    }",False,False
+46,removeNewFlagWithUndo(FeedItem),Method,"onContextItemSelected(MenuItem)""","de.danoeh.antennapod.fragment.NewEpisodesFragment+onSwiped(RecyclerView.ViewHolder,int)""","android.util.Log+d(String,String) android.util.Log+d(String,String) de.danoeh.antennapod.core.feed.FeedComponent+getId() de.danoeh.antennapod.core.feed.FeedComponent+getId() de.danoeh.antennapod.core.storage.DBWriter+markItemPlayed(int,long[]) de.danoeh.antennapod.core.storage.DBWriter+markItemPlayed(int,long[]) de.danoeh.antennapod.core.feed.FeedComponent+getId() de.danoeh.antennapod.core.feed.FeedComponent+getId() android.os.Handler+Handler(Callback) de.danoeh.antennapod.core.feed.FeedItem+getMedia() de.danoeh.antennapod.core.feed.FeedItem+getMedia() de.danoeh.antennapod.core.feed.FeedMedia+hasAlmostEnded() de.danoeh.antennapod.core.feed.FeedMedia+hasAlmostEnded() de.danoeh.antennapod.core.preferences.UserPreferences+isAutoDelete() de.danoeh.antennapod.core.preferences.UserPreferences+isAutoDelete() de.danoeh.antennapod.core.storage.DBWriter+deleteFeedMediaOfItem(Context,long) de.danoeh.antennapod.core.storage.DBWriter+deleteFeedMediaOfItem(Context,long) de.danoeh.antennapod.core.feed.FeedComponent+getId() de.danoeh.antennapod.core.feed.FeedComponent+getId() android.os.Handler+postDelayed(Runnable,long) android.os.Handler+postDelayed(Runnable,long) java.lang.Math+ceil(double) java.lang.Math+ceil(double)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+TAG de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable de.danoeh.antennapod.fragment.AllEpisodesFragment+disposable de.danoeh.antennapod.core.feed.FeedItem+UNPLAYED""",1295,31,21293,549,0,,"void removeNewFlagWithUndo(FeedItem item) {
+        if (item == null) {
+            return;
+        }
+
+        Log.d(TAG, ""removeNewFlagWithUndo("" + item.getId() + "")"");
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        // we're marking it as unplayed since the user didn't actually play it
+        // but they don't want it considered 'NEW' anymore
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+
+        final Handler h = new Handler(getActivity().getMainLooper());
+        final Runnable r = () -> {
+            FeedMedia media = item.getMedia();
+            if (media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
+            }
+        };
+
+        Snackbar snackbar = Snackbar.make(getView(), getString(R.string.removed_new_flag_label),
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(getString(R.string.undo), v -> {
+            DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
+            // don't forget to cancel the thing that's going to remove the media
+            h.removeCallbacks(r);
+        });
+        snackbar.show();
+        h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
+    }",True,True
+47,showFilterDialog(),Method,"""","""","de.danoeh.antennapod.dialog.FilterDialog+FilterDialog(Context,FeedItemFilter) +updateFilter(Set<String>)""","de.danoeh.antennapod.fragment.AllEpisodesFragment+feedItemFilter""",412,11,22594,581,2,,"private void showFilterDialog() {
+        FilterDialog filterDialog = new FilterDialog(getContext(), feedItemFilter) {
+            @Override
+            protected void updateFilter(Set<String> filterValues) {
+                feedItemFilter = new FeedItemFilter(filterValues.toArray(new String[filterValues.size()]));
+                loadItems();
+            }
+        };
+
+        filterDialog.openDialog();
+    }",False,False

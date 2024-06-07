@@ -1,0 +1,530 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,commit,full text,moved,removed
+1,newline,Field,"""","""","""","""",74,1,1941,57,25,,"public static final String newline = System.getProperty(""line.separator"");",False,False
+2,PRESERVE_TEST_DIR,Field,"""","""","""","""",585,12,2018,70,25,"/** 
+ * When the  {@code antlr.preserve-test-dir} runtime property is set to{@code true}, the temporary directories created by the test run will not be removed at the end of the test run, even for tests that completed successfully. <p> The default behavior (used in all other cases) is removing the temporary directories for all tests which completed successfully, and preserving the directories for tests which failed.</p>
+ */
+","/**
+	 * When the {@code antlr.preserve-test-dir} runtime property is set to
+	 * {@code true}, the temporary directories created by the test run will not
+	 * be removed at the end of the test run, even for tests that completed
+	 * successfully.
+	 *
+	 * <p>
+	 * The default behavior (used in all other cases) is removing the temporary
+	 * directories for all tests which completed successfully, and preserving
+	 * the directories for tests which failed.</p>
+	 */
+	public static final boolean PRESERVE_TEST_DIR = Boolean.parseBoolean(System.getProperty(""antlr-preserve-csharp-test-dir""));",False,False
+3,BASE_TEST_DIR,Field,"""","""","""","""",500,12,2606,83,25,"/** 
+ * The base test directory is the directory where generated files get placed during unit test execution. <p> The default value for this property is the  {@code java.io.tmpdir} systemproperty, and can be overridden by setting the {@code antlr.java-test-dir} property to a custom location. Note that the{@code antlr.java-test-dir} property directly affects the{@link #CREATE_PER_TEST_DIRECTORIES} value as well.</p>
+ */
+","/**
+	 * The base test directory is the directory where generated files get placed
+	 * during unit test execution.
+	 *
+	 * <p>
+	 * The default value for this property is the {@code java.io.tmpdir} system
+	 * property, and can be overridden by setting the
+	 * {@code antlr.java-test-dir} property to a custom location. Note that the
+	 * {@code antlr.java-test-dir} property directly affects the
+	 * {@link #CREATE_PER_TEST_DIRECTORIES} value as well.</p>
+	 */
+	public static final String BASE_TEST_DIR;",False,False
+4,CREATE_PER_TEST_DIRECTORIES,Field,"""","""","""","""",316,9,3109,93,25,"/** 
+ * When  {@code true}, a temporary directory will be created for each test executed during the test run. <p> This value is  {@code true} when the {@code antlr.java-test-dir} systemproperty is set, and otherwise  {@code false}.</p>
+ */
+","/**
+	 * When {@code true}, a temporary directory will be created for each test
+	 * executed during the test run.
+	 *
+	 * <p>
+	 * This value is {@code true} when the {@code antlr.java-test-dir} system
+	 * property is set, and otherwise {@code false}.</p>
+	 */
+	public static final boolean CREATE_PER_TEST_DIRECTORIES;",False,False
+5,tmpdir,Field,"""","""","""","""",28,1,3938,111,1,,public String tmpdir = null;,False,False
+6,stderrDuringParse,Field,"rawExecRecognizer(String,String,String,boolean) runProcess(String[],String,int) execTest()""","""","""","""",184,5,3969,117,4,"/** 
+ * If error during parser execution, store stderr here; can't return stdout and stderr.  This doesn't trap errors from running antlr.
+ */
+","/**
+	 * If error during parser execution, store stderr here; can't return
+	 * stdout and stderr.  This doesn't trap errors from running antlr.
+	 */
+	protected String stderrDuringParse;",False,False
+7,antlrToolErrors,Field,"""","""","""","""",87,4,4156,122,4,"/** 
+ * Errors found while running antlr
+ */
+","/**
+	 * Errors found while running antlr
+	 */
+	protected StringBuilder antlrToolErrors;",True,True
+8,testWatcher,Field,"""","""","""","""",200,10,4246,125,17,,"@org.junit.Rule
+	public final TestRule testWatcher = new TestWatcher() {
+
+		@Override
+		protected void succeeded(Description description) {
+			// remove tmpdir if no error.
+			eraseTempDir();
+		}
+
+	};",True,True
+9,testSetUp(),Method,"""","""","java.lang.Class+getSimpleName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getSimpleName() java.lang.Thread+getName() java.lang.Thread+currentThread() java.lang.Thread+currentThread() java.lang.Thread+getName() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.io.File+getAbsolutePath() java.io.File+File(String,String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.File+File(String) java.io.File+getAbsolutePath() java.io.File+exists() java.io.File+File(String) java.io.File+exists() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+eraseDirectory(File) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+eraseDirectory(File) java.io.File+File(String) java.lang.StringBuilder+StringBuilder()""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+CREATE_PER_TEST_DIRECTORIES org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir org.antlr.v4.test.runtime.csharp.BaseCSharpTest+BASE_TEST_DIR org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir org.antlr.v4.test.runtime.csharp.BaseCSharpTest+BASE_TEST_DIR org.antlr.v4.test.runtime.csharp.BaseCSharpTest+PRESERVE_TEST_DIR org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir org.antlr.v4.test.runtime.csharp.BaseCSharpTest+antlrToolErrors""",540,14,4449,136,1,,"@Override
+	public void testSetUp() throws Exception {
+		if (CREATE_PER_TEST_DIRECTORIES) {
+			// new output dir for each test
+			String testDirectory = getClass().getSimpleName() + ""-"" + Thread.currentThread().getName() + ""-"" + System.currentTimeMillis();
+			tmpdir = new File(BASE_TEST_DIR, testDirectory).getAbsolutePath();
+		} else {
+			tmpdir = new File(BASE_TEST_DIR).getAbsolutePath();
+			if (!PRESERVE_TEST_DIR && new File(tmpdir).exists()) {
+				eraseDirectory(new File(tmpdir));
+			}
+		}
+		antlrToolErrors = new StringBuilder();
+	}",True,True
+10,testTearDown(),Method,"""","""","""","""",59,3,4992,151,1,,"@Override
+	public void testTearDown() throws Exception {
+	}",True,True
+11,beforeTest(RuntimeTestDescriptor),Method,"""","""","java.io.PrintStream+println(String) java.io.PrintStream+println(String) org.antlr.v4.test.runtime.RuntimeTestDescriptor+getTestName() org.antlr.v4.test.runtime.RuntimeTestDescriptor+getTestName()""","java.lang.System+out""",120,4,5054,155,1,,"@Override
+	public void beforeTest(RuntimeTestDescriptor descriptor) {
+		System.out.println(descriptor.getTestName());
+	}",True,True
+12,afterTest(RuntimeTestDescriptor),Method,"""","""","""","""",71,3,5177,160,1,,"@Override
+	public void afterTest(RuntimeTestDescriptor descriptor) {
+	}",True,True
+13,getTmpDir(),Method,"rawGenerateRecognizer(String,String,String,String,boolean,String)""","""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir""",58,4,5251,164,1,,"@Override
+	public String getTmpDir() {
+		return tmpdir;
+	}",True,True
+14,getStdout(),Method,"""","""","""","""",56,4,5312,169,1,,"@Override
+	public String getStdout() {
+		return null;
+	}",False,False
+15,getParseErrors(),Method,"""","""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+stderrDuringParse""",74,4,5371,174,1,,"@Override
+	public String getParseErrors() {
+		return stderrDuringParse;
+	}",True,True
+16,getANTLRToolErrors(),Method,"""","""","java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.StringBuilder+toString() java.lang.StringBuilder+toString()""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+antlrToolErrors org.antlr.v4.test.runtime.csharp.BaseCSharpTest+antlrToolErrors""",146,7,5448,179,1,,"@Override
+	public String getANTLRToolErrors() {
+		if (antlrToolErrors.length() == 0) {
+			return null;
+		}
+		return antlrToolErrors.toString();
+	}",True,True
+17,"execLexer(String,String,String,String)",Method,"""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+execLexer(String,String,String,String,boolean) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+execLexer(String,String,String,String,boolean)""","""",210,6,5597,186,4,,"protected String execLexer(String grammarFileName,
+							   String grammarStr,
+							   String lexerName,
+							   String input) {
+		return execLexer(grammarFileName, grammarStr, lexerName, input, false);
+	}",False,False
+18,"execLexer(String,String,String,String,boolean)",Method,"execLexer(String,String,String,String)""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+rawGenerateRecognizer(String,String,String,String,String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+rawGenerateRecognizer(String,String,String,String,String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+writeLexerTestFile(String,boolean) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+writeLexerTestFile(String,boolean) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+addSourceFiles(String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+addSourceFiles(String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+compile() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+compile() java.io.PrintStream+println(String) java.io.PrintStream+println(String) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+execTest() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+execTest() java.lang.String+length() java.lang.String+length()""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir java.lang.System+err org.antlr.v4.test.runtime.csharp.BaseCSharpTest+stderrDuringParse""",606,24,5810,194,1,,"@Override
+	public String execLexer(String grammarFileName,
+							String grammarStr,
+							String lexerName,
+							String input,
+							boolean showDFA) {
+		boolean success = rawGenerateRecognizer(grammarFileName,
+				grammarStr,
+				null,
+				lexerName);
+		assertTrue(success);
+		writeFile(tmpdir, ""input"", input);
+		writeLexerTestFile(lexerName, showDFA);
+		addSourceFiles(""Test.cs"");
+		if (!compile()) {
+			System.err.println(""Failed to compile!"");
+			return stderrDuringParse;
+		}
+		String output = execTest();
+		if (output != null && output.length() == 0) {
+			output = null;
+		}
+		return output;
+	}",False,False
+19,sourceFiles,Field,"addSourceFiles(String)""","""","""","""",42,1,6419,218,0,,Set<String> sourceFiles = new HashSet<>();,False,False
+20,addSourceFiles(String),Method,"""","""","java.util.Set+add(E) java.util.Set+add(E)""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+sourceFiles org.antlr.v4.test.runtime.csharp.BaseCSharpTest+sourceFiles""",108,4,6464,220,2,,"private void addSourceFiles(String... files) {
+		for (String file : files)
+			this.sourceFiles.add(file);
+	}",False,False
+21,"execParser(String,String,String,String,String,String,String,String,boolean)",Method,"""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+rawGenerateRecognizer(String,String,String,String,String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+rawGenerateRecognizer(String,String,String,String,String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+rawExecRecognizer(String,String,String,boolean) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+rawExecRecognizer(String,String,String,boolean)""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir""",574,22,6575,226,1,,"@Override
+	public String execParser(String grammarFileName,
+							 String grammarStr,
+							 String parserName,
+							 String lexerName,
+							 String listenerName,
+							 String visitorName,
+							 String startRuleName,
+							 String input,
+							 boolean showDiagnosticErrors) {
+		boolean success = rawGenerateRecognizer(grammarFileName,
+				grammarStr,
+				parserName,
+				lexerName,
+				""-visitor"");
+		assertTrue(success);
+		writeFile(tmpdir, ""input"", input);
+		return rawExecRecognizer(parserName,
+				lexerName,
+				startRuleName,
+				showDiagnosticErrors);
+	}",False,False
+22,"rawGenerateRecognizer(String,String,String,String,String)",Method,"""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+rawGenerateRecognizer(String,String,String,String,boolean,String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+rawGenerateRecognizer(String,String,String,String,boolean,String[])""","""",338,10,7152,251,4,"/** 
+ * Return true if all is well
+ */
+","/**
+	 * Return true if all is well
+	 */
+	protected boolean rawGenerateRecognizer(String grammarFileName,
+											String grammarStr,
+											String parserName,
+											String lexerName,
+											String... extraOptions) {
+		return rawGenerateRecognizer(grammarFileName, grammarStr, parserName, lexerName, false, extraOptions);
+	}",False,False
+23,"rawGenerateRecognizer(String,String,String,String,boolean,String)",Method,"""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+getTmpDir() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+getTmpDir() java.util.List+isEmpty() java.util.List+isEmpty() java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.HashSet+HashSet(Collection) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+lastIndexOf(int) java.lang.String+lastIndexOf(int) java.util.Set+contains(Object) java.util.Set+contains(Object) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.Set+contains(Object) java.util.Set+contains(Object) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+addSourceFiles(String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+addSourceFiles(String[]) java.util.List+toArray(T[]) java.util.List+toArray(T[]) java.util.List+size() java.util.List+size()""","org.antlr.v4.test.runtime.ErrorQueue+errors""",1144,34,7493,262,4,"/** 
+ * Return true if all is well
+ */
+","/**
+	 * Return true if all is well
+	 */
+	protected boolean rawGenerateRecognizer(String grammarFileName,
+											String grammarStr,
+											String parserName,
+											String lexerName,
+											boolean defaultListener,
+											String... extraOptions) {
+		ErrorQueue equeue = antlrOnString(getTmpDir(), ""CSharp"", grammarFileName, grammarStr, defaultListener, extraOptions);
+		if (!equeue.errors.isEmpty()) {
+			return false;
+		}
+
+		List<String> files = new ArrayList<String>();
+		if (lexerName != null) {
+			files.add(lexerName + "".cs"");
+		}
+		if (parserName != null) {
+			files.add(parserName + "".cs"");
+			Set<String> optionsSet = new HashSet<String>(Arrays.asList(extraOptions));
+			String grammarName = grammarFileName.substring(0, grammarFileName.lastIndexOf('.'));
+			if (!optionsSet.contains(""-no-listener"")) {
+				files.add(grammarName + ""Listener.cs"");
+				files.add(grammarName + ""BaseListener.cs"");
+			}
+			if (optionsSet.contains(""-visitor"")) {
+				files.add(grammarName + ""Visitor.cs"");
+				files.add(grammarName + ""BaseVisitor.cs"");
+			}
+		}
+		addSourceFiles(files.toArray(new String[files.size()]));
+		return true;
+	}",False,False
+24,"rawExecRecognizer(String,String,String,boolean)",Method,"execParser(String,String,String,String,String,String,String,String,boolean)""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+writeLexerTestFile(String,boolean) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+writeLexerTestFile(String,boolean) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+writeParserTestFile(String,String,String,boolean) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+writeParserTestFile(String,String,String,boolean) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+addSourceFiles(String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+addSourceFiles(String[]) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+execRecognizer() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+execRecognizer()""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+stderrDuringParse org.antlr.v4.test.runtime.csharp.BaseCSharpTest+stderrDuringParse""",419,17,8640,294,4,,"protected String rawExecRecognizer(String parserName,
+									   String lexerName,
+									   String parserStartRuleName,
+									   boolean debug) {
+		this.stderrDuringParse = null;
+		if (parserName == null) {
+			writeLexerTestFile(lexerName, false);
+		} else {
+			writeParserTestFile(parserName,
+					lexerName,
+					parserStartRuleName,
+					debug);
+		}
+
+		addSourceFiles(""Test.cs"");
+		return execRecognizer();
+	}",False,False
+25,execRecognizer(),Method,"rawExecRecognizer(String,String,String,boolean)""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+compile() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+compile() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+execTest() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+execTest() java.lang.String+length() java.lang.String+length()""","""",207,10,9062,312,1,,"public String execRecognizer() {
+		boolean success = compile();
+		assertTrue(success);
+
+		String output = execTest();
+		if (output != null && output.length() == 0) {
+			output = null;
+		}
+		return output;
+	}",False,False
+26,compile(),Method,"execLexer(String,String,String,String,boolean) execRecognizer()""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+buildProject() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+buildProject() java.lang.Throwable+printStackTrace(PrintStream) java.lang.Throwable+printStackTrace(PrintStream)""","java.lang.System+err""",144,8,9272,323,1,,"public boolean compile() {
+		try {
+			return buildProject();
+		} catch (Exception e) {
+			e.printStackTrace(System.err);
+			return false;
+		}
+	}",False,False
+27,locateExec(),Method,"execTest()""","""","java.io.File+getAbsolutePath() java.io.File+File(String,String) java.io.File+getAbsolutePath()""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir""",115,3,9419,332,2,,"private String locateExec() {
+		return new File(tmpdir, ""bin/Release/netcoreapp3.1/Test.dll"").getAbsolutePath();
+	}",False,False
+28,buildProject(),Method,"compile()""","""","java.lang.String+replace(CharSequence,CharSequence) java.lang.Package+getName() java.lang.Class+getPackage() java.lang.Class+getPackage() java.lang.Package+getName() java.lang.String+replace(CharSequence,CharSequence) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+saveResourceAsFile(String,File) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+saveResourceAsFile(String,File) java.io.File+File(String,String) java.lang.Thread+getContextClassLoader() java.lang.Thread+currentThread() java.lang.Thread+currentThread() java.lang.Thread+getContextClassLoader() java.lang.ClassLoader+getResource(String) java.lang.ClassLoader+getResource(String) java.lang.RuntimeException+RuntimeException(String) java.io.File+File(String) java.net.URL+getFile() java.net.URL+getFile() java.io.File+getPath() java.io.File+getPath() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+runProcess(String[],String) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+runProcess(String[],String) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+runProcess(String[],String) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+runProcess(String[],String) java.lang.Throwable+printStackTrace(PrintStream) java.lang.Throwable+printStackTrace(PrintStream)""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir java.lang.System+err""",1173,43,9537,336,1,,"public boolean buildProject() {
+		try {
+			// save auxiliary files
+			String pack = BaseCSharpTest.class.getPackage().getName().replace(""."", ""/"") + ""/"";
+			saveResourceAsFile(pack + ""Antlr4.Test.csproj"", new File(tmpdir, ""Antlr4.Test.csproj""));
+
+			// find runtime package
+			final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+			final URL runtimeProj = loader.getResource(""CSharp/Antlr4.csproj"");
+			if (runtimeProj == null) {
+				throw new RuntimeException(""C# runtime project file not found!"");
+			}
+			File runtimeProjFile = new File(runtimeProj.getFile());
+			String runtimeProjPath = runtimeProjFile.getPath();
+
+			// add Runtime project reference
+			String[] args = new String[]{
+					""dotnet"",
+					""add"",
+					""Antlr4.Test.csproj"",
+					""reference"",
+					runtimeProjPath
+			};
+			boolean success = runProcess(args, tmpdir);
+			assertTrue(success);
+
+			// build test
+			args = new String[]{
+					""dotnet"",
+					""build"",
+					""Antlr4.Test.csproj"",
+					""-c"",
+					""Release""
+			};
+			success = runProcess(args, tmpdir);
+			assertTrue(success);
+		} catch (Exception e) {
+			e.printStackTrace(System.err);
+			return false;
+		}
+
+		return true;
+	}",False,False
+29,"runProcess(String[],String)",Method,"buildProject() buildProject()""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+runProcess(String[],String,int) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+runProcess(String[],String,int)""","""",112,3,10713,380,2,,"private boolean runProcess(String[] args, String path) throws Exception {
+		return runProcess(args, path, 0);
+	}",False,False
+30,"runProcess(String[],String,int)",Method,"runProcess(String[],String) runProcess(String[],String,int)""","""","java.lang.ProcessBuilder+ProcessBuilder(String[]) java.lang.ProcessBuilder+directory(File) java.lang.ProcessBuilder+directory(File) java.io.File+File(String) java.lang.ProcessBuilder+start() java.lang.ProcessBuilder+start() org.antlr.v4.test.runtime.StreamVacuum+StreamVacuum(InputStream) java.lang.Process+getInputStream() java.lang.Process+getInputStream() org.antlr.v4.test.runtime.StreamVacuum+StreamVacuum(InputStream) java.lang.Process+getErrorStream() java.lang.Process+getErrorStream() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() java.lang.Process+waitFor() java.lang.Process+waitFor() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() java.lang.Process+exitValue() java.lang.Process+exitValue() org.antlr.v4.test.runtime.StreamVacuum+toString() org.antlr.v4.test.runtime.StreamVacuum+toString() java.io.PrintStream+println(String) java.io.PrintStream+println(String) org.antlr.v4.runtime.misc.Utils+join(T[],String) org.antlr.v4.runtime.misc.Utils+join(T[],String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) org.antlr.v4.test.runtime.StreamVacuum+toString() org.antlr.v4.test.runtime.StreamVacuum+toString() java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+runProcess(String[],String,int) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+runProcess(String[],String,int) java.io.PrintStream+println(String) java.io.PrintStream+println(String)""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+stderrDuringParse org.antlr.v4.test.runtime.csharp.BaseCSharpTest+stderrDuringParse java.lang.System+err java.lang.System+err java.lang.System+err java.lang.System+err org.antlr.v4.test.runtime.csharp.BaseCSharpTest+stderrDuringParse java.lang.System+err java.lang.System+err""",1311,35,10828,384,2,,"private boolean runProcess(String[] args, String path, int retries) throws Exception {
+		ProcessBuilder pb = new ProcessBuilder(args);
+		pb.directory(new File(path));
+		Process process = pb.start();
+		StreamVacuum stdoutVacuum = new StreamVacuum(process.getInputStream());
+		StreamVacuum stderrVacuum = new StreamVacuum(process.getErrorStream());
+		stdoutVacuum.start();
+		stderrVacuum.start();
+		process.waitFor();
+		stdoutVacuum.join();
+		stderrVacuum.join();
+		int exitValue = process.exitValue();
+		boolean success = (exitValue == 0);
+		if (!success) {
+			this.stderrDuringParse = stderrVacuum.toString();
+			System.err.println(""runProcess command: "" + Utils.join(args, "" ""));
+			System.err.println(""runProcess exitValue: "" + exitValue);
+			System.err.println(""runProcess stdoutVacuum: "" + stdoutVacuum.toString());
+			System.err.println(""runProcess stderrVacuum: "" + stderrDuringParse);
+		}
+		if (exitValue == 132) {
+			// Retry after SIGILL.  We are seeing this intermittently on
+			// macOS (issue #2078).
+			if (retries < 3) {
+				System.err.println(""runProcess retrying; "" + retries +
+						"" retries so far"");
+				return runProcess(args, path, retries + 1);
+			} else {
+				System.err.println(""runProcess giving up after "" + retries +
+						"" retries"");
+				return false;
+			}
+		}
+		return success;
+	}",False,False
+31,"saveResourceAsFile(String,File)",Method,"buildProject()""","""","java.lang.ClassLoader+getResourceAsStream(String) java.lang.Thread+getContextClassLoader() java.lang.Thread+currentThread() java.lang.Thread+currentThread() java.lang.Thread+getContextClassLoader() java.lang.ClassLoader+getResourceAsStream(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.IOException+IOException(String) java.io.FileOutputStream+FileOutputStream(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.InputStream+available() java.io.InputStream+available() java.io.OutputStream+write(int) java.io.OutputStream+write(int) java.io.InputStream+read() java.io.InputStream+read() java.io.OutputStream+close() java.io.OutputStream+close() java.io.InputStream+close() java.io.InputStream+close()""","java.lang.System+err""",524,13,12142,420,2,,"private void saveResourceAsFile(String resourceName, File file) throws IOException {
+		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
+		if (input == null) {
+			System.err.println(""Can't find "" + resourceName + "" as resource"");
+			throw new IOException(""Missing resource:"" + resourceName);
+		}
+		OutputStream output = new FileOutputStream(file.getAbsolutePath());
+		while (input.available() > 0) {
+			output.write(input.read());
+		}
+		output.close();
+		input.close();
+	}",False,False
+32,execTest(),Method,"execLexer(String,String,String,String,boolean) execRecognizer()""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+locateExec() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+locateExec() java.io.File+File(String) java.nio.file.Path+resolve(String) java.io.File+toPath() java.io.File+toPath() java.nio.file.Path+resolve(String) java.nio.file.Path+resolve(String) java.io.File+toPath() java.io.File+toPath() java.nio.file.Path+resolve(String) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+getExecTestArgs(String,Path,Path) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+getExecTestArgs(String,Path,Path) java.lang.ProcessBuilder+ProcessBuilder(String[]) java.lang.ProcessBuilder+directory(File) java.lang.ProcessBuilder+directory(File) java.lang.ProcessBuilder+start() java.lang.ProcessBuilder+start() org.antlr.v4.test.runtime.StreamVacuum+StreamVacuum(InputStream) java.lang.Process+getInputStream() java.lang.Process+getInputStream() org.antlr.v4.test.runtime.StreamVacuum+StreamVacuum(InputStream) java.lang.Process+getErrorStream() java.lang.Process+getErrorStream() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() java.lang.Process+waitFor() java.lang.Process+waitFor() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.TestOutputReading+read(Path) org.antlr.v4.test.runtime.TestOutputReading+read(Path) org.antlr.v4.test.runtime.TestOutputReading+read(Path) org.antlr.v4.test.runtime.TestOutputReading+read(Path) java.lang.Process+exitValue() java.lang.Process+exitValue() java.lang.String+trim() org.antlr.v4.test.runtime.StreamVacuum+toString() org.antlr.v4.test.runtime.StreamVacuum+toString() java.lang.String+trim() java.lang.String+trim() org.antlr.v4.test.runtime.StreamVacuum+toString() org.antlr.v4.test.runtime.StreamVacuum+toString() java.lang.String+trim() java.io.PrintStream+println(String) java.io.PrintStream+println(String) org.antlr.v4.runtime.misc.Utils+join(T[],String) org.antlr.v4.runtime.misc.Utils+join(T[],String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.lang.String+isEmpty() java.lang.String+isEmpty() java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.lang.String+isEmpty() java.lang.String+isEmpty() java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.lang.Throwable+printStackTrace(PrintStream) java.lang.Throwable+printStackTrace(PrintStream)""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir org.antlr.v4.test.runtime.csharp.BaseCSharpTest+stderrDuringParse org.antlr.v4.test.runtime.csharp.BaseCSharpTest+stderrDuringParse java.lang.System+err java.lang.System+err java.lang.System+err java.lang.System+err java.lang.System+err java.lang.System+err""",1472,39,12669,434,1,,"public String execTest() {
+		String exec = locateExec();
+		try {
+			File tmpdirFile = new File(tmpdir);
+			Path output = tmpdirFile.toPath().resolve(""output"");
+			Path errorOutput = tmpdirFile.toPath().resolve(""error-output"");
+			String[] args = getExecTestArgs(exec, output, errorOutput);
+			ProcessBuilder pb = new ProcessBuilder(args);
+			pb.directory(tmpdirFile);
+			Process process = pb.start();
+			StreamVacuum stdoutVacuum = new StreamVacuum(process.getInputStream());
+			StreamVacuum stderrVacuum = new StreamVacuum(process.getErrorStream());
+			stdoutVacuum.start();
+			stderrVacuum.start();
+			process.waitFor();
+			stdoutVacuum.join();
+			stderrVacuum.join();
+			String writtenOutput = TestOutputReading.read(output);
+			this.stderrDuringParse = TestOutputReading.read(errorOutput);
+			int exitValue = process.exitValue();
+			String stdoutString = stdoutVacuum.toString().trim();
+			String stderrString = stderrVacuum.toString().trim();
+			if (exitValue != 0) {
+				System.err.println(""execTest command: "" + Utils.join(args, "" ""));
+				System.err.println(""execTest exitValue: "" + exitValue);
+			}
+			if (!stdoutString.isEmpty()) {
+				System.err.println(""execTest stdoutVacuum: "" + stdoutString);
+			}
+			if (!stderrString.isEmpty()) {
+				System.err.println(""execTest stderrVacuum: "" + stderrString);
+			}
+			return writtenOutput;
+		} catch (Exception e) {
+			System.err.println(""can't exec recognizer"");
+			e.printStackTrace(System.err);
+		}
+		return null;
+	}",False,False
+33,"getExecTestArgs(String,Path,Path)",Method,"execTest()""","""","java.io.File+getAbsolutePath() java.io.File+File(String,String) java.io.File+getAbsolutePath() java.nio.file.Path+toString() java.nio.file.Path+toAbsolutePath() java.nio.file.Path+toAbsolutePath() java.nio.file.Path+toString() java.nio.file.Path+toString() java.nio.file.Path+toAbsolutePath() java.nio.file.Path+toAbsolutePath() java.nio.file.Path+toString()""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir""",258,7,14144,474,2,,"private String[] getExecTestArgs(String exec, Path output, Path errorOutput) {
+		return new String[]{
+				""dotnet"", exec, new File(tmpdir, ""input"").getAbsolutePath(),
+				output.toAbsolutePath().toString(),
+				errorOutput.toAbsolutePath().toString()
+		};
+	}",False,False
+34,"writeParserTestFile(String,String,String,boolean)",Method,"rawExecRecognizer(String,String,String,boolean)""","""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir""",2638,56,14405,482,4,,"protected void writeParserTestFile(String parserName,
+									   String lexerName,
+									   String parserStartRuleName,
+									   boolean debug) {
+		ST outputFileST = new ST(
+				""using System;\n"" +
+						""using Antlr4.Runtime;\n"" +
+						""using Antlr4.Runtime.Tree;\n"" +
+						""using System.IO;\n"" +
+						""using System.Text;\n"" +
+						""\n"" +
+						""public class Test {\n"" +
+						""    public static void Main(string[] args) {\n"" +
+						""        var input = CharStreams.fromPath(args[0]);\n"" +
+						""        using (FileStream fsOut = new FileStream(args[1], FileMode.Create, FileAccess.Write))\n"" +
+						""        using (FileStream fsErr = new FileStream(args[2], FileMode.Create, FileAccess.Write))\n"" +
+						""        using (TextWriter output = new StreamWriter(fsOut),\n"" +
+						""                          errorOutput = new StreamWriter(fsErr)) {\n"" +
+						""                <lexerName> lex = new <lexerName>(input, output, errorOutput);\n"" +
+						""                CommonTokenStream tokens = new CommonTokenStream(lex);\n"" +
+						""                <createParser>\n"" +
+						""			 parser.BuildParseTree = true;\n"" +
+						""                ParserRuleContext tree = parser.<parserStartRuleName>();\n"" +
+						""                ParseTreeWalker.Default.Walk(new TreeShapeListener(), tree);\n"" +
+						""        }\n"" +
+						""    }\n"" +
+						""}\n"" +
+						""\n"" +
+						""class TreeShapeListener : IParseTreeListener {\n"" +
+						""	public void VisitTerminal(ITerminalNode node) { }\n"" +
+						""	public void VisitErrorNode(IErrorNode node) { }\n"" +
+						""	public void ExitEveryRule(ParserRuleContext ctx) { }\n"" +
+						""\n"" +
+						""	public void EnterEveryRule(ParserRuleContext ctx) {\n"" +
+						""		for (int i = 0; i \\< ctx.ChildCount; i++) {\n"" +
+						""			IParseTree parent = ctx.GetChild(i).Parent;\n"" +
+						""			if (!(parent is IRuleNode) || ((IRuleNode)parent).RuleContext != ctx) {\n"" +
+						""				throw new Exception(\""Invalid parse tree shape detected.\"");\n"" +
+						""			}\n"" +
+						""		}\n"" +
+						""	}\n"" +
+						""}""
+		);
+		ST createParserST = new ST(""        <parserName> parser = new <parserName>(tokens, output, errorOutput);\n"");
+		if (debug) {
+			createParserST =
+					new ST(
+							""        <parserName> parser = new <parserName>(tokens, output, errorOutput);\n"" +
+									""        parser.AddErrorListener(new DiagnosticErrorListener());\n"");
+		}
+		outputFileST.add(""createParser"", createParserST);
+		outputFileST.add(""parserName"", parserName);
+		outputFileST.add(""lexerName"", lexerName);
+		outputFileST.add(""parserStartRuleName"", parserStartRuleName);
+		writeFile(tmpdir, ""Test.cs"", outputFileST.render());
+	}",False,False
+35,"writeLexerTestFile(String,boolean)",Method,"execLexer(String,String,String,String,boolean) rawExecRecognizer(String,String,String,boolean)""","""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir""",1295,28,17046,539,4,,"protected void writeLexerTestFile(String lexerName, boolean showDFA) {
+		ST outputFileST = new ST(
+				""using System;\n"" +
+						""using Antlr4.Runtime;\n"" +
+						""using System.IO;\n"" +
+						""using System.Text;\n"" +
+						""\n"" +
+						""public class Test {\n"" +
+						""    public static void Main(string[] args) {\n"" +
+						""        var input = CharStreams.fromPath(args[0]);\n"" +
+						""        using (FileStream fsOut = new FileStream(args[1], FileMode.Create, FileAccess.Write))\n"" +
+						""        using (FileStream fsErr = new FileStream(args[2], FileMode.Create, FileAccess.Write))\n"" +
+						""        using (TextWriter output = new StreamWriter(fsOut),\n"" +
+						""                          errorOutput = new StreamWriter(fsErr)) {\n"" +
+						""        <lexerName> lex = new <lexerName>(input, output, errorOutput);\n"" +
+						""        CommonTokenStream tokens = new CommonTokenStream(lex);\n"" +
+						""        tokens.Fill();\n"" +
+						""        foreach (object t in tokens.GetTokens())\n"" +
+						""			output.WriteLine(t);\n"" +
+						(showDFA ? ""        output.Write(lex.Interpreter.GetDFA(Lexer.DEFAULT_MODE).ToLexerString());\n"" : """") +
+						""    }\n"" +
+						""}\n"" +
+						""}""
+		);
+
+		outputFileST.add(""lexerName"", lexerName);
+		writeFile(tmpdir, ""Test.cs"", outputFileST.render());
+	}",False,False
+36,eraseDirectory(File),Method,"testSetUp() eraseDirectory(File) eraseTempDir()""","""","java.io.File+listFiles() java.io.File+listFiles() java.io.File+isDirectory() java.io.File+isDirectory() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+eraseDirectory(File) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+eraseDirectory(File) java.io.File+delete() java.io.File+delete() java.io.File+delete() java.io.File+delete()""","""",251,13,18344,568,4,,"protected void eraseDirectory(File dir) {
+		File[] files = dir.listFiles();
+		if (files != null) {
+			for (File file : files) {
+				if (file.isDirectory()) {
+					eraseDirectory(file);
+				} else {
+					file.delete();
+				}
+			}
+		}
+		dir.delete();
+	}",True,True
+37,eraseTempDir(),Method,"""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+shouldEraseTempDir() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+shouldEraseTempDir() java.io.File+File(String) java.io.File+exists() java.io.File+exists() org.antlr.v4.test.runtime.csharp.BaseCSharpTest+eraseDirectory(File) org.antlr.v4.test.runtime.csharp.BaseCSharpTest+eraseDirectory(File) java.io.File+delete() java.io.File+delete()""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir""",195,10,18598,583,1,,"@Override
+	public void eraseTempDir() {
+		if (shouldEraseTempDir()) {
+			File tmpdirF = new File(tmpdir);
+			if (tmpdirF.exists()) {
+				eraseDirectory(tmpdirF);
+				tmpdirF.delete();
+			}
+		}
+	}",True,True
+38,shouldEraseTempDir(),Method,"eraseTempDir()""","""","""","org.antlr.v4.test.runtime.csharp.BaseCSharpTest+tmpdir org.antlr.v4.test.runtime.csharp.BaseCSharpTest+PRESERVE_TEST_DIR""",86,3,18796,593,2,,"private boolean shouldEraseTempDir() {
+		return tmpdir!=null && !PRESERVE_TEST_DIR;
+	}",True,True
+39,"sort(Map<K,V>)",Method,"""","""","java.util.LinkedHashMap+LinkedHashMap() java.util.ArrayList+ArrayList() java.util.List+addAll(Collection) java.util.List+addAll(Collection) java.util.Map+keySet() java.util.Map+keySet() java.util.Collections+sort(List) java.util.Collections+sort(List) java.util.HashMap+put(K,V) java.util.HashMap+put(K,V) java.util.Map+get(Object) java.util.Map+get(Object)""","""",343,13,18885,600,1,"/** 
+ * Return map sorted by key
+ */
+","/**
+	 * Return map sorted by key
+	 */
+	public <K extends Comparable<? super K>, V> LinkedHashMap<K, V> sort(Map<K, V> data) {
+		LinkedHashMap<K, V> dup = new LinkedHashMap<K, V>();
+		List<K> keys = new ArrayList<K>();
+		keys.addAll(data.keySet());
+		Collections.sort(keys);
+		for (K k : keys) {
+			dup.put(k, data.get(k));
+		}
+		return dup;
+	}",False,False
+40,"assertEquals(String,int,int)",Method,"""","""","""","""",109,3,19231,611,12,,"protected static void assertEquals(String msg, int a, int b) {
+		org.junit.Assert.assertEquals(msg, a, b);
+	}",False,False
+41,"assertEquals(String,String)",Method,"""","""","""","""",98,3,19343,615,12,,"protected static void assertEquals(String a, String b) {
+		org.junit.Assert.assertEquals(a, b);
+	}",False,False

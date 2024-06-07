@@ -1,0 +1,467 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,commit,full text,moved,removed
+1,newline,Field,"""","""","""","""",74,1,1309,38,25,,"public static final String newline = System.getProperty(""line.separator"");",False,False
+2,pathSep,Field,"""","""","""","""",74,1,1385,39,25,,"public static final String pathSep = System.getProperty(""path.separator"");",False,False
+3,tmpdir,Field,"""","""","""","""",28,1,1462,41,1,,public String tmpdir = null;,False,False
+4,stderrDuringParse,Field,"rawBuildRecognizerTestFile(String,String,String,String,String,boolean) execModule(String)""","""","""","""",183,5,1493,47,4,"/** 
+ * If error during parser execution, store stderr here; can't return stdout and stderr. This doesn't trap errors from running antlr.
+ */
+","/**
+	 * If error during parser execution, store stderr here; can't return stdout
+	 * and stderr. This doesn't trap errors from running antlr.
+	 */
+	protected String stderrDuringParse;",False,False
+5,antlrToolErrors,Field,"""","""","""","""",81,2,1679,50,4,"/** 
+ * Errors found while running antlr 
+ */
+","/** Errors found while running antlr */
+	protected StringBuilder antlrToolErrors;",False,True
+6,testWatcher,Field,"""","""","""","""",200,10,1763,53,17,,"@org.junit.Rule
+	public final TestRule testWatcher = new TestWatcher() {
+
+		@Override
+		protected void succeeded(Description description) {
+			// remove tmpdir if no error.
+			eraseTempDir();
+		}
+
+	};",False,True
+7,testSetUp(),Method,"""","""","java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.String+length() java.lang.String+length() java.io.File+getAbsolutePath() java.io.File+File(String,String) java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.Class+getSimpleName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getSimpleName() java.lang.Thread+getName() java.lang.Thread+currentThread() java.lang.Thread+currentThread() java.lang.Thread+getName() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.io.File+getAbsolutePath() java.io.File+File(String) java.io.File+exists() java.io.File+exists() org.antlr.v4.test.runtime.javascript.BaseNodeTest+eraseFiles(File) org.antlr.v4.test.runtime.javascript.BaseNodeTest+eraseFiles(File) java.lang.StringBuilder+StringBuilder()""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+antlrToolErrors""",534,17,1966,64,1,,"@Override
+	public void testSetUp() throws Exception {
+		// new output dir for each test
+		String prop = System.getProperty(""antlr-javascript-test-dir"");
+		if (prop != null && prop.length() > 0) {
+			tmpdir = prop;
+		}
+		else {
+			tmpdir = new File(System.getProperty(""java.io.tmpdir""), getClass()
+				.getSimpleName()+""-""+Thread.currentThread().getName()+""-""+System.currentTimeMillis())
+				.getAbsolutePath();
+		}
+		File dir = new File(tmpdir);
+		if (dir.exists())
+			this.eraseFiles(dir);
+		antlrToolErrors = new StringBuilder();
+	}",False,True
+8,testTearDown(),Method,"""","""","""","""",59,3,2503,82,1,,"@Override
+	public void testTearDown() throws Exception {
+	}",False,True
+9,beforeTest(RuntimeTestDescriptor),Method,"""","""","""","""",72,3,2565,86,1,,"@Override
+	public void beforeTest(RuntimeTestDescriptor descriptor) {
+	}",False,True
+10,afterTest(RuntimeTestDescriptor),Method,"""","""","""","""",71,3,2640,90,1,,"@Override
+	public void afterTest(RuntimeTestDescriptor descriptor) {
+	}",False,True
+11,getTmpDir(),Method,"rawGenerateAndBuildRecognizer(String,String,String,String,boolean,String)""","""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",58,4,2714,94,1,,"@Override
+	public String getTmpDir() {
+		return tmpdir;
+	}",False,True
+12,getStdout(),Method,"""","""","""","""",56,4,2775,99,1,,"@Override
+	public String getStdout() {
+		return null;
+	}",False,False
+13,getParseErrors(),Method,"""","""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+stderrDuringParse""",74,4,2834,104,1,,"@Override
+	public String getParseErrors() {
+		return stderrDuringParse;
+	}",False,True
+14,getANTLRToolErrors(),Method,"""","""","java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.StringBuilder+toString() java.lang.StringBuilder+toString()""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+antlrToolErrors org.antlr.v4.test.runtime.javascript.BaseNodeTest+antlrToolErrors""",146,7,2911,109,1,,"@Override
+	public String getANTLRToolErrors() {
+		if ( antlrToolErrors.length()==0 ) {
+			return null;
+		}
+		return antlrToolErrors.toString();
+	}",False,True
+15,"createATN(Grammar,boolean)",Method,"""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+semanticProcess(Grammar) org.antlr.v4.test.runtime.javascript.BaseNodeTest+semanticProcess(Grammar) org.antlr.v4.Tool+getNumErrors() org.antlr.v4.Tool+getNumErrors() org.antlr.v4.tool.Grammar+isLexer() org.antlr.v4.tool.Grammar+isLexer() org.antlr.v4.automata.LexerATNFactory+LexerATNFactory(LexerGrammar) org.antlr.v4.automata.ParserATNFactory+ParserATNFactory(Grammar) org.antlr.v4.automata.ParserATNFactory+createATN() org.antlr.v4.automata.ParserATNFactory+createATN() org.antlr.v4.Tool+getNumErrors() org.antlr.v4.Tool+getNumErrors() org.antlr.v4.runtime.atn.ATNSerializer+getSerializedAsChars(ATN) org.antlr.v4.runtime.atn.ATNSerializer+getSerializedAsChars(ATN) org.antlr.v4.runtime.atn.ATNDeserializer+deserialize(char[]) org.antlr.v4.runtime.atn.ATNDeserializer+ATNDeserializer() org.antlr.v4.runtime.atn.ATNDeserializer+deserialize(char[])""","org.antlr.v4.tool.Grammar+atn org.antlr.v4.tool.Grammar+tool org.antlr.v4.tool.Grammar+atn org.antlr.v4.tool.Grammar+tool org.antlr.v4.tool.Grammar+atn""",554,25,3060,116,4,,"protected ATN createATN(Grammar g, boolean useSerializer) {
+		if (g.atn == null) {
+			semanticProcess(g);
+			assertEquals(0, g.tool.getNumErrors());
+
+			ParserATNFactory f;
+			if (g.isLexer()) {
+				f = new LexerATNFactory((LexerGrammar) g);
+			}
+			else {
+				f = new ParserATNFactory(g);
+			}
+
+			g.atn = f.createATN();
+			assertEquals(0, g.tool.getNumErrors());
+		}
+
+		ATN atn = g.atn;
+		if (useSerializer) {
+			char[] serialized = ATNSerializer.getSerializedAsChars(atn);
+			return new ATNDeserializer().deserialize(serialized);
+		}
+
+		return atn;
+	}",False,True
+16,semanticProcess(Grammar),Method,"createATN(Grammar,boolean)""","""","java.io.PrintStream+println(char[]) java.io.PrintStream+println(char[]) org.antlr.v4.Tool+Tool() org.antlr.v4.semantics.SemanticPipeline+SemanticPipeline(Grammar) org.antlr.v4.semantics.SemanticPipeline+process() org.antlr.v4.semantics.SemanticPipeline+process() org.antlr.v4.tool.Grammar+getImportedGrammars() org.antlr.v4.tool.Grammar+getImportedGrammars() org.antlr.v4.tool.Grammar+getImportedGrammars() org.antlr.v4.tool.Grammar+getImportedGrammars() org.antlr.v4.Tool+processNonCombinedGrammar(Grammar,boolean) org.antlr.v4.Tool+processNonCombinedGrammar(Grammar,boolean)""","org.antlr.v4.tool.Grammar+ast org.antlr.v4.tool.Grammar+ast org.antlr.v4.tool.ast.GrammarRootAST+hasErrors java.lang.System+out org.antlr.v4.tool.Grammar+ast""",442,14,3617,142,4,,"protected void semanticProcess(Grammar g) {
+		if (g.ast != null && !g.ast.hasErrors) {
+			System.out.println(g.ast.toStringTree());
+			Tool antlr = new Tool();
+			SemanticPipeline sem = new SemanticPipeline(g);
+			sem.process();
+			if (g.getImportedGrammars() != null) { // process imported grammars
+													// (if any)
+				for (Grammar imp : g.getImportedGrammars()) {
+					antlr.processNonCombinedGrammar(imp, false);
+				}
+			}
+		}
+	}",False,True
+17,"execLexer(String,String,String,String)",Method,"""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+execLexer(String,String,String,String,boolean) org.antlr.v4.test.runtime.javascript.BaseNodeTest+execLexer(String,String,String,String,boolean)""","""",208,4,4062,157,4,,"protected String execLexer(String grammarFileName, String grammarStr,
+	                           String lexerName, String input) {
+		return execLexer(grammarFileName, grammarStr, lexerName, input, false);
+	}",False,False
+18,"execLexer(String,String,String,String,boolean)",Method,"execLexer(String,String,String,String)""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+rawGenerateAndBuildRecognizer(String,String,String,String,String[]) org.antlr.v4.test.runtime.javascript.BaseNodeTest+rawGenerateAndBuildRecognizer(String,String,String,String,String[]) org.antlr.v4.test.runtime.javascript.BaseNodeTest+writeLexerTestFile(String,boolean) org.antlr.v4.test.runtime.javascript.BaseNodeTest+writeLexerTestFile(String,boolean) org.antlr.v4.test.runtime.javascript.BaseNodeTest+execModule(String) org.antlr.v4.test.runtime.javascript.BaseNodeTest+execModule(String) java.lang.String+length() java.lang.String+length()""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",612,15,4273,163,1,,"@Override
+	public  String execLexer(String grammarFileName, String grammarStr,
+	                         String lexerName, String input, boolean showDFA) {
+		boolean success = rawGenerateAndBuildRecognizer(grammarFileName,
+		                                                grammarStr, null, lexerName, ""-no-listener"");
+		assertTrue(success);
+		writeFile(tmpdir, ""input"", input);
+		writeLexerTestFile(lexerName, showDFA);
+		writeFile(tmpdir, ""package.json"", ""{\""type\"": \""module\""}"");
+		String output = execModule(""Test.js"");
+		if ( output!=null && output.length()==0 ) {
+			output = null;
+		}
+		return output;
+	}",False,False
+19,"execParser(String,String,String,String,String,String,String,String,boolean)",Method,"""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+rawGenerateAndBuildRecognizer(String,String,String,String,String[]) org.antlr.v4.test.runtime.javascript.BaseNodeTest+rawGenerateAndBuildRecognizer(String,String,String,String,String[]) org.antlr.v4.test.runtime.javascript.BaseNodeTest+rawBuildRecognizerTestFile(String,String,String,String,String,boolean) org.antlr.v4.test.runtime.javascript.BaseNodeTest+rawBuildRecognizerTestFile(String,String,String,String,String,boolean) org.antlr.v4.test.runtime.javascript.BaseNodeTest+execRecognizer() org.antlr.v4.test.runtime.javascript.BaseNodeTest+execRecognizer()""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",721,15,4888,179,1,,"@Override
+	public String execParser(String grammarFileName, String grammarStr,
+	                         String parserName, String lexerName, String listenerName,
+	                         String visitorName, String startRuleName, String input,
+	                         boolean showDiagnosticErrors)
+	{
+		boolean success = rawGenerateAndBuildRecognizer(grammarFileName,
+				grammarStr, parserName, lexerName, ""-visitor"");
+		assertTrue(success);
+		writeFile(tmpdir, ""input"", input);
+		rawBuildRecognizerTestFile(parserName, lexerName, listenerName,
+		                           visitorName, startRuleName, showDiagnosticErrors);
+		writeFile(tmpdir, ""package.json"", ""{\""type\"": \""module\""}"");
+		return execRecognizer();
+	}",False,False
+20,"rawGenerateAndBuildRecognizer(String,String,String,String,String)",Method,"""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+rawGenerateAndBuildRecognizer(String,String,String,String,boolean,String[]) org.antlr.v4.test.runtime.javascript.BaseNodeTest+rawGenerateAndBuildRecognizer(String,String,String,String,boolean,String[])""","""",441,7,5612,195,4,"/** 
+ * Return true if all is well 
+ */
+","/** Return true if all is well */
+	protected boolean rawGenerateAndBuildRecognizer(String grammarFileName,
+	                                                String grammarStr, String parserName, String lexerName,
+	                                                String... extraOptions) {
+		return rawGenerateAndBuildRecognizer(grammarFileName, grammarStr,
+		                                     parserName, lexerName, false, extraOptions);
+	}",False,False
+21,"rawGenerateAndBuildRecognizer(String,String,String,String,boolean,String)",Method,"""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+getTmpDir() org.antlr.v4.test.runtime.javascript.BaseNodeTest+getTmpDir() java.util.List+isEmpty() java.util.List+isEmpty() java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.List+add(E) java.util.HashSet+HashSet(Collection) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.util.Set+contains(Object) java.util.Set+contains(Object) java.util.List+add(E) java.util.List+add(E) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+lastIndexOf(int) java.lang.String+lastIndexOf(int) java.util.Set+contains(Object) java.util.Set+contains(Object) java.util.List+add(E) java.util.List+add(E) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+lastIndexOf(int) java.lang.String+lastIndexOf(int)""","org.antlr.v4.test.runtime.ErrorQueue+errors""",1144,31,6056,203,4,"/** 
+ * Return true if all is well 
+ */
+","/** Return true if all is well */
+	protected boolean rawGenerateAndBuildRecognizer(String grammarFileName,
+	                                                String grammarStr, String parserName, String lexerName,
+	                                                boolean defaultListener, String... extraOptions) {
+		ErrorQueue equeue = antlrOnString(getTmpDir(), ""JavaScript"", grammarFileName, grammarStr,
+		                                  defaultListener, extraOptions);
+		if (!equeue.errors.isEmpty()) {
+			return false;
+		}
+
+		List<String> files = new ArrayList<String>();
+		if (lexerName != null) {
+			files.add(lexerName + "".js"");
+		}
+		if (parserName != null) {
+			files.add(parserName + "".js"");
+			Set<String> optionsSet = new HashSet<String>(
+					Arrays.asList(extraOptions));
+			if (!optionsSet.contains(""-no-listener"")) {
+				files.add(grammarFileName.substring(0,
+						grammarFileName.lastIndexOf('.'))
+						+ ""Listener.js"");
+			}
+			if (optionsSet.contains(""-visitor"")) {
+				files.add(grammarFileName.substring(0,
+						grammarFileName.lastIndexOf('.'))
+						+ ""Visitor.js"");
+			}
+		}
+		return true; // allIsWell: no compile
+	}",False,False
+22,"rawBuildRecognizerTestFile(String,String,String,String,String,boolean)",Method,"execParser(String,String,String,String,String,String,String,String,boolean)""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+writeLexerTestFile(String,boolean) org.antlr.v4.test.runtime.javascript.BaseNodeTest+writeLexerTestFile(String,boolean) org.antlr.v4.test.runtime.javascript.BaseNodeTest+writeParserTestFile(String,String,String,String,String,boolean) org.antlr.v4.test.runtime.javascript.BaseNodeTest+writeParserTestFile(String,String,String,String,String,boolean)""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+stderrDuringParse org.antlr.v4.test.runtime.javascript.BaseNodeTest+stderrDuringParse""",399,12,7203,234,4,,"protected void rawBuildRecognizerTestFile(String parserName,
+			String lexerName, String listenerName, String visitorName,
+			String parserStartRuleName, boolean debug) {
+		this.stderrDuringParse = null;
+		if (parserName == null) {
+			writeLexerTestFile(lexerName, false);
+		}
+		else {
+			writeParserTestFile(parserName, lexerName, listenerName,
+					visitorName, parserStartRuleName, debug);
+		}
+	}",False,False
+23,execRecognizer(),Method,"execParser(String,String,String,String,String,String,String,String,boolean)""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+execModule(String) org.antlr.v4.test.runtime.javascript.BaseNodeTest+execModule(String)""","""",67,3,7605,247,1,,"public String execRecognizer() {
+		return execModule(""Test.js"");
+	}",False,False
+24,execModule(String),Method,"execLexer(String,String,String,String,boolean) execRecognizer()""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+locateNpm() org.antlr.v4.test.runtime.javascript.BaseNodeTest+locateNpm() org.antlr.v4.test.runtime.TestContext+isTravisCI() org.antlr.v4.test.runtime.TestContext+isTravisCI() org.antlr.v4.test.runtime.TestContext+isCircleCI() org.antlr.v4.test.runtime.TestContext+isCircleCI() org.antlr.v4.test.runtime.javascript.BaseNodeTest+installRuntime(String) org.antlr.v4.test.runtime.javascript.BaseNodeTest+installRuntime(String) org.antlr.v4.test.runtime.javascript.BaseNodeTest+registerRuntime(String) org.antlr.v4.test.runtime.javascript.BaseNodeTest+registerRuntime(String) java.io.File+getAbsolutePath() java.io.File+File(File,String) java.io.File+File(String) java.io.File+getAbsolutePath() org.antlr.v4.test.runtime.javascript.BaseNodeTest+linkRuntime(String) org.antlr.v4.test.runtime.javascript.BaseNodeTest+linkRuntime(String) org.antlr.v4.test.runtime.javascript.BaseNodeTest+locateNodeJS() org.antlr.v4.test.runtime.javascript.BaseNodeTest+locateNodeJS() java.io.File+getAbsolutePath() java.io.File+File(File,String) java.io.File+File(String) java.io.File+getAbsolutePath() java.lang.ProcessBuilder+ProcessBuilder(List) java.util.Map+put(K,V) java.lang.ProcessBuilder+environment() java.lang.ProcessBuilder+environment() java.util.Map+put(K,V) java.lang.ProcessBuilder+directory(File) java.lang.ProcessBuilder+directory(File) java.io.File+File(String) java.lang.ProcessBuilder+start() java.lang.ProcessBuilder+start() org.antlr.v4.test.runtime.StreamVacuum+StreamVacuum(InputStream) java.lang.Process+getInputStream() java.lang.Process+getInputStream() org.antlr.v4.test.runtime.StreamVacuum+StreamVacuum(InputStream) java.lang.Process+getErrorStream() java.lang.Process+getErrorStream() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() java.lang.Process+waitFor() java.lang.Process+waitFor() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+toString() org.antlr.v4.test.runtime.StreamVacuum+toString() java.lang.String+length() java.lang.String+length() java.lang.String+length() org.antlr.v4.test.runtime.StreamVacuum+toString() org.antlr.v4.test.runtime.StreamVacuum+toString() java.lang.String+length() org.antlr.v4.test.runtime.StreamVacuum+toString() org.antlr.v4.test.runtime.StreamVacuum+toString() java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.lang.Throwable+printStackTrace(PrintStream) java.lang.Throwable+printStackTrace(PrintStream) java.io.PrintStream+println() java.io.PrintStream+println()""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+stderrDuringParse org.antlr.v4.test.runtime.javascript.BaseNodeTest+stderrDuringParse java.lang.System+err java.lang.System+err java.lang.System+err""",1431,45,7675,251,1,,"public String execModule(String fileName) {
+		try {
+			String npmPath = locateNpm();
+			if(!TestContext.isTravisCI() && !TestContext.isCircleCI()) {
+				installRuntime(npmPath);
+				registerRuntime(npmPath);
+			}
+			String modulePath = new File(new File(tmpdir), fileName)
+					.getAbsolutePath();
+			linkRuntime(npmPath);
+			String nodejsPath = locateNodeJS();
+			String inputPath = new File(new File(tmpdir), ""input"")
+					.getAbsolutePath();
+			ProcessBuilder builder = new ProcessBuilder(nodejsPath, modulePath,
+					inputPath);
+			builder.environment().put(""NODE_PATH"", tmpdir);
+			builder.directory(new File(tmpdir));
+			Process process = builder.start();
+			StreamVacuum stdoutVacuum = new StreamVacuum(
+					process.getInputStream());
+			StreamVacuum stderrVacuum = new StreamVacuum(
+					process.getErrorStream());
+			stdoutVacuum.start();
+			stderrVacuum.start();
+			// TODO switch to jdk 8
+			process.waitFor();
+			// if(!process.waitFor(1L, TimeUnit.MINUTES))
+			//	process.destroyForcibly();
+			stdoutVacuum.join();
+			stderrVacuum.join();
+			String output = stdoutVacuum.toString();
+			if ( output.length()==0 ) {
+				output = null;
+			}
+			if (stderrVacuum.toString().length() > 0) {
+				this.stderrDuringParse = stderrVacuum.toString();
+			}
+			return output;
+		} catch (Exception e) {
+			System.err.println(""can't exec recognizer"");
+			e.printStackTrace(System.err);
+			System.err.println();
+			return null;
+		}
+	}",False,False
+25,installRuntime(String),Method,"execModule(String)""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+locateRuntime() org.antlr.v4.test.runtime.javascript.BaseNodeTest+locateRuntime() java.lang.ProcessBuilder+ProcessBuilder(List) java.lang.ProcessBuilder+directory(File) java.lang.ProcessBuilder+directory(File) java.io.File+File(String) java.lang.ProcessBuilder+redirectError(File) java.lang.ProcessBuilder+redirectError(File) java.io.File+File(String,String) java.lang.ProcessBuilder+redirectOutput(File) java.lang.ProcessBuilder+redirectOutput(File) java.io.File+File(String,String) java.lang.ProcessBuilder+start() java.lang.ProcessBuilder+start() java.lang.Process+waitFor() java.lang.Process+waitFor() java.lang.Process+exitValue() java.lang.Process+exitValue() java.io.IOException+IOException(String)""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",620,15,9109,297,2,,"private void installRuntime(String npmPath) throws IOException, InterruptedException {
+		String runtimePath = locateRuntime();
+		ProcessBuilder builder = new ProcessBuilder(npmPath, ""install"");
+		builder.directory(new File(runtimePath));
+		builder.redirectError(new File(tmpdir, ""error.txt""));
+		builder.redirectOutput(new File(tmpdir, ""output.txt""));
+		Process process = builder.start();
+		// TODO switch to jdk 8
+		process.waitFor();
+		// if(!process.waitFor(30L, TimeUnit.SECONDS))
+		// 	process.destroyForcibly();
+		int error = process.exitValue();
+		if(error!=0)
+			throw new IOException(""'npm install' failed"");
+	}",False,False
+26,registerRuntime(String),Method,"execModule(String)""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+locateRuntime() org.antlr.v4.test.runtime.javascript.BaseNodeTest+locateRuntime() java.lang.ProcessBuilder+ProcessBuilder(List) java.lang.ProcessBuilder+directory(File) java.lang.ProcessBuilder+directory(File) java.io.File+File(String) java.lang.ProcessBuilder+redirectError(File) java.lang.ProcessBuilder+redirectError(File) java.io.File+File(String,String) java.lang.ProcessBuilder+redirectOutput(File) java.lang.ProcessBuilder+redirectOutput(File) java.io.File+File(String,String) java.lang.ProcessBuilder+start() java.lang.ProcessBuilder+start() java.lang.Process+waitFor() java.lang.Process+waitFor() java.lang.Process+exitValue() java.lang.Process+exitValue() java.io.IOException+IOException(String)""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",614,15,9732,313,2,,"private void registerRuntime(String npmPath) throws IOException, InterruptedException {
+		String runtimePath = locateRuntime();
+		ProcessBuilder builder = new ProcessBuilder(npmPath, ""link"");
+		builder.directory(new File(runtimePath));
+		builder.redirectError(new File(tmpdir, ""error.txt""));
+		builder.redirectOutput(new File(tmpdir, ""output.txt""));
+		Process process = builder.start();
+		// TODO switch to jdk 8
+		process.waitFor();
+		// if(!process.waitFor(30L, TimeUnit.SECONDS))
+		//	process.destroyForcibly();
+		int error = process.exitValue();
+		if(error!=0)
+			throw new IOException(""'npm link' failed"");
+	}",False,False
+27,linkRuntime(String),Method,"execModule(String)""","""","org.antlr.v4.test.runtime.TestContext+isCircleCI() org.antlr.v4.test.runtime.TestContext+isCircleCI() java.util.List+add(E) java.util.List+add(E) java.util.List+addAll(Collection) java.util.List+addAll(Collection) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.lang.ProcessBuilder+ProcessBuilder(List) java.util.List+toArray(T[]) java.util.List+toArray(T[]) java.lang.ProcessBuilder+directory(File) java.lang.ProcessBuilder+directory(File) java.io.File+File(String) java.lang.ProcessBuilder+redirectError(File) java.lang.ProcessBuilder+redirectError(File) java.io.File+File(String,String) java.lang.ProcessBuilder+redirectOutput(File) java.lang.ProcessBuilder+redirectOutput(File) java.io.File+File(String,String) java.lang.ProcessBuilder+start() java.lang.ProcessBuilder+start() java.lang.Process+waitFor() java.lang.Process+waitFor() java.lang.Process+exitValue() java.lang.Process+exitValue() java.io.IOException+IOException(String)""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",734,18,10349,329,2,,"private void linkRuntime(String npmPath) throws IOException, InterruptedException {
+		List<String> args = new ArrayList<>();
+		if(TestContext.isCircleCI())
+			args.add(""sudo"");
+		args.addAll(Arrays.asList(npmPath, ""link"", ""antlr4""));
+		ProcessBuilder builder = new ProcessBuilder(args.toArray(new String[0]));
+		builder.directory(new File(tmpdir));
+		builder.redirectError(new File(tmpdir, ""error.txt""));
+		builder.redirectOutput(new File(tmpdir, ""output.txt""));
+		Process process = builder.start();
+		// TODO switch to jdk 8
+		process.waitFor();
+		// if(!process.waitFor(30L, TimeUnit.SECONDS))
+		//	process.destroyForcibly();
+		int error = process.exitValue();
+		if(error!=0)
+			throw new IOException(""'npm link antlr4' failed"");
+	}",False,False
+28,canExecute(String),Method,"locateNodeJS()""","""","java.lang.ProcessBuilder+ProcessBuilder(List) java.lang.ProcessBuilder+redirectErrorStream(boolean) java.lang.ProcessBuilder+redirectErrorStream(boolean) java.lang.ProcessBuilder+start() java.lang.ProcessBuilder+start() org.antlr.v4.test.runtime.StreamVacuum+StreamVacuum(InputStream) java.lang.Process+getInputStream() java.lang.Process+getInputStream() org.antlr.v4.test.runtime.StreamVacuum+start() org.antlr.v4.test.runtime.StreamVacuum+start() java.lang.Process+waitFor() java.lang.Process+waitFor() org.antlr.v4.test.runtime.StreamVacuum+join() org.antlr.v4.test.runtime.StreamVacuum+join() java.lang.Process+exitValue() java.lang.Process+exitValue()""","""",516,17,11086,348,2,,"private boolean canExecute(String tool) {
+		try {
+			ProcessBuilder builder = new ProcessBuilder(tool, ""--version"");
+			builder.redirectErrorStream(true);
+			Process process = builder.start();
+			StreamVacuum vacuum = new StreamVacuum(process.getInputStream());
+			vacuum.start();
+			// TODO switch to jdk 8
+			process.waitFor();
+			// if(!process.waitFor(30L, TimeUnit.SECONDS))
+			//	process.destroyForcibly();
+			vacuum.join();
+			return process.exitValue() == 0;
+		} catch (Exception e) {
+			return false;
+		}
+	}",False,False
+29,locateNpm(),Method,"execModule(String)""","""","java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.String+length() java.lang.String+length()""","""",217,8,11605,366,2,,"private String locateNpm() {
+		// typically /usr/local/bin/npm
+		String prop = System.getProperty(""antlr-javascript-npm"");
+		if ( prop!=null && prop.length()!=0 ) {
+			return prop;
+		}
+		return ""npm""; // everywhere
+	}",False,False
+30,locateNodeJS(),Method,"execModule(String)""","""","java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.String+length() java.lang.String+length() org.antlr.v4.test.runtime.javascript.BaseNodeTest+canExecute(String) org.antlr.v4.test.runtime.javascript.BaseNodeTest+canExecute(String)""","""",332,11,11825,375,2,,"private String locateNodeJS() {
+		// typically /usr/local/bin/node
+		String prop = System.getProperty(""antlr-javascript-nodejs"");
+		if ( prop!=null && prop.length()!=0 ) {
+			return prop;
+		}
+		if (canExecute(""nodejs"")) {
+			return ""nodejs""; // nodejs on Debian without node-legacy package
+		}
+		return ""node""; // everywhere else
+	}",False,False
+31,locateRuntime(),Method,"installRuntime(String) registerRuntime(String)""","""","java.lang.Thread+getContextClassLoader() java.lang.Thread+currentThread() java.lang.Thread+currentThread() java.lang.Thread+getContextClassLoader() java.lang.ClassLoader+getResource(String) java.lang.ClassLoader+getResource(String) java.lang.RuntimeException+RuntimeException(String) org.antlr.v4.test.runtime.javascript.BaseNodeTest+isWindows() org.antlr.v4.test.runtime.javascript.BaseNodeTest+isWindows() java.lang.String+replaceFirst(String,String) java.net.URL+getPath() java.net.URL+getPath() java.lang.String+replaceFirst(String,String) java.net.URL+getPath() java.net.URL+getPath()""","""",376,11,12160,387,2,,"private String locateRuntime() {
+		final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		final URL runtimeSrc = loader.getResource(""JavaScript"");
+		if ( runtimeSrc==null ) {
+			throw new RuntimeException(""Cannot find JavaScript runtime"");
+		}
+		if(isWindows()){
+			return runtimeSrc.getPath().replaceFirst(""/"", """");
+		}
+		return runtimeSrc.getPath();
+	}",False,False
+32,isWindows(),Method,"locateRuntime()""","""","java.lang.String+contains(CharSequence) java.lang.String+toLowerCase() java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.String+toLowerCase() java.lang.String+contains(CharSequence)""","""",106,3,12539,399,2,,"private boolean isWindows() {
+		return System.getProperty(""os.name"").toLowerCase().contains(""windows"");
+	}",False,True
+33,"writeParserTestFile(String,String,String,String,String,boolean)",Method,"rawBuildRecognizerTestFile(String,String,String,String,String,boolean)""","""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",2423,52,12649,404,4,,"protected void writeParserTestFile(String parserName, String lexerName,
+			String listenerName, String visitorName,
+			String parserStartRuleName, boolean debug) {
+		ST outputFileST = new ST(
+				""import antlr4 from 'antlr4';\n""
+						+ ""import <lexerName> from './<lexerName>.js';\n""
+						+ ""import <parserName> from './<parserName>.js';\n""
+						+ ""import <listenerName> from './<listenerName>.js';\n""
+						+ ""import <visitorName> from './<visitorName>.js';\n""
+						+ ""\n""
+						+ ""class TreeShapeListener extends antlr4.tree.ParseTreeListener {\n"" +
+						""    enterEveryRule(ctx) {\n"" +
+						""        for (let i = 0; i \\< ctx.getChildCount; i++) {\n"" +
+						""            const child = ctx.getChild(i)\n"" +
+						""            const parent = child.parentCtx\n"" +
+						""            if (parent.getRuleContext() !== ctx || !(parent instanceof antlr4.tree.RuleNode)) {\n"" +
+						""                throw `Invalid parse tree shape detected.`\n"" +
+						""            }\n"" +
+						""        }\n"" +
+						""    }\n"" +
+						""}\n""
+						+ ""\n""
+						+ ""function main(argv) {\n""
+						+ ""    var input = new antlr4.FileStream(argv[2], true);\n""
+						+ ""    var lexer = new <lexerName>(input);\n""
+						+ ""    var stream = new antlr4.CommonTokenStream(lexer);\n""
+						+ ""<createParser>""
+						+ ""    parser.buildParseTrees = true;\n""
+						+ ""	   const printer = function() {\n""
+						+ ""		this.println = function(s) { console.log(s); }\n""
+						+ ""		this.print = function(s) { process.stdout.write(s); }\n""
+						+ ""		return this;\n""
+						+ ""	 };\n""
+						+ ""    parser.printer = new printer();\n""
+						+ ""    var tree = parser.<parserStartRuleName>();\n""
+						+ ""    antlr4.tree.ParseTreeWalker.DEFAULT.walk(new TreeShapeListener(), tree);\n""
+						+ ""}\n"" + ""\n"" + ""main(process.argv);\n"" + ""\n"");
+		ST createParserST = new ST(
+				""	var parser = new <parserName>(stream);\n"");
+		if (debug) {
+			createParserST = new ST(
+					""	var parser = new <parserName>(stream);\n""
+							+ ""	parser.addErrorListener(new antlr4.error.DiagnosticErrorListener());\n"");
+		}
+		outputFileST.add(""createParser"", createParserST);
+		outputFileST.add(""parserName"", parserName);
+		outputFileST.add(""lexerName"", lexerName);
+		outputFileST.add(""listenerName"", listenerName);
+		outputFileST.add(""visitorName"", visitorName);
+		outputFileST.add(""parserStartRuleName"", parserStartRuleName);
+		writeFile(tmpdir, ""Test.js"", outputFileST.render());
+	}",False,False
+34,"writeLexerTestFile(String,boolean)",Method,"execLexer(String,String,String,String,boolean) rawBuildRecognizerTestFile(String,String,String,String,String,boolean)""","""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",882,19,15075,457,4,,"protected void writeLexerTestFile(String lexerName, boolean showDFA) {
+		ST outputFileST = new ST(
+				""import antlr4 from 'antlr4';\n""
+						+ ""import <lexerName> from './<lexerName>.js';\n""
+						+ ""\n""
+						+ ""function main(argv) {\n""
+						+ ""    var input = new antlr4.FileStream(argv[2], true);\n""
+						+ ""    var lexer = new <lexerName>(input);\n""
+						+ ""    var stream = new antlr4.CommonTokenStream(lexer);\n""
+						+ ""    stream.fill();\n""
+						+ ""    for(var i=0; i\\<stream.tokens.length; i++) {\n""
+						+ ""		console.log(stream.tokens[i].toString());\n""
+						+ ""    }\n""
+						+ (showDFA ? ""    process.stdout.write(lexer._interp.decisionToDFA[antlr4.Lexer.DEFAULT_MODE].toLexerString());\n""
+								: """") + ""}\n"" + ""\n"" + ""main(process.argv);\n""
+						+ ""\n"");
+		outputFileST.add(""lexerName"", lexerName);
+		writeFile(tmpdir, ""Test.js"", outputFileST.render());
+	}",False,False
+35,eraseFiles(File),Method,"testSetUp() eraseTempDir()""","""","java.io.File+list() java.io.File+list() java.io.File+delete() java.io.File+File(File,String) java.io.File+delete()""","""",172,6,15960,477,4,,"protected void eraseFiles(File dir) {
+		String[] files = dir.list();
+		for (int i = 0; files != null && i < files.length; i++) {
+			new File(dir, files[i]).delete();
+		}
+	}",False,True
+36,eraseTempDir(),Method,"""","""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+shouldEraseTempDir() org.antlr.v4.test.runtime.javascript.BaseNodeTest+shouldEraseTempDir() java.io.File+File(String) java.io.File+exists() java.io.File+exists() org.antlr.v4.test.runtime.javascript.BaseNodeTest+eraseFiles(File) org.antlr.v4.test.runtime.javascript.BaseNodeTest+eraseFiles(File) java.io.File+delete() java.io.File+delete()""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",191,10,16135,485,1,,"@Override
+	public void eraseTempDir() {
+		if (shouldEraseTempDir()) {
+			File tmpdirF = new File(tmpdir);
+			if (tmpdirF.exists()) {
+				eraseFiles(tmpdirF);
+				tmpdirF.delete();
+			}
+		}
+	}",False,True
+37,shouldEraseTempDir(),Method,"eraseTempDir()""","""","java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.String+length() java.lang.String+length() java.lang.Boolean+getBoolean(String) java.lang.Boolean+getBoolean(String)""","org.antlr.v4.test.runtime.javascript.BaseNodeTest+tmpdir""",278,10,16329,495,2,,"private boolean shouldEraseTempDir() {
+		if(tmpdir==null)
+			return false;
+		String propName = ""antlr-javascript-erase-test-dir"";
+		String prop = System.getProperty(propName);
+		if (prop != null && prop.length() > 0)
+			return Boolean.getBoolean(prop);
+		else
+			return true;
+	}",False,True
+38,sort(List<T>),Method,"""","""","java.util.ArrayList+ArrayList(Collection) java.util.Collections+sort(List) java.util.Collections+sort(List)""","""",171,6,16610,507,1,"/** 
+ * Sort a list 
+ */
+","/** Sort a list */
+	public <T extends Comparable<? super T>> List<T> sort(List<T> data) {
+		List<T> dup = new ArrayList<T>(data);
+		Collections.sort(dup);
+		return dup;
+	}",True,True
+39,"sort(Map<K,V>)",Method,"""","""","java.util.LinkedHashMap+LinkedHashMap() java.util.ArrayList+ArrayList(Collection) java.util.Map+keySet() java.util.Map+keySet() java.util.Collections+sort(List) java.util.Collections+sort(List) java.util.HashMap+put(K,V) java.util.HashMap+put(K,V) java.util.Map+get(Object) java.util.Map+get(Object)""","""",324,11,16784,514,1,"/** 
+ * Return map sorted by key 
+ */
+","/** Return map sorted by key */
+	public <K extends Comparable<? super K>, V> LinkedHashMap<K, V> sort(
+			Map<K, V> data) {
+		LinkedHashMap<K, V> dup = new LinkedHashMap<K, V>();
+		List<K> keys = new ArrayList<K>(data.keySet());
+		Collections.sort(keys);
+		for (K k : keys) {
+			dup.put(k, data.get(k));
+		}
+		return dup;
+	}",True,True

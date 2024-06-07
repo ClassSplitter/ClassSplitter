@@ -1,0 +1,384 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,commit,full text,moved,removed
+1,initialCreateLatch,Field,"""","""","""","""",126,1,2316,58,18,,private final AtomicReference<CountDownLatch> initialCreateLatch = new AtomicReference<CountDownLatch>(new CountDownLatch(1));,True,True
+2,log,Field,"""","""","""","""",63,1,2447,59,18,,private final Logger log = LoggerFactory.getLogger(getClass());,True,True
+3,client,Field,"PersistentEphemeralNode(CuratorFramework,Mode,String,byte[])""","""","""","""",38,1,2515,60,18,,private final CuratorFramework client;,True,True
+4,createMethod,Field,"""","""","""","""",80,1,2558,61,18,,private final CreateModable<ACLBackgroundPathAndBytesable<String>> createMethod;,True,True
+5,nodePath,Field,"""","""","""","""",83,1,2643,62,18,,private final AtomicReference<String> nodePath = new AtomicReference<String>(null);,True,True
+6,basePath,Field,"PersistentEphemeralNode(CuratorFramework,Mode,String,byte[])""","""","""","""",30,1,2731,63,18,,private final String basePath;,True,True
+7,mode,Field,"PersistentEphemeralNode(CuratorFramework,Mode,String,byte[])""","""","""","""",24,1,2766,64,18,,private final Mode mode;,True,True
+8,data,Field,"setData(byte[]) getData()""","""","""","""",75,1,2795,65,18,,private final AtomicReference<byte[]> data = new AtomicReference<byte[]>();,True,True
+9,state,Field,"""","""","""","""",86,1,2875,66,18,,private final AtomicReference<State> state = new AtomicReference<State>(State.LATENT);,True,True
+10,authFailure,Field,"""","""","""","""",67,1,2966,67,18,,private final AtomicBoolean authFailure = new AtomicBoolean(false);,True,True
+11,backgroundCallback,Field,"""","""","""","""",52,1,3038,68,18,,private final BackgroundCallback backgroundCallback;,True,True
+12,watcher,Field,"""","""","""","""",420,15,3095,69,18,,"private final CuratorWatcher watcher = new CuratorWatcher()
+    {
+        @Override
+        public void process(WatchedEvent event) throws Exception
+        {
+            if ( event.getType() == EventType.NodeDeleted )
+            {
+                createNode();
+            }
+            else if ( event.getType() == EventType.NodeDataChanged )
+            {
+                watchNode();
+            }
+        }
+    };
+",True,True
+13,checkExistsCallback,Field,"""","""","""","""",368,11,3519,84,18,,"private final BackgroundCallback checkExistsCallback = new BackgroundCallback()
+    {
+        @Override
+        public void processResult(CuratorFramework client, CuratorEvent event) throws Exception
+        {
+            if ( event.getResultCode() == KeeperException.Code.NONODE.intValue() )
+            {
+                createNode();
+            }
+        }
+    };
+",True,True
+14,setDataCallback,Field,"""","""","""","""",747,17,3891,95,18,,"private final BackgroundCallback setDataCallback = new BackgroundCallback()
+    {
+
+        @Override
+        public void processResult(CuratorFramework client, CuratorEvent event)
+            throws Exception
+        {
+            //If the result is ok then initialisation is complete (if we're still initialising)
+            //Don't retry on other errors as the only recoverable cases will be connection loss
+            //and the node not existing, both of which are already handled by other watches.
+            if ( event.getResultCode() == KeeperException.Code.OK.intValue() )
+            {
+                //Update is ok, mark initialisation as complete if required.
+                initialisationComplete();
+            }
+        }
+    };
+",True,True
+15,connectionStateListener,Field,"""","""","""","""",347,11,4642,112,18,,"private final ConnectionStateListener connectionStateListener = new ConnectionStateListener()
+    {
+        @Override
+        public void stateChanged(CuratorFramework client, ConnectionState newState)
+        {
+            if ( newState == ConnectionState.RECONNECTED )
+            {
+                createNode();
+            }
+        }
+    };
+
+",True,True
+16,State,Field,"""","""","""","""",18,1,4993,124,2,,private enum State,False,False
+17,Mode,Field,"""","""","""","""",66,4,5077,134,1,"/** 
+ * The mode for node creation
+ */
+","/**
+     * The mode for node creation
+     */
+    public enum Mode",False,False
+18,EPHEMERAL(),Method,"""","""","""","""",97,5,5158,139,0,"/** 
+ * Same as  {@link CreateMode#EPHEMERAL}
+ */
+","/**
+         * Same as {@link CreateMode#EPHEMERAL}
+         */
+        EPHEMERAL()
+            {",False,False
+19,getCreateMode(boolean),Method,"""","""","""","""",164,5,5272,142,4,,"@Override
+                protected CreateMode getCreateMode(boolean pathIsSet)
+                {
+                    return CreateMode.EPHEMERAL;
+                }",False,False
+20,isProtected(),Method,"""","""","""","""",127,5,5454,148,4,,"@Override
+                protected boolean isProtected()
+                {
+                    return false;
+                }",False,False
+21,EPHEMERAL_SEQUENTIAL(),Method,"""","""","""","""",119,5,5606,157,0,"/** 
+ * Same as  {@link CreateMode#EPHEMERAL_SEQUENTIAL}
+ */
+","/**
+         * Same as {@link CreateMode#EPHEMERAL_SEQUENTIAL}
+         */
+        EPHEMERAL_SEQUENTIAL()
+            {",False,False
+22,getCreateMode(boolean),Method,"""","""","""","""",210,5,5742,160,4,,"@Override
+                protected CreateMode getCreateMode(boolean pathIsSet)
+                {
+                    return pathIsSet ? CreateMode.EPHEMERAL : CreateMode.EPHEMERAL_SEQUENTIAL;
+                }",False,False
+23,isProtected(),Method,"""","""","""","""",127,5,5970,166,4,,"@Override
+                protected boolean isProtected()
+                {
+                    return false;
+                }",False,False
+24,PROTECTED_EPHEMERAL(),Method,"""","""","""","""",123,5,6122,175,0,"/** 
+ * Same as  {@link CreateMode#EPHEMERAL} with protection
+ */
+","/**
+         * Same as {@link CreateMode#EPHEMERAL} with protection
+         */
+        PROTECTED_EPHEMERAL()
+            {",False,False
+25,getCreateMode(boolean),Method,"""","""","""","""",164,5,6262,178,4,,"@Override
+                protected CreateMode getCreateMode(boolean pathIsSet)
+                {
+                    return CreateMode.EPHEMERAL;
+                }",False,False
+26,isProtected(),Method,"""","""","""","""",126,5,6444,184,4,,"@Override
+                protected boolean isProtected()
+                {
+                    return true;
+                }",False,False
+27,PROTECTED_EPHEMERAL_SEQUENTIAL(),Method,"""","""","""","""",145,5,6595,193,0,"/** 
+ * Same as  {@link CreateMode#EPHEMERAL_SEQUENTIAL} with protection
+ */
+","/**
+         * Same as {@link CreateMode#EPHEMERAL_SEQUENTIAL} with protection
+         */
+        PROTECTED_EPHEMERAL_SEQUENTIAL()
+            {",False,False
+28,getCreateMode(boolean),Method,"""","""","""","""",210,5,6757,196,4,,"@Override
+                protected CreateMode getCreateMode(boolean pathIsSet)
+                {
+                    return pathIsSet ? CreateMode.EPHEMERAL : CreateMode.EPHEMERAL_SEQUENTIAL;
+                }",False,False
+29,isProtected(),Method,"""","""","""","""",126,5,6985,202,4,,"@Override
+                protected boolean isProtected()
+                {
+                    return true;
+                }",False,False
+30,getCreateMode(boolean),Method,"""","""","""","""",63,1,7136,208,1028,,protected abstract CreateMode getCreateMode(boolean pathIsSet);,False,False
+31,isProtected(),Method,"""","""","""","""",41,1,7209,210,1028,,protected abstract boolean isProtected();,False,False
+32,"PersistentEphemeralNode(CuratorFramework,Mode,String,byte[])",Method,"""","""","org.apache.curator.utils.PathUtils+validatePath(String) org.apache.curator.utils.PathUtils+validatePath(String) +() +processResult(CuratorFramework,CuratorEvent)""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+client org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+client org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+basePath org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+basePath org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+mode org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+mode org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+backgroundCallback""",2434,60,7262,219,1,"/** 
+ * @param client   client instance
+ * @param mode     creation/protection mode
+ * @param basePath the base path for the node
+ * @param initData     data for the node
+ */
+","/**
+     * @param client   client instance
+     * @param mode     creation/protection mode
+     * @param basePath the base path for the node
+     * @param initData     data for the node
+     */
+    public PersistentEphemeralNode(CuratorFramework client, Mode mode, String basePath, byte[] initData)
+    {
+        this.client = Preconditions.checkNotNull(client, ""client cannot be null"");
+        this.basePath = PathUtils.validatePath(basePath);
+        this.mode = Preconditions.checkNotNull(mode, ""mode cannot be null"");
+        final byte[] data = Preconditions.checkNotNull(initData, ""data cannot be null"");
+
+        backgroundCallback = new BackgroundCallback()
+        {
+            @Override
+            public void processResult(CuratorFramework client, CuratorEvent event) throws Exception
+            {
+                String path = null;
+                boolean nodeExists = false;
+                if ( event.getResultCode() == KeeperException.Code.NODEEXISTS.intValue() )
+                {
+                    path = event.getPath();
+                    nodeExists = true;
+                }
+                else if ( event.getResultCode() == KeeperException.Code.OK.intValue() )
+                {
+                    path = event.getName();
+                }
+                else if ( event.getResultCode() == KeeperException.Code.NOAUTH.intValue() )
+                {
+                    log.warn(""Client does not have authorisation to write ephemeral node at path {}"", event.getPath());
+                    authFailure.set(true);
+                    return;
+                }
+                if ( path != null )
+                {
+                    authFailure.set(false);
+                    nodePath.set(path);
+                    watchNode();
+
+                    if ( nodeExists )
+                    {
+                        client.setData().inBackground(setDataCallback).forPath(getActualPath(), getData());
+                    }
+                    else
+                    {
+                        initialisationComplete();
+                    }
+                }
+                else
+                {
+                    createNode();
+                }
+            }
+        };
+
+        createMethod = mode.isProtected() ? client.create().creatingParentContainersIfNeeded().withProtection() : client.create().creatingParentContainersIfNeeded();
+        this.data.set(Arrays.copyOf(data, data.length));
+    }",False,False
+33,initialisationComplete(),Method,"""","""","java.util.concurrent.atomic.AtomicReference+getAndSet(V) java.util.concurrent.atomic.AtomicReference+getAndSet(V) java.util.concurrent.CountDownLatch+countDown() java.util.concurrent.CountDownLatch+countDown()""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+initialCreateLatch""",211,8,9702,274,2,,"private void initialisationComplete()
+    {
+        CountDownLatch localLatch = initialCreateLatch.getAndSet(null);
+        if ( localLatch != null )
+        {
+            localLatch.countDown();
+        }
+    }",True,True
+34,start(),Method,"""","org.apache.curator.framework.recipes.nodes.GroupMember+start() org.apache.curator.framework.client.TestBackgroundStates+testListenersReconnectedIsOK() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testListenersReconnectedIsFast() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNoServerAtStart() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+setDataTest(PersistentEphemeralNode.Mode) org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testDeletesNodeWhenClosed() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testClosingMultipleTimes() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testDeletesNodeWhenSessionDisconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnectsMultipleTimes() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenEphemeralOwnerSessionExpires() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenItGetsDeleted() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenItGetsDeletedAfterSetData() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNodesCreateUniquePaths() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNodesCreateUniquePaths() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testData() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetDataWhenNodeExists() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetDataWhenDisconnected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetUpdatedDataWhenReconnected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testProtected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNoWritePermission() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNodeListener+testListenersReconnectedIsOK() org.apache.curator.x.rpc.idl.services.CuratorProjectionService+startPersistentEphemeralNode(CuratorProjection,String,byte[],RpcPersistentEphemeralNodeMode)""","org.apache.curator.framework.listen.Listenable+addListener(T) org.apache.curator.framework.CuratorFramework+getConnectionStateListenable() org.apache.curator.framework.CuratorFramework+getConnectionStateListenable() org.apache.curator.framework.listen.Listenable+addListener(T) org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+createNode() org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+createNode()""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+state org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+State org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+State org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+client org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+connectionStateListener""",400,11,9919,287,1,"/** 
+ * You must call start() to initiate the persistent ephemeral node. An attempt to create the node in the background will be started
+ */
+","/**
+     * You must call start() to initiate the persistent ephemeral node. An attempt to create the node
+     * in the background will be started
+     */
+    public void start()
+    {
+        Preconditions.checkState(state.compareAndSet(State.LATENT, State.STARTED), ""Already started"");
+
+        client.getConnectionStateListenable().addListener(connectionStateListener);
+        createNode();
+    }",True,True
+35,"waitForInitialCreate(long,TimeUnit)",Method,"""","org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+setDataTest(PersistentEphemeralNode.Mode) org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testDeletesNodeWhenClosed() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testClosingMultipleTimes() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testDeletesNodeWhenSessionDisconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnectsMultipleTimes() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenEphemeralOwnerSessionExpires() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenItGetsDeleted() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenItGetsDeletedAfterSetData() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNodesCreateUniquePaths() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNodesCreateUniquePaths() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testData() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetDataWhenNodeExists() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetDataWhenDisconnected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetUpdatedDataWhenReconnected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testProtected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNoWritePermission()""","java.util.concurrent.atomic.AtomicReference+get() java.util.concurrent.atomic.AtomicReference+get() java.util.concurrent.CountDownLatch+await(long,TimeUnit) java.util.concurrent.CountDownLatch+await(long,TimeUnit)""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+state org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+State org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+initialCreateLatch""",661,16,10325,304,1,"/** 
+ * Block until the either initial node creation initiated by  {@link #start()} succeeds orthe timeout elapses.
+ * @param timeout the maximum time to wait
+ * @param unit    time unit
+ * @return if the node was created before timeout
+ * @throws InterruptedException if the thread is interrupted
+ */
+","/**
+     * Block until the either initial node creation initiated by {@link #start()} succeeds or
+     * the timeout elapses.
+     *
+     * @param timeout the maximum time to wait
+     * @param unit    time unit
+     * @return if the node was created before timeout
+     * @throws InterruptedException if the thread is interrupted
+     */
+    public boolean waitForInitialCreate(long timeout, TimeUnit unit) throws InterruptedException
+    {
+        Preconditions.checkState(state.get() == State.STARTED, ""Not started"");
+
+        CountDownLatch localLatch = initialCreateLatch.get();
+        return (localLatch == null) || localLatch.await(timeout, unit);
+    }",True,True
+36,close(),Method,"""","org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+teardown() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testDeletesNodeWhenClosed() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testClosingMultipleTimes() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testClosingMultipleTimes() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testDeletesNodeWhenSessionDisconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnectsMultipleTimes() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenEphemeralOwnerSessionExpires() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenItGetsDeleted() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenItGetsDeletedAfterSetData() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNodesCreateUniquePaths() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNodesCreateUniquePaths() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testData() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetDataWhenNodeExists() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testProtected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNoWritePermission() org.apache.curator.x.rpc.idl.services.CuratorProjectionService+close()""","org.apache.curator.framework.listen.Listenable+removeListener(T) org.apache.curator.framework.CuratorFramework+getConnectionStateListenable() org.apache.curator.framework.CuratorFramework+getConnectionStateListenable() org.apache.curator.framework.listen.Listenable+removeListener(T) org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+deleteNode() org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+deleteNode() java.io.IOException+IOException(Throwable)""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+state org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+State org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+State org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+client org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+connectionStateListener""",404,19,10992,313,1,,"@Override
+    public void close() throws IOException
+    {
+        if ( !state.compareAndSet(State.STARTED, State.CLOSED) )
+        {
+            return;
+        }
+
+        client.getConnectionStateListenable().removeListener(connectionStateListener);
+
+        try
+        {
+            deleteNode();
+        }
+        catch ( Exception e )
+        {
+            throw new IOException(e);
+        }
+    }",True,True
+37,getActualPath(),Method,"setData(byte[])""","org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+setDataTest(PersistentEphemeralNode.Mode) org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testDeletesNodeWhenClosed() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testClosingMultipleTimes() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testDeletesNodeWhenSessionDisconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testDeletesNodeWhenSessionDisconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnects() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenSessionReconnectsMultipleTimes() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenEphemeralOwnerSessionExpires() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenEphemeralOwnerSessionExpires() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenEphemeralOwnerSessionExpires() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenItGetsDeleted() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenItGetsDeletedAfterSetData() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNodesCreateUniquePaths() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNodesCreateUniquePaths() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testData() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetDataWhenNodeExists() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetDataWhenDisconnected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetUpdatedDataWhenReconnected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetUpdatedDataWhenReconnected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testProtected() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testProtected()""","java.util.concurrent.atomic.AtomicReference+get() java.util.concurrent.atomic.AtomicReference+get()""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+nodePath""",201,9,11402,337,1,"/** 
+ * Returns the currently set path or null if the node does not exist
+ * @return node path or null
+ */
+","/**
+     * Returns the currently set path or null if the node does not exist
+     *
+     * @return node path or null
+     */
+    public String getActualPath()
+    {
+        return nodePath.get();
+    }",True,True
+38,setData(byte[]),Method,"""","org.apache.curator.framework.recipes.nodes.GroupMember+setThisData(byte[]) org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testRecreatesNodeWhenItGetsDeletedAfterSetData() org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testSetUpdatedDataWhenReconnected()""","java.util.concurrent.atomic.AtomicReference+set(V) java.util.concurrent.atomic.AtomicReference+set(V) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+isActive() org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+isActive() org.apache.curator.framework.api.Backgroundable+inBackground() org.apache.curator.framework.CuratorFramework+setData() org.apache.curator.framework.CuratorFramework+setData() org.apache.curator.framework.api.Backgroundable+inBackground() org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+getActualPath() org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+getActualPath() org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+getData() org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+getData()""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+data org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+data org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+client""",492,15,11609,348,1,"/** 
+ * Set data that ephemeral node should set in ZK also writes the data to the node
+ * @param data new data value
+ * @throws Exception errors
+ */
+","/**
+     * Set data that ephemeral node should set in ZK also writes the data to the node
+     *
+     * @param data new data value
+     * @throws Exception errors
+     */
+    public void setData(byte[] data) throws Exception
+    {
+        data = Preconditions.checkNotNull(data, ""data cannot be null"");
+        this.data.set(Arrays.copyOf(data, data.length));
+        if ( isActive() )
+        {
+            client.setData().inBackground().forPath(getActualPath(), getData());
+        }
+    }",True,True
+39,getData(),Method,"setData(byte[])""","org.apache.curator.framework.recipes.nodes.GroupMember+getCurrentMembers()""","java.util.concurrent.atomic.AtomicReference+get() java.util.concurrent.atomic.AtomicReference+get()""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+data org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+data""",158,9,12107,363,1,"/** 
+ * Return the current value of our data
+ * @return our data
+ */
+","/**
+     * Return the current value of our data
+     *
+     * @return our data
+     */
+    public byte[] getData()
+    {
+        return this.data.get();
+    }",True,True
+40,deleteNode(),Method,"close()""","""","java.util.concurrent.atomic.AtomicReference+getAndSet(V) java.util.concurrent.atomic.AtomicReference+getAndSet(V) org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.api.Guaranteeable+guaranteed() org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.api.Guaranteeable+guaranteed() org.apache.curator.framework.api.Pathable+forPath(String)""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+nodePath org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+client""",396,15,12271,368,2,,"private void deleteNode() throws Exception
+    {
+        String localNodePath = nodePath.getAndSet(null);
+        if ( localNodePath != null )
+        {
+            try
+            {
+                client.delete().guaranteed().forPath(localNodePath);
+            }
+            catch ( KeeperException.NoNodeException ignore )
+            {
+                // ignore
+            }
+        }
+    }",True,True
+41,createNode(),Method,"start()""","""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+isActive() org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+isActive() java.util.concurrent.atomic.AtomicReference+get() java.util.concurrent.atomic.AtomicReference+get() org.apache.curator.framework.api.CreateModable+withMode(CreateMode) org.apache.curator.framework.api.CreateModable+withMode(CreateMode) java.util.concurrent.atomic.AtomicReference+get() java.util.concurrent.atomic.AtomicReference+get() java.lang.RuntimeException+RuntimeException(String,Throwable)""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+nodePath org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+mode org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+basePath org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+createMethod org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+mode org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+backgroundCallback org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+data org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+basePath""",654,18,12673,384,2,,"private void createNode()
+    {
+        if ( !isActive() )
+        {
+            return;
+        }
+
+        try
+        {
+            String existingPath = nodePath.get();
+            String createPath = (existingPath != null && !mode.isProtected()) ? existingPath : basePath;
+            createMethod.withMode(mode.getCreateMode(existingPath != null)).inBackground(backgroundCallback).forPath(createPath, data.get());
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException(""Creating node. BasePath: "" + basePath, e);  // should never happen unless there's a programming error - so throw RuntimeException
+        }
+    }",True,True
+42,watchNode(),Method,"""","""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+isActive() org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+isActive() java.util.concurrent.atomic.AtomicReference+get() java.util.concurrent.atomic.AtomicReference+get() org.apache.curator.framework.api.Watchable+usingWatcher(CuratorWatcher) org.apache.curator.framework.CuratorFramework+checkExists() org.apache.curator.framework.CuratorFramework+checkExists() org.apache.curator.framework.api.Watchable+usingWatcher(CuratorWatcher)""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+nodePath org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+client org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+watcher org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+checkExistsCallback""",338,13,13333,403,2,,"private void watchNode() throws Exception
+    {
+        if ( !isActive() )
+        {
+            return;
+        }
+
+        String localNodePath = nodePath.get();
+        if ( localNodePath != null )
+        {
+            client.checkExists().usingWatcher(watcher).inBackground(checkExistsCallback).forPath(localNodePath);
+        }
+    }",True,True
+43,isActive(),Method,"setData(byte[]) createNode() watchNode()""","""","""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+state org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+State""",85,4,13677,417,2,,"private boolean isActive()
+    {
+        return (state.get() == State.STARTED);
+    }",True,True
+44,isAuthFailure(),Method,"""","org.apache.curator.framework.recipes.nodes.TestPersistentEphemeralNode+testNoWritePermission()""","java.util.concurrent.atomic.AtomicBoolean+get() java.util.concurrent.atomic.AtomicBoolean+get()""","org.apache.curator.framework.recipes.nodes.PersistentEphemeralNode+authFailure""",92,5,13768,423,0,,"@VisibleForTesting
+    boolean isAuthFailure()
+    {
+        return authFailure.get();
+    }",True,True
