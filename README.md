@@ -8,12 +8,14 @@ For the code used in our experiment and the experiment result, see `Implementati
 
 ## Dataset
 
-The real-world God classes and their refactoring solutions are organized by two CSV-formated catalog: 
+The real-world God classes and their refactoring are organized by two CSV-formated catalog: 
 
 * The `GodClassRefactorDictionary.csv` catalog documents the refactoring examples in `god_class_refactor_example` folder, which were used for evaluation in our experiments.
 * The `GodClassRefactorForPositionStudyDictionary.csv` catalog documents the refactoring examples in `refactor_example_position` folder, which were used to validate the correlation between code position and god class refactoring. 
 
-The refactorings are presented as individual CSV files. Each file represents a class before refactoring, with each row in the file recording an entity from the original class. These rows contain the features of the entities, as well as their refactoring information. The file paths are documented in the "data path" column in the catalog. The recorded features of the entities include:
+The catalog files record essential information about the commits where the refactorings take place. This information includes: `commit hash`, `parent hash`, `commit message`, `origin class`, `new class` and `url`.
+
+The refactorings are presented as individual CSV files. Each file represents a class before refactoring, with each row in the file recording an entity from the original class. These rows contain the features of the entities, as well as their refactoring information. The file paths are documented in the `data path` column in the catalog. The recorded features of the entities include:
 
 | tag       | description                                                  |
 | --------- | ------------------------------------------------------------ |
