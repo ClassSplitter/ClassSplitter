@@ -1,0 +1,394 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,DATE_PATTERN,Field,,,,,57,1,24,,"static final String DATE_PATTERN = ""yyyy-MM-dd_HH_mm_ss"";",True
+2,sdf,Field,,,,,58,1,0,,SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);,True
+3,layout,Field,,,,,53,1,0,,EchoLayout<Object> layout = new EchoLayout<Object>();,True
+4,context,Field,,,,,36,1,0,,Context context = new ContextBase();,True
+5,rfa1,Field,,,,,69,1,0,,RollingFileAppender<Object> rfa1 = new RollingFileAppender<Object>();,False
+6,tbrp1,Field,,,,,76,1,0,,TimeBasedRollingPolicy<Object> tbrp1 = new TimeBasedRollingPolicy<Object>();,False
+7,rfa2,Field,,,,,69,1,0,,RollingFileAppender<Object> rfa2 = new RollingFileAppender<Object>();,False
+8,tbrp2,Field,,,,,76,1,0,,TimeBasedRollingPolicy<Object> tbrp2 = new TimeBasedRollingPolicy<Object>();,False
+9,cal,Field,,,,,38,1,0,,Calendar cal = Calendar.getInstance();,True
+10,currentTime,Field,,,,,17,1,0,,long currentTime;,True
+11,nextRolloverThreshold,Field,,,,,27,1,0,,long nextRolloverThreshold;,True
+12,expectedFilenameList,Field,,,,,60,1,0,,List<String> expectedFilenameList = new ArrayList<String>();,True
+13,setUp(),Method,,,"ch.qos.logback.core.Context+setName(String) ch.qos.logback.core.Context+setName(String) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+getTimeInMillis() java.util.Calendar+getTimeInMillis() ch.qos.logback.core.rolling.TimeBasedRollingTest+recomputeRolloverThreshold(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+recomputeRolloverThreshold(long) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.text.DateFormat+format(Date) java.text.DateFormat+format(Date) java.sql.Date+Date(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+deleteStaleLogFile(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+deleteStaleLogFile(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+deleteStaleLogFile(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+deleteStaleLogFile(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+deleteStaleLogFile(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+deleteStaleLogFile(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+deleteStaleLogFile(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+deleteStaleLogFile(String)",ch.qos.logback.core.rolling.TimeBasedRollingTest+context ch.qos.logback.core.rolling.TimeBasedRollingTest+cal java.util.Calendar+MILLISECOND ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+cal ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime java.lang.System+out ch.qos.logback.core.rolling.TimeBasedRollingTest+sdf ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime,474,15,1,,"@Before
+  public void setUp() {
+    context.setName(""test"");
+    cal.set(Calendar.MILLISECOND, 333);
+    currentTime = cal.getTimeInMillis();
+    recomputeRolloverThreshold(currentTime);
+    System.out.println(""at setUp() currentTime=""
+        + sdf.format(new Date(currentTime)));
+
+    // Delete .log files
+    deleteStaleLogFile(""test4.log"");
+    deleteStaleLogFile(""test4B.log"");
+    deleteStaleLogFile(""test5.log"");
+    deleteStaleLogFile(""test6.log"");
+  }",False
+14,deleteStaleLogFile(String),Method,setUp() setUp() setUp() setUp(),,java.io.File+File(String) java.io.File+mkdirs() java.io.File+mkdirs() java.io.File+delete() java.io.File+delete(),ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX,168,5,0,,"void deleteStaleLogFile(String filename) {
+    File target = new File(CoreTestConstants.OUTPUT_DIR_PREFIX + filename);
+    target.mkdirs();
+    target.delete();
+  }",False
+15,tearDown(),Method,,,,,39,3,1,,"@After
+  public void tearDown() {
+  }",False
+16,"initRFA(RollingFileAppender<Object>,String)",Method,noCompression_FileBlank_NoRestart_1() withCompression_FileBlank_NoRestart_2() noCompression_FileBlank_StopRestart_3() noCompression_FileBlank_StopRestart_3() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_NoRestart_5() withCompression_FileSet_NoRestart_6(),,ch.qos.logback.core.spi.ContextAwareBase+setContext(Context) ch.qos.logback.core.spi.ContextAwareBase+setContext(Context) ch.qos.logback.core.UnsynchronizedAppenderBase+setLayout(Layout<E>) ch.qos.logback.core.UnsynchronizedAppenderBase+setLayout(Layout<E>) ch.qos.logback.core.rolling.RollingFileAppender+setFile(String) ch.qos.logback.core.rolling.RollingFileAppender+setFile(String),ch.qos.logback.core.rolling.TimeBasedRollingTest+context ch.qos.logback.core.rolling.TimeBasedRollingTest+layout,193,7,0,,"void initRFA(RollingFileAppender<Object> rfa, String filename) {
+    rfa.setContext(context);
+    rfa.setLayout(layout);
+    if (filename != null) {
+      rfa.setFile(filename);
+    }
+  }",False
+17,"initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long)",Method,noCompression_FileBlank_NoRestart_1() withCompression_FileBlank_NoRestart_2() noCompression_FileBlank_StopRestart_3() noCompression_FileBlank_StopRestart_3() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_NoRestart_5() withCompression_FileSet_NoRestart_6(),,ch.qos.logback.core.spi.ContextAwareBase+setContext(Context) ch.qos.logback.core.spi.ContextAwareBase+setContext(Context) ch.qos.logback.core.rolling.RollingPolicyBase+setFileNamePattern(String) ch.qos.logback.core.rolling.RollingPolicyBase+setFileNamePattern(String) ch.qos.logback.core.rolling.RollingPolicyBase+setParent(FileAppender) ch.qos.logback.core.rolling.RollingPolicyBase+setParent(FileAppender) ch.qos.logback.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy+DefaultTimeBasedFileNamingAndTriggeringPolicy() ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setDateInCurrentPeriod(Date) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setDateInCurrentPeriod(Date) java.sql.Date+Date(long) ch.qos.logback.core.rolling.RollingFileAppender+setRollingPolicy(RollingPolicy) ch.qos.logback.core.rolling.RollingFileAppender+setRollingPolicy(RollingPolicy) ch.qos.logback.core.rolling.TimeBasedRollingPolicy+start() ch.qos.logback.core.rolling.TimeBasedRollingPolicy+start() ch.qos.logback.core.rolling.RollingFileAppender+start() ch.qos.logback.core.rolling.RollingFileAppender+start(),ch.qos.logback.core.rolling.TimeBasedRollingTest+context ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering,588,14,0,,"void initTRBP(RollingFileAppender<Object> rfa, TimeBasedRollingPolicy<Object> tbrp,
+      String filenamePattern, long givenTime, long lastCheck) {
+    tbrp.setContext(context);
+    tbrp.setFileNamePattern(filenamePattern);
+    tbrp.setParent(rfa);
+    tbrp.timeBasedTriggering = new DefaultTimeBasedFileNamingAndTriggeringPolicy<Object>();
+    tbrp.timeBasedTriggering.setCurrentTime(givenTime);
+    if (lastCheck != 0) {
+      tbrp.timeBasedTriggering.setDateInCurrentPeriod(new Date(lastCheck));
+    }
+    rfa.setRollingPolicy(tbrp);
+    tbrp.start();
+    rfa.start();
+  }",False
+18,noCompression_FileBlank_NoRestart_1(),Method,,,"ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.util.Compare+compare(String,String) ch.qos.logback.core.util.Compare+compare(String,String)",ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList ch.qos.logback.core.util.CoreTestConstants+TEST_DIR_PREFIX,1002,29,1,"/** 
+ * Test rolling without compression, file option left blank, no stop/start
+ */
+","/**
+   * Test rolling without compression, file option left blank, no stop/start
+   */
+  @Test
+  public void noCompression_FileBlank_NoRestart_1() throws Exception {
+    String testId = ""test1"";
+    initRFA(rfa1, null);
+    initTRBP(rfa1, tbrp1, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}"", currentTime, 0);
+
+    // compute the current filename
+    addExpectedFileName_ByDate(testId, getDateOfCurrentPeriodsStart(), false);
+
+    incCurrentTime(1100);
+    tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+
+    for (int i = 0; i < 3; i++) {
+      rfa1.doAppend(""Hello---"" + i);
+      addExpectedFileNamedIfItsTime_ByDate(testId, false);
+      incCurrentTime(500);
+      tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    int i = 0;
+    for (String fn : expectedFilenameList) {
+      assertTrue(Compare.compare(fn, CoreTestConstants.TEST_DIR_PREFIX
+          + ""witness/rolling/tbr-"" + testId + ""."" + i++));
+    }
+  }",False
+19,withCompression_FileBlank_NoRestart_2(),Method,,,"ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) java.util.concurrent.Future+get(long,TimeUnit) java.util.concurrent.Future+get(long,TimeUnit) ch.qos.logback.core.util.Compare+compare(String,String) ch.qos.logback.core.util.Compare+compare(String,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+addGZIfNotLast(int) ch.qos.logback.core.rolling.TimeBasedRollingTest+addGZIfNotLast(int)",ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+future java.util.concurrent.TimeUnit+MILLISECONDS ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList ch.qos.logback.core.util.CoreTestConstants+TEST_DIR_PREFIX,1101,31,1,"/** 
+ * With compression, file option left blank, no stop/restart
+ */
+","/**
+   * With compression, file option left blank, no stop/restart
+   */
+  @Test
+  public void withCompression_FileBlank_NoRestart_2() throws Exception {
+    String testId = ""test2"";
+    initRFA(rfa1, null);
+    initTRBP(rfa1, tbrp1, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}.gz"", currentTime, 0);
+
+    addExpectedFileName_ByDate(testId, getDateOfCurrentPeriodsStart(), true);
+    incCurrentTime(1100);
+    tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+
+    for (int i = 0; i < 3; i++) {
+      // when i == 2, file name should not have .gz extension
+      addExpectedFileNamedIfItsTime_ByDate(testId, i != 2);
+      rfa1.doAppend(""Hello---"" + i);
+      incCurrentTime(500);
+      tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    tbrp1.future.get(2000, TimeUnit.MILLISECONDS);
+
+    int i = 0;
+    for (String fn : expectedFilenameList) {
+      assertTrue(Compare.compare(fn, CoreTestConstants.TEST_DIR_PREFIX
+          + ""witness/rolling/tbr-"" + testId + ""."" + i + addGZIfNotLast(i)));
+      i++;
+    }
+  }",False
+20,noCompression_FileBlank_StopRestart_3(),Method,,,"ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.WriterAppender+stop() ch.qos.logback.core.WriterAppender+stop() ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+getCurrentTime() ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+getCurrentTime() ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.util.Compare+compare(String,String) ch.qos.logback.core.util.Compare+compare(String,String)",ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa2 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa2 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp2 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa2 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp2 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList ch.qos.logback.core.util.CoreTestConstants+TEST_DIR_PREFIX,1454,43,1,"/** 
+ * No compression, file option left blank, with stop/restart,
+ */
+","/**
+   * No compression, file option left blank, with stop/restart,
+   */
+  @Test
+  public void noCompression_FileBlank_StopRestart_3() throws Exception {
+    String testId = ""test3"";
+
+    initRFA(rfa1, null);
+    initTRBP(rfa1, tbrp1, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}"", currentTime, 0);
+
+    // a new file is created by virtue of rfa.start();
+    addExpectedFileName_ByDate(testId, getDateOfCurrentPeriodsStart(), false);
+
+    incCurrentTime(1100);
+    tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+
+    for (int i = 0; i <= 2; i++) {
+      rfa1.doAppend(""Hello---"" + i);
+      addExpectedFileNamedIfItsTime_ByDate(testId, false);
+      incCurrentTime(500);
+      tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    rfa1.stop();
+
+    initRFA(rfa2, null);
+    initTRBP(rfa2, tbrp2, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}"", tbrp1.timeBasedTriggering.getCurrentTime(), 0);
+
+    for (int i = 0; i <= 2; i++) {
+      addExpectedFileNamedIfItsTime_ByDate(testId, false);
+      rfa2.doAppend(""World---"" + i);
+      incCurrentTime(100);
+      tbrp2.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    int i = 0;
+    for (String fn : expectedFilenameList) {
+      assertTrue(Compare.compare(fn, CoreTestConstants.TEST_DIR_PREFIX
+          + ""witness/rolling/tbr-"" + testId + ""."" + i++));
+    }
+  }",False
+21,noCompression_FileSet_StopRestart_4(),Method,,,"ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.WriterAppender+stop() ch.qos.logback.core.WriterAppender+stop() ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+massageExpectedFilesToCorresponToCurrentTarget(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+massageExpectedFilesToCorresponToCurrentTarget(String) ch.qos.logback.core.util.Compare+compare(String,String) ch.qos.logback.core.util.Compare+compare(String,String)",ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa2 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa2 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp2 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa2 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp2 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList ch.qos.logback.core.util.CoreTestConstants+TEST_DIR_PREFIX,1476,43,1,"/** 
+ * Without compression, file option set, with stop/restart
+ */
+","/**
+   * Without compression, file option set, with stop/restart
+   */
+  @Test
+  public void noCompression_FileSet_StopRestart_4() throws Exception {
+    String testId = ""test4"";
+    initRFA(rfa1, testId2FileName(testId));
+    initTRBP(rfa1, tbrp1, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}"", currentTime, 0);
+
+    addExpectedFileName_ByDate(testId, getDateOfCurrentPeriodsStart(), false);
+
+    incCurrentTime(1100);
+    tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+
+    for (int i = 0; i <= 2; i++) {
+      rfa1.doAppend(""Hello---"" + i);
+      addExpectedFileNamedIfItsTime_ByDate(testId, false);
+      incCurrentTime(500);
+      tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    rfa1.stop();
+
+    initRFA(rfa2, testId2FileName(testId));
+    initTRBP(rfa2, tbrp2, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}"", currentTime, currentTime);
+
+    for (int i = 0; i <= 2; i++) {
+      rfa2.doAppend(""World---"" + i);
+      addExpectedFileNamedIfItsTime_ByDate(testId, false);
+      incCurrentTime(100);
+      tbrp2.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    massageExpectedFilesToCorresponToCurrentTarget(""test4.log"");
+
+    int i = 0;
+    for (String fn : expectedFilenameList) {
+      assertTrue(Compare.compare(fn, CoreTestConstants.TEST_DIR_PREFIX
+          + ""witness/rolling/tbr-"" + testId + ""."" + i++));
+    }
+  }",False
+22,noCompression_FileSet_StopRestart_WithLongWait_4B(),Method,,,"ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.WriterAppender+stop() ch.qos.logback.core.WriterAppender+stop() ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+massageExpectedFilesToCorresponToCurrentTarget(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+massageExpectedFilesToCorresponToCurrentTarget(String) ch.qos.logback.core.util.Compare+compare(String,String) ch.qos.logback.core.util.Compare+compare(String,String)",ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa2 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa2 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp2 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa2 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp2 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList ch.qos.logback.core.util.CoreTestConstants+TEST_DIR_PREFIX,1514,45,1,,"@Test
+  public void noCompression_FileSet_StopRestart_WithLongWait_4B()
+      throws Exception {
+    String testId = ""test4B"";
+    initRFA(rfa1, testId2FileName(testId));
+    initTRBP(rfa1, tbrp1, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}"", currentTime, 0);
+
+    addExpectedFileName_ByDate(testId, getDateOfCurrentPeriodsStart(), false);
+
+    incCurrentTime(1100);
+    tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+
+    for (int i = 0; i <= 2; i++) {
+      rfa1.doAppend(""Hello---"" + i);
+      addExpectedFileNamedIfItsTime_ByDate(testId, false);
+      incCurrentTime(500);
+      tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    rfa1.stop();
+
+    long fileTimestamp = currentTime;
+    incCurrentTime(2000);
+
+    initRFA(rfa2, CoreTestConstants.OUTPUT_DIR_PREFIX + ""test4B.log"");
+    initTRBP(rfa2, tbrp2, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}"", currentTime, fileTimestamp);
+
+    for (int i = 0; i <= 2; i++) {
+      rfa2.doAppend(""World---"" + i);
+      addExpectedFileNamedIfItsTime_ByDate(testId, false);
+      incCurrentTime(100);
+      tbrp2.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    massageExpectedFilesToCorresponToCurrentTarget(""test4B.log"");
+
+    int i = 0;
+    for (String fn : expectedFilenameList) {
+      assertTrue(Compare.compare(fn, CoreTestConstants.TEST_DIR_PREFIX
+          + ""witness/rolling/tbr-test4B."" + i++));
+    }
+
+  }",False
+23,noCompression_FileSet_NoRestart_5(),Method,,,"ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+massageExpectedFilesToCorresponToCurrentTarget(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+massageExpectedFilesToCorresponToCurrentTarget(String) ch.qos.logback.core.util.Compare+compare(String,String) ch.qos.logback.core.util.Compare+compare(String,String)",ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList ch.qos.logback.core.util.CoreTestConstants+TEST_DIR_PREFIX,1025,31,1,"/** 
+ * No compression, file option set, without stop/restart
+ */
+","/**
+   * No compression, file option set, without stop/restart
+   */
+  @Test
+  public void noCompression_FileSet_NoRestart_5() throws Exception {
+    String testId = ""test5"";
+
+    initRFA(rfa1, testId2FileName(testId));
+    initTRBP(rfa1, tbrp1, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}"", currentTime, 0);
+
+    addExpectedFileName_ByDate(testId, getDateOfCurrentPeriodsStart(), false);
+
+    incCurrentTime(1100);
+    tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+
+    for (int i = 0; i < 3; i++) {
+      rfa1.doAppend(""Hello---"" + i);
+      addExpectedFileNamedIfItsTime_ByDate(testId, false);
+      incCurrentTime(500);
+      tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    massageExpectedFilesToCorresponToCurrentTarget(""test5.log"");
+
+    int i = 0;
+    for (String fn : expectedFilenameList) {
+      assertTrue(Compare.compare(fn, CoreTestConstants.TEST_DIR_PREFIX
+          + ""witness/rolling/tbr-test5."" + i++));
+    }
+  }",False
+24,withCompression_FileSet_NoRestart_6(),Method,,,"ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initRFA(RollingFileAppender<Object>,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+testId2FileName(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+initTRBP(RollingFileAppender<Object>,TimeBasedRollingPolicy<Object>,String,long,long) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.UnsynchronizedAppenderBase+doAppend(E) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileNamedIfItsTime_ByDate(String,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+incCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy+setCurrentTime(long) java.util.concurrent.Future+get(long,TimeUnit) java.util.concurrent.Future+get(long,TimeUnit) ch.qos.logback.core.rolling.TimeBasedRollingTest+massageExpectedFilesToCorresponToCurrentTarget(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+massageExpectedFilesToCorresponToCurrentTarget(String) ch.qos.logback.core.util.Compare+compare(String,String) ch.qos.logback.core.util.Compare+compare(String,String) ch.qos.logback.core.rolling.TimeBasedRollingTest+addGZIfNotLast(int) ch.qos.logback.core.rolling.TimeBasedRollingTest+addGZIfNotLast(int)",ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+DATE_PATTERN ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+rfa1 ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+timeBasedTriggering ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+tbrp1 ch.qos.logback.core.rolling.TimeBasedRollingPolicy+future java.util.concurrent.TimeUnit+MILLISECONDS ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList ch.qos.logback.core.util.CoreTestConstants+TEST_DIR_PREFIX,1169,36,1,"/** 
+ * With compression, file option set, no stop/restart,
+ */
+","/**
+   * With compression, file option set, no stop/restart,
+   */
+  @Test
+  public void withCompression_FileSet_NoRestart_6() throws Exception {
+
+    String testId = ""test6"";
+
+    initRFA(rfa1, testId2FileName(testId));
+    initTRBP(rfa1, tbrp1, CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-%d{""
+        + DATE_PATTERN + ""}.gz"", currentTime, 0);
+
+    addExpectedFileName_ByDate(testId, getDateOfCurrentPeriodsStart(), true);
+
+    incCurrentTime(1100);
+    tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+
+    for (int i = 0; i < 3; i++) {
+      rfa1.doAppend(""Hello---"" + i);
+      addExpectedFileNamedIfItsTime_ByDate(testId, true);
+      incCurrentTime(500);
+      tbrp1.timeBasedTriggering.setCurrentTime(currentTime);
+    }
+
+    // wait for the compression task to finish
+    tbrp1.future.get(1000, TimeUnit.MILLISECONDS);
+
+    massageExpectedFilesToCorresponToCurrentTarget(""test6.log"");
+
+    int i = 0;
+    for (String fn : expectedFilenameList) {
+      assertTrue(Compare.compare(fn, CoreTestConstants.TEST_DIR_PREFIX
+          + ""witness/rolling/tbr-"" + testId + ""."" + i + addGZIfNotLast(i)));
+      i++;
+    }
+  }",False
+25,testId2FileName(String),Method,noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_NoRestart_5() withCompression_FileSet_NoRestart_6(),,,ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX,111,3,0,,"String testId2FileName(String testId) {
+    return CoreTestConstants.OUTPUT_DIR_PREFIX + testId + "".log"";
+  }",False
+26,massageExpectedFilesToCorresponToCurrentTarget(String),Method,noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_NoRestart_5() withCompression_FileSet_NoRestart_6(),,java.util.List+remove(int) java.util.List+remove(int) java.util.List+size() java.util.List+size() ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByFile(String) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByFile(String),ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList,266,6,0,,"void massageExpectedFilesToCorresponToCurrentTarget(String file) {
+    // we added one too many files by date
+    expectedFilenameList.remove(expectedFilenameList.size() - 1);
+    // since file is set, we have to add it
+    addExpectedFileName_ByFile(file);
+  }",False
+27,addGZIfNotLast(int),Method,withCompression_FileBlank_NoRestart_2() withCompression_FileSet_NoRestart_6(),,java.util.List+size() java.util.List+size(),ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList,176,8,0,,"String addGZIfNotLast(int i) {
+    int lastIndex = expectedFilenameList.size() - 1;
+    if (i != lastIndex) {
+      return "".gz"";
+    } else {
+      return """";
+    }
+  }",True
+28,"addExpectedFileName_ByDate(String,Date,boolean)",Method,"noCompression_FileBlank_NoRestart_1() withCompression_FileBlank_NoRestart_2() noCompression_FileBlank_StopRestart_3() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_NoRestart_5() withCompression_FileSet_NoRestart_6() addExpectedFileNamedIfItsTime_ByDate(String,boolean)",,java.text.DateFormat+format(Date) java.text.DateFormat+format(Date) java.util.List+add(E) java.util.List+add(E),ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+sdf ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList,268,8,0,,"void addExpectedFileName_ByDate(String testId, Date date, boolean gzExtension) {
+    String fn = CoreTestConstants.OUTPUT_DIR_PREFIX + testId + ""-""
+        + sdf.format(date);
+    if (gzExtension) {
+      fn += "".gz"";
+    }
+    expectedFilenameList.add(fn);
+  }",False
+29,"addExpectedFileNamedIfItsTime_ByDate(String,boolean)",Method,noCompression_FileBlank_NoRestart_1() withCompression_FileBlank_NoRestart_2() noCompression_FileBlank_StopRestart_3() noCompression_FileBlank_StopRestart_3() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_NoRestart_5() withCompression_FileSet_NoRestart_6(),,"ch.qos.logback.core.rolling.TimeBasedRollingTest+passThresholdTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+passThresholdTime(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+addExpectedFileName_ByDate(String,Date,boolean) ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+getDateOfCurrentPeriodsStart() ch.qos.logback.core.rolling.TimeBasedRollingTest+recomputeRolloverThreshold(long) ch.qos.logback.core.rolling.TimeBasedRollingTest+recomputeRolloverThreshold(long)",ch.qos.logback.core.rolling.TimeBasedRollingTest+nextRolloverThreshold ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime,291,7,0,,"void addExpectedFileNamedIfItsTime_ByDate(String testId, boolean gzExtension) {
+    if (passThresholdTime(nextRolloverThreshold)) {
+      addExpectedFileName_ByDate(testId, getDateOfCurrentPeriodsStart(),
+          gzExtension);
+      recomputeRolloverThreshold(currentTime);
+    }
+  }",False
+30,addExpectedFileName_ByFile(String),Method,massageExpectedFilesToCorresponToCurrentTarget(String),,java.util.List+add(E) java.util.List+add(E),ch.qos.logback.core.util.CoreTestConstants+OUTPUT_DIR_PREFIX ch.qos.logback.core.rolling.TimeBasedRollingTest+expectedFilenameList,167,4,0,,"void addExpectedFileName_ByFile(String filenameSuffix) {
+    String fn = CoreTestConstants.OUTPUT_DIR_PREFIX + filenameSuffix;
+    expectedFilenameList.add(fn);
+  }",False
+31,getDateOfCurrentPeriodsStart(),Method,"noCompression_FileBlank_NoRestart_1() withCompression_FileBlank_NoRestart_2() noCompression_FileBlank_StopRestart_3() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_NoRestart_5() withCompression_FileSet_NoRestart_6() addExpectedFileNamedIfItsTime_ByDate(String,boolean)",,java.sql.Date+Date(long),ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime,123,4,0,,"Date getDateOfCurrentPeriodsStart() {
+    long delta = currentTime % 1000;
+    return new Date(currentTime - delta);
+  }",True
+32,getDateOfPastPeriodsStart(),Method,,,java.sql.Date+Date(long),ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime,127,4,0,,"Date getDateOfPastPeriodsStart() {
+    long delta = currentTime % 1000;
+    return new Date(currentTime - delta - 1000);
+  }",True
+33,"addTime(long,long)",Method,,,,,99,3,8,,"static long addTime(long currentTime, long timeToWait) {
+    return currentTime + timeToWait;
+  }",True
+34,passThresholdTime(long),Method,"addExpectedFileNamedIfItsTime_ByDate(String,boolean)",,,ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime,110,3,0,,"boolean passThresholdTime(long nextRolloverThreshold) {
+    return currentTime >= nextRolloverThreshold;
+  }",True
+35,recomputeRolloverThreshold(long),Method,"setUp() addExpectedFileNamedIfItsTime_ByDate(String,boolean)",,,ch.qos.logback.core.rolling.TimeBasedRollingTest+nextRolloverThreshold,126,4,0,,"void recomputeRolloverThreshold(long ct) {
+    long delta = ct % 1000;
+    nextRolloverThreshold = (ct - delta) + 1000;
+  }",True
+36,incCurrentTime(long),Method,noCompression_FileBlank_NoRestart_1() noCompression_FileBlank_NoRestart_1() withCompression_FileBlank_NoRestart_2() withCompression_FileBlank_NoRestart_2() noCompression_FileBlank_StopRestart_3() noCompression_FileBlank_StopRestart_3() noCompression_FileBlank_StopRestart_3() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_4() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_StopRestart_WithLongWait_4B() noCompression_FileSet_NoRestart_5() noCompression_FileSet_NoRestart_5() withCompression_FileSet_NoRestart_6() withCompression_FileSet_NoRestart_6(),,,ch.qos.logback.core.rolling.TimeBasedRollingTest+currentTime,73,3,0,,"void incCurrentTime(long increment) {
+    currentTime += increment;
+  }",True
+37,"printLongAsDate(String,long)",Method,,,java.text.SimpleDateFormat+SimpleDateFormat(String) java.io.PrintStream+println(String) java.io.PrintStream+println(String) java.text.DateFormat+format(Date) java.text.DateFormat+format(Date) java.sql.Date+Date(long),java.lang.System+out,182,4,0,,"void printLongAsDate(String msg, long time) {
+    SimpleDateFormat sdf = new SimpleDateFormat(""yyyy-MM-dd_HH_mm_ss"");
+    System.out.println(msg + sdf.format(new Date(time)));
+  }",True

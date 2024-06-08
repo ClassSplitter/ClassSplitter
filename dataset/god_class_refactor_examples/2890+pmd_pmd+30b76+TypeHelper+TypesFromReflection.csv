@@ -1,0 +1,287 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,PRIMITIVES_BY_NAME,Field,,,,,166,2,26,"/** 
+ * Maps names of primitives to their corresponding primitive  {@code Class}es. 
+ */
+","/** Maps names of primitives to their corresponding primitive {@code Class}es. */
+    private static final Map<String, Class<?>> PRIMITIVES_BY_NAME = new HashMap<>();",True
+2,TypeHelper(),Method,,,,,53,3,2,,"private TypeHelper() {
+        // utility class
+    }",False
+3,"isA(TypeNode,String)",Method,,,"net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() java.lang.Class+isAnnotation() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() java.lang.Class+isAnnotation() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isAnnotationSubtype(Class<?>,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isAnnotationSubtype(Class<?>,String) net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassWithNodeClassloader(TypeNode,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassWithNodeClassloader(TypeNode,String) net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypeNode,Class<?>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypeNode,Class<?>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+fallbackIsA(TypeNode,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+fallbackIsA(TypeNode,String)",,1068,26,9,"/** 
+ * Checks whether the resolved type of the given  {@link TypeNode} n is of the typegiven by the clazzName. If the clazzName is on the auxclasspath, then also subclasses are considered. <p>If clazzName is not on the auxclasspath (so it can't be resolved), then a string comparison of the class names are performed. This might result in comparing only the simple name of the classes.
+ * @param n the type node to check
+ * @param clazzName the class name to compare to
+ * @return <code>true</code> if type node n is of type clazzName or a subtype of clazzName
+ */
+","/**
+     * Checks whether the resolved type of the given {@link TypeNode} n is of the type
+     * given by the clazzName. If the clazzName is on the auxclasspath, then also subclasses
+     * are considered.
+     *
+     * <p>If clazzName is not on the auxclasspath (so it can't be resolved), then a string
+     * comparison of the class names are performed. This might result in comparing only
+     * the simple name of the classes.
+     *
+     * @param n the type node to check
+     * @param clazzName the class name to compare to
+     * @return <code>true</code> if type node n is of type clazzName or a subtype of clazzName
+     */
+    public static boolean isA(final TypeNode n, final String clazzName) {
+        if (n.getType() != null && n.getType().isAnnotation()) {
+            return isAnnotationSubtype(n.getType(), clazzName);
+        }
+
+        final Class<?> clazz = loadClassWithNodeClassloader(n, clazzName);
+
+        if (clazz != null || n.getType() != null) {
+            return isA(n, clazz);
+        }
+
+        return fallbackIsA(n, clazzName);
+    }",False
+4,"isAnnotationSubtype(Class<?>,String)",Method,,,,,628,13,10,"/** 
+ * Returns true if the class n is a subtype of clazzName, given n is an annotationt type.
+ */
+","/**
+     * Returns true if the class n is a subtype of clazzName, given n
+     * is an annotationt type.
+     */
+    private static boolean isAnnotationSubtype(Class<?> n, String clazzName) {
+        assert n != null && n.isAnnotation() : ""Not an annotation type"";
+        // then, the supertype may only be Object, j.l.Annotation, or the class name
+        // this avoids classloading altogether
+        // this is used e.g. by the typeIs function in XPath
+        return ""java.lang.annotation.Annotation"".equals(clazzName)
+            || ""java.lang.Object"".equals(clazzName)
+            || clazzName.equals(n.getName());
+    }",True
+5,"fallbackIsA(TypeNode,String)",Method,,,"net.sourceforge.pmd.lang.ast.Node+getImage() net.sourceforge.pmd.lang.ast.Node+getImage() java.lang.String+contains(CharSequence) net.sourceforge.pmd.lang.ast.Node+getImage() net.sourceforge.pmd.lang.ast.Node+getImage() java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) net.sourceforge.pmd.lang.ast.AbstractNode+findChildrenOfType(Class<T>) net.sourceforge.pmd.lang.java.ast.JavaNode+getRoot() net.sourceforge.pmd.lang.java.ast.JavaNode+getRoot() net.sourceforge.pmd.lang.ast.AbstractNode+findChildrenOfType(Class<T>) net.sourceforge.pmd.lang.ast.Node+hasImageEqualTo(String) net.sourceforge.pmd.lang.ast.Node+hasImageEqualTo(String) net.sourceforge.pmd.lang.java.ast.ASTImportDeclaration+getImportedSimpleName() net.sourceforge.pmd.lang.java.ast.ASTImportDeclaration+getImportedSimpleName() java.lang.String+equals(Object) java.lang.String+equals(Object) net.sourceforge.pmd.lang.java.ast.ASTImportDeclaration+getImportedName() net.sourceforge.pmd.lang.java.ast.ASTImportDeclaration+getImportedName() java.lang.String+equals(Object) java.lang.String+equals(Object) net.sourceforge.pmd.lang.ast.Node+getImage() net.sourceforge.pmd.lang.ast.Node+getImage() java.lang.String+endsWith(String) java.lang.String+endsWith(String) net.sourceforge.pmd.lang.ast.Node+getImage() net.sourceforge.pmd.lang.ast.Node+getImage() net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration+getSuperClassTypeNode() net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration+getSuperClassTypeNode() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypeNode,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypeNode,String) net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration+getSuperInterfacesTypeNodes() net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration+getSuperInterfacesTypeNodes() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypeNode,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypeNode,String) net.sourceforge.pmd.lang.ast.Node+getFirstChildOfType(Class<T>) net.sourceforge.pmd.lang.ast.Node+getFirstChildOfType(Class<T>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypeNode,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypeNode,String) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object)",,2270,51,10,,"private static boolean fallbackIsA(TypeNode n, String clazzName) {
+        if (n.getImage() != null && !n.getImage().contains(""."") && clazzName.contains(""."")) {
+            // simple name detected, check the imports to get the full name and use that for fallback
+            List<ASTImportDeclaration> imports = n.getRoot().findChildrenOfType(ASTImportDeclaration.class);
+            for (ASTImportDeclaration importDecl : imports) {
+                if (n.hasImageEqualTo(importDecl.getImportedSimpleName())) {
+                    // found the import, compare the full names
+                    return clazzName.equals(importDecl.getImportedName());
+                }
+            }
+        }
+
+        // fall back on using the simple name of the class only
+        if (clazzName.equals(n.getImage()) || clazzName.endsWith(""."" + n.getImage())) {
+            return true;
+        }
+
+        if (n instanceof ASTClassOrInterfaceDeclaration) {
+            ASTClassOrInterfaceType superClass = ((ASTClassOrInterfaceDeclaration) n).getSuperClassTypeNode();
+            if (superClass != null) {
+                return isA(superClass, clazzName);
+            }
+
+            for (ASTClassOrInterfaceType itf : ((ASTClassOrInterfaceDeclaration) n).getSuperInterfacesTypeNodes()) {
+                if (isA(itf, clazzName)) {
+                    return true;
+                }
+            }
+        } else if (n instanceof ASTEnumDeclaration) {
+
+            ASTImplementsList implemented = n.getFirstChildOfType(ASTImplementsList.class);
+            if (implemented != null) {
+                for (ASTClassOrInterfaceType itf : implemented) {
+                    if (isA(itf, clazzName)) {
+                        return true;
+                    }
+                }
+            }
+
+            return ""java.lang.Enum"".equals(clazzName)
+                // supertypes of Enum
+                || ""java.lang.Comparable"".equals(clazzName)
+                || ""java.io.Serializable"".equals(clazzName)
+                || ""java.lang.Object"".equals(clazzName);
+        } else if (n instanceof ASTAnnotationTypeDeclaration) {
+            return ""java.lang.annotation.Annotation"".equals(clazzName)
+                || ""java.lang.Object"".equals(clazzName);
+        }
+
+        return false;
+    }",True
+6,"isExactlyA(TypeNode,String)",Method,,,"net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() java.lang.String+equals(Object) java.lang.Class+getName() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() java.lang.Class+getName() java.lang.String+equals(Object) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassWithNodeClassloader(TypeNode,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassWithNodeClassloader(TypeNode,String) net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() java.lang.String+equals(Object) java.lang.String+equals(Object) net.sourceforge.pmd.lang.ast.Node+getImage() net.sourceforge.pmd.lang.ast.Node+getImage() java.lang.String+endsWith(String) java.lang.String+endsWith(String) net.sourceforge.pmd.lang.ast.Node+getImage() net.sourceforge.pmd.lang.ast.Node+getImage()",,808,22,9,"/** 
+ * Checks whether the resolved type of the given  {@link TypeNode} n is exactly of the typegiven by the clazzName.
+ * @param n the type node to check
+ * @param clazzName the class name to compare to
+ * @return <code>true</code> if type node n is exactly of type clazzName.
+ */
+","/**
+     * Checks whether the resolved type of the given {@link TypeNode} n is exactly of the type
+     * given by the clazzName.
+     *
+     * @param n the type node to check
+     * @param clazzName the class name to compare to
+     * @return <code>true</code> if type node n is exactly of type clazzName.
+     */
+    public static boolean isExactlyA(final TypeNode n, final String clazzName) {
+        if (n.getType() != null && n.getType().getName().equals(clazzName)) {
+            // fast path avoiding classloading
+            return true;
+        }
+
+        final Class<?> clazz = loadClassWithNodeClassloader(n, clazzName);
+
+        if (clazz != null) {
+            return n.getType() == clazz;
+        }
+
+        return clazzName.equals(n.getImage()) || clazzName.endsWith(""."" + n.getImage());
+    }",False
+7,"loadClassWithNodeClassloader(TypeNode,String)",Method,,,"net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClass(NullableClassLoader,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClass(NullableClassLoader,String) net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit+getClassTypeResolver() net.sourceforge.pmd.lang.java.ast.JavaNode+getRoot() net.sourceforge.pmd.lang.java.ast.JavaNode+getRoot() net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit+getClassTypeResolver()",,246,7,10,,"private static Class<?> loadClassWithNodeClassloader(final TypeNode n, final String clazzName) {
+        if (n.getType() != null) {
+            return loadClass(n.getRoot().getClassTypeResolver(), clazzName);
+        }
+
+        return null;
+    }",False
+8,"loadClass(NullableClassLoader,String)",Method,,,"net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassMaybeArray(NullableClassLoader,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassMaybeArray(NullableClassLoader,String)",,383,9,8,"/** 
+ * Load a class. Supports loading array types like 'java.lang.String[]' and converting a canonical name to a binary name (eg 'java.util.Map.Entry' -> 'java.util.Map$Entry').
+ */
+","/**
+     * Load a class. Supports loading array types like 'java.lang.String[]' and
+     * converting a canonical name to a binary name (eg 'java.util.Map.Entry' ->
+     * 'java.util.Map$Entry').
+     */
+    // test only
+    static Class<?> loadClass(NullableClassLoader ctr, String className) {
+        return loadClassMaybeArray(ctr, StringUtils.deleteWhitespace(className));
+    }",True
+9,"loadClassFromCanonicalName(NullableClassLoader,String)",Method,,,"java.util.Map+get(Object) java.util.Map+get(Object) net.sourceforge.pmd.lang.java.typeresolution.internal.NullableClassLoader+loadClassOrNull(String) net.sourceforge.pmd.lang.java.typeresolution.internal.NullableClassLoader+loadClassOrNull(String) java.lang.String+lastIndexOf(int) java.lang.String+lastIndexOf(int) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+substring(int) java.lang.String+substring(int) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassFromCanonicalName(NullableClassLoader,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassFromCanonicalName(NullableClassLoader,String)",net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+PRIMITIVES_BY_NAME,701,18,10,,"private static Class<?> loadClassFromCanonicalName(NullableClassLoader ctr, String className) {
+        Class<?> clazz = PRIMITIVES_BY_NAME.get(className);
+        if (clazz == null) {
+            clazz = ctr.loadClassOrNull(className);
+        }
+        if (clazz != null) {
+            return clazz;
+        }
+        // allow path separators (.) as inner class name separators
+        final int lastDotIndex = className.lastIndexOf('.');
+
+        if (lastDotIndex >= 0) {
+            String asInner = className.substring(0, lastDotIndex)
+                + '$' + className.substring(lastDotIndex + 1);
+            return loadClassFromCanonicalName(ctr, asInner);
+        }
+        return null;
+    }",True
+10,"loadClassMaybeArray(NullableClassLoader,String)",Method,,,"java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.lang.String+length() java.lang.String+length() java.lang.String+startsWith(String,int) java.lang.String+startsWith(String,int) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+checkJavaIdent(String,int) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+checkJavaIdent(String,int) java.lang.String+substring(int,int) java.lang.String+substring(int,int) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassFromCanonicalName(NullableClassLoader,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassFromCanonicalName(NullableClassLoader,String) java.lang.Object+getClass() java.lang.reflect.Array+newInstance(Class,int[]) java.lang.reflect.Array+newInstance(Class,int[]) java.lang.reflect.Array+newInstance(Class,int) java.lang.reflect.Array+newInstance(Class,int) java.lang.Object+getClass() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+checkJavaIdent(String,int) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+checkJavaIdent(String,int) java.lang.String+length() java.lang.String+length() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassFromCanonicalName(NullableClassLoader,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClassFromCanonicalName(NullableClassLoader,String)",,1006,25,10,,"private static Class<?> loadClassMaybeArray(NullableClassLoader classLoader,
+                                                String className) {
+        Validate.notNull(className, ""className must not be null."");
+        if (className.endsWith(""[]"")) {
+            int dimension = 0;
+            int i = className.length();
+            while (i >= 2 && className.startsWith(""[]"", i - 2)) {
+                dimension++;
+                i -= 2;
+            }
+
+            checkJavaIdent(className, i);
+            String elementName = className.substring(0, i);
+
+            Class<?> elementType = loadClassFromCanonicalName(classLoader, elementName);
+            if (elementType == null) {
+                return null;
+            }
+
+            return Array.newInstance(elementType, (int[]) Array.newInstance(int.class, dimension)).getClass();
+        } else {
+            checkJavaIdent(className, className.length());
+            return loadClassFromCanonicalName(classLoader, className);
+        }
+    }",True
+11,invalidClassName(String),Method,,,java.lang.IllegalArgumentException+IllegalArgumentException(String),,175,3,10,,"private static IllegalArgumentException invalidClassName(String className) {
+        return new IllegalArgumentException(""Not a valid class name \"""" + className + ""\"""");
+    }",True
+12,"checkJavaIdent(String,int)",Method,,,java.lang.Character+isJavaIdentifierStart(char) java.lang.Character+isJavaIdentifierStart(char) java.lang.String+charAt(int) java.lang.String+charAt(int) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+invalidClassName(String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+invalidClassName(String) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.Character+isJavaIdentifierPart(char) java.lang.Character+isJavaIdentifierPart(char) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+invalidClassName(String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+invalidClassName(String),,478,12,10,,"private static void checkJavaIdent(String className, int endOffsetExclusive) {
+        if (endOffsetExclusive <= 0 || !Character.isJavaIdentifierStart(className.charAt(0))) {
+            throw invalidClassName(className);
+        }
+
+        for (int i = 1; i < endOffsetExclusive; i++) {
+            char c = className.charAt(i);
+            if (!(Character.isJavaIdentifierPart(c) || c == '.')) {
+                throw invalidClassName(className);
+            }
+        }
+    }",True
+13,"isA(TypeNode,Class<?>)",Method,,,"net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+subclasses(TypeNode,Class<?>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+subclasses(TypeNode,Class<?>)",,137,4,9,"/** 
+ * @see #isA(TypeNode,String) 
+ */
+","/** @see #isA(TypeNode, String) */
+    public static boolean isA(TypeNode n, Class<?> clazz) {
+        return subclasses(n, clazz);
+    }",False
+14,"isEither(TypeNode,Class<?>,Class<?>)",Method,,,"net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+subclasses(TypeNode,Class<?>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+subclasses(TypeNode,Class<?>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+subclasses(TypeNode,Class<?>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+subclasses(TypeNode,Class<?>)",,147,3,9,,"public static boolean isEither(TypeNode n, Class<?> class1, Class<?> class2) {
+        return subclasses(n, class1) || subclasses(n, class2);
+    }",False
+15,"isExactlyAny(TypedNameDeclaration,Class<?>)",Method,,,net.sourceforge.pmd.lang.java.symboltable.TypedNameDeclaration+getType() net.sourceforge.pmd.lang.java.symboltable.TypedNameDeclaration+getType() java.lang.Object+equals(Object) java.lang.Object+equals(Object) java.lang.String+equals(Object) java.lang.Class+getSimpleName() java.lang.Class+getSimpleName() java.lang.String+equals(Object) net.sourceforge.pmd.lang.java.symboltable.TypedNameDeclaration+getTypeImage() net.sourceforge.pmd.lang.java.symboltable.TypedNameDeclaration+getTypeImage() java.lang.String+equals(Object) java.lang.Class+getName() java.lang.Class+getName() java.lang.String+equals(Object) net.sourceforge.pmd.lang.java.symboltable.TypedNameDeclaration+getTypeImage() net.sourceforge.pmd.lang.java.symboltable.TypedNameDeclaration+getTypeImage(),,437,11,9,,"public static boolean isExactlyAny(TypedNameDeclaration vnd, Class<?>... clazzes) {
+        Class<?> type = vnd.getType();
+        for (final Class<?> clazz : clazzes) {
+            if (type != null && type.equals(clazz) || type == null
+                && (clazz.getSimpleName().equals(vnd.getTypeImage()) || clazz.getName().equals(vnd.getTypeImage()))) {
+                return true;
+            }
+        }
+
+        return false;
+    }",False
+16,"isExactlyNone(TypedNameDeclaration,Class<?>)",Method,,,"net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isExactlyAny(TypedNameDeclaration,Class<?>[]) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isExactlyAny(TypedNameDeclaration,Class<?>[])",,134,3,9,,"public static boolean isExactlyNone(TypedNameDeclaration vnd, Class<?>... clazzes) {
+        return !isExactlyAny(vnd, clazzes);
+    }",False
+17,"isA(TypedNameDeclaration,Class<?>)",Method,,,"net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isExactlyAny(TypedNameDeclaration,Class<?>[]) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isExactlyAny(TypedNameDeclaration,Class<?>[])",,225,7,9,"/** 
+ * @deprecated use {@link #isExactlyAny(TypedNameDeclaration,Class...)}
+ */
+","/**
+     * @deprecated use {@link #isExactlyAny(TypedNameDeclaration, Class...)}
+     */
+    @Deprecated
+    public static boolean isA(TypedNameDeclaration vnd, Class<?> clazz) {
+        return isExactlyAny(vnd, clazz);
+    }",False
+18,"isEither(TypedNameDeclaration,Class<?>,Class<?>)",Method,,,"net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isExactlyAny(TypedNameDeclaration,Class<?>[]) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isExactlyAny(TypedNameDeclaration,Class<?>[])",,257,7,9,"/** 
+ * @deprecated use {@link #isExactlyAny(TypedNameDeclaration,Class...)}
+ */
+","/**
+     * @deprecated use {@link #isExactlyAny(TypedNameDeclaration, Class...)}
+     */
+    @Deprecated
+    public static boolean isEither(TypedNameDeclaration vnd, Class<?> class1, Class<?> class2) {
+        return isExactlyAny(vnd, class1, class2);
+    }",False
+19,"isNeither(TypedNameDeclaration,Class<?>,Class<?>)",Method,,,"net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypedNameDeclaration,Class<?>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypedNameDeclaration,Class<?>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypedNameDeclaration,Class<?>) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+isA(TypedNameDeclaration,Class<?>)",,264,7,9,"/** 
+ * @deprecated use {@link #isExactlyNone(TypedNameDeclaration,Class...)}
+ */
+","/**
+     * @deprecated use {@link #isExactlyNone(TypedNameDeclaration, Class...)}
+     */
+    @Deprecated
+    public static boolean isNeither(TypedNameDeclaration vnd, Class<?> class1, Class<?> class2) {
+        return !isA(vnd, class1) && !isA(vnd, class2);
+    }",False
+20,"subclasses(TypeNode,Class<?>)",Method,,,"net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.ast.TypeNode+getType() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+fallbackIsA(TypeNode,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+fallbackIsA(TypeNode,String) java.lang.Class+getName() java.lang.Class+getName() java.lang.Class+isAssignableFrom(Class) java.lang.Class+isAssignableFrom(Class)",,373,10,9,,"public static boolean subclasses(TypeNode n, Class<?> clazz) {
+        Class<?> type = n.getType();
+        if (clazz == null) {
+            return false; // If in auxclasspath, both should be resolvable, or are not the same
+        } else if (type == null) {
+            return fallbackIsA(n, clazz.getName());
+        }
+
+        return clazz.isAssignableFrom(type);
+    }",False
+21,"isA(TypedNameDeclaration,String)",Method,,,"net.sourceforge.pmd.lang.java.symboltable.TypedNameDeclaration+getType() net.sourceforge.pmd.lang.java.symboltable.TypedNameDeclaration+getType() net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClass(NullableClassLoader,String) net.sourceforge.pmd.lang.java.typeresolution.TypeHelper+loadClass(NullableClassLoader,String) net.sourceforge.pmd.lang.java.typeresolution.internal.NullableClassLoader.ClassLoaderWrapper+wrapNullable(ClassLoader) net.sourceforge.pmd.lang.java.typeresolution.internal.NullableClassLoader.ClassLoaderWrapper+wrapNullable(ClassLoader) java.lang.Class+getClassLoader() java.lang.Class+getClassLoader() java.lang.Class+isAssignableFrom(Class) java.lang.Class+isAssignableFrom(Class)",,383,10,9,,"public static boolean isA(TypedNameDeclaration vnd, String className) {
+        Class<?> type = vnd.getType();
+        if (type != null) {
+            Class<?> clazz = loadClass(ClassLoaderWrapper.wrapNullable(type.getClassLoader()), className);
+            if (clazz != null) {
+                return clazz.isAssignableFrom(type);
+            }
+        }
+        return false;
+    }",False

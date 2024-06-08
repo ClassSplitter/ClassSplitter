@@ -1,0 +1,177 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,array,Field,SingleConsumerArrayQueue(int),,,,29,1,18,,private final Object[] array;,True
+2,head,Field,,,,,26,1,66,,private volatile int head;,False
+3,p001,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+4,p002,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+5,p003,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+6,p004,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+7,p005,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+8,p006,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+9,p007,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+10,p008,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+11,p009,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+12,p010,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+13,p011,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+14,p012,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+15,p013,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+16,p014,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+17,p015,Field,,,,,113,1,66,,"private volatile Object p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011, p012, p013, p014, p015;",False
+18,tail,Field,,,,,26,1,66,,private volatile int tail;,False
+19,SingleConsumerArrayQueue(int),Method,,,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue<E>+array co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+array,88,3,1,,"public SingleConsumerArrayQueue(int size) {
+        this.array = new Object[size];
+    }",True
+20,allowRetainPointers(),Method,,,,,80,4,1,,"@Override
+    public boolean allowRetainPointers() {
+        return false;
+    }",False
+21,value(Integer),Method,,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+value(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+value(int) java.lang.Integer+intValue() java.lang.Integer+intValue(),,91,4,1,,"@Override
+    public E value(Integer index) {
+        return value(index.intValue());
+    }",False
+22,value(int),Method,value(Integer) QueueIterator.next(),,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+array,66,3,1,,"public E value(int index) {
+        return (E) array[index];
+    }",False
+23,enq(E),Method,,,"java.lang.IllegalArgumentException+IllegalArgumentException(String) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.QueueCapacityExceededException+QueueCapacityExceededException() co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+compareAndSetTail(int,int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+compareAndSetTail(int,int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+set(int,Object) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+set(int,Object)",co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+tail co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+tail,393,15,1,,"@Override
+    public void enq(E item) {
+        if (item == null)
+            throw new IllegalArgumentException(""null values not allowed"");
+        if (next(tail) == head)
+            throw new QueueCapacityExceededException();
+
+        int t;
+        for (;;) {
+            t = tail;
+            if (compareAndSetTail(t, next(t)))
+                break;
+        }
+        set(t, item);
+    }",False
+24,deq(Integer),Method,,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+deq(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+deq(int) java.lang.Integer+intValue() java.lang.Integer+intValue(),,83,4,1,,"@Override
+    public void deq(Integer index) {
+        deq(index.intValue());
+    }",False
+25,deq(int),Method,deq(Integer) del(int),,"co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+lazySet(int,Object) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+lazySet(int,Object)",co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head,183,6,1,,"public void deq(int index) {
+        final int newHead = next(index);
+        for (int i = head; i != newHead; i = next(i))
+            lazySet(i, null);
+        head = newHead;
+    }",False
+26,pk(),Method,succ(int),,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+get(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+get(int) java.lang.Integer+valueOf(int) java.lang.Integer+valueOf(int),co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+tail co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head,223,8,1,,"@Override
+    @SuppressWarnings(""empty-statement"")
+    public Integer pk() {
+        if (head == tail)
+            return null;
+        while (get(head) == null); // volatile read
+        return Integer.valueOf(head);
+    }",False
+27,succ(Integer),Method,,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+succ(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+succ(int) java.lang.Integer+intValue() java.lang.Integer+intValue() java.lang.Integer+valueOf(int) java.lang.Integer+valueOf(int),,174,5,1,,"@Override
+    public Integer succ(Integer index) {
+        final int s = succ(index != null ? index.intValue() : -1);
+        return s >= 0 ? Integer.valueOf(s) : null;
+    }",False
+28,succ(int),Method,succ(Integer) QueueIterator.hasNext() QueueIterator.next(),,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+pk() co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+pk() co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+get(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+get(int),co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+tail,345,13,1,,"@SuppressWarnings(""empty-statement"")
+    public int succ(int index) {
+        if (index < 0) {
+            final Integer pk = pk();
+            return pk != null ? pk : -1;
+        }
+        int n = index;
+        n = next(n);
+        if (n == tail)
+            return -1;
+        while (get(n) == null); // volatile read
+        return n;
+    }",False
+29,del(Integer),Method,,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+del(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+del(int) java.lang.Integer+intValue() java.lang.Integer+intValue(),,93,4,1,,"@Override
+    public Integer del(Integer index) {
+        return del(index.intValue());
+    }",False
+30,del(int),Method,del(Integer) QueueIterator.remove(),,"co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+deq(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+deq(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+lazySet(int,Object) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+lazySet(int,Object) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+compareAndSetTail(int,int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+compareAndSetTail(int,int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+prev(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+prev(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+prev(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+prev(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+prev(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+prev(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+lazySet(int,Object) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+lazySet(int,Object) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+next(int)",co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+tail co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+array co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head,509,23,1,,"public int del(int index) {
+        if (index == head) {
+            deq(index);
+            return -1;
+        }
+
+        lazySet(index, null);
+        int t = tail;
+        if (index == t) {
+            if (compareAndSetTail(t, prev(t)))
+                return prev(index);
+        }
+
+        final int h = head;
+        int i = index;
+        while (i != h) {
+            int pi = prev(i);
+            lazySet(i, array[pi]);
+            i = pi;
+        }
+        head = next(h);
+        return index;
+    }",False
+31,size(),Method,,,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+tail co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+tail co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+tail co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+array co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+head,159,7,1,,"@Override
+    public int size() {
+        if (tail >= head)
+            return tail - head;
+        else
+            return tail + (array.length - head);
+    }",False
+32,next(int),Method,enq(E) enq(E) deq(int) deq(int) succ(int) del(int),,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+array,118,4,2,,"private int next(int i) {
+        return (i + 1) % array.length;
+        //return (++i == array.length) ? 0 : i;
+    }",False
+33,prev(int),Method,del(int) del(int) del(int),,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+array,84,3,2,,"private int prev(int i) {
+        return (--i == -1) ? (array.length - 1) : i;
+    }",False
+34,iterator(),Method,,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+QueueIterator(),,87,4,1,,"@Override
+    public Iterator<E> iterator() {
+        return new QueueIterator();
+    }",False
+35,resetIterator(Iterator<E>),Method,,,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue<E>.QueueIterator+n co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+n,104,4,1,,"@Override
+    public void resetIterator(Iterator<E> iter) {
+        ((QueueIterator) iter).n = -1;
+    }",False
+36,QueueIterator,MemberClass,,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+hasNext() co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+succ(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+succ(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+next() co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+succ(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+succ(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+value(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+value(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+remove() co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+del(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+del(int),co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+n co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+n co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+n co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+n co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+n co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+n co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue.QueueIterator+n,376,19,2,,"private class QueueIterator implements Iterator<E> {
+        private int n = -1;
+
+        @Override
+        public boolean hasNext() {
+            return succ(n) >= 0;
+        }
+
+        @Override
+        public E next() {
+            n = succ(n);
+            return value(n);
+        }
+
+        @Override
+        public void remove() {
+            n = del(n);
+        }
+    }",False
+37,unsafe,Field,,,,,60,1,26,,private static final Unsafe unsafe = UtilUnsafe.getUnsafe();,False
+38,tailOffset,Field,,,,,37,1,26,,private static final long tailOffset;,False
+39,base,Field,,,,,30,1,26,,private static final int base;,True
+40,shift,Field,,,,,31,1,26,,private static final int shift;,True
+41,byteOffset(int),Method,"set(int,Object) lazySet(int,Object) get(int)",,,co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+shift co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+base,88,3,10,,"private static long byteOffset(int i) {
+        return ((long) i << shift) + base;
+    }",True
+42,"compareAndSetTail(int,int)",Method,enq(E) del(int),,"sun.misc.Unsafe+compareAndSwapInt(Object,long,int,int) sun.misc.Unsafe+compareAndSwapInt(Object,long,int,int)",co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+unsafe co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+tailOffset,197,6,2,"/** 
+ * CAS tail field. Used only by enq.
+ */
+","/**
+     * CAS tail field. Used only by enq.
+     */
+    private boolean compareAndSetTail(int expect, int update) {
+        return unsafe.compareAndSwapInt(this, tailOffset, expect, update);
+    }",False
+43,"set(int,Object)",Method,enq(E),,"sun.misc.Unsafe+putObjectVolatile(Object,long,Object) sun.misc.Unsafe+putObjectVolatile(Object,long,Object) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+byteOffset(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+byteOffset(int)",co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+unsafe co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+array,108,3,2,,"private void set(int i, Object value) {
+        unsafe.putObjectVolatile(array, byteOffset(i), value);
+    }",True
+44,"lazySet(int,Object)",Method,deq(int) del(int) del(int),,"sun.misc.Unsafe+putOrderedObject(Object,long,Object) sun.misc.Unsafe+putOrderedObject(Object,long,Object) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+byteOffset(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+byteOffset(int)",co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+unsafe co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+array,111,3,2,,"private void lazySet(int i, Object value) {
+        unsafe.putOrderedObject(array, byteOffset(i), value);
+    }",True
+45,get(int),Method,pk() succ(int),,"sun.misc.Unsafe+getObjectVolatile(Object,long) sun.misc.Unsafe+getObjectVolatile(Object,long) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+byteOffset(int) co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+byteOffset(int)",co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+unsafe co.paralleluniverse.lwthreads.datastruct.SingleConsumerArrayQueue+array,96,3,2,,"private Object get(int i) {
+        return unsafe.getObjectVolatile(array, byteOffset(i));
+    }",True

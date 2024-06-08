@@ -1,0 +1,173 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,TEXT_KEY,Field,,,,,46,1,26,,"private static final String TEXT_KEY = ""text"";",False
+2,text,Field,"TextNode(String,String) text(String)",,,,12,1,0,,String text;,False
+3,"TextNode(String,String)",Method,,,,org.jsoup.nodes.Node+baseUri org.jsoup.nodes.Node+baseUri org.jsoup.nodes.TextNode+text org.jsoup.nodes.TextNode+text,299,11,1,"/** 
+ * Create a new TextNode representing the supplied (unencoded) text).
+ * @param text raw text
+ * @param baseUri base uri
+ * @see #createFromEncoded(String,String)
+ */
+","/**
+     Create a new TextNode representing the supplied (unencoded) text).
+
+     @param text raw text
+     @param baseUri base uri
+     @see #createFromEncoded(String, String)
+     */
+    public TextNode(String text, String baseUri) {
+        this.baseUri = baseUri;
+        this.text = text;
+    }",False
+4,nodeName(),Method,,,,,56,3,1,,"public String nodeName() {
+        return ""#text"";
+    }",False
+5,text(),Method,,"org.jsoup.examples.HtmlToPlainText+FormattingVisitor.head(Node,int) org.jsoup.nodes.ElementTest+testGetTextNodes() org.jsoup.nodes.ElementTest+testGetTextNodes() org.jsoup.nodes.ElementTest+testGetTextNodes() org.jsoup.nodes.NodeTest+unwrap() org.jsoup.nodes.NodeTest+childNodesCopy() org.jsoup.nodes.TextNodeTest+testTextBean() org.jsoup.nodes.TextNodeTest+testTextBean() org.jsoup.nodes.TextNodeTest+testTextBean() org.jsoup.parser.XmlTreeBuilderTest+xmlFragment()",org.jsoup.nodes.TextNode+normaliseWhitespace(String) org.jsoup.nodes.TextNode+normaliseWhitespace(String) org.jsoup.nodes.TextNode+getWholeText() org.jsoup.nodes.TextNode+getWholeText(),,222,8,1,"/** 
+ * Get the text content of this text node.
+ * @return Unencoded, normalised text.
+ * @see TextNode#getWholeText()
+ */
+","/**
+     * Get the text content of this text node.
+     * @return Unencoded, normalised text.
+     * @see TextNode#getWholeText()
+     */
+    public String text() {
+        return normaliseWhitespace(getWholeText());
+    }",False
+6,text(String),Method,splitText(int),org.jsoup.nodes.ElementTest+testManipulateTextNodes() org.jsoup.nodes.ElementTest+testManipulateTextNodes() org.jsoup.nodes.NodeTest+childNodesCopy() org.jsoup.nodes.TextNodeTest+testTextBean() org.jsoup.nodes.TextNodeTest+testSplitText(),"org.jsoup.nodes.Attributes+put(String,String) org.jsoup.nodes.Attributes+put(String,String)",org.jsoup.nodes.TextNode+text org.jsoup.nodes.TextNode+text org.jsoup.nodes.Node+attributes org.jsoup.nodes.Node+attributes org.jsoup.nodes.TextNode+TEXT_KEY,295,11,1,"/** 
+ * Set the text content of this text node.
+ * @param text unencoded text
+ * @return this, for chaining
+ */
+","/**
+     * Set the text content of this text node.
+     * @param text unencoded text
+     * @return this, for chaining
+     */
+    public TextNode text(String text) {
+        this.text = text;
+        if (attributes != null)
+            attributes.put(TEXT_KEY, text);
+        return this;
+    }",False
+7,getWholeText(),Method,"text() isBlank() splitText(int) splitText(int) outerHtmlHead(Appendable,int,Document.OutputSettings)","org.jsoup.helper.W3CDom+W3CBuilder.head(org.jsoup.nodes.Node,int) org.jsoup.nodes.Element+appendNormalisedText(StringBuilder,TextNode) org.jsoup.safety.Cleaner+CleaningVisitor.head(Node,int) org.jsoup.nodes.ElementTest+getElementsByTagName() org.jsoup.nodes.ElementTest+getElementsByTagName() org.jsoup.nodes.ElementTest+testNormalizesNbspInText() org.jsoup.nodes.TextNodeTest+testSplitText() org.jsoup.nodes.TextNodeTest+testSplitText() org.jsoup.parser.HtmlParserTest+parsesComments() org.jsoup.parser.HtmlParserTest+parsesUnterminatedComments()",org.jsoup.nodes.Attributes+get(String) org.jsoup.nodes.Attributes+get(String),org.jsoup.nodes.Node+attributes org.jsoup.nodes.TextNode+text org.jsoup.nodes.Node+attributes org.jsoup.nodes.TextNode+TEXT_KEY,247,7,1,"/** 
+ * Get the (unencoded) text of this text node, including any newlines and spaces present in the original.
+ * @return text
+ */
+","/**
+     Get the (unencoded) text of this text node, including any newlines and spaces present in the original.
+     @return text
+     */
+    public String getWholeText() {
+        return attributes == null ? text : attributes.get(TEXT_KEY);
+    }",False
+8,isBlank(),Method,"outerHtmlHead(Appendable,int,Document.OutputSettings) outerHtmlHead(Appendable,int,Document.OutputSettings)",org.jsoup.nodes.Document+normaliseTextNodes(Element) org.jsoup.nodes.Element+hasText() org.jsoup.nodes.TextNodeTest+testBlank() org.jsoup.nodes.TextNodeTest+testBlank() org.jsoup.nodes.TextNodeTest+testBlank() org.jsoup.nodes.TextNodeTest+testBlank() org.jsoup.nodes.TextNodeTest+testBlank(),org.jsoup.helper.StringUtil+isBlank(String) org.jsoup.helper.StringUtil+isBlank(String) org.jsoup.nodes.TextNode+getWholeText() org.jsoup.nodes.TextNode+getWholeText(),,298,7,1,"/** 
+ * Test if this text node is blank -- that is, empty or only whitespace (including newlines).
+ * @return true if this document is empty or only whitespace, false if it contains any text content.
+ */
+","/**
+     Test if this text node is blank -- that is, empty or only whitespace (including newlines).
+     @return true if this document is empty or only whitespace, false if it contains any text content.
+     */
+    public boolean isBlank() {
+        return StringUtil.isBlank(getWholeText());
+    }",False
+9,splitText(int),Method,,org.jsoup.nodes.ElementTest+testManipulateTextNodes() org.jsoup.nodes.TextNodeTest+testSplitText() org.jsoup.nodes.TextNodeTest+testSplitAnEmbolden(),"org.jsoup.helper.Validate+isTrue(boolean,String) org.jsoup.helper.Validate+isTrue(boolean,String) org.jsoup.helper.Validate+isTrue(boolean,String) org.jsoup.helper.Validate+isTrue(boolean,String) java.lang.String+length() java.lang.String+length() java.lang.String+substring(int,int) org.jsoup.nodes.TextNode+getWholeText() org.jsoup.nodes.TextNode+getWholeText() java.lang.String+substring(int,int) java.lang.String+substring(int) org.jsoup.nodes.TextNode+getWholeText() org.jsoup.nodes.TextNode+getWholeText() java.lang.String+substring(int) org.jsoup.nodes.TextNode+text(String) org.jsoup.nodes.TextNode+text(String) org.jsoup.nodes.TextNode+TextNode(String,String) org.jsoup.nodes.Node+baseUri() org.jsoup.nodes.Node+baseUri() org.jsoup.nodes.Node+parent() org.jsoup.nodes.Node+parent() org.jsoup.nodes.Node+addChildren(int,Node[]) org.jsoup.nodes.Node+parent() org.jsoup.nodes.Node+parent() org.jsoup.nodes.Node+addChildren(int,Node[]) org.jsoup.nodes.Node+siblingIndex() org.jsoup.nodes.Node+siblingIndex()",org.jsoup.nodes.TextNode+text,941,19,1,"/** 
+ * Split this text node into two nodes at the specified string offset. After splitting, this node will contain the original text up to the offset, and will have a new text node sibling containing the text after the offset.
+ * @param offset string offset point to split node at.
+ * @return the newly created text node containing the text after the offset.
+ */
+","/**
+     * Split this text node into two nodes at the specified string offset. After splitting, this node will contain the
+     * original text up to the offset, and will have a new text node sibling containing the text after the offset.
+     * @param offset string offset point to split node at.
+     * @return the newly created text node containing the text after the offset.
+     */
+    public TextNode splitText(int offset) {
+        Validate.isTrue(offset >= 0, ""Split offset must be not be negative"");
+        Validate.isTrue(offset < text.length(), ""Split offset must not be greater than current text length"");
+
+        String head = getWholeText().substring(0, offset);
+        String tail = getWholeText().substring(offset);
+        text(head);
+        TextNode tailNode = new TextNode(tail, this.baseUri());
+        if (parent() != null)
+            parent().addChildren(siblingIndex()+1, tailNode);
+
+        return tailNode;
+    }",False
+10,"outerHtmlHead(Appendable,int,Document.OutputSettings)",Method,,,"org.jsoup.nodes.Document.OutputSettings+prettyPrint() org.jsoup.nodes.Document.OutputSettings+prettyPrint() org.jsoup.nodes.Node+siblingIndex() org.jsoup.nodes.Node+siblingIndex() org.jsoup.parser.Tag+formatAsBlock() org.jsoup.nodes.Element+tag() org.jsoup.nodes.Element+tag() org.jsoup.parser.Tag+formatAsBlock() org.jsoup.nodes.TextNode+isBlank() org.jsoup.nodes.TextNode+isBlank() org.jsoup.nodes.Document.OutputSettings+outline() org.jsoup.nodes.Document.OutputSettings+outline() java.util.List+size() org.jsoup.nodes.Node+siblingNodes() org.jsoup.nodes.Node+siblingNodes() java.util.List+size() org.jsoup.nodes.TextNode+isBlank() org.jsoup.nodes.TextNode+isBlank() org.jsoup.nodes.Node+indent(Appendable,int,OutputSettings) org.jsoup.nodes.Node+indent(Appendable,int,OutputSettings) org.jsoup.nodes.Document.OutputSettings+prettyPrint() org.jsoup.nodes.Document.OutputSettings+prettyPrint() org.jsoup.nodes.Node+parent() org.jsoup.nodes.Node+parent() org.jsoup.nodes.Element+preserveWhitespace(Node) org.jsoup.nodes.Element+preserveWhitespace(Node) org.jsoup.nodes.Node+parent() org.jsoup.nodes.Node+parent() org.jsoup.nodes.Entities+escape(Appendable,String,OutputSettings,boolean,boolean,boolean) org.jsoup.nodes.Entities+escape(Appendable,String,OutputSettings,boolean,boolean,boolean) org.jsoup.nodes.TextNode+getWholeText() org.jsoup.nodes.TextNode+getWholeText()",org.jsoup.nodes.Node+parentNode org.jsoup.nodes.Node+parentNode,580,8,0,,"void outerHtmlHead(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+        if (out.prettyPrint() && ((siblingIndex() == 0 && parentNode instanceof Element && ((Element) parentNode).tag().formatAsBlock() && !isBlank()) || (out.outline() && siblingNodes().size()>0 && !isBlank()) ))
+            indent(accum, depth, out);
+
+        boolean normaliseWhite = out.prettyPrint() && parent() instanceof Element
+                && !Element.preserveWhitespace(parent());
+        Entities.escape(accum, getWholeText(), out, false, normaliseWhite, false);
+    }",False
+11,"outerHtmlTail(Appendable,int,Document.OutputSettings)",Method,,,,,79,1,0,,"void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) {}",False
+12,toString(),Method,,,org.jsoup.nodes.Node+outerHtml() org.jsoup.nodes.Node+outerHtml(),,74,4,1,,"@Override
+    public String toString() {
+        return outerHtml();
+    }",False
+13,"createFromEncoded(String,String)",Method,,,"org.jsoup.nodes.Entities+unescape(String) org.jsoup.nodes.Entities+unescape(String) org.jsoup.nodes.TextNode+TextNode(String,String)",,429,10,9,"/** 
+ * Create a new TextNode from HTML encoded (aka escaped) data.
+ * @param encodedText Text containing encoded HTML (e.g. &amp;lt;)
+ * @param baseUri Base uri
+ * @return TextNode containing unencoded data (e.g. &lt;)
+ */
+","/**
+     * Create a new TextNode from HTML encoded (aka escaped) data.
+     * @param encodedText Text containing encoded HTML (e.g. &amp;lt;)
+     * @param baseUri Base uri
+     * @return TextNode containing unencoded data (e.g. &lt;)
+     */
+    public static TextNode createFromEncoded(String encodedText, String baseUri) {
+        String text = Entities.unescape(encodedText);
+        return new TextNode(text, baseUri);
+    }",False
+14,normaliseWhitespace(String),Method,text(),,org.jsoup.helper.StringUtil+normaliseWhitespace(String) org.jsoup.helper.StringUtil+normaliseWhitespace(String),,128,4,8,,"static String normaliseWhitespace(String text) {
+        text = StringUtil.normaliseWhitespace(text);
+        return text;
+    }",False
+15,stripLeadingWhitespace(String),Method,,,"java.lang.String+replaceFirst(String,String) java.lang.String+replaceFirst(String,String)",,104,3,8,,"static String stripLeadingWhitespace(String text) {
+        return text.replaceFirst(""^\\s+"", """");
+    }",False
+16,lastCharIsWhitespace(StringBuilder),Method,,"org.jsoup.nodes.Element+head(Node,int) org.jsoup.nodes.Element+appendNormalisedText(StringBuilder,TextNode) org.jsoup.nodes.Element+appendWhitespaceIfBr(Element,StringBuilder)",java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.StringBuilder+charAt(int) java.lang.StringBuilder+charAt(int) java.lang.StringBuilder+length() java.lang.StringBuilder+length(),,131,3,8,,"static boolean lastCharIsWhitespace(StringBuilder sb) {
+        return sb.length() != 0 && sb.charAt(sb.length() - 1) == ' ';
+    }",False
+17,ensureAttributes(),Method,"attr(String) attributes() attr(String,String) hasAttr(String) removeAttr(String) absUrl(String)",,"org.jsoup.nodes.Attributes+Attributes() org.jsoup.nodes.Attributes+put(String,String) org.jsoup.nodes.Attributes+put(String,String)",org.jsoup.nodes.Node+attributes org.jsoup.nodes.Node+attributes org.jsoup.nodes.Node+attributes org.jsoup.nodes.TextNode+TEXT_KEY org.jsoup.nodes.TextNode+text,170,6,2,,"private void ensureAttributes() {
+        if (attributes == null) {
+            attributes = new Attributes();
+            attributes.put(TEXT_KEY, text);
+        }
+    }",True
+18,attr(String),Method,,,org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.Node+attr(String),,130,5,1,,"@Override
+    public String attr(String attributeKey) {
+        ensureAttributes();
+        return super.attr(attributeKey);
+    }",True
+19,attributes(),Method,,,org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.Node+attributes(),,115,5,1,,"@Override
+    public Attributes attributes() {
+        ensureAttributes();
+        return super.attributes();
+    }",True
+20,"attr(String,String)",Method,,org.jsoup.nodes.TextNodeTest+testTextBean(),"org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.Node+attr(String,String)",,167,5,1,,"@Override
+    public Node attr(String attributeKey, String attributeValue) {
+        ensureAttributes();
+        return super.attr(attributeKey, attributeValue);
+    }",True
+21,hasAttr(String),Method,,,org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.Node+hasAttr(String),,137,5,1,,"@Override
+    public boolean hasAttr(String attributeKey) {
+        ensureAttributes();
+        return super.hasAttr(attributeKey);
+    }",True
+22,removeAttr(String),Method,,,org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.Node+removeAttr(String),,140,5,1,,"@Override
+    public Node removeAttr(String attributeKey) {
+        ensureAttributes();
+        return super.removeAttr(attributeKey);
+    }",True
+23,absUrl(String),Method,,,org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.TextNode+ensureAttributes() org.jsoup.nodes.Node+absUrl(String),,134,5,1,,"@Override
+    public String absUrl(String attributeKey) {
+        ensureAttributes();
+        return super.absUrl(attributeKey);
+    }",True

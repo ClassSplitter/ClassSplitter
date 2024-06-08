@@ -1,0 +1,949 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,logger,Field,,,,,108,2,26,,"private static final Logger logger = Logger
+           .getLogger(OperationSetMultiUserChatYahooImpl.class);",False
+2,invitationListeners,Field,,,,,205,5,2,"/** 
+ * A list of listeners subscribed for invitations multi user chat events.
+ */
+","/**
+    * A list of listeners subscribed for invitations multi user chat events.
+    */
+   private Vector<ChatRoomInvitationListener> invitationListeners 
+       = new Vector<ChatRoomInvitationListener>();",True
+3,invitationRejectionListeners,Field,,,,,286,7,2,"/** 
+ * A list of listeners subscribed for events indicating rejection of a multi user chat invitation sent by us.
+ */
+","/**
+    * A list of listeners subscribed for events indicating rejection of a multi
+    * user chat invitation sent by us.
+    */
+   private Vector<ChatRoomInvitationRejectionListener> 
+       invitationRejectionListeners 
+           = new Vector<ChatRoomInvitationRejectionListener>();",True
+4,presenceListeners,Field,,,,,284,6,2,"/** 
+ * Listeners that will be notified of changes in our status in the room such as us being kicked, banned, or granted admin permissions.
+ */
+","/**
+    * Listeners that will be notified of changes in our status in the room such
+    * as us being kicked, banned, or granted admin permissions.
+    */
+   private Vector<LocalUserChatRoomPresenceListener> presenceListeners 
+       = new Vector<LocalUserChatRoomPresenceListener>();",True
+5,chatRoomCache,Field,getCurrentlyJoinedChatRooms() getCurrentlyJoinedChatRooms(ChatRoomMember),,,,193,5,2,"/** 
+ * A list of the rooms that are currently open by this account.
+ */
+","/**
+    * A list of the rooms that are currently open by this account.
+    */
+   private Hashtable<String, ChatRoomYahooImpl> chatRoomCache 
+       = new Hashtable<String, ChatRoomYahooImpl>();",False
+6,yahooProvider,Field,OperationSetMultiUserChatYahooImpl(ProtocolProviderServiceYahooImpl),,,,150,4,2,"/** 
+ * The currently valid Yahoo protocol provider service implementation.
+ */
+","/**
+    * The currently valid Yahoo protocol provider service implementation.
+    */
+   private ProtocolProviderServiceYahooImpl yahooProvider = null;",False
+7,opSetBasic,Field,,,,,187,5,2,"/** 
+ * The operation set for the basic instant messaging, provides some  message format functions.
+ */
+","/**
+    * The operation set for the basic instant messaging, provides some 
+    * message format functions.
+    */
+   private OperationSetBasicInstantMessagingYahooImpl opSetBasic = null;",False
+8,messageDecoder,Field,,,,,217,5,2,"/** 
+ * Message decoder allows to convert Yahoo formated messages, which can contains some specials characters, to HTML or to plain text.
+ */
+","/**
+    * Message decoder allows to convert Yahoo formated messages, which can
+    * contains some specials characters, to HTML or to plain text.
+    */
+   private MessageDecoder messageDecoder = new MessageDecoder();",False
+9,OperationSetMultiUserChatYahooImpl(ProtocolProviderServiceYahooImpl),Method,,,net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+addRegistrationStateChangeListener(RegistrationStateChangeListener) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+addRegistrationStateChangeListener(RegistrationStateChangeListener) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl.RegistrationStateListener+RegistrationStateListener() net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.OperationSetPresence+addSubscriptionListener(SubscriptionListener) net.java.sip.communicator.service.protocol.OperationSetPresence+addSubscriptionListener(SubscriptionListener),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+yahooProvider net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+yahooProvider net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+opSetBasic,899,25,0,"/** 
+ * Instantiates the user operation set with a currently valid instance of the Yahoo protocol provider.
+ * @param yahooProvider a currently valid instance of ProtocolProviderServiceYahooImpl.
+ */
+","/**
+    * Instantiates the user operation set with a currently valid instance of
+    * the Yahoo protocol provider.
+    * 
+    * @param yahooProvider
+    *            a currently valid instance of
+    *            ProtocolProviderServiceYahooImpl.
+    */
+   OperationSetMultiUserChatYahooImpl(
+           ProtocolProviderServiceYahooImpl yahooProvider)
+   {
+       this.yahooProvider = yahooProvider;
+
+       yahooProvider.addRegistrationStateChangeListener(
+           new RegistrationStateListener());
+
+       opSetBasic = (OperationSetBasicInstantMessagingYahooImpl) yahooProvider
+               .getOperationSet(OperationSetBasicInstantMessaging.class);
+
+       OperationSetPersistentPresence presenceOpSet
+           = (OperationSetPersistentPresence) yahooProvider
+               .getOperationSet(OperationSetPersistentPresence.class);
+
+       presenceOpSet.addSubscriptionListener(this);
+   }",False
+10,addInvitationListener(ChatRoomInvitationListener),Method,,,java.util.Vector+contains(Object) java.util.Vector+contains(Object) java.util.Vector+add(E) java.util.Vector+add(E),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationListeners,381,14,1,"/** 
+ * Adds a listener to invitation notifications.
+ * @param listener An invitation listener.
+ */
+","/**
+    * Adds a listener to invitation notifications.
+    * 
+    * @param listener
+    *            An invitation listener.
+    */
+   public void addInvitationListener(ChatRoomInvitationListener listener)
+   {
+       synchronized (invitationListeners)
+       {
+           if (!invitationListeners.contains(listener))
+               invitationListeners.add(listener);
+       }
+   }",True
+11,removeInvitationListener(ChatRoomInvitationListener),Method,,,java.util.Vector+remove(Object) java.util.Vector+remove(Object),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationListeners,434,14,1,"/** 
+ * Removes a listener that was being notified of changes in our status in a room such as us being kicked, banned or dropped.
+ * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+ */
+","/**
+    * Removes a listener that was being notified of changes in our status in a
+    * room such as us being kicked, banned or dropped.
+    * 
+    * @param listener
+    *            the <tt>LocalUserChatRoomPresenceListener</tt>.
+    */
+   public void removeInvitationListener(ChatRoomInvitationListener listener)
+   {
+       synchronized (invitationListeners)
+       {
+           invitationListeners.remove(listener);
+       }
+   }",True
+12,addInvitationRejectionListener(ChatRoomInvitationRejectionListener),Method,,,java.util.Vector+contains(Object) java.util.Vector+contains(Object) java.util.Vector+add(E) java.util.Vector+add(E),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationRejectionListeners,599,18,1,"/** 
+ * Subscribes <tt>listener</tt> so that it would receive events indicating rejection of a multi user chat invitation that we've sent earlier.
+ * @param listener the listener that we'll subscribe for invitation rejection events.
+ */
+","/**
+    * Subscribes <tt>listener</tt> so that it would receive events indicating
+    * rejection of a multi user chat invitation that we've sent earlier.
+    * 
+    * @param listener
+    *            the listener that we'll subscribe for invitation rejection
+    *            events.
+    */
+
+   public void addInvitationRejectionListener(
+           ChatRoomInvitationRejectionListener listener)
+   {
+       synchronized (invitationRejectionListeners)
+       {
+           if (!invitationRejectionListeners.contains(listener))
+               invitationRejectionListeners.add(listener);
+       }
+   }",True
+13,removeInvitationRejectionListener(ChatRoomInvitationRejectionListener),Method,,,java.util.Vector+remove(Object) java.util.Vector+remove(Object),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationRejectionListeners,462,15,1,"/** 
+ * Removes <tt>listener</tt> from the list of invitation listeners registered to receive invitation rejection events.
+ * @param listener the invitation listener to remove.
+ */
+","/**
+    * Removes <tt>listener</tt> from the list of invitation listeners
+    * registered to receive invitation rejection events.
+    * 
+    * @param listener
+    *            the invitation listener to remove.
+    */
+   public void removeInvitationRejectionListener(
+           ChatRoomInvitationRejectionListener listener)
+   {
+       synchronized (invitationRejectionListeners)
+       {
+           invitationRejectionListeners.remove(listener);
+       }
+   }",True
+14,addPresenceListener(LocalUserChatRoomPresenceListener),Method,,,java.util.Vector+contains(Object) java.util.Vector+contains(Object) java.util.Vector+add(E) java.util.Vector+add(E),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+presenceListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+presenceListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+presenceListeners,487,15,1,"/** 
+ * Adds a listener that will be notified of changes in our status in a chat room such as us being kicked, banned or dropped.
+ * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+ */
+","/**
+    * Adds a listener that will be notified of changes in our status in a chat
+    * room such as us being kicked, banned or dropped.
+    * 
+    * @param listener
+    *            the <tt>LocalUserChatRoomPresenceListener</tt>.
+    */
+   public void addPresenceListener(LocalUserChatRoomPresenceListener listener)
+   {
+       synchronized (presenceListeners)
+       {
+           if (!presenceListeners.contains(listener))
+               presenceListeners.add(listener);
+       }
+   }",True
+15,removePresenceListener(LocalUserChatRoomPresenceListener),Method,,,java.util.Vector+remove(Object) java.util.Vector+remove(Object),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+presenceListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+presenceListeners,447,15,1,"/** 
+ * Removes a listener that was being notified of changes in our status in a room such as us being kicked, banned or dropped.
+ * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+ */
+","/**
+    * Removes a listener that was being notified of changes in our status in a
+    * room such as us being kicked, banned or dropped.
+    * 
+    * @param listener
+    *            the <tt>LocalUserChatRoomPresenceListener</tt>.
+    */
+   public void removePresenceListener(
+           LocalUserChatRoomPresenceListener listener)
+   {
+       synchronized (presenceListeners)
+       {
+           presenceListeners.remove(listener);
+       }
+   }",True
+16,"createChatRoom(String,Map<String,Object>)",Method,,,"ymsg.network.Session+createConference(String[],String,YahooIdentity) net.java.sip.communicator.impl.protocol.yahoo.ProtocolProviderServiceYahooImpl+getYahooSession() net.java.sip.communicator.impl.protocol.yahoo.ProtocolProviderServiceYahooImpl+getYahooSession() ymsg.network.Session+createConference(String[],String,YahooIdentity) ymsg.network.Session+getLoginIdentity() net.java.sip.communicator.impl.protocol.yahoo.ProtocolProviderServiceYahooImpl+getYahooSession() net.java.sip.communicator.impl.protocol.yahoo.ProtocolProviderServiceYahooImpl+getYahooSession() ymsg.network.Session+getLoginIdentity() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(YahooConference) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(YahooConference) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object)",net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+yahooProvider net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+yahooProvider net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger,1765,45,1,"/** 
+ * Creates a room with the named <tt>roomName</tt> and according to the specified <tt>roomProperties</tt> on the server that this protocol provider is currently connected to. Note the roomProperties also contain users that we like to invite to the chatRoom, this is required in the yahoo protocol.
+ * @param roomName the name of the <tt>ChatRoom</tt> to create.
+ * @param roomProperties properties specifying how the room should be created.
+ * @throws OperationFailedException if the room couldn't be created for some reason (e.g. room already exists; user already joined to an existent room or user has no permissions to create a chat room).
+ * @throws OperationNotSupportedException if chat room creation is not supported by this server
+ * @return ChatRoom the chat room that we've just created.
+ */
+","/**
+    * Creates a room with the named <tt>roomName</tt> and according to the
+    * specified <tt>roomProperties</tt> on the server that this protocol
+    * provider is currently connected to. Note the roomProperties also contain
+    * users that we like to invite to the chatRoom, this is required in the
+    * yahoo protocol.
+    * 
+    * @param roomName
+    *            the name of the <tt>ChatRoom</tt> to create.
+    * @param roomProperties
+    *            properties specifying how the room should be created.
+    * 
+    * @throws OperationFailedException
+    *             if the room couldn't be created for some reason (e.g. room
+    *             already exists; user already joined to an existent room or
+    *             user has no permissions to create a chat room).
+    * @throws OperationNotSupportedException
+    *             if chat room creation is not supported by this server
+    * 
+    * @return ChatRoom the chat room that we've just created.
+    */
+   public ChatRoom createChatRoom(String roomName, 
+                                  Map<String, Object> roomProperties)
+           throws OperationFailedException,
+                  OperationNotSupportedException
+   {
+       ChatRoom chatRoom = null;
+       try
+       {
+           YahooConference conference = yahooProvider.getYahooSession()
+               .createConference(
+                       new String[]{},  //users invited to this conference
+                       """",              //invite message / topic
+                       yahooProvider.getYahooSession().getLoginIdentity());
+
+           chatRoom = findRoom(conference);
+
+       }
+       catch (Exception e)
+       {
+           logger.debug(""Failed to create the chat Room"" + e);
+       }
+
+       return chatRoom;
+   }",False
+17,findRoom(String),Method,YahooMessageListener.conferenceInviteReceived(SessionConferenceEvent) YahooMessageListener.conferenceLogoffReceived(SessionConferenceEvent) YahooMessageListener.conferenceLogonReceived(SessionConferenceEvent) YahooMessageListener.conferenceMessageReceived(SessionConferenceEvent),,java.util.Hashtable+get(Object) java.util.Hashtable+get(Object),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache,833,21,1,"/** 
+ * Returns a reference to a chatRoom named <tt>roomName</tt> or null.
+ * @param roomName the name of the <tt>ChatRoom</tt> that we're looking for.
+ * @return the <tt>ChatRoom</tt> named <tt>roomName</tt> or null if no suchroom exists on the server that this provider is currently connected to.
+ * @throws OperationFailedException if an error occurs while trying to discover the room on the server.
+ * @throws OperationNotSupportedException if the server does not support multi user chat
+ */
+","/**
+    * Returns a reference to a chatRoom named <tt>roomName</tt> or null.
+    * 
+    * @param roomName
+    *            the name of the <tt>ChatRoom</tt> that we're looking for.
+    * @return the <tt>ChatRoom</tt> named <tt>roomName</tt> or null if no such
+    *         room exists on the server that this provider is currently
+    *         connected to.
+    * @throws OperationFailedException
+    *             if an error occurs while trying to discover the room on the
+    *             server.
+    * @throws OperationNotSupportedException
+    *             if the server does not support multi user chat
+    */
+   public ChatRoom findRoom(String roomName) throws OperationFailedException,
+           OperationNotSupportedException
+   {
+       ChatRoom room = (ChatRoom) chatRoomCache.get(roomName);
+
+       return room;
+   }",False
+18,findRoom(YahooConference),Method,"createChatRoom(String,Map<String,Object>) YahooMessageListener.conferenceInviteDeclinedReceived(SessionConferenceEvent) YahooMessageListener.conferenceInviteReceived(SessionConferenceEvent)",,"java.util.Hashtable+get(Object) java.util.Hashtable+get(Object) ymsg.network.YahooConference+getName() ymsg.network.YahooConference+getName() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+createLocalChatRoomInstance(YahooConference) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+createLocalChatRoomInstance(YahooConference) java.util.Hashtable+put(K,V) java.util.Hashtable+put(K,V) ymsg.network.YahooConference+getName() ymsg.network.YahooConference+getName()",net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache,989,27,1,"/** 
+ * Returns a reference to a chatRoom based on the YahooConference, or creates a chatRoom with it.
+ * @param yahooConference The yahoo conference model for a chat room
+ * @return the <tt>ChatRoom</tt> with the name that is in the yahooconference specified.
+ * @throws OperationFailedException if an error occurs while trying to discover the room on the server.
+ * @throws OperationNotSupportedException if the server does not support multi user chat
+ */
+","/**
+    * Returns a reference to a chatRoom based on the YahooConference, or
+    * creates a chatRoom with it.
+    * 
+    * @param yahooConference
+    *            The yahoo conference model for a chat room
+    * @return the <tt>ChatRoom</tt> with the name that is in the yahoo
+    *         conference specified.
+    * @throws OperationFailedException
+    *             if an error occurs while trying to discover the room on the
+    *             server.
+    * @throws OperationNotSupportedException
+    *             if the server does not support multi user chat
+    */
+   public ChatRoom findRoom(YahooConference yahooConference)
+           throws OperationFailedException, OperationNotSupportedException
+   {
+       ChatRoomYahooImpl room = chatRoomCache.get(yahooConference.getName());
+
+       if (room == null)
+       {
+           room = createLocalChatRoomInstance(yahooConference);
+           chatRoomCache.put(yahooConference.getName(), room);
+       }
+
+       return room;
+   }",False
+19,createLocalChatRoomInstance(YahooConference),Method,findRoom(YahooConference),,"net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+ChatRoomYahooImpl(YahooConference,ProtocolProviderServiceYahooImpl)",net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+yahooProvider,560,19,2,"/** 
+ * Creates a <tt>ChatRoom</tt> instance from the specified Yahoo conference.
+ * @param yahooConference The chat room model from the yahoo lib.
+ * @return ChatRoom the chat room that we've just created.
+ */
+","/**
+    * Creates a <tt>ChatRoom</tt> instance from the specified Yahoo conference.
+    * 
+    * @param yahooConference
+    *            The chat room model from the yahoo lib.
+    * 
+    * @return ChatRoom the chat room that we've just created.
+    */
+   private ChatRoomYahooImpl 
+       createLocalChatRoomInstance(YahooConference yahooConference)
+   {
+       synchronized (chatRoomCache)
+       {
+           ChatRoomYahooImpl newChatRoom 
+               = new ChatRoomYahooImpl(yahooConference, yahooProvider);
+
+           return newChatRoom;
+       }
+   }",False
+20,getCurrentlyJoinedChatRooms(),Method,,,java.util.LinkedList+LinkedList(Collection) java.util.Hashtable+values() java.util.Hashtable+values() java.util.List+iterator() java.util.List+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() java.util.Iterator+remove() java.util.Iterator+remove(),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache,740,25,1,"/** 
+ * Returns a list of the chat rooms that we have joined and are currently active in.
+ * @return a <tt>List</tt> of the rooms where the user has joined using agiven connection.
+ */
+","/**
+    * Returns a list of the chat rooms that we have joined and are currently
+    * active in.
+    * 
+    * @return a <tt>List</tt> of the rooms where the user has joined using a
+    *         given connection.
+    */
+   public List<ChatRoom> getCurrentlyJoinedChatRooms()
+   {
+       synchronized (chatRoomCache)
+       {
+           List<ChatRoom> joinedRooms 
+               = new LinkedList<ChatRoom>(this.chatRoomCache.values());
+
+           Iterator<ChatRoom> joinedRoomsIter = joinedRooms.iterator();
+
+           while (joinedRoomsIter.hasNext())
+           {
+               if (!((ChatRoom) joinedRoomsIter.next()).isJoined())
+                   joinedRoomsIter.remove();
+           }
+
+           return joinedRooms;
+       }
+   }",False
+21,getCurrentlyJoinedChatRooms(ChatRoomMember),Method,,,java.util.LinkedList+LinkedList() java.util.AbstractSequentialList+iterator() java.util.LinkedList+LinkedList(Collection) java.util.Hashtable+values() java.util.Hashtable+values() java.util.AbstractSequentialList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() java.util.List+add(E) java.util.List+add(E) net.java.sip.communicator.service.protocol.ChatRoom+getName() net.java.sip.communicator.service.protocol.ChatRoom+getName(),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache,1323,36,1,"/** 
+ * Returns a list of the names of all chat rooms that <tt>contact</tt> is currently a member of.
+ * @param contact the contact whose current ChatRooms we will be querying.
+ * @return a list of <tt>String</tt> indicating the names of the chat roomsthat <tt>contact</tt> has joined and is currently active in.
+ * @throws OperationFailedException if an error occurs while trying to discover the room on the server.
+ * @throws OperationNotSupportedException if the server does not support multi user chat
+ */
+","/**
+    * Returns a list of the names of all chat rooms that <tt>contact</tt> is
+    * currently a member of.
+    * 
+    * @param contact
+    *            the contact whose current ChatRooms we will be querying.
+    * @return a list of <tt>String</tt> indicating the names of the chat rooms
+    *         that <tt>contact</tt> has joined and is currently active in.
+    * 
+    * @throws OperationFailedException
+    *             if an error occurs while trying to discover the room on the
+    *             server.
+    * @throws OperationNotSupportedException
+    *             if the server does not support multi user chat
+    */
+   public List<String> getCurrentlyJoinedChatRooms(ChatRoomMember chatRoomMember)
+           throws OperationFailedException, OperationNotSupportedException
+   {
+       synchronized (chatRoomCache)
+       {
+           List<String> joinedRooms 
+               = new LinkedList<String>();
+
+           Iterator<ChatRoom> joinedRoomsIter = new LinkedList<ChatRoom>(
+                           this.chatRoomCache.values()).iterator();
+
+           while (joinedRoomsIter.hasNext())
+           {
+               ChatRoom room = joinedRoomsIter.next();
+               if (room.isJoined())
+                   joinedRooms.add(room.getName());
+           }
+
+           return joinedRooms;
+       }
+   }",False
+22,getExistingChatRooms(),Method,,,java.util.LinkedList+LinkedList(),,484,17,1,,"public List<String> getExistingChatRooms() throws OperationFailedException,
+           OperationNotSupportedException
+   {
+       LinkedList<String> list = new LinkedList<String>();
+
+       // disabled due to new security system for chat rooms.
+
+       // try
+       // {
+       // YahooChatCategory root = YahooChatCategory.loadCategories();
+       // getChatCategories(root, """");
+       // }
+       // catch (Exception e) {}
+       // return _chatRoomList;
+
+       return list;
+   }",False
+23,isMultiChatSupportedByContact(Contact),Method,,,net.java.sip.communicator.service.protocol.ProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.Contact+getProtocolProvider() net.java.sip.communicator.service.protocol.Contact+getProtocolProvider() net.java.sip.communicator.service.protocol.ProtocolProviderService+getOperationSet(Class<? extends OperationSet>),,670,19,1,"/** 
+ * Returns true if <tt>contact</tt> supports multi user chat sessions.
+ * @param contact reference to the contact whose support for chat rooms we are currently querying.
+ * @return a boolean indicating whether <tt>contact</tt> supports chatrooms.
+ * @todo Implement thisnet.java.sip.communicator.service.protocol.OperationSetMultiUserChat method
+ */
+","/**
+    * Returns true if <tt>contact</tt> supports multi user chat sessions.
+    * 
+    * @param contact
+    *            reference to the contact whose support for chat rooms we are
+    *            currently querying.
+    * @return a boolean indicating whether <tt>contact</tt> supports chatrooms.
+    * @todo Implement this
+    *       net.java.sip.communicator.service.protocol.OperationSetMultiUserChat
+    *       method
+    */
+   public boolean isMultiChatSupportedByContact(Contact contact)
+   {
+       if (contact.getProtocolProvider().getOperationSet(
+               OperationSetMultiUserChat.class) != null)
+           return true;
+
+       return false;
+   }",False
+24,"rejectInvitation(ChatRoomInvitation,String)",Method,,,"net.java.sip.communicator.service.protocol.ChatRoomInvitation+getTargetChatRoom() net.java.sip.communicator.service.protocol.ChatRoomInvitation+getTargetChatRoom() ymsg.network.Session+declineConferenceInvite(YahooConference,String) net.java.sip.communicator.impl.protocol.yahoo.ProtocolProviderServiceYahooImpl+getYahooSession() net.java.sip.communicator.impl.protocol.yahoo.ProtocolProviderServiceYahooImpl+getYahooSession() ymsg.network.Session+declineConferenceInvite(YahooConference,String) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+getYahooConference() net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+getYahooConference() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object)",net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+yahooProvider net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger,750,25,1,"/** 
+ * Informs the sender of an invitation that we decline their invitation.
+ * @param invitation the connection to use for sending the rejection.
+ * @param rejectReason the reason to reject the given invitation
+ */
+","/**
+    * Informs the sender of an invitation that we decline their invitation.
+    * 
+    * @param invitation
+    *            the connection to use for sending the rejection.
+    * @param rejectReason
+    *            the reason to reject the given invitation
+    */
+   public void rejectInvitation(ChatRoomInvitation invitation,
+           String rejectReason)
+   {
+       ChatRoomYahooImpl chatRoom = (ChatRoomYahooImpl) invitation
+               .getTargetChatRoom();
+
+       try
+       {
+           yahooProvider.getYahooSession().declineConferenceInvite(
+                   chatRoom.getYahooConference(), rejectReason);
+
+       }
+       catch (IOException e)
+       {
+           logger.debug(""Failed to reject Invitation: "" + e);
+       }
+   }",False
+25,"fireInvitationEvent(ChatRoom,String,String,byte[])",Method,YahooMessageListener.conferenceInviteReceived(SessionConferenceEvent),,"net.java.sip.communicator.impl.protocol.yahoo.ChatRoomInvitationYahooImpl+ChatRoomInvitationYahooImpl(ChatRoom,String,String,byte[]) net.java.sip.communicator.service.protocol.event.ChatRoomInvitationReceivedEvent+ChatRoomInvitationReceivedEvent(OperationSetMultiUserChat,ChatRoomInvitation,Date) java.util.Date+Date(long) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.util.ArrayList+iterator() java.util.ArrayList+ArrayList(Collection) java.util.ArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.event.ChatRoomInvitationListener+invitationReceived(ChatRoomInvitationReceivedEvent) net.java.sip.communicator.service.protocol.event.ChatRoomInvitationListener+invitationReceived(ChatRoomInvitationReceivedEvent)",net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationListeners,1345,37,1,"/** 
+ * Delivers a <tt>ChatRoomInvitationReceivedEvent</tt> to all registered <tt>ChatRoomInvitationListener</tt>s.
+ * @param targetChatRoom the room that invitation refers to
+ * @param inviter the inviter that sent the invitation
+ * @param reason the reason why the inviter sent the invitation
+ * @param password the password to use when joining the room
+ */
+","/**
+    * Delivers a <tt>ChatRoomInvitationReceivedEvent</tt> to all registered
+    * <tt>ChatRoomInvitationListener</tt>s.
+    * 
+    * @param targetChatRoom
+    *            the room that invitation refers to
+    * @param inviter
+    *            the inviter that sent the invitation
+    * @param reason
+    *            the reason why the inviter sent the invitation
+    * @param password
+    *            the password to use when joining the room
+    */
+   public void fireInvitationEvent(ChatRoom targetChatRoom, String inviter,
+           String reason, byte[] password)
+   {
+       ChatRoomInvitationYahooImpl invitation = new ChatRoomInvitationYahooImpl(
+               targetChatRoom, inviter, reason, password);
+
+       ChatRoomInvitationReceivedEvent evt = new ChatRoomInvitationReceivedEvent(
+               this, invitation, new Date(System.currentTimeMillis()));
+
+       Iterator<ChatRoomInvitationListener> listeners = null;
+       synchronized (invitationListeners)
+       {
+           listeners = new ArrayList<ChatRoomInvitationListener>(
+                               invitationListeners).iterator();
+       }
+
+       while (listeners.hasNext())
+       {
+           ChatRoomInvitationListener listener
+               = (ChatRoomInvitationListener) listeners.next();
+
+           listener.invitationReceived(evt);
+       }
+   }",False
+26,"fireInvitationRejectedEvent(ChatRoom,String,String)",Method,YahooMessageListener.conferenceInviteDeclinedReceived(SessionConferenceEvent),,"net.java.sip.communicator.service.protocol.event.ChatRoomInvitationRejectedEvent+ChatRoomInvitationRejectedEvent(OperationSetMultiUserChat,ChatRoom,String,String,Date) java.util.Date+Date(long) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.util.ArrayList+iterator() java.util.ArrayList+ArrayList(Collection) java.util.ArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.event.ChatRoomInvitationRejectionListener+invitationRejected(ChatRoomInvitationRejectedEvent) net.java.sip.communicator.service.protocol.event.ChatRoomInvitationRejectionListener+invitationRejected(ChatRoomInvitationRejectedEvent)",net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+invitationRejectionListeners,1219,33,1,"/** 
+ * Delivers a <tt>ChatRoomInvitationRejectedEvent</tt> to all registered <tt>ChatRoomInvitationRejectionListener</tt>s.
+ * @param sourceChatRoom the room that invitation refers to
+ * @param invitee the name of the invitee that rejected the invitation
+ * @param reason the reason of the rejection
+ */
+","/**
+    * Delivers a <tt>ChatRoomInvitationRejectedEvent</tt> to all registered
+    * <tt>ChatRoomInvitationRejectionListener</tt>s.
+    * 
+    * @param sourceChatRoom
+    *            the room that invitation refers to
+    * @param invitee
+    *            the name of the invitee that rejected the invitation
+    * @param reason
+    *            the reason of the rejection
+    */
+   public void fireInvitationRejectedEvent(ChatRoom sourceChatRoom,
+           String invitee, String reason)
+   {
+       ChatRoomInvitationRejectedEvent evt = new ChatRoomInvitationRejectedEvent(
+               this, sourceChatRoom, invitee, reason, new Date(System
+                       .currentTimeMillis()));
+
+       Iterator<ChatRoomInvitationRejectionListener> listeners = null;
+       synchronized (invitationRejectionListeners)
+       {
+           listeners = new ArrayList<ChatRoomInvitationRejectionListener>(
+                               invitationRejectionListeners).iterator();
+       }
+
+       while (listeners.hasNext())
+       {
+           ChatRoomInvitationRejectionListener listener
+               = (ChatRoomInvitationRejectionListener) listeners.next();
+
+           listener.invitationRejected(evt);
+       }
+   }",True
+27,"fireLocalUserPresenceEvent(ChatRoom,String,String)",Method,,net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+joinAs(String),"net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceChangeEvent+LocalUserChatRoomPresenceChangeEvent(OperationSetMultiUserChat,ChatRoom,String,String) java.util.ArrayList+iterator() java.util.ArrayList+ArrayList(Collection) java.util.ArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceListener+localUserPresenceChanged(LocalUserChatRoomPresenceChangeEvent) net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceListener+localUserPresenceChanged(LocalUserChatRoomPresenceChangeEvent)",net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+presenceListeners net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+presenceListeners,1330,36,1,"/** 
+ * Delivers a <tt>LocalUserChatRoomPresenceChangeEvent</tt> to all registered <tt>LocalUserChatRoomPresenceListener</tt>s.
+ * @param chatRoom the <tt>ChatRoom</tt> which has been joined, left, etc.
+ * @param eventType the type of this event; one of LOCAL_USER_JOINED, LOCAL_USER_LEFT, etc.
+ * @param reason the reason
+ */
+","/**
+    * Delivers a <tt>LocalUserChatRoomPresenceChangeEvent</tt> to all
+    * registered <tt>LocalUserChatRoomPresenceListener</tt>s.
+    * 
+    * @param chatRoom
+    *            the <tt>ChatRoom</tt> which has been joined, left, etc.
+    * @param eventType
+    *            the type of this event; one of LOCAL_USER_JOINED,
+    *            LOCAL_USER_LEFT, etc.
+    * @param reason
+    *            the reason
+    */
+   public void fireLocalUserPresenceEvent(ChatRoom chatRoom, String eventType,
+           String reason)
+   {
+       LocalUserChatRoomPresenceChangeEvent evt
+           = new LocalUserChatRoomPresenceChangeEvent( this,
+                                                       chatRoom,
+                                                       eventType,
+                                                       reason);
+
+       Iterator<LocalUserChatRoomPresenceListener> listeners = null;
+       synchronized (presenceListeners)
+       {
+           listeners = new ArrayList<LocalUserChatRoomPresenceListener>(
+                           presenceListeners).iterator();
+       }
+
+       while (listeners.hasNext())
+       {
+           LocalUserChatRoomPresenceListener listener
+               = (LocalUserChatRoomPresenceListener) listeners.next();
+
+           listener.localUserPresenceChanged(evt);
+       }
+   }",True
+28,"createMessage(byte[],String,String,String)",Method,YahooMessageListener.conferenceMessageReceived(SessionConferenceEvent),,"net.java.sip.communicator.impl.protocol.yahoo.MessageYahooImpl+MessageYahooImpl(String,String,String,String) java.lang.String+String(byte[])",,614,15,1,"/** 
+ * Create a Message instance for sending arbitrary MIME-encoding content.
+ * @param content content value
+ * @param contentType the MIME-type for <tt>content</tt>
+ * @param contentEncoding encoding used for <tt>content</tt>
+ * @param subject a <tt>String</tt> subject or <tt>null</tt> for now subject.
+ * @return the newly created message.
+ */
+","/**
+    * Create a Message instance for sending arbitrary MIME-encoding content.
+    *
+    * @param content content value
+    * @param contentType the MIME-type for <tt>content</tt>
+    * @param contentEncoding encoding used for <tt>content</tt>
+    * @param subject a <tt>String</tt> subject or <tt>null</tt> for now subject.
+    * @return the newly created message.
+    */
+   public Message createMessage(byte[] content, String contentType,
+           String contentEncoding, String subject)
+   {
+       return new MessageYahooImpl(new String(content), contentType,
+               contentEncoding, subject);
+   }",False
+29,createMessage(String),Method,,,"net.java.sip.communicator.impl.protocol.yahoo.MessageYahooImpl+MessageYahooImpl(String,String,String,String)",net.java.sip.communicator.service.protocol.OperationSetBasicInstantMessaging+DEFAULT_MIME_TYPE net.java.sip.communicator.service.protocol.OperationSetBasicInstantMessaging+DEFAULT_MIME_ENCODING,424,13,1,"/** 
+ * Creates a message by a given message text.
+ * @param messageText The message text.
+ * @return the newly created message.
+ */
+","/**
+    * Creates a message by a given message text.
+    * 
+    * @param messageText
+    *            The message text.
+    * @return the newly created message.
+    */
+   public Message createMessage(String messageText)
+   {
+       return new MessageYahooImpl(messageText,
+               OperationSetBasicInstantMessaging.DEFAULT_MIME_TYPE,
+               OperationSetBasicInstantMessaging.DEFAULT_MIME_ENCODING, null);
+   }",False
+30,RegistrationStateListener,MemberClass,,,net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl.RegistrationStateListener+registrationStateChanged(RegistrationStateChangeEvent) net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getNewState() net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getNewState() ymsg.network.Session+addSessionListener(SessionListener) net.java.sip.communicator.impl.protocol.yahoo.ProtocolProviderServiceYahooImpl+getYahooSession() net.java.sip.communicator.impl.protocol.yahoo.ProtocolProviderServiceYahooImpl+getYahooSession() ymsg.network.Session+addSessionListener(SessionListener) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl.YahooMessageListener+YahooMessageListener(),net.java.sip.communicator.service.protocol.RegistrationState+REGISTERED net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+yahooProvider,846,25,2,"/** 
+ * Our listener that will tell us when we're registered to yahoo network.
+ */
+","/**
+    * Our listener that will tell us when we're registered to yahoo network.
+    * 
+    */
+   private class RegistrationStateListener implements
+           RegistrationStateChangeListener
+   {
+       /**
+        * The method is called by a ProtocolProvider implementation whenever a
+        * change in the registration state of the corresponding provider had
+        * occurred.
+        * 
+        * @param evt
+        *            ProviderStatusChangeEvent the event describing the status
+        *            change.
+        */
+       public void registrationStateChanged(RegistrationStateChangeEvent evt)
+       {
+           if (evt.getNewState() == RegistrationState.REGISTERED)
+           {
+               yahooProvider.getYahooSession().addSessionListener(
+                       new YahooMessageListener());
+           }
+       }
+   }",False
+31,YahooMessageListener,MemberClass,,,"net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl.YahooMessageListener+conferenceInviteDeclinedReceived(SessionConferenceEvent) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) ymsg.network.event.SessionConferenceEvent+toString() ymsg.network.event.SessionConferenceEvent+toString() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(YahooConference) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(YahooConference) ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.event.SessionConferenceEvent+getRoom() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+fireInvitationRejectedEvent(ChatRoom,String,String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+fireInvitationRejectedEvent(ChatRoom,String,String) ymsg.network.event.SessionEvent+getFrom() ymsg.network.event.SessionEvent+getFrom() ymsg.network.event.SessionEvent+getMessage() ymsg.network.event.SessionEvent+getMessage() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl.YahooMessageListener+conferenceInviteReceived(SessionConferenceEvent) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) ymsg.network.event.SessionConferenceEvent+toString() ymsg.network.event.SessionConferenceEvent+toString() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(String) ymsg.network.YahooConference+getName() ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.YahooConference+getName() net.java.sip.communicator.service.protocol.ChatRoom+join() net.java.sip.communicator.service.protocol.ChatRoom+join() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(YahooConference) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(YahooConference) ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.event.SessionConferenceEvent+getRoom() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+fireInvitationEvent(ChatRoom,String,String,byte[]) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+fireInvitationEvent(ChatRoom,String,String,byte[]) ymsg.network.event.SessionEvent+getFrom() ymsg.network.event.SessionEvent+getFrom() ymsg.network.event.SessionEvent+getMessage() ymsg.network.event.SessionEvent+getMessage() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl.YahooMessageListener+conferenceLogoffReceived(SessionConferenceEvent) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) ymsg.network.event.SessionConferenceEvent+toString() ymsg.network.event.SessionConferenceEvent+toString() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(String) ymsg.network.YahooConference+getName() ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.YahooConference+getName() net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+getChatRoomMember(String) ymsg.network.event.SessionEvent+getFrom() ymsg.network.event.SessionEvent+getFrom() net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+removeChatRoomMember(ChatRoomMemberYahooImpl) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+removeChatRoomMember(ChatRoomMemberYahooImpl) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl.YahooMessageListener+conferenceLogonReceived(SessionConferenceEvent) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) ymsg.network.event.SessionConferenceEvent+toString() ymsg.network.event.SessionConferenceEvent+toString() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(String) ymsg.network.YahooConference+getName() ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.YahooConference+getName() net.java.sip.communicator.impl.protocol.yahoo.ChatRoomMemberYahooImpl+ChatRoomMemberYahooImpl(ChatRoomYahooImpl,String,String,ChatRoomMemberRole) ymsg.network.event.SessionEvent+getFrom() ymsg.network.event.SessionEvent+getFrom() ymsg.network.event.SessionEvent+getFrom() ymsg.network.event.SessionEvent+getFrom() net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+addChatRoomMember(ChatRoomMemberYahooImpl) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+addChatRoomMember(ChatRoomMemberYahooImpl) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl.YahooMessageListener+conferenceMessageReceived(SessionConferenceEvent) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) ymsg.network.event.SessionConferenceEvent+toString() ymsg.network.event.SessionConferenceEvent+toString() ymsg.network.event.SessionEvent+getMessage() ymsg.network.event.SessionEvent+getMessage() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) java.lang.String+startsWith(String) java.lang.String+startsWith(String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetBasicInstantMessagingYahooImpl+processLinks(String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetBasicInstantMessagingYahooImpl+processLinks(String) ymsg.support.MessageDecoder+decodeToHTML(String) ymsg.support.MessageDecoder+decodeToHTML(String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetBasicInstantMessagingYahooImpl+processLinks(String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetBasicInstantMessagingYahooImpl+processLinks(String) java.lang.String+replaceAll(String,String) java.lang.String+replaceAll(String,String) java.lang.String+replaceAll(String,String) java.lang.String+replaceAll(String,String) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+createMessage(byte[],String,String,String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+createMessage(byte[],String,String,String) java.lang.String+getBytes() java.lang.String+getBytes() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(String) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+findRoom(String) ymsg.network.YahooConference+getName() ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.event.SessionConferenceEvent+getRoom() ymsg.network.YahooConference+getName() net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+getChatRoomMember(String) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+getChatRoomMember(String) ymsg.network.event.SessionEvent+getFrom() ymsg.network.event.SessionEvent+getFrom() net.java.sip.communicator.service.protocol.event.ChatRoomMessageReceivedEvent+ChatRoomMessageReceivedEvent(ChatRoom,ChatRoomMember,long,Message,int) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+fireMessageEvent(EventObject) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+fireMessageEvent(EventObject) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl.YahooMessageListener+connectionClosed(SessionEvent) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) ymsg.network.event.SessionEvent+toString() ymsg.network.event.SessionEvent+toString()",net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.service.protocol.ChatRoomMemberRole+MEMBER net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+opSetBasic net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+messageDecoder net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+opSetBasic net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.service.protocol.OperationSetBasicInstantMessaging+HTML_MIME_TYPE net.java.sip.communicator.service.protocol.OperationSetBasicInstantMessaging+DEFAULT_MIME_ENCODING net.java.sip.communicator.service.protocol.event.ChatRoomMessageReceivedEvent+CONVERSATION_MESSAGE_RECEIVED net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+logger,5989,173,2,"/** 
+ * Our group chat message listener, it extends the SessionAdapter from the the yahoo library.
+ */
+","/**
+    * Our group chat message listener, it extends the SessionAdapter from the
+    * the yahoo library.
+    * 
+    */
+   private class YahooMessageListener extends SessionAdapter
+   {
+
+       public void conferenceInviteDeclinedReceived(SessionConferenceEvent ev)
+       {
+           logger.debug(""Group Chat invite declined received. ""
+                   + ev.toString());
+           try
+           {
+               ChatRoom chatRoom = findRoom(ev.getRoom());
+
+               fireInvitationRejectedEvent(chatRoom, ev.getFrom(), ev
+                       .getMessage());
+           }
+           catch (Exception e)
+           {
+               logger.debug(""Error: "" + e);
+           }
+       }
+
+       public void conferenceInviteReceived(SessionConferenceEvent ev)
+       {
+           logger.debug(""Conference Invite Received: "" + ev.toString());
+
+           try
+           {
+               ChatRoom chatRoom = findRoom(ev.getRoom().getName());
+               if (chatRoom != null)
+               {
+                   chatRoom.join();
+               } else
+               {
+                   chatRoom = findRoom(ev.getRoom());
+                   fireInvitationEvent(chatRoom, ev.getFrom(),
+                           ev.getMessage(), null);
+               }
+
+           }
+           catch (Exception e)
+           {
+               logger.debug(""Error: "" + e);
+           }
+       }
+
+       public void conferenceLogoffReceived(SessionConferenceEvent ev)
+       {
+           logger.debug(""Conference Logoff Received: "" + ev.toString());
+
+           try
+           {
+               ChatRoomYahooImpl chatRoom = (ChatRoomYahooImpl) findRoom(ev
+                       .getRoom().getName());
+
+               if (chatRoom != null)
+               {
+                   ChatRoomMemberYahooImpl member = chatRoom
+                           .getChatRoomMember(ev.getFrom());
+                   chatRoom.removeChatRoomMember(member);
+               }
+           }
+           catch (Exception e)
+           {
+               logger
+                       .debug(""Failed to remove a user from the chat room. ""
+                               + e);
+           }
+       }
+
+       public void conferenceLogonReceived(SessionConferenceEvent ev)
+       {
+           logger.debug(""Conference Logon Received: "" + ev.toString());
+
+           try
+           {
+               ChatRoomYahooImpl chatRoom = (ChatRoomYahooImpl) findRoom(ev
+                       .getRoom().getName());
+
+               if (chatRoom != null)
+               {
+                   ChatRoomMemberYahooImpl newMember
+                       = new ChatRoomMemberYahooImpl(
+                           chatRoom,
+                           ev.getFrom(),
+                           ev.getFrom(),
+                           ChatRoomMemberRole.MEMBER);
+
+                   chatRoom.addChatRoomMember(newMember);
+               }
+           }
+           catch (Exception e)
+           {
+               logger.debug(""Failed to add a user to the chat room. "" + e);
+           }
+       }
+
+       public void conferenceMessageReceived(SessionConferenceEvent ev)
+       {
+           logger.debug(""Conference Message Received: "" + ev.toString());
+
+           try
+           {
+               String formattedMessage = ev.getMessage();
+               logger.debug(""original message received : "" + formattedMessage);
+
+               // if the message is decorated by Yahoo, we try to ""decode"" it
+               // first.
+               if (formattedMessage.startsWith(""\u001b""))
+               {
+                   formattedMessage = opSetBasic.processLinks(messageDecoder
+                           .decodeToHTML(formattedMessage));
+               } else
+               {
+                   formattedMessage = opSetBasic
+                           .processLinks(formattedMessage);
+               }
+
+               // now, we try to fix a wrong usage of the size attribute in the
+               // <font> HTML element
+               // here, the zero 0 correspond to 10px
+               formattedMessage = formattedMessage.replaceAll(
+                       ""(<font) (.*) size=\""0\"">"", ""$1 $2 size=\""10\"">"");
+               formattedMessage = formattedMessage.replaceAll(
+                       ""(<font) (.*) size=\""(\\d+)\"">"",
+                       ""$1 $2 style=\""font-size: $3px;\"">"");
+
+               logger.debug(""formatted Message : "" + formattedMessage);
+               // As no indications in the protocol is it html or not. No harm
+               // to set all messages html - doesn't affect the appearance of
+               // the gui
+               
+               Message newMessage = createMessage(formattedMessage.getBytes(),
+                       OperationSetBasicInstantMessaging.HTML_MIME_TYPE,
+                       OperationSetBasicInstantMessaging.DEFAULT_MIME_ENCODING, 
+                       null);
+
+               ChatRoomYahooImpl chatRoom = (ChatRoomYahooImpl) findRoom(ev
+                       .getRoom().getName());
+
+               if (chatRoom != null)
+               {
+                   ChatRoomMemberYahooImpl member = chatRoom
+                           .getChatRoomMember(ev.getFrom());
+
+                   ChatRoomMessageReceivedEvent msgReceivedEvent
+                       = new ChatRoomMessageReceivedEvent(
+                           chatRoom,
+                           member,
+                           System.currentTimeMillis(),
+                           newMessage,
+                           ChatRoomMessageReceivedEvent
+                               .CONVERSATION_MESSAGE_RECEIVED);
+
+                   chatRoom.fireMessageEvent(msgReceivedEvent);
+               }
+           }
+           catch (Exception e)
+           {
+               logger.debug(""Error while receiving a multi user chat message: ""
+                               + e);
+           }
+
+       }
+
+       public void connectionClosed(SessionEvent ev)
+       {
+           logger.debug(""Connection Closed: "" + ev.toString());
+       }
+   }",False
+32,contactModified(ContactPropertyChangeEvent),Method,,,net.java.sip.communicator.service.protocol.event.ContactPropertyChangeEvent+getSourceContact() net.java.sip.communicator.service.protocol.event.ContactPropertyChangeEvent+getSourceContact() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+updateChatRoomMembers(Contact) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+updateChatRoomMembers(Contact),,304,10,1,"/** 
+ * Updates corresponding chat room members when a contact has been modified in our contact list.
+ */
+","/**
+    * Updates corresponding chat room members when a contact has been modified
+    * in our contact list.
+    */
+    public void contactModified(ContactPropertyChangeEvent evt)
+    {
+        Contact modifiedContact = evt.getSourceContact();
+
+        this.updateChatRoomMembers(modifiedContact);
+    }",False
+33,subscriptionCreated(SubscriptionEvent),Method,,,net.java.sip.communicator.service.protocol.event.SubscriptionEvent+getSourceContact() net.java.sip.communicator.service.protocol.event.SubscriptionEvent+getSourceContact() net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+updateChatRoomMembers(Contact) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+updateChatRoomMembers(Contact),,299,10,1,"/** 
+ * Updates corresponding chat room members when a contact has been created in our contact list.
+ */
+","/**
+     * Updates corresponding chat room members when a contact has been created
+     * in our contact list.
+     */
+    public void subscriptionCreated(SubscriptionEvent evt)
+    {
+        Contact createdContact = evt.getSourceContact();
+
+        this.updateChatRoomMembers(createdContact);
+    }",False
+34,subscriptionFailed(SubscriptionEvent),Method,,,,,144,5,1,"/** 
+ * Not interested in this event for our member update purposes.
+ */
+","/**
+     * Not interested in this event for our member update purposes.
+     */
+    public void subscriptionFailed(SubscriptionEvent evt)
+    {}",False
+35,subscriptionMoved(SubscriptionMovedEvent),Method,,,,,148,5,1,"/** 
+ * Not interested in this event for our member update purposes.
+ */
+","/**
+     * Not interested in this event for our member update purposes.
+     */
+    public void subscriptionMoved(SubscriptionMovedEvent evt)
+    {}",False
+36,subscriptionRemoved(SubscriptionEvent),Method,,,net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+updateChatRoomMembers(Contact) net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+updateChatRoomMembers(Contact),,329,10,1,"/** 
+ * Updates corresponding chat room members when a contact has been removed from our contact list.
+ */
+","/**
+     * Updates corresponding chat room members when a contact has been removed
+     * from our contact list.
+     */
+    public void subscriptionRemoved(SubscriptionEvent evt)
+    {
+        // Set to null the contact reference in all corresponding chat room
+        // members.
+        this.updateChatRoomMembers(null);
+    }",False
+37,subscriptionResolved(SubscriptionEvent),Method,,,,,146,5,1,"/** 
+ * Not interested in this event for our member update purposes.
+ */
+","/**
+     * Not interested in this event for our member update purposes.
+     */
+    public void subscriptionResolved(SubscriptionEvent evt)
+    {}",False
+38,updateChatRoomMembers(Contact),Method,contactModified(ContactPropertyChangeEvent) subscriptionCreated(SubscriptionEvent) subscriptionRemoved(SubscriptionEvent),,java.util.Hashtable+elements() java.util.Hashtable+elements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+findMemberForNickName(String) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomYahooImpl+findMemberForNickName(String) net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.impl.protocol.yahoo.ChatRoomMemberYahooImpl+setContact(Contact) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomMemberYahooImpl+setContact(Contact) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomMemberYahooImpl+setAvatar(byte[]) net.java.sip.communicator.impl.protocol.yahoo.ChatRoomMemberYahooImpl+setAvatar(byte[]) net.java.sip.communicator.service.protocol.Contact+getImage() net.java.sip.communicator.service.protocol.Contact+getImage(),net.java.sip.communicator.impl.protocol.yahoo.OperationSetMultiUserChatYahooImpl+chatRoomCache,776,24,2,"/** 
+ * Finds all chat room members, which name corresponds to the name of the given contact and updates their contact references.
+ * @param contact the contact we're looking correspondences for.
+ */
+","/**
+     * Finds all chat room members, which name corresponds to the name of the
+     * given contact and updates their contact references.
+     * 
+     * @param contact the contact we're looking correspondences for.
+     */
+    private void updateChatRoomMembers(Contact contact)
+    {
+        Enumeration<ChatRoomYahooImpl> chatRooms = chatRoomCache.elements();
+
+        while (chatRooms.hasMoreElements())
+        {
+            ChatRoomYahooImpl chatRoom = chatRooms.nextElement();
+
+            ChatRoomMemberYahooImpl member
+                = chatRoom.findMemberForNickName(contact.getAddress());
+
+            if (member != null)
+            {
+                member.setContact(contact);
+                member.setAvatar(contact.getImage());
+            }
+        }
+    }",False

@@ -1,0 +1,538 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,connector,Field,RTPConnectorImpl(StreamConnector),,,,191,5,18,"/** 
+ * The pair of datagram sockets for RTP and RTCP traffic that this instance uses in the form of a <tt>StreamConnector</tt>.
+ */
+","/**
+     * The pair of datagram sockets for RTP and RTCP traffic that this instance
+     * uses in the form of a <tt>StreamConnector</tt>.
+     */
+    private final StreamConnector connector;",False
+2,controlInputStream,Field,,,,,128,4,2,"/** 
+ * RTCP packet input stream used by <tt>RTPManager</tt>.
+ */
+","/**
+     * RTCP packet input stream used by <tt>RTPManager</tt>.
+     */
+    private RTPConnectorInputStream controlInputStream;",False
+3,controlOutputStream,Field,,,,,131,4,2,"/** 
+ * RTCP packet output stream used by <tt>RTPManager</tt>.
+ */
+","/**
+     * RTCP packet output stream used by <tt>RTPManager</tt>.
+     */
+    private RTPConnectorOutputStream controlOutputStream;",False
+4,controlSocket,Field,,,,,128,4,2,"/** 
+ * The UDP socket this instance uses to send and receive RTCP packets.
+ */
+","/**
+     * The UDP socket this instance uses to send and receive RTCP packets.
+     */
+    private DatagramSocket controlSocket;",True
+5,dataInputStream,Field,,,,,124,4,2,"/** 
+ * RTP packet input stream used by <tt>RTPManager</tt>.
+ */
+","/**
+     * RTP packet input stream used by <tt>RTPManager</tt>.
+     */
+    private RTPConnectorInputStream dataInputStream;",False
+6,dataOutputStream,Field,,,,,127,4,2,"/** 
+ * RTP packet output stream used by <tt>RTPManager</tt>.
+ */
+","/**
+     * RTP packet output stream used by <tt>RTPManager</tt>.
+     */
+    private RTPConnectorOutputStream dataOutputStream;",False
+7,dataSocket,Field,,,,,124,4,2,"/** 
+ * The UDP socket this instance uses to send and receive RTP packets.
+ */
+","/**
+     * The UDP socket this instance uses to send and receive RTP packets.
+     */
+    private DatagramSocket dataSocket;",True
+8,RTPConnectorImpl(StreamConnector),Method,,,java.lang.NullPointerException+NullPointerException(String),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+connector net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+connector,514,15,1,"/** 
+ * Initializes a new <tt>RTPConnectorImpl</tt> which is to use a given pair of datagram sockets for RTP and RTCP traffic specified in the form of a <tt>StreamConnector</tt>.
+ * @param connector the pair of datagram sockets for RTP and RTCP trafficthe new instance is to use
+ */
+","/**
+     * Initializes a new <tt>RTPConnectorImpl</tt> which is to use a given pair
+     * of datagram sockets for RTP and RTCP traffic specified in the form of a
+     * <tt>StreamConnector</tt>.
+     *
+     * @param connector the pair of datagram sockets for RTP and RTCP traffic
+     * the new instance is to use
+     */
+    public RTPConnectorImpl(StreamConnector connector)
+    {
+        if (connector == null)
+            throw new NullPointerException(""connector"");
+
+        this.connector = connector;
+    }",False
+9,addTarget(SessionAddress),Method,,net.java.sip.communicator.impl.neomedia.MediaStreamImpl+doSetTarget(MediaStreamTarget),"net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+addTarget(InetAddress,int) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlOutputStream() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlOutputStream() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+addTarget(InetAddress,int) javax.media.rtp.SessionAddress+getControlAddress() javax.media.rtp.SessionAddress+getControlAddress() javax.media.rtp.SessionAddress+getControlPort() javax.media.rtp.SessionAddress+getControlPort() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+addTarget(InetAddress,int) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataOutputStream() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataOutputStream() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+addTarget(InetAddress,int) javax.media.rtp.SessionAddress+getDataAddress() javax.media.rtp.SessionAddress+getDataAddress() javax.media.rtp.SessionAddress+getDataPort() javax.media.rtp.SessionAddress+getDataPort()",,789,22,1,"/** 
+ * Add a stream target. A stream target is the destination address which this RTP session will send its data to. For a single session, we can add multiple SessionAddresses, and for each address, one copy of data will be sent to.
+ * @param target Destination target address
+ * @throws IOException if there was a socket-related error while adding thespecified target
+ */
+","/**
+     * Add a stream target. A stream target is the destination address which
+     * this RTP session will send its data to. For a single session, we can add
+     * multiple SessionAddresses, and for each address, one copy of data will be
+     * sent to.
+     *
+     * @param target Destination target address
+     * @throws IOException if there was a socket-related error while adding the
+     * specified target
+     */
+    public void addTarget(SessionAddress target)
+        throws IOException
+    {
+        getControlOutputStream()
+            .addTarget(
+                target.getControlAddress(),
+                target.getControlPort());
+        getDataOutputStream()
+            .addTarget(
+                target.getDataAddress(),
+                target.getDataPort());
+    }",False
+10,close(),Method,,,net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+close() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+close() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+close() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+close() net.java.sip.communicator.impl.neomedia.RTPConnectorInputStream+close() net.java.sip.communicator.impl.neomedia.RTPConnectorInputStream+close() net.java.sip.communicator.impl.neomedia.RTPConnectorInputStream+close() net.java.sip.communicator.impl.neomedia.RTPConnectorInputStream+close() net.java.sip.communicator.service.neomedia.StreamConnector+close() net.java.sip.communicator.service.neomedia.StreamConnector+close(),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+connector,738,31,1,"/** 
+ * Closes all sockets, stream, and the <tt>StreamConnector</tt> that this <tt>RTPConnector</tt> is using.
+ */
+","/**
+     * Closes all sockets, stream, and the <tt>StreamConnector</tt> that this
+     * <tt>RTPConnector</tt> is using.
+     */
+    public void close()
+    {
+        if (dataOutputStream != null)
+        {
+            dataOutputStream.close();
+            dataOutputStream = null;
+        }
+
+        if (controlOutputStream != null)
+        {
+            controlOutputStream.close();
+            controlOutputStream = null;
+        }
+
+        if (dataInputStream != null)
+        {
+            dataInputStream.close();
+            dataInputStream = null;
+        }
+        if (controlInputStream != null)
+        {
+            controlInputStream.close();
+            controlInputStream = null;
+        }
+
+        connector.close();
+    }",False
+11,createControlInputStream(),Method,getControlInputStream(boolean),,net.java.sip.communicator.impl.neomedia.RTCPConnectorInputStream+RTCPConnectorInputStream(DatagramSocket) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlSocket() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlSocket(),,451,12,4,"/** 
+ * Creates the RTCP packet input stream to be used by <tt>RTPManager</tt>.
+ * @return a new RTCP packet input stream to be used by <tt>RTPManager</tt>
+ * @throws IOException if an error occurs during the creation of the RTCPpacket input stream
+ */
+","/**
+     * Creates the RTCP packet input stream to be used by <tt>RTPManager</tt>.
+     *
+     * @return a new RTCP packet input stream to be used by <tt>RTPManager</tt>
+     * @throws IOException if an error occurs during the creation of the RTCP
+     * packet input stream
+     */
+    protected RTPConnectorInputStream createControlInputStream()
+        throws IOException
+    {
+        return new RTCPConnectorInputStream(getControlSocket());
+    }",True
+12,createControlOutputStream(),Method,getControlOutputStream(boolean),,net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+RTPConnectorOutputStream(DatagramSocket) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlSocket() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlSocket(),,456,12,4,"/** 
+ * Creates the RTCP packet output stream to be used by <tt>RTPManager</tt>.
+ * @return a new RTCP packet output stream to be used by <tt>RTPManager</tt>
+ * @throws IOException if an error occurs during the creation of the RTCPpacket output stream
+ */
+","/**
+     * Creates the RTCP packet output stream to be used by <tt>RTPManager</tt>.
+     *
+     * @return a new RTCP packet output stream to be used by <tt>RTPManager</tt>
+     * @throws IOException if an error occurs during the creation of the RTCP
+     * packet output stream
+     */
+    protected RTPConnectorOutputStream createControlOutputStream()
+        throws IOException
+    {
+        return new RTPConnectorOutputStream(getControlSocket());
+    }",True
+13,createDataInputStream(),Method,getDataInputStream(boolean),,net.java.sip.communicator.impl.neomedia.RTPConnectorInputStream+RTPConnectorInputStream(DatagramSocket) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataSocket() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataSocket(),,441,12,4,"/** 
+ * Creates the RTP packet input stream to be used by <tt>RTPManager</tt>.
+ * @return a new RTP packet input stream to be used by <tt>RTPManager</tt>
+ * @throws IOException if an error occurs during the creation of the RTPpacket input stream
+ */
+","/**
+     * Creates the RTP packet input stream to be used by <tt>RTPManager</tt>.
+     *
+     * @return a new RTP packet input stream to be used by <tt>RTPManager</tt>
+     * @throws IOException if an error occurs during the creation of the RTP
+     * packet input stream
+     */
+    protected RTPConnectorInputStream createDataInputStream()
+        throws IOException
+    {
+        return new RTPConnectorInputStream(getDataSocket());
+    }",True
+14,createDataOutputStream(),Method,getDataOutputStream(boolean),,net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+RTPConnectorOutputStream(DatagramSocket) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataSocket() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataSocket(),,447,12,4,"/** 
+ * Creates the RTP packet output stream to be used by <tt>RTPManager</tt>.
+ * @return a new RTP packet output stream to be used by <tt>RTPManager</tt>
+ * @throws IOException if an error occurs during the creation of the RTPpacket output stream
+ */
+","/**
+     * Creates the RTP packet output stream to be used by <tt>RTPManager</tt>.
+     *
+     * @return a new RTP packet output stream to be used by <tt>RTPManager</tt>
+     * @throws IOException if an error occurs during the creation of the RTP
+     * packet output stream
+     */
+    protected RTPConnectorOutputStream createDataOutputStream()
+        throws IOException
+    {
+        return new RTPConnectorOutputStream(getDataSocket());
+    }",True
+15,getConnector(),Method,,net.java.sip.communicator.impl.neomedia.MediaStreamImpl+setConnector(StreamConnector),,net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+connector,390,11,17,"/** 
+ * Gets the <tt>StreamConnector</tt> which represents the pair of datagram sockets for RTP and RTCP traffic used by this instance.
+ * @return the <tt>StreamConnector</tt> which represents the pair ofdatagram sockets for RTP and RTCP traffic used by this instance
+ */
+","/**
+     * Gets the <tt>StreamConnector</tt> which represents the pair of datagram
+     * sockets for RTP and RTCP traffic used by this instance.
+     *
+     * @return the <tt>StreamConnector</tt> which represents the pair of
+     * datagram sockets for RTP and RTCP traffic used by this instance
+     */
+    public final StreamConnector getConnector()
+    {
+        return connector;
+    }",False
+16,getControlInputStream(),Method,,"net.java.sip.communicator.impl.neomedia.device.VideoMediaDeviceSession+setProcessorFormat(TrackControl,MediaFormatImpl<? extends Format>,Format)",net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlInputStream(boolean) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlInputStream(boolean),,416,13,1,"/** 
+ * Returns the input stream that is handling incoming RTCP packets.
+ * @return the input stream that is handling incoming RTCP packets.
+ * @throws IOException if an error occurs during the creation of the RTCPpacket input stream
+ */
+","/**
+     * Returns the input stream that is handling incoming RTCP packets.
+     *
+     * @return the input stream that is handling incoming RTCP packets.
+     *
+     * @throws IOException if an error occurs during the creation of the RTCP
+     * packet input stream
+     */
+    public RTPConnectorInputStream getControlInputStream()
+        throws IOException
+    {
+        return getControlInputStream(true);
+    }",False
+17,getControlInputStream(boolean),Method,getControlInputStream(),net.java.sip.communicator.impl.neomedia.transform.RTPTransformConnector+setEngine(TransformEngine),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+createControlInputStream() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+createControlInputStream(),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlInputStream,949,20,4,"/** 
+ * Gets the <tt>PushSourceStream</tt> which gives access to the RTCP data received from the remote targets and optionally creates it if it does not exist yet.
+ * @param create <tt>true</tt> to create the <tt>PushSourceStream</tt> whichgives access to the RTCP data received from the remote targets if it does not exist yet; otherwise, <tt>false</tt>
+ * @return the <tt>PushBufferStream</tt> which gives access to the RTCP datareceived from the remote targets; <tt>null</tt> if it does not exist yet and <tt>create</tt> is <tt>false</tt>
+ * @throws IOException if creating the <tt>PushSourceStream</tt> fails
+ */
+","/**
+     * Gets the <tt>PushSourceStream</tt> which gives access to the RTCP data
+     * received from the remote targets and optionally creates it if it does not
+     * exist yet.
+     *
+     * @param create <tt>true</tt> to create the <tt>PushSourceStream</tt> which
+     * gives access to the RTCP data received from the remote targets if it does
+     * not exist yet; otherwise, <tt>false</tt>
+     * @return the <tt>PushBufferStream</tt> which gives access to the RTCP data
+     * received from the remote targets; <tt>null</tt> if it does not exist yet
+     * and <tt>create</tt> is <tt>false</tt>
+     * @throws IOException if creating the <tt>PushSourceStream</tt> fails
+     */
+    protected RTPConnectorInputStream getControlInputStream(boolean create)
+        throws IOException
+    {
+        if ((controlInputStream == null) && create)
+            controlInputStream = createControlInputStream();
+        return controlInputStream;
+    }",False
+18,getControlOutputStream(),Method,addTarget(SessionAddress),net.java.sip.communicator.impl.neomedia.device.VideoMediaDeviceSession+requestKeyFrame(),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlOutputStream(boolean) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getControlOutputStream(boolean),,420,13,1,"/** 
+ * Returns the input stream that is handling outgoing RTCP packets.
+ * @return the input stream that is handling outgoing RTCP packets.
+ * @throws IOException if an error occurs during the creation of the RTCPpacket output stream
+ */
+","/**
+     * Returns the input stream that is handling outgoing RTCP packets.
+     *
+     * @return the input stream that is handling outgoing RTCP packets.
+     *
+     * @throws IOException if an error occurs during the creation of the RTCP
+     * packet output stream
+     */
+    public RTPConnectorOutputStream getControlOutputStream()
+        throws IOException
+    {
+        return getControlOutputStream(true);
+    }",False
+19,getControlOutputStream(boolean),Method,getControlOutputStream(),net.java.sip.communicator.impl.neomedia.transform.RTPTransformConnector+setEngine(TransformEngine),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+createControlOutputStream() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+createControlOutputStream(),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream,957,20,4,"/** 
+ * Gets the <tt>OutputDataStream</tt> which is used to write RTCP data to be sent to from the remote targets and optionally creates it if it does not exist yet.
+ * @param create <tt>true</tt> to create the <tt>OutputDataStream</tt> whichis to be used to write RTCP data to be sent to the remote targets if it does not exist yet; otherwise, <tt>false</tt>
+ * @return the <tt>OutputDataStream</tt> which is used to write RTCP data tobe sent to the remote targets; <tt>null</tt> if it does not exist yet and <tt>create</tt> is <tt>false</tt>
+ * @throws IOException if creating the <tt>OutputDataStream</tt> fails
+ */
+","/**
+     * Gets the <tt>OutputDataStream</tt> which is used to write RTCP data to be
+     * sent to from the remote targets and optionally creates it if it does not
+     * exist yet.
+     *
+     * @param create <tt>true</tt> to create the <tt>OutputDataStream</tt> which
+     * is to be used to write RTCP data to be sent to the remote targets if it
+     * does not exist yet; otherwise, <tt>false</tt>
+     * @return the <tt>OutputDataStream</tt> which is used to write RTCP data to
+     * be sent to the remote targets; <tt>null</tt> if it does not exist yet and
+     * <tt>create</tt> is <tt>false</tt>
+     * @throws IOException if creating the <tt>OutputDataStream</tt> fails
+     */
+    protected RTPConnectorOutputStream getControlOutputStream(boolean create)
+        throws IOException
+    {
+        if ((controlOutputStream == null) && create)
+            controlOutputStream = createControlOutputStream();
+        return controlOutputStream;
+    }",False
+20,getControlSocket(),Method,,net.java.sip.communicator.impl.neomedia.MediaStreamImpl+getRemoteControlAddress() net.java.sip.communicator.impl.neomedia.transform.RTPTransformConnector+createControlInputStream() net.java.sip.communicator.impl.neomedia.transform.RTPTransformConnector+createControlOutputStream(),net.java.sip.communicator.service.neomedia.StreamConnector+getControlSocket() net.java.sip.communicator.service.neomedia.StreamConnector+getControlSocket(),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlSocket net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlSocket net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+connector net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlSocket,367,12,1,"/** 
+ * Gets the UDP Socket this instance uses to send and receive RTCP packets.
+ * @return the UDP Socket this instance uses to send and receive RTCPpackets
+ */
+","/**
+     * Gets the UDP Socket this instance uses to send and receive RTCP packets.
+     *
+     * @return the UDP Socket this instance uses to send and receive RTCP
+     * packets
+     */
+    public DatagramSocket getControlSocket()
+    {
+        if (controlSocket == null)
+            controlSocket = connector.getControlSocket();
+        return controlSocket;
+    }",True
+21,getDataInputStream(),Method,,,net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataInputStream(boolean) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataInputStream(boolean),,407,13,1,"/** 
+ * Returns the input stream that is handling incoming RTP packets.
+ * @return the input stream that is handling incoming RTP packets.
+ * @throws IOException if an error occurs during the creation of the RTPpacket input stream
+ */
+","/**
+     * Returns the input stream that is handling incoming RTP packets.
+     *
+     * @return the input stream that is handling incoming RTP packets.
+     *
+     * @throws IOException if an error occurs during the creation of the RTP
+     * packet input stream
+     */
+    public RTPConnectorInputStream getDataInputStream()
+        throws IOException
+    {
+        return getDataInputStream(true);
+    }",False
+22,getDataInputStream(boolean),Method,getDataInputStream(),net.java.sip.communicator.impl.neomedia.transform.RTPTransformConnector+setEngine(TransformEngine),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+createDataInputStream() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+createDataInputStream(),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataInputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataInputStream,931,20,4,"/** 
+ * Gets the <tt>PushSourceStream</tt> which gives access to the RTP data received from the remote targets and optionally creates it if it does not exist yet.
+ * @param create <tt>true</tt> to create the <tt>PushSourceStream</tt> whichgives access to the RTP data received from the remote targets if it does not exist yet; otherwise, <tt>false</tt>
+ * @return the <tt>PushBufferStream</tt> which gives access to the RTP datareceived from the remote targets; <tt>null</tt> if it does not exist yet and <tt>create</tt> is <tt>false</tt>
+ * @throws IOException if creating the <tt>PushSourceStream</tt> fails
+ */
+","/**
+     * Gets the <tt>PushSourceStream</tt> which gives access to the RTP data
+     * received from the remote targets and optionally creates it if it does not
+     * exist yet.
+     *
+     * @param create <tt>true</tt> to create the <tt>PushSourceStream</tt> which
+     * gives access to the RTP data received from the remote targets if it does
+     * not exist yet; otherwise, <tt>false</tt>
+     * @return the <tt>PushBufferStream</tt> which gives access to the RTP data
+     * received from the remote targets; <tt>null</tt> if it does not exist yet
+     * and <tt>create</tt> is <tt>false</tt>
+     * @throws IOException if creating the <tt>PushSourceStream</tt> fails
+     */
+    protected RTPConnectorInputStream getDataInputStream(boolean create)
+        throws IOException
+    {
+        if ((dataInputStream == null) && create)
+            dataInputStream = createDataInputStream();
+        return dataInputStream;
+    }",False
+23,getDataOutputStream(),Method,addTarget(SessionAddress),net.java.sip.communicator.impl.neomedia.transform.zrtp.ZRTPTransformEngine+sendDataZRTP(byte[]),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataOutputStream(boolean) net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+getDataOutputStream(boolean),,383,12,1,"/** 
+ * Returns the input stream that is handling outgoing RTP packets.
+ * @return the input stream that is handling outgoing RTP packets.
+ * @throws IOException if an error occurs during the creation of the RTP
+ */
+","/**
+     * Returns the input stream that is handling outgoing RTP packets.
+     *
+     * @return the input stream that is handling outgoing RTP packets.
+     *
+     * @throws IOException if an error occurs during the creation of the RTP
+     */
+    public RTPConnectorOutputStream getDataOutputStream()
+        throws IOException
+    {
+        return getDataOutputStream(true);
+    }",False
+24,getDataOutputStream(boolean),Method,getDataOutputStream(),net.java.sip.communicator.impl.neomedia.transform.RTPTransformConnector+setEngine(TransformEngine),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+createDataOutputStream() net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+createDataOutputStream(),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream,936,20,1,"/** 
+ * Gets the <tt>OutputDataStream</tt> which is used to write RTP data to be sent to from the remote targets and optionally creates it if it does not exist yet.
+ * @param create <tt>true</tt> to create the <tt>OutputDataStream</tt> whichis to be used to write RTP data to be sent to the remote targets if it does not exist yet; otherwise, <tt>false</tt>
+ * @return the <tt>OutputDataStream</tt> which is used to write RTP data tobe sent to the remote targets; <tt>null</tt> if it does not exist yet and <tt>create</tt> is <tt>false</tt>
+ * @throws IOException if creating the <tt>OutputDataStream</tt> fails
+ */
+","/**
+     * Gets the <tt>OutputDataStream</tt> which is used to write RTP data to be
+     * sent to from the remote targets and optionally creates it if it does not
+     * exist yet.
+     *
+     * @param create <tt>true</tt> to create the <tt>OutputDataStream</tt> which
+     * is to be used to write RTP data to be sent to the remote targets if it
+     * does not exist yet; otherwise, <tt>false</tt>
+     * @return the <tt>OutputDataStream</tt> which is used to write RTP data to
+     * be sent to the remote targets; <tt>null</tt> if it does not exist yet and
+     * <tt>create</tt> is <tt>false</tt>
+     * @throws IOException if creating the <tt>OutputDataStream</tt> fails
+     */
+    public RTPConnectorOutputStream getDataOutputStream(boolean create)
+        throws IOException
+    {
+        if ((dataOutputStream == null) && create)
+            dataOutputStream = createDataOutputStream();
+        return dataOutputStream;
+    }",False
+25,getDataSocket(),Method,,net.java.sip.communicator.impl.neomedia.MediaStreamImpl+getRemoteDataAddress() net.java.sip.communicator.impl.neomedia.transform.RTPTransformConnector+createDataInputStream() net.java.sip.communicator.impl.neomedia.transform.RTPTransformConnector+createDataOutputStream(),net.java.sip.communicator.service.neomedia.StreamConnector+getDataSocket() net.java.sip.communicator.service.neomedia.StreamConnector+getDataSocket(),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataSocket net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataSocket net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+connector net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataSocket,343,11,1,"/** 
+ * Gets the UDP socket this instance uses to send and receive RTP packets.
+ * @return the UDP socket this instance uses to send and receive RTP packets
+ */
+","/**
+     * Gets the UDP socket this instance uses to send and receive RTP packets.
+     *
+     * @return the UDP socket this instance uses to send and receive RTP packets
+     */
+    public DatagramSocket getDataSocket()
+    {
+        if (dataSocket == null)
+            dataSocket = connector.getDataSocket();
+        return dataSocket;
+    }",True
+26,getReceiveBufferSize(),Method,,,,,232,9,1,"/** 
+ * Provides a dummy implementation to  {@link RTPConnector#getReceiveBufferSize()} that always returns <tt>-1</tt>.
+ */
+","/**
+     * Provides a dummy implementation to {@link
+     * RTPConnector#getReceiveBufferSize()} that always returns <tt>-1</tt>.
+     */
+    public int getReceiveBufferSize()
+    {
+        // Not applicable
+        return -1;
+    }",False
+27,getRTCPBandwidthFraction(),Method,,,,,243,9,1,"/** 
+ * Provides a dummy implementation to  {@link RTPConnector#getRTCPBandwidthFraction()} that always returns <tt>-1</tt>.
+ */
+","/**
+     * Provides a dummy implementation to {@link
+     * RTPConnector#getRTCPBandwidthFraction()} that always returns <tt>-1</tt>.
+     */
+    public double getRTCPBandwidthFraction()
+    {
+        // Not applicable
+        return -1;
+    }",False
+28,getRTCPSenderBandwidthFraction(),Method,,,,,262,10,1,"/** 
+ * Provides a dummy implementation to  {@link RTPConnector#getRTCPSenderBandwidthFraction()} that always returns<tt>-1</tt>.
+ */
+","/**
+     * Provides a dummy implementation to {@link
+     * RTPConnector#getRTCPSenderBandwidthFraction()} that always returns
+     * <tt>-1</tt>.
+     */
+    public double getRTCPSenderBandwidthFraction()
+    {
+        // Not applicable
+        return -1;
+    }",False
+29,getSendBufferSize(),Method,,,,,226,9,1,"/** 
+ * Provides a dummy implementation to  {@link RTPConnector#getSendBufferSize()} that always returns <tt>-1</tt>.
+ */
+","/**
+     * Provides a dummy implementation to {@link
+     * RTPConnector#getSendBufferSize()} that always returns <tt>-1</tt>.
+     */
+    public int getSendBufferSize()
+    {
+        // Not applicable
+        return -1;
+    }",False
+30,removeTarget(SessionAddress),Method,,,"net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+removeTarget(InetAddress,int) net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+removeTarget(InetAddress,int) javax.media.rtp.SessionAddress+getControlAddress() javax.media.rtp.SessionAddress+getControlAddress() javax.media.rtp.SessionAddress+getControlPort() javax.media.rtp.SessionAddress+getControlPort() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+removeTarget(InetAddress,int) net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+removeTarget(InetAddress,int) javax.media.rtp.SessionAddress+getDataAddress() javax.media.rtp.SessionAddress+getDataAddress() javax.media.rtp.SessionAddress+getDataPort() javax.media.rtp.SessionAddress+getDataPort()",net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream,638,20,1,"/** 
+ * Removes a target from our session. If a target is removed, there will be no data sent to that address.
+ * @param target Destination target to be removed
+ */
+","/**
+     * Removes a target from our session. If a target is removed, there will be
+     * no data sent to that address.
+     *
+     * @param target Destination target to be removed
+     */
+    public void removeTarget(SessionAddress target)
+    {
+        if (controlOutputStream != null)
+            controlOutputStream
+                .removeTarget(
+                    target.getControlAddress(),
+                    target.getControlPort());
+
+        if (dataOutputStream != null)
+            dataOutputStream
+                .removeTarget(
+                    target.getDataAddress(),
+                    target.getDataPort());
+    }",False
+31,removeTargets(),Method,,net.java.sip.communicator.impl.neomedia.MediaStreamImpl+close() net.java.sip.communicator.impl.neomedia.MediaStreamImpl+doSetTarget(MediaStreamTarget),net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+removeTargets() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+removeTargets() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+removeTargets() net.java.sip.communicator.impl.neomedia.RTPConnectorOutputStream+removeTargets(),net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+controlOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream net.java.sip.communicator.impl.neomedia.RTPConnectorImpl+dataOutputStream,367,12,1,"/** 
+ * Remove all stream targets. After this operation is done. There will be no targets receiving data, so no data will be sent.
+ */
+","/**
+     * Remove all stream targets. After this operation is done. There will be
+     * no targets receiving data, so no data will be sent.
+     */
+    public void removeTargets()
+    {
+        if (controlOutputStream != null)
+            controlOutputStream.removeTargets();
+
+        if (dataOutputStream != null)
+            dataOutputStream.removeTargets();
+    }",False
+32,setReceiveBufferSize(int),Method,,,,,272,11,1,"/** 
+ * Provides a dummy implementation to  {@link RTPConnector#setReceiveBufferSize(int)}.
+ * @param size ignored.
+ */
+","/**
+     * Provides a dummy implementation to {@link
+     * RTPConnector#setReceiveBufferSize(int)}.
+     *
+     * @param size ignored.
+     */
+    public void setReceiveBufferSize(int size)
+        throws IOException
+    {
+        // Nothing should be done here :-)
+    }",False
+33,setSendBufferSize(int),Method,,,,,266,11,1,"/** 
+ * Provides a dummy implementation to  {@link RTPConnector#setSendBufferSize(int)}.
+ * @param size ignored.
+ */
+","/**
+     * Provides a dummy implementation to {@link
+     * RTPConnector#setSendBufferSize(int)}.
+     *
+     * @param size ignored.
+     */
+    public void setSendBufferSize(int size)
+        throws IOException
+    {
+        // Nothing should be done here :-)
+    }",False

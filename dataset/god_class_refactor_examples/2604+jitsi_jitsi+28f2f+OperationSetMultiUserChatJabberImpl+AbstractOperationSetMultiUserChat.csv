@@ -1,0 +1,975 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,logger,Field,,,,,105,2,26,,"private static final Logger logger
+        = Logger.getLogger(OperationSetMultiUserChatJabberImpl.class);",False
+2,jabberProvider,Field,OperationSetMultiUserChatJabberImpl(ProtocolProviderServiceJabberImpl),,,,155,4,18,"/** 
+ * The currently valid Jabber protocol provider service implementation.
+ */
+","/**
+     * The currently valid Jabber protocol provider service implementation.
+     */
+    private final ProtocolProviderServiceJabberImpl jabberProvider;",False
+3,invitationListeners,Field,,,,,150,4,18,"/** 
+ * A list of listeners subscribed for invitations multi user chat events.
+ */
+","/**
+     * A list of listeners subscribed for invitations multi user chat events.
+     */
+    private final Vector invitationListeners = new Vector();",True
+4,invitationRejectionListeners,Field,,,,,202,5,18,"/** 
+ * A list of listeners subscribed for events indicating rejection of a multi user chat invitation sent by us.
+ */
+","/**
+     * A list of listeners subscribed for events indicating rejection of a
+     * multi user chat invitation sent by us.
+     */
+    private final Vector invitationRejectionListeners = new Vector();",True
+5,presenceListeners,Field,,,,,216,5,18,"/** 
+ * Listeners that will be notified of changes in our status in the room such as us being kicked, banned, or granted admin permissions.
+ */
+","/**
+     * Listeners that will be notified of changes in our status in the
+     * room such as us being kicked, banned, or granted admin permissions.
+     */
+    private final Vector presenceListeners = new Vector();",True
+6,chatRoomCache,Field,getCurrentlyJoinedChatRooms() cacheChatRoom(ChatRoom) getChatRoom(String),,,,276,6,18,"/** 
+ * A list of the rooms that are currently open by this account. Note that we have not necessarily joined these rooms, we might have simply been searching through them.
+ */
+","/**
+     * A list of the rooms that are currently open by this account. Note that
+     * we have not necessarily joined these rooms, we might have simply been
+     * searching through them.
+     */
+    private final Hashtable<String, ChatRoom> chatRoomCache = new Hashtable();",False
+7,providerRegListener,Field,,,,,235,6,18,"/** 
+ * The registration listener that would get notified when the underlying Jabber provider gets registered.
+ */
+","/**
+     * The registration listener that would get notified when the underlying
+     * Jabber provider gets registered.
+     */
+    private final RegistrationStateListener providerRegListener
+        = new RegistrationStateListener();",False
+8,OperationSetMultiUserChatJabberImpl(ProtocolProviderServiceJabberImpl),Method,,,net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+addRegistrationStateChangeListener(RegistrationStateChangeListener) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+addRegistrationStateChangeListener(RegistrationStateChangeListener) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.OperationSetPresence+addSubscriptionListener(SubscriptionListener) net.java.sip.communicator.service.protocol.OperationSetPresence+addSubscriptionListener(SubscriptionListener),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+providerRegListener,723,19,0,"/** 
+ * Instantiates the user operation set with a currently valid instance of the Jabber protocol provider.
+ * @param jabberProvider a currently valid instance ofProtocolProviderServiceJabberImpl.
+ */
+","/**
+     * Instantiates the user operation set with a currently valid instance of
+     * the Jabber protocol provider.
+     * @param jabberProvider a currently valid instance of
+     * ProtocolProviderServiceJabberImpl.
+     */
+    OperationSetMultiUserChatJabberImpl(
+                        ProtocolProviderServiceJabberImpl jabberProvider)
+    {
+        this.jabberProvider = jabberProvider;
+
+        jabberProvider.addRegistrationStateChangeListener(providerRegListener);
+
+        OperationSetPersistentPresence presenceOpSet
+            = (OperationSetPersistentPresence) jabberProvider
+                .getOperationSet(OperationSetPersistentPresence.class);
+
+        presenceOpSet.addSubscriptionListener(this);
+    }",False
+9,addInvitationListener(ChatRoomInvitationListener),Method,,,java.util.Vector+contains(Object) java.util.Vector+contains(Object) java.util.Vector+add(E) java.util.Vector+add(E),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationListeners,374,13,1,"/** 
+ * Adds a listener to invitation notifications.
+ * @param listener an invitation listener.
+ */
+","/**
+     * Adds a listener to invitation notifications.
+     *
+     * @param listener an invitation listener.
+     */
+    public void addInvitationListener(ChatRoomInvitationListener listener)
+    {
+        synchronized(invitationListeners)
+        {
+            if (!invitationListeners.contains(listener))
+                invitationListeners.add(listener);
+        }
+    }",True
+10,removeInvitationListener(ChatRoomInvitationListener),Method,,,java.util.Vector+remove(Object) java.util.Vector+remove(Object),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationListeners,397,13,1,"/** 
+ * Removes <tt>listener</tt> from the list of invitation listeners registered to receive invitation events.
+ * @param listener the invitation listener to remove.
+ */
+","/**
+     * Removes <tt>listener</tt> from the list of invitation listeners
+     * registered to receive invitation events.
+     *
+     * @param listener the invitation listener to remove.
+     */
+    public void removeInvitationListener(ChatRoomInvitationListener listener)
+    {
+        synchronized(invitationListeners)
+        {
+            invitationListeners.remove(listener);
+        }
+    }",True
+11,addPresenceListener(LocalUserChatRoomPresenceListener),Method,,,java.util.Vector+contains(Object) java.util.Vector+contains(Object) java.util.Vector+add(E) java.util.Vector+add(E),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+presenceListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+presenceListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+presenceListeners,481,14,1,"/** 
+ * Adds a listener that will be notified of changes in our status in a chat room such as us being kicked, banned or dropped.
+ * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+ */
+","/**
+     * Adds a listener that will be notified of changes in our status in a chat
+     * room such as us being kicked, banned or dropped.
+     *
+     * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+     */
+    public void addPresenceListener(LocalUserChatRoomPresenceListener listener)
+    {
+        synchronized(presenceListeners)
+        {
+            if (!presenceListeners.contains(listener))
+                presenceListeners.add(listener);
+        }
+    }",True
+12,removePresenceListener(LocalUserChatRoomPresenceListener),Method,,,java.util.Vector+remove(Object) java.util.Vector+remove(Object),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+presenceListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+presenceListeners,437,14,1,"/** 
+ * Removes a listener that was being notified of changes in our status in a room such as us being kicked, banned or dropped.
+ * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+ */
+","/**
+     * Removes a listener that was being notified of changes in our status in
+     * a room such as us being kicked, banned or dropped.
+     *
+     * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+     */
+    public void removePresenceListener(
+        LocalUserChatRoomPresenceListener listener)
+    {
+        synchronized(presenceListeners)
+        {
+            presenceListeners.remove(listener);
+        }
+    }",True
+13,addInvitationRejectionListener(ChatRoomInvitationRejectionListener),Method,,,java.util.Vector+contains(Object) java.util.Vector+contains(Object) java.util.Vector+add(E) java.util.Vector+add(E),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationRejectionListeners,603,16,1,"/** 
+ * Subscribes <tt>listener</tt> so that it would receive events indicating rejection of a multi user chat invitation that we've sent earlier.
+ * @param listener the listener that we'll subscribe for invitationrejection events.
+ */
+","/**
+     * Subscribes <tt>listener</tt> so that it would receive events indicating
+     * rejection of a multi user chat invitation that we've sent earlier.
+     *
+     * @param listener the listener that we'll subscribe for invitation
+     * rejection events.
+     */
+    public void addInvitationRejectionListener(
+                                ChatRoomInvitationRejectionListener listener)
+    {
+        synchronized(invitationRejectionListeners)
+        {
+            if (!invitationRejectionListeners.contains(listener))
+                invitationRejectionListeners.add(listener);
+        }
+    }",True
+14,removeInvitationRejectionListener(ChatRoomInvitationRejectionListener),Method,,,java.util.Vector+remove(Object) java.util.Vector+remove(Object),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationRejectionListeners,476,14,1,"/** 
+ * Removes <tt>listener</tt> from the list of invitation listeners registered to receive invitation rejection events.
+ * @param listener the invitation listener to remove.
+ */
+","/**
+     * Removes <tt>listener</tt> from the list of invitation listeners
+     * registered to receive invitation rejection events.
+     *
+     * @param listener the invitation listener to remove.
+     */
+    public void removeInvitationRejectionListener(
+                                ChatRoomInvitationRejectionListener listener)
+    {
+        synchronized(invitationRejectionListeners)
+        {
+            invitationRejectionListeners.remove(listener);
+        }
+    }",True
+15,"createChatRoom(String,Map<String,Object>)",Method,,,"net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+assertSupportedAndConnected() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+assertSupportedAndConnected() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+findRoom(String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+findRoom(String) org.jivesoftware.smackx.muc.MultiUserChat+MultiUserChat(XMPPConnection,String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getCanonicalRoomName(String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getCanonicalRoomName(String) org.jivesoftware.smackx.muc.MultiUserChat+create(String) org.jivesoftware.smackx.muc.MultiUserChat+create(String) org.jivesoftware.smack.XMPPConnection+getUser() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() org.jivesoftware.smack.XMPPConnection+getUser() org.jivesoftware.smackx.muc.MultiUserChat+sendConfigurationForm(Form) org.jivesoftware.smackx.muc.MultiUserChat+sendConfigurationForm(Form) org.jivesoftware.smackx.Form+Form(String) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.service.protocol.OperationFailedException+OperationFailedException(String,int,Throwable) org.jivesoftware.smack.packet.XMPPError+getCode() org.jivesoftware.smack.XMPPException+getXMPPError() org.jivesoftware.smack.XMPPException+getXMPPError() org.jivesoftware.smack.packet.XMPPError+getCode() java.lang.Throwable+getCause() java.lang.Throwable+getCause() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+createLocalChatRoomInstance(MultiUserChat) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+createLocalChatRoomInstance(MultiUserChat)",org.jivesoftware.smackx.Form+TYPE_SUBMIT net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+logger,1925,49,1,"/** 
+ * Creates a room with the named <tt>roomName</tt> and according to the specified <tt>roomProperties</tt> on the server that this protocol provider is currently connected to.
+ * @param roomName the name of the <tt>ChatRoom</tt> to create.
+ * @param roomProperties properties specifying how the room should becreated.
+ * @throws OperationFailedException if the room couldn't be created forsome reason (e.g. room already exists; user already joined to an existent room or user has no permissions to create a chat room).
+ * @throws OperationNotSupportedException if chat room creation is notsupported by this server
+ * @return ChatRoom the chat room that we've just created.
+ */
+","/**
+     * Creates a room with the named <tt>roomName</tt> and according to the
+     * specified <tt>roomProperties</tt> on the server that this protocol
+     * provider is currently connected to.
+     *
+     * @param roomName the name of the <tt>ChatRoom</tt> to create.
+     * @param roomProperties properties specifying how the room should be
+     *   created.
+     *
+     * @throws OperationFailedException if the room couldn't be created for
+     * some reason (e.g. room already exists; user already joined to an
+     * existent room or user has no permissions to create a chat room).
+     * @throws OperationNotSupportedException if chat room creation is not
+     * supported by this server
+     *
+     * @return ChatRoom the chat room that we've just created.
+     */
+    public ChatRoom createChatRoom(
+            String roomName,
+            Map<String, Object> roomProperties)
+        throws OperationFailedException,
+               OperationNotSupportedException
+    {
+        //first make sure we are connected and the server supports multichat
+        assertSupportedAndConnected();
+
+        ChatRoom room = findRoom(roomName);
+
+        if (room == null)
+        {
+            MultiUserChat muc = new MultiUserChat(
+                getXmppConnection(), getCanonicalRoomName(roomName));
+
+            try
+            {
+                muc.create(getXmppConnection().getUser());
+                muc.sendConfigurationForm(new Form(Form.TYPE_SUBMIT));
+            }
+            catch (XMPPException ex)
+            {
+                logger.error(""Failed to create chat room."", ex);
+                throw new OperationFailedException(""Failed to create chat room""
+                                                   , ex.getXMPPError().getCode()
+                                                   , ex.getCause());
+            }
+            room = createLocalChatRoomInstance(muc);
+        }
+        return room;
+    }",False
+16,createLocalChatRoomInstance(MultiUserChat),Method,"createChatRoom(String,Map<String,Object>)",,"net.java.sip.communicator.impl.protocol.jabber.ChatRoomJabberImpl+ChatRoomJabberImpl(MultiUserChat,ProtocolProviderServiceJabberImpl) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+cacheChatRoom(ChatRoom) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+cacheChatRoom(ChatRoom) org.jivesoftware.smackx.muc.MultiUserChat+addInvitationRejectionListener(InvitationRejectionListener) org.jivesoftware.smackx.muc.MultiUserChat+addInvitationRejectionListener(InvitationRejectionListener) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl.SmackInvitationRejectionListener+SmackInvitationRejectionListener(ChatRoom)",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider,899,26,2,"/** 
+ * Creates a <tt>ChatRoom</tt> from the specified smack <tt>MultiUserChat</tt>.
+ * @param muc the smack MultiUserChat instance that we're going to wrap ourchat room around.
+ * @return ChatRoom the chat room that we've just created.
+ */
+","/**
+     * Creates a <tt>ChatRoom</tt> from the specified smack
+     * <tt>MultiUserChat</tt>.
+     *
+     * @param muc the smack MultiUserChat instance that we're going to wrap our
+     * chat room around.
+     *
+     * @return ChatRoom the chat room that we've just created.
+     */
+    private ChatRoom createLocalChatRoomInstance(MultiUserChat muc)
+    {
+        synchronized(chatRoomCache)
+        {
+            ChatRoomJabberImpl chatRoom
+                = new ChatRoomJabberImpl(muc, jabberProvider);
+            cacheChatRoom(chatRoom);
+
+            // Add the contained in this class SmackInvitationRejectionListener
+            // which will dispatch all rejection events to the
+            // ChatRoomInvitationRejectionListener.
+            muc.addInvitationRejectionListener(
+                new SmackInvitationRejectionListener(chatRoom));
+
+            return chatRoom;
+        }
+    }",False
+17,findRoom(String),Method,"createChatRoom(String,Map<String,Object>) SmackInvitationListener.invitationReceived(XMPPConnection,String,String,String,String,Message)",,"net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+assertSupportedAndConnected() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+assertSupportedAndConnected() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getCanonicalRoomName(String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getCanonicalRoomName(String) java.util.Hashtable+get(Object) java.util.Hashtable+get(Object) org.jivesoftware.smackx.ServiceDiscoveryManager+discoverInfo(String) org.jivesoftware.smackx.ServiceDiscoveryManager+getInstanceFor(XMPPConnection) org.jivesoftware.smackx.ServiceDiscoveryManager+getInstanceFor(XMPPConnection) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() org.jivesoftware.smackx.ServiceDiscoveryManager+discoverInfo(String) org.jivesoftware.smackx.muc.MultiUserChat+MultiUserChat(XMPPConnection,String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.ChatRoomJabberImpl+ChatRoomJabberImpl(MultiUserChat,ProtocolProviderServiceJabberImpl) java.util.Hashtable+put(K,V) java.util.Hashtable+put(K,V)",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache,1625,46,33,"/** 
+ * Returns a reference to a chatRoom named <tt>roomName</tt> or null if that room does not exist.
+ * @param roomName the name of the <tt>ChatRoom</tt> that we're lookingfor.
+ * @return the <tt>ChatRoom</tt> named <tt>roomName</tt> if it exists, nullotherwise.
+ * @throws OperationFailedException if an error occurs while trying todiscover the room on the server.
+ * @throws OperationNotSupportedException if the server does not supportmulti user chat
+ */
+","/**
+     * Returns a reference to a chatRoom named <tt>roomName</tt> or null
+     * if that room does not exist.
+     *
+     * @param roomName the name of the <tt>ChatRoom</tt> that we're looking
+     *   for.
+     * @return the <tt>ChatRoom</tt> named <tt>roomName</tt> if it exists, null
+     * otherwise.
+     * @throws OperationFailedException if an error occurs while trying to
+     * discover the room on the server.
+     * @throws OperationNotSupportedException if the server does not support
+     * multi user chat
+     */
+    public synchronized ChatRoom findRoom(String roomName)
+        throws OperationFailedException, OperationNotSupportedException
+    {
+        //make sure we are connected and multichat is supported.
+        assertSupportedAndConnected();
+
+        String canonicalRoomName = getCanonicalRoomName(roomName);
+
+        ChatRoom room = chatRoomCache.get(canonicalRoomName);
+
+        if (room != null)
+            return room;
+
+        try
+        {
+            // throws Exception if room does not exist
+            // do not use MultiUserChat.getRoomInfo as there is a bug which
+            // throws NPE
+            ServiceDiscoveryManager.getInstanceFor(getXmppConnection()).
+                discoverInfo(canonicalRoomName);
+
+            MultiUserChat muc =
+                new MultiUserChat(getXmppConnection(), canonicalRoomName);
+            room = new ChatRoomJabberImpl(muc, jabberProvider);
+            chatRoomCache.put(canonicalRoomName, room);
+
+            return room;
+        } catch (XMPPException e)
+        {
+            // room not found
+            return null;
+        }
+    }",False
+18,getCurrentlyJoinedChatRooms(),Method,,,java.util.LinkedList+LinkedList(Collection) java.util.Hashtable+values() java.util.Hashtable+values() java.util.List+iterator() java.util.List+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() java.util.Iterator+remove() java.util.Iterator+remove(),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache,724,25,1,"/** 
+ * Returns a list of the chat rooms that we have joined and are currently active in.
+ * @return a <tt>List</tt> of the rooms where the user has joined usinga given connection.
+ */
+","/**
+     * Returns a list of the chat rooms that we have joined and are currently
+     * active in.
+     *
+     * @return a <tt>List</tt> of the rooms where the user has joined using
+     *   a given connection.
+     */
+    public List<ChatRoom> getCurrentlyJoinedChatRooms()
+    {
+        synchronized(chatRoomCache)
+        {
+            List joinedRooms
+                = new LinkedList(this.chatRoomCache.values());
+
+            Iterator joinedRoomsIter = joinedRooms.iterator();
+
+            while (joinedRoomsIter.hasNext())
+            {
+                if ( !( (ChatRoom) joinedRoomsIter.next()).isJoined())
+                    joinedRoomsIter.remove();
+            }
+
+            return joinedRooms;
+        }
+    }",False
+19,getExistingChatRooms(),Method,,,"net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+assertSupportedAndConnected() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+assertSupportedAndConnected() java.util.LinkedList+LinkedList() java.util.Collection+iterator() org.jivesoftware.smackx.muc.MultiUserChat+getServiceNames(XMPPConnection) org.jivesoftware.smackx.muc.MultiUserChat+getServiceNames(XMPPConnection) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() java.util.Collection+iterator() net.java.sip.communicator.service.protocol.OperationFailedException+OperationFailedException(String,int,Throwable) java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() java.util.LinkedList+LinkedList() java.util.List+addAll(Collection) java.util.List+addAll(Collection) org.jivesoftware.smackx.muc.MultiUserChat+getHostedRooms(XMPPConnection,String) org.jivesoftware.smackx.muc.MultiUserChat+getHostedRooms(XMPPConnection,String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) java.util.List+iterator() java.util.List+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.List+add(E) java.util.List+add(E) org.jivesoftware.smackx.muc.HostedRoom+getJid() java.util.Iterator+next() java.util.Iterator+next() org.jivesoftware.smackx.muc.HostedRoom+getJid()",net.java.sip.communicator.service.protocol.OperationFailedException+GENERAL_ERROR net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+logger,2581,71,1,"/** 
+ * Returns the <tt>List</tt> of <tt>String</tt>s indicating chat rooms currently available on the server that this protocol provider is connected to.
+ * @return a <tt>java.util.List</tt> of the name <tt>String</tt>s for chatrooms that are currently available on the server that this protocol provider is connected to.
+ * @throws OperationFailedException if we faile retrieving this list fromthe server.
+ * @throws OperationNotSupportedException if the server does not supportmulti user chat
+ */
+","/**
+     * Returns the <tt>List</tt> of <tt>String</tt>s indicating chat rooms
+     * currently available on the server that this protocol provider is
+     * connected to.
+     *
+     * @return a <tt>java.util.List</tt> of the name <tt>String</tt>s for chat
+     * rooms that are currently available on the server that this protocol
+     * provider is connected to.
+     *
+     * @throws OperationFailedException if we faile retrieving this list from
+     * the server.
+     * @throws OperationNotSupportedException if the server does not support
+     * multi user chat
+     */
+    public List<String> getExistingChatRooms()
+        throws  OperationFailedException,
+                OperationNotSupportedException
+    {
+        assertSupportedAndConnected();
+
+        List list = new LinkedList();
+
+        //first retrieve all conference service names available on this server
+        Iterator<String> serviceNames = null;
+        try
+        {
+            serviceNames = MultiUserChat
+                .getServiceNames(getXmppConnection()).iterator();
+        }
+        catch (XMPPException ex)
+        {
+            throw new OperationFailedException(
+                ""Failed to retrieve Jabber conference service names""
+                , OperationFailedException.GENERAL_ERROR
+                , ex);
+        }
+
+        //now retrieve all chat rooms currently available for every service name
+        while(serviceNames.hasNext())
+        {
+            String serviceName = serviceNames.next();
+            List<HostedRoom> roomsOnThisService = new LinkedList();
+
+            try
+            {
+                roomsOnThisService
+                    .addAll(MultiUserChat.getHostedRooms(getXmppConnection()
+                                                         , serviceName));
+            }
+            catch (XMPPException ex)
+            {
+                logger.error(""Failed to retrieve rooms for serviceName=""
+                             + serviceName, ex);
+                //continue bravely with other service names
+                continue;
+            }
+
+            //now go through all rooms available on this service
+            Iterator<HostedRoom> serviceRoomsIter = roomsOnThisService.iterator();
+
+            //add the room name to the list of names we are returning
+            while(serviceRoomsIter.hasNext())
+                list.add(
+                    serviceRoomsIter.next().getJid());
+        }
+
+        /** @todo maybe we should add a check here and fail if retrieving chat
+         * rooms failed for all service names*/
+
+        return list;
+    }",False
+20,isMultiChatSupportedByContact(Contact),Method,,,net.java.sip.communicator.service.protocol.ProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.Contact+getProtocolProvider() net.java.sip.communicator.service.protocol.Contact+getProtocolProvider() net.java.sip.communicator.service.protocol.ProtocolProviderService+getOperationSet(Class<? extends OperationSet>),,655,19,1,"/** 
+ * Returns true if <tt>contact</tt> supports multi user chat sessions.
+ * @param contact reference to the contact whose support for chat roomswe are currently querying.
+ * @return a boolean indicating whether <tt>contact</tt> supportschatrooms.
+ * @todo Implement thisnet.java.sip.communicator.service.protocol.OperationSetMultiUserChat method
+ */
+","/**
+     * Returns true if <tt>contact</tt> supports multi user chat sessions.
+     *
+     * @param contact reference to the contact whose support for chat rooms
+     *   we are currently querying.
+     * @return a boolean indicating whether <tt>contact</tt> supports
+     *   chatrooms.
+     * @todo Implement this
+     *   net.java.sip.communicator.service.protocol.OperationSetMultiUserChat
+     *   method
+     */
+    public boolean isMultiChatSupportedByContact(Contact contact)
+    {
+        if(contact.getProtocolProvider()
+            .getOperationSet(OperationSetMultiUserChat.class) != null)
+            return true;
+
+        return false;
+    }",False
+21,"rejectInvitation(ChatRoomInvitation,String)",Method,,,"org.jivesoftware.smackx.muc.MultiUserChat+decline(XMPPConnection,String,String,String) org.jivesoftware.smackx.muc.MultiUserChat+decline(XMPPConnection,String,String,String) net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getConnection() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getConnection() net.java.sip.communicator.service.protocol.ChatRoom+getName() net.java.sip.communicator.service.protocol.ChatRoomInvitation+getTargetChatRoom() net.java.sip.communicator.service.protocol.ChatRoomInvitation+getTargetChatRoom() net.java.sip.communicator.service.protocol.ChatRoom+getName() net.java.sip.communicator.service.protocol.ChatRoomInvitation+getInviter() net.java.sip.communicator.service.protocol.ChatRoomInvitation+getInviter()",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider,523,14,1,"/** 
+ * Informs the sender of an invitation that we decline their invitation.
+ * @param invitation the connection to use for sending the rejection.
+ * @param rejectReason the reason to reject the given invitation
+ */
+","/**
+     * Informs the sender of an invitation that we decline their invitation.
+     *
+     * @param invitation the connection to use for sending the rejection.
+     * @param rejectReason the reason to reject the given invitation
+     */
+    public void rejectInvitation(ChatRoomInvitation invitation,
+        String rejectReason)
+    {
+        MultiUserChat.decline(jabberProvider.getConnection(),
+            invitation.getTargetChatRoom().getName(),
+            invitation.getInviter(),
+            rejectReason);
+    }",False
+22,getXmppConnection(),Method,"createChatRoom(String,Map<String,Object>) findRoom(String) getExistingChatRooms() getExistingChatRooms() assertSupportedAndConnected() getCanonicalRoomName(String) getCurrentlyJoinedChatRooms(ChatRoomMember)",,net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getConnection() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getConnection(),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider,458,13,2,"/** 
+ * Almost all <tt>MultiUserChat</tt> methods require an xmpp connection param so I added this method only for the sake of utility.
+ * @return the XMPPConnection currently in use by the jabber provider ornull if jabber provider has yet to be initialized.
+ */
+","/**
+     * Almost all <tt>MultiUserChat</tt> methods require an xmpp connection
+     * param so I added this method only for the sake of utility.
+     *
+     * @return the XMPPConnection currently in use by the jabber provider or
+     * null if jabber provider has yet to be initialized.
+     */
+    private XMPPConnection getXmppConnection()
+    {
+        return (jabberProvider == null)
+            ? null
+            :jabberProvider.getConnection();
+    }",False
+23,assertSupportedAndConnected(),Method,"createChatRoom(String,Map<String,Object>) findRoom(String) getExistingChatRooms() getCurrentlyJoinedChatRooms(ChatRoomMember)",,"net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+isRegistered() net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+isRegistered() org.jivesoftware.smack.XMPPConnection+isConnected() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() org.jivesoftware.smack.XMPPConnection+isConnected() net.java.sip.communicator.service.protocol.OperationFailedException+OperationFailedException(String,int)",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.service.protocol.OperationFailedException+NETWORK_FAILURE,1527,39,2,"/** 
+ * Makes sure that we are properly connected and that the server supports multi user chats.
+ * @throws OperationFailedException if the provider is not registered orthe xmpp connection not connected.
+ * @throws OperationNotSupportedException if the service is not supportedby the server.
+ */
+","/**
+     * Makes sure that we are properly connected and that the server supports
+     * multi user chats.
+     *
+     * @throws OperationFailedException if the provider is not registered or
+     * the xmpp connection not connected.
+     * @throws OperationNotSupportedException if the service is not supported
+     * by the server.
+     */
+    private void assertSupportedAndConnected()
+        throws OperationFailedException, OperationNotSupportedException
+    {
+        //throw an exception if the provider is not registered or the xmpp
+        //connection not connected.
+        if( !jabberProvider.isRegistered()
+            || !getXmppConnection().isConnected())
+        {
+            throw new OperationFailedException(
+                ""Provider not connected to jabber server""
+                , OperationFailedException.NETWORK_FAILURE);
+        }
+
+//MultiUserChat.isServiceEnabled() *always* returns false,
+//altough the functionalty is implemented and advertised. Because of
+//that, we cant rely on it.
+//The problem has been reported to igniterealtime.org since 2006.
+//
+//        if (!MultiUserChat.isServiceEnabled(
+//            getXmppConnection()
+//            , jabberProvider.getAccountID().getUserID()))
+//        {
+//            throw new OperationNotSupportedException(
+//                ""Chat rooms not supported on server ""
+//                + jabberProvider.getAccountID().getService()
+//                + "" for user ""
+//                + jabberProvider.getAccountID().getUserID());
+//        }
+
+    }",False
+24,getCanonicalRoomName(String),Method,findRoom(String),,"java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.util.Collection+iterator() org.jivesoftware.smackx.muc.MultiUserChat+getServiceNames(XMPPConnection) org.jivesoftware.smackx.muc.MultiUserChat+getServiceNames(XMPPConnection) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() java.util.Collection+iterator() net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.service.protocol.AccountID+getUserID() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getAccountID() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getAccountID() net.java.sip.communicator.service.protocol.AccountID+getUserID() net.java.sip.communicator.service.protocol.AccountID+getService() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getAccountID() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getAccountID() net.java.sip.communicator.service.protocol.AccountID+getService() net.java.sip.communicator.service.protocol.OperationFailedException+OperationFailedException(String,int,Throwable) net.java.sip.communicator.service.protocol.AccountID+getUserID() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getAccountID() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getAccountID() net.java.sip.communicator.service.protocol.AccountID+getUserID() net.java.sip.communicator.service.protocol.AccountID+getService() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getAccountID() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getAccountID() net.java.sip.communicator.service.protocol.AccountID+getService() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.OperationFailedException+OperationFailedException(String,int)",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+logger net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.service.protocol.OperationFailedException+GENERAL_ERROR net.java.sip.communicator.service.protocol.OperationFailedException+GENERAL_ERROR,2059,54,2,"/** 
+ * In case <tt>roomName</tt> does not represent a complete room id, the method returns a canonincal chat room name in the following form: roomName@muc-servicename.jabserver.com. In case <tt>roomName</tt> is already a canonical room name, the method simply returns it without changing it.
+ * @param roomName the name of the room that we'd like to ""canonize"".
+ * @return the canonincal name of the room (which might be equal toroomName in case it was already in a canonical format).
+ * @throws OperationFailedException if we fail retrieving the conferenceservice name
+ */
+","/**
+     * In case <tt>roomName</tt> does not represent a complete room id, the
+     * method returns a canonincal chat room name in the following form:
+     * roomName@muc-servicename.jabserver.com. In case <tt>roomName</tt> is
+     * already a canonical room name, the method simply returns it without
+     * changing it.
+     *
+     * @param roomName the name of the room that we'd like to ""canonize"".
+     *
+     * @return the canonincal name of the room (which might be equal to
+     * roomName in case it was already in a canonical format).
+     *
+     * @throws OperationFailedException if we fail retrieving the conference
+     * service name
+     */
+    private String getCanonicalRoomName(String roomName)
+        throws OperationFailedException
+    {
+
+        if (roomName.indexOf('@') > 0)
+            return roomName;
+
+        Iterator<String> serviceNamesIter = null;
+        try
+        {
+            serviceNamesIter
+                = MultiUserChat.getServiceNames(getXmppConnection()).iterator();
+        }
+        catch (XMPPException ex)
+        {
+            logger.error(""Failed to retrieve conference service name for user: ""
+                + jabberProvider.getAccountID().getUserID()
+                + "" on server: ""
+                + jabberProvider.getAccountID().getService()
+                , ex);
+            throw new OperationFailedException(
+                ""Failed to retrieve conference service name for user: ""
+                + jabberProvider.getAccountID().getUserID()
+                + "" on server: ""
+                + jabberProvider.getAccountID().getService()
+                , OperationFailedException.GENERAL_ERROR
+                , ex);
+
+        }
+
+        if (serviceNamesIter.hasNext())
+            return roomName + ""@"" + serviceNamesIter.next();
+
+        //hmmmm strange.. no service name returned. we should probably throw an
+        //exception
+        throw new OperationFailedException(
+            ""Failed to retrieve MultiUserChat service names.""
+            , OperationFailedException.GENERAL_ERROR);
+    }",False
+25,cacheChatRoom(ChatRoom),Method,createLocalChatRoomInstance(MultiUserChat),,"java.util.Hashtable+put(K,V) java.util.Hashtable+put(K,V) net.java.sip.communicator.service.protocol.ChatRoom+getName() net.java.sip.communicator.service.protocol.ChatRoom+getName()",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache,298,10,2,"/** 
+ * Adds <tt>chatRoom</tt> to the cache of chat rooms that this operation set is handling.
+ * @param chatRoom the <tt>ChatRoom</tt> to cache.
+ */
+","/**
+     * Adds <tt>chatRoom</tt> to the cache of chat rooms that this operation
+     * set is handling.
+     *
+     * @param chatRoom the <tt>ChatRoom</tt> to cache.
+     */
+    private void cacheChatRoom(ChatRoom chatRoom)
+    {
+        this.chatRoomCache.put(chatRoom.getName(), chatRoom);
+    }",False
+26,getChatRoom(String),Method,,,java.util.Hashtable+get(Object) java.util.Hashtable+get(Object),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache,521,13,1,"/** 
+ * Returns a reference to the chat room named <tt>chatRoomName</tt> or null if the room hasn't been cached yet.
+ * @param chatRoomName the name of the room we're looking for.
+ * @return the <tt>ChatRoomJabberImpl</tt> instance that has been cachedfor <tt>chatRoomName</tt> or null if no such room has been cached so far.
+ */
+","/**
+     * Returns a reference to the chat room named <tt>chatRoomName</tt> or
+     * null if the room hasn't been cached yet.
+     *
+     * @param chatRoomName the name of the room we're looking for.
+     *
+     * @return the <tt>ChatRoomJabberImpl</tt> instance that has been cached
+     * for <tt>chatRoomName</tt> or null if no such room has been cached so far.
+     */
+    public ChatRoomJabberImpl getChatRoom(String chatRoomName)
+    {
+        return (ChatRoomJabberImpl)this.chatRoomCache.get(chatRoomName);
+    }",False
+27,getCurrentlyJoinedChatRooms(ChatRoomMember),Method,,,"net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+assertSupportedAndConnected() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+assertSupportedAndConnected() org.jivesoftware.smackx.muc.MultiUserChat+getJoinedRooms(XMPPConnection,String) org.jivesoftware.smackx.muc.MultiUserChat+getJoinedRooms(XMPPConnection,String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+getXmppConnection() net.java.sip.communicator.service.protocol.ChatRoomMember+getContactAddress() net.java.sip.communicator.service.protocol.ChatRoomMember+getContactAddress()",,457,13,1,"/** 
+ * Returns the list of currently joined chat rooms.
+ */
+","/**
+     * Returns the list of currently joined chat rooms.
+     */
+    public List<String> getCurrentlyJoinedChatRooms(ChatRoomMember chatRoomMember)
+        throws OperationFailedException, OperationNotSupportedException
+    {
+        assertSupportedAndConnected();
+
+        Iterator<String> joinedRoomsIter = MultiUserChat.getJoinedRooms(
+            getXmppConnection(), chatRoomMember.getContactAddress());
+
+        return (List) joinedRoomsIter;
+    }",False
+28,"fireLocalUserPresenceEvent(ChatRoom,String,String)",Method,,"net.java.sip.communicator.impl.protocol.jabber.ChatRoomJabberImpl+joinAs(String,byte[]) net.java.sip.communicator.impl.protocol.jabber.ChatRoomJabberImpl+joinAs(String)","net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceChangeEvent+LocalUserChatRoomPresenceChangeEvent(OperationSetMultiUserChat,ChatRoom,String,String) java.util.ArrayList+iterator() java.util.ArrayList+ArrayList(Collection) java.util.ArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceListener+localUserPresenceChanged(LocalUserChatRoomPresenceChangeEvent) net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceListener+localUserPresenceChanged(LocalUserChatRoomPresenceChangeEvent)",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+presenceListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+presenceListeners,1193,32,1,"/** 
+ * Delivers a <tt>LocalUserChatRoomPresenceChangeEvent</tt> to all registered <tt>LocalUserChatRoomPresenceListener</tt>s.
+ * @param chatRoom the <tt>ChatRoom</tt> which has been joined, left, etc.
+ * @param eventType the type of this event; one of LOCAL_USER_JOINED,LOCAL_USER_LEFT, etc.
+ * @param reason the reason
+ */
+","/**
+     * Delivers a <tt>LocalUserChatRoomPresenceChangeEvent</tt> to all
+     * registered <tt>LocalUserChatRoomPresenceListener</tt>s.
+     *
+     * @param chatRoom the <tt>ChatRoom</tt> which has been joined, left, etc.
+     * @param eventType the type of this event; one of LOCAL_USER_JOINED,
+     * LOCAL_USER_LEFT, etc.
+     * @param reason the reason
+     */
+    public void fireLocalUserPresenceEvent(ChatRoom chatRoom, String eventType,
+        String reason)
+    {
+        LocalUserChatRoomPresenceChangeEvent evt
+            = new LocalUserChatRoomPresenceChangeEvent( this,
+                                                        chatRoom,
+                                                        eventType,
+                                                        reason);
+
+        Iterator listeners = null;
+        synchronized (presenceListeners)
+        {
+            listeners = new ArrayList(presenceListeners).iterator();
+        }
+
+        while (listeners.hasNext())
+        {
+            LocalUserChatRoomPresenceListener listener
+                = (LocalUserChatRoomPresenceListener) listeners.next();
+
+            listener.localUserPresenceChanged(evt);
+        }
+    }",True
+29,"fireInvitationEvent(ChatRoom,String,String,byte[])",Method,"SmackInvitationListener.invitationReceived(XMPPConnection,String,String,String,String,Message) SmackInvitationListener.invitationReceived(XMPPConnection,String,String,String,String,Message)",,"net.java.sip.communicator.impl.protocol.jabber.ChatRoomInvitationJabberImpl+ChatRoomInvitationJabberImpl(ChatRoom,String,String,byte[]) net.java.sip.communicator.service.protocol.event.ChatRoomInvitationReceivedEvent+ChatRoomInvitationReceivedEvent(OperationSetMultiUserChat,ChatRoomInvitation,Date) java.util.Date+Date(long) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.util.ArrayList+iterator() java.util.ArrayList+ArrayList(Collection) java.util.ArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.event.ChatRoomInvitationListener+invitationReceived(ChatRoomInvitationReceivedEvent) net.java.sip.communicator.service.protocol.event.ChatRoomInvitationListener+invitationReceived(ChatRoomInvitationReceivedEvent)",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationListeners,1389,39,1,"/** 
+ * Delivers a <tt>ChatRoomInvitationReceivedEvent</tt> to all registered <tt>ChatRoomInvitationListener</tt>s.
+ * @param targetChatRoom the room that invitation refers to
+ * @param inviter the inviter that sent the invitation
+ * @param reason the reason why the inviter sent the invitation
+ * @param password the password to use when joining the room
+ */
+","/**
+     * Delivers a <tt>ChatRoomInvitationReceivedEvent</tt> to all
+     * registered <tt>ChatRoomInvitationListener</tt>s.
+     *
+     * @param targetChatRoom the room that invitation refers to
+     * @param inviter the inviter that sent the invitation
+     * @param reason the reason why the inviter sent the invitation
+     * @param password the password to use when joining the room
+     */
+    public void fireInvitationEvent(
+        ChatRoom targetChatRoom,
+        String inviter,
+        String reason,
+        byte[] password)
+    {
+        ChatRoomInvitationJabberImpl invitation
+            = new ChatRoomInvitationJabberImpl( targetChatRoom,
+                                                inviter,
+                                                reason,
+                                                password);
+
+        ChatRoomInvitationReceivedEvent evt
+            = new ChatRoomInvitationReceivedEvent(this, invitation,
+                new Date(System.currentTimeMillis()));
+
+        Iterator listeners = null;
+        synchronized (invitationListeners)
+        {
+            listeners = new ArrayList(invitationListeners).iterator();
+        }
+
+        while (listeners.hasNext())
+        {
+            ChatRoomInvitationListener listener
+                = (ChatRoomInvitationListener) listeners.next();
+
+            listener.invitationReceived(evt);
+        }
+    }",False
+30,"fireInvitationRejectedEvent(ChatRoom,String,String)",Method,"SmackInvitationRejectionListener.invitationDeclined(String,String)",,"net.java.sip.communicator.service.protocol.event.ChatRoomInvitationRejectedEvent+ChatRoomInvitationRejectedEvent(OperationSetMultiUserChat,ChatRoom,String,String,Date) java.util.Date+Date(long) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.util.ArrayList+iterator() java.util.ArrayList+ArrayList(Collection) java.util.ArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.event.ChatRoomInvitationRejectionListener+invitationRejected(ChatRoomInvitationRejectedEvent) net.java.sip.communicator.service.protocol.event.ChatRoomInvitationRejectionListener+invitationRejected(ChatRoomInvitationRejectedEvent)",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+invitationRejectionListeners,1165,31,1,"/** 
+ * Delivers a <tt>ChatRoomInvitationRejectedEvent</tt> to all registered <tt>ChatRoomInvitationRejectionListener</tt>s.
+ * @param sourceChatRoom the room that invitation refers to
+ * @param invitee the name of the invitee that rejected the invitation
+ * @param reason the reason of the rejection
+ */
+","/**
+     * Delivers a <tt>ChatRoomInvitationRejectedEvent</tt> to all
+     * registered <tt>ChatRoomInvitationRejectionListener</tt>s.
+     *
+     * @param sourceChatRoom the room that invitation refers to
+     * @param invitee the name of the invitee that rejected the invitation
+     * @param reason the reason of the rejection
+     */
+    public void fireInvitationRejectedEvent(ChatRoom sourceChatRoom,
+                                            String invitee,
+                                            String reason)
+    {
+        ChatRoomInvitationRejectedEvent evt
+            = new ChatRoomInvitationRejectedEvent(
+                this, sourceChatRoom, invitee, reason,
+                new Date(System.currentTimeMillis()));
+
+        Iterator listeners = null;
+        synchronized (invitationRejectionListeners)
+        {
+            listeners = new ArrayList(invitationRejectionListeners).iterator();
+        }
+
+        while (listeners.hasNext())
+        {
+            ChatRoomInvitationRejectionListener listener
+                = (ChatRoomInvitationRejectionListener) listeners.next();
+
+            listener.invitationRejected(evt);
+        }
+    }",True
+31,SmackInvitationListener,MemberClass,,,"net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl.SmackInvitationListener+invitationReceived(XMPPConnection,String,String,String,String,Message) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+findRoom(String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+findRoom(String) org.jivesoftware.smackx.muc.MultiUserChat+MultiUserChat(XMPPConnection,String) net.java.sip.communicator.impl.protocol.jabber.ChatRoomJabberImpl+ChatRoomJabberImpl(MultiUserChat,ProtocolProviderServiceJabberImpl) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+fireInvitationEvent(ChatRoom,String,String,byte[]) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+fireInvitationEvent(ChatRoom,String,String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+fireInvitationEvent(ChatRoom,String,String,byte[]) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+fireInvitationEvent(ChatRoom,String,String,byte[]) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable)",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+logger net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+logger,2117,52,2,"/** 
+ * A listener that is fired anytime an invitation to join a MUC room is received.
+ */
+","/**
+     * A listener that is fired anytime an invitation to join a MUC room is
+     * received.
+     */
+    private class SmackInvitationListener
+        implements InvitationListener
+    {
+        /**
+         * Called when the an invitation to join a MUC room is received.<p>
+         *
+         * If the room is password-protected, the invitee will receive a
+         * password to use to join the room. If the room is members-only, the
+         * the invitee may be added to the member list.
+         *
+         * @param conn the XMPPConnection that received the invitation.
+         * @param room the room that invitation refers to.
+         * @param inviter the inviter that sent the invitation.
+         * (e.g. crone1@shakespeare.lit).
+         * @param reason the reason why the inviter sent the invitation.
+         * @param password the password to use when joining the room.
+         * @param message the message used by the inviter to send the invitation.
+         */
+        public void invitationReceived(XMPPConnection conn,
+            String room, String inviter, String reason,
+            String password, Message message)
+        {
+            ChatRoomJabberImpl chatRoom;
+            try
+            {
+                chatRoom = (ChatRoomJabberImpl) findRoom(room);
+                if (chatRoom == null)
+                {
+                    MultiUserChat muc = new MultiUserChat(conn, room);
+                    chatRoom = new ChatRoomJabberImpl(muc, jabberProvider);
+                }
+                if (password != null)
+                    fireInvitationEvent(
+                        chatRoom, inviter, reason, password.getBytes());
+                else
+                    fireInvitationEvent(
+                        chatRoom, inviter, reason, null);
+            }
+            catch (OperationFailedException e)
+            {
+                logger.error(""Failed to find room with name: "" + room, e);
+            }
+            catch (OperationNotSupportedException e)
+            {
+                logger.error(""Failed to find room with name: "" + room, e);
+            }
+        }
+    }",False
+32,SmackInvitationRejectionListener,MemberClass,,,"net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl.SmackInvitationRejectionListener+SmackInvitationRejectionListener(ChatRoom) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl.SmackInvitationRejectionListener+invitationDeclined(String,String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+fireInvitationRejectedEvent(ChatRoom,String,String) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+fireInvitationRejectedEvent(ChatRoom,String,String)",net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl.SmackInvitationRejectionListener+chatRoom net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl.SmackInvitationRejectionListener+chatRoom net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl.SmackInvitationRejectionListener+chatRoom,1054,33,2,"/** 
+ * A listener that is fired anytime an invitee declines or rejects an invitation.
+ */
+","/**
+     * A listener that is fired anytime an invitee declines or rejects an
+     * invitation.
+     */
+    private class SmackInvitationRejectionListener
+        implements InvitationRejectionListener
+    {
+        private ChatRoom chatRoom;
+
+        /**
+         * Creates an instance of <tt>SmackInvitationRejectionListener</tt> and
+         * passes to it the chat room for which it will listen for rejection
+         * events.
+         *
+         * @param chatRoom
+         */
+        public SmackInvitationRejectionListener(ChatRoom chatRoom)
+        {
+            this.chatRoom = chatRoom;
+        }
+
+        /**
+         * Called when the invitee declines the invitation.
+         *
+         * @param invitee the invitee that declined the invitation.
+         * (e.g. hecate@shakespeare.lit).
+         * @param reason the reason why the invitee declined the invitation.
+         */
+        public void invitationDeclined(String invitee, String reason)
+        {
+            fireInvitationRejectedEvent(chatRoom, invitee, reason);
+        }
+    }",False
+33,RegistrationStateListener,MemberClass,,,"net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl.RegistrationStateListener+registrationStateChanged(RegistrationStateChangeEvent) net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getNewState() net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getNewState() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) org.jivesoftware.smackx.muc.MultiUserChat+addInvitationListener(XMPPConnection,InvitationListener) org.jivesoftware.smackx.muc.MultiUserChat+addInvitationListener(XMPPConnection,InvitationListener) net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getConnection() net.java.sip.communicator.impl.protocol.jabber.ProtocolProviderServiceJabberImpl+getConnection() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl.SmackInvitationListener+SmackInvitationListener()",net.java.sip.communicator.service.protocol.RegistrationState+REGISTERED net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+logger net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+jabberProvider,993,26,2,"/** 
+ * Our listener that will tell us when we're registered to jabber and the smack MultiUserChat is ready to accept us as a listener.
+ */
+","/**
+     * Our listener that will tell us when we're registered to jabber and the
+     * smack MultiUserChat is ready to accept us as a listener.
+     */
+    private class RegistrationStateListener
+        implements RegistrationStateChangeListener
+    {
+        /**
+         * The method is called by a ProtocolProvider implementation whenver
+         * a change in the registration state of the corresponding provider had
+         * occurred.
+         * @param evt ProviderStatusChangeEvent the event describing the status
+         * change.
+         */
+        public void registrationStateChanged(RegistrationStateChangeEvent evt)
+        {
+            if (evt.getNewState() == RegistrationState.REGISTERED)
+            {
+                logger.debug(""adding an Invitation listener to the smack muc"");
+
+                MultiUserChat.addInvitationListener(
+                    jabberProvider.getConnection(),
+                    new SmackInvitationListener());
+            }
+        }
+    }",False
+34,contactModified(ContactPropertyChangeEvent),Method,,,net.java.sip.communicator.service.protocol.event.ContactPropertyChangeEvent+getSourceContact() net.java.sip.communicator.service.protocol.event.ContactPropertyChangeEvent+getSourceContact() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+updateChatRoomMembers(Contact) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+updateChatRoomMembers(Contact),,312,10,1,"/** 
+ * Updates corresponding chat room members when a contact has been modified in our contact list.
+ */
+","/**
+     * Updates corresponding chat room members when a contact has been modified
+     * in our contact list.
+     */
+     public void contactModified(ContactPropertyChangeEvent evt)
+     {
+         Contact modifiedContact = evt.getSourceContact();
+
+         this.updateChatRoomMembers(modifiedContact);
+     }",False
+35,subscriptionCreated(SubscriptionEvent),Method,,,net.java.sip.communicator.service.protocol.event.SubscriptionEvent+getSourceContact() net.java.sip.communicator.service.protocol.event.SubscriptionEvent+getSourceContact() net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+updateChatRoomMembers(Contact) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+updateChatRoomMembers(Contact),,307,10,1,"/** 
+ * Updates corresponding chat room members when a contact has been created in our contact list.
+ */
+","/**
+      * Updates corresponding chat room members when a contact has been created
+      * in our contact list.
+      */
+     public void subscriptionCreated(SubscriptionEvent evt)
+     {
+         Contact createdContact = evt.getSourceContact();
+
+         this.updateChatRoomMembers(createdContact);
+     }",False
+36,subscriptionFailed(SubscriptionEvent),Method,,,,,148,5,1,"/** 
+ * Not interested in this event for our member update purposes.
+ */
+","/**
+      * Not interested in this event for our member update purposes.
+      */
+     public void subscriptionFailed(SubscriptionEvent evt)
+     {}",False
+37,subscriptionMoved(SubscriptionMovedEvent),Method,,,,,152,5,1,"/** 
+ * Not interested in this event for our member update purposes.
+ */
+","/**
+      * Not interested in this event for our member update purposes.
+      */
+     public void subscriptionMoved(SubscriptionMovedEvent evt)
+     {}",False
+38,subscriptionRemoved(SubscriptionEvent),Method,,,net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+updateChatRoomMembers(Contact) net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+updateChatRoomMembers(Contact),,338,10,1,"/** 
+ * Updates corresponding chat room members when a contact has been removed from our contact list.
+ */
+","/**
+      * Updates corresponding chat room members when a contact has been removed
+      * from our contact list.
+      */
+     public void subscriptionRemoved(SubscriptionEvent evt)
+     {
+         // Set to null the contact reference in all corresponding chat room
+         // members.
+         this.updateChatRoomMembers(null);
+     }",False
+39,subscriptionResolved(SubscriptionEvent),Method,,,,,150,5,1,"/** 
+ * Not interested in this event for our member update purposes.
+ */
+","/**
+      * Not interested in this event for our member update purposes.
+      */
+     public void subscriptionResolved(SubscriptionEvent evt)
+     {}",False
+40,updateChatRoomMembers(Contact),Method,contactModified(ContactPropertyChangeEvent) subscriptionCreated(SubscriptionEvent) subscriptionRemoved(SubscriptionEvent),,java.util.Hashtable+elements() java.util.Hashtable+elements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() net.java.sip.communicator.impl.protocol.jabber.ChatRoomJabberImpl+findMemberForNickName(String) net.java.sip.communicator.impl.protocol.jabber.ChatRoomJabberImpl+findMemberForNickName(String) net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.impl.protocol.jabber.ChatRoomMemberJabberImpl+setContact(Contact) net.java.sip.communicator.impl.protocol.jabber.ChatRoomMemberJabberImpl+setContact(Contact) net.java.sip.communicator.impl.protocol.jabber.ChatRoomMemberJabberImpl+setAvatar(byte[]) net.java.sip.communicator.impl.protocol.jabber.ChatRoomMemberJabberImpl+setAvatar(byte[]) net.java.sip.communicator.service.protocol.Contact+getImage() net.java.sip.communicator.service.protocol.Contact+getImage(),net.java.sip.communicator.impl.protocol.jabber.OperationSetMultiUserChatJabberImpl+chatRoomCache,826,25,2,"/** 
+ * Finds all chat room members, which name corresponds to the name of the given contact and updates their contact references.
+ * @param contact the contact we're looking correspondences for.
+ */
+","/**
+      * Finds all chat room members, which name corresponds to the name of the
+      * given contact and updates their contact references.
+      *
+      * @param contact the contact we're looking correspondences for.
+      */
+     private void updateChatRoomMembers(Contact contact)
+     {
+         Enumeration<ChatRoom> chatRooms = chatRoomCache.elements();
+
+         while (chatRooms.hasMoreElements())
+         {
+             ChatRoomJabberImpl chatRoom =
+                 (ChatRoomJabberImpl) chatRooms.nextElement();
+
+             ChatRoomMemberJabberImpl member
+                 = chatRoom.findMemberForNickName(contact.getAddress());
+
+             if (member != null)
+             {
+                 member.setContact(contact);
+                 member.setAvatar(contact.getImage());
+             }
+         }
+     }",False

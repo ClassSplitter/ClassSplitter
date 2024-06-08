@@ -1,0 +1,273 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,TAG,Field,,,,,70,1,26,,private static final String TAG = CameraManager.class.getSimpleName();,False
+2,context,Field,CameraManager(Context),,,,30,1,18,,private final Context context;,False
+3,camera,Field,,,,,22,1,2,,private Camera camera;,False
+4,cameraInfo,Field,,,,,37,1,2,,private Camera.CameraInfo cameraInfo;,False
+5,autoFocusManager,Field,,,,,42,1,2,,private AutoFocusManager autoFocusManager;,False
+6,previewing,Field,,,,,27,1,2,,private boolean previewing;,False
+7,defaultParameters,Field,,,,,33,1,2,,private String defaultParameters;,False
+8,requestedCameraId,Field,,,,,72,1,2,,private int requestedCameraId = OpenCameraInterface.NO_REQUESTED_CAMERA;,True
+9,invertScan,Field,setInvertScan(boolean),,,,35,1,2,,private boolean invertScan = false;,True
+10,disableBarcodeSceneMode,Field,setDisableBarcodeSceneMode(boolean),,,,47,1,2,,private boolean disableBarcodeSceneMode = true;,True
+11,disableMetering,Field,setDisableMetering(boolean),,,,39,1,2,,private boolean disableMetering = true;,True
+12,autoFocus,Field,setAutoFocus(boolean),,,,33,1,2,,private boolean autoFocus = true;,True
+13,disableContinuousFocus,Field,setDisableContinuousFocus(boolean),,,,46,1,2,,private boolean disableContinuousFocus = true;,True
+14,rotated,Field,,,,,24,1,2,,private boolean rotated;,False
+15,desiredLandscapeSize,Field,,,,,35,1,2,,private Point desiredLandscapeSize;,False
+16,desiredRotatedSize,Field,,,,,33,1,2,,private Point desiredRotatedSize;,False
+17,requestedPreviewSize,Field,,,,,35,1,2,,private Point requestedPreviewSize;,False
+18,previewSize,Field,,,,,26,1,2,,private Point previewSize;,False
+19,previewCallback,Field,,,,,215,5,18,"/** 
+ * Preview frames are delivered here, which we pass on to the registered handler. Make sure to clear the handler so it will only receive one message.
+ */
+","/**
+   * Preview frames are delivered here, which we pass on to the registered handler. Make sure to
+   * clear the handler so it will only receive one message.
+   */
+  private final PreviewCallback previewCallback;",False
+20,CameraManager(Context),Method,,,com.journeyapps.barcodescanner.camera.PreviewCallback+PreviewCallback(),com.journeyapps.barcodescanner.camera.CameraManager+context com.journeyapps.barcodescanner.camera.CameraManager+context com.journeyapps.barcodescanner.camera.CameraManager+previewCallback,360,11,1,,"public CameraManager(Context context) {
+    this.context = context;
+    previewCallback = new PreviewCallback();
+
+    // 1. open(), set desired preview size and other parameters (any order)
+    // 2. configure(), setPreviewDisplay(holder) (any order)
+    // 3. startPreview()
+    // 4. requestPreviewFrame (repeat)
+    // 5. stopPreview()
+    // 6. close()
+  }",False
+21,open(),Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),com.google.zxing.client.android.camera.open.OpenCameraInterface+open(int) com.google.zxing.client.android.camera.open.OpenCameraInterface+open(int) java.lang.RuntimeException+RuntimeException(String) com.google.zxing.client.android.camera.open.OpenCameraInterface+getCameraId(int) com.google.zxing.client.android.camera.open.OpenCameraInterface+getCameraId(int),com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+requestedCameraId com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+requestedCameraId com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo,334,10,1,,"public void open() {
+    camera = OpenCameraInterface.open(requestedCameraId);
+    if(camera == null) {
+      throw new RuntimeException(""Failed to open camera"");
+    }
+
+    int cameraId = OpenCameraInterface.getCameraId(requestedCameraId);
+    cameraInfo = new Camera.CameraInfo();
+    Camera.getCameraInfo(cameraId, cameraInfo);
+  }",False
+22,configure(),Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),com.journeyapps.barcodescanner.camera.CameraManager+setParameters() com.journeyapps.barcodescanner.camera.CameraManager+setParameters(),,50,3,1,,"public void configure() {
+    setParameters();
+  }",False
+23,setPreviewDisplay(SurfaceHolder),Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),,com.journeyapps.barcodescanner.camera.CameraManager+camera,114,3,1,,"public void setPreviewDisplay(SurfaceHolder holder) throws IOException {
+    camera.setPreviewDisplay(holder);
+  }",False
+24,startPreview(),Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),"com.journeyapps.barcodescanner.camera.AutoFocusManager+AutoFocusManager(Context,Camera)",com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewing com.journeyapps.barcodescanner.camera.CameraManager+previewing com.journeyapps.barcodescanner.camera.CameraManager+autoFocusManager com.journeyapps.barcodescanner.camera.CameraManager+context com.journeyapps.barcodescanner.camera.CameraManager+camera,323,11,1,"/** 
+ * Asks the camera hardware to begin drawing preview frames to the screen.
+ */
+","/**
+   * Asks the camera hardware to begin drawing preview frames to the screen.
+   */
+  public void startPreview() {
+    Camera theCamera = camera;
+    if (theCamera != null && !previewing) {
+      theCamera.startPreview();
+      previewing = true;
+      autoFocusManager = new AutoFocusManager(context, camera);
+    }
+  }",False
+25,stopPreview(),Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),"com.journeyapps.barcodescanner.camera.AutoFocusManager+stop() com.journeyapps.barcodescanner.camera.AutoFocusManager+stop() com.journeyapps.barcodescanner.camera.PreviewCallback+setHandler(Handler,int) com.journeyapps.barcodescanner.camera.PreviewCallback+setHandler(Handler,int)",com.journeyapps.barcodescanner.camera.CameraManager+autoFocusManager com.journeyapps.barcodescanner.camera.CameraManager+autoFocusManager com.journeyapps.barcodescanner.camera.CameraManager+autoFocusManager com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewing com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewCallback com.journeyapps.barcodescanner.camera.CameraManager+previewing,344,14,1,"/** 
+ * Tells the camera to stop drawing preview frames.
+ */
+","/**
+   * Tells the camera to stop drawing preview frames.
+   */
+  public void stopPreview() {
+    if (autoFocusManager != null) {
+      autoFocusManager.stop();
+      autoFocusManager = null;
+    }
+    if (camera != null && previewing) {
+      camera.stopPreview();
+      previewCallback.setHandler(null, 0);
+      previewing = false;
+    }
+  }",False
+26,close(),Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),,com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+camera,161,9,1,"/** 
+ * Closes the camera driver if still in use.
+ */
+","/**
+   * Closes the camera driver if still in use.
+   */
+  public void close() {
+    if (camera != null) {
+      camera.release();
+      camera = null;
+    }
+  }",False
+27,getDefaultCameraParameters(),Method,setDesiredParameters(boolean),,,com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+defaultParameters com.journeyapps.barcodescanner.camera.CameraManager+defaultParameters com.journeyapps.barcodescanner.camera.CameraManager+defaultParameters,292,9,2,,"private Camera.Parameters getDefaultCameraParameters() {
+    Camera.Parameters parameters = camera.getParameters();
+    if(defaultParameters == null) {
+      defaultParameters = parameters.flatten();
+    } else {
+      parameters.unflatten(defaultParameters);
+    }
+    return parameters;
+  }",False
+28,setDesiredParameters(boolean),Method,setParameters() setParameters(),,"com.journeyapps.barcodescanner.camera.CameraManager+getDefaultCameraParameters() com.journeyapps.barcodescanner.camera.CameraManager+getDefaultCameraParameters() com.google.zxing.client.android.camera.CameraConfigurationUtils+setFocus(Parameters,boolean,boolean,boolean) com.google.zxing.client.android.camera.CameraConfigurationUtils+setFocus(Parameters,boolean,boolean,boolean) com.google.zxing.client.android.camera.CameraConfigurationUtils+setTorch(Parameters,boolean) com.google.zxing.client.android.camera.CameraConfigurationUtils+setTorch(Parameters,boolean) com.google.zxing.client.android.camera.CameraConfigurationUtils+setInvertColor(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setInvertColor(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setBarcodeSceneMode(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setBarcodeSceneMode(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setVideoStabilization(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setVideoStabilization(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setFocusArea(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setFocusArea(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setMetering(Parameters) com.google.zxing.client.android.camera.CameraConfigurationUtils+setMetering(Parameters) java.lang.Object+Object() com.google.zxing.client.android.camera.CameraConfigurationUtils+findBestPreviewSizeValue(Parameters,Point) com.google.zxing.client.android.camera.CameraConfigurationUtils+findBestPreviewSizeValue(Parameters,Point)",com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+autoFocus com.journeyapps.barcodescanner.camera.CameraManager+disableContinuousFocus com.journeyapps.barcodescanner.camera.CameraManager+invertScan com.journeyapps.barcodescanner.camera.CameraManager+disableBarcodeSceneMode com.journeyapps.barcodescanner.camera.CameraManager+disableMetering com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+rotated com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize com.journeyapps.barcodescanner.camera.CameraManager+requestedPreviewSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize com.journeyapps.barcodescanner.camera.CameraManager+requestedPreviewSize com.journeyapps.barcodescanner.camera.CameraManager+requestedPreviewSize com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+camera,1738,55,2,,"private void setDesiredParameters(boolean safeMode) {
+    Camera.Parameters parameters = getDefaultCameraParameters();
+
+    //noinspection ConstantConditions
+    if (parameters == null) {
+      Log.w(TAG, ""Device error: no camera parameters are available. Proceeding without configuration."");
+      return;
+    }
+
+    Log.i(TAG, ""Initial camera parameters: "" + parameters.flatten());
+
+    if (safeMode) {
+      Log.w(TAG, ""In camera config safe mode -- most settings will not be honored"");
+    }
+
+
+    CameraConfigurationUtils.setFocus(parameters,autoFocus, disableContinuousFocus, safeMode);
+
+    if (!safeMode) {
+      CameraConfigurationUtils.setTorch(parameters, false);
+
+      if (invertScan) {
+        CameraConfigurationUtils.setInvertColor(parameters);
+      }
+
+      if (!disableBarcodeSceneMode) {
+        CameraConfigurationUtils.setBarcodeSceneMode(parameters);
+      }
+
+      if (!disableMetering) {
+        CameraConfigurationUtils.setVideoStabilization(parameters);
+        CameraConfigurationUtils.setFocusArea(parameters);
+        CameraConfigurationUtils.setMetering(parameters);
+      }
+
+    }
+
+    if(desiredRotatedSize != null) {
+      if(rotated) {
+        //noinspection SuspiciousNameCombination
+        desiredLandscapeSize = new Point(desiredRotatedSize.y, desiredRotatedSize.x);
+      } else {
+        desiredLandscapeSize = desiredRotatedSize;
+      }
+    }
+
+    if(desiredLandscapeSize != null) {
+      requestedPreviewSize = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, desiredLandscapeSize);
+      parameters.setPreviewSize(requestedPreviewSize.x, requestedPreviewSize.y);
+    }
+
+    Log.i(TAG, ""Final camera parameters: "" + parameters.flatten());
+
+    camera.setParameters(parameters);
+  }",False
+29,setCameraDisplayOrientation(),Method,setParameters(),,,com.journeyapps.barcodescanner.camera.CameraManager+context com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo com.journeyapps.barcodescanner.camera.CameraManager+cameraInfo com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+rotated,829,22,2,,"private void setCameraDisplayOrientation() {
+    int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
+            .getRotation();
+    int degrees = 0;
+    switch (rotation) {
+      case Surface.ROTATION_0: degrees = 0; break;
+      case Surface.ROTATION_90: degrees = 90; break;
+      case Surface.ROTATION_180: degrees = 180; break;
+      case Surface.ROTATION_270: degrees = 270; break;
+    }
+
+    int result;
+    if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+      result = (cameraInfo.orientation + degrees) % 360;
+      result = (360 - result) % 360;  // compensate the mirror
+    } else {  // back-facing
+      result = (cameraInfo.orientation - degrees + 360) % 360;
+    }
+    camera.setDisplayOrientation(result);
+
+    rotated = degrees % 180 == 0;
+  }",False
+30,setParameters(),Method,configure(),,com.journeyapps.barcodescanner.camera.CameraManager+setCameraDisplayOrientation() com.journeyapps.barcodescanner.camera.CameraManager+setCameraDisplayOrientation() com.journeyapps.barcodescanner.camera.CameraManager+setDesiredParameters(boolean) com.journeyapps.barcodescanner.camera.CameraManager+setDesiredParameters(boolean) com.journeyapps.barcodescanner.camera.CameraManager+setDesiredParameters(boolean) com.journeyapps.barcodescanner.camera.CameraManager+setDesiredParameters(boolean) java.lang.Object+Object(),com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+TAG com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewSize com.journeyapps.barcodescanner.camera.CameraManager+requestedPreviewSize com.journeyapps.barcodescanner.camera.CameraManager+previewSize,720,25,2,,"private void setParameters() {
+    try {
+      setCameraDisplayOrientation();
+    } catch(Exception e) {
+      Log.w(TAG, ""Failed to set rotation."");
+    }
+    try {
+      setDesiredParameters(false);
+    } catch (Exception e) {
+      // Failed, use safe mode
+      try {
+        setDesiredParameters(false);
+      } catch (Exception e2) {
+        // Well, darn. Give up
+        Log.w(TAG, ""Camera rejected even safe-mode parameters! No configuration"");
+      }
+    }
+
+    Camera.Size realPreviewSize = camera.getParameters().getPreviewSize();
+    if(realPreviewSize == null) {
+      previewSize = requestedPreviewSize;
+    } else {
+      previewSize = new Point(realPreviewSize.width, realPreviewSize.height);
+    }
+  }",False
+31,isOpen(),Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+camera,56,3,1,,"public boolean isOpen() {
+    return camera != null;
+  }",False
+32,isRotated(),Method,,"com.journeyapps.barcodescanner.DecoderThread+createSource(byte[],int,int)",,com.journeyapps.barcodescanner.camera.CameraManager+rotated,52,3,1,,"public boolean isRotated() {
+    return rotated;
+  }",True
+33,getPreviewSize(),Method,,com.journeyapps.barcodescanner.BarcodeView+getPreviewSize(),,com.journeyapps.barcodescanner.camera.CameraManager+previewSize,59,3,1,,"public Point getPreviewSize() {
+    return previewSize;
+  }",False
+34,"requestPreviewFrame(Handler,int)",Method,,com.journeyapps.barcodescanner.camera.CameraThread+CameraInstance.run(),"com.journeyapps.barcodescanner.camera.PreviewCallback+setHandler(Handler,int) com.journeyapps.barcodescanner.camera.PreviewCallback+setHandler(Handler,int)",com.journeyapps.barcodescanner.camera.CameraManager+camera com.journeyapps.barcodescanner.camera.CameraManager+previewing com.journeyapps.barcodescanner.camera.CameraManager+previewCallback com.journeyapps.barcodescanner.camera.CameraManager+previewCallback,609,15,1,"/** 
+ * A single preview frame will be returned to the handler supplied. The data will arrive as byte[] in the message.obj field, with width and height encoded as message.arg1 and message.arg2, respectively.
+ * @param handler The handler to send the message to.
+ * @param message The what field of the message to be sent.
+ */
+","/**
+   * A single preview frame will be returned to the handler supplied. The data will arrive as byte[]
+   * in the message.obj field, with width and height encoded as message.arg1 and message.arg2,
+   * respectively.
+   *
+   * @param handler The handler to send the message to.
+   * @param message The what field of the message to be sent.
+   */
+  public void requestPreviewFrame(Handler handler, int message) {
+    Camera theCamera = camera;
+    if (theCamera != null && previewing) {
+      previewCallback.setHandler(handler, message);
+      theCamera.setOneShotPreviewCallback(previewCallback);
+    }
+  }",False
+35,setManualCameraId(int),Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+requestedCameraId,342,9,1,"/** 
+ * Allows third party apps to specify the camera ID, rather than determine it automatically based on available cameras and their orientation.
+ * @param cameraId camera ID of the camera to use. A negative value means ""no preference"".
+ */
+","/**
+   * Allows third party apps to specify the camera ID, rather than determine
+   * it automatically based on available cameras and their orientation.
+   *
+   * @param cameraId camera ID of the camera to use. A negative value means ""no preference"".
+   */
+  public void setManualCameraId(int cameraId) {
+    requestedCameraId = cameraId;
+  }",True
+36,setInvertScan(boolean),Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+invertScan com.journeyapps.barcodescanner.camera.CameraManager+invertScan,85,3,1,,"public void setInvertScan(boolean invertScan) {
+    this.invertScan = invertScan;
+  }",True
+37,setDisableBarcodeSceneMode(boolean),Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+disableBarcodeSceneMode com.journeyapps.barcodescanner.camera.CameraManager+disableBarcodeSceneMode,137,3,1,,"public void setDisableBarcodeSceneMode(boolean disableBarcodeSceneMode) {
+    this.disableBarcodeSceneMode = disableBarcodeSceneMode;
+  }",True
+38,setDisableMetering(boolean),Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+disableMetering com.journeyapps.barcodescanner.camera.CameraManager+disableMetering,105,3,1,,"public void setDisableMetering(boolean disableMetering) {
+    this.disableMetering = disableMetering;
+  }",True
+39,setAutoFocus(boolean),Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+autoFocus com.journeyapps.barcodescanner.camera.CameraManager+autoFocus,81,3,1,,"public void setAutoFocus(boolean autoFocus) {
+    this.autoFocus = autoFocus;
+  }",True
+40,setDisableContinuousFocus(boolean),Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+disableContinuousFocus com.journeyapps.barcodescanner.camera.CameraManager+disableContinuousFocus,133,3,1,,"public void setDisableContinuousFocus(boolean disableContinuousFocus) {
+    this.disableContinuousFocus = disableContinuousFocus;
+  }",True
+41,setDesiredLandscapePreviewSize(Point),Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize,124,4,1,,"public void setDesiredLandscapePreviewSize(Point size) {
+    desiredRotatedSize = null;
+    desiredLandscapeSize = size;
+  }",False
+42,setDesiredPreviewSize(Point),Method,,,,com.journeyapps.barcodescanner.camera.CameraManager+desiredRotatedSize com.journeyapps.barcodescanner.camera.CameraManager+desiredLandscapeSize,115,4,1,,"public void setDesiredPreviewSize(Point size) {
+    desiredRotatedSize = size;
+    desiredLandscapeSize = null;
+  }",False

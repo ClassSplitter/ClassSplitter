@@ -1,0 +1,706 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,WINDOW_LIST,Field,,,,,129,4,26,"/** 
+ * The list of all <tt>Window</tt>s owned by this application.
+ */
+","/**
+     * The list of all <tt>Window</tt>s owned by this application.
+     */
+    private static final List<Window> WINDOW_LIST;",True
+2,c1,Field,,,,,58,1,26,,private static final Calendar c1 = Calendar.getInstance();,False
+3,c2,Field,,,,,58,1,26,,private static final Calendar c2 = Calendar.getInstance();,False
+4,MILLIS_PER_SECOND,Field,,,,,109,4,25,"/** 
+ * Number of milliseconds in a second.
+ */
+","/**
+     * Number of milliseconds in a second.
+     */
+    public static final long MILLIS_PER_SECOND = 1000;",False
+5,MILLIS_PER_MINUTE,Field,,,,,136,4,25,"/** 
+ * Number of milliseconds in a standard minute.
+ */
+","/**
+     * Number of milliseconds in a standard minute.
+     */
+    public static final long MILLIS_PER_MINUTE = 60 * MILLIS_PER_SECOND;",False
+6,MILLIS_PER_HOUR,Field,,,,,132,4,25,"/** 
+ * Number of milliseconds in a standard hour.
+ */
+","/**
+     * Number of milliseconds in a standard hour.
+     */
+    public static final long MILLIS_PER_HOUR = 60 * MILLIS_PER_MINUTE;",False
+7,MILLIS_PER_DAY,Field,,,,,128,4,25,"/** 
+ * Number of milliseconds in a standard day.
+ */
+","/**
+     * Number of milliseconds in a standard day.
+     */
+    public static final long MILLIS_PER_DAY = 24 * MILLIS_PER_HOUR;",False
+8,DIGIT_MAPPINGS,Field,,,,,62,1,26,,"private static final Map<Character, Character> DIGIT_MAPPINGS;",False
+9,ESCAPE_SEQUENCES,Field,,,,,485,16,26,"/** 
+ * Characters and their replacement in created folder names
+ */
+","/**
+     *  Characters and their replacement in created folder names
+     */
+    private final static String[][] ESCAPE_SEQUENCES = new String[][]
+    {
+        {""&"", ""&_amp""},
+        {""/"", ""&_sl""},
+        {""\\\\"", ""&_bs""},   // the char \
+        {"":"", ""&_co""},
+        {""\\*"", ""&_as""},    // the char *
+        {""\\?"", ""&_qm""},    // the char ?
+        {""\"""", ""&_pa""},     // the char ""
+        {""<"", ""&_lt""},
+        {"">"", ""&_gt""},
+        {""\\|"", ""&_pp""}     // the char |
+    };",False
+10,replaceSpecialRegExpChars(String),Method,,net.java.sip.communicator.impl.replacement.smiley.ReplacementServiceSmileyImpl+getSmileyPattern(Collection<Smiley>),"java.lang.String+replaceAll(String,String) java.lang.String+replaceAll(String,String)",,285,9,9,"/** 
+ * Replaces some chars that are special in a regular expression.
+ * @param text The initial text.
+ * @return the formatted text
+ */
+","/**
+     * Replaces some chars that are special in a regular expression.
+     * @param text The initial text.
+     * @return the formatted text
+     */
+    public static String replaceSpecialRegExpChars(String text)
+    {
+        return text.replaceAll(""([.()^&$*|])"", ""\\\\$1"");
+    }",False
+11,"getStringWidth(Component,String)",Method,,"net.java.sip.communicator.impl.gui.main.chat.StatusPanel+setStatusMessage(String) net.java.sip.communicator.impl.gui.main.chat.StatusPanel+setStatusMessage(String) net.java.sip.communicator.impl.gui.main.chat.StatusPanel+setStatusMessage(String) net.java.sip.communicator.impl.gui.main.presence.GlobalStatusSelectorBox+fitSizeToText() net.java.sip.communicator.impl.swingnotification.PopupMessageHandlerSwingImpl+getPopupMessageAreaHeight(Component,String) net.java.sip.communicator.util.swing.ExtendedTooltip+calculateLabelSize(JLabel)","javax.swing.SwingUtilities+computeStringWidth(FontMetrics,String) javax.swing.SwingUtilities+computeStringWidth(FontMetrics,String) java.awt.Component+getFontMetrics(Font) java.awt.Component+getFontMetrics(Font) java.awt.Component+getFont() java.awt.Component+getFont()",,379,11,9,"/** 
+ * Returns the width in pixels of a text.
+ * @param c the component where the text is contained
+ * @param text the text to measure
+ * @return the width in pixels of a text.
+ */
+","/**
+     * Returns the width in pixels of a text.
+     * @param c the component where the text is contained
+     * @param text the text to measure
+     * @return the width in pixels of a text.
+     */
+    public static int getStringWidth(Component c, String text)
+    {
+        return SwingUtilities.computeStringWidth(c
+                .getFontMetrics(c.getFont()), text);
+    }",True
+12,"getStringSize(Component,String)",Method,,"net.java.sip.communicator.impl.gui.main.contactlist.ContactListTreeCellRenderer+addButton(SIPCommButton,int,int,boolean) net.java.sip.communicator.impl.gui.main.contactlist.ContactListTreeCellRenderer+addButton(SIPCommButton,int,int,boolean) net.java.sip.communicator.util.swing.ExtendedTooltip+setTitle(String) net.java.sip.communicator.util.swing.ExtendedTooltip+calculateLabelSize(JLabel)","java.awt.Component+getFontMetrics(Font) java.awt.Component+getFontMetrics(Font) java.awt.Component+getFont() java.awt.Component+getFont() java.awt.FontMetrics+getHeight() java.awt.FontMetrics+getHeight() java.awt.FontMetrics+stringWidth(String) java.awt.FontMetrics+stringWidth(String) java.awt.Dimension+Dimension(int,int)",,771,18,9,"/** 
+ * Returns the size of the given text computed towards to the given component.
+ * @param c the component where the text is contained
+ * @param text the text to measure
+ * @return the dimensions of the text
+ */
+","/**
+     * Returns the size of the given text computed towards to the given
+     * component.
+     * @param c the component where the text is contained
+     * @param text the text to measure
+     * @return the dimensions of the text
+     */
+    public static Dimension getStringSize(Component c, String text)
+    {
+        // get metrics from the graphics
+        FontMetrics metrics = c.getFontMetrics(c.getFont());
+        // get the height of a line of text in this font and render context
+        int hgt = metrics.getHeight();
+        // get the advance of my text in this font and render context
+        int adv = metrics.stringWidth(text);
+        // calculate the size of a box to hold the text with some padding.
+        return new Dimension(adv+2, hgt+2);
+    }",True
+13,getDefaultStringSize(String),Method,,net.java.sip.communicator.util.swing.ExtendedTransferHandler+getVisualRepresentation(Transferable),"javax.swing.UIManager+getFont(Object) javax.swing.UIManager+getFont(Object) java.awt.font.FontRenderContext+FontRenderContext(AffineTransform,boolean,boolean) java.awt.font.TextLayout+TextLayout(String,Font,FontRenderContext) java.awt.font.TextLayout+getBounds() java.awt.font.TextLayout+getBounds()",,445,13,9,"/** 
+ * Returns the bounds of the given string.
+ * @param text the string to measure
+ * @return the bounds of the given string
+ */
+","/**
+     * Returns the bounds of the given string.
+     * @param text the string to measure
+     * @return the bounds of the given string
+     */
+    public static Rectangle2D getDefaultStringSize(String text)
+    {
+        Font font = UIManager.getFont(""Label.font"");
+        FontRenderContext frc = new FontRenderContext(null, true, false);
+        TextLayout layout = new TextLayout(text, font, frc);
+
+        return layout.getBounds();
+    }",True
+14,"countOccurrences(String,char)",Method,,,java.lang.String+toCharArray() java.lang.String+toCharArray(),,545,19,9,"/** 
+ * Counts occurrences of the <tt>needle</tt> character in the given <tt>text</tt>.
+ * @param text the text in which we search
+ * @param needle the character we're looking for
+ * @return the count of occurrences of the <tt>needle</tt> chat in thegiven <tt>text</tt>
+ */
+","/**
+     * Counts occurrences of the <tt>needle</tt> character in the given
+     * <tt>text</tt>.
+     * @param text the text in which we search
+     * @param needle the character we're looking for
+     * @return the count of occurrences of the <tt>needle</tt> chat in the
+     * given <tt>text</tt>
+     */
+    public static int countOccurrences(String text, char needle)
+    {
+        int count = 0;
+
+        for (char c : text.toCharArray())
+        {
+            if (c == needle)
+               ++count;
+        }
+        return count;
+    }",False
+15,"compareDates(Date,Date)",Method,,,java.util.Date+compareTo(Date) java.util.Date+compareTo(Date),,653,15,9,"/** 
+ * Compares the two dates. The comparison is based only on the day, month and year values. Returns 0 if the two dates are equals, a value < 0 if the first date is before the second one and > 0 if the first date is after the second one.
+ * @param date1 the first date to compare
+ * @param date2 the second date to compare with
+ * @return Returns 0 if the two dates are equals, a value < 0 ifthe first date is before the second one and > 0 if the first date is after the second one
+ */
+","/**
+     * Compares the two dates. The comparison is based only on the day, month
+     * and year values. Returns 0 if the two dates are equals, a value < 0 if
+     * the first date is before the second one and > 0 if the first date is after
+     * the second one.
+     * @param date1 the first date to compare
+     * @param date2 the second date to compare with
+     * @return Returns 0 if the two dates are equals, a value < 0 if
+     * the first date is before the second one and > 0 if the first date is after
+     * the second one
+     */
+    public static int compareDates(Date date1, Date date2)
+    {
+        return date1.compareTo(date2);
+    }",False
+16,"compareDates(long,long)",Method,,,,,678,15,9,"/** 
+ * Compares the two dates. The comparison is based only on the day, month and year values. Returns 0 if the two dates are equals, a value < 0 if the first date is before the second one and > 0 if the first date is after the second one.
+ * @param date1 the first date to compare
+ * @param date2 the second date to compare with
+ * @return Returns 0 if the two dates are equals, a value < 0 ifthe first date is before the second one and > 0 if the first date is after the second one
+ */
+","/**
+     * Compares the two dates. The comparison is based only on the day, month
+     * and year values. Returns 0 if the two dates are equals, a value < 0 if
+     * the first date is before the second one and > 0 if the first date is after
+     * the second one.
+     * @param date1 the first date to compare
+     * @param date2 the second date to compare with
+     * @return Returns 0 if the two dates are equals, a value < 0 if
+     * the first date is before the second one and > 0 if the first date is after
+     * the second one
+     */
+    public static int compareDates(long date1, long date2)
+    {
+        return (date1 < date2 ? -1 : (date1 == date2 ? 0 : 1));
+    }",False
+17,"compareDatesOnly(long,long)",Method,,"net.java.sip.communicator.impl.callhistory.CallHistorySourceContact+getDateString(long) net.java.sip.communicator.impl.gui.main.chat.ChatHtmlUtils+getDateString(long) net.java.sip.communicator.impl.gui.main.chat.history.HistoryWindow+DatesLoader.run() net.java.sip.communicator.impl.gui.main.chat.history.HistoryWindow+processMessage(Contact,long,String,String,String) net.java.sip.communicator.impl.gui.main.chat.history.HistoryWindow+processMessage(Contact,long,String,String,String)",java.util.Calendar+setTimeInMillis(long) java.util.Calendar+setTimeInMillis(long) java.util.Calendar+setTimeInMillis(long) java.util.Calendar+setTimeInMillis(long) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int),net.java.sip.communicator.util.GuiUtils+c1 net.java.sip.communicator.util.GuiUtils+c2 net.java.sip.communicator.util.GuiUtils+c1 java.util.Calendar+DAY_OF_MONTH net.java.sip.communicator.util.GuiUtils+c1 java.util.Calendar+MONTH net.java.sip.communicator.util.GuiUtils+c1 java.util.Calendar+YEAR net.java.sip.communicator.util.GuiUtils+c2 java.util.Calendar+DAY_OF_MONTH net.java.sip.communicator.util.GuiUtils+c2 java.util.Calendar+MONTH net.java.sip.communicator.util.GuiUtils+c2 java.util.Calendar+YEAR,1499,49,9,"/** 
+ * Compares the two dates. The comparison is based only on the day, month and year values. Returns 0 if the two dates are equals, a value < 0 if the first date is before the second one and > 0 if the first date is after the second one.
+ * @param date1 the first date to compare
+ * @param date2 the second date to compare with
+ * @return Returns 0 if the two dates are equals, a value < 0 ifthe first date is before the second one and > 0 if the first date is after the second one
+ */
+","/**
+     * Compares the two dates. The comparison is based only on the day, month
+     * and year values. Returns 0 if the two dates are equals, a value < 0 if
+     * the first date is before the second one and > 0 if the first date is
+     * after the second one.
+     * @param date1 the first date to compare
+     * @param date2 the second date to compare with
+     * @return Returns 0 if the two dates are equals, a value < 0 if
+     * the first date is before the second one and > 0 if the first date is
+     * after the second one
+     */
+    public static int compareDatesOnly(long date1, long date2)
+    {
+        c1.setTimeInMillis(date1);
+        c2.setTimeInMillis(date2);
+
+        int day1 = c1.get(Calendar.DAY_OF_MONTH);
+        int month1 = c1.get(Calendar.MONTH);
+        int year1 = c1.get(Calendar.YEAR);
+
+        int day2 = c2.get(Calendar.DAY_OF_MONTH);
+        int month2 = c2.get(Calendar.MONTH);
+        int year2 = c2.get(Calendar.YEAR);
+
+        if (year1 < year2)
+        {
+            return -1;
+        }
+        else if (year1 == year2)
+        {
+            if (month1 < month2)
+                return -1;
+            else if (month1 == month2)
+            {
+                if (day1 < day2)
+                    return -1;
+                else if (day1 == day2)
+                    return 0;
+                else
+                    return 1;
+            }
+            else
+                return 1;
+        }
+        else
+        {
+            return 1;
+        }
+    }",False
+18,formatDate(Date),Method,,,net.java.sip.communicator.util.GuiUtils+formatDate(long) net.java.sip.communicator.util.GuiUtils+formatDate(long) java.util.Date+getTime() java.util.Date+getTime(),,316,10,9,"/** 
+ * Formats the given date. The result format is the following: [Month] [Day], [Year]. For example: Dec 24, 2000.
+ * @param date the date to format
+ * @return the formatted date string
+ */
+","/**
+     * Formats the given date. The result format is the following:
+     * [Month] [Day], [Year]. For example: Dec 24, 2000.
+     * @param date the date to format
+     * @return the formatted date string
+     */
+    public static String formatDate(Date date)
+    {
+        return formatDate(date.getTime());
+    }",False
+19,formatDate(long),Method,formatDate(Date),,"java.lang.StringBuffer+StringBuffer() net.java.sip.communicator.util.GuiUtils+formatDate(long,StringBuffer) net.java.sip.communicator.util.GuiUtils+formatDate(long,StringBuffer) java.lang.StringBuffer+toString() java.lang.StringBuffer+toString()",,398,13,9,"/** 
+ * Formats the given date. The result format is the following: [Month] [Day], [Year]. For example: Dec 24, 2000.
+ * @param date the date to format
+ * @return the formatted date string
+ */
+","/**
+     * Formats the given date. The result format is the following:
+     * [Month] [Day], [Year]. For example: Dec 24, 2000.
+     * @param date the date to format
+     * @return the formatted date string
+     */
+    public static String formatDate(final long date)
+    {
+        StringBuffer strBuf = new StringBuffer();
+
+        formatDate(date, strBuf);
+        return strBuf.toString();
+    }",False
+20,"formatDate(long,StringBuffer)",Method,formatDate(long),"net.java.sip.communicator.impl.callhistory.CallHistorySourceContact+getDateString(long) net.java.sip.communicator.impl.gui.main.chat.ChatHtmlUtils+getDateString(long) net.java.sip.communicator.impl.gui.main.chat.history.DatesListRenderer+getListCellRendererComponent(JList,Object,int,boolean,boolean)","java.util.Calendar+setTimeInMillis(long) java.util.Calendar+setTimeInMillis(long) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) net.java.sip.communicator.util.GuiUtils+processMonth(int) net.java.sip.communicator.util.GuiUtils+processMonth(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) java.util.Calendar+get(int) java.util.Calendar+get(int) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) java.util.Calendar+get(int) java.util.Calendar+get(int)",net.java.sip.communicator.util.GuiUtils+c1 net.java.sip.communicator.util.GuiUtils+c1 java.util.Calendar+MONTH net.java.sip.communicator.util.GuiUtils+c1 java.util.Calendar+DAY_OF_MONTH net.java.sip.communicator.util.GuiUtils+c1 java.util.Calendar+YEAR,654,17,9,"/** 
+ * Formats the given date as: Month DD, YYYY and appends it to the given <tt>dateStrBuf</tt> string buffer.
+ * @param date the date to format
+ * @param dateStrBuf the <tt>StringBuffer</tt>, where to append theformatted date
+ */
+","/**
+     * Formats the given date as: Month DD, YYYY and appends it to the given
+     * <tt>dateStrBuf</tt> string buffer.
+     * @param date the date to format
+     * @param dateStrBuf the <tt>StringBuffer</tt>, where to append the
+     * formatted date
+     */
+    public static void formatDate(long date, StringBuffer dateStrBuf)
+    {
+        c1.setTimeInMillis(date);
+
+        dateStrBuf.append(GuiUtils.processMonth(c1.get(Calendar.MONTH)));
+        dateStrBuf.append(' ');
+        GuiUtils.formatTime(c1.get(Calendar.DAY_OF_MONTH), dateStrBuf);
+        dateStrBuf.append("", "");
+        GuiUtils.formatTime(c1.get(Calendar.YEAR), dateStrBuf);
+    }",False
+21,formatTime(Date),Method,,net.java.sip.communicator.impl.gui.main.chat.ChatConversationComponent+getDateString(Date),net.java.sip.communicator.util.GuiUtils+formatTime(long) net.java.sip.communicator.util.GuiUtils+formatTime(long) java.util.Date+getTime() java.util.Date+getTime(),,328,10,9,"/** 
+ * Formats the time for the given date. The result format is the following: [Hour]:[Minute]:[Second]. For example: 12:25:30.
+ * @param date the date to format
+ * @return the formatted hour string
+ */
+","/**
+     * Formats the time for the given date. The result format is the following:
+     * [Hour]:[Minute]:[Second]. For example: 12:25:30.
+     * @param date the date to format
+     * @return the formatted hour string
+     */
+    public static String formatTime(Date date)
+    {
+        return formatTime(date.getTime());
+    }",False
+22,formatTime(long),Method,formatTime(Date),"net.java.sip.communicator.impl.callhistory.CallHistorySourceContact+getDateString(long) net.java.sip.communicator.impl.gui.main.call.CallHistoryButton+setNotificationView(Collection<UINotificationGroup>) net.java.sip.communicator.impl.gui.main.chat.ChatConversationPanel+processMessage(ChatMessage,String,ProtocolProviderService,String) net.java.sip.communicator.impl.gui.main.chat.ChatConversationPanel+processMessage(ChatMessage,String,ProtocolProviderService,String) net.java.sip.communicator.impl.gui.main.chat.ChatHtmlUtils+createSimpleIncomingMessageTag(String,String,String,String,long,String,String,boolean) net.java.sip.communicator.impl.gui.main.chat.ChatHtmlUtils+createSimpleOutgoingMessageTag(String,String,String,String,long,String,String,boolean) net.java.sip.communicator.impl.gui.main.chat.ChatHtmlUtils+createAdvancedMessageHeaderTag(String,long) net.java.sip.communicator.impl.gui.main.chat.ChatHtmlUtils+createEditedAtTag(String,long) net.java.sip.communicator.impl.gui.main.chat.ChatHtmlUtils+createEditedAt(long)","java.util.Calendar+setTimeInMillis(long) java.util.Calendar+setTimeInMillis(long) java.lang.StringBuffer+StringBuffer() net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) java.util.Calendar+get(int) java.util.Calendar+get(int) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) java.util.Calendar+get(int) java.util.Calendar+get(int) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) net.java.sip.communicator.util.GuiUtils+formatTime(int,StringBuffer) java.util.Calendar+get(int) java.util.Calendar+get(int) java.lang.StringBuffer+toString() java.lang.StringBuffer+toString()",net.java.sip.communicator.util.GuiUtils+c1 net.java.sip.communicator.util.GuiUtils+c1 java.util.Calendar+HOUR_OF_DAY net.java.sip.communicator.util.GuiUtils+c1 java.util.Calendar+MINUTE net.java.sip.communicator.util.GuiUtils+c1 java.util.Calendar+SECOND,680,19,9,"/** 
+ * Formats the time for the given date. The result format is the following: [Hour]:[Minute]:[Second]. For example: 12:25:30.
+ * @param time the date to format
+ * @return the formatted hour string
+ */
+","/**
+     * Formats the time for the given date. The result format is the following:
+     * [Hour]:[Minute]:[Second]. For example: 12:25:30.
+     * @param time the date to format
+     * @return the formatted hour string
+     */
+    public static String formatTime(long time)
+    {
+        c1.setTimeInMillis(time);
+
+        StringBuffer timeStrBuf = new StringBuffer();
+
+        GuiUtils.formatTime(c1.get(Calendar.HOUR_OF_DAY), timeStrBuf);
+        timeStrBuf.append(':');
+        GuiUtils.formatTime(c1.get(Calendar.MINUTE), timeStrBuf);
+        timeStrBuf.append(':');
+        GuiUtils.formatTime(c1.get(Calendar.SECOND), timeStrBuf);
+        return timeStrBuf.toString();
+    }",False
+23,"formatTime(Date,Date)",Method,,"net.java.sip.communicator.impl.callhistory.CallHistorySourceContact+CallHistorySourceContact(CallHistoryContactSource,CallRecord)","net.java.sip.communicator.util.GuiUtils+formatTime(long,long) net.java.sip.communicator.util.GuiUtils+formatTime(long,long) java.util.Date+getTime() java.util.Date+getTime() java.util.Date+getTime() java.util.Date+getTime()",,450,12,9,"/** 
+ * Formats the time period duration for the given start date and end date. The result format is the following: [Hour]:[Minute]:[Second]. For example: 12:25:30. 
+ * @param startDate the start date
+ * @param endDate the end date
+ * @return the formatted hour string
+ */
+","/**
+     * Formats the time period duration for the given start date and end date.
+     * The result format is the following:
+     * [Hour]:[Minute]:[Second]. For example: 12:25:30. 
+     * @param startDate the start date
+     * @param endDate the end date
+     * @return the formatted hour string
+     */
+    public static String formatTime(Date startDate, Date endDate)
+    {
+        return formatTime(startDate.getTime(), endDate.getTime());
+    }",False
+24,"formatTime(long,long)",Method,"formatTime(Date,Date)","net.java.sip.communicator.impl.gui.main.call.CallInfoFrame+constructPeerInfo(CallPeer,StringBuffer) net.java.sip.communicator.impl.gui.main.call.CallPanel+setCallTitle(long)","java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[])",,864,25,9,"/** 
+ * Formats the time period duration for the given start date and end date. The result format is the following: [Hour]:[Minute]:[Second]. For example: 12:25:30.
+ * @param start the start date in milliseconds
+ * @param end the end date in milliseconds
+ * @return the formatted hour string
+ */
+","/**
+     * Formats the time period duration for the given start date and end date.
+     * The result format is the following:
+     * [Hour]:[Minute]:[Second]. For example: 12:25:30.
+     * @param start the start date in milliseconds
+     * @param end the end date in milliseconds
+     * @return the formatted hour string
+     */
+    public static String formatTime(long start, long end)
+    {
+        long duration = end - start;
+
+        long milPerSec = 1000;
+        long milPerMin = milPerSec*60;
+        long milPerHour = milPerMin*60;
+
+        long hours = duration / milPerHour;
+        long minutes
+            = ( duration - hours*milPerHour ) / milPerMin;
+        long seconds
+            = ( duration - hours*milPerHour - minutes*milPerMin)
+                    / milPerSec;
+
+        return String.format(""%02d:%02d:%02d"", hours, minutes, seconds);
+    }",False
+25,processMonth(int),Method,"formatDate(long,StringBuffer)",,org.jitsi.service.resources.ResourceManagementService+getI18NString(String) net.java.sip.communicator.util.UtilActivator+getResources() net.java.sip.communicator.util.UtilActivator+getResources() org.jitsi.service.resources.ResourceManagementService+getI18NString(String),,1232,30,10,"/** 
+ * Gets the display/human-readable string representation of the month with the specified zero-based month number.
+ * @param month the zero-based month number
+ * @return the corresponding month abbreviation
+ */
+","/**
+     * Gets the display/human-readable string representation of the month with
+     * the specified zero-based month number.
+     *
+     * @param month the zero-based month number
+     * @return the corresponding month abbreviation
+     */
+    private static String processMonth(int month)
+    {
+        String monthStringKey;
+
+        switch (month)
+        {
+        case 0: monthStringKey = ""service.gui.JANUARY""; break;
+        case 1: monthStringKey = ""service.gui.FEBRUARY""; break;
+        case 2: monthStringKey = ""service.gui.MARCH""; break;
+        case 3: monthStringKey = ""service.gui.APRIL""; break;
+        case 4: monthStringKey = ""service.gui.MAY""; break;
+        case 5: monthStringKey = ""service.gui.JUNE""; break;
+        case 6: monthStringKey = ""service.gui.JULY""; break;
+        case 7: monthStringKey = ""service.gui.AUGUST""; break;
+        case 8: monthStringKey = ""service.gui.SEPTEMBER""; break;
+        case 9: monthStringKey = ""service.gui.OCTOBER""; break;
+        case 10: monthStringKey = ""service.gui.NOVEMBER""; break;
+        case 11: monthStringKey = ""service.gui.DECEMBER""; break;
+        default: return """";
+        }
+
+        return UtilActivator.getResources().getI18NString(monthStringKey);
+    }",False
+26,"formatTime(int,StringBuffer)",Method,"formatDate(long,StringBuffer) formatDate(long,StringBuffer) formatTime(long) formatTime(long) formatTime(long)",,java.lang.Integer+toString(int) java.lang.Integer+toString(int) java.lang.String+length() java.lang.String+length() java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String),,508,15,10,"/** 
+ * Adds a 0 in the beginning of one digit numbers.
+ * @param time The time parameter could be hours, minutes or seconds.
+ * @param timeStrBuf the <tt>StringBuffer</tt> to which the formattedminutes string is to be appended
+ */
+","/**
+     * Adds a 0 in the beginning of one digit numbers.
+     *
+     * @param time The time parameter could be hours, minutes or seconds.
+     * @param timeStrBuf the <tt>StringBuffer</tt> to which the formatted
+     * minutes string is to be appended
+     */
+    private static void formatTime(int time, StringBuffer timeStrBuf)
+    {
+        String timeString = Integer.toString(time);
+
+        if (timeString.length() < 2)
+            timeStrBuf.append('0');
+        timeStrBuf.append(timeString);
+    }",False
+27,formatSeconds(long),Method,,net.java.sip.communicator.impl.gui.main.chat.filetransfer.FileTransferConversationComponent+progressChanged(FileTransferProgressEvent),java.lang.StringBuffer+StringBuffer(int) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(long) java.lang.StringBuffer+append(long) java.lang.StringBuffer+append(String) java.lang.String+trim() java.lang.StringBuffer+toString() java.lang.StringBuffer+toString() java.lang.String+trim(),net.java.sip.communicator.util.GuiUtils+MILLIS_PER_DAY net.java.sip.communicator.util.GuiUtils+MILLIS_PER_HOUR net.java.sip.communicator.util.GuiUtils+MILLIS_PER_MINUTE net.java.sip.communicator.util.GuiUtils+MILLIS_PER_SECOND,1028,36,9,"/** 
+ * Formats the given long to X hour, Y min, Z sec.
+ * @param millis the time in milliseconds to format
+ * @return the formatted seconds
+ */
+","/**
+     * Formats the given long to X hour, Y min, Z sec.
+     * @param millis the time in milliseconds to format
+     * @return the formatted seconds
+     */
+    public static String formatSeconds(long millis)
+    {
+        long[] values = new long[4];
+        values[0] = millis / MILLIS_PER_DAY;
+        values[1] = (millis / MILLIS_PER_HOUR) % 24;
+        values[2] = (millis / MILLIS_PER_MINUTE) % 60;
+        values[3] = (millis / MILLIS_PER_SECOND) % 60;
+
+        String[] fields = { "" d "", "" h "", "" min "", "" sec"" };
+
+        StringBuffer buf = new StringBuffer(64);
+        boolean valueOutput = false;
+
+        for (int i = 0; i < 4; i++)
+        {
+            long value = values[i];
+
+            if (value == 0)
+            {
+                if (valueOutput)
+                    buf.append('0').append(fields[i]);
+            }
+            else
+            {
+                valueOutput = true;
+                buf.append(value).append(fields[i]);
+            }
+        }
+
+        return buf.toString().trim();
+    }",False
+28,getWindows(),Method,,,"java.lang.Class+getMethod(String,Class[]) java.lang.Class+getMethod(String,Class[]) java.lang.reflect.Method+invoke(Object,Object[]) java.lang.reflect.Method+invoke(Object,Object[]) java.util.List+toArray(T[]) java.util.List+toArray(T[]) java.util.List+size() java.util.List+size()",net.java.sip.communicator.util.GuiUtils+WINDOW_LIST net.java.sip.communicator.util.GuiUtils+WINDOW_LIST net.java.sip.communicator.util.GuiUtils+WINDOW_LIST net.java.sip.communicator.util.GuiUtils+WINDOW_LIST,2189,71,9,"/** 
+ * Returns an array of all  {@code Window}s, both owned and ownerless, created by this application. If called from an applet, the array includes only the  {@code Window}s accessible by that applet. <p> <b>Warning:</b> this method may return system created windows, such as a print dialog. Applications should not assume the existence of these dialogs, nor should an application assume anything about these dialogs such as component positions, <code>LayoutManager</code>s or serialization.
+ * @return Returns an array of all {@code Window}s.
+ */
+","/**
+     * Returns an array of all {@code Window}s, both owned and ownerless,
+     * created by this application.
+     * If called from an applet, the array includes only the {@code Window}s
+     * accessible by that applet.
+     * <p>
+     * <b>Warning:</b> this method may return system created windows, such
+     * as a print dialog. Applications should not assume the existence of
+     * these dialogs, nor should an application assume anything about these
+     * dialogs such as component positions, <code>LayoutManager</code>s
+     * or serialization.
+     *
+     * @return Returns an array of all {@code Window}s.
+     */
+    public static Window[] getWindows()
+    {
+        if (WINDOW_LIST == null)
+        {
+            Method Window_getWindows = null;
+
+            try
+            {
+                Window_getWindows = Window.class.getMethod(""getWindows"");
+            }
+            catch (NoSuchMethodException nsme)
+            {
+                /* Ignore it because we cannot really do anything useful. */
+            }
+            catch (SecurityException se)
+            {
+            }
+
+            Object windows = null;
+
+            if (Window_getWindows != null)
+            {
+                try
+                {
+                    windows = Window_getWindows.invoke(null);
+                }
+                catch (ExceptionInInitializerError eiie)
+                {
+                    /* Ignore it because we cannot really do anything useful. */
+                }
+                catch (IllegalAccessException iae)
+                {
+                }
+                catch (IllegalArgumentException iae)
+                {
+                }
+                catch (InvocationTargetException ite)
+                {
+                }
+                catch (NullPointerException npe)
+                {
+                }
+            }
+
+            return
+                (windows instanceof Window[])
+                    ? (Window[]) windows
+                    : new Window[0];
+        }
+        else
+        {
+            synchronized (WINDOW_LIST)
+            {
+                return WINDOW_LIST.toArray(new Window[WINDOW_LIST.size()]);
+            }
+        }
+    }",True
+29,addWindow(Window),Method,,net.java.sip.communicator.util.swing.SIPCommDialog+init() net.java.sip.communicator.util.swing.SIPCommFrame+SIPCommFrame(),java.util.List+contains(Object) java.util.List+contains(Object) java.util.List+add(E) java.util.List+add(E),net.java.sip.communicator.util.GuiUtils+WINDOW_LIST net.java.sip.communicator.util.GuiUtils+WINDOW_LIST net.java.sip.communicator.util.GuiUtils+WINDOW_LIST net.java.sip.communicator.util.GuiUtils+WINDOW_LIST,362,15,9,"/** 
+ * Adds a  {@link Window} into window list
+ * @param w {@link Window} to be added.
+ */
+","/**
+     * Adds a {@link Window} into window list
+     * @param w {@link Window} to be added.
+     */
+    public static void addWindow(Window w)
+    {
+        if (WINDOW_LIST != null)
+        {
+            synchronized (WINDOW_LIST)
+            {
+                if (!WINDOW_LIST.contains(w))
+                    WINDOW_LIST.add(w);
+            }
+        }
+    }",True
+30,removeWindow(Window),Method,,,java.util.List+remove(Object) java.util.List+remove(Object),net.java.sip.communicator.util.GuiUtils+WINDOW_LIST net.java.sip.communicator.util.GuiUtils+WINDOW_LIST net.java.sip.communicator.util.GuiUtils+WINDOW_LIST,323,14,9,"/** 
+ * Removes a  {@link Window} into window list
+ * @param w {@link Window} to be removed.
+ */
+","/**
+     * Removes a {@link Window} into window list
+     * @param w {@link Window} to be removed.
+     */
+    public static void removeWindow(Window w)
+    {
+        if (WINDOW_LIST != null)
+        {
+            synchronized (WINDOW_LIST)
+            {
+                WINDOW_LIST.remove(w);
+            }
+        }
+    }",True
+31,updateComponentTreeUI(Component),Method,updateComponentTreeUI0(Component),,net.java.sip.communicator.util.GuiUtils+updateComponentTreeUI0(Component) net.java.sip.communicator.util.GuiUtils+updateComponentTreeUI0(Component) java.awt.Component+invalidate() java.awt.Component+invalidate() java.awt.Component+validate() java.awt.Component+validate() java.awt.Component+repaint() java.awt.Component+repaint(),,406,14,9,"/** 
+ * A simple minded look and feel change: ask each node in the tree to <code>updateUI()</code> -- that is, to initialize its UI property with the current look and feel.
+ * @param c UI component.
+ */
+","/**
+     * A simple minded look and feel change: ask each node in the tree
+     * to <code>updateUI()</code> -- that is, to initialize its UI property
+     * with the current look and feel.
+     *
+     * @param c UI component.
+     */
+    public static void updateComponentTreeUI(Component c)
+    {
+        updateComponentTreeUI0(c);
+        c.invalidate();
+        c.validate();
+        c.repaint();
+    }",True
+32,"getComponentIndex(Component,Container)",Method,,,java.awt.Container+getComponentCount() java.awt.Container+getComponentCount() java.lang.Object+equals(Object) java.awt.Container+getComponent(int) java.awt.Container+getComponent(int) java.lang.Object+equals(Object),,614,17,9,"/** 
+ * Returns the index of the given component in the given container.
+ * @param c the Component to look for
+ * @param container the parent container, where this component is added
+ * @return the index of the component in the container or -1 if no suchcomponent is contained in the container
+ */
+","/**
+     * Returns the index of the given component in the given container.
+     *
+     * @param c the Component to look for
+     * @param container the parent container, where this component is added
+     * @return the index of the component in the container or -1 if no such
+     * component is contained in the container
+     */
+    public static int getComponentIndex(Component c, Container container)
+    {
+        for (int i = 0, count = container.getComponentCount(); i < count; i++)
+        {
+            if (container.getComponent(i).equals(c))
+                return i;
+        }
+        return -1;
+    }",True
+33,updateComponentTreeUI0(Component),Method,updateComponentTreeUI(Component) updateComponentTreeUI0(Component),,java.awt.Container+invalidate() java.awt.Container+invalidate() java.awt.Container+validate() java.awt.Container+validate() java.awt.Component+repaint() java.awt.Component+repaint() javax.swing.JComponent+getComponentPopupMenu() javax.swing.JComponent+getComponentPopupMenu() javax.swing.JPopupMenu+isVisible() javax.swing.JPopupMenu+isVisible() javax.swing.JPopupMenu+getInvoker() javax.swing.JPopupMenu+getInvoker() net.java.sip.communicator.util.GuiUtils+updateComponentTreeUI(Component) net.java.sip.communicator.util.GuiUtils+updateComponentTreeUI(Component) javax.swing.JMenu+getMenuComponents() javax.swing.JMenu+getMenuComponents() java.awt.Container+getComponents() java.awt.Container+getComponents() net.java.sip.communicator.util.GuiUtils+updateComponentTreeUI0(Component) net.java.sip.communicator.util.GuiUtils+updateComponentTreeUI0(Component),,968,33,10,"/** 
+ * Repaints UI tree recursively.
+ * @param c UI component.
+ */
+","/**
+     * Repaints UI tree recursively.
+     * @param c UI component.
+     */
+    private static void updateComponentTreeUI0(Component c)
+    {
+        if (c instanceof JComponent)
+        {
+            JComponent jc = (JComponent) c;
+            jc.invalidate();
+            jc.validate();
+            jc.repaint();
+            JPopupMenu jpm =jc.getComponentPopupMenu();
+            if(jpm != null && jpm.isVisible() && jpm.getInvoker() == jc)
+            {
+                updateComponentTreeUI(jpm);
+            }
+        }
+        Component[] children = null;
+        if (c instanceof JMenu)
+        {
+            children = ((JMenu)c).getMenuComponents();
+        }
+        else if (c instanceof java.awt.Container)
+        {
+            children = ((java.awt.Container)c).getComponents();
+        }
+        if (children != null)
+        {
+            for(int i = 0; i < children.length; i++)
+                updateComponentTreeUI0(children[i]);
+        }
+    }",True
+34,escapeFileNameSpecialCharacters(String),Method,,,"java.lang.String+replaceAll(String,String) java.lang.String+replaceAll(String,String)",net.java.sip.communicator.util.GuiUtils+ESCAPE_SEQUENCES net.java.sip.communicator.util.GuiUtils+ESCAPE_SEQUENCES net.java.sip.communicator.util.GuiUtils+ESCAPE_SEQUENCES,621,19,9,"/** 
+ * Replaces the characters that we must escape used for the created filename.
+ * @param string the <tt>String</tt> which is to have its characters escaped
+ * @return a <tt>String</tt> derived from the specified <tt>id</tt> byescaping characters
+ */
+","/**
+     * Replaces the characters that we must escape used for the created
+     * filename.
+     *
+     * @param string the <tt>String</tt> which is to have its characters escaped
+     * @return a <tt>String</tt> derived from the specified <tt>id</tt> by
+     * escaping characters
+     */
+    public static String escapeFileNameSpecialCharacters(String string)
+    {
+        String resultId = string;
+
+        for (int j = 0; j < ESCAPE_SEQUENCES.length; j++)
+        {
+            resultId = resultId.
+                replaceAll(ESCAPE_SEQUENCES[j][0], ESCAPE_SEQUENCES[j][1]);
+        }
+        return resultId;
+    }",False

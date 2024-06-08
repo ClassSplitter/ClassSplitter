@@ -1,0 +1,933 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,logger,Field,,,,,114,4,26,"/** 
+ * Our class logger.
+ */
+","/**
+     * Our class logger.
+     */
+    private static final Logger logger = Logger.getLogger(CallSipImpl.class);",False
+2,conferenceAudioMixer,Field,,,,,322,7,2,"/** 
+ * The <tt>MediaDevice</tt> which performs audio mixing for this <tt>Call</tt> and its <tt>CallPeer</tt>s when the local peer represented by this <tt>Call</tt> is acting as a conference focus i.e. {@link #conferenceFocus} is <tt>true</tt>.
+ */
+","/**
+     * The <tt>MediaDevice</tt> which performs audio mixing for this
+     * <tt>Call</tt> and its <tt>CallPeer</tt>s when the local peer represented
+     * by this <tt>Call</tt> is acting as a conference focus i.e.
+     * {@link #conferenceFocus} is <tt>true</tt>.
+     */
+    private MediaDevice conferenceAudioMixer;",True
+3,conferenceFocus,Field,setConferenceFocus(boolean) setConferenceFocus(boolean) setConferenceFocus(boolean) setConferenceFocus(boolean) setConferenceFocus(boolean),,,,315,7,2,"/** 
+ * The indicator which determines whether the local peer represented by this <tt>Call</tt> is acting as a conference focus and is thus specifying the &quot;isfocus&quot; parameter in the Contact headers of its outgoing SIP signaling.
+ */
+","/**
+     * The indicator which determines whether the local peer represented by this
+     * <tt>Call</tt> is acting as a conference focus and is thus specifying the
+     * &quot;isfocus&quot; parameter in the Contact headers of its outgoing SIP
+     * signaling.
+     */
+    private boolean conferenceFocus = false;",True
+4,localVideoAllowed,Field,"setLocalVideoAllowed(boolean,MediaUseCase)",,,,93,4,2,"/** 
+ * Our video streaming policy.
+ */
+","/**
+     * Our video streaming policy.
+     */
+    private boolean localVideoAllowed = false;",True
+5,messageFactory,Field,CallSipImpl(OperationSetBasicTelephonySipImpl),,,,175,5,18,"/** 
+ * A reference to the <tt>SipMessageFactory</tt> instance that we should use when creating requests.
+ */
+","/**
+     * A reference to the <tt>SipMessageFactory</tt> instance that we should
+     * use when creating requests.
+     */
+    private final SipMessageFactory messageFactory;",False
+6,parentOpSet,Field,CallSipImpl(OperationSetBasicTelephonySipImpl),,,,169,5,18,"/** 
+ * A reference to the <tt>OperationSetBasicTelephonySipImpl</tt> that created us;
+ */
+","/**
+     * A reference to the <tt>OperationSetBasicTelephonySipImpl</tt> that
+     * created us;
+     */
+    private final OperationSetBasicTelephonySipImpl parentOpSet;",False
+7,localUserAudioLevelListeners,Field,,,,,198,5,18,"/** 
+ * Holds listeners registered for level changes in local audio.
+ */
+","/**
+     * Holds listeners registered for level changes in local audio.
+     */
+    private final List<SoundLevelListener> localUserAudioLevelListeners
+        = new ArrayList<SoundLevelListener>();",True
+8,mute,Field,isMute() setMute(boolean) setMute(boolean),,,,175,5,2,"/** 
+ * The indicator which determines whether this <tt>Call</tt> is set to transmit ""silence"" instead of the actual media.
+ */
+","/**
+     * The indicator which determines whether this <tt>Call</tt> is set
+     * to transmit ""silence"" instead of the actual media.
+     */
+    private boolean mute = false;",True
+9,mediaUseCase,Field,,,,,140,4,0,"/** 
+ * Device used in call will be choosen according to <tt>MediaUseCase</tt>.
+ */
+","/**
+     * Device used in call will be choosen according to <tt>MediaUseCase</tt>.
+     */
+    MediaUseCase mediaUseCase = MediaUseCase.ANY;",True
+10,localAudioLevelDelegator,Field,,,,,460,13,18,"/** 
+ * The listener that would actually subscribe for level events from the media handler if there's at least one listener in <tt>localUserAudioLevelListeners</tt>.
+ */
+","/**
+     * The listener that would actually subscribe for level events from the
+     * media handler if there's at least one listener in
+     * <tt>localUserAudioLevelListeners</tt>.
+     */
+    private final SimpleAudioLevelListener localAudioLevelDelegator
+        = new SimpleAudioLevelListener()
+        {
+            public void audioLevelChanged(int level)
+            {
+                fireLocalUserAudioLevelChangeEvent(level);
+            }
+        };",True
+11,CallSipImpl(OperationSetBasicTelephonySipImpl),Method,,,net.java.sip.communicator.impl.protocol.sip.OperationSetBasicTelephonySipImpl+getProtocolProvider() net.java.sip.communicator.impl.protocol.sip.OperationSetBasicTelephonySipImpl+getProtocolProvider() net.java.sip.communicator.impl.protocol.sip.ProtocolProviderServiceSipImpl+getMessageFactory() net.java.sip.communicator.impl.protocol.sip.CallSipImpl+getProtocolProvider() net.java.sip.communicator.impl.protocol.sip.CallSipImpl+getProtocolProvider() net.java.sip.communicator.impl.protocol.sip.ProtocolProviderServiceSipImpl+getMessageFactory() net.java.sip.communicator.service.protocol.ActiveCallsRepository+addCall(T) net.java.sip.communicator.impl.protocol.sip.OperationSetBasicTelephonySipImpl+getActiveCallsRepository() net.java.sip.communicator.impl.protocol.sip.OperationSetBasicTelephonySipImpl+getActiveCallsRepository() net.java.sip.communicator.service.protocol.ActiveCallsRepository+addCall(T),net.java.sip.communicator.impl.protocol.sip.CallSipImpl+messageFactory net.java.sip.communicator.impl.protocol.sip.CallSipImpl+messageFactory net.java.sip.communicator.impl.protocol.sip.CallSipImpl+parentOpSet net.java.sip.communicator.impl.protocol.sip.CallSipImpl+parentOpSet,718,17,4,"/** 
+ * Crates a CallSipImpl instance belonging to <tt>sourceProvider</tt> and initiated by <tt>CallCreator</tt>.
+ * @param parentOpSet a reference to the operation set that's creating usand that we would be able to use for even dispatching.
+ */
+","/**
+     * Crates a CallSipImpl instance belonging to <tt>sourceProvider</tt> and
+     * initiated by <tt>CallCreator</tt>.
+     *
+     * @param parentOpSet a reference to the operation set that's creating us
+     * and that we would be able to use for even dispatching.
+     */
+    protected CallSipImpl(OperationSetBasicTelephonySipImpl parentOpSet)
+    {
+        super(parentOpSet.getProtocolProvider());
+        this.messageFactory = getProtocolProvider().getMessageFactory();
+        this.parentOpSet = parentOpSet;
+
+        //let's add ourselves to the calls repo. we are doing it ourselves just
+        //to make sure that no one ever forgets.
+        parentOpSet.getActiveCallsRepository().addCall(this);
+    }",False
+12,addCallPeer(CallPeerSipImpl),Method,"createCallPeerFor(Transaction,SipProvider)",,"java.util.Vector+contains(Object) net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() java.util.Vector+contains(Object) net.java.sip.communicator.service.protocol.AbstractCallPeer+addCallPeerListener(CallPeerListener) net.java.sip.communicator.service.protocol.AbstractCallPeer+addCallPeerListener(CallPeerListener) java.util.Vector+size() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() java.util.Vector+size() net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalUserAudioLevelListener(SimpleAudioLevelListener) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalUserAudioLevelListener(SimpleAudioLevelListener) java.util.Vector+add(E) net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() java.util.Vector+add(E) net.java.sip.communicator.service.protocol.Call+fireCallPeerEvent(CallPeer,int) net.java.sip.communicator.service.protocol.Call+fireCallPeerEvent(CallPeer,int)",net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localAudioLevelDelegator net.java.sip.communicator.service.protocol.event.CallPeerEvent+CALL_PEER_ADDED,935,28,2,"/** 
+ * Adds <tt>callPeer</tt> to the list of peers in this call. If the call peer is already included in the call, the method has no effect.
+ * @param callPeer the new <tt>CallPeer</tt>
+ */
+","/**
+     * Adds <tt>callPeer</tt> to the list of peers in this call.
+     * If the call peer is already included in the call, the method has
+     * no effect.
+     *
+     * @param callPeer the new <tt>CallPeer</tt>
+     */
+    private void addCallPeer(CallPeerSipImpl callPeer)
+    {
+        if (getCallPeersVector().contains(callPeer))
+            return;
+
+        callPeer.addCallPeerListener(this);
+
+        synchronized(localUserAudioLevelListeners)
+        {
+            // if there's someone listening for audio level events then they'd
+            // also like to know about the new peer.
+            if(getCallPeersVector().size() == 0)
+            {
+                callPeer.getMediaHandler().setLocalUserAudioLevelListener(
+                                localAudioLevelDelegator);
+            }
+        }
+
+        getCallPeersVector().add(callPeer);
+        fireCallPeerEvent(callPeer, CallPeerEvent.CALL_PEER_ADDED);
+    }",True
+13,removeCallPeer(CallPeerSipImpl),Method,peerStateChanged(CallPeerChangeEvent),,"java.util.Vector+contains(Object) net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() java.util.Vector+contains(Object) java.util.Vector+remove(Object) net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() java.util.Vector+remove(Object) net.java.sip.communicator.service.protocol.AbstractCallPeer+removeCallPeerListener(CallPeerListener) net.java.sip.communicator.service.protocol.AbstractCallPeer+removeCallPeerListener(CallPeerListener) net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalUserAudioLevelListener(SimpleAudioLevelListener) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalUserAudioLevelListener(SimpleAudioLevelListener) net.java.sip.communicator.service.protocol.Call+fireCallPeerEvent(CallPeer,int) net.java.sip.communicator.service.protocol.Call+fireCallPeerEvent(CallPeer,int) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setCall(CallSipImpl) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setCall(CallSipImpl) java.util.Vector+size() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeersVector() java.util.Vector+size() net.java.sip.communicator.service.protocol.Call+setCallState(CallState) net.java.sip.communicator.service.protocol.Call+setCallState(CallState)",net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners net.java.sip.communicator.service.protocol.event.CallPeerEvent+CALL_PEER_REMOVED net.java.sip.communicator.service.protocol.CallState+CALL_ENDED,1139,39,2,"/** 
+ * Removes <tt>callPeer</tt> from the list of peers in this call. The method has no effect if there was no such peer in the call.
+ * @param callPeer the <tt>CallPeer</tt> leaving the call;
+ */
+","/**
+     * Removes <tt>callPeer</tt> from the list of peers in this
+     * call. The method has no effect if there was no such peer in the
+     * call.
+     *
+     * @param callPeer the <tt>CallPeer</tt> leaving the call;
+     */
+    private void removeCallPeer(CallPeerSipImpl callPeer)
+    {
+        if (!getCallPeersVector().contains(callPeer))
+            return;
+
+        getCallPeersVector().remove(callPeer);
+        callPeer.removeCallPeerListener(this);
+
+        synchronized(localUserAudioLevelListeners)
+        {
+            // remove sound level listeners from the peer
+            callPeer.getMediaHandler().setLocalUserAudioLevelListener(null);
+        }
+
+        try
+        {
+            fireCallPeerEvent(callPeer,
+                CallPeerEvent.CALL_PEER_REMOVED);
+        }
+        finally
+        {
+
+            /*
+             * The peer should loose its state once it has finished
+             * firing its events in order to allow the listeners to undo.
+             */
+            callPeer.setCall(null);
+        }
+
+        if (getCallPeersVector().size() == 0)
+            setCallState(CallState.CALL_ENDED);
+    }",True
+14,peerImageChanged(CallPeerChangeEvent),Method,,,,,245,10,1,"/** 
+ * Dummy implementation of a method (inherited from CallPeerListener) that we don't need.
+ * @param evt unused.
+ */
+","/**
+     * Dummy implementation of a method (inherited from CallPeerListener)
+     * that we don't need.
+     *
+     * @param evt unused.
+     */
+    public void peerImageChanged(CallPeerChangeEvent evt)
+    {
+        //does not concern us
+    }",True
+15,peerAddressChanged(CallPeerChangeEvent),Method,,,,,245,10,1,"/** 
+ * Dummy implementation of a method (inherited from CallPeerListener) that we don't need.
+ * @param evt unused.
+ */
+","/**
+     * Dummy implementation of a method (inherited from CallPeerListener)
+     * that we don't need.
+     *
+     * @param evt unused.
+     */
+    public void peerAddressChanged(CallPeerChangeEvent evt)
+    {
+      //does not concern us
+    }",True
+16,peerTransportAddressChanged(CallPeerChangeEvent),Method,,,,,263,11,1,"/** 
+ * Dummy implementation of a method (inherited from CallPeerListener) that we don't need.
+ * @param evt unused.
+ */
+","/**
+     * Dummy implementation of a method (inherited from CallPeerListener)
+     * that we don't need.
+     *
+     * @param evt unused.
+     */
+    public void peerTransportAddressChanged(
+        CallPeerChangeEvent evt)
+    {
+      //does not concern us
+    }",True
+17,peerDisplayNameChanged(CallPeerChangeEvent),Method,,,,,249,10,1,"/** 
+ * Dummy implementation of a method (inherited from CallPeerListener) that we don't need.
+ * @param evt unused.
+ */
+","/**
+     * Dummy implementation of a method (inherited from CallPeerListener)
+     * that we don't need.
+     *
+     * @param evt unused.
+     */
+    public void peerDisplayNameChanged(CallPeerChangeEvent evt)
+    {
+      //does not concern us
+    }",True
+18,peerStateChanged(CallPeerChangeEvent),Method,,,java.beans.PropertyChangeEvent+getNewValue() java.beans.PropertyChangeEvent+getNewValue() java.lang.Object+equals(Object) java.lang.Object+equals(Object) java.lang.Object+equals(Object) java.lang.Object+equals(Object) net.java.sip.communicator.impl.protocol.sip.CallSipImpl+removeCallPeer(CallPeerSipImpl) net.java.sip.communicator.impl.protocol.sip.CallSipImpl+removeCallPeer(CallPeerSipImpl) net.java.sip.communicator.service.protocol.event.CallPeerChangeEvent+getSourceCallPeer() net.java.sip.communicator.service.protocol.event.CallPeerChangeEvent+getSourceCallPeer() java.lang.Object+equals(Object) java.lang.Object+equals(Object) java.lang.Object+equals(Object) java.lang.Object+equals(Object) net.java.sip.communicator.service.protocol.Call+setCallState(CallState) net.java.sip.communicator.service.protocol.Call+setCallState(CallState) java.lang.Object+equals(Object) java.lang.Object+equals(Object) net.java.sip.communicator.service.protocol.Call+setCallState(CallState) net.java.sip.communicator.service.protocol.Call+setCallState(CallState),net.java.sip.communicator.service.protocol.CallPeerState+DISCONNECTED net.java.sip.communicator.service.protocol.CallPeerState+FAILED net.java.sip.communicator.service.protocol.CallPeerState+CONNECTED net.java.sip.communicator.service.protocol.CallPeerState+CONNECTING_WITH_EARLY_MEDIA net.java.sip.communicator.service.protocol.CallState+CALL_IN_PROGRESS net.java.sip.communicator.service.protocol.CallPeerState+REFERRED net.java.sip.communicator.service.protocol.CallState+CALL_REFERRED,900,25,1,"/** 
+ * Verifies whether the call peer has entered a state.
+ * @param evt The <tt>CallPeerChangeEvent</tt> instance containingthe source event as well as its previous and its new status.
+ */
+","/**
+     * Verifies whether the call peer has entered a state.
+     *
+     * @param evt The <tt>CallPeerChangeEvent</tt> instance containing
+     * the source event as well as its previous and its new status.
+     */
+    public void peerStateChanged(CallPeerChangeEvent evt)
+    {
+        CallPeerState newState = (CallPeerState) evt.getNewValue();
+
+        if (CallPeerState.DISCONNECTED.equals(newState)
+                || CallPeerState.FAILED.equals(newState))
+        {
+            removeCallPeer((CallPeerSipImpl) evt.getSourceCallPeer());
+        }
+        else if (CallPeerState.CONNECTED.equals(newState)
+                || CallPeerState.CONNECTING_WITH_EARLY_MEDIA.equals(newState))
+        {
+            setCallState(CallState.CALL_IN_PROGRESS);
+        }
+        else if (CallPeerState.REFERRED.equals(newState))
+        {
+            setCallState(CallState.CALL_REFERRED);
+        }
+    }",True
+19,contains(Dialog),Method,,net.java.sip.communicator.impl.protocol.sip.ActiveCallsRepositorySipImpl+findCall(Dialog),net.java.sip.communicator.impl.protocol.sip.CallSipImpl+findCallPeer(Dialog) net.java.sip.communicator.impl.protocol.sip.CallSipImpl+findCallPeer(Dialog),,465,13,1,"/** 
+ * Returns <tt>true</tt> if <tt>dialog</tt> matches the jain sip dialog established with one of the peers in this call.
+ * @param dialog the dialog whose corresponding peer we're looking for.
+ * @return true if this call contains a call peer whose jain sipdialog is the same as the specified and false otherwise.
+ */
+","/**
+     * Returns <tt>true</tt> if <tt>dialog</tt> matches the jain sip dialog
+     * established with one of the peers in this call.
+     *
+     * @param dialog the dialog whose corresponding peer we're looking for.
+     *
+     * @return true if this call contains a call peer whose jain sip
+     * dialog is the same as the specified and false otherwise.
+     */
+    public boolean contains(Dialog dialog)
+    {
+        return findCallPeer(dialog) != null;
+    }",False
+20,findCallPeer(Dialog),Method,contains(Dialog),net.java.sip.communicator.impl.protocol.sip.ActiveCallsRepositorySipImpl+findCallPeer(Dialog),net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.service.protocol.AbstractCall+getCallPeerCount() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeerCount() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getDialog() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getDialog() net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getDialog() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getDialog(),net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger,1221,39,1,"/** 
+ * Returns the call peer whose associated jain sip dialog matches <tt>dialog</tt>.
+ * @param dialog the jain sip dialog whose corresponding peer we're lookingfor.
+ * @return the call peer whose jain sip dialog is the same as the specifiedor null if no such call peer was found.
+ */
+","/**
+     * Returns the call peer whose associated jain sip dialog matches
+     * <tt>dialog</tt>.
+     *
+     * @param dialog the jain sip dialog whose corresponding peer we're looking
+     * for.
+     * @return the call peer whose jain sip dialog is the same as the specified
+     * or null if no such call peer was found.
+     */
+    public CallPeerSipImpl findCallPeer(Dialog dialog)
+    {
+        Iterator<CallPeerSipImpl> callPeers = this.getCallPeers();
+
+        if (logger.isTraceEnabled())
+        {
+            logger.trace(""Looking for peer with dialog: "" + dialog
+                + ""among "" + getCallPeerCount() + "" calls"");
+        }
+
+        while (callPeers.hasNext())
+        {
+            CallPeerSipImpl cp = callPeers.next();
+
+            if (cp.getDialog() == dialog)
+            {
+                if (logger.isTraceEnabled())
+                    logger.trace(""Returing cp="" + cp);
+                return cp;
+            }
+            else
+            {
+                if (logger.isTraceEnabled())
+                    logger.trace(""Ignoring cp="" + cp + "" because cp.dialog=""
+                            + cp.getDialog() + "" while dialog="" + dialog);
+            }
+        }
+
+        return null;
+    }",False
+21,getProtocolProvider(),Method,"CallSipImpl(OperationSetBasicTelephonySipImpl) invite(Address,javax.sip.message.Message)",net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getProtocolProvider() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getContact(),net.java.sip.communicator.service.protocol.AbstractCall+getProtocolProvider(),,380,12,1,"/** 
+ * Returns a reference to the <tt>ProtocolProviderServiceSipImpl</tt> instance that created this call.
+ * @return a reference to the <tt>ProtocolProviderServiceSipImpl</tt>instance that created this call.
+ */
+","/**
+     * Returns a reference to the <tt>ProtocolProviderServiceSipImpl</tt>
+     * instance that created this call.
+     *
+     * @return a reference to the <tt>ProtocolProviderServiceSipImpl</tt>
+     * instance that created this call.
+     */
+    @Override
+    public ProtocolProviderServiceSipImpl getProtocolProvider()
+    {
+        return super.getProtocolProvider();
+    }",False
+22,getParentOperationSet(),Method,,,,net.java.sip.communicator.impl.protocol.sip.CallSipImpl+parentOpSet,361,11,1,"/** 
+ * Returns a reference to the <tt>OperationSetBasicTelephonySipImpl</tt> instance that created this call.
+ * @return a reference to the <tt>OperationSetBasicTelephonySipImpl</tt>instance that created this call.
+ */
+","/**
+     * Returns a reference to the <tt>OperationSetBasicTelephonySipImpl</tt>
+     * instance that created this call.
+     *
+     * @return a reference to the <tt>OperationSetBasicTelephonySipImpl</tt>
+     * instance that created this call.
+     */
+    public OperationSetBasicTelephonySipImpl getParentOperationSet()
+    {
+        return parentOpSet;
+    }",False
+23,"invite(Address,javax.sip.message.Message)",Method,,,"net.java.sip.communicator.impl.protocol.sip.SipMessageFactory+createInviteRequest(Address,Message) net.java.sip.communicator.impl.protocol.sip.SipMessageFactory+createInviteRequest(Address,Message) net.java.sip.communicator.impl.protocol.sip.ProtocolProviderServiceSipImpl+getDefaultJainSipProvider() net.java.sip.communicator.impl.protocol.sip.CallSipImpl+getProtocolProvider() net.java.sip.communicator.impl.protocol.sip.CallSipImpl+getProtocolProvider() net.java.sip.communicator.impl.protocol.sip.ProtocolProviderServiceSipImpl+getDefaultJainSipProvider() javax.sip.SipProvider+getNewClientTransaction(Request) javax.sip.SipProvider+getNewClientTransaction(Request) net.java.sip.communicator.impl.protocol.sip.ProtocolProviderServiceSipImpl+throwOperationFailedException(String,int,Throwable,Logger) net.java.sip.communicator.impl.protocol.sip.ProtocolProviderServiceSipImpl+throwOperationFailedException(String,int,Throwable,Logger) net.java.sip.communicator.impl.protocol.sip.CallSipImpl+createCallPeerFor(Transaction,SipProvider) net.java.sip.communicator.impl.protocol.sip.CallSipImpl+createCallPeerFor(Transaction,SipProvider) net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalVideoTransmissionEnabled(boolean) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalVideoTransmissionEnabled(boolean) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+invite() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+invite()",net.java.sip.communicator.impl.protocol.sip.CallSipImpl+messageFactory net.java.sip.communicator.service.protocol.OperationFailedException+INTERNAL_ERROR net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localVideoAllowed,2170,52,1,"/** 
+ * Creates a <tt>CallPeerSipImpl</tt> from <tt>calleeAddress</tt> and sends them an invite request. The invite request will be initialized according to any relevant parameters in the <tt>cause</tt> message (if different from <tt>null</tt>) that is the reason for creating this call.
+ * @param calleeAddress the party that we would like to invite to this call.
+ * @param cause the message (e.g. a Refer request), that is the reason forthis invite or <tt>null</tt> if this is a user-initiated invitation
+ * @return the newly created <tt>CallPeer</tt> corresponding to<tt>calleeAddress</tt>. All following state change events will be delivered through this call peer.
+ * @throws OperationFailedException  with the corresponding code if we failto create the call.
+ */
+","/**
+     * Creates a <tt>CallPeerSipImpl</tt> from <tt>calleeAddress</tt> and sends
+     * them an invite request. The invite request will be initialized according
+     * to any relevant parameters in the <tt>cause</tt> message (if different
+     * from <tt>null</tt>) that is the reason for creating this call.
+     *
+     * @param calleeAddress the party that we would like to invite to this call.
+     * @param cause the message (e.g. a Refer request), that is the reason for
+     * this invite or <tt>null</tt> if this is a user-initiated invitation
+     *
+     * @return the newly created <tt>CallPeer</tt> corresponding to
+     * <tt>calleeAddress</tt>. All following state change events will be
+     * delivered through this call peer.
+     *
+     * @throws OperationFailedException  with the corresponding code if we fail
+     *  to create the call.
+     */
+    public CallPeerSipImpl invite(Address                   calleeAddress,
+                                  javax.sip.message.Message cause)
+        throws OperationFailedException
+    {
+        // create the invite request
+        Request invite = messageFactory
+            .createInviteRequest(calleeAddress, cause);
+
+        // Transaction
+        ClientTransaction inviteTransaction = null;
+        SipProvider jainSipProvider
+            = getProtocolProvider().getDefaultJainSipProvider();
+        try
+        {
+            inviteTransaction = jainSipProvider.getNewClientTransaction(invite);
+        }
+        catch (TransactionUnavailableException ex)
+        {
+            ProtocolProviderServiceSipImpl.throwOperationFailedException(
+                ""Failed to create inviteTransaction.\n""
+                    + ""This is most probably a network connection error."",
+                OperationFailedException.INTERNAL_ERROR, ex, logger);
+        }
+        // create the call peer
+        CallPeerSipImpl callPeer
+            = createCallPeerFor(inviteTransaction, jainSipProvider);
+
+        /* enable video if it is a videocall */
+        callPeer.getMediaHandler().setLocalVideoTransmissionEnabled(
+                localVideoAllowed);
+
+        callPeer.invite();
+
+        return callPeer;
+    }",False
+24,reInvite(),Method,,"net.java.sip.communicator.impl.protocol.sip.OperationSetVideoTelephonySipImpl+setLocalVideoAllowed(Call,boolean)",net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+sendReInvite() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+sendReInvite(),,529,16,1,"/** 
+ * Send a RE-INVITE request for all current <tt>CallPeer</tt> to reflect possible change in media setup (video start/stop, ...).
+ * @throws OperationFailedException if problem occurred during SDPgeneration or network problem
+ */
+","/**
+     * Send a RE-INVITE request for all current <tt>CallPeer</tt> to reflect
+     * possible change in media setup (video start/stop, ...).
+     *
+     * @throws OperationFailedException if problem occurred during SDP
+     * generation or network problem
+     */
+    public void reInvite() throws OperationFailedException
+    {
+        Iterator<CallPeerSipImpl> peers = getCallPeers();
+        while (peers.hasNext())
+        {
+            CallPeerSipImpl peer = peers.next();
+            peer.sendReInvite();
+        }
+    }",False
+25,"createCallPeerFor(Transaction,SipProvider)",Method,"invite(Address,javax.sip.message.Message) processReplacingInvite(SipProvider,ServerTransaction,CallPeerSipImpl) processInvite(SipProvider,ServerTransaction)",,"net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+CallPeerSipImpl(Address,CallSipImpl,Transaction,SipProvider) javax.sip.Dialog+getRemoteParty() javax.sip.Transaction+getDialog() javax.sip.Transaction+getDialog() javax.sip.Dialog+getRemoteParty() net.java.sip.communicator.impl.protocol.sip.CallSipImpl+addCallPeer(CallPeerSipImpl) net.java.sip.communicator.impl.protocol.sip.CallSipImpl+addCallPeer(CallPeerSipImpl) net.java.sip.communicator.service.protocol.AbstractCallPeer+setState(CallPeerState) net.java.sip.communicator.service.protocol.AbstractCallPeer+setState(CallPeerState) net.java.sip.communicator.service.protocol.AbstractCall+getCallPeerCount() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeerCount() net.java.sip.communicator.service.protocol.AbstractOperationSetBasicTelephony+fireCallEvent(int,Call) net.java.sip.communicator.service.protocol.AbstractOperationSetBasicTelephony+fireCallEvent(int,Call)",net.java.sip.communicator.service.protocol.CallPeerState+INCOMING_CALL net.java.sip.communicator.service.protocol.CallPeerState+INITIATING_CALL net.java.sip.communicator.impl.protocol.sip.CallSipImpl+parentOpSet net.java.sip.communicator.service.protocol.event.CallEvent+CALL_RECEIVED net.java.sip.communicator.service.protocol.event.CallEvent+CALL_INITIATED,1460,36,2,"/** 
+ * Creates a new call peer associated with <tt>containingTransaction</tt>
+ * @param containingTransaction the transaction that created the call peer.
+ * @param sourceProvider the provider that the containingTransaction belongsto.
+ * @return a new instance of a <tt>CallPeerSipImpl</tt> correspondingto the <tt>containingTransaction</tt>.
+ */
+","/**
+     * Creates a new call peer associated with <tt>containingTransaction</tt>
+     *
+     * @param containingTransaction the transaction that created the call peer.
+     * @param sourceProvider the provider that the containingTransaction belongs
+     * to.
+     *
+     * @return a new instance of a <tt>CallPeerSipImpl</tt> corresponding
+     * to the <tt>containingTransaction</tt>.
+     */
+    private CallPeerSipImpl createCallPeerFor(
+        Transaction containingTransaction, SipProvider sourceProvider)
+    {
+        CallPeerSipImpl callPeer = new CallPeerSipImpl(
+                containingTransaction.getDialog().getRemoteParty(),
+                this, containingTransaction, sourceProvider);
+        addCallPeer(callPeer);
+
+        boolean incomingCall
+            = (containingTransaction instanceof ServerTransaction);
+        callPeer.setState( incomingCall
+                        ? CallPeerState.INCOMING_CALL
+                        : CallPeerState.INITIATING_CALL);
+
+        // if this was the first peer we added in this call then the call is
+        // new and we also need to notify everyone of its creation.
+        if(this.getCallPeerCount() == 1)
+        {
+            parentOpSet.fireCallEvent( (incomingCall
+                                        ? CallEvent.CALL_RECEIVED
+                                        : CallEvent.CALL_INITIATED),
+                                        this);
+        }
+
+        return callPeer;
+    }",False
+26,"processReplacingInvite(SipProvider,ServerTransaction,CallPeerSipImpl)",Method,,"net.java.sip.communicator.impl.protocol.sip.OperationSetBasicTelephonySipImpl+processInvite(SipProvider,ServerTransaction)","net.java.sip.communicator.impl.protocol.sip.CallSipImpl+createCallPeerFor(Transaction,SipProvider) net.java.sip.communicator.impl.protocol.sip.CallSipImpl+createCallPeerFor(Transaction,SipProvider) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+answer() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+answer() net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+hangup() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+hangup() net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setState(CallPeerState,String) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setState(CallPeerState,String)",net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.service.protocol.CallPeerState+FAILED,1857,48,1,"/** 
+ * Processes an incoming INVITE that is meant to replace an existing <tt>CallPeerSipImpl</tt> that is participating in this call. Typically this would happen as a result of an attended transfer.
+ * @param jainSipProvider the JAIN-SIP <tt>SipProvider</tt> that receivedthe request.
+ * @param serverTransaction the transaction containing the INVITE request.
+ * @param callPeerToReplace a reference to the <tt>CallPeer</tt> that thisINVITE is trying to replace.
+ */
+","/**
+     * Processes an incoming INVITE that is meant to replace an existing
+     * <tt>CallPeerSipImpl</tt> that is participating in this call. Typically
+     * this would happen as a result of an attended transfer.
+     *
+     * @param jainSipProvider the JAIN-SIP <tt>SipProvider</tt> that received
+     * the request.
+     * @param serverTransaction the transaction containing the INVITE request.
+     * @param callPeerToReplace a reference to the <tt>CallPeer</tt> that this
+     * INVITE is trying to replace.
+     */
+    public void processReplacingInvite(SipProvider       jainSipProvider,
+                                       ServerTransaction serverTransaction,
+                                       CallPeerSipImpl   callPeerToReplace)
+    {
+        CallPeerSipImpl newCallPeer
+                    = createCallPeerFor(serverTransaction, jainSipProvider);
+        try
+        {
+            newCallPeer.answer();
+        }
+        catch (OperationFailedException ex)
+        {
+            logger.error(
+                ""Failed to auto-answer the referred call peer ""
+                    + newCallPeer, ex);
+            /*
+             * RFC 3891 says an appropriate error response MUST be returned
+             * and callPeerToReplace must be left unchanged.
+             */
+            //TODO should we send a response here?
+            return;
+        }
+
+        //we just accepted the new peer and if we got here then it went well
+        //now let's hangup the other call.
+        try
+        {
+            callPeerToReplace.hangup();
+        }
+        catch (OperationFailedException ex)
+        {
+            logger.error(""Failed to hangup the referer ""
+                            + callPeerToReplace, ex);
+            callPeerToReplace.setState(
+                            CallPeerState.FAILED, ""Internal Error: "" + ex);
+        }
+    }",False
+27,"processInvite(SipProvider,ServerTransaction)",Method,,"net.java.sip.communicator.impl.protocol.sip.OperationSetBasicTelephonySipImpl+processInvite(SipProvider,ServerTransaction)","javax.sip.Transaction+getRequest() javax.sip.Transaction+getRequest() net.java.sip.communicator.impl.protocol.sip.CallSipImpl+createCallPeerFor(Transaction,SipProvider) net.java.sip.communicator.impl.protocol.sip.CallSipImpl+createCallPeerFor(Transaction,SipProvider) net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+isTraceEnabled() net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.util.Logger+trace(Object) net.java.sip.communicator.impl.protocol.sip.SipMessageFactory+createResponse(int,Request) net.java.sip.communicator.impl.protocol.sip.SipMessageFactory+createResponse(int,Request) javax.sip.ServerTransaction+sendResponse(Response) javax.sip.ServerTransaction+sendResponse(Response) net.java.sip.communicator.util.Logger+isDebugEnabled() net.java.sip.communicator.util.Logger+isDebugEnabled() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.util.Logger+error(Object,Throwable) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setState(CallPeerState,String) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setState(CallPeerState,String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+messageFactory javax.sip.message.Response+RINGING net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.impl.protocol.sip.CallSipImpl+logger net.java.sip.communicator.service.protocol.CallPeerState+FAILED,1338,38,1,"/** 
+ * Creates a new call and sends a RINGING response.
+ * @param jainSipProvider the provider containing<tt>sourceTransaction</tt>.
+ * @param serverTran the transaction containing the received request.
+ * @return CallPeerSipImpl the newly created call peer (the one that sentthe INVITE).
+ */
+","/**
+     * Creates a new call and sends a RINGING response.
+     *
+     * @param jainSipProvider the provider containing
+     * <tt>sourceTransaction</tt>.
+     * @param serverTran the transaction containing the received request.
+     *
+     * @return CallPeerSipImpl the newly created call peer (the one that sent
+     * the INVITE).
+     */
+    public CallPeerSipImpl processInvite(SipProvider       jainSipProvider,
+                                         ServerTransaction serverTran)
+{
+        Request invite = serverTran.getRequest();
+
+        CallPeerSipImpl peer = createCallPeerFor(serverTran, jainSipProvider);
+
+        //send a ringing response
+        Response response = null;
+        try
+        {
+            if (logger.isTraceEnabled())
+                logger.trace(""will send ringing response: "");
+            response = messageFactory.createResponse(Response.RINGING, invite);
+            serverTran.sendResponse(response);
+            if (logger.isDebugEnabled())
+                logger.debug(""sent a ringing response: "" + response);
+        }
+        catch (Exception ex)
+        {
+            logger.error(""Error while trying to send a request"", ex);
+            peer.setState(CallPeerState.FAILED,
+                ""Internal Error: "" + ex.getMessage());
+            return peer;
+        }
+
+        return peer;
+    }",False
+28,"setLocalVideoAllowed(boolean,MediaUseCase)",Method,,"net.java.sip.communicator.impl.protocol.sip.OperationSetVideoTelephonySipImpl+setLocalVideoAllowed(Call,boolean) net.java.sip.communicator.impl.protocol.sip.OperationSetVideoTelephonySipImpl+createVideoCall(String) net.java.sip.communicator.impl.protocol.sip.OperationSetVideoTelephonySipImpl+createVideoCall(Contact) net.java.sip.communicator.impl.protocol.sip.OperationSetVideoTelephonySipImpl+answerVideoCallPeer(CallPeer)",net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setLocalVideoAllowed(boolean) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setLocalVideoAllowed(boolean),net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localVideoAllowed net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localVideoAllowed net.java.sip.communicator.impl.protocol.sip.CallSipImpl+mediaUseCase,1040,29,1,"/** 
+ * Modifies the local media setup of all peers in the call to reflect the requested setting for the streaming of the local video and then passes the setting to the participating <tt>CallPeerSipImpl</tt> instances.
+ * @param allowed <tt>true</tt> if local video transmission is allowed and<tt>false</tt> otherwise.
+ * @param useCase usecase for the video (i.e video call or desktopstreaming/sharing session)
+ * @throws OperationFailedException if video initialization fails.
+ */
+","/**
+     * Modifies the local media setup of all peers in the call to reflect the
+     * requested setting for the streaming of the local video and then passes
+     * the setting to the participating <tt>CallPeerSipImpl</tt> instances.
+     *
+     * @param allowed <tt>true</tt> if local video transmission is allowed and
+     * <tt>false</tt> otherwise.
+     * @param useCase usecase for the video (i.e video call or desktop
+     * streaming/sharing session)
+     *
+     *  @throws OperationFailedException if video initialization fails.
+     */
+    public void setLocalVideoAllowed(boolean allowed, MediaUseCase useCase)
+        throws OperationFailedException
+    {
+        this.localVideoAllowed = allowed;
+        mediaUseCase = useCase;
+
+        /*
+         * Record the setting locally and notify all peers.
+         */
+        Iterator<CallPeerSipImpl> peers = getCallPeers();
+        while (peers.hasNext())
+        {
+            CallPeerSipImpl peer = peers.next();
+
+            peer.setLocalVideoAllowed(allowed);
+        }
+    }",False
+29,isLocalVideoAllowed(),Method,,net.java.sip.communicator.impl.protocol.sip.OperationSetVideoTelephonySipImpl+isLocalVideoAllowed(Call),,net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localVideoAllowed,582,14,1,"/** 
+ * Determines whether the streaming of local video in this <tt>Call</tt> is currently allowed. The setting does not reflect the availability of actual video capture devices, it just expresses the local policy (or desire of the user) to have the local video streamed in the case the system is actually able to do so.
+ * @return <tt>true</tt> if the streaming of local video for this<tt>Call</tt> is allowed; otherwise, <tt>false</tt>
+ */
+","/**
+     * Determines whether the streaming of local video in this <tt>Call</tt>
+     * is currently allowed. The setting does not reflect the availability of
+     * actual video capture devices, it just expresses the local policy (or
+     * desire of the user) to have the local video streamed in the case the
+     * system is actually able to do so.
+     *
+     * @return <tt>true</tt> if the streaming of local video for this
+     * <tt>Call</tt> is allowed; otherwise, <tt>false</tt>
+     */
+    public boolean isLocalVideoAllowed()
+    {
+        return localVideoAllowed;
+    }",False
+30,isLocalVideoStreaming(),Method,,net.java.sip.communicator.impl.protocol.sip.OperationSetVideoTelephonySipImpl+isLocalVideoStreaming(Call),net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+isLocalVideoStreaming() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+isLocalVideoStreaming(),,593,21,1,"/** 
+ * Determines whether we are currently streaming video toward at least one of the peers in this call.
+ * @return <tt>true</tt> if we are currently streaming video toward at leastone of the peers in this call and <tt>false</tt> otherwise.
+ */
+","/**
+     * Determines whether we are currently streaming video toward at least one
+     * of the peers in this call.
+     *
+     * @return <tt>true</tt> if we are currently streaming video toward at least
+     * one of the peers in this call and <tt>false</tt> otherwise.
+     */
+    public boolean isLocalVideoStreaming()
+    {
+
+        Iterator<CallPeerSipImpl> peers = getCallPeers();
+        while (peers.hasNext())
+        {
+            CallPeerSipImpl peer = peers.next();
+
+            if (peer.isLocalVideoStreaming())
+                return true;
+        }
+
+        return false;
+    }",False
+31,addVideoPropertyChangeListener(PropertyChangeListener),Method,,"net.java.sip.communicator.impl.protocol.sip.OperationSetVideoTelephonySipImpl+addPropertyChangeListener(Call,PropertyChangeListener)",net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+addVideoPropertyChangeListener(PropertyChangeListener) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+addVideoPropertyChangeListener(PropertyChangeListener),,765,19,1,"/** 
+ * Registers a <tt>listener</tt> with all <tt>CallPeer</tt> currently participating with the call so that it would be notified of changes in video related properties (e.g. <tt>LOCAL_VIDEO_STREAMING</tt>).
+ * @param listener the <tt>PropertyChangeListener</tt> to be notifiedwhen the properties associated with member <tt>CallPeer</tt>s change their values.
+ */
+","/**
+     * Registers a <tt>listener</tt> with all <tt>CallPeer</tt> currently
+     * participating with the call so that it would be notified of changes in
+     * video related properties (e.g. <tt>LOCAL_VIDEO_STREAMING</tt>).
+     *
+     * @param listener the <tt>PropertyChangeListener</tt> to be notified
+     * when the properties associated with member <tt>CallPeer</tt>s change
+     * their values.
+     */
+    public void addVideoPropertyChangeListener(
+                                          PropertyChangeListener listener)
+    {
+        Iterator<CallPeerSipImpl> peers = getCallPeers();
+        while (peers.hasNext())
+        {
+            CallPeerSipImpl peer = peers.next();
+            peer.addVideoPropertyChangeListener(listener);
+        }
+    }",False
+32,removeVideoPropertyChangeListener(PropertyChangeListener),Method,,"net.java.sip.communicator.impl.protocol.sip.OperationSetVideoTelephonySipImpl+removePropertyChangeListener(Call,PropertyChangeListener)",net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+removeVideoPropertyChangeListener(PropertyChangeListener) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+removeVideoPropertyChangeListener(PropertyChangeListener),,756,19,1,"/** 
+ * Removes <tt>listener</tt> from all <tt>CallPeer</tt>s currently participating with the call so that it won't receive furher notifications on changes in video related properties (e.g. <tt>LOCAL_VIDEO_STREAMING</tt>).
+ * @param listener the <tt>PropertyChangeListener</tt> to unregister frommember <tt>CallPeer</tt>s change their values.
+ */
+","/**
+     * Removes <tt>listener</tt> from all <tt>CallPeer</tt>s currently
+     * participating with the call so that it won't receive furher notifications
+     * on changes in video related properties (e.g.
+     * <tt>LOCAL_VIDEO_STREAMING</tt>).
+     *
+     * @param listener the <tt>PropertyChangeListener</tt> to unregister from
+     * member <tt>CallPeer</tt>s change their values.
+     */
+    public void removeVideoPropertyChangeListener(
+                                             PropertyChangeListener listener)
+    {
+        Iterator<CallPeerSipImpl> peers = getCallPeers();
+        while (peers.hasNext())
+        {
+            CallPeerSipImpl peer = peers.next();
+            peer.removeVideoPropertyChangeListener(listener);
+        }
+    }",False
+33,isConferenceFocus(),Method,getDefaultDevice(MediaType),"net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+reflectConferenceFocus(javax.sip.message.Message) net.java.sip.communicator.impl.protocol.sip.OperationSetTelephonyConferencingSipImpl+inviteCalleeToCall(Address,CallSipImpl)",,net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus,510,13,1,"/** 
+ * Gets the indicator which determines whether the local peer represented by this <tt>Call</tt> is acting as a conference focus and thus should send the &quot;isfocus&quot; parameter in the Contact headers of its outgoing SIP signaling.
+ * @return <tt>true</tt> if the local peer represented by this <tt>Call</tt>is acting as a conference focus; otherwise, <tt>false</tt>
+ */
+","/**
+     * Gets the indicator which determines whether the local peer represented by
+     * this <tt>Call</tt> is acting as a conference focus and thus should send
+     * the &quot;isfocus&quot; parameter in the Contact headers of its outgoing
+     * SIP signaling.
+     *
+     * @return <tt>true</tt> if the local peer represented by this <tt>Call</tt>
+     * is acting as a conference focus; otherwise, <tt>false</tt>
+     */
+    public boolean isConferenceFocus()
+    {
+        return conferenceFocus;
+    }",True
+34,setConferenceFocus(boolean),Method,,"net.java.sip.communicator.impl.protocol.sip.OperationSetTelephonyConferencingSipImpl+createConfCall(String[]) net.java.sip.communicator.impl.protocol.sip.OperationSetTelephonyConferencingSipImpl+inviteCalleeToCall(Address,CallSipImpl)","net.java.sip.communicator.service.protocol.Call+fireCallChangeEvent(String,Object,Object) net.java.sip.communicator.service.protocol.Call+fireCallChangeEvent(String,Object,Object)",net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceAudioMixer net.java.sip.communicator.service.protocol.event.CallChangeEvent+CALL_FOCUS_CHANGE net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceFocus,1136,30,0,"/** 
+ * Sets the indicator which determines whether the local peer represented by this <tt>Call</tt> is acting as a conference focus and thus should send the &quot;isfocus&quot; parameter in the Contact headers of its outgoing SIP signaling
+ * @param conferenceFocus <tt>true</tt> if the local peer represented bythis <tt>Call</tt> is to act as a conference focus; otherwise, <tt>false</tt>
+ */
+","/**
+     * Sets the indicator which determines whether the local peer represented by
+     * this <tt>Call</tt> is acting as a conference focus and thus should send
+     * the &quot;isfocus&quot; parameter in the Contact headers of its outgoing
+     * SIP signaling
+     *
+     * @param conferenceFocus <tt>true</tt> if the local peer represented by
+     * this <tt>Call</tt> is to act as a conference focus; otherwise,
+     * <tt>false</tt>
+     */
+    void setConferenceFocus(boolean conferenceFocus)
+    {
+        if (this.conferenceFocus != conferenceFocus)
+        {
+            this.conferenceFocus = conferenceFocus;
+
+            /*
+             * If this Call switches from being a conference focus to not being
+             * one, dispose of the audio mixer used when it was a conference
+             * focus.
+             */
+            if (!this.conferenceFocus)
+                conferenceAudioMixer = null;
+
+            // fire that the focus property has changed
+            fireCallChangeEvent(
+                CallChangeEvent.CALL_FOCUS_CHANGE,
+                !this.conferenceFocus, this.conferenceFocus);
+        }
+    }",True
+35,getDefaultDevice(MediaType),Method,,net.java.sip.communicator.impl.protocol.sip.CallPeerMediaHandlerSipImpl+getDefaultDevice(MediaType),"net.java.sip.communicator.impl.protocol.sip.SipActivator+getMediaService() net.java.sip.communicator.impl.protocol.sip.SipActivator+getMediaService() net.java.sip.communicator.service.neomedia.MediaService+getDefaultDevice(MediaType,MediaUseCase) net.java.sip.communicator.service.neomedia.MediaService+getDefaultDevice(MediaType,MediaUseCase) net.java.sip.communicator.impl.protocol.sip.CallSipImpl+isConferenceFocus() net.java.sip.communicator.impl.protocol.sip.CallSipImpl+isConferenceFocus() net.java.sip.communicator.service.neomedia.MediaService+createMixer(MediaDevice) net.java.sip.communicator.service.neomedia.MediaService+createMixer(MediaDevice)",net.java.sip.communicator.impl.protocol.sip.CallSipImpl+mediaUseCase net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceAudioMixer net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceAudioMixer net.java.sip.communicator.impl.protocol.sip.CallSipImpl+conferenceAudioMixer,1544,36,0,"/** 
+ * Gets a <tt>MediaDevice</tt> which is capable of capture and/or playback of media of the specified <tt>MediaType</tt>, is the default choice of the user for a <tt>MediaDevice</tt> with the specified <tt>MediaType</tt> and is appropriate for the current state of this <tt>Call</tt>. <p> For example, when the local peer represented by this <tt>Call</tt> instance is acting as a conference focus, the audio device must be a mixer. </p>
+ * @param mediaType the <tt>MediaType</tt> in which the retrieved<tt>MediaDevice</tt> is to capture and/or play back media
+ * @return a <tt>MediaDevice</tt> which is capable of capture and/orplayback of media of the specified <tt>mediaType</tt>, is the default choice of the user for a <tt>MediaDevice</tt> with the specified <tt>mediaType</tt> and is appropriate for the current state of this <tt>Call</tt>
+ */
+","/**
+     * Gets a <tt>MediaDevice</tt> which is capable of capture and/or playback
+     * of media of the specified <tt>MediaType</tt>, is the default choice of
+     * the user for a <tt>MediaDevice</tt> with the specified <tt>MediaType</tt>
+     * and is appropriate for the current state of this <tt>Call</tt>.
+     * <p>
+     * For example, when the local peer represented by this <tt>Call</tt>
+     * instance is acting as a conference focus, the audio device must be a
+     * mixer.
+     * </p>
+     *
+     * @param mediaType the <tt>MediaType</tt> in which the retrieved
+     * <tt>MediaDevice</tt> is to capture and/or play back media
+     * @return a <tt>MediaDevice</tt> which is capable of capture and/or
+     * playback of media of the specified <tt>mediaType</tt>, is the default
+     * choice of the user for a <tt>MediaDevice</tt> with the specified
+     * <tt>mediaType</tt> and is appropriate for the current state of this
+     * <tt>Call</tt>
+     */
+    MediaDevice getDefaultDevice(MediaType mediaType)
+    {
+        MediaService mediaService = SipActivator.getMediaService();
+        MediaDevice device = mediaService.getDefaultDevice(mediaType,
+                mediaUseCase);
+
+        if (MediaType.AUDIO.equals(mediaType) && isConferenceFocus())
+        {
+            if (conferenceAudioMixer == null)
+            {
+                if (device != null)
+                    conferenceAudioMixer = mediaService.createMixer(device);
+            }
+            return conferenceAudioMixer;
+        }
+        return device;
+    }",True
+36,addLocalUserSoundLevelListener(SoundLevelListener),Method,,,java.util.List+size() java.util.List+size() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalUserAudioLevelListener(SimpleAudioLevelListener) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalUserAudioLevelListener(SimpleAudioLevelListener) java.util.List+add(E) java.util.List+add(E),net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localAudioLevelDelegator net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners,1522,35,1,"/** 
+ * Adds a specific <tt>SoundLevelListener</tt> to the list of listeners interested in and notified about changes in local sound level related information. When the first listener is being registered the method also registers its single listener with the call peer media handlers so that it would receive level change events and delegate them to the listeners that have registered with us.
+ * @param l the <tt>SoundLevelListener</tt> to add
+ */
+","/**
+     * Adds a specific <tt>SoundLevelListener</tt> to the list of
+     * listeners interested in and notified about changes in local sound level
+     * related information. When the first listener is being registered the
+     * method also registers its single listener with the call peer media
+     * handlers so that it would receive level change events and delegate them
+     * to the listeners that have registered with us.
+     *
+     * @param l the <tt>SoundLevelListener</tt> to add
+     */
+    public void addLocalUserSoundLevelListener(SoundLevelListener l)
+    {
+        synchronized(localUserAudioLevelListeners)
+        {
+
+            if (localUserAudioLevelListeners.size() == 0)
+            {
+                //if this is the first listener that's being registered with
+                //us, we also need to register ourselves as an audio level
+                //listener with the media handler. we do this so that audio
+                //level would only be calculated if anyone is interested in
+                //receiving them.
+                Iterator<CallPeerSipImpl> cps = getCallPeers();
+                while (cps.hasNext())
+                {
+                    CallPeerSipImpl callPeerSipImpl = cps.next();
+                    callPeerSipImpl.getMediaHandler()
+                            .setLocalUserAudioLevelListener(
+                                                localAudioLevelDelegator);
+                }
+            }
+
+            localUserAudioLevelListeners.add(l);
+        }
+    }",True
+37,removeLocalUserSoundLevelListener(SoundLevelListener),Method,,,java.util.List+add(E) java.util.List+add(E) java.util.List+size() java.util.List+size() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalUserAudioLevelListener(SimpleAudioLevelListener) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+getMediaHandler() net.java.sip.communicator.service.protocol.media.CallPeerMediaHandler+setLocalUserAudioLevelListener(SimpleAudioLevelListener),net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners,1322,31,1,"/** 
+ * Removes a specific <tt>SoundLevelListener</tt> from the list of listeners interested in and notified about changes in local sound level related information. If <tt>l</tt> is the last listener that we had here we are also going to unregister our own level event delegator in order to stop level calculations.
+ * @param l the <tt>SoundLevelListener</tt> to remove
+ */
+","/**
+     * Removes a specific <tt>SoundLevelListener</tt> from the list of
+     * listeners interested in and notified about changes in local sound level
+     * related information. If <tt>l</tt> is the last listener that we had here
+     * we are also going to unregister our own level event delegator in order
+     * to stop level calculations.
+     *
+     * @param l the <tt>SoundLevelListener</tt> to remove
+     */
+    public void removeLocalUserSoundLevelListener(SoundLevelListener l)
+    {
+        synchronized(localUserAudioLevelListeners)
+        {
+            localUserAudioLevelListeners.add(l);
+
+            if (localUserAudioLevelListeners.size() == 0)
+            {
+                //if this was the last listener that was registered with us then
+                //no long need to have a delegator registered with the call
+                //peer media handlers. We therefore remove it so that audio
+                //level calculations would be ceased.
+                Iterator<CallPeerSipImpl> cps = getCallPeers();
+                while (cps.hasNext())
+                {
+                    CallPeerSipImpl callPeerSipImpl = cps.next();
+                    callPeerSipImpl.getMediaHandler()
+                            .setLocalUserAudioLevelListener(null);
+                }
+            }
+        }
+    }",True
+38,fireLocalUserAudioLevelChangeEvent(int),Method,,,"net.java.sip.communicator.service.protocol.event.SoundLevelChangeEvent+SoundLevelChangeEvent(Object,int) net.java.sip.communicator.service.protocol.event.SoundLevelListener+soundLevelChanged(SoundLevelChangeEvent) net.java.sip.communicator.service.protocol.event.SoundLevelListener+soundLevelChanged(SoundLevelChangeEvent)",net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners net.java.sip.communicator.impl.protocol.sip.CallSipImpl+localUserAudioLevelListeners,680,18,2,"/** 
+ * Notified by its very majesty the media service about changes in the audio level of the local user, this listener generates the corresponding events and delivers them to the listeners that have registered here.
+ * @param newLevel the new audio level of the local user.
+ */
+","/**
+     * Notified by its very majesty the media service about changes in the
+     * audio level of the local user, this listener generates the corresponding
+     * events and delivers them to the listeners that have registered here.
+     *
+     * @param newLevel the new audio level of the local user.
+     */
+    private void fireLocalUserAudioLevelChangeEvent(int newLevel)
+    {
+        SoundLevelChangeEvent evt
+            = new SoundLevelChangeEvent(this, newLevel);
+
+        synchronized( localUserAudioLevelListeners )
+        {
+            for(SoundLevelListener listener : localUserAudioLevelListeners)
+                 listener.soundLevelChanged(evt);
+        }
+    }",True
+39,isMute(),Method,,"net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+processAck(ServerTransaction,Request) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+processAck(ServerTransaction,Request) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+processInviteOK(ClientTransaction,Response) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+processInviteOK(ClientTransaction,Response)",,net.java.sip.communicator.impl.protocol.sip.CallSipImpl+mute net.java.sip.communicator.impl.protocol.sip.CallSipImpl+mute,269,10,1,"/** 
+ * Determines whether this call is mute.
+ * @return <tt>true</tt> if an audio streams being sent to the callpeers are currently muted; <tt>false</tt>, otherwise
+ */
+","/**
+     * Determines whether this call is mute.
+     *
+     * @return <tt>true</tt> if an audio streams being sent to the call
+     *         peers are currently muted; <tt>false</tt>, otherwise
+     */
+    public boolean isMute()
+    {
+        return this.mute;
+    }",True
+40,setMute(boolean),Method,,"net.java.sip.communicator.impl.protocol.sip.OperationSetBasicTelephonySipImpl+setMute(Call,boolean)",net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() net.java.sip.communicator.service.protocol.AbstractCall+getCallPeers() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setMute(boolean) net.java.sip.communicator.impl.protocol.sip.CallPeerSipImpl+setMute(boolean),net.java.sip.communicator.impl.protocol.sip.CallSipImpl+mute net.java.sip.communicator.impl.protocol.sip.CallSipImpl+mute net.java.sip.communicator.impl.protocol.sip.CallSipImpl+mute net.java.sip.communicator.impl.protocol.sip.CallSipImpl+mute,518,19,1,"/** 
+ * Sets the mute property for this call.
+ * @param newMuteValue the new value of the mute property for this call
+ */
+","/**
+     * Sets the mute property for this call.
+     *
+     * @param newMuteValue the new value of the mute property for this call
+     */
+    public void setMute(boolean newMuteValue)
+    {
+        if (this.mute != newMuteValue)
+        {
+            this.mute = newMuteValue;
+
+            Iterator<CallPeerSipImpl> peers = getCallPeers();
+            while (peers.hasNext())
+            {
+                CallPeerSipImpl peer = peers.next();
+                peer.setMute(newMuteValue);
+            }
+        }
+    }",True

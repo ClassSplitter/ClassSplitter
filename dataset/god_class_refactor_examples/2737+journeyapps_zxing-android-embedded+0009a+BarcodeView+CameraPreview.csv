@@ -1,0 +1,443 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,StateListener,MemberClass,,,com.journeyapps.barcodescanner.BarcodeView.StateListener+previewReady(),,75,3,9,,"public static interface StateListener {
+    public void previewReady();
+  }",False
+2,DecodeMode,Field,,,,,29,1,9,,public static enum DecodeMode,False
+3,PreviewScaleMode,Field,,,,,35,1,9,,public static enum PreviewScaleMode,False
+4,TAG,Field,,,,,68,1,26,"/** 
+ * Drop the preview inside the BarcodeView (default). It will fill all available space, but sections may be cut off.
+ */
+",private static final String TAG = BarcodeView.class.getSimpleName();,True
+5,cameraInstance,Field,,,,,38,1,2,,private CameraInstance cameraInstance;,True
+6,hasSurface,Field,,,,,27,1,2,,private boolean hasSurface;,True
+7,activity,Field,,,,,26,1,2,,private Activity activity;,True
+8,decoderThread,Field,setDecoder(Decoder) setDecoder(Decoder),,,,36,1,2,,private DecoderThread decoderThread;,True
+9,resultHandler,Field,,,,,30,1,2,,private Handler resultHandler;,True
+10,decoder,Field,setDecoder(Decoder),,,,24,1,2,,private Decoder decoder;,True
+11,decodeMode,Field,decodeSingle(BarcodeCallback) decodeContinuous(BarcodeCallback) stopDecoding(),,,,48,1,2,,private DecodeMode decodeMode = DecodeMode.NONE;,False
+12,callback,Field,decodeSingle(BarcodeCallback) decodeContinuous(BarcodeCallback) stopDecoding(),,,,40,1,2,,private BarcodeCallback callback = null;,False
+13,surfaceView,Field,,,,,32,1,2,,private SurfaceView surfaceView;,True
+14,previewActive,Field,,,,,38,1,2,,private boolean previewActive = false;,True
+15,rotationListener,Field,,,,,42,1,2,,private RotationListener rotationListener;,True
+16,stateListeners,Field,,,,,63,1,2,,private List<StateListener> stateListeners = new ArrayList<>();,True
+17,previewScaleMode,Field,setPreviewScaleMode(PreviewScaleMode),,,,66,1,2,,private PreviewScaleMode previewScaleMode = PreviewScaleMode.CROP;,True
+18,containerRect,Field,containerSized(Rect) pause(),,,,27,1,2,,private Rect containerRect;,True
+19,previewSize,Field,previewSized(Point) pause(),,,,26,1,2,,private Point previewSize;,True
+20,surfaceRect,Field,,,,,25,1,2,,private Rect surfaceRect;,True
+21,framingRect,Field,,,,,32,1,2,,private Rect framingRect = null;,True
+22,previewFramingRect,Field,pause(),,,,39,1,2,,private Rect previewFramingRect = null;,True
+23,surfaceCallback,Field,,,,,786,27,18,,"private final SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+      hasSurface = false;
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+      if (holder == null) {
+        Log.e(TAG, ""*** WARNING *** surfaceChanged() gave us a null surface!"");
+        return;
+      }
+      if(!hasSurface && surfaceRect != null) {
+        if(surfaceRect.width() == width && surfaceRect.height() == height) {
+          // We're only ready if the surface has the correct size
+          hasSurface = true;
+          startPreviewIfReady();
+        }
+      }
+    }
+  };
+
+",True
+24,BarcodeView(Context),Method,,,"com.journeyapps.barcodescanner.BarcodeView+initialize(Context,AttributeSet,int,int) com.journeyapps.barcodescanner.BarcodeView+initialize(Context,AttributeSet,int,int)",,98,4,1,,"public BarcodeView(Context context) {
+    super(context);
+    initialize(context, null, 0, 0);
+  }",False
+25,"BarcodeView(Context,AttributeSet)",Method,,,"com.journeyapps.barcodescanner.BarcodeView+initialize(Context,AttributeSet,int,int) com.journeyapps.barcodescanner.BarcodeView+initialize(Context,AttributeSet,int,int)",,126,4,1,,"public BarcodeView(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    initialize(context, attrs, 0, 0);
+  }",False
+26,"BarcodeView(Context,AttributeSet,int)",Method,,,"com.journeyapps.barcodescanner.BarcodeView+initialize(Context,AttributeSet,int,int) com.journeyapps.barcodescanner.BarcodeView+initialize(Context,AttributeSet,int,int)",,169,4,1,,"public BarcodeView(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    initialize(context, attrs, defStyleAttr, 0);
+  }",False
+27,"initialize(Context,AttributeSet,int,int)",Method,"BarcodeView(Context) BarcodeView(Context,AttributeSet) BarcodeView(Context,AttributeSet,int)",,java.lang.Object+Object() com.journeyapps.barcodescanner.BarcodeView+createDefaultDecoder() com.journeyapps.barcodescanner.BarcodeView+createDefaultDecoder() com.journeyapps.barcodescanner.BarcodeView+setupSurfaceView() com.journeyapps.barcodescanner.BarcodeView+setupSurfaceView() com.journeyapps.barcodescanner.RotationListener+RotationListener(Context) +onRotationChanged(int),com.journeyapps.barcodescanner.BarcodeView+activity com.journeyapps.barcodescanner.BarcodeView+resultHandler com.journeyapps.barcodescanner.BarcodeView+resultCallback com.journeyapps.barcodescanner.BarcodeView+decoder com.journeyapps.barcodescanner.BarcodeView+rotationListener,568,21,2,,"private void initialize(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    if(getBackground() == null) {
+      // Default to SurfaceView colour, so that there are less changes.
+      setBackgroundColor(Color.BLACK);
+    }
+
+    activity = (Activity) context;
+
+    resultHandler = new Handler(resultCallback);
+
+    decoder = createDefaultDecoder();
+
+    setupSurfaceView();
+
+    rotationListener = new RotationListener(context) {
+      @Override
+      public void onRotationChanged(int rotation) {
+        rotationChanged();
+      }
+    };
+  }",True
+28,rotationChanged(),Method,,,com.journeyapps.barcodescanner.BarcodeView+pause() com.journeyapps.barcodescanner.BarcodeView+pause() com.journeyapps.barcodescanner.BarcodeView+resume() com.journeyapps.barcodescanner.BarcodeView+resume(),,63,4,2,,"private void rotationChanged() {
+    pause();
+    resume();
+  }",True
+29,setupSurfaceView(),Method,"initialize(Context,AttributeSet,int,int)",,java.lang.Object+Object(),com.journeyapps.barcodescanner.BarcodeView+surfaceView com.journeyapps.barcodescanner.BarcodeView+surfaceView com.journeyapps.barcodescanner.BarcodeView+surfaceCallback com.journeyapps.barcodescanner.BarcodeView+surfaceView,170,5,2,,"private void setupSurfaceView() {
+    surfaceView = new SurfaceView(getContext());
+    surfaceView.getHolder().addCallback(surfaceCallback);
+    addView(surfaceView);
+  }",True
+30,setDecoder(Decoder),Method,,,com.journeyapps.barcodescanner.Util+validateMainThread() com.journeyapps.barcodescanner.Util+validateMainThread() com.journeyapps.barcodescanner.DecoderThread+setDecoder(Decoder) com.journeyapps.barcodescanner.DecoderThread+setDecoder(Decoder),com.journeyapps.barcodescanner.BarcodeView+decoder com.journeyapps.barcodescanner.BarcodeView+decoder com.journeyapps.barcodescanner.BarcodeView+decoderThread com.journeyapps.barcodescanner.BarcodeView+decoderThread com.journeyapps.barcodescanner.BarcodeView+decoderThread com.journeyapps.barcodescanner.BarcodeView+decoderThread,539,18,1,"/** 
+ * Set the Decoder to use. Use this for more advanced customization of the decoding process, when Decoder#setReader() is not enough. The decoder's decode method will only be called from a dedicated DecoderThread. Call this from UI thread only.
+ * @param decoder the decoder used to decode barcodes.
+ */
+","/**
+   * Set the Decoder to use. Use this for more advanced customization of the decoding process,
+   * when Decoder#setReader() is not enough.
+   *
+   * The decoder's decode method will only be called from a dedicated DecoderThread.
+   *
+   * Call this from UI thread only.
+   *
+   * @param decoder the decoder used to decode barcodes.
+   */
+  public void setDecoder(Decoder decoder) {
+    Util.validateMainThread();
+
+    this.decoder = decoder;
+    if(this.decoderThread != null) {
+      this.decoderThread.setDecoder(decoder);
+    }
+  }",False
+31,getDecoder(),Method,,,,com.journeyapps.barcodescanner.BarcodeView+decoder,53,3,1,,"public Decoder getDecoder() {
+    return decoder;
+  }",False
+32,addStateListener(StateListener),Method,,com.journeyapps.barcodescanner.ViewfinderView+setBarcodeView(BarcodeView),java.util.List+add(E) java.util.List+add(E),com.journeyapps.barcodescanner.BarcodeView+stateListeners,92,3,1,,"public void addStateListener(StateListener listener) {
+    stateListeners.add(listener);
+  }",True
+33,firePreviewReady(),Method,calculateFrames(),,com.journeyapps.barcodescanner.BarcodeView.StateListener+previewReady() com.journeyapps.barcodescanner.BarcodeView.StateListener+previewReady(),com.journeyapps.barcodescanner.BarcodeView+stateListeners,126,5,2,,"private void firePreviewReady() {
+    for (StateListener listener : stateListeners) {
+      listener.previewReady();
+    }
+  }",True
+34,getPreviewScaleMode(),Method,,,,com.journeyapps.barcodescanner.BarcodeView+previewScaleMode,80,3,1,,"public PreviewScaleMode getPreviewScaleMode() {
+    return previewScaleMode;
+  }",True
+35,setPreviewScaleMode(PreviewScaleMode),Method,,,,com.journeyapps.barcodescanner.BarcodeView+previewScaleMode com.journeyapps.barcodescanner.BarcodeView+previewScaleMode,310,8,1,"/** 
+ * Set the scale mode of the preview, when the aspect ratio is different from the BarcodeView.
+ * @param previewScaleMode PreviewScaleMode.CROP or PreviewScaleMode.CENTER
+ */
+","/**
+   * Set the scale mode of the preview, when the aspect ratio is different from the BarcodeView.
+   *
+   * @param previewScaleMode PreviewScaleMode.CROP or PreviewScaleMode.CENTER
+   */
+  public void setPreviewScaleMode(PreviewScaleMode previewScaleMode) {
+    this.previewScaleMode = previewScaleMode;
+  }",False
+36,decodeSingle(BarcodeCallback),Method,,com.journeyapps.barcodescanner.CaptureActivity2+triggerScan(View),com.journeyapps.barcodescanner.BarcodeView+startDecoderThread() com.journeyapps.barcodescanner.BarcodeView+startDecoderThread(),com.journeyapps.barcodescanner.BarcodeView+decodeMode com.journeyapps.barcodescanner.BarcodeView+decodeMode com.journeyapps.barcodescanner.BarcodeView+DecodeMode com.journeyapps.barcodescanner.BarcodeView+callback com.journeyapps.barcodescanner.BarcodeView+callback,367,12,1,"/** 
+ * Decode a single barcode, then stop decoding. The callback will only be called on the UI thread.
+ * @param callback called with the barcode result, as well as possible ResultPoints
+ */
+","/**
+   * Decode a single barcode, then stop decoding.
+   *
+   * The callback will only be called on the UI thread.
+   *
+   * @param callback called with the barcode result, as well as possible ResultPoints
+   */
+  public void decodeSingle(BarcodeCallback callback) {
+    this.decodeMode = DecodeMode.SINGLE;
+    this.callback = callback;
+    startDecoderThread();
+  }",False
+37,decodeContinuous(BarcodeCallback),Method,,com.journeyapps.barcodescanner.CaptureActivity2+onCreate(Bundle),com.journeyapps.barcodescanner.BarcodeView+startDecoderThread() com.journeyapps.barcodescanner.BarcodeView+startDecoderThread(),com.journeyapps.barcodescanner.BarcodeView+decodeMode com.journeyapps.barcodescanner.BarcodeView+decodeMode com.journeyapps.barcodescanner.BarcodeView+DecodeMode com.journeyapps.barcodescanner.BarcodeView+callback com.journeyapps.barcodescanner.BarcodeView+callback,420,12,1,"/** 
+ * Continuously decode barcodes. The same barcode may be returned multiple times per second. The callback will only be called on the UI thread.
+ * @param callback called with the barcode result, as well as possible ResultPoints
+ */
+","/**
+   * Continuously decode barcodes. The same barcode may be returned multiple times per second.
+   *
+   * The callback will only be called on the UI thread.
+   *
+   * @param callback called with the barcode result, as well as possible ResultPoints
+   */
+  public void decodeContinuous(BarcodeCallback callback) {
+    this.decodeMode = DecodeMode.CONTINUOUS;
+    this.callback = callback;
+    startDecoderThread();
+  }",False
+38,stopDecoding(),Method,,,com.journeyapps.barcodescanner.BarcodeView+stopDecoderThread() com.journeyapps.barcodescanner.BarcodeView+stopDecoderThread(),com.journeyapps.barcodescanner.BarcodeView+decodeMode com.journeyapps.barcodescanner.BarcodeView+decodeMode com.journeyapps.barcodescanner.BarcodeView+DecodeMode com.journeyapps.barcodescanner.BarcodeView+callback com.journeyapps.barcodescanner.BarcodeView+callback,183,8,1,"/** 
+ * Stop decoding, but do not stop the preview.
+ */
+","/**
+   * Stop decoding, but do not stop the preview.
+   */
+  public void stopDecoding() {
+    this.decodeMode = DecodeMode.NONE;
+    this.callback = null;
+    stopDecoderThread();
+  }",False
+39,resultCallback,Field,,,,,1032,27,18,,"private final Handler.Callback resultCallback = new Handler.Callback() {
+    @Override
+    public boolean handleMessage(Message message) {
+      if(message.what == R.id.zxing_decode_succeeded) {
+        Result result = (Result) message.obj;
+
+        if(result != null) {
+          if(callback != null && decodeMode != DecodeMode.NONE) {
+            callback.barcodeResult(result);
+            if(decodeMode == DecodeMode.SINGLE) {
+              stopDecoding();
+            }
+          }
+        }
+      } else if(message.what == R.id.zxing_decode_failed) {
+        // Failed. Next preview is automatically tried.
+      } else if(message.what == R.id.zxing_possible_result_points) {
+        List<ResultPoint> resultPoints = (List<ResultPoint>) message.obj;
+        if(callback != null && decodeMode != DecodeMode.NONE) {
+          callback.possibleResultPoints(resultPoints);
+        }
+      } else if(message.what == R.id.zxing_prewiew_size_ready) {
+        previewSized((Point)message.obj);
+      }
+      return false;
+    }
+  };
+
+",False
+40,createDefaultDecoder(),Method,"initialize(Context,AttributeSet,int,int)",,com.journeyapps.barcodescanner.Decoder+Decoder(Reader),,338,8,4,,"protected Decoder createDefaultDecoder() {
+    MultiFormatReader defaultReader = new MultiFormatReader();
+    Map<DecodeHintType, Object> hints = new HashMap<>();
+    Decoder decoder = new Decoder(defaultReader);
+    hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, decoder);
+    defaultReader.setHints(hints);
+    return decoder;
+  }",False
+41,calculateFrames(),Method,previewSized(Point),,"java.lang.IllegalStateException+IllegalStateException(String) com.journeyapps.barcodescanner.BarcodeView+calculateFramingRect(Rect,Rect) com.journeyapps.barcodescanner.BarcodeView+calculateFramingRect(Rect,Rect) java.lang.Object+Object() java.lang.Object+Object() com.journeyapps.barcodescanner.BarcodeView+firePreviewReady() com.journeyapps.barcodescanner.BarcodeView+firePreviewReady()",com.journeyapps.barcodescanner.BarcodeView+containerRect com.journeyapps.barcodescanner.BarcodeView+previewSize com.journeyapps.barcodescanner.BarcodeView+previewFramingRect com.journeyapps.barcodescanner.BarcodeView+framingRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+previewSize com.journeyapps.barcodescanner.BarcodeView+previewSize com.journeyapps.barcodescanner.BarcodeView+containerRect com.journeyapps.barcodescanner.BarcodeView+containerRect com.journeyapps.barcodescanner.BarcodeView+previewScaleMode com.journeyapps.barcodescanner.BarcodeView+PreviewScaleMode com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+framingRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+framingRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+previewFramingRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+previewFramingRect com.journeyapps.barcodescanner.BarcodeView+previewFramingRect com.journeyapps.barcodescanner.BarcodeView+previewFramingRect com.journeyapps.barcodescanner.BarcodeView+framingRect com.journeyapps.barcodescanner.BarcodeView+TAG,1775,43,2,,"private void calculateFrames() {
+    if(containerRect == null || previewSize == null) {
+      previewFramingRect = null;
+      framingRect = null;
+      surfaceRect = null;
+      throw new IllegalStateException(""containerRect or previewSize is not set yet"");
+    }
+
+    int previewWidth = previewSize.x;
+    int previewHeight = previewSize.y;
+
+    int width = containerRect.width();
+    int height = containerRect.height();
+
+    // Either crop or center the SurfaceView.
+    boolean center = (previewScaleMode == PreviewScaleMode.CENTER);
+    if (center ^ (width * previewHeight < height * previewWidth)) {
+      final int scaledChildWidth = previewWidth * height / previewHeight;
+      surfaceRect = new Rect((width - scaledChildWidth) / 2, 0, (width + scaledChildWidth) / 2, height);
+    } else {
+      final int scaledChildHeight = previewHeight * width / previewWidth;
+      surfaceRect = new Rect(0, (height - scaledChildHeight) / 2,
+              width, (height + scaledChildHeight) / 2);
+    }
+
+    Rect container = new Rect(0, 0, width, height);
+    framingRect = calculateFramingRect(container, surfaceRect);
+    Rect frameInPreview = new Rect(framingRect);
+    frameInPreview.offset(-surfaceRect.left, -surfaceRect.top);
+
+    previewFramingRect = new Rect(frameInPreview.left * previewWidth / surfaceRect.width(),
+            frameInPreview.top * previewHeight / surfaceRect.height(),
+            frameInPreview.right * previewWidth / surfaceRect.width(),
+            frameInPreview.bottom * previewHeight / surfaceRect.height());
+
+    if(previewFramingRect.width() <= 0 || previewFramingRect.height() <= 0) {
+      previewFramingRect = null;
+      framingRect = null;
+      Log.w(TAG, ""Preview frame is too small"");
+    } else {
+      firePreviewReady();
+    }
+  }",True
+42,containerSized(Rect),Method,"onLayout(boolean,int,int,int,int)",,com.journeyapps.barcodescanner.camera.CameraInstance+getDisplayConfiguration() com.journeyapps.barcodescanner.camera.CameraInstance+getDisplayConfiguration() com.journeyapps.barcodescanner.camera.CameraInstance+setDisplayConfiguration(DisplayConfiguration) com.journeyapps.barcodescanner.camera.CameraInstance+setDisplayConfiguration(DisplayConfiguration) com.journeyapps.barcodescanner.camera.DisplayConfiguration+DisplayConfiguration(int) com.journeyapps.barcodescanner.BarcodeView+getDisplayRotation() com.journeyapps.barcodescanner.BarcodeView+getDisplayRotation() java.lang.Object+Object() com.journeyapps.barcodescanner.camera.CameraInstance+configureCamera() com.journeyapps.barcodescanner.camera.CameraInstance+configureCamera(),com.journeyapps.barcodescanner.BarcodeView+containerRect com.journeyapps.barcodescanner.BarcodeView+containerRect com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+cameraInstance,382,9,2,,"private void containerSized(Rect container) {
+    this.containerRect = container;
+    if(cameraInstance != null) {
+      if (cameraInstance.getDisplayConfiguration() == null) {
+        cameraInstance.setDisplayConfiguration(new DisplayConfiguration(getDisplayRotation(), new Point(container.width(), container.height())));
+        cameraInstance.configureCamera();
+      }
+    }
+  }",True
+43,previewSized(Point),Method,,,com.journeyapps.barcodescanner.BarcodeView+calculateFrames() com.journeyapps.barcodescanner.BarcodeView+calculateFrames() com.journeyapps.barcodescanner.BarcodeView+startPreviewIfReady() com.journeyapps.barcodescanner.BarcodeView+startPreviewIfReady(),com.journeyapps.barcodescanner.BarcodeView+previewSize com.journeyapps.barcodescanner.BarcodeView+previewSize com.journeyapps.barcodescanner.BarcodeView+containerRect,187,8,2,,"private void previewSized(Point size) {
+    this.previewSize = size;
+    if(containerRect != null) {
+      calculateFrames();
+      requestLayout();
+      startPreviewIfReady();
+    }
+  }",True
+44,startPreviewIfReady(),Method,previewSized(Point) resume(),,com.journeyapps.barcodescanner.BarcodeView+startCameraPreview(SurfaceHolder) com.journeyapps.barcodescanner.BarcodeView+startCameraPreview(SurfaceHolder),com.journeyapps.barcodescanner.BarcodeView+hasSurface com.journeyapps.barcodescanner.BarcodeView+previewSize com.journeyapps.barcodescanner.BarcodeView+surfaceView,141,5,2,,"private void startPreviewIfReady() {
+    if(hasSurface && previewSize != null) {
+      startCameraPreview(surfaceView.getHolder());
+    }
+  }",True
+45,"onLayout(boolean,int,int,int,int)",Method,,,com.journeyapps.barcodescanner.BarcodeView+containerSized(Rect) com.journeyapps.barcodescanner.BarcodeView+containerSized(Rect),com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+surfaceView com.journeyapps.barcodescanner.BarcodeView+surfaceView com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect com.journeyapps.barcodescanner.BarcodeView+surfaceRect,514,13,4,,"@SuppressLint(""DrawAllocation"")
+  @Override
+  protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    containerSized(new Rect(0, 0, r - l, b - t));
+
+    if (surfaceRect == null) {
+      // Match the container, to reduce the risk of issues. The preview should never be drawn
+      // while the surface has this size.
+      surfaceView.layout(0, 0, getWidth(), getHeight());
+    } else {
+      surfaceView.layout(surfaceRect.left, surfaceRect.top, surfaceRect.right, surfaceRect.bottom);
+    }
+  }",True
+46,getFramingRect(),Method,,com.journeyapps.barcodescanner.ViewfinderView+onDraw(Canvas) com.journeyapps.barcodescanner.ViewfinderView+onDraw(Canvas),,com.journeyapps.barcodescanner.BarcodeView+framingRect,58,3,1,,"public Rect getFramingRect() {
+    return framingRect;
+  }",True
+47,getPreviewFramingRect(),Method,,com.journeyapps.barcodescanner.ViewfinderView+onDraw(Canvas) com.journeyapps.barcodescanner.ViewfinderView+onDraw(Canvas),,com.journeyapps.barcodescanner.BarcodeView+previewFramingRect,72,3,1,,"public Rect getPreviewFramingRect() {
+    return previewFramingRect;
+  }",True
+48,resume(),Method,rotationChanged(),com.journeyapps.barcodescanner.CaptureActivity2+orientationChanged() com.journeyapps.barcodescanner.CaptureActivity2+onResume() com.journeyapps.barcodescanner.CaptureActivity2+resume(View),com.journeyapps.barcodescanner.Util+validateMainThread() com.journeyapps.barcodescanner.Util+validateMainThread() com.journeyapps.barcodescanner.BarcodeView+initCamera() com.journeyapps.barcodescanner.BarcodeView+initCamera() com.journeyapps.barcodescanner.BarcodeView+startPreviewIfReady() com.journeyapps.barcodescanner.BarcodeView+startPreviewIfReady(),com.journeyapps.barcodescanner.BarcodeView+hasSurface com.journeyapps.barcodescanner.BarcodeView+surfaceView com.journeyapps.barcodescanner.BarcodeView+surfaceCallback com.journeyapps.barcodescanner.BarcodeView+rotationListener,823,26,1,"/** 
+ * Start the camera preview and decoding. Typically this should be called from the Activity's onResume() method. Call from UI thread only.
+ */
+","/**
+   * Start the camera preview and decoding. Typically this should be called from the Activity's
+   * onResume() method.
+   *
+   * Call from UI thread only.
+   */
+  public void resume() {
+    // This must be safe to call multiple times
+    Util.validateMainThread();
+
+    // initCamera() does nothing if called twice, but does log a warning
+    initCamera();
+
+    if (hasSurface) {
+      // The activity was paused but not stopped, so the surface still exists. Therefore
+      // surfaceCreated() won't be called, so init the camera here.
+      startPreviewIfReady();
+    } else {
+      // Install the callback and wait for surfaceCreated() to init the camera.
+      surfaceView.getHolder().addCallback(surfaceCallback);
+    }
+
+    // To trigger surfaceSized again
+    requestLayout();
+    rotationListener.enable();
+  }",True
+49,pause(),Method,rotationChanged(),com.journeyapps.barcodescanner.CaptureActivity2+orientationChanged() com.journeyapps.barcodescanner.CaptureActivity2+onPause() com.journeyapps.barcodescanner.CaptureActivity2+pause(View),com.journeyapps.barcodescanner.Util+validateMainThread() com.journeyapps.barcodescanner.Util+validateMainThread() com.journeyapps.barcodescanner.BarcodeView+stopDecoderThread() com.journeyapps.barcodescanner.BarcodeView+stopDecoderThread() com.journeyapps.barcodescanner.camera.CameraInstance+close() com.journeyapps.barcodescanner.camera.CameraInstance+close(),com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+previewActive com.journeyapps.barcodescanner.BarcodeView+hasSurface com.journeyapps.barcodescanner.BarcodeView+surfaceView com.journeyapps.barcodescanner.BarcodeView+surfaceCallback com.journeyapps.barcodescanner.BarcodeView+containerRect com.journeyapps.barcodescanner.BarcodeView+containerRect com.journeyapps.barcodescanner.BarcodeView+previewSize com.journeyapps.barcodescanner.BarcodeView+previewSize com.journeyapps.barcodescanner.BarcodeView+previewFramingRect com.journeyapps.barcodescanner.BarcodeView+previewFramingRect com.journeyapps.barcodescanner.BarcodeView+rotationListener,698,27,1,"/** 
+ * Pause scanning and the camera preview. Typically this should be called from the Activity's onPause() method. Call from UI thread only.
+ */
+","/**
+   * Pause scanning and the camera preview. Typically this should be called from the Activity's
+   * onPause() method.
+   *
+   * Call from UI thread only.
+   */
+  public void pause() {
+    // This must be safe to call multiple times.
+    Util.validateMainThread();
+
+    stopDecoderThread();
+
+    if(cameraInstance != null) {
+      cameraInstance.close();
+      cameraInstance = null;
+      previewActive = false;
+    }
+    if (!hasSurface) {
+      SurfaceHolder surfaceHolder = surfaceView.getHolder();
+      surfaceHolder.removeCallback(surfaceCallback);
+    }
+
+    this.containerRect = null;
+    this.previewSize = null;
+    this.previewFramingRect = null;
+    rotationListener.disable();
+  }",True
+50,getDisplayRotation(),Method,,,,com.journeyapps.barcodescanner.BarcodeView+activity,112,3,2,,"private int getDisplayRotation() {
+    return activity.getWindowManager().getDefaultDisplay().getRotation();
+  }",True
+51,initCamera(),Method,resume(),,com.journeyapps.barcodescanner.camera.CameraInstance+CameraInstance(Context) com.journeyapps.barcodescanner.camera.CameraInstance+setReadyHandler(Handler) com.journeyapps.barcodescanner.camera.CameraInstance+setReadyHandler(Handler) com.journeyapps.barcodescanner.camera.CameraInstance+open() com.journeyapps.barcodescanner.camera.CameraInstance+open(),com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+decoderThread com.journeyapps.barcodescanner.BarcodeView+TAG com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+resultHandler com.journeyapps.barcodescanner.BarcodeView+cameraInstance,289,11,2,,"private void initCamera() {
+    if(cameraInstance != null || decoderThread != null) {
+      Log.w(TAG, ""initCamera called twice"");
+      return;
+    }
+
+    cameraInstance = new CameraInstance(getContext());
+
+    cameraInstance.setReadyHandler(resultHandler);
+    cameraInstance.open();
+  }",True
+52,stopDecoderThread(),Method,stopDecoding() pause() startDecoderThread(),,com.journeyapps.barcodescanner.DecoderThread+stop() com.journeyapps.barcodescanner.DecoderThread+stop(),com.journeyapps.barcodescanner.BarcodeView+decoderThread com.journeyapps.barcodescanner.BarcodeView+decoderThread com.journeyapps.barcodescanner.BarcodeView+decoderThread,132,6,2,,"private void stopDecoderThread() {
+    if(decoderThread != null) {
+      decoderThread.stop();
+      decoderThread = null;
+    }
+  }",False
+53,startCameraPreview(SurfaceHolder),Method,startPreviewIfReady(),,com.journeyapps.barcodescanner.camera.CameraInstance+setSurfaceHolder(SurfaceHolder) com.journeyapps.barcodescanner.camera.CameraInstance+setSurfaceHolder(SurfaceHolder) com.journeyapps.barcodescanner.camera.CameraInstance+startPreview() com.journeyapps.barcodescanner.camera.CameraInstance+startPreview() com.journeyapps.barcodescanner.BarcodeView+startDecoderThread() com.journeyapps.barcodescanner.BarcodeView+startDecoderThread(),com.journeyapps.barcodescanner.BarcodeView+previewActive com.journeyapps.barcodescanner.BarcodeView+TAG com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+previewActive,267,10,2,,"private void startCameraPreview(SurfaceHolder holder) {
+    if(!previewActive) {
+      Log.i(TAG, ""Starting preview"");
+      cameraInstance.setSurfaceHolder(holder);
+      cameraInstance.startPreview();
+      previewActive = true;
+    }
+
+    startDecoderThread();
+  }",True
+54,startDecoderThread(),Method,decodeSingle(BarcodeCallback) decodeContinuous(BarcodeCallback) startCameraPreview(SurfaceHolder),,"com.journeyapps.barcodescanner.BarcodeView+stopDecoderThread() com.journeyapps.barcodescanner.BarcodeView+stopDecoderThread() com.journeyapps.barcodescanner.DecoderThread+DecoderThread(CameraInstance,Decoder,Handler) com.journeyapps.barcodescanner.DecoderThread+setCropRect(Rect) com.journeyapps.barcodescanner.DecoderThread+setCropRect(Rect) com.journeyapps.barcodescanner.DecoderThread+start() com.journeyapps.barcodescanner.DecoderThread+start()",com.journeyapps.barcodescanner.BarcodeView+decodeMode com.journeyapps.barcodescanner.BarcodeView+DecodeMode com.journeyapps.barcodescanner.BarcodeView+previewActive com.journeyapps.barcodescanner.BarcodeView+decoderThread com.journeyapps.barcodescanner.BarcodeView+cameraInstance com.journeyapps.barcodescanner.BarcodeView+decoder com.journeyapps.barcodescanner.BarcodeView+resultHandler com.journeyapps.barcodescanner.BarcodeView+decoderThread com.journeyapps.barcodescanner.BarcodeView+previewFramingRect com.journeyapps.barcodescanner.BarcodeView+decoderThread,305,9,2,,"private void startDecoderThread() {
+    stopDecoderThread(); // To be safe
+
+    if(decodeMode != DecodeMode.NONE && previewActive) {
+      decoderThread = new DecoderThread(cameraInstance, decoder, resultHandler);
+      decoderThread.setCropRect(previewFramingRect);
+      decoderThread.start();
+    }
+  }",True
+55,"calculateFramingRect(Rect,Rect)",Method,calculateFrames(),,"java.lang.Object+Object() java.lang.Math+min(int,int) java.lang.Math+min(int,int)",,815,20,4,"/** 
+ * Calculate framing rectangle, relative to the preview frame.
+ * @param container this container, with left = top = 0
+ * @param surface the SurfaceView, relative to this container
+ * @return the framing rect, relative to this container
+ */
+","/**
+   * Calculate framing rectangle, relative to the preview frame.
+   *
+   * @param container this container, with left = top = 0
+   * @param surface the SurfaceView, relative to this container
+   * @return the framing rect, relative to this container
+   */
+  protected Rect calculateFramingRect(Rect container, Rect surface) {
+    Rect intersection = new Rect(container);
+    intersection.intersect(surface);
+
+    // margin as 10% of the smaller of width, height
+    int margin = Math.min(intersection.width() / 10, intersection.height() / 10);
+    intersection.inset(margin, margin);
+    if(intersection.height() > intersection.width()) {
+      // We don't want a frame that is taller than wide.
+      intersection.inset(0, (intersection.height() - intersection.width()) / 2);
+    }
+    return intersection;
+  }",True
+56,displayFrameworkBugMessageAndExit(),Method,,,java.lang.Object+Object() com.google.zxing.client.android.FinishListener+FinishListener(Activity) com.google.zxing.client.android.FinishListener+FinishListener(Activity),com.journeyapps.barcodescanner.BarcodeView+activity com.journeyapps.barcodescanner.BarcodeView+activity,457,8,2,,"private void displayFrameworkBugMessageAndExit() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+    builder.setTitle(getContext().getString(R.string.zxing_app_name));
+    builder.setMessage(getContext().getString(R.string.zxing_msg_camera_framework_bug));
+    builder.setPositiveButton(R.string.zxing_button_ok, new FinishListener(activity));
+    builder.setOnCancelListener(new FinishListener(activity));
+    builder.show();
+  }",True

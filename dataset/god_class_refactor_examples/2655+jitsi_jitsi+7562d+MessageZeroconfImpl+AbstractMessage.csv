@@ -1,0 +1,361 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,textContent,Field,"MessageZeroconfImpl(String,String,String,int)",,,,85,4,2,"/** 
+ * The actual message content.
+ */
+","/**
+     * The actual message content.
+     */
+    private String textContent = null;",True
+2,contentType,Field,"MessageZeroconfImpl(String,String,String,int)",,,,90,4,2,"/** 
+ * The content type of the message.
+ */
+","/**
+     * The content type of the message.
+     */
+    private String contentType = null;",True
+3,contentEncoding,Field,"MessageZeroconfImpl(String,String,String,int)",,,,99,4,2,"/** 
+ * The message encoding. (UTF8 if null).
+ */
+","/**
+     * The message encoding. (UTF8 if null).
+     */
+    private String contentEncoding = null;",True
+4,messageUID,Field,"MessageZeroconfImpl(String,String,String,int)",,,,98,4,2,"/** 
+ * A String uniquely identifying the message
+ */
+","/**
+     * A String uniquely identifying the message
+     */
+    private String messageUID = null;",True
+5,subject,Field,,,,,102,4,2,"/** 
+ * The subject of the message. (most often is null)
+ */
+","/**
+     * The subject of the message. (most often is null)
+     */
+    private String subject = null;",True
+6,type,Field,"MessageZeroconfImpl(String,String,String,int)",,,,54,4,2,"/** 
+ * Message Type.
+ */
+","/**
+     * Message Type.
+     */
+    private int type;",False
+7,STREAM_OPEN,Field,,,,,120,4,25,"/** 
+ * Message type indicating that a stream is being created
+ */
+","/**
+     * Message type indicating that a stream is being created
+     */
+    public static final int STREAM_OPEN = 0x1;",False
+8,MESSAGE,Field,,,,,81,4,25,"/** 
+ * Normal chat message
+ */
+","/**
+     * Normal chat message
+     */
+    public static final int MESSAGE = 0x2;",False
+9,TYPING,Field,,,,,80,4,25,"/** 
+ * Typing notification
+ */
+","/**
+     * Typing notification
+     */
+    public static final int TYPING = 0x3;",False
+10,STREAM_CLOSE,Field,,,,,117,4,25,"/** 
+ * Message indicating that the stream is being closed
+ */
+","/**
+     * Message indicating that the stream is being closed
+     */
+    public static final int STREAM_CLOSE = 0x4;",False
+11,DELIVERED,Field,,,,,136,4,25,"/** 
+ * Message indicating that the previsous message was delivered successfully
+ */
+","/**
+     * Message indicating that the previsous message was delivered successfully
+     */
+    public static final int DELIVERED = 0x5;",False
+12,UNDEF,Field,,,,,77,4,25,"/** 
+ * Undefined message
+ */
+","/**
+     * Undefined message
+     */
+    public static final int UNDEF = 0x6;",False
+13,baloonColor,Field,setBaloonColor(int),,,,35,1,2,,private int baloonColor = 0x7BB5EE;,False
+14,textColor,Field,setTextColor(int),,,,33,1,2,,private int textColor = 0x000000;,False
+15,textFont,Field,setTextFont(String),,,,38,1,2,,"private String textFont = ""Helvetica"";",False
+16,textSize,Field,setTextSize(int),,,,26,1,2,,private int textSize = 12;,False
+17,contactID,Field,setContactID(String),,,,25,1,2,,private String contactID;,False
+18,"MessageZeroconfImpl(String,String,String,int)",Method,,,java.lang.String+valueOf(long) java.lang.String+valueOf(long) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.String+valueOf(int) java.lang.String+valueOf(int) java.lang.Object+hashCode() java.lang.Object+hashCode(),net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textContent net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textContent net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+contentEncoding net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+contentEncoding net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+contentType net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+contentType net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+type net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+type net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+messageUID net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+messageUID,758,21,1,"/** 
+ * Creates a message instance according to the specified parameters.
+ * @param type Type of message
+ * @param content the message body
+ * @param contentType of the message
+ * @param contentEncoding message encoding or null for UTF8
+ */
+","/**
+     * Creates a message instance according to the specified parameters.
+     * @param type Type of message
+     * @param content the message body
+     * @param contentType of the message
+     * @param contentEncoding message encoding or null for UTF8
+     */
+    public MessageZeroconfImpl(String content,
+                               String contentEncoding,
+                               String contentType,
+                               int type)
+    {
+        this.textContent = content;
+        this.contentEncoding = contentEncoding;
+        this.contentType = contentType;
+        this.type = type;
+
+        //generate the uid
+        this.messageUID = String.valueOf(System.currentTimeMillis())
+            + String.valueOf(hashCode());
+    }",False
+19,"MessageZeroconfImpl(String,String,int)",Method,,,,net.java.sip.communicator.service.protocol.OperationSetBasicInstantMessaging+DEFAULT_MIME_TYPE,515,15,1,"/** 
+ * Creates a message instance according to the specified parameters.
+ * @param type Type of message
+ * @param content the message body
+ * @param contentEncoding message encoding or null for UTF8
+ */
+","/**
+     * Creates a message instance according to the specified parameters.
+     * @param type Type of message
+     * @param content the message body
+     * @param contentEncoding message encoding or null for UTF8
+     */
+    public MessageZeroconfImpl(String content,
+                               String contentEncoding,
+                               int type)
+    {
+        this(content, 
+            contentEncoding, 
+            OperationSetBasicInstantMessaging.DEFAULT_MIME_TYPE, 
+            type);
+    }",False
+20,getContent(),Method,getRawData() getSize(),net.java.sip.communicator.impl.protocol.zeroconf.ClientThread+toXHTML(MessageZeroconfImpl) net.java.sip.communicator.impl.protocol.zeroconf.ClientThread+toXHTML(MessageZeroconfImpl) net.java.sip.communicator.impl.protocol.zeroconf.ClientThread+toXHTML(MessageZeroconfImpl) net.java.sip.communicator.impl.protocol.zeroconf.ClientThread+toXHTML(MessageZeroconfImpl) net.java.sip.communicator.impl.protocol.zeroconf.ClientThread+toXHTML(MessageZeroconfImpl) net.java.sip.communicator.impl.protocol.zeroconf.ClientThread+sendMessage(MessageZeroconfImpl),,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textContent,158,9,1,"/** 
+ * Returns the message body.
+ * @return the message content.
+ */
+","/**
+     * Returns the message body.
+     *
+     * @return the message content.
+     */
+    public String getContent()
+    {
+        return textContent;
+    }",True
+21,getContentType(),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+contentType,205,9,1,"/** 
+ * Returns the type of the content of this message.
+ * @return the type of the content of this message.
+ */
+","/**
+     * Returns the type of the content of this message.
+     *
+     * @return the type of the content of this message.
+     */
+    public String getContentType()
+    {
+        return contentType;
+    }",True
+22,getEncoding(),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+contentEncoding,201,9,1,"/** 
+ * Returns the encoding used for the message content.
+ * @return the encoding of the message body.
+ */
+","/**
+     * Returns the encoding used for the message content.
+     *
+     * @return the encoding of the message body.
+     */
+    public String getEncoding()
+    {
+        return contentEncoding;
+    }",True
+23,getMessageUID(),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+messageUID,208,9,1,"/** 
+ * A string uniquely identifying the message.
+ * @return a <tt>String</tt> uniquely identifying the message.
+ */
+","/**
+     * A string uniquely identifying the message.
+     *
+     * @return a <tt>String</tt> uniquely identifying the message.
+     */
+    public String getMessageUID()
+    {
+        return messageUID;
+    }",True
+24,getRawData(),Method,,,java.lang.String+getBytes() net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+getContent() net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+getContent() java.lang.String+getBytes(),,220,9,1,"/** 
+ * Returns the message body in a binary form.
+ * @return a <tt>byte[]</tt> representation of the message body.
+ */
+","/**
+     * Returns the message body in a binary form.
+     *
+     * @return a <tt>byte[]</tt> representation of the message body.
+     */
+    public byte[] getRawData()
+    {
+        return getContent().getBytes();
+    }",True
+25,getSize(),Method,,,java.lang.String+length() net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+getContent() net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+getContent() java.lang.String+length(),,178,9,1,"/** 
+ * Return the length of this message.
+ * @return the length of this message.
+ */
+","/**
+     * Return the length of this message.
+     *
+     * @return the length of this message.
+     */
+    public int getSize()
+    {
+        return getContent().length();
+    }",True
+26,getSubject(),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+subject,166,8,1,"/** 
+ * Returns the subject of the message. ALWAYS null in Zeroconf
+ * @return null
+ */
+","/**
+     * Returns the subject of the message. ALWAYS null in Zeroconf
+     * @return null
+     */
+    public String getSubject() 
+    {
+        return subject;
+    }",True
+27,getType(),Method,,net.java.sip.communicator.impl.protocol.zeroconf.ClientThread+handleMessage(MessageZeroconfImpl) net.java.sip.communicator.impl.protocol.zeroconf.ClientThread+toXHTML(MessageZeroconfImpl) net.java.sip.communicator.impl.protocol.zeroconf.ClientThread+toXHTML(MessageZeroconfImpl),,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+type,167,8,1,"/** 
+ * Returns the type of message. Always text/plain for Zeroconf, so null.
+ * @return null
+ */
+","/**
+     * Returns the type of message. Always text/plain for Zeroconf, so null.
+     * @return null
+     */
+    public int getType() 
+    {
+        return type;
+    }",False
+28,getBaloonColor(),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+baloonColor,188,8,1,"/** 
+ * Gets the baloon color declared in messages sent by iChat-like clients
+ * @return baloon color
+ */
+","/**
+     * Gets the baloon color declared in messages sent by iChat-like clients
+     * @return baloon color
+     */
+    public int getBaloonColor()
+    {
+        return baloonColor;
+    }",False
+29,setBaloonColor(int),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+baloonColor net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+baloonColor,228,8,1,"/** 
+ * Sets the baloon color declared in messages sent by iChat-like clients
+ * @param baloonColor baloon color
+ */
+","/**
+     * Sets the baloon color declared in messages sent by iChat-like clients
+     * @param baloonColor baloon color
+     */
+    public void setBaloonColor(int baloonColor) 
+    {
+        this.baloonColor = baloonColor;
+    }",False
+30,getTextColor(),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textColor,136,8,1,"/** 
+ * Returns the text color
+ * @return Text color
+ */
+","/**
+     * Returns the text color
+     * @return Text color
+     */
+    public int getTextColor() 
+    {
+        return textColor;
+    }",False
+31,setTextColor(int),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textColor net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textColor,166,8,1,"/** 
+ * Sets the text color
+ * @param textColor Text color
+ */
+","/**
+     * Sets the text color
+     * @param textColor Text color
+     */
+    public void setTextColor(int textColor) 
+    {
+        this.textColor = textColor;
+    }",False
+32,getTextFont(),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textFont,135,8,1,"/** 
+ * Returns the text font
+ * @return Text font
+ */
+","/**
+     * Returns the text font
+     * @return Text font
+     */
+    public String getTextFont() 
+    {
+        return textFont;
+    }",False
+33,setTextFont(String),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textFont net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textFont,163,8,1,"/** 
+ * Sets the text color
+ * @param textFont Text font
+ */
+","/**
+     * Sets the text color
+     * @param textFont Text font
+     */
+    public void setTextFont(String textFont) 
+    {
+        this.textFont = textFont;
+    }",False
+34,getTextSize(),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textSize,132,8,1,"/** 
+ * Returns the text size
+ * @return Text size
+ */
+","/**
+     * Returns the text size
+     * @return Text size
+     */
+    public int getTextSize() 
+    {
+        return textSize;
+    }",False
+35,setTextSize(int),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textSize net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+textSize,159,8,1,"/** 
+ * Sets the text size
+ * @param textSize Text size
+ */
+","/**
+     * Sets the text size
+     * @param textSize Text size
+     */
+    public void setTextSize(int textSize) 
+    {
+        this.textSize = textSize;
+    }",False
+36,getContactID(),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+contactID,167,8,1,"/** 
+ * Returns the contact's ID
+ * @return String representing the contact's ID
+ */
+","/**
+     * Returns the contact's ID
+     * @return String representing the contact's ID
+     */
+    public String getContactID() 
+    {
+        return contactID;
+    }",False
+37,setContactID(String),Method,,,,net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+contactID net.java.sip.communicator.impl.protocol.zeroconf.MessageZeroconfImpl+contactID,197,8,1,"/** 
+ * Sets the contact's ID
+ * @param contactID String representing the contact's ID
+ */
+","/**
+     * Sets the contact's ID
+     * @param contactID String representing the contact's ID
+     */
+    public void setContactID(String contactID) 
+    {
+        this.contactID = contactID;
+    }",False

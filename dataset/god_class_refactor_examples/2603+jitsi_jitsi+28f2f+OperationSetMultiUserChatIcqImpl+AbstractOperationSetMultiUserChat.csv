@@ -1,0 +1,715 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,logger,Field,,,,,106,2,26,,"private static final Logger logger = Logger
+           .getLogger(OperationSetMultiUserChatIcqImpl.class);",False
+2,icqProvider,Field,OperationSetMultiUserChatIcqImpl(ProtocolProviderServiceIcqImpl),,,,144,4,2,"/** 
+ * The currently valid ICQ protocol provider service implementation.
+ */
+","/**
+    * The currently valid ICQ protocol provider service implementation.
+    */
+   private ProtocolProviderServiceIcqImpl icqProvider = null;",False
+3,invitationListeners,Field,,,,,141,4,2,"/** 
+ * A list of listeners subscribed for invitations multi user chat events.
+ */
+","/**
+    * A list of listeners subscribed for invitations multi user chat events.
+    */
+   private Vector invitationListeners = new Vector();",True
+4,invitationRejectionListeners,Field,,,,,192,5,2,"/** 
+ * A list of listeners subscribed for events indicating rejection of a multi user chat invitation sent by us.
+ */
+","/**
+    * A list of listeners subscribed for events indicating rejection of a
+    * multi user chat invitation sent by us.
+    */
+   private Vector invitationRejectionListeners = new Vector();",True
+5,presenceListeners,Field,,,,,206,5,2,"/** 
+ * Listeners that will be notified of changes in our status in the room such as us being kicked, banned, or granted admin permissions.
+ */
+","/**
+    * Listeners that will be notified of changes in our status in the
+    * room such as us being kicked, banned, or granted admin permissions.
+    */
+   private Vector presenceListeners = new Vector();",True
+6,chatRoomCache,Field,getCurrentlyJoinedChatRooms() getCurrentlyJoinedChatRooms(ChatRoomMember),,,,247,6,2,"/** 
+ * A list of the rooms that are currently open by this account. Note that we have not necessarily joined these rooms, we might have simply been searching through them.
+ */
+","/**
+    * A list of the rooms that are currently open by this account. Note that
+    * we have not necessarily joined these rooms, we might have simply been
+    * searching through them.
+    */
+   private Hashtable chatRoomCache = new Hashtable();",False
+7,providerRegListener,Field,,,,,218,6,2,"/** 
+ * The registration listener that would get notified when the underlying ICQ provider gets registered.
+ */
+","/**
+   * The registration listener that would get notified when the underlying
+   * ICQ provider gets registered.
+   */
+   private RegistrationStateListener providerRegListener
+       = new RegistrationStateListener();",False
+8,opSetPersPresence,Field,,,,,225,5,4,"/** 
+ * A reference to the persistent presence operation set that we use to match incoming messages to <tt>Contact</tt>s and vice versa.
+ */
+","/**
+   * A reference to the persistent presence operation set that we use
+   * to match incoming messages to <tt>Contact</tt>s and vice versa.
+   */
+   protected OperationSetPersistentPresenceIcqImpl opSetPersPresence = null;",False
+9,invitations,Field,,,,,174,5,2,"/** 
+ * Hash table that contains all invitations, this is needed if the user wants to reject an invitation.
+ */
+","/**
+    * Hash table that contains all invitations, this is needed if the user wants
+    * to reject an invitation.
+    */
+   private Hashtable invitations = new Hashtable();",False
+10,DEFAULT_INVITATION,Field,,,,,118,4,18,"/** 
+ * Default Invitation message.
+ */
+","/**
+    * Default Invitation message.
+    */
+   private final String DEFAULT_INVITATION = ""Please join my chat room!"";",False
+11,OperationSetMultiUserChatIcqImpl(ProtocolProviderServiceIcqImpl),Method,,,net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+addRegistrationStateChangeListener(RegistrationStateChangeListener) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+addRegistrationStateChangeListener(RegistrationStateChangeListener) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.OperationSetPresence+addSubscriptionListener(SubscriptionListener) net.java.sip.communicator.service.protocol.OperationSetPresence+addSubscriptionListener(SubscriptionListener),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+icqProvider net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+icqProvider net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+providerRegListener,648,17,0,"/** 
+ * Instantiates the user operation set with a currently valid instance of the Icq protocol provider.
+ * @param icqProvider a currently valid instance ofProtocolProviderServiceIcqImpl.
+ */
+","/**
+   * Instantiates the user operation set with a currently valid instance of
+   * the Icq protocol provider.
+   * @param icqProvider a currently valid instance of
+   * ProtocolProviderServiceIcqImpl.
+   */
+   OperationSetMultiUserChatIcqImpl(ProtocolProviderServiceIcqImpl icqProvider)
+   {
+       this.icqProvider = icqProvider;
+       icqProvider.addRegistrationStateChangeListener(providerRegListener);
+
+       OperationSetPersistentPresence presenceOpSet
+           = (OperationSetPersistentPresence) icqProvider
+               .getOperationSet(OperationSetPersistentPresence.class);
+
+       presenceOpSet.addSubscriptionListener(this);
+   }",False
+12,addInvitationListener(ChatRoomInvitationListener),Method,,,java.util.Vector+contains(Object) java.util.Vector+contains(Object) java.util.Vector+add(E) java.util.Vector+add(E),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationListeners,359,13,1,"/** 
+ * Adds a listener to invitation notifications.
+ * @param listener an invitation listener.
+ */
+","/**
+   * Adds a listener to invitation notifications.
+   *
+   * @param listener an invitation listener.
+   */
+   public void addInvitationListener(ChatRoomInvitationListener listener)
+   {
+       synchronized (invitationListeners)
+       {
+           if (!invitationListeners.contains(listener))
+               invitationListeners.add(listener);
+       }
+   }",True
+13,addInvitationRejectionListener(ChatRoomInvitationRejectionListener),Method,,,java.util.Vector+contains(Object) java.util.Vector+contains(Object) java.util.Vector+add(E) java.util.Vector+add(E),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationRejectionListeners,569,16,1,"/** 
+ * Subscribes <tt>listener</tt> so that it would receive events indicating rejection of a multi user chat invitation that we've sent earlier.
+ * @param listener the listener that we'll subscribe for invitationrejection events.
+ */
+","/**
+    * Subscribes <tt>listener</tt> so that it would receive events indicating
+    * rejection of a multi user chat invitation that we've sent earlier.
+    *
+    * @param listener the listener that we'll subscribe for invitation
+    * rejection events.
+    */
+   public void addInvitationRejectionListener(
+           ChatRoomInvitationRejectionListener listener)
+   {
+       synchronized (invitationRejectionListeners)
+       {
+           if (!invitationRejectionListeners.contains(listener))
+               invitationRejectionListeners.add(listener);
+       }
+   }",True
+14,addPresenceListener(LocalUserChatRoomPresenceListener),Method,,,java.util.Vector+contains(Object) java.util.Vector+contains(Object) java.util.Vector+add(E) java.util.Vector+add(E),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+presenceListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+presenceListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+presenceListeners,469,14,1,"/** 
+ * Adds a listener that will be notified of changes in our status in a chat room such as us being kicked, banned or dropped.
+ * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+ */
+","/**
+    * Adds a listener that will be notified of changes in our status in a chat
+    * room such as us being kicked, banned or dropped.
+    *
+    * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+    */
+   public void addPresenceListener(LocalUserChatRoomPresenceListener listener)
+   {
+       synchronized (presenceListeners)
+       {
+           if (!presenceListeners.contains(listener))
+               presenceListeners.add(listener);
+       }
+   }",True
+15,findRoom(ChatInvitation),Method,"ChatRoomManagerListenerImpl.handleInvitation(ChatRoomManager,ChatInvitation)",,java.util.Hashtable+get(Object) java.util.Hashtable+get(Object) net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getRoomName() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getRoomName() net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+createLocalChatRoomInstance(ChatInvitation) net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+createLocalChatRoomInstance(ChatInvitation),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache,1031,26,1,"/** 
+ * Returns a reference to a chatRoom by an given chat invitation. This method is called, when the user received a chat invitation. The chat room will be created and the chatInvitation will be saved in the created chat room. This ensures to get the chat room session for each chat room.
+ * @param chatInvitation The Chat invitation the user received
+ * @return A chat room based on the chat invitation
+ * @throws OperationFailedException if an error occurs while trying todiscover the room on the server.
+ * @throws OperationNotSupportedException if the server does not supportmulti user chat
+ */
+","/**
+   * Returns a reference to a chatRoom by an given chat invitation. This method
+   * is called, when the user received a chat invitation. The chat room will be
+   * created and the chatInvitation will be saved in the created chat room. This
+   * ensures to get the chat room session for each chat room.
+   * 
+   * @param chatInvitation The Chat invitation the user received
+   * @return A chat room based on the chat invitation
+   * @throws OperationFailedException if an error occurs while trying to
+   * discover the room on the server.
+   * @throws OperationNotSupportedException if the server does not support
+   * multi user chat
+   */
+   public ChatRoom findRoom(ChatInvitation chatInvitation)
+           throws OperationFailedException, OperationNotSupportedException
+   {
+       ChatRoom chatRoom = (ChatRoom) chatRoomCache.get(chatInvitation
+               .getRoomName());
+
+       if (chatRoom == null)
+       {
+           chatRoom = createLocalChatRoomInstance(chatInvitation);
+       }
+
+       return chatRoom;
+   }",False
+16,createLocalChatRoomInstance(ChatInvitation),Method,findRoom(ChatInvitation),,"net.java.sip.communicator.impl.protocol.icq.ChatRoomIcqImpl+ChatRoomIcqImpl(ChatInvitation,ProtocolProviderServiceIcqImpl) java.util.Hashtable+put(K,V) java.util.Hashtable+put(K,V) net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getRoomName() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getRoomName()",net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+icqProvider net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache,616,21,2,"/** 
+ * Creates a <tt>ChatRoom</tt> from the specified smack <tt>MultiUserChat</tt>.
+ * @param chatInvitation The chat invitation we received from thechatRoomManager
+ * @return ChatRoom the chat room that we've just created.
+ */
+","/**
+    * Creates a <tt>ChatRoom</tt> from the specified smack
+    * <tt>MultiUserChat</tt>.
+    *
+    * @param chatInvitation The chat invitation we received from the
+    * chatRoomManager
+    *
+    * @return ChatRoom the chat room that we've just created.
+    */
+
+   private ChatRoom createLocalChatRoomInstance(ChatInvitation chatInvitation)
+   {
+       synchronized (chatRoomCache)
+       {
+           ChatRoom newChatRoom = new ChatRoomIcqImpl(chatInvitation,
+                   icqProvider);
+
+           chatRoomCache.put(chatInvitation.getRoomName(), newChatRoom);
+           return newChatRoom;
+       }
+   }",False
+17,"createChatRoom(String,Map<String,Object>)",Method,,,"net.kano.joustsim.oscar.AimConnection+getChatRoomManager() net.java.sip.communicator.impl.protocol.icq.ProtocolProviderServiceIcqImpl+getAimConnection() net.java.sip.communicator.impl.protocol.icq.ProtocolProviderServiceIcqImpl+getAimConnection() net.kano.joustsim.oscar.AimConnection+getChatRoomManager() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatRoomManager+joinRoom(String) net.kano.joustsim.oscar.oscar.service.chatrooms.ChatRoomManager+joinRoom(String) net.java.sip.communicator.impl.protocol.icq.ChatRoomIcqImpl+ChatRoomIcqImpl(String,ChatRoomSession,ProtocolProviderServiceIcqImpl)",net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+icqProvider net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+icqProvider,1515,38,1,"/** 
+ * Creates a room with the named <tt>roomName</tt> and according to the specified <tt>roomProperties</tt> on the server that this protocol provider is currently connected to.
+ * @param roomName the name of the <tt>ChatRoom</tt> to create.
+ * @param roomProperties properties specifying how the room should becreated. Contains list of invitees and the invitation message.
+ * @throws OperationFailedException if the room couldn't be created forsome reason (e.g. room already exists; user already joined to an existent room or user has no permissions to create a chat room).
+ * @throws OperationNotSupportedException if chat room creation is notsupported by this server
+ * @return ChatRoom the chat room that we've just created.
+ */
+","/**
+    * Creates a room with the named <tt>roomName</tt> and according to the
+    * specified <tt>roomProperties</tt> on the server that this protocol
+    * provider is currently connected to.
+    *
+    * @param roomName the name of the <tt>ChatRoom</tt> to create.
+    * @param roomProperties properties specifying how the room should be
+    *   created. Contains list of invitees and the invitation message.
+    *
+    * @throws OperationFailedException if the room couldn't be created for
+    * some reason (e.g. room already exists; user already joined to an
+    * existent room or user has no permissions to create a chat room).
+    * @throws OperationNotSupportedException if chat room creation is not
+    * supported by this server
+    *
+    * @return ChatRoom the chat room that we've just created.
+    */
+   public ChatRoom createChatRoom( String roomName,
+                                   Map<String, Object> roomProperties)
+           throws  OperationFailedException,
+                   OperationNotSupportedException
+   {
+       ChatRoom chatRoom = null;
+
+       ChatRoomManager chatRoomManager = icqProvider.getAimConnection()
+               .getChatRoomManager();
+
+       ChatRoomSession chatRoomSession = chatRoomManager.joinRoom(roomName);
+
+       if(chatRoomSession != null)
+       {
+           chatRoom = new ChatRoomIcqImpl(  roomName,
+                                            chatRoomSession,
+                                            icqProvider);
+       }
+
+       return chatRoom;
+   }",False
+18,findRoom(String),Method,,,java.util.Hashtable+get(Object) java.util.Hashtable+get(Object),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache,799,22,1,"/** 
+ * Returns a reference to a chatRoom named <tt>roomName</tt> or null if no such room exists.
+ * @param roomName the name of the <tt>ChatRoom</tt> that we're lookingfor.
+ * @return the <tt>ChatRoom</tt> named <tt>roomName</tt> or null if nosuch room exists on the server that this provider is currently connected to.
+ * @throws OperationFailedException if an error occurs while trying todiscover the room on the server.
+ * @throws OperationNotSupportedException if the server does not supportmulti user chat
+ */
+","/**
+    * Returns a reference to a chatRoom named <tt>roomName</tt> or null if
+    * no such room exists.
+    *
+    * @param roomName the name of the <tt>ChatRoom</tt> that we're looking
+    *   for.
+    * @return the <tt>ChatRoom</tt> named <tt>roomName</tt> or null if no
+    *   such room exists on the server that this provider is currently
+    *   connected to.
+    * @throws OperationFailedException if an error occurs while trying to
+    * discover the room on the server.
+    * @throws OperationNotSupportedException if the server does not support
+    * multi user chat
+    */
+
+   public ChatRoom findRoom(String roomName) throws OperationFailedException,
+           OperationNotSupportedException
+   {
+       ChatRoom room = (ChatRoom) chatRoomCache.get(roomName);
+
+       return room;
+   }",False
+19,getCurrentlyJoinedChatRooms(),Method,,,java.util.LinkedList+LinkedList(Collection) java.util.Hashtable+values() java.util.Hashtable+values() java.util.List+iterator() java.util.List+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() java.util.Iterator+remove() java.util.Iterator+remove(),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache,677,24,1,"/** 
+ * Returns a list of the chat rooms that we have joined and are currently active in.
+ * @return a <tt>List</tt> of the rooms where the user has joined usinga given connection.
+ */
+","/**
+    * Returns a list of the chat rooms that we have joined and are currently
+    * active in.
+    *
+    * @return a <tt>List</tt> of the rooms where the user has joined using
+    *   a given connection.
+    */
+   public List getCurrentlyJoinedChatRooms()
+   {
+       synchronized (chatRoomCache)
+       {
+           List joinedRooms = new LinkedList(this.chatRoomCache.values());
+
+           Iterator joinedRoomsIter = joinedRooms.iterator();
+
+           while (joinedRoomsIter.hasNext())
+           {
+               if (!((ChatRoom) joinedRoomsIter.next()).isJoined())
+                   joinedRoomsIter.remove();
+           }
+
+           return joinedRooms;
+       }
+   }",False
+20,getCurrentlyJoinedChatRooms(ChatRoomMember),Method,,,java.util.LinkedList+LinkedList(Collection) java.util.Hashtable+values() java.util.Hashtable+values() java.util.List+iterator() java.util.List+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.ChatRoom+isJoined() java.util.Iterator+remove() java.util.Iterator+remove(),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache,1141,32,1,"/** 
+ * Returns a list of the names of all chat rooms that <tt>contact</tt> is currently a  member of.
+ * @param contact the contact whose current ChatRooms we will bequerying.
+ * @return a list of <tt>String</tt> indicating the names of  the chat roomsthat <tt>contact</tt> has joined and is currently active in.
+ * @throws OperationFailedException if an error occurs while trying todiscover the room on the server.
+ * @throws OperationNotSupportedException if the server does not supportmulti user chat
+ */
+","/**
+    * Returns a list of the names of all chat rooms that <tt>contact</tt> is
+    * currently a  member of.
+    *
+    * @param contact the contact whose current ChatRooms we will be
+    *   querying.
+    * @return a list of <tt>String</tt> indicating the names of  the chat rooms
+    * that <tt>contact</tt> has joined and is currently active in.
+    *
+    * @throws OperationFailedException if an error occurs while trying to
+    * discover the room on the server.
+    * @throws OperationNotSupportedException if the server does not support
+    * multi user chat
+    */
+   public List getCurrentlyJoinedChatRooms(ChatRoomMember chatRoomMember)
+           throws OperationFailedException, OperationNotSupportedException
+   {
+       synchronized (chatRoomCache)
+       {
+           List joinedRooms = new LinkedList(this.chatRoomCache.values());
+
+           Iterator joinedRoomsIter = joinedRooms.iterator();
+
+           while (joinedRoomsIter.hasNext())
+           {
+               if (!((ChatRoom) joinedRoomsIter.next()).isJoined())
+                   joinedRoomsIter.remove();
+           }
+
+           return joinedRooms;
+       }
+   }",False
+21,getExistingChatRooms(),Method,,,java.util.LinkedList+LinkedList(),,803,20,1,"/** 
+ * Returns the <tt>List</tt> of <tt>String</tt>s indicating chat rooms currently available on the server that this protocol provider is connected to. Note: There are no more system chat rooms in the ICQ network at this moment.
+ * @return a <tt>java.util.List</tt> of the name <tt>String</tt>s for chatrooms that are currently available on the server that this protocol provider is connected to.
+ * @throws OperationFailedException if we failed retrieving this list fromthe server.
+ * @throws OperationNotSupportedException if the server does not supportmulti user chat
+ */
+","/**
+    * Returns the <tt>List</tt> of <tt>String</tt>s indicating chat rooms
+    * currently available on the server that this protocol provider is
+    * connected to. Note: There are no more system chat rooms in the ICQ
+    * network at this moment.
+    *
+    * @return a <tt>java.util.List</tt> of the name <tt>String</tt>s for chat
+    * rooms that are currently available on the server that this protocol
+    * provider is connected to.
+    *
+    * @throws OperationFailedException if we failed retrieving this list from
+    * the server.
+    * @throws OperationNotSupportedException if the server does not support
+    * multi user chat
+    */
+   public List getExistingChatRooms() throws OperationFailedException,
+           OperationNotSupportedException
+   {
+       return new LinkedList();
+   }",False
+22,isMultiChatSupportedByContact(Contact),Method,,,net.java.sip.communicator.service.protocol.ProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.Contact+getProtocolProvider() net.java.sip.communicator.service.protocol.Contact+getProtocolProvider() net.java.sip.communicator.service.protocol.ProtocolProviderService+getOperationSet(Class<? extends OperationSet>),,525,16,1,"/** 
+ * Returns true if <tt>contact</tt> supports multi user chat sessions.
+ * @param contact reference to the contact whose support for chat roomswe are currently querying.
+ * @return a boolean indicating whether <tt>contact</tt> supportschat rooms.
+ */
+","/**
+    * Returns true if <tt>contact</tt> supports multi user chat sessions.
+    *
+    * @param contact reference to the contact whose support for chat rooms
+    *   we are currently querying.
+    * @return a boolean indicating whether <tt>contact</tt> supports
+    *   chat rooms.
+    */
+   public boolean isMultiChatSupportedByContact(Contact contact)
+   {
+       if (contact.getProtocolProvider().getOperationSet(
+               OperationSetMultiUserChat.class) != null)
+           return true;
+
+       return false;
+   }",False
+23,"rejectInvitation(ChatRoomInvitation,String)",Method,,,java.util.Hashtable+get(Object) java.util.Hashtable+get(Object) net.java.sip.communicator.service.protocol.ChatRoomInvitation+getTargetChatRoom() net.java.sip.communicator.service.protocol.ChatRoomInvitation+getTargetChatRoom() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+reject() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+reject() java.util.Hashtable+remove(Object) java.util.Hashtable+remove(Object) net.java.sip.communicator.service.protocol.ChatRoomInvitation+getTargetChatRoom() net.java.sip.communicator.service.protocol.ChatRoomInvitation+getTargetChatRoom(),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitations net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitations,624,19,1,"/** 
+ * Informs the sender of an invitation that we decline their invitation.
+ * @param invitation the connection to use for sending the rejection.
+ * @param rejectReason the reason to reject the given invitation
+ */
+","/**
+   * Informs the sender of an invitation that we decline their invitation.
+   *
+   * @param invitation the connection to use for sending the rejection.
+   * @param rejectReason the reason to reject the given invitation
+   */
+   public void rejectInvitation(ChatRoomInvitation invitation,
+           String rejectReason)
+   {
+       ChatInvitation inv = (ChatInvitation) invitations.get(invitation
+               .getTargetChatRoom());
+
+       if (inv != null)
+       {   //send the rejection
+           inv.reject();
+       }
+       //remove the invitation
+       invitations.remove(invitation.getTargetChatRoom());
+   }",False
+24,removeInvitationListener(ChatRoomInvitationListener),Method,,,java.util.Vector+remove(Object) java.util.Vector+remove(Object),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationListeners,386,13,1,"/** 
+ * Removes <tt>listener</tt> from the list of invitation listeners registered to receive invitation events.
+ * @param listener the invitation listener to remove.
+ */
+","/**
+    * Removes <tt>listener</tt> from the list of invitation listeners
+    * registered to receive invitation events.
+    *
+    * @param listener the invitation listener to remove.
+    */
+   public void removeInvitationListener(ChatRoomInvitationListener listener)
+   {
+       synchronized (invitationListeners)
+       {
+           invitationListeners.remove(listener);
+       }
+   }",True
+25,removeInvitationRejectionListener(ChatRoomInvitationRejectionListener),Method,,,java.util.Vector+remove(Object) java.util.Vector+remove(Object),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationRejectionListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationRejectionListeners,444,14,1,"/** 
+ * Removes <tt>listener</tt> from the list of invitation listeners registered to receive invitation rejection events.
+ * @param listener the invitation listener to remove.
+ */
+","/**
+    * Removes <tt>listener</tt> from the list of invitation listeners
+    * registered to receive invitation rejection events.
+    *
+    * @param listener the invitation listener to remove.
+    */
+   public void removeInvitationRejectionListener(
+           ChatRoomInvitationRejectionListener listener)
+   {
+       synchronized (invitationRejectionListeners)
+       {
+           invitationRejectionListeners.remove(listener);
+       }
+   }",True
+26,removePresenceListener(LocalUserChatRoomPresenceListener),Method,,,java.util.Vector+remove(Object) java.util.Vector+remove(Object),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+presenceListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+presenceListeners,429,14,1,"/** 
+ * Removes a listener that was being notified of changes in our status in a room such as us being kicked, banned or dropped.
+ * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+ */
+","/**
+    * Removes a listener that was being notified of changes in our status in
+    * a room such as us being kicked, banned or dropped.
+    *
+    * @param listener the <tt>LocalUserChatRoomPresenceListener</tt>.
+    */
+   public void removePresenceListener(
+           LocalUserChatRoomPresenceListener listener)
+   {
+       synchronized (presenceListeners)
+       {
+           presenceListeners.remove(listener);
+       }
+   }",True
+27,"fireInvitationEvent(ChatRoom,String,String,byte[])",Method,"ChatRoomManagerListenerImpl.handleInvitation(ChatRoomManager,ChatInvitation)",,"net.java.sip.communicator.impl.protocol.icq.ChatRoomInvitationIcqImpl+ChatRoomInvitationIcqImpl(ChatRoom,String,String,byte[]) net.java.sip.communicator.service.protocol.event.ChatRoomInvitationReceivedEvent+ChatRoomInvitationReceivedEvent(OperationSetMultiUserChat,ChatRoomInvitation,Date) java.util.Date+Date(long) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.util.ArrayList+iterator() java.util.ArrayList+ArrayList(Collection) java.util.ArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.event.ChatRoomInvitationListener+invitationReceived(ChatRoomInvitationReceivedEvent) net.java.sip.communicator.service.protocol.event.ChatRoomInvitationListener+invitationReceived(ChatRoomInvitationReceivedEvent)",net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitationListeners,1189,33,1,"/** 
+ * Delivers a <tt>ChatRoomInvitationReceivedEvent</tt> to all registered <tt>ChatRoomInvitationListener</tt>s.
+ * @param targetChatRoom the room that invitation refers to
+ * @param inviter the inviter that sent the invitation
+ * @param reason the reason why the inviter sent the invitation
+ * @param password the password to use when joining the room 
+ */
+","/**
+   * Delivers a <tt>ChatRoomInvitationReceivedEvent</tt> to all
+   * registered <tt>ChatRoomInvitationListener</tt>s.
+   * 
+   * @param targetChatRoom the room that invitation refers to
+   * @param inviter the inviter that sent the invitation
+   * @param reason the reason why the inviter sent the invitation
+   * @param password the password to use when joining the room 
+   */
+   public void fireInvitationEvent(ChatRoom targetChatRoom, String inviter,
+           String reason, byte[] password)
+   {
+       ChatRoomInvitationIcqImpl invitation = new ChatRoomInvitationIcqImpl(
+               targetChatRoom, inviter, reason, password);
+
+       ChatRoomInvitationReceivedEvent evt
+           = new ChatRoomInvitationReceivedEvent(
+               this, invitation, new Date(System.currentTimeMillis()));
+
+       Iterator listeners = null;
+       synchronized (invitationListeners)
+       {
+           listeners = new ArrayList(invitationListeners).iterator();
+       }
+
+       while (listeners.hasNext())
+       {
+           ChatRoomInvitationListener listener
+               = (ChatRoomInvitationListener) listeners.next();
+
+           listener.invitationReceived(evt);
+       }
+   }",True
+28,"fireLocalUserPresenceEvent(ChatRoom,String,String)",Method,,net.java.sip.communicator.impl.protocol.icq.ChatRoomIcqImpl+joinAs(String),"net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceChangeEvent+LocalUserChatRoomPresenceChangeEvent(OperationSetMultiUserChat,ChatRoom,String,String) java.util.ArrayList+iterator() java.util.ArrayList+ArrayList(Collection) java.util.ArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceListener+localUserPresenceChanged(LocalUserChatRoomPresenceChangeEvent) net.java.sip.communicator.service.protocol.event.LocalUserChatRoomPresenceListener+localUserPresenceChanged(LocalUserChatRoomPresenceChangeEvent)",net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+presenceListeners net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+presenceListeners,1009,29,1,"/** 
+ * Delivers a <tt>LocalUserChatRoomPresenceChangeEvent</tt> to all registered <tt>LocalUserChatRoomPresenceListener</tt>s.
+ * @param chatRoom the <tt>ChatRoom</tt> which has been joined, left, etc.
+ * @param eventType the type of this event; one of LOCAL_USER_JOINED,LOCAL_USER_LEFT, etc.
+ * @param reason the reason
+ */
+","/**
+    * Delivers a <tt>LocalUserChatRoomPresenceChangeEvent</tt> to all
+    * registered <tt>LocalUserChatRoomPresenceListener</tt>s.
+    * 
+    * @param chatRoom the <tt>ChatRoom</tt> which has been joined, left, etc.
+    * @param eventType the type of this event; one of LOCAL_USER_JOINED,
+    * LOCAL_USER_LEFT, etc.
+    * @param reason the reason
+    */
+   public void fireLocalUserPresenceEvent(ChatRoom chatRoom, String eventType,
+           String reason)
+   {
+       LocalUserChatRoomPresenceChangeEvent evt = new LocalUserChatRoomPresenceChangeEvent(
+               this, chatRoom, eventType, reason);
+
+       Iterator listeners = null;
+       synchronized (presenceListeners)
+       {
+           listeners = new ArrayList(presenceListeners).iterator();
+       }
+
+       while (listeners.hasNext())
+       {
+           LocalUserChatRoomPresenceListener listener
+               = (LocalUserChatRoomPresenceListener) listeners.next();
+
+           listener.localUserPresenceChanged(evt);
+       }
+   }",True
+29,RegistrationStateListener,MemberClass,,,net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl.RegistrationStateListener+registrationStateChanged(RegistrationStateChangeEvent) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getOldState() net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getOldState() net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getNewState() net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getNewState() net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getNewState() net.java.sip.communicator.service.protocol.event.RegistrationStateChangeEvent+getNewState() java.lang.System+getProperty(String) java.lang.System+getProperty(String) net.kano.joscar.OscarTools+setDefaultCharset(String) net.kano.joscar.OscarTools+setDefaultCharset(String) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.java.sip.communicator.service.protocol.AbstractProtocolProviderService+getOperationSet(Class<? extends OperationSet>) net.kano.joustsim.oscar.oscar.service.chatrooms.ChatRoomManager+addListener(ChatRoomManagerListener) net.kano.joustsim.oscar.AimConnection+getChatRoomManager() net.java.sip.communicator.impl.protocol.icq.ProtocolProviderServiceIcqImpl+getAimConnection() net.java.sip.communicator.impl.protocol.icq.ProtocolProviderServiceIcqImpl+getAimConnection() net.kano.joustsim.oscar.AimConnection+getChatRoomManager() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatRoomManager+addListener(ChatRoomManagerListener) net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl.ChatRoomManagerListenerImpl+ChatRoomManagerListenerImpl(),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+logger net.java.sip.communicator.service.protocol.RegistrationState+REGISTERED net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+opSetPersPresence net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+icqProvider net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+icqProvider,1482,35,2,"/** 
+ * Our listener that will tell us when we're registered to icq and joust sim is ready to accept us as a listener.
+ */
+","/**
+    * Our listener that will tell us when we're registered to icq and joust
+    * sim is ready to accept us as a listener.
+    */
+   private class RegistrationStateListener implements
+           RegistrationStateChangeListener
+   {
+       /**
+        * The method is called by a ProtocolProvider implementation whenver
+        * a change in the registration state of the corresponding provider had
+        * occurred.
+        * @param evt ProviderStatusChangeEvent the event describing the status
+        * change.
+        */
+       public void registrationStateChanged(RegistrationStateChangeEvent evt)
+       {
+           logger.debug(""The ICQ provider changed state from: ""
+                   + evt.getOldState() + "" to: "" + evt.getNewState());
+           if (evt.getNewState() == RegistrationState.REGISTERED)
+           {
+               String customMessageEncoding = null;
+               if ((customMessageEncoding = System
+                       .getProperty(""icq.custom.message.charset"")) != null)
+                   OscarTools.setDefaultCharset(customMessageEncoding);
+
+               opSetPersPresence =
+                    (OperationSetPersistentPresenceIcqImpl) icqProvider
+                        .getOperationSet(OperationSetPersistentPresence.class);
+
+               //add ChatRoomMangagerListener
+               icqProvider.getAimConnection().getChatRoomManager()
+                       .addListener(new ChatRoomManagerListenerImpl());
+           }
+       }
+   }",False
+30,ChatRoomManagerListenerImpl,MemberClass,,,"net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl.ChatRoomManagerListenerImpl+handleInvitation(ChatRoomManager,ChatInvitation) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getRoomName() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getRoomName() net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+findRoom(ChatInvitation) net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+findRoom(ChatInvitation) java.util.Hashtable+put(K,V) java.util.Hashtable+put(K,V) net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+fireInvitationEvent(ChatRoom,String,String,byte[]) net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+fireInvitationEvent(ChatRoom,String,String,byte[]) net.kano.joustsim.Screenname+toString() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getScreenname() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getScreenname() net.kano.joustsim.Screenname+toString() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getMessage() net.kano.joustsim.oscar.oscar.service.chatrooms.ChatInvitation+getMessage() net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object) net.java.sip.communicator.util.Logger+debug(Object)",net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+logger net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+invitations net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+logger net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+logger,1099,33,2,"/** 
+ * Our listener for chat room invitations. 
+ */
+","/**
+    * Our listener for chat room invitations. 
+    *
+    */
+   private class ChatRoomManagerListenerImpl implements
+           ChatRoomManagerListener
+   {
+       public void handleInvitation(ChatRoomManager chatRoomManager,
+               ChatInvitation chatInvitation)
+       {
+           logger
+                   .debug(""Invitation received: ""
+                           + chatInvitation.getRoomName());
+           try
+           {
+               ChatRoom chatRoom = findRoom(chatInvitation);
+               // save chatInvitation, for a possible rejection
+               invitations.put(chatRoom, chatInvitation);
+
+               fireInvitationEvent(chatRoom, chatInvitation.getScreenname()
+                       .toString(), chatInvitation.getMessage(), null);
+
+           }
+           catch (OperationNotSupportedException onse)
+           {
+               logger.debug(""Failed to handle ChatInvitation: "" + onse);
+           }
+           catch (OperationFailedException ofe)
+           {
+               logger.debug(""Failed to handle ChatInvitation: "" + ofe);
+           }
+       }
+   }",False
+31,contactModified(ContactPropertyChangeEvent),Method,,,net.java.sip.communicator.service.protocol.event.ContactPropertyChangeEvent+getSourceContact() net.java.sip.communicator.service.protocol.event.ContactPropertyChangeEvent+getSourceContact() net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+updateChatRoomMembers(Contact) net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+updateChatRoomMembers(Contact),,304,10,1,"/** 
+ * Updates corresponding chat room members when a contact has been modified in our contact list.
+ */
+","/**
+    * Updates corresponding chat room members when a contact has been modified
+    * in our contact list.
+    */
+    public void contactModified(ContactPropertyChangeEvent evt)
+    {
+        Contact modifiedContact = evt.getSourceContact();
+
+        this.updateChatRoomMembers(modifiedContact);
+    }",False
+32,subscriptionCreated(SubscriptionEvent),Method,,,net.java.sip.communicator.service.protocol.event.SubscriptionEvent+getSourceContact() net.java.sip.communicator.service.protocol.event.SubscriptionEvent+getSourceContact() net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+updateChatRoomMembers(Contact) net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+updateChatRoomMembers(Contact),,299,10,1,"/** 
+ * Updates corresponding chat room members when a contact has been created in our contact list.
+ */
+","/**
+     * Updates corresponding chat room members when a contact has been created
+     * in our contact list.
+     */
+    public void subscriptionCreated(SubscriptionEvent evt)
+    {
+        Contact createdContact = evt.getSourceContact();
+
+        this.updateChatRoomMembers(createdContact);
+    }",False
+33,subscriptionFailed(SubscriptionEvent),Method,,,,,144,5,1,"/** 
+ * Not interested in this event for our member update purposes.
+ */
+","/**
+     * Not interested in this event for our member update purposes.
+     */
+    public void subscriptionFailed(SubscriptionEvent evt)
+    {}",False
+34,subscriptionMoved(SubscriptionMovedEvent),Method,,,,,148,5,1,"/** 
+ * Not interested in this event for our member update purposes.
+ */
+","/**
+     * Not interested in this event for our member update purposes.
+     */
+    public void subscriptionMoved(SubscriptionMovedEvent evt)
+    {}",False
+35,subscriptionRemoved(SubscriptionEvent),Method,,,net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+updateChatRoomMembers(Contact) net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+updateChatRoomMembers(Contact),,329,10,1,"/** 
+ * Updates corresponding chat room members when a contact has been removed from our contact list.
+ */
+","/**
+     * Updates corresponding chat room members when a contact has been removed
+     * from our contact list.
+     */
+    public void subscriptionRemoved(SubscriptionEvent evt)
+    {
+        // Set to null the contact reference in all corresponding chat room
+        // members.
+        this.updateChatRoomMembers(null);
+    }",False
+36,subscriptionResolved(SubscriptionEvent),Method,,,,,146,5,1,"/** 
+ * Not interested in this event for our member update purposes.
+ */
+","/**
+     * Not interested in this event for our member update purposes.
+     */
+    public void subscriptionResolved(SubscriptionEvent evt)
+    {}",False
+37,updateChatRoomMembers(Contact),Method,contactModified(ContactPropertyChangeEvent) subscriptionCreated(SubscriptionEvent) subscriptionRemoved(SubscriptionEvent),,java.util.Hashtable+elements() java.util.Hashtable+elements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() net.java.sip.communicator.impl.protocol.icq.ChatRoomIcqImpl+findMemberForNickName(String) net.java.sip.communicator.impl.protocol.icq.ChatRoomIcqImpl+findMemberForNickName(String) net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.service.protocol.Contact+getAddress() net.java.sip.communicator.impl.protocol.icq.ChatRoomMemberIcqImpl+setContact(Contact) net.java.sip.communicator.impl.protocol.icq.ChatRoomMemberIcqImpl+setContact(Contact) net.java.sip.communicator.impl.protocol.icq.ChatRoomMemberIcqImpl+setAvatar(byte[]) net.java.sip.communicator.impl.protocol.icq.ChatRoomMemberIcqImpl+setAvatar(byte[]) net.java.sip.communicator.service.protocol.Contact+getImage() net.java.sip.communicator.service.protocol.Contact+getImage(),net.java.sip.communicator.impl.protocol.icq.OperationSetMultiUserChatIcqImpl+chatRoomCache,770,24,2,"/** 
+ * Finds all chat room members, which name corresponds to the name of the given contact and updates their contact references.
+ * @param contact the contact we're looking correspondences for.
+ */
+","/**
+     * Finds all chat room members, which name corresponds to the name of the
+     * given contact and updates their contact references.
+     * 
+     * @param contact the contact we're looking correspondences for.
+     */
+    private void updateChatRoomMembers(Contact contact)
+    {
+        Enumeration<ChatRoomIcqImpl> chatRooms = chatRoomCache.elements();
+
+        while (chatRooms.hasMoreElements())
+        {
+            ChatRoomIcqImpl chatRoom = chatRooms.nextElement();
+
+            ChatRoomMemberIcqImpl member
+                = chatRoom.findMemberForNickName(contact.getAddress());
+
+            if (member != null)
+            {
+                member.setContact(contact);
+                member.setAvatar(contact.getImage());
+            }
+        }
+    }",False
