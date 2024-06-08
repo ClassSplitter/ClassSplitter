@@ -13,7 +13,7 @@ The real-world God classes and their refactoring solutions are organized by two 
 * The `GodClassRefactorDictionary.csv` catalog documents the refactoring examples in `god_class_refactor_example` folder, which were used for evaluation in our experiments.
 * The `GodClassRefactorForPositionStudyDictionary.csv` catalog documents the refactoring examples in `refactor_example_position` folder, which were used to validate the correlation between code position and god class refactoring. 
 
-The refactoring is presented as individual CSV files. Each file represents a class before refactoring, with each row in the file recording an entity from the original class. These rows contain the features of the entities, as well as their refactoring information. The file paths are documented in the "data path" column in the catalog. The recorded features of the entities include:
+The refactorings are presented as individual CSV files. Each file represents a class before refactoring, with each row in the file recording an entity from the original class. These rows contain the features of the entities, as well as their refactoring information. The file paths are documented in the "data path" column in the catalog. The recorded features of the entities include:
 
 | tag       | description                                                  |
 | --------- | ------------------------------------------------------------ |
