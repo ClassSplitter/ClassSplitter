@@ -1,0 +1,692 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,delegate,Field,,,,,43,1,2,,private NamespacedOpenShiftClient delegate;,False
+2,"activate(Map<String,Object>)",Method,,,java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.lang.String+split(String) java.lang.String+split(String) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.util.Map+get(Object) java.util.Map+get(Object) io.fabric8.kubernetes.client.utils.URLUtils+join(String[]) io.fabric8.kubernetes.client.utils.URLUtils+join(String[]) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.lang.Long+parseLong(String) java.lang.Long+parseLong(String) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+containsKey(Object) java.util.Map+containsKey(Object) java.lang.Long+parseLong(String) java.lang.Long+parseLong(String) java.util.Map+get(Object) java.util.Map+get(Object) io.fabric8.kubernetes.client.KubernetesClientBuilder+withConfig(Config) io.fabric8.kubernetes.client.KubernetesClientBuilder+KubernetesClientBuilder() io.fabric8.kubernetes.client.KubernetesClientBuilder+withConfig(Config),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,5022,87,1,,"@Activate
+  public void activate(Map<String, Object> properties) {
+    final OpenShiftConfigBuilder builder = new OpenShiftConfigBuilder();
+
+    if (properties.containsKey(KUBERNETES_MASTER_SYSTEM_PROPERTY)) {
+      builder.withMasterUrl((String) properties.get(KUBERNETES_MASTER_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_API_VERSION_SYSTEM_PROPERTY)) {
+      builder.withApiVersion((String) properties.get(KUBERNETES_API_VERSION_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY)) {
+      builder.withNamespace((String) properties.get(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY)) {
+      builder.withCaCertFile((String) properties.get(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY)) {
+      builder.withCaCertData((String) properties.get(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY)) {
+      builder.withClientCertFile((String) properties.get(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY)) {
+      builder.withClientCertData((String) properties.get(KUBERNETES_CLIENT_CERTIFICATE_DATA_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY)) {
+      builder.withClientKeyFile((String) properties.get(KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY)) {
+      builder.withClientKeyData((String) properties.get(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY)) {
+      builder.withClientKeyAlgo((String) properties.get(KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY)) {
+      builder.withClientKeyPassphrase((String) properties.get(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY)) {
+      builder.withUsername((String) properties.get(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY)) {
+      builder.withPassword((String) properties.get(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY)) {
+      builder.withOauthToken((String) properties.get(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY));
+    }
+    if (properties.containsKey(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)) {
+      builder.withWatchReconnectInterval(
+          Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY)));
+    }
+    if (properties.containsKey(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)) {
+      builder
+          .withWatchReconnectLimit(Integer.parseInt((String) properties.get(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY)));
+    }
+    if (properties.containsKey(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY)) {
+      builder.withRequestTimeout(Integer.parseInt((String) properties.get(KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY)));
+    }
+    if (properties.containsKey(KUBERNETES_HTTP_PROXY)) {
+      builder.withHttpProxy((String) properties.get(KUBERNETES_HTTP_PROXY));
+    }
+    if (properties.containsKey(KUBERNETES_HTTPS_PROXY)) {
+      builder.withHttpsProxy((String) properties.get(KUBERNETES_HTTPS_PROXY));
+    }
+    if (properties.containsKey(KUBERNETES_NO_PROXY)) {
+      String noProxyProperty = (String) properties.get(KUBERNETES_NO_PROXY);
+      builder.withNoProxy(noProxyProperty.split("",""));
+    }
+    if (properties.containsKey(OPENSHIFT_URL_SYSTEM_PROPERTY)) {
+      builder.withOpenShiftUrl((String) properties.get(OPENSHIFT_URL_SYSTEM_PROPERTY));
+    } else {
+      builder.withOpenShiftUrl(URLUtils.join(builder.getMasterUrl(), ""oapi"", builder.getOapiVersion()));
+    }
+    if (properties.containsKey(OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY)) {
+      builder.withBuildTimeout(Integer.parseInt((String) properties.get(OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY)));
+    } else {
+      builder.withBuildTimeout(DEFAULT_BUILD_TIMEOUT);
+    }
+    if (properties.containsKey(KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY)) {
+      builder.withWebsocketTimeout(Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY)));
+    }
+    if (properties.containsKey(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)) {
+      builder.withWebsocketPingInterval(
+          Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)));
+    }
+
+    delegate = new KubernetesClientBuilder().withConfig(builder.build()).build().adapt(NamespacedOpenShiftClient.class);
+  }",False
+3,deactivate(),Method,,,io.fabric8.kubernetes.client.Client+close() io.fabric8.kubernetes.client.Client+close(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,66,4,1,,"@Deactivate
+  public void deactivate() {
+    delegate.close();
+  }",False
+4,getOpenshiftUrl(),Method,,,io.fabric8.openshift.client.OpenShiftClient+getOpenshiftUrl() io.fabric8.openshift.client.OpenShiftClient+getOpenshiftUrl(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,85,4,1,,"@Override
+  public URL getOpenshiftUrl() {
+    return delegate.getOpenshiftUrl();
+  }",False
+5,config(),Method,,,io.fabric8.openshift.client.OpenShiftClient+config() io.fabric8.openshift.client.OpenShiftClient+config(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,90,4,1,,"@Override
+  public OpenShiftConfigAPIGroupDSL config() {
+    return delegate.config();
+  }",False
+6,console(),Method,,,io.fabric8.openshift.client.OpenShiftClient+console() io.fabric8.openshift.client.OpenShiftClient+console(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,93,4,1,,"@Override
+  public OpenShiftConsoleAPIGroupDSL console() {
+    return delegate.console();
+  }",False
+7,clusterAutoscaling(),Method,,,io.fabric8.openshift.client.OpenShiftClient+clusterAutoscaling() io.fabric8.openshift.client.OpenShiftClient+clusterAutoscaling(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,126,4,1,,"@Override
+  public OpenShiftClusterAutoscalingAPIGroupDSL clusterAutoscaling() {
+    return delegate.clusterAutoscaling();
+  }",False
+8,hive(),Method,,,io.fabric8.openshift.client.OpenShiftClient+hive() io.fabric8.openshift.client.OpenShiftClient+hive(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,84,4,1,,"@Override
+  public OpenShiftHiveAPIGroupDSL hive() {
+    return delegate.hive();
+  }",False
+9,operator(),Method,,,io.fabric8.openshift.client.OpenShiftClient+operator() io.fabric8.openshift.client.OpenShiftClient+operator(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,96,4,1,,"@Override
+  public OpenShiftOperatorAPIGroupDSL operator() {
+    return delegate.operator();
+  }",False
+10,operatorHub(),Method,,,io.fabric8.openshift.client.OpenShiftClient+operatorHub() io.fabric8.openshift.client.OpenShiftClient+operatorHub(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,105,4,1,,"@Override
+  public OpenShiftOperatorHubAPIGroupDSL operatorHub() {
+    return delegate.operatorHub();
+  }",False
+11,builds(),Method,,,io.fabric8.openshift.client.OpenShiftClient+builds() io.fabric8.openshift.client.OpenShiftClient+builds(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,128,4,1,,"@Override
+  public MixedOperation<Build, BuildList, BuildResource<Build, LogWatch>> builds() {
+    return delegate.builds();
+  }",False
+12,componentstatuses(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+componentstatuses() io.fabric8.kubernetes.client.KubernetesClient+componentstatuses(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,172,4,1,,"@Override
+  public NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
+    return delegate.componentstatuses();
+  }",False
+13,buildConfigs(),Method,,,io.fabric8.openshift.client.OpenShiftClient+buildConfigs() io.fabric8.openshift.client.OpenShiftClient+buildConfigs(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,167,4,1,,"@Override
+  public MixedOperation<BuildConfig, BuildConfigList, BuildConfigResource<BuildConfig, Void, Build>> buildConfigs() {
+    return delegate.buildConfigs();
+  }",False
+14,credentialsRequests(),Method,,,io.fabric8.openshift.client.OpenShiftClient+credentialsRequests() io.fabric8.openshift.client.OpenShiftClient+credentialsRequests(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,178,4,1,,"@Override
+  public MixedOperation<CredentialsRequest, CredentialsRequestList, Resource<CredentialsRequest>> credentialsRequests() {
+    return delegate.credentialsRequests();
+  }",False
+15,deploymentConfigs(),Method,,,io.fabric8.openshift.client.OpenShiftClient+deploymentConfigs() io.fabric8.openshift.client.OpenShiftClient+deploymentConfigs(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,186,4,1,,"@Override
+  public MixedOperation<DeploymentConfig, DeploymentConfigList, DeployableScalableResource<DeploymentConfig>> deploymentConfigs() {
+    return delegate.deploymentConfigs();
+  }",False
+16,groups(),Method,,,io.fabric8.openshift.client.OpenShiftClient+groups() io.fabric8.openshift.client.OpenShiftClient+groups(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,120,4,1,,"@Override
+  public NonNamespaceOperation<Group, GroupList, Resource<Group>> groups() {
+    return delegate.groups();
+  }",False
+17,helmChartRepositories(),Method,,,io.fabric8.openshift.client.OpenShiftClient+helmChartRepositories() io.fabric8.openshift.client.OpenShiftClient+helmChartRepositories(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,192,4,1,,"@Override
+  public NonNamespaceOperation<HelmChartRepository, HelmChartRepositoryList, Resource<HelmChartRepository>> helmChartRepositories() {
+    return delegate.helmChartRepositories();
+  }",False
+18,images(),Method,,,io.fabric8.openshift.client.OpenShiftClient+images() io.fabric8.openshift.client.OpenShiftClient+images(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,120,4,1,,"@Override
+  public NonNamespaceOperation<Image, ImageList, Resource<Image>> images() {
+    return delegate.images();
+  }",False
+19,imageTags(),Method,,,io.fabric8.openshift.client.OpenShiftClient+imageTags() io.fabric8.openshift.client.OpenShiftClient+imageTags(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,128,4,1,,"@Override
+  public MixedOperation<ImageTag, ImageTagList, Resource<ImageTag>> imageTags() {
+    return delegate.imageTags();
+  }",False
+20,imageStreams(),Method,,,io.fabric8.openshift.client.OpenShiftClient+imageStreams() io.fabric8.openshift.client.OpenShiftClient+imageStreams(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,143,4,1,,"@Override
+  public MixedOperation<ImageStream, ImageStreamList, Resource<ImageStream>> imageStreams() {
+    return delegate.imageStreams();
+  }",False
+21,imageStreamTags(),Method,,,io.fabric8.openshift.client.OpenShiftClient+imageStreamTags() io.fabric8.openshift.client.OpenShiftClient+imageStreamTags(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,158,4,1,,"@Override
+  public MixedOperation<ImageStreamTag, ImageStreamTagList, Resource<ImageStreamTag>> imageStreamTags() {
+    return delegate.imageStreamTags();
+  }",False
+22,imageStreamImports(),Method,,,io.fabric8.openshift.client.OpenShiftClient+imageStreamImports() io.fabric8.openshift.client.OpenShiftClient+imageStreamImports(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,151,4,1,,"@Override
+  public NamespacedInOutCreateable<ImageStreamImport, ImageStreamImport> imageStreamImports() {
+    return delegate.imageStreamImports();
+  }",False
+23,imageStreamMappings(),Method,,,io.fabric8.openshift.client.OpenShiftClient+imageStreamMappings() io.fabric8.openshift.client.OpenShiftClient+imageStreamMappings(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,155,4,1,,"@Override
+  public NamespacedInOutCreateable<ImageStreamMapping, ImageStreamMapping> imageStreamMappings() {
+    return delegate.imageStreamMappings();
+  }",False
+24,imageStreamImages(),Method,,,io.fabric8.openshift.client.OpenShiftClient+imageStreamImages() io.fabric8.openshift.client.OpenShiftClient+imageStreamImages(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,147,4,1,,"@Override
+  public Namespaceable<Nameable<? extends Gettable<ImageStreamImage>>> imageStreamImages() {
+    return delegate.imageStreamImages();
+  }",False
+25,imageSignatures(),Method,,,io.fabric8.openshift.client.OpenShiftClient+imageSignatures() io.fabric8.openshift.client.OpenShiftClient+imageSignatures(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,108,4,1,,"@Override
+  public NameableCreateOrDeleteable imageSignatures() {
+    return delegate.imageSignatures();
+  }",False
+26,imageRegistryOperatorConfigs(),Method,,,io.fabric8.openshift.client.OpenShiftClient+imageRegistryOperatorConfigs() io.fabric8.openshift.client.OpenShiftClient+imageRegistryOperatorConfigs(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,309,4,1,,"@Override
+  public NonNamespaceOperation<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config, ConfigList, Resource<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config>> imageRegistryOperatorConfigs() {
+    return delegate.imageRegistryOperatorConfigs();
+  }",False
+27,networkAttachmentDefinitions(),Method,,,io.fabric8.openshift.client.OpenShiftClient+networkAttachmentDefinitions() io.fabric8.openshift.client.OpenShiftClient+networkAttachmentDefinitions(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,223,4,1,,"@Override
+  public MixedOperation<NetworkAttachmentDefinition, NetworkAttachmentDefinitionList, Resource<NetworkAttachmentDefinition>> networkAttachmentDefinitions() {
+    return delegate.networkAttachmentDefinitions();
+  }",False
+28,oAuthAccessTokens(),Method,,,io.fabric8.openshift.client.OpenShiftClient+oAuthAccessTokens() io.fabric8.openshift.client.OpenShiftClient+oAuthAccessTokens(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,175,4,1,,"@Override
+  public NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, Resource<OAuthAccessToken>> oAuthAccessTokens() {
+    return delegate.oAuthAccessTokens();
+  }",False
+29,oAuthAuthorizeTokens(),Method,,,io.fabric8.openshift.client.OpenShiftClient+oAuthAuthorizeTokens() io.fabric8.openshift.client.OpenShiftClient+oAuthAuthorizeTokens(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,190,4,1,,"@Override
+  public NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, Resource<OAuthAuthorizeToken>> oAuthAuthorizeTokens() {
+    return delegate.oAuthAuthorizeTokens();
+  }",False
+30,oAuthClients(),Method,,,io.fabric8.openshift.client.OpenShiftClient+oAuthClients() io.fabric8.openshift.client.OpenShiftClient+oAuthClients(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,150,4,1,,"@Override
+  public NonNamespaceOperation<OAuthClient, OAuthClientList, Resource<OAuthClient>> oAuthClients() {
+    return delegate.oAuthClients();
+  }",False
+31,podSecurityPolicyReviews(),Method,,,io.fabric8.openshift.client.OpenShiftClient+podSecurityPolicyReviews() io.fabric8.openshift.client.OpenShiftClient+podSecurityPolicyReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,175,4,1,,"@Override
+  public NamespacedInOutCreateable<PodSecurityPolicyReview, PodSecurityPolicyReview> podSecurityPolicyReviews() {
+    return delegate.podSecurityPolicyReviews();
+  }",False
+32,oAuthClientAuthorizations(),Method,,,io.fabric8.openshift.client.OpenShiftClient+oAuthClientAuthorizations() io.fabric8.openshift.client.OpenShiftClient+oAuthClientAuthorizations(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,215,4,1,,"@Override
+  public NonNamespaceOperation<OAuthClientAuthorization, OAuthClientAuthorizationList, Resource<OAuthClientAuthorization>> oAuthClientAuthorizations() {
+    return delegate.oAuthClientAuthorizations();
+  }",False
+33,operatorPKIs(),Method,,,io.fabric8.openshift.client.OpenShiftClient+operatorPKIs() io.fabric8.openshift.client.OpenShiftClient+operatorPKIs(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,143,4,1,,"@Override
+  public MixedOperation<OperatorPKI, OperatorPKIList, Resource<OperatorPKI>> operatorPKIs() {
+    return delegate.operatorPKIs();
+  }",False
+34,egressRouters(),Method,,,io.fabric8.openshift.client.OpenShiftClient+egressRouters() io.fabric8.openshift.client.OpenShiftClient+egressRouters(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,148,4,1,,"@Override
+  public MixedOperation<EgressRouter, EgressRouterList, Resource<EgressRouter>> egressRouters() {
+    return delegate.egressRouters();
+  }",False
+35,podSecurityPolicySelfSubjectReviews(),Method,,,io.fabric8.openshift.client.OpenShiftClient+podSecurityPolicySelfSubjectReviews() io.fabric8.openshift.client.OpenShiftClient+podSecurityPolicySelfSubjectReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,219,4,1,,"@Override
+  public NamespacedInOutCreateable<PodSecurityPolicySelfSubjectReview, PodSecurityPolicySelfSubjectReview> podSecurityPolicySelfSubjectReviews() {
+    return delegate.podSecurityPolicySelfSubjectReviews();
+  }",False
+36,podSecurityPolicySubjectReviews(),Method,,,io.fabric8.openshift.client.OpenShiftClient+podSecurityPolicySubjectReviews() io.fabric8.openshift.client.OpenShiftClient+podSecurityPolicySubjectReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,203,4,1,,"@Override
+  public NamespacedInOutCreateable<PodSecurityPolicySubjectReview, PodSecurityPolicySubjectReview> podSecurityPolicySubjectReviews() {
+    return delegate.podSecurityPolicySubjectReviews();
+  }",False
+37,quotas(),Method,,,io.fabric8.openshift.client.OpenShiftClient+quotas() io.fabric8.openshift.client.OpenShiftClient+quotas(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,89,4,1,,"@Override
+  public OpenShiftQuotaAPIGroupDSL quotas() {
+    return delegate.quotas();
+  }",False
+38,projects(),Method,,,io.fabric8.openshift.client.OpenShiftClient+projects() io.fabric8.openshift.client.OpenShiftClient+projects(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,84,4,1,,"@Override
+  public ProjectOperation projects() {
+    return delegate.projects();
+  }",False
+39,projectrequests(),Method,,,io.fabric8.openshift.client.OpenShiftClient+projectrequests() io.fabric8.openshift.client.OpenShiftClient+projectrequests(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,105,4,1,,"@Override
+  public ProjectRequestOperation projectrequests() {
+    return delegate.projectrequests();
+  }",False
+40,roles(),Method,,,io.fabric8.openshift.client.OpenShiftClient+roles() io.fabric8.openshift.client.OpenShiftClient+roles(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,108,4,1,,"@Override
+  public MixedOperation<Role, RoleList, Resource<Role>> roles() {
+    return delegate.roles();
+  }",False
+41,roleBindings(),Method,,,io.fabric8.openshift.client.OpenShiftClient+roleBindings() io.fabric8.openshift.client.OpenShiftClient+roleBindings(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,143,4,1,,"@Override
+  public MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> roleBindings() {
+    return delegate.roleBindings();
+  }",False
+42,routes(),Method,,,io.fabric8.openshift.client.OpenShiftClient+routes() io.fabric8.openshift.client.OpenShiftClient+routes(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,113,4,1,,"@Override
+  public MixedOperation<Route, RouteList, Resource<Route>> routes() {
+    return delegate.routes();
+  }",False
+43,templates(),Method,,,io.fabric8.openshift.client.OpenShiftClient+templates() io.fabric8.openshift.client.OpenShiftClient+templates(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,161,4,1,,"@Override
+  public ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
+    return delegate.templates();
+  }",False
+44,templateInstances(),Method,,,io.fabric8.openshift.client.OpenShiftClient+templateInstances() io.fabric8.openshift.client.OpenShiftClient+templateInstances(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,168,4,1,,"@Override
+  public MixedOperation<TemplateInstance, TemplateInstanceList, Resource<TemplateInstance>> templateInstances() {
+    return delegate.templateInstances();
+  }",False
+45,tuned(),Method,,,io.fabric8.openshift.client.OpenShiftClient+tuned() io.fabric8.openshift.client.OpenShiftClient+tuned(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,87,4,1,,"@Override
+  public OpenShiftTunedAPIGroupDSL tuned() {
+    return delegate.tuned();
+  }",False
+46,brokerTemplateInstances(),Method,,,io.fabric8.openshift.client.OpenShiftClient+brokerTemplateInstances() io.fabric8.openshift.client.OpenShiftClient+brokerTemplateInstances(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,205,4,1,,"@Override
+  public NonNamespaceOperation<BrokerTemplateInstance, BrokerTemplateInstanceList, Resource<BrokerTemplateInstance>> brokerTemplateInstances() {
+    return delegate.brokerTemplateInstances();
+  }",False
+47,users(),Method,,,io.fabric8.openshift.client.OpenShiftClient+users() io.fabric8.openshift.client.OpenShiftClient+users(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,115,4,1,,"@Override
+  public NonNamespaceOperation<User, UserList, Resource<User>> users() {
+    return delegate.users();
+  }",False
+48,clusterRoleBindings(),Method,,,io.fabric8.openshift.client.OpenShiftClient+clusterRoleBindings() io.fabric8.openshift.client.OpenShiftClient+clusterRoleBindings(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,178,4,1,,"@Override
+  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
+    return delegate.clusterRoleBindings();
+  }",False
+49,roleBindingRestrictions(),Method,,,io.fabric8.openshift.client.OpenShiftClient+roleBindingRestrictions() io.fabric8.openshift.client.OpenShiftClient+roleBindingRestrictions(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,198,4,1,,"@Override
+  public MixedOperation<RoleBindingRestriction, RoleBindingRestrictionList, Resource<RoleBindingRestriction>> roleBindingRestrictions() {
+    return delegate.roleBindingRestrictions();
+  }",False
+50,load(InputStream),Method,,,io.fabric8.kubernetes.client.KubernetesClient+load(InputStream) io.fabric8.kubernetes.client.KubernetesClient+load(InputStream),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,157,4,1,,"@Override
+  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
+    return delegate.load(is);
+  }",True
+51,resourceList(KubernetesResourceList),Method,,,io.fabric8.kubernetes.client.KubernetesClient+resourceList(KubernetesResourceList) io.fabric8.kubernetes.client.KubernetesClient+resourceList(KubernetesResourceList),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,175,4,1,,"@Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList is) {
+    return delegate.resourceList(is);
+  }",True
+52,resourceList(HasMetadata),Method,,,io.fabric8.kubernetes.client.KubernetesClient+resourceList(HasMetadata[]) io.fabric8.kubernetes.client.KubernetesClient+resourceList(HasMetadata[]),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,173,4,1,,"@Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(HasMetadata... items) {
+    return delegate.resourceList(items);
+  }",False
+53,resourceList(Collection<? extends HasMetadata>),Method,,,io.fabric8.kubernetes.client.KubernetesClient+resourceList(Collection<? extends HasMetadata>) io.fabric8.kubernetes.client.KubernetesClient+resourceList(Collection<? extends HasMetadata>),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,199,5,1,,"@Override
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(
+      Collection<? extends HasMetadata> items) {
+    return delegate.resourceList(items);
+  }",False
+54,resourceList(String),Method,,,io.fabric8.kubernetes.client.KubernetesClient+resourceList(String) io.fabric8.kubernetes.client.KubernetesClient+resourceList(String),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,166,4,1,,"@Override
+  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
+    return delegate.resourceList(s);
+  }",True
+55,resource(String),Method,,,io.fabric8.kubernetes.client.KubernetesClient+resource(String) io.fabric8.kubernetes.client.KubernetesClient+resource(String),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,111,4,1,,"@Override
+  public NamespaceableResource<HasMetadata> resource(String s) {
+    return delegate.resource(s);
+  }",True
+56,resource(T),Method,,,io.fabric8.kubernetes.client.KubernetesClient+resource(T) io.fabric8.kubernetes.client.KubernetesClient+resource(T),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,122,4,1,,"@Override
+  public <T extends HasMetadata> NamespaceableResource<T> resource(T is) {
+    return delegate.resource(is);
+  }",True
+57,endpoints(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+endpoints() io.fabric8.kubernetes.client.KubernetesClient+endpoints(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,131,4,1,,"@Override
+  public MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints() {
+    return delegate.endpoints();
+  }",True
+58,bindings(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+bindings() io.fabric8.kubernetes.client.KubernetesClient+bindings(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,143,4,1,,"@Override
+  public MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings() {
+    return delegate.bindings();
+  }",True
+59,namespaces(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+namespaces() io.fabric8.kubernetes.client.KubernetesClient+namespaces(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,140,4,1,,"@Override
+  public NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces() {
+    return delegate.namespaces();
+  }",True
+60,nodes(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+nodes() io.fabric8.kubernetes.client.KubernetesClient+nodes(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,115,4,1,,"@Override
+  public NonNamespaceOperation<Node, NodeList, Resource<Node>> nodes() {
+    return delegate.nodes();
+  }",True
+61,persistentVolumes(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+persistentVolumes() io.fabric8.kubernetes.client.KubernetesClient+persistentVolumes(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,175,4,1,,"@Override
+  public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, Resource<PersistentVolume>> persistentVolumes() {
+    return delegate.persistentVolumes();
+  }",True
+62,persistentVolumeClaims(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+persistentVolumeClaims() io.fabric8.kubernetes.client.KubernetesClient+persistentVolumeClaims(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,193,4,1,,"@Override
+  public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, Resource<PersistentVolumeClaim>> persistentVolumeClaims() {
+    return delegate.persistentVolumeClaims();
+  }",True
+63,pods(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+pods() io.fabric8.kubernetes.client.KubernetesClient+pods(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,101,4,1,,"@Override
+  public MixedOperation<Pod, PodList, PodResource> pods() {
+    return delegate.pods();
+  }",True
+64,replicationControllers(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+replicationControllers() io.fabric8.kubernetes.client.KubernetesClient+replicationControllers(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,209,4,1,,"@Override
+  public MixedOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>> replicationControllers() {
+    return delegate.replicationControllers();
+  }",True
+65,resourceQuotas(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+resourceQuotas() io.fabric8.kubernetes.client.KubernetesClient+resourceQuotas(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,153,4,1,,"@Override
+  public MixedOperation<ResourceQuota, ResourceQuotaList, Resource<ResourceQuota>> resourceQuotas() {
+    return delegate.resourceQuotas();
+  }",True
+66,secrets(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+secrets() io.fabric8.kubernetes.client.KubernetesClient+secrets(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,118,4,1,,"@Override
+  public MixedOperation<Secret, SecretList, Resource<Secret>> secrets() {
+    return delegate.secrets();
+  }",True
+67,services(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+services() io.fabric8.kubernetes.client.KubernetesClient+services(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,194,4,1,,"@Override
+  public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, ServiceResource<io.fabric8.kubernetes.api.model.Service>> services() {
+    return delegate.services();
+  }",True
+68,serviceAccounts(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+serviceAccounts() io.fabric8.kubernetes.client.KubernetesClient+serviceAccounts(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,158,4,1,,"@Override
+  public MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts() {
+    return delegate.serviceAccounts();
+  }",True
+69,apiServices(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+apiServices() io.fabric8.kubernetes.client.KubernetesClient+apiServices(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,145,4,1,,"@Override
+  public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
+    return delegate.apiServices();
+  }",True
+70,rangeAllocations(),Method,,,io.fabric8.openshift.client.OpenShiftClient+rangeAllocations() io.fabric8.openshift.client.OpenShiftClient+rangeAllocations(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,170,4,1,,"@Override
+  public NonNamespaceOperation<RangeAllocation, RangeAllocationList, Resource<RangeAllocation>> rangeAllocations() {
+    return delegate.rangeAllocations();
+  }",True
+71,securityContextConstraints(),Method,,,io.fabric8.openshift.client.OpenShiftClient+securityContextConstraints() io.fabric8.openshift.client.OpenShiftClient+securityContextConstraints(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,223,4,1,,"@Override
+  public NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, Resource<SecurityContextConstraints>> securityContextConstraints() {
+    return delegate.securityContextConstraints();
+  }",True
+72,configMaps(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+configMaps() io.fabric8.kubernetes.client.KubernetesClient+configMaps(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,133,4,1,,"@Override
+  public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
+    return delegate.configMaps();
+  }",True
+73,limitRanges(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+limitRanges() io.fabric8.kubernetes.client.KubernetesClient+limitRanges(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,138,4,1,,"@Override
+  public MixedOperation<LimitRange, LimitRangeList, Resource<LimitRange>> limitRanges() {
+    return delegate.limitRanges();
+  }",True
+74,customResources(Class<T>),Method,,,io.fabric8.kubernetes.client.KubernetesClient+customResources(Class<T>) io.fabric8.kubernetes.client.KubernetesClient+customResources(Class<T>),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,206,5,1,,"@Override
+  public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(
+      Class<T> resourceType) {
+    return delegate.customResources(resourceType);
+  }",True
+75,"customResources(Class<T>,Class<L>)",Method,,,"io.fabric8.kubernetes.client.KubernetesClient+customResources(Class<T>,Class<L>) io.fabric8.kubernetes.client.KubernetesClient+customResources(Class<T>,Class<L>)",io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,250,5,1,,"@Override
+  public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
+      Class<T> resourceType, Class<L> listClass) {
+    return delegate.customResources(resourceType, listClass);
+  }",True
+76,"customResources(ResourceDefinitionContext,Class<T>,Class<L>)",Method,,,"io.fabric8.kubernetes.client.KubernetesClient+customResources(ResourceDefinitionContext,Class<T>,Class<L>) io.fabric8.kubernetes.client.KubernetesClient+customResources(ResourceDefinitionContext,Class<T>,Class<L>)",io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,297,5,1,,"@Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(
+      ResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
+    return delegate.customResources(crdContext, resourceType, listClass);
+  }",True
+77,"resources(Class<T>,Class<L>)",Method,,,"io.fabric8.kubernetes.client.Client+resources(Class<T>,Class<L>) io.fabric8.kubernetes.client.Client+resources(Class<T>,Class<L>)",io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,235,5,1,,"@Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(
+      Class<T> resourceType, Class<L> listClass) {
+    return delegate.resources(resourceType, listClass);
+  }",True
+78,discovery(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+discovery() io.fabric8.kubernetes.client.KubernetesClient+discovery(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,90,4,1,,"@Override
+  public DiscoveryAPIGroupDSL discovery() {
+    return delegate.discovery();
+  }",True
+79,events(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+events() io.fabric8.kubernetes.client.KubernetesClient+events(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,83,4,1,,"@Override
+  public EventingAPIGroupDSL events() {
+    return delegate.events();
+  }",True
+80,apiextensions(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+apiextensions() io.fabric8.kubernetes.client.KubernetesClient+apiextensions(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,102,4,1,,"@Override
+  public ApiextensionsAPIGroupDSL apiextensions() {
+    return delegate.apiextensions();
+  }",True
+81,certificateSigningRequests(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+certificateSigningRequests() io.fabric8.kubernetes.client.KubernetesClient+certificateSigningRequests(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,220,4,1,,"@Override
+  public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests() {
+    return delegate.certificateSigningRequests();
+  }",True
+82,certificates(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+certificates() io.fabric8.kubernetes.client.KubernetesClient+certificates(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,99,4,1,,"@Override
+  public CertificatesAPIGroupDSL certificates() {
+    return delegate.certificates();
+  }",True
+83,authorization(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+authorization() io.fabric8.kubernetes.client.KubernetesClient+authorization(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,102,4,1,,"@Override
+  public AuthorizationAPIGroupDSL authorization() {
+    return delegate.authorization();
+  }",True
+84,tokenReviews(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+tokenReviews() io.fabric8.kubernetes.client.KubernetesClient+tokenReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,117,4,1,,"@Override
+  public InOutCreateable<TokenReview, TokenReview> tokenReviews() {
+    return delegate.tokenReviews();
+  }",True
+85,adapt(Class<C>),Method,,,io.fabric8.kubernetes.client.Client+adapt(Class<C>) io.fabric8.kubernetes.client.Client+adapt(Class<C>),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,99,4,1,,"@Override
+  public <C extends Client> C adapt(Class<C> type) {
+    return delegate.adapt(type);
+  }",True
+86,getMasterUrl(),Method,,,io.fabric8.kubernetes.client.Client+getMasterUrl() io.fabric8.kubernetes.client.Client+getMasterUrl(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,79,4,1,,"@Override
+  public URL getMasterUrl() {
+    return delegate.getMasterUrl();
+  }",True
+87,getApiVersion(),Method,,,io.fabric8.kubernetes.client.Client+getApiVersion() io.fabric8.kubernetes.client.Client+getApiVersion(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,84,4,1,,"@Override
+  public String getApiVersion() {
+    return delegate.getApiVersion();
+  }",True
+88,getNamespace(),Method,,,io.fabric8.kubernetes.client.Client+getNamespace() io.fabric8.kubernetes.client.Client+getNamespace(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,82,4,1,,"@Override
+  public String getNamespace() {
+    return delegate.getNamespace();
+  }",True
+89,rootPaths(),Method,,,io.fabric8.kubernetes.client.Client+rootPaths() io.fabric8.kubernetes.client.Client+rootPaths(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,79,4,1,,"@Override
+  public RootPaths rootPaths() {
+    return delegate.rootPaths();
+  }",True
+90,close(),Method,,,io.fabric8.kubernetes.client.Client+close() io.fabric8.kubernetes.client.Client+close(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,59,4,1,,"@Override
+  public void close() {
+    delegate.close();
+  }",True
+91,getConfiguration(),Method,,,io.fabric8.kubernetes.client.ConfigAware+getConfiguration() io.fabric8.kubernetes.client.ConfigAware+getConfiguration(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,90,4,1,,"@Override
+  public Config getConfiguration() {
+    return delegate.getConfiguration();
+  }",True
+92,extensions(),Method,,,io.fabric8.openshift.client.OpenShiftClient+extensions() io.fabric8.openshift.client.OpenShiftClient+extensions(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,93,4,1,,"@Override
+  public ExtensionsAPIGroupDSL extensions() {
+    return delegate.extensions();
+  }",True
+93,flowControl(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+flowControl() io.fabric8.kubernetes.client.KubernetesClient+flowControl(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,96,4,1,,"@Override
+  public FlowControlAPIGroupDSL flowControl() {
+    return delegate.flowControl();
+  }",True
+94,getVersion(),Method,,,io.fabric8.openshift.client.OpenShiftClient+getVersion() io.fabric8.openshift.client.OpenShiftClient+getVersion(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,83,4,1,,"@Override
+  public VersionInfo getVersion() {
+    return delegate.getVersion();
+  }",True
+95,getKubernetesVersion(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+getKubernetesVersion() io.fabric8.kubernetes.client.KubernetesClient+getKubernetesVersion(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,103,4,1,,"@Override
+  public VersionInfo getKubernetesVersion() {
+    return delegate.getKubernetesVersion();
+  }",True
+96,getOpenShiftV3Version(),Method,,,io.fabric8.openshift.client.OpenShiftClient+getOpenShiftV3Version() io.fabric8.openshift.client.OpenShiftClient+getOpenShiftV3Version(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,105,4,1,,"@Override
+  public VersionInfo getOpenShiftV3Version() {
+    return delegate.getOpenShiftV3Version();
+  }",False
+97,getOpenShiftV4Version(),Method,,,io.fabric8.openshift.client.OpenShiftClient+getOpenShiftV4Version() io.fabric8.openshift.client.OpenShiftClient+getOpenShiftV4Version(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,100,4,1,,"@Override
+  public String getOpenShiftV4Version() {
+    return delegate.getOpenShiftV4Version();
+  }",False
+98,v1(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+v1() io.fabric8.kubernetes.client.KubernetesClient+v1(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,69,4,1,,"@Override
+  public V1APIGroupDSL v1() {
+    return delegate.v1();
+  }",True
+99,run(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+run() io.fabric8.kubernetes.client.KubernetesClient+run(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,71,4,1,,"@Override
+  public RunOperations run() {
+    return delegate.run();
+  }",True
+100,runtimeClasses(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+runtimeClasses() io.fabric8.kubernetes.client.KubernetesClient+runtimeClasses(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,157,4,1,,"@Override
+  public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
+    return delegate.runtimeClasses();
+  }",True
+101,admissionRegistration(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+admissionRegistration() io.fabric8.kubernetes.client.KubernetesClient+admissionRegistration(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,126,4,1,,"@Override
+  public AdmissionRegistrationAPIGroupDSL admissionRegistration() {
+    return delegate.admissionRegistration();
+  }",False
+102,apps(),Method,,,io.fabric8.openshift.client.OpenShiftClient+apps() io.fabric8.openshift.client.OpenShiftClient+apps(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,75,4,1,,"@Override
+  public AppsAPIGroupDSL apps() {
+    return delegate.apps();
+  }",True
+103,autoscaling(),Method,,,io.fabric8.openshift.client.OpenShiftClient+autoscaling() io.fabric8.openshift.client.OpenShiftClient+autoscaling(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,96,4,1,,"@Override
+  public AutoscalingAPIGroupDSL autoscaling() {
+    return delegate.autoscaling();
+  }",True
+104,machineConfigurations(),Method,,,io.fabric8.openshift.client.OpenShiftClient+machineConfigurations() io.fabric8.openshift.client.OpenShiftClient+machineConfigurations(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,125,4,1,,"@Override
+  public MachineConfigurationAPIGroupDSL machineConfigurations() {
+    return delegate.machineConfigurations();
+  }",False
+105,machine(),Method,,,io.fabric8.openshift.client.OpenShiftClient+machine() io.fabric8.openshift.client.OpenShiftClient+machine(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,93,4,1,,"@Override
+  public OpenShiftMachineAPIGroupDSL machine() {
+    return delegate.machine();
+  }",False
+106,monitoring(),Method,,,io.fabric8.openshift.client.OpenShiftClient+monitoring() io.fabric8.openshift.client.OpenShiftClient+monitoring(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,102,4,1,,"@Override
+  public OpenShiftMonitoringAPIGroupDSL monitoring() {
+    return delegate.monitoring();
+  }",False
+107,netNamespaces(),Method,,,io.fabric8.openshift.client.OpenShiftClient+netNamespaces() io.fabric8.openshift.client.OpenShiftClient+netNamespaces(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,155,4,1,,"@Override
+  public NonNamespaceOperation<NetNamespace, NetNamespaceList, Resource<NetNamespace>> netNamespaces() {
+    return delegate.netNamespaces();
+  }",False
+108,clusterNetworks(),Method,,,io.fabric8.openshift.client.OpenShiftClient+clusterNetworks() io.fabric8.openshift.client.OpenShiftClient+clusterNetworks(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,165,4,1,,"@Override
+  public NonNamespaceOperation<ClusterNetwork, ClusterNetworkList, Resource<ClusterNetwork>> clusterNetworks() {
+    return delegate.clusterNetworks();
+  }",False
+109,egressNetworkPolicies(),Method,,,io.fabric8.openshift.client.OpenShiftClient+egressNetworkPolicies() io.fabric8.openshift.client.OpenShiftClient+egressNetworkPolicies(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,185,4,1,,"@Override
+  public MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, Resource<EgressNetworkPolicy>> egressNetworkPolicies() {
+    return delegate.egressNetworkPolicies();
+  }",False
+110,hostSubnets(),Method,,,io.fabric8.openshift.client.OpenShiftClient+hostSubnets() io.fabric8.openshift.client.OpenShiftClient+hostSubnets(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,145,4,1,,"@Override
+  public NonNamespaceOperation<HostSubnet, HostSubnetList, Resource<HostSubnet>> hostSubnets() {
+    return delegate.hostSubnets();
+  }",False
+111,network(),Method,,,io.fabric8.openshift.client.OpenShiftClient+network() io.fabric8.openshift.client.OpenShiftClient+network(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,84,4,1,,"@Override
+  public NetworkAPIGroupDSL network() {
+    return delegate.network();
+  }",True
+112,storage(),Method,,,io.fabric8.openshift.client.OpenShiftClient+storage() io.fabric8.openshift.client.OpenShiftClient+storage(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,84,4,1,,"@Override
+  public StorageAPIGroupDSL storage() {
+    return delegate.storage();
+  }",True
+113,batch(),Method,,,io.fabric8.openshift.client.OpenShiftClient+batch() io.fabric8.openshift.client.OpenShiftClient+batch(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,78,4,1,,"@Override
+  public BatchAPIGroupDSL batch() {
+    return delegate.batch();
+  }",True
+114,top(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+top() io.fabric8.kubernetes.client.KubernetesClient+top(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,75,4,1,,"@Override
+  public MetricAPIGroupDSL top() {
+    return delegate.top();
+  }",True
+115,policy(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+policy() io.fabric8.kubernetes.client.KubernetesClient+policy(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,81,4,1,,"@Override
+  public PolicyAPIGroupDSL policy() {
+    return delegate.policy();
+  }",True
+116,rbac(),Method,,,io.fabric8.openshift.client.OpenShiftClient+rbac() io.fabric8.openshift.client.OpenShiftClient+rbac(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,75,4,1,,"@Override
+  public RbacAPIGroupDSL rbac() {
+    return delegate.rbac();
+  }",True
+117,scheduling(),Method,,,io.fabric8.openshift.client.OpenShiftClient+scheduling() io.fabric8.openshift.client.OpenShiftClient+scheduling(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,93,4,1,,"@Override
+  public SchedulingAPIGroupDSL scheduling() {
+    return delegate.scheduling();
+  }",True
+118,apiRequestCounts(),Method,,,io.fabric8.openshift.client.OpenShiftClient+apiRequestCounts() io.fabric8.openshift.client.OpenShiftClient+apiRequestCounts(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,170,4,1,,"@Override
+  public NonNamespaceOperation<APIRequestCount, APIRequestCountList, Resource<APIRequestCount>> apiRequestCounts() {
+    return delegate.apiRequestCounts();
+  }",False
+119,bareMetalHosts(),Method,,,io.fabric8.openshift.client.OpenShiftClient+bareMetalHosts() io.fabric8.openshift.client.OpenShiftClient+bareMetalHosts(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,153,4,1,,"@Override
+  public MixedOperation<BareMetalHost, BareMetalHostList, Resource<BareMetalHost>> bareMetalHosts() {
+    return delegate.bareMetalHosts();
+  }",False
+120,subjectAccessReviews(),Method,,,io.fabric8.openshift.client.OpenShiftClient+subjectAccessReviews() io.fabric8.openshift.client.OpenShiftClient+subjectAccessReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,157,4,1,,"@Override
+  public InOutCreateable<SubjectAccessReview, SubjectAccessReviewResponse> subjectAccessReviews() {
+    return delegate.subjectAccessReviews();
+  }",False
+121,resourceAccessReviews(),Method,,,io.fabric8.openshift.client.OpenShiftClient+resourceAccessReviews() io.fabric8.openshift.client.OpenShiftClient+resourceAccessReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,161,4,1,,"@Override
+  public InOutCreateable<ResourceAccessReview, ResourceAccessReviewResponse> resourceAccessReviews() {
+    return delegate.resourceAccessReviews();
+  }",False
+122,localSubjectAccessReviews(),Method,,,io.fabric8.openshift.client.OpenShiftClient+localSubjectAccessReviews() io.fabric8.openshift.client.OpenShiftClient+localSubjectAccessReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,182,4,1,,"@Override
+  public NamespacedInOutCreateable<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews() {
+    return delegate.localSubjectAccessReviews();
+  }",False
+123,localResourceAccessReviews(),Method,,,io.fabric8.openshift.client.OpenShiftClient+localResourceAccessReviews() io.fabric8.openshift.client.OpenShiftClient+localResourceAccessReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,186,4,1,,"@Override
+  public NamespacedInOutCreateable<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews() {
+    return delegate.localResourceAccessReviews();
+  }",False
+124,selfSubjectRulesReviews(),Method,,,io.fabric8.openshift.client.OpenShiftClient+selfSubjectRulesReviews() io.fabric8.openshift.client.OpenShiftClient+selfSubjectRulesReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,171,4,1,,"@Override
+  public NamespacedInOutCreateable<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReviews() {
+    return delegate.selfSubjectRulesReviews();
+  }",False
+125,subjectRulesReviews(),Method,,,io.fabric8.openshift.client.OpenShiftClient+subjectRulesReviews() io.fabric8.openshift.client.OpenShiftClient+subjectRulesReviews(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,155,4,1,,"@Override
+  public NamespacedInOutCreateable<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews() {
+    return delegate.subjectRulesReviews();
+  }",False
+126,kubeStorageVersionMigrator(),Method,,,io.fabric8.openshift.client.OpenShiftClient+kubeStorageVersionMigrator() io.fabric8.openshift.client.OpenShiftClient+kubeStorageVersionMigrator(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,146,4,1,,"@Override
+  public OpenShiftStorageVersionMigratorApiGroupDSL kubeStorageVersionMigrator() {
+    return delegate.kubeStorageVersionMigrator();
+  }",False
+127,clusterRoles(),Method,,,io.fabric8.openshift.client.OpenShiftClient+clusterRoles() io.fabric8.openshift.client.OpenShiftClient+clusterRoles(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,150,4,1,,"@Override
+  public NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
+    return delegate.clusterRoles();
+  }",False
+128,informers(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+informers() io.fabric8.kubernetes.client.KubernetesClient+informers(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,91,4,1,,"@Override
+  public SharedInformerFactory informers() {
+    return delegate.informers();
+  }",True
+129,informers(ExecutorService),Method,,,io.fabric8.kubernetes.client.KubernetesClient+informers(ExecutorService) io.fabric8.kubernetes.client.KubernetesClient+informers(ExecutorService),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,137,4,1,,"@Override
+  public SharedInformerFactory informers(ExecutorService executorService) {
+    return delegate.informers(executorService);
+  }",True
+130,leaderElector(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+leaderElector() io.fabric8.kubernetes.client.KubernetesClient+leaderElector(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,125,4,1,,"@Override
+  public LeaderElectorBuilder<NamespacedOpenShiftClient> leaderElector() {
+    return delegate.leaderElector();
+  }",True
+131,leases(),Method,,,io.fabric8.kubernetes.client.KubernetesClient+leases() io.fabric8.kubernetes.client.KubernetesClient+leases(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,113,4,1,,"@Override
+  public MixedOperation<Lease, LeaseList, Resource<Lease>> leases() {
+    return delegate.leases();
+  }",True
+132,inAnyNamespace(),Method,,,io.fabric8.openshift.client.NamespacedOpenShiftClient+inAnyNamespace() io.fabric8.openshift.client.NamespacedOpenShiftClient+inAnyNamespace(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,105,4,1,,"@Override
+  public NamespacedOpenShiftClient inAnyNamespace() {
+    return delegate.inAnyNamespace();
+  }",True
+133,inNamespace(String),Method,,,io.fabric8.openshift.client.NamespacedOpenShiftClient+inNamespace(String) io.fabric8.openshift.client.NamespacedOpenShiftClient+inNamespace(String),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,114,4,1,,"@Override
+  public NamespacedOpenShiftClient inNamespace(String name) {
+    return delegate.inNamespace(name);
+  }",True
+134,withRequestConfig(RequestConfig),Method,,,io.fabric8.openshift.client.NamespacedOpenShiftClient+withRequestConfig(RequestConfig) io.fabric8.openshift.client.NamespacedOpenShiftClient+withRequestConfig(RequestConfig),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,169,4,1,,"@Override
+  public FunctionCallable<NamespacedOpenShiftClient> withRequestConfig(RequestConfig requestConfig) {
+    return delegate.withRequestConfig(requestConfig);
+  }",False
+135,currentUser(),Method,,,io.fabric8.openshift.client.OpenShiftClient+currentUser() io.fabric8.openshift.client.OpenShiftClient+currentUser(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,78,4,1,,"@Override
+  public User currentUser() {
+    return delegate.currentUser();
+  }",False
+136,identities(),Method,,,io.fabric8.openshift.client.OpenShiftClient+identities() io.fabric8.openshift.client.OpenShiftClient+identities(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,137,4,1,,"@Override
+  public NonNamespaceOperation<Identity, IdentityList, Resource<Identity>> identities() {
+    return delegate.identities();
+  }",False
+137,userIdentityMappings(),Method,,,,,122,4,1,,"@Override
+  public InOutCreateable<UserIdentityMapping, UserIdentityMapping> userIdentityMappings() {
+    return null;
+  }",False
+138,userOAuthAccessTokens(),Method,,,io.fabric8.openshift.client.OpenShiftClient+userOAuthAccessTokens() io.fabric8.openshift.client.OpenShiftClient+userOAuthAccessTokens(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,195,4,1,,"@Override
+  public NonNamespaceOperation<UserOAuthAccessToken, UserOAuthAccessTokenList, Resource<UserOAuthAccessToken>> userOAuthAccessTokens() {
+    return delegate.userOAuthAccessTokens();
+  }",False
+139,whereabouts(),Method,,,io.fabric8.openshift.client.OpenShiftClient+whereabouts() io.fabric8.openshift.client.OpenShiftClient+whereabouts(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,105,4,1,,"@Override
+  public OpenShiftWhereaboutsAPIGroupDSL whereabouts() {
+    return delegate.whereabouts();
+  }",False
+140,supportsOpenShiftAPIGroup(String),Method,,,io.fabric8.openshift.client.OpenShiftClient+supportsOpenShiftAPIGroup(String) io.fabric8.openshift.client.OpenShiftClient+supportsOpenShiftAPIGroup(String),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,132,4,1,,"@Override
+  public boolean supportsOpenShiftAPIGroup(String apiGroup) {
+    return delegate.supportsOpenShiftAPIGroup(apiGroup);
+  }",False
+141,"genericKubernetesResources(String,String)",Method,,,"io.fabric8.kubernetes.client.KubernetesClient+genericKubernetesResources(String,String) io.fabric8.kubernetes.client.KubernetesClient+genericKubernetesResources(String,String)",io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,266,5,1,,"@Override
+  public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
+      String apiVersion, String kind) {
+    return delegate.genericKubernetesResources(apiVersion, kind);
+  }",True
+142,isSupported(),Method,,,io.fabric8.kubernetes.client.extension.SupportTestingClient+isSupported() io.fabric8.kubernetes.client.extension.SupportTestingClient+isSupported(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,81,4,1,,"@Override
+  public boolean isSupported() {
+    return delegate.isSupported();
+  }",True
+143,isAdaptable(Class<C>),Method,,,io.fabric8.kubernetes.client.Client+isAdaptable(Class<C>) io.fabric8.kubernetes.client.Client+isAdaptable(Class<C>),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,117,4,1,,"@Override
+  public <C extends Client> Boolean isAdaptable(Class<C> type) {
+    return delegate.isAdaptable(type);
+  }",True
+144,supportsApiPath(String),Method,,,io.fabric8.kubernetes.client.Client+supportsApiPath(String) io.fabric8.kubernetes.client.Client+supportsApiPath(String),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,104,4,1,,"@Override
+  public boolean supportsApiPath(String path) {
+    return delegate.supportsApiPath(path);
+  }",True
+145,getApiGroups(),Method,,,io.fabric8.kubernetes.client.Client+getApiGroups() io.fabric8.kubernetes.client.Client+getApiGroups(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,88,4,1,,"@Override
+  public APIGroupList getApiGroups() {
+    return delegate.getApiGroups();
+  }",True
+146,getApiGroup(String),Method,,,io.fabric8.kubernetes.client.Client+getApiGroup(String) io.fabric8.kubernetes.client.Client+getApiGroup(String),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,97,4,1,,"@Override
+  public APIGroup getApiGroup(String name) {
+    return delegate.getApiGroup(name);
+  }",False
+147,getApiResources(String),Method,,,io.fabric8.kubernetes.client.Client+getApiResources(String) io.fabric8.kubernetes.client.Client+getApiResources(String),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,128,4,1,,"@Override
+  public APIResourceList getApiResources(String groupVersion) {
+    return delegate.getApiResources(groupVersion);
+  }",False
+148,"resources(Class<T>,Class<L>,Class<R>)",Method,,,"io.fabric8.kubernetes.client.Client+resources(Class<T>,Class<L>,Class<R>) io.fabric8.kubernetes.client.Client+resources(Class<T>,Class<L>,Class<R>)",io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,287,5,1,,"@Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> MixedOperation<T, L, R> resources(
+      Class<T> resourceType, Class<L> listClass, Class<R> resourceClass) {
+    return delegate.resources(resourceType, listClass, resourceClass);
+  }",False
+149,getHttpClient(),Method,,,io.fabric8.kubernetes.client.HttpClientAware+getHttpClient() io.fabric8.kubernetes.client.HttpClientAware+getHttpClient(),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,88,4,1,,"@Override
+  public HttpClient getHttpClient() {
+    return delegate.getHttpClient();
+  }",False
+150,supports(Class<R>),Method,,,io.fabric8.kubernetes.client.Client+supports(Class<R>) io.fabric8.kubernetes.client.Client+supports(Class<R>),io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,123,4,1,,"@Override
+  public <R extends KubernetesResource> boolean supports(Class<R> type) {
+    return delegate.supports(type);
+  }",False
+151,"hasApiGroup(String,boolean)",Method,,,"io.fabric8.kubernetes.client.Client+hasApiGroup(String,boolean) io.fabric8.kubernetes.client.Client+hasApiGroup(String,boolean)",io.fabric8.openshift.client.osgi.ManagedOpenShiftClient+delegate,126,4,1,,"@Override
+  public boolean hasApiGroup(String apiGroup, boolean exact) {
+    return delegate.hasApiGroup(apiGroup, exact);
+  }",False

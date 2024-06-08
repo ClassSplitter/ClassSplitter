@@ -1,0 +1,1008 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,IOUtils(),Method,,,,,50,3,2,,"private IOUtils() {
+        // utility class
+    }",False
+2,closeSilently(OutputStream),Method,"copyAndClose(InputStream,OutputStream)","org.h2.command.dml.RunScriptCommand+closeIO() org.h2.server.web.WebServlet+run() org.h2.tools.Backup+process(String,String,String,boolean) org.h2.tools.CreateCluster+process(String,String,String,String,String) org.h2.tools.Recover+dumpLob(String,boolean) org.h2.tools.Restore+execute(String,String,String,boolean) org.h2.tools.Script+execute(String,String,String,String) org.h2.test.poweroff.TestRecover+backup(String,String,String,int,String) org.h2.test.poweroff.TestRecover+testConsistency() org.h2.dev.fs.FileShell+zip(String,String,ArrayList<String>) org.h2.dev.fs.FileShell+unzip(String,String) org.h2.dev.ftp.server.FtpServer+StreamRedirect.run()","org.h2.util.IOUtils+trace(String,String,Object) org.h2.util.IOUtils+trace(String,String,Object) java.io.OutputStream+close() java.io.OutputStream+close()",,397,15,9,"/** 
+ * Close an output stream without throwing an exception.
+ * @param out the output stream or null
+ */
+","/**
+     * Close an output stream without throwing an exception.
+     *
+     * @param out the output stream or null
+     */
+    public static void closeSilently(OutputStream out) {
+        if (out != null) {
+            try {
+                trace(""closeSilently"", null, out);
+                out.close();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }",False
+3,"skipFully(InputStream,long)",Method,,"org.h2.jdbc.JdbcBlob+getBytes(long,int) org.h2.jdbc.JdbcBlob+position(byte[],long) org.h2.store.fs.FileObjectZip+readFully(byte[],int,int) org.h2.dev.fs.FileObjectZip2+readFully(byte[],int,int) org.h2.dev.ftp.server.FtpData+send(String,long)",java.io.InputStream+skip(long) java.io.InputStream+skip(long) java.io.EOFException+EOFException() org.h2.message.DbException+convertToIOException(Throwable) org.h2.message.DbException+convertToIOException(Throwable),,758,22,9,"/** 
+ * Skip a number of bytes in an input stream.
+ * @param in the input stream
+ * @param skip the number of bytes to skip
+ * @throws EOFException if the end of file has been reached before all bytescould be skipped
+ * @throws IOException if an IO exception occurred while skipping
+ */
+","/**
+     * Skip a number of bytes in an input stream.
+     *
+     * @param in the input stream
+     * @param skip the number of bytes to skip
+     * @throws EOFException if the end of file has been reached before all bytes
+     *             could be skipped
+     * @throws IOException if an IO exception occurred while skipping
+     */
+    public static void skipFully(InputStream in, long skip) throws IOException {
+        try {
+            while (skip > 0) {
+                long skipped = in.skip(skip);
+                if (skipped <= 0) {
+                    throw new EOFException();
+                }
+                skip -= skipped;
+            }
+        } catch (Exception e) {
+            throw DbException.convertToIOException(e);
+        }
+    }",False
+4,"skipFully(Reader,long)",Method,,"org.h2.jdbc.JdbcClob+getSubString(long,int)",java.io.Reader+skip(long) java.io.Reader+skip(long) java.io.EOFException+EOFException() org.h2.message.DbException+convertToIOException(Throwable) org.h2.message.DbException+convertToIOException(Throwable),,767,22,9,"/** 
+ * Skip a number of characters in a reader.
+ * @param reader the reader
+ * @param skip the number of characters to skip
+ * @throws EOFException if the end of file has been reached before allcharacters could be skipped
+ * @throws IOException if an IO exception occurred while skipping
+ */
+","/**
+     * Skip a number of characters in a reader.
+     *
+     * @param reader the reader
+     * @param skip the number of characters to skip
+     * @throws EOFException if the end of file has been reached before all
+     *             characters could be skipped
+     * @throws IOException if an IO exception occurred while skipping
+     */
+    public static void skipFully(Reader reader, long skip) throws IOException {
+        try {
+            while (skip > 0) {
+                long skipped = reader.skip(skip);
+                if (skipped <= 0) {
+                    throw new EOFException();
+                }
+                skip -= skipped;
+            }
+        } catch (Exception e) {
+            throw DbException.convertToIOException(e);
+        }
+    }",False
+5,"copyAndClose(InputStream,OutputStream)",Method,"copy(String,String)","org.h2.test.unit.FileSystemDatabase+openFileObject(String,String) org.h2.test.unit.TestSampleApps+test() org.h2.dev.ftp.FtpClient+retrieve(String,OutputStream,long) org.h2.dev.ftp.FtpClient+store(String,InputStream) org.h2.dev.ftp.FtpClient+nameList(String) org.h2.dev.ftp.FtpClient+list(String)","org.h2.util.IOUtils+copyAndCloseInput(InputStream,OutputStream) org.h2.util.IOUtils+copyAndCloseInput(InputStream,OutputStream) java.io.OutputStream+close() java.io.OutputStream+close() org.h2.message.DbException+convertToIOException(Throwable) org.h2.message.DbException+convertToIOException(Throwable) org.h2.util.IOUtils+closeSilently(OutputStream) org.h2.util.IOUtils+closeSilently(OutputStream)",,623,19,9,"/** 
+ * Copy all data from the input stream to the output stream and close both streams. Exceptions while closing are ignored.
+ * @param in the input stream
+ * @param out the output stream
+ * @return the number of bytes copied
+ */
+","/**
+     * Copy all data from the input stream to the output stream and close both
+     * streams. Exceptions while closing are ignored.
+     *
+     * @param in the input stream
+     * @param out the output stream
+     * @return the number of bytes copied
+     */
+    public static long copyAndClose(InputStream in, OutputStream out) throws IOException {
+        try {
+            long len = copyAndCloseInput(in, out);
+            out.close();
+            return len;
+        } catch (Exception e) {
+            throw DbException.convertToIOException(e);
+        } finally {
+            closeSilently(out);
+        }
+    }",False
+6,"copyAndCloseInput(InputStream,OutputStream)",Method,"copyAndClose(InputStream,OutputStream)","org.h2.command.dml.BackupCommand+backupFile(ZipOutputStream,String,String) org.h2.jdbc.JdbcBlob+length() org.h2.tools.Backup+process(String,String,String,boolean) org.h2.value.Transfer+writeValue(Value) org.h2.test.poweroff.TestRecover+backup(String,String,String,int,String) org.h2.test.server.WebClient+upload(String,String,InputStream) org.h2.dev.fs.FileShell+zip(String,String,ArrayList<String>)","org.h2.util.IOUtils+copy(InputStream,OutputStream) org.h2.util.IOUtils+copy(InputStream,OutputStream) org.h2.message.DbException+convertToIOException(Throwable) org.h2.message.DbException+convertToIOException(Throwable) org.h2.util.IOUtils+closeSilently(InputStream) org.h2.util.IOUtils+closeSilently(InputStream)",,599,17,9,"/** 
+ * Copy all data from the input stream to the output stream and close the input stream. Exceptions while closing are ignored.
+ * @param in the input stream
+ * @param out the output stream (null if writing is not required)
+ * @return the number of bytes copied
+ */
+","/**
+     * Copy all data from the input stream to the output stream and close the
+     * input stream. Exceptions while closing are ignored.
+     *
+     * @param in the input stream
+     * @param out the output stream (null if writing is not required)
+     * @return the number of bytes copied
+     */
+    public static long copyAndCloseInput(InputStream in, OutputStream out) throws IOException {
+        try {
+            return copy(in, out);
+        } catch (Exception e) {
+            throw DbException.convertToIOException(e);
+        } finally {
+            closeSilently(in);
+        }
+    }",False
+7,"copy(InputStream,OutputStream)",Method,"copyAndCloseInput(InputStream,OutputStream)","org.h2.tools.Recover+dumpLob(String,boolean) org.h2.tools.Restore+execute(String,String,String,boolean) org.h2.util.SourceCompiler+call() org.h2.util.Utils+loadResource(String) org.h2.test.unit.TestCompress+test(int) org.h2.test.unit.TestCompress+test(int) org.h2.dev.fs.FileShell+unzip(String,String) org.h2.dev.ftp.server.FtpData+receive(String) org.h2.dev.ftp.server.FtpData+send(String,long)","org.h2.util.IOUtils+copy(InputStream,OutputStream,long) org.h2.util.IOUtils+copy(InputStream,OutputStream,long)",java.lang.Long+MAX_VALUE,399,11,9,"/** 
+ * Copy all data from the input stream to the output stream. Both streams are kept open.
+ * @param in the input stream
+ * @param out the output stream (null if writing is not required)
+ * @return the number of bytes copied
+ */
+","/**
+     * Copy all data from the input stream to the output stream. Both streams
+     * are kept open.
+     *
+     * @param in the input stream
+     * @param out the output stream (null if writing is not required)
+     * @return the number of bytes copied
+     */
+    public static long copy(InputStream in, OutputStream out) throws IOException {
+        return copy(in, out, Long.MAX_VALUE);
+    }",False
+8,"copy(InputStream,OutputStream,long)",Method,"copy(InputStream,OutputStream) readBytesAndClose(InputStream,int)","org.h2.jdbc.JdbcBlob+getBytes(long,int) org.h2.server.web.WebServlet+uploadMultipart(InputStream,int) org.h2.dev.fs.FileShell+cat(String,long)","java.lang.Math+min(long,long) java.lang.Math+min(long,long) java.io.InputStream+read(byte[],int,int) java.io.InputStream+read(byte[],int,int) java.io.OutputStream+write(byte[],int,int) java.io.OutputStream+write(byte[],int,int) java.lang.Math+min(long,long) java.lang.Math+min(long,long) org.h2.message.DbException+convertToIOException(Throwable) org.h2.message.DbException+convertToIOException(Throwable)",org.h2.engine.Constants+IO_BUFFER_SIZE org.h2.engine.Constants+IO_BUFFER_SIZE,1109,31,9,"/** 
+ * Copy all data from the input stream to the output stream. Both streams are kept open.
+ * @param in the input stream
+ * @param out the output stream (null if writing is not required)
+ * @param length the maximum number of bytes to copy
+ * @return the number of bytes copied
+ */
+","/**
+     * Copy all data from the input stream to the output stream. Both streams
+     * are kept open.
+     *
+     * @param in the input stream
+     * @param out the output stream (null if writing is not required)
+     * @param length the maximum number of bytes to copy
+     * @return the number of bytes copied
+     */
+    public static long copy(InputStream in, OutputStream out, long length) throws IOException {
+        try {
+            long copied = 0;
+            int len = (int) Math.min(length, Constants.IO_BUFFER_SIZE);
+            byte[] buffer = new byte[len];
+            while (length > 0) {
+                len = in.read(buffer, 0, len);
+                if (len < 0) {
+                    break;
+                }
+                if (out != null) {
+                    out.write(buffer, 0, len);
+                }
+                copied += len;
+                length -= len;
+                len = (int) Math.min(length, Constants.IO_BUFFER_SIZE);
+            }
+            return copied;
+        } catch (Exception e) {
+            throw DbException.convertToIOException(e);
+        }
+    }",False
+9,"copyAndCloseInput(Reader,Writer,long)",Method,"readStringAndClose(Reader,int)","org.h2.jdbc.JdbcClob+length() org.h2.jdbc.JdbcClob+getSubString(long,int)","java.lang.Math+min(long,long) java.lang.Math+min(long,long) java.io.Reader+read(char[],int,int) java.io.Reader+read(char[],int,int) java.io.Writer+write(char[],int,int) java.io.Writer+write(char[],int,int) java.lang.Math+min(long,long) java.lang.Math+min(long,long) org.h2.message.DbException+convertToIOException(Throwable) org.h2.message.DbException+convertToIOException(Throwable) java.io.Reader+close() java.io.Reader+close()",org.h2.engine.Constants+IO_BUFFER_SIZE org.h2.engine.Constants+IO_BUFFER_SIZE,1165,33,9,"/** 
+ * Copy all data from the reader to the writer and close the reader. Exceptions while closing are ignored.
+ * @param in the reader
+ * @param out the writer (null if writing is not required)
+ * @param length the maximum number of bytes to copy
+ * @return the number of characters copied
+ */
+","/**
+     * Copy all data from the reader to the writer and close the reader.
+     * Exceptions while closing are ignored.
+     *
+     * @param in the reader
+     * @param out the writer (null if writing is not required)
+     * @param length the maximum number of bytes to copy
+     * @return the number of characters copied
+     */
+    public static long copyAndCloseInput(Reader in, Writer out, long length) throws IOException {
+        try {
+            long copied = 0;
+            int len = (int) Math.min(length, Constants.IO_BUFFER_SIZE);
+            char[] buffer = new char[len];
+            while (length > 0) {
+                len = in.read(buffer, 0, len);
+                if (len < 0) {
+                    break;
+                }
+                if (out != null) {
+                    out.write(buffer, 0, len);
+                }
+                length -= len;
+                len = (int) Math.min(length, Constants.IO_BUFFER_SIZE);
+                copied += len;
+            }
+            return copied;
+        } catch (Exception e) {
+            throw DbException.convertToIOException(e);
+        } finally {
+            in.close();
+        }
+    }",False
+10,closeSilently(InputStream),Method,"copyAndCloseInput(InputStream,OutputStream)","org.h2.command.dml.RunScriptCommand+closeIO() org.h2.command.dml.ScriptCommand+writeLobStream(Value) org.h2.server.web.WebServlet+run() org.h2.tools.Backup+process(String,String,String,boolean) org.h2.tools.Recover+dumpLob(String,boolean) org.h2.tools.Restore+getOriginalDbName(String,String) org.h2.tools.Restore+execute(String,String,String,boolean) org.h2.tools.RunScript+process(Connection,String,boolean,String) org.h2.test.poweroff.TestRecover+backup(String,String,String,int,String) org.h2.test.synth.OutputCatcher+run() org.h2.dev.fs.FileShell+cat(String,long) org.h2.dev.fs.FileShell+zip(String,String,ArrayList<String>) org.h2.dev.fs.FileShell+unzip(String,String) org.h2.dev.ftp.server.FtpServer+StreamRedirect.run()","org.h2.util.IOUtils+trace(String,String,Object) org.h2.util.IOUtils+trace(String,String,Object) java.io.InputStream+close() java.io.InputStream+close()",,389,15,9,"/** 
+ * Close an input stream without throwing an exception.
+ * @param in the input stream or null
+ */
+","/**
+     * Close an input stream without throwing an exception.
+     *
+     * @param in the input stream or null
+     */
+    public static void closeSilently(InputStream in) {
+        if (in != null) {
+            try {
+                trace(""closeSilently"", null, in);
+                in.close();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }",False
+11,closeSilently(Reader),Method,,org.h2.command.dml.ScriptCommand+writeLobStream(Value) org.h2.server.pg.PgServerThread+installPgCatalog(Statement) org.h2.tools.Csv+close(),java.io.Reader+close() java.io.Reader+close(),,337,14,9,"/** 
+ * Close a reader without throwing an exception.
+ * @param reader the reader or null
+ */
+","/**
+     * Close a reader without throwing an exception.
+     *
+     * @param reader the reader or null
+     */
+    public static void closeSilently(Reader reader) {
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }",False
+12,closeSilently(Writer),Method,,"org.h2.store.RecoverTester+log(int,String,byte[],long) org.h2.tools.Csv+close() org.h2.test.bench.TestPerformance+test(String) org.h2.test.synth.TestHalt+traceOperation(String,Exception)",java.io.Writer+flush() java.io.Writer+flush() java.io.Writer+close() java.io.Writer+close(),,369,15,9,"/** 
+ * Close a writer without throwing an exception.
+ * @param writer the writer or null
+ */
+","/**
+     * Close a writer without throwing an exception.
+     *
+     * @param writer the writer or null
+     */
+    public static void closeSilently(Writer writer) {
+        if (writer != null) {
+            try {
+                writer.flush();
+                writer.close();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }",False
+13,"readBytesAndClose(InputStream,int)",Method,,"org.h2.security.CipherFactory+setKeystore() org.h2.server.web.WebServer+getFile(String) org.h2.util.Utils+loadResource(String) org.h2.value.ValueLob+createBlob(InputStream,long,DataHandler) org.h2.value.ValueLob+createBlob(InputStream,long,DataHandler) org.h2.value.ValueLob+getString() org.h2.value.ValueLob+getBytesNoCopy() org.h2.value.ValueLobDb+getString() org.h2.value.ValueLobDb+getBytesNoCopy() org.h2.value.ValueLobDb+createTempBlob(InputStream,long,DataHandler) org.h2.test.server.TestWeb+testTransfer() org.h2.test.unit.TestReader+test() org.h2.build.doc.GenerateDoc+process(String,String) org.h2.build.doc.UploadBuild+main(String) org.h2.build.doc.UploadBuild+addFiles(File,File,ZipOutputStream) org.h2.build.doc.WebSite+loadFragments() org.h2.build.doc.WebSite+copy(File,File,boolean,boolean) org.h2.build.i18n.PrepareTranslation+load(String,boolean) org.h2.build.indexer.Indexer+readPage(File) org.h2.jcr.Railroads+processHtml(String)","java.lang.Math+min(int,int) java.lang.Math+min(int,int) java.io.ByteArrayOutputStream+ByteArrayOutputStream(int) org.h2.util.IOUtils+copy(InputStream,OutputStream,long) org.h2.util.IOUtils+copy(InputStream,OutputStream,long) java.io.ByteArrayOutputStream+toByteArray() java.io.ByteArrayOutputStream+toByteArray() org.h2.message.DbException+convertToIOException(Throwable) org.h2.message.DbException+convertToIOException(Throwable) java.io.InputStream+close() java.io.InputStream+close()",java.lang.Integer+MAX_VALUE org.h2.engine.Constants+IO_BUFFER_SIZE,824,23,9,"/** 
+ * Read a number of bytes from an input stream and close the stream.
+ * @param in the input stream
+ * @param length the maximum number of bytes to read, or -1 to read untilthe end of file
+ * @return the bytes read
+ */
+","/**
+     * Read a number of bytes from an input stream and close the stream.
+     *
+     * @param in the input stream
+     * @param length the maximum number of bytes to read, or -1 to read until
+     *            the end of file
+     * @return the bytes read
+     */
+    public static byte[] readBytesAndClose(InputStream in, int length) throws IOException {
+        try {
+            if (length <= 0) {
+                length = Integer.MAX_VALUE;
+            }
+            int block = Math.min(Constants.IO_BUFFER_SIZE, length);
+            ByteArrayOutputStream out = new ByteArrayOutputStream(block);
+            copy(in, out, length);
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw DbException.convertToIOException(e);
+        } finally {
+            in.close();
+        }
+    }",False
+14,"readStringAndClose(Reader,int)",Method,,"org.h2.fulltext.FullText+asString(Object,int) org.h2.value.ValueLob+createClob(Reader,long,DataHandler) org.h2.value.ValueLob+createClob(Reader,long,DataHandler) org.h2.value.ValueLob+getString() org.h2.value.ValueLobDb+getString() org.h2.value.ValueLobDb+createTempClob(Reader,long,DataHandler) org.h2.test.db.TestCsv+testNull() org.h2.test.db.TestCsv+testEmptyFieldDelimiter() org.h2.test.db.TestFunctions+testFileRead() org.h2.test.db.TestLob+testLobCompression(boolean) org.h2.test.server.WebClient+get(String) org.h2.test.server.WebClient+upload(String,String,InputStream) org.h2.test.unit.TestReader+test() org.h2.test.unit.TestRecovery+testCorrupt() org.h2.build.doc.LinkChecker+processFile(String) org.h2.build.doc.UploadBuild+main(String) org.h2.build.doc.UploadBuild+main(String) org.h2.build.doc.UploadBuild+main(String) org.h2.build.doc.XMLChecker+processFile(String) org.h2.build.i18n.PrepareTranslation+buildHtml(String,String,String) org.h2.build.i18n.PrepareTranslation+extract(String,File,String) org.h2.build.i18n.PropertiesToUTF8+convert(String) org.h2.jaqu.util.ClassUtils+convert(Object,Class<?>)","java.lang.Math+min(int,int) java.lang.Math+min(int,int) java.io.StringWriter+StringWriter(int) org.h2.util.IOUtils+copyAndCloseInput(Reader,Writer,long) org.h2.util.IOUtils+copyAndCloseInput(Reader,Writer,long) java.io.StringWriter+toString() java.io.StringWriter+toString() java.io.Reader+close() java.io.Reader+close()",java.lang.Integer+MAX_VALUE org.h2.engine.Constants+IO_BUFFER_SIZE,715,21,9,"/** 
+ * Read a number of characters from a reader and close it.
+ * @param in the reader
+ * @param length the maximum number of characters to read, or -1 to readuntil the end of file
+ * @return the string read
+ */
+","/**
+     * Read a number of characters from a reader and close it.
+     *
+     * @param in the reader
+     * @param length the maximum number of characters to read, or -1 to read
+     *            until the end of file
+     * @return the string read
+     */
+    public static String readStringAndClose(Reader in, int length) throws IOException {
+        try {
+            if (length <= 0) {
+                length = Integer.MAX_VALUE;
+            }
+            int block = Math.min(Constants.IO_BUFFER_SIZE, length);
+            StringWriter out = new StringWriter(block);
+            copyAndCloseInput(in, out, length);
+            return out.toString();
+        } finally {
+            in.close();
+        }
+    }",False
+15,"readFully(InputStream,byte[],int,int)",Method,,"org.h2.command.dml.ScriptCommand+writeLobStream(Value) org.h2.store.DataReader+readFully(byte[],int,int) org.h2.store.fs.FileObjectZip+readFully(byte[],int,int) org.h2.store.LobStorage+addLob(InputStream,long,int) org.h2.value.ValueLob+createBlob(InputStream,long,DataHandler) org.h2.value.ValueLob+createFromStream(byte[],int,InputStream,long,DataHandler) org.h2.value.ValueLobDb+createTempBlob(InputStream,long,DataHandler) org.h2.value.ValueLobDb+createTempFromStream(byte[],int,InputStream,long,DataHandler) org.h2.dev.fs.FileObjectZip2+readFully(byte[],int,int)","java.lang.Math+min(int,int) java.lang.Math+min(int,int) java.io.InputStream+read(byte[],int,int) java.io.InputStream+read(byte[],int,int) org.h2.message.DbException+convertToIOException(Throwable) org.h2.message.DbException+convertToIOException(Throwable)",,986,29,9,"/** 
+ * Try to read the given number of bytes to the buffer. This method reads until the maximum number of bytes have been read or until the end of file.
+ * @param in the input stream
+ * @param buffer the output buffer
+ * @param off the offset in the buffer
+ * @param max the number of bytes to read at most
+ * @return the number of bytes read, 0 meaning EOF
+ */
+","/**
+     * Try to read the given number of bytes to the buffer. This method reads
+     * until the maximum number of bytes have been read or until the end of
+     * file.
+     *
+     * @param in the input stream
+     * @param buffer the output buffer
+     * @param off the offset in the buffer
+     * @param max the number of bytes to read at most
+     * @return the number of bytes read, 0 meaning EOF
+     */
+    public static int readFully(InputStream in, byte[] buffer, int off, int max) throws IOException {
+        try {
+            int len = Math.min(max, buffer.length);
+            int result = 0;
+            while (len > 0) {
+                int l = in.read(buffer, off, len);
+                if (l < 0) {
+                    break;
+                }
+                result += l;
+                off += l;
+                len -= l;
+            }
+            return result;
+        } catch (Exception e) {
+            throw DbException.convertToIOException(e);
+        }
+    }",False
+16,"readFully(Reader,char[],int)",Method,,"org.h2.command.dml.ScriptCommand+writeLobStream(Value) org.h2.value.ValueLob+createClob(Reader,long,DataHandler) org.h2.value.ValueLob+createFromReader(char[],int,Reader,long,DataHandler) org.h2.value.ValueLobDb+createTempClob(Reader,long,DataHandler) org.h2.value.ValueLobDb+createTempFromReader(char[],int,Reader,long,DataHandler)","java.lang.Math+min(int,int) java.lang.Math+min(int,int) java.io.Reader+read(char[],int,int) java.io.Reader+read(char[],int,int) org.h2.message.DbException+convertToIOException(Throwable) org.h2.message.DbException+convertToIOException(Throwable)",,1036,32,9,"/** 
+ * Try to read the given number of characters to the buffer. This method reads until the maximum number of characters have been read or until the end of file.
+ * @param in the reader
+ * @param buffer the output buffer
+ * @param max the number of characters to read at most
+ * @return the number of characters read
+ */
+","/**
+     * Try to read the given number of characters to the buffer. This method
+     * reads until the maximum number of characters have been read or until the
+     * end of file.
+     *
+     * @param in the reader
+     * @param buffer the output buffer
+     * @param max the number of characters to read at most
+     * @return the number of characters read
+     */
+    public static int readFully(Reader in, char[] buffer, int max) throws IOException {
+        try {
+            int off = 0, len = Math.min(max, buffer.length);
+            if (len == 0) {
+                return 0;
+            }
+            while (true) {
+                int l = len - off;
+                if (l <= 0) {
+                    break;
+                }
+                l = in.read(buffer, off, l);
+                if (l < 0) {
+                    break;
+                }
+                off += l;
+            }
+            return off <= 0 ? -1 : off;
+        } catch (Exception e) {
+            throw DbException.convertToIOException(e);
+        }
+    }",False
+17,getBufferedReader(InputStream),Method,,"org.h2.tools.ConvertTraceFile+convertFile(String,String,String) org.h2.value.ValueLob+getReader() org.h2.value.ValueLobDb+getReader() org.h2.test.unit.TestReader+test()","java.io.BufferedReader+BufferedReader(Reader) java.io.InputStreamReader+InputStreamReader(InputStream,String) org.h2.message.DbException+convert(Throwable) org.h2.message.DbException+convert(Throwable)",org.h2.engine.Constants+UTF8,688,18,9,"/** 
+ * Create a buffered reader to read from an input stream using the UTF-8 format. If the input stream is null, this method returns null. The InputStreamReader that is used here is not exact, that means it may read some additional bytes when buffering.
+ * @param in the input stream or null
+ * @return the reader
+ */
+","/**
+     * Create a buffered reader to read from an input stream using the UTF-8
+     * format. If the input stream is null, this method returns null. The
+     * InputStreamReader that is used here is not exact, that means it may read
+     * some additional bytes when buffering.
+     *
+     * @param in the input stream or null
+     * @return the reader
+     */
+    public static Reader getBufferedReader(InputStream in) {
+        try {
+            //
+            return in == null ? null : new BufferedReader(new InputStreamReader(in, Constants.UTF8));
+        } catch (Exception e) {
+            // UnsupportedEncodingException
+            throw DbException.convert(e);
+        }
+    }",False
+18,getReader(InputStream),Method,,org.h2.jdbc.JdbcClob+call(),"java.io.BufferedReader+BufferedReader(Reader) java.io.InputStreamReader+InputStreamReader(InputStream,String) org.h2.message.DbException+convert(Throwable) org.h2.message.DbException+convert(Throwable)",org.h2.engine.Constants+UTF8,714,18,9,"/** 
+ * Create a reader to read from an input stream using the UTF-8 format. If the input stream is null, this method returns null. The InputStreamReader that is used here is not exact, that means it may read some additional bytes when buffering.
+ * @param in the input stream or null
+ * @return the reader
+ */
+","/**
+     * Create a reader to read from an input stream using the UTF-8 format. If
+     * the input stream is null, this method returns null. The InputStreamReader
+     * that is used here is not exact, that means it may read some additional
+     * bytes when buffering.
+     *
+     * @param in the input stream or null
+     * @return the reader
+     */
+    public static Reader getReader(InputStream in) {
+        try {
+            // InputStreamReader may read some more bytes
+            return in == null ? null : new BufferedReader(new InputStreamReader(in, Constants.UTF8));
+        } catch (Exception e) {
+            // UnsupportedEncodingException
+            throw DbException.convert(e);
+        }
+    }",False
+19,getBufferedWriter(OutputStream),Method,,"org.h2.message.TraceSystem+openWriter() org.h2.tools.ConvertTraceFile+convertFile(String,String,String) org.h2.tools.ConvertTraceFile+convertFile(String,String,String) org.h2.tools.Recover+getWriter(String,String) org.h2.tools.Script+process(Connection,OutputStream) org.h2.util.SourceCompiler+javacCompile(String,String,String)","java.io.BufferedWriter+BufferedWriter(Writer) java.io.OutputStreamWriter+OutputStreamWriter(OutputStream,String) org.h2.message.DbException+convert(Throwable) org.h2.message.DbException+convert(Throwable)",org.h2.engine.Constants+UTF8,552,15,9,"/** 
+ * Create a buffered writer to write to an output stream using the UTF-8 format. If the output stream is null, this method returns null.
+ * @param out the output stream or null
+ * @return the writer
+ */
+","/**
+     * Create a buffered writer to write to an output stream using the UTF-8
+     * format. If the output stream is null, this method returns null.
+     *
+     * @param out the output stream or null
+     * @return the writer
+     */
+    public static Writer getBufferedWriter(OutputStream out) {
+        try {
+            return out == null ? null : new BufferedWriter(new OutputStreamWriter(out, Constants.UTF8));
+        } catch (Exception e) {
+            // UnsupportedEncodingException
+            throw DbException.convert(e);
+        }
+    }",False
+20,getInputStreamFromString(String),Method,,org.h2.jdbc.JdbcClob+getAsciiStream() org.h2.jdbc.JdbcResultSet+getAsciiStream(int) org.h2.jdbc.JdbcResultSet+getAsciiStream(String),java.io.ByteArrayInputStream+ByteArrayInputStream(byte[]) org.h2.util.StringUtils+utf8Encode(String) org.h2.util.StringUtils+utf8Encode(String),,456,14,9,"/** 
+ * Create an input stream to read from a string. The string is converted to a byte array using UTF-8 encoding. If the string is null, this method returns null.
+ * @param s the string
+ * @return the input stream
+ */
+","/**
+     * Create an input stream to read from a string. The string is converted to
+     * a byte array using UTF-8 encoding.
+     * If the string is null, this method returns null.
+     *
+     * @param s the string
+     * @return the input stream
+     */
+    public static InputStream getInputStreamFromString(String s) {
+        if (s == null) {
+            return null;
+        }
+        return new ByteArrayInputStream(StringUtils.utf8Encode(s));
+    }",False
+21,getReaderFromString(String),Method,,org.h2.value.Value+getReader(),java.io.StringReader+StringReader(String),,299,10,9,"/** 
+ * Create a reader to read from a string. If the string is null, this method returns null.
+ * @param s the string or null
+ * @return the reader
+ */
+","/**
+     * Create a reader to read from a string.
+     * If the string is null, this method returns null.
+     *
+     * @param s the string or null
+     * @return the reader
+     */
+    public static Reader getReaderFromString(String s) {
+        return s == null ? null : new StringReader(s);
+    }",False
+22,getAsciiReader(InputStream),Method,,"org.h2.jdbc.JdbcPreparedStatement+setAsciiStream(int,InputStream,long) org.h2.jdbc.JdbcResultSet+updateAsciiStream(int,InputStream,long) org.h2.jdbc.JdbcResultSet+updateAsciiStream(String,InputStream,long)","java.io.InputStreamReader+InputStreamReader(InputStream,String) org.h2.message.DbException+convert(Throwable) org.h2.message.DbException+convert(Throwable)",,482,15,9,"/** 
+ * Wrap an input stream in a reader. The bytes are converted to characters using the US-ASCII character set.
+ * @param in the input stream
+ * @return the reader
+ */
+","/**
+     * Wrap an input stream in a reader. The bytes are converted to characters
+     * using the US-ASCII character set.
+     *
+     * @param in the input stream
+     * @return the reader
+     */
+    public static Reader getAsciiReader(InputStream in) {
+        try {
+            return in == null ? null : new InputStreamReader(in, ""US-ASCII"");
+        } catch (Exception e) {
+            // UnsupportedEncodingException
+            throw DbException.convert(e);
+        }
+    }",False
+23,mkdirs(File),Method,,"org.h2.store.fs.FileSystemDisk+createTempFile(String,String,boolean,boolean) org.h2.util.SourceCompiler+javacCompile(String,String,String) org.h2.test.db.TestLob+testTempFilesDeleted()",java.io.File+exists() java.io.File+exists() java.io.File+isDirectory() java.io.File+isDirectory() java.io.IOException+IOException(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.File+mkdirs() java.io.File+mkdirs() java.io.IOException+IOException(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath(),,923,24,9,"/** 
+ * Create the directory and all parent directories if required.
+ * @param directory the directory
+ * @throws IOException
+ */
+","/**
+     * Create the directory and all parent directories if required.
+     *
+     * @param directory the directory
+     * @throws IOException
+     */
+    public static void mkdirs(File directory) throws IOException {
+        // loop, to deal with race conditions (if another thread creates or
+        // deletes the same directory at the same time).
+        for (int i = 0; i < 5; i++) {
+            if (directory.exists()) {
+                if (directory.isDirectory()) {
+                    return;
+                }
+                throw new IOException(""Could not create directory, "" +
+                        ""because a file with the same name already exists: "" +
+                        directory.getAbsolutePath());
+            }
+            if (directory.mkdirs()) {
+                return;
+            }
+        }
+        throw new IOException(""Could not create directory: "" + directory.getAbsolutePath());
+    }",False
+24,"setLength(RandomAccessFile,long)",Method,,org.h2.store.fs.FileObjectDisk+setFileLength(long) org.h2.store.fs.FileObjectDiskMapped+setFileLength(long) org.h2.test.poweroff.Test+testFile(DataOutputStream),"org.h2.util.IOUtils+trace(String,String,Object) org.h2.util.IOUtils+trace(String,String,Object) java.io.RandomAccessFile+setLength(long) java.io.RandomAccessFile+setLength(long) java.io.RandomAccessFile+length() java.io.RandomAccessFile+length() java.io.RandomAccessFile+getFilePointer() java.io.RandomAccessFile+getFilePointer() java.io.RandomAccessFile+seek(long) java.io.RandomAccessFile+seek(long) java.lang.Math+min(long,long) java.lang.Math+min(long,long) java.lang.Math+min(long,long) java.lang.Math+min(long,long) java.io.RandomAccessFile+write(byte[],int,int) java.io.RandomAccessFile+write(byte[],int,int) java.io.RandomAccessFile+seek(long) java.io.RandomAccessFile+seek(long)",,989,29,9,"/** 
+ * Change the length of the file.
+ * @param file the random access file
+ * @param newLength the new length
+ */
+","/**
+     * Change the length of the file.
+     *
+     * @param file the random access file
+     * @param newLength the new length
+     */
+    public static void setLength(RandomAccessFile file, long newLength) throws IOException {
+        try {
+            trace(""setLength"", null, file);
+            file.setLength(newLength);
+        } catch (IOException e) {
+            long length = file.length();
+            if (newLength < length) {
+                throw e;
+            }
+            long pos = file.getFilePointer();
+            file.seek(length);
+            long remaining = newLength - length;
+            int maxSize = 1024 * 1024;
+            int block = (int) Math.min(remaining, maxSize);
+            byte[] buffer = new byte[block];
+            while (remaining > 0) {
+                int write = (int) Math.min(remaining, maxSize);
+                file.write(buffer, 0, write);
+                remaining -= write;
+            }
+            file.seek(pos);
+        }
+    }",False
+25,getFileName(String),Method,,"org.h2.command.dml.BackupCommand+backupTo(String) org.h2.command.dml.BackupCommand+backupPageStore(ZipOutputStream,String,PageStore) org.h2.engine.ConnectionInfo+getName() org.h2.engine.Database+close(boolean) org.h2.store.fs.FileSystemWrapper+getFileName(String) org.h2.value.ValueLob+getNewObjectId(DataHandler) org.h2.test.db.TestLinkedTable+testLinkedTableInReadOnlyDb() org.h2.test.unit.TestFileSystem+testDatabaseInJar() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.ftp.server.FtpServer+appendFile(StringBuilder,String)",org.h2.store.fs.FileSystem+getFileName(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+getFileName(String),,262,9,9,"/** 
+ * Get the file name (without directory part).
+ * @param name the directory and file name
+ * @return just the file name
+ */
+","/**
+     * Get the file name (without directory part).
+     *
+     * @param name the directory and file name
+     * @return just the file name
+     */
+    public static String getFileName(String name) {
+        return getFileSystem(name).getFileName(name);
+    }",True
+26,canWrite(String),Method,,"org.h2.store.FileStore+FileStore(DataHandler,String,String) org.h2.store.fs.FileSystemWrapper+canWrite(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.dev.ftp.server.FtpServer+appendFile(StringBuilder,String)",org.h2.store.fs.FileSystem+canWrite(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+canWrite(String),,251,9,9,"/** 
+ * Check if the file is writable.
+ * @param fileName the file name
+ * @return if the file is writable
+ */
+","/**
+     * Check if the file is writable.
+     *
+     * @param fileName the file name
+     * @return if the file is writable
+     */
+    public static boolean canWrite(String fileName) {
+        return getFileSystem(fileName).canWrite(fileName);
+    }",True
+27,setReadOnly(String),Method,,org.h2.store.fs.FileSystemWrapper+setReadOnly(String) org.h2.test.db.TestLinkedTable+testLinkedTableInReadOnlyDb() org.h2.test.db.TestReadOnly+setReadOnly() org.h2.test.unit.TestTraceSystem+testReadOnly() org.h2.dev.fs.FileShell+execute(String[]),org.h2.store.fs.FileSystem+setReadOnly(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+setReadOnly(String),,264,9,9,"/** 
+ * Disable the ability to write.
+ * @param fileName the file name
+ * @return true if the call was successful
+ */
+","/**
+     * Disable the ability to write.
+     *
+     * @param fileName the file name
+     * @return true if the call was successful
+     */
+    public static boolean setReadOnly(String fileName) {
+        return getFileSystem(fileName).setReadOnly(fileName);
+    }",True
+28,"copy(String,String)",Method,,"org.h2.store.RecoverTester+testDatabase(String,PrintWriter) org.h2.store.RecoverTester+testDatabase(String,PrintWriter) org.h2.value.ValueLob+copyFileTo(DataHandler,String,String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestReopen+logDb(String) org.h2.test.unit.TestReopen+logDb(String) org.h2.dev.fs.FileShell+execute(String[])","org.h2.util.IOUtils+openFileInputStream(String) org.h2.util.IOUtils+openFileInputStream(String) org.h2.util.IOUtils+openFileOutputStream(String,boolean) org.h2.util.IOUtils+openFileOutputStream(String,boolean) org.h2.util.IOUtils+copyAndClose(InputStream,OutputStream) org.h2.util.IOUtils+copyAndClose(InputStream,OutputStream)",,413,11,9,"/** 
+ * Copy a file from one directory to another, or to another file.
+ * @param original the original file name
+ * @param copy the file name of the copy
+ */
+","/**
+     * Copy a file from one directory to another, or to another file.
+     *
+     * @param original the original file name
+     * @param copy the file name of the copy
+     */
+    public static void copy(String original, String copy) throws IOException {
+        InputStream in = openFileInputStream(original);
+        OutputStream out = openFileOutputStream(copy, false);
+        copyAndClose(in, out);
+    }",True
+29,createNewFile(String),Method,,org.h2.store.FileLock+lockSerialized() org.h2.store.FileLock+lockFile() org.h2.store.FileLock+lockFile() org.h2.store.FileLock+lockSocket() org.h2.store.FileLock+lockSocket() org.h2.store.fs.FileSystemWrapper+createNewFile(String) org.h2.test.unit.TestFileSystem+testSimple(String),org.h2.store.fs.FileSystem+createNewFile(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+createNewFile(String),,257,9,9,"/** 
+ * Create a new file.
+ * @param fileName the file name
+ * @return true if creating was successful
+ */
+","/**
+     * Create a new file.
+     *
+     * @param fileName the file name
+     * @return true if creating was successful
+     */
+    public static boolean createNewFile(String fileName) {
+        return getFileSystem(fileName).createNewFile(fileName);
+    }",True
+30,"openFileObject(String,String)",Method,,"org.h2.store.FileStore+FileStore(DataHandler,String,String) org.h2.store.FileStore+openFile() org.h2.store.fs.FileSystemWrapper+openFileObject(String,String) org.h2.test.db.TestOpenClose+testErrorMessageWrongSplit() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testRandomAccess(String,int) org.h2.test.unit.TestFileSystem+testRandomAccess(String,int) org.h2.test.unit.TestPageStoreCoverage+testIncompleteCreate() org.h2.test.unit.TestPageStoreCoverage+testIncompleteCreate() org.h2.test.unit.TestRecovery+testCorrupt() org.h2.dev.fs.FileShell+truncate(String,long) org.h2.dev.fs.FileSystemCrypt+openFileObject(String,String)","org.h2.store.fs.FileSystem+openFileObject(String,String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+openFileObject(String,String)",,365,10,9,"/** 
+ * Open a random access file object.
+ * @param fileName the file name
+ * @param mode the access mode. Supported are r, rw, rws, rwd
+ * @return the file object
+ */
+","/**
+     * Open a random access file object.
+     *
+     * @param fileName the file name
+     * @param mode the access mode. Supported are r, rw, rws, rwd
+     * @return the file object
+     */
+    public static FileObject openFileObject(String fileName, String mode) throws IOException {
+        return getFileSystem(fileName).openFileObject(fileName, mode);
+    }",True
+31,getCanonicalPath(String),Method,,"org.h2.command.dml.BackupCommand+backupFile(ZipOutputStream,String,String) org.h2.command.dml.BackupCommand+backupFile(ZipOutputStream,String,String) org.h2.engine.ConnectionInfo+setBaseDir(String) org.h2.engine.ConnectionInfo+setBaseDir(String) org.h2.engine.ConnectionInfo+getName() org.h2.engine.Database+getDatabasePath() org.h2.security.CipherFactory+setKeystore() org.h2.store.FileLister+getDir(String) org.h2.store.FileLister+getDatabaseFiles(String,String,boolean) org.h2.store.fs.FileSystemWrapper+getCanonicalPath(String) org.h2.tools.Backup+process(String,String,String,boolean) org.h2.tools.Backup+process(String,String,String,boolean) org.h2.value.ValueLob+getFileNamePrefix(String,int) org.h2.test.unit.TestFileSystem+test() org.h2.test.unit.TestFileSystem+testUserHome() org.h2.dev.fs.FileShell+promptLoop() org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.fs.FileShell+zip(String,String,ArrayList<String>) org.h2.dev.fs.FileShell+getFile(String) org.h2.dev.fs.FileSystemCrypt+getCanonicalPath(String) org.h2.dev.ftp.server.FtpServer+init(String) org.h2.dev.ftp.server.FtpServer+start()",org.h2.store.fs.FileSystem+getCanonicalPath(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+getCanonicalPath(String),,259,9,9,"/** 
+ * Normalize a file name.
+ * @param fileName the file name
+ * @return the normalized file name
+ */
+","/**
+     * Normalize a file name.
+     *
+     * @param fileName the file name
+     * @return the normalized file name
+     */
+    public static String getCanonicalPath(String fileName) {
+        return getFileSystem(fileName).getCanonicalPath(fileName);
+    }",True
+32,tryDelete(String),Method,"deleteRecursive(String,boolean)","org.h2.engine.Database+deleteOldTempFiles() org.h2.store.fs.FileSystemWrapper+tryDelete(String) org.h2.tools.DeleteDbFiles+process(String,boolean) org.h2.tools.DeleteDbFiles+process(String,boolean) org.h2.util.TempFileDeleter+deleteFile(Reference<?>,String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processRemoveDir(String)",org.h2.store.fs.FileSystem+tryDelete(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+tryDelete(String),,238,9,9,"/** 
+ * Try to delete a file.
+ * @param fileName the file name
+ * @return true if it worked
+ */
+","/**
+     * Try to delete a file.
+     *
+     * @param fileName the file name
+     * @return true if it worked
+     */
+    public static boolean tryDelete(String fileName) {
+        return getFileSystem(fileName).tryDelete(fileName);
+    }",True
+33,isReadOnly(String),Method,,"org.h2.engine.Database+open(int,int) org.h2.engine.Database+open(int,int) org.h2.message.TraceSystem+openWriter() org.h2.store.fs.FileSystemWrapper+isReadOnly(String) org.h2.test.db.TestLinkedTable+testLinkedTableInReadOnlyDb() org.h2.dev.fs.FileShell+execute(String[])",org.h2.store.fs.FileSystem+isReadOnly(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+isReadOnly(String),,249,9,9,"/** 
+ * Check if a file is read-only.
+ * @param fileName the file name
+ * @return if it is read only
+ */
+","/**
+     * Check if a file is read-only.
+     *
+     * @param fileName the file name
+     * @return if it is read only
+     */
+    public static boolean isReadOnly(String fileName) {
+        return getFileSystem(fileName).isReadOnly(fileName);
+    }",True
+34,exists(String),Method,"deleteRecursive(String,boolean) createDirectories(String)","org.h2.engine.Database+exists(String) org.h2.engine.Database+openFile(String,String,boolean) org.h2.engine.Database+open(int,int) org.h2.engine.Database+open(int,int) org.h2.engine.Database+open(int,int) org.h2.engine.SessionRemote+openFile(String,String,boolean) org.h2.message.TraceSystem+writeFile(String,Throwable) org.h2.message.TraceSystem+openWriter() org.h2.security.CipherFactory+setKeystore() org.h2.store.FileLock+run() org.h2.store.FileStore+FileStore(DataHandler,String,String) org.h2.store.fs.FileSystemWrapper+exists(String) org.h2.store.PageStore+open() org.h2.tools.Backup+process(String,String,String,boolean) org.h2.tools.Restore+execute(String,String,String,boolean) org.h2.upgrade.DbUpgrade+connectOrUpgrade(String,Properties) org.h2.upgrade.DbUpgrade+connectOrUpgrade(String,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.util.SortedProperties+loadProperties(String) org.h2.util.TempFileDeleter+deleteFile(Reference<?>,String) org.h2.test.db.TestUpgrade+testLobs() org.h2.test.db.TestUpgrade+testLobs() org.h2.test.db.TestUpgrade+testLobs() org.h2.test.db.TestUpgrade+testLobs() org.h2.test.db.TestUpgrade+testErrorUpgrading() org.h2.test.db.TestUpgrade+testErrorUpgrading() org.h2.test.db.TestUpgrade+testNoDb() org.h2.test.db.TestUpgrade+testNoDb() org.h2.test.db.TestUpgrade+testNoUpgradeOldAndNew() org.h2.test.db.TestUpgrade+testNoUpgradeOldAndNew() org.h2.test.db.TestUpgrade+testNoUpgradeOldAndNew() org.h2.test.db.TestUpgrade+testNoUpgradeOldAndNew() org.h2.test.db.TestUpgrade+testNoUpgradeOldAndNew() org.h2.test.db.TestUpgrade+testIfExists() org.h2.test.db.TestUpgrade+testIfExists() org.h2.test.db.TestUpgrade+testCipher() org.h2.test.db.TestUpgrade+testCipher() org.h2.test.server.TestWeb+testTools() org.h2.test.server.TestWeb+testTools() org.h2.test.server.TestWeb+testTools() org.h2.test.server.TestWeb+testTools() org.h2.test.server.TestWeb+testTools() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestRecovery+testRecoverTestMode() org.h2.test.unit.TestTools+testConvertTraceFile() org.h2.test.unit.TestTools+testConvertTraceFile() org.h2.build.doc.UploadBuild+main(String) org.h2.dev.fs.FileShell+cat(String,long) org.h2.dev.fs.FileShell+zip(String,String,ArrayList<String>) org.h2.dev.fs.FileShell+readFileList(String[],int,ArrayList<String>,boolean) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processRemoveDir(String) org.h2.dev.ftp.server.FtpControl+processList(String,boolean)",org.h2.store.fs.FileSystem+exists(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+exists(String),,235,9,9,"/** 
+ * Checks if a file exists.
+ * @param fileName the file name
+ * @return true if it exists
+ */
+","/**
+     * Checks if a file exists.
+     *
+     * @param fileName the file name
+     * @return true if it exists
+     */
+    public static boolean exists(String fileName) {
+        return getFileSystem(fileName).exists(fileName);
+    }",True
+35,length(String),Method,,"org.h2.message.TraceSystem+writeFile(String,Throwable) org.h2.security.CipherFactory+setKeystore() org.h2.store.fs.FileSystemWrapper+length(String) org.h2.store.PageStore+open() org.h2.store.RecoverTester+log(int,String,byte[],long) org.h2.test.db.TestFunctions+testFileRead() org.h2.test.db.TestTempTables+testDeleteGlobalTempTableWhenClosing() org.h2.test.db.TestTempTables+testDeleteGlobalTempTableWhenClosing() org.h2.test.jdbc.TestStatement+testTraceError() org.h2.test.jdbc.TestStatement+testTraceError() org.h2.test.jdbc.TestStatement+testTraceError() org.h2.test.unit.TestFileSystem+testDatabaseInJar() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestReopen+logDb(String) org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpServer+appendFile(StringBuilder,String)",org.h2.store.fs.FileSystem+length(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+length(String),,235,9,9,"/** 
+ * Get the length of a file.
+ * @param fileName the file name
+ * @return the length in bytes
+ */
+","/**
+     * Get the length of a file.
+     *
+     * @param fileName the file name
+     * @return the length in bytes
+     */
+    public static long length(String fileName) {
+        return getFileSystem(fileName).length(fileName);
+    }",True
+36,"createTempFile(String,String,boolean,boolean)",Method,,"org.h2.engine.Database+createTempFile() org.h2.engine.SessionRemote+connectServer(ConnectionInfo) org.h2.store.fs.FileSystemWrapper+createTempFile(String,String,boolean,boolean) org.h2.value.ValueLobDb+initTemp(DataHandler) org.h2.test.unit.TestFileSystem+testRandomAccess(String,int) org.h2.test.unit.TestFileSystem+testTempFile(String) org.h2.dev.fs.FileSystemCrypt+createTempFile(String,String,boolean,boolean)","org.h2.store.fs.FileSystem+createTempFile(String,String,boolean,boolean) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+createTempFile(String,String,boolean,boolean)",,667,15,9,"/** 
+ * Create a new temporary file.
+ * @param prefix the prefix of the file name (including directory name ifrequired)
+ * @param suffix the suffix
+ * @param deleteOnExit if the file should be deleted when the virtualmachine exists
+ * @param inTempDir if the file should be stored in the temporary directory
+ * @return the name of the created file
+ */
+","/**
+     * Create a new temporary file.
+     *
+     * @param prefix the prefix of the file name (including directory name if
+     *            required)
+     * @param suffix the suffix
+     * @param deleteOnExit if the file should be deleted when the virtual
+     *            machine exists
+     * @param inTempDir if the file should be stored in the temporary directory
+     * @return the name of the created file
+     */
+    public static String createTempFile(String prefix, String suffix, boolean deleteOnExit, boolean inTempDir)
+            throws IOException {
+        return getFileSystem(prefix).createTempFile(prefix, suffix, deleteOnExit, inTempDir);
+    }",True
+37,getParent(String),Method,createDirectories(String),"org.h2.command.dml.BackupCommand+backupTo(String) org.h2.command.dml.BackupCommand+backupTo(String) org.h2.engine.Database+close(boolean) org.h2.engine.Database+deleteOldTempFiles() org.h2.message.TraceSystem+openWriter() org.h2.store.FileLock+lockSerialized() org.h2.store.FileLock+lockFile() org.h2.store.FileLock+lockSocket() org.h2.store.FileStore+FileStore(DataHandler,String,String) org.h2.store.fs.FileSystemWrapper+getParent(String) org.h2.tools.Backup+process(String,String,String,boolean) org.h2.tools.RunScript+process(Connection,String,boolean,String) org.h2.test.server.TestInit+test() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestStreams+testLZFStreamClose() org.h2.dev.fs.FileSystemCrypt+getParent(String)",org.h2.store.fs.FileSystem+getParent(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+getParent(String),,285,9,9,"/** 
+ * Get the parent directory of a file or directory.
+ * @param fileName the file or directory name
+ * @return the parent directory name
+ */
+","/**
+     * Get the parent directory of a file or directory.
+     *
+     * @param fileName the file or directory name
+     * @return the parent directory name
+     */
+    public static String getParent(String fileName) {
+        return getFileSystem(fileName).getParent(fileName);
+    }",True
+38,listFiles(String),Method,"deleteRecursive(String,boolean)","org.h2.engine.Database+deleteOldTempFiles() org.h2.store.FileLister+getDatabaseFiles(String,String,boolean) org.h2.store.fs.FileSystemWrapper+listFiles(String) org.h2.tools.Backup+process(String,String,String,boolean) org.h2.value.ValueLob+getFileList(DataHandler,String) org.h2.value.ValueLob+getFileList(DataHandler,String) org.h2.value.ValueLob+removeAllForTable(DataHandler,String,int) org.h2.test.db.TestCases+testDeleteAndDropTableWithLobs(boolean) org.h2.test.db.TestLinkedTable+testLinkedTableInReadOnlyDb() org.h2.test.db.TestLob+testDropAllObjects() org.h2.test.db.TestLob+testDropAllObjects() org.h2.test.db.TestLob+testDropAllObjects() org.h2.test.db.TestLob+testDropAllObjects() org.h2.test.db.TestLob+testDropAllObjects() org.h2.test.db.TestLob+testDropAllObjects() org.h2.test.db.TestLob+testTempFilesDeleted() org.h2.test.db.TestLob+testTempFilesDeleted() org.h2.test.db.TestLob+testLobDeleteTemp() org.h2.test.db.TestLob+testLobDeleteTemp() org.h2.test.unit.TestFileLockSerialized+testLeftLogFiles() org.h2.test.unit.TestFileLockSerialized+testLeftLogFiles() org.h2.test.unit.TestFileSystem+testMemFsDir() org.h2.test.unit.TestFileSystem+testDatabaseInJar() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.fs.FileShell+addFilesRecursive(String,ArrayList<String>) org.h2.dev.fs.FileSystemCrypt+listFiles(String) org.h2.dev.ftp.server.FtpServer+getDirectoryListing(String,boolean)",org.h2.store.fs.FileSystem+listFiles(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+listFiles(String),,261,9,9,"/** 
+ * List the files in the given directory.
+ * @param path the directory
+ * @return the list of fully qualified file names
+ */
+","/**
+     * List the files in the given directory.
+     *
+     * @param path the directory
+     * @return the list of fully qualified file names
+     */
+    public static String[] listFiles(String path) {
+        return getFileSystem(path).listFiles(path);
+    }",True
+39,isDirectory(String),Method,"deleteRecursive(String,boolean)","org.h2.store.fs.FileSystemWrapper+isDirectory(String) org.h2.tools.Backup+process(String,String,String,boolean) org.h2.tools.ChangeFileEncryption+process(String,String,String,char[],char[],boolean) org.h2.tools.ChangeFileEncryption+copy(String,FileStore,byte[]) org.h2.tools.DeleteDbFiles+process(String,boolean) org.h2.util.Tool+printNoDatabaseFilesFound(String,String) org.h2.value.ValueLob+removeAllForTable(DataHandler,String,int) org.h2.test.unit.TestFileSystem+testDatabaseInJar() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestTools+testRecover() org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.fs.FileShell+cat(String,long) org.h2.dev.fs.FileShell+zip(String,String,ArrayList<String>) org.h2.dev.fs.FileShell+addFilesRecursive(String,ArrayList<String>) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processConnected(String,String) org.h2.dev.ftp.server.FtpControl+processRemoveDir(String) org.h2.dev.ftp.server.FtpControl+processList(String,boolean) org.h2.dev.ftp.server.FtpServer+appendFile(StringBuilder,String) org.h2.dev.ftp.server.FtpServer+getDirectoryListing(String,boolean) org.h2.dev.ftp.server.FtpServer+getDirectoryListing(String,boolean)",org.h2.store.fs.FileSystem+isDirectory(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+isDirectory(String),,279,9,9,"/** 
+ * Check if it is a file or a directory.
+ * @param fileName the file or directory name
+ * @return true if it is a directory
+ */
+","/**
+     * Check if it is a file or a directory.
+     *
+     * @param fileName the file or directory name
+     * @return true if it is a directory
+     */
+    public static boolean isDirectory(String fileName) {
+        return getFileSystem(fileName).isDirectory(fileName);
+    }",True
+40,isAbsolute(String),Method,,"org.h2.engine.ConnectionInfo+setBaseDir(String) org.h2.store.fs.FileSystemWrapper+isAbsolute(String) org.h2.tools.RunScript+process(Connection,boolean,String,Reader,String) org.h2.test.unit.TestFileSystem+testDatabaseInJar() org.h2.dev.fs.FileShell+getFile(String)",org.h2.store.fs.FileSystem+isAbsolute(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+isAbsolute(String),,269,9,9,"/** 
+ * Check if the file name includes a path.
+ * @param fileName the file name
+ * @return if the file name is absolute
+ */
+","/**
+     * Check if the file name includes a path.
+     *
+     * @param fileName the file name
+     * @return if the file name is absolute
+     */
+    public static boolean isAbsolute(String fileName) {
+        return getFileSystem(fileName).isAbsolute(fileName);
+    }",True
+41,"fileStartsWith(String,String)",Method,,"org.h2.engine.Database+deleteOldTempFiles() org.h2.store.FileLister+getDatabaseFiles(String,String,boolean) org.h2.store.FileLister+getDatabaseFiles(String,String,boolean) org.h2.store.fs.FileSystemWrapper+fileStartsWith(String,String)","org.h2.store.fs.FileSystem+fileStartsWith(String,String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+fileStartsWith(String,String)",,350,10,9,"/** 
+ * Check if a file starts with a given prefix.
+ * @param fileName the complete file name
+ * @param prefix the prefix
+ * @return true if it starts with the prefix
+ */
+","/**
+     * Check if a file starts with a given prefix.
+     *
+     * @param fileName the complete file name
+     * @param prefix the prefix
+     * @return true if it starts with the prefix
+     */
+    public static boolean fileStartsWith(String fileName, String prefix) {
+        return getFileSystem(fileName).fileStartsWith(fileName, prefix);
+    }",True
+42,openFileInputStream(String),Method,"copy(String,String)","org.h2.command.dml.BackupCommand+backupFile(ZipOutputStream,String,String) org.h2.command.dml.RunScriptCommand+openInput() org.h2.expression.Function+getValueWithArgs(Session,Expression[]) org.h2.security.CipherFactory+setKeystore() org.h2.server.web.WebServer+TranslateThread.run() org.h2.store.fs.FileSystemWrapper+openFileInputStream(String) org.h2.tools.Backup+process(String,String,String,boolean) org.h2.tools.ConvertTraceFile+convertFile(String,String,String) org.h2.tools.Csv+initRead() org.h2.tools.Recover+readBlob(String) org.h2.tools.Restore+getOriginalDbName(String,String) org.h2.tools.Restore+execute(String,String,String,boolean) org.h2.tools.RunScript+process(Connection,String,boolean,String) org.h2.util.SortedProperties+loadProperties(String) org.h2.samples.CreateScriptFile+openScriptReader(String,String,String,String,String) org.h2.test.db.TestCsv+testNull() org.h2.test.db.TestCsv+testEmptyFieldDelimiter() org.h2.test.db.TestFunctions+testFileRead() org.h2.test.trace.Player+runFile(String) org.h2.test.unit.TestCompress+testDatabase() org.h2.test.unit.TestCompress+testDatabase() org.h2.test.unit.TestFileSystem+testClasspath() org.h2.test.unit.TestFileSystem+testClasspath() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testTempFile(String) org.h2.test.unit.TestRecovery+testCorrupt() org.h2.test.unit.TestStreams+testLZFStreamClose() org.h2.dev.fs.FileObjectZip2+readFully(byte[],int,int) org.h2.dev.fs.FileShell+cat(String,long) org.h2.dev.fs.FileShell+zip(String,String,ArrayList<String>) org.h2.dev.fs.FileShell+unzip(String,String) org.h2.dev.fs.FileSystemZip2+openZip(String) org.h2.dev.ftp.server.FtpData+send(String,long)",org.h2.store.fs.FileSystem+openFileInputStream(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+openFileInputStream(String),,304,9,9,"/** 
+ * Create an input stream to read from the file.
+ * @param fileName the file name
+ * @return the input stream
+ */
+","/**
+     * Create an input stream to read from the file.
+     *
+     * @param fileName the file name
+     * @return the input stream
+     */
+    public static InputStream openFileInputStream(String fileName) throws IOException {
+        return getFileSystem(fileName).openFileInputStream(fileName);
+    }",True
+43,"openFileOutputStream(String,boolean)",Method,"copy(String,String)","org.h2.command.dml.BackupCommand+backupTo(String) org.h2.command.dml.RunScriptCommand+openOutput() org.h2.message.TraceSystem+openWriter() org.h2.security.CipherFactory+setKeystore() org.h2.server.web.WebServer+saveProperties(Properties) org.h2.server.web.WebServer+TranslateThread.run() org.h2.store.FileLock+save() org.h2.store.fs.FileSystemWrapper+openFileOutputStream(String,boolean) org.h2.store.RecoverTester+log(int,String,byte[],long) org.h2.tools.Backup+process(String,String,String,boolean) org.h2.tools.ConvertTraceFile+convertFile(String,String,String) org.h2.tools.ConvertTraceFile+convertFile(String,String,String) org.h2.tools.CreateCluster+process(String,String,String,String,String) org.h2.tools.Csv+initWrite() org.h2.tools.Recover+getWriter(String,String) org.h2.tools.Recover+dumpLob(String,boolean) org.h2.tools.Restore+execute(String,String,String,boolean) org.h2.tools.Script+execute(String,String,String,String) org.h2.util.SortedProperties+store(String) org.h2.util.SourceCompiler+javacCompile(String,String,String) org.h2.samples.CreateScriptFile+openScriptWriter(String,String,String,String,String) org.h2.test.db.TestCsv+testPreserveWhitespace() org.h2.test.db.TestCsv+testChangeData() org.h2.test.db.TestCsv+testChangeData() org.h2.test.db.TestCsv+testNull() org.h2.test.db.TestCsv+testFieldDelimiter() org.h2.test.db.TestCsv+testRead() org.h2.test.db.TestFunctions+testFileRead() org.h2.test.db.TestUpgrade+testErrorUpgrading() org.h2.test.db.TestUpgrade+testErrorUpgrading() org.h2.test.server.TestInit+test() org.h2.test.server.TestInit+test() org.h2.test.unit.TestFileLockSerialized+testPendingWrite() org.h2.test.unit.TestFileSystem+testMemFsDir() org.h2.test.unit.TestFileSystem+testTempFile(String) org.h2.test.unit.TestFileSystem+testTempFile(String) org.h2.test.unit.TestStreams+testLZFStreamClose() org.h2.test.unit.TestTraceSystem+testReadOnly() org.h2.dev.fs.FileShell+zip(String,String,ArrayList<String>) org.h2.dev.fs.FileShell+unzip(String,String) org.h2.dev.ftp.server.FtpData+receive(String) org.h2.dev.ftp.server.FtpServer+StreamRedirect.openOutput()","org.h2.store.fs.FileSystem+openFileOutputStream(String,boolean) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+openFileOutputStream(String,boolean)",,426,11,9,"/** 
+ * Create an output stream to write into the file.
+ * @param fileName the file name
+ * @param append if true, the file will grow, if false, the file will betruncated first
+ * @return the output stream
+ */
+","/**
+     * Create an output stream to write into the file.
+     *
+     * @param fileName the file name
+     * @param append if true, the file will grow, if false, the file will be
+     *            truncated first
+     * @return the output stream
+     */
+    public static OutputStream openFileOutputStream(String fileName, boolean append) {
+        return getFileSystem(fileName).openFileOutputStream(fileName, append);
+    }",True
+44,"rename(String,String)",Method,,"org.h2.message.TraceSystem+writeFile(String,Throwable) org.h2.store.fs.FileSystemWrapper+rename(String,String) org.h2.tools.ChangeFileEncryption+process(String,String,String,char[],char[],boolean) org.h2.tools.ChangeFileEncryption+process(String,String,String,char[],char[],boolean) org.h2.tools.ChangeFileEncryption+copy(String,FileStore,byte[]) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.value.ValueLob+renameFile(DataHandler,String,String) org.h2.test.synth.TestKillRestartMulti+test() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestTools+testConvertTraceFile() org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.ftp.server.FtpControl+processConnected(String,String)","org.h2.store.fs.FileSystem+rename(String,String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+rename(String,String)",,298,9,9,"/** 
+ * Rename a file if this is allowed.
+ * @param oldName the old fully qualified file name
+ * @param newName the new fully qualified file name
+ */
+","/**
+     * Rename a file if this is allowed.
+     *
+     * @param oldName the old fully qualified file name
+     * @param newName the new fully qualified file name
+     */
+    public static void rename(String oldName, String newName) {
+        getFileSystem(oldName).rename(oldName, newName);
+    }",True
+45,createDirectory(String),Method,createDirectories(String),org.h2.store.fs.FileSystemWrapper+createDirectory(String),org.h2.store.fs.FileSystem+createDirectory(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+createDirectory(String),,278,8,9,"/** 
+ * Create a directory (all required parent directories already exist).
+ * @param directoryName the directory name
+ */
+","/**
+     * Create a directory (all required parent directories already exist).
+     *
+     * @param directoryName the directory name
+     */
+    public static void createDirectory(String directoryName) {
+        getFileSystem(directoryName).createDirectory(directoryName);
+    }",True
+46,delete(String),Method,"deleteRecursive(String,boolean)","org.h2.command.dml.RunScriptCommand+deleteStore() org.h2.message.TraceSystem+writeFile(String,Throwable) org.h2.store.FileLock+unlock() org.h2.store.FileLock+lockFile() org.h2.store.FileLock+lockSocket() org.h2.store.fs.FileObjectSplit+setFileLength(long) org.h2.store.fs.FileSystemWrapper+delete(String) org.h2.store.PageStore+openExisting() org.h2.tools.Backup+process(String,String,String,boolean) org.h2.tools.ChangeFileEncryption+process(String,String,String,char[],char[],boolean) org.h2.tools.ChangeFileEncryption+copy(String,FileStore,byte[]) org.h2.tools.ChangeFileEncryption+copy(String,FileStore,byte[]) org.h2.tools.CreateCluster+process(String,String,String,String,String) org.h2.tools.DeleteDbFiles+process(String,boolean) org.h2.tools.Recover+dumpLob(String,boolean) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.value.ValueLob+deleteFile(DataHandler,String) org.h2.value.ValueLobDb+close() org.h2.samples.Compact+compact(String,String,String,String) org.h2.samples.CreateScriptFile+openScriptWriter(String,String,String,String,String) org.h2.samples.CsvSample+main(String) org.h2.test.db.TestBackup+test() org.h2.test.db.TestCases+testReuseSpace() org.h2.test.db.TestCluster+deleteFiles() org.h2.test.db.TestCluster+deleteFiles() org.h2.test.db.TestCsv+testSpaceSeparated() org.h2.test.db.TestCsv+testSpaceSeparated() org.h2.test.db.TestCsv+testSpaceSeparated() org.h2.test.db.TestCsv+testNull() org.h2.test.db.TestCsv+testNull() org.h2.test.db.TestCsv+testRandomData() org.h2.test.db.TestCsv+testEmptyFieldDelimiter() org.h2.test.db.TestCsv+testEmptyFieldDelimiter() org.h2.test.db.TestCsv+testFieldDelimiter() org.h2.test.db.TestCsv+testFieldDelimiter() org.h2.test.db.TestCsv+testFieldDelimiter() org.h2.test.db.TestCsv+testPipe() org.h2.test.db.TestCsv+testRead() org.h2.test.db.TestCsv+testRead() org.h2.test.db.TestCsv+testWriteRead() org.h2.test.db.TestFunctions+testFileRead() org.h2.test.db.TestOpenClose+testErrorMessageWrongSplit() org.h2.test.db.TestOpenClose+testErrorMessageWrongSplit() org.h2.test.db.TestOpenClose+testBackup() org.h2.test.db.TestRights+testAccessRights() org.h2.test.db.TestRunscript+testEncoding() org.h2.test.db.TestRunscript+testClobPrimaryKey() org.h2.test.db.TestRunscript+test(boolean) org.h2.test.db.TestRunscript+test(boolean) org.h2.test.db.TestUpgrade+deleteDb(String) org.h2.test.db.TestUpgrade+deleteDb(String) org.h2.test.server.TestInit+test() org.h2.test.server.TestInit+test() org.h2.test.server.TestWeb+testTools() org.h2.test.server.TestWeb+testTools() org.h2.test.server.TestWeb+testTools() org.h2.test.server.TestWeb+testTools() org.h2.test.server.TestWeb+testTools() org.h2.test.synth.TestCrashAPI+getConnection(int,boolean) org.h2.test.synth.TestCrashAPI+getConnection(int,boolean) org.h2.test.synth.TestKillRestartMulti+test() org.h2.test.synth.TestRandomSQL+deleteDb() org.h2.test.unit.TestFile+doTest(boolean) org.h2.test.unit.TestFile+doTest(boolean) org.h2.test.unit.TestFile+doTest(boolean) org.h2.test.unit.TestFile+doTest(boolean) org.h2.test.unit.TestFileSystem+test() org.h2.test.unit.TestFileSystem+testDatabaseInMemFileSys() org.h2.test.unit.TestFileSystem+testDatabaseInJar() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testRandomAccess(String,int) org.h2.test.unit.TestFileSystem+testRandomAccess(String,int) org.h2.test.unit.TestFileSystem+testTempFile(String) org.h2.test.unit.TestFtp+test() org.h2.test.unit.TestPageStore+testLargeRows(int) org.h2.test.unit.TestPageStoreCoverage+testBackupRestore() org.h2.test.unit.TestRecovery+testRecoverTestMode() org.h2.test.unit.TestRecovery+testRunScript() org.h2.test.unit.TestSampleApps+test() org.h2.test.unit.TestStreams+testLZFStreamClose() org.h2.test.unit.TestTools+test() org.h2.test.unit.TestTools+test() org.h2.test.unit.TestTools+test() org.h2.test.unit.TestTools+testConvertTraceFile() org.h2.test.unit.TestTools+testConvertTraceFile() org.h2.test.unit.TestTools+testConvertTraceFile() org.h2.test.unit.TestTools+testConvertTraceFile() org.h2.test.unit.TestTools+testRemove() org.h2.test.unit.TestTools+testRecover() org.h2.test.unit.TestTools+testRecover() org.h2.test.unit.TestTraceSystem+testReadOnly() org.h2.test.unit.TestTraceSystem+testReadOnly() org.h2.build.doc.UploadBuild+main(String) org.h2.build.doc.UploadBuild+main(String) org.h2.build.doc.UploadBuild+main(String) org.h2.build.doc.UploadBuild+main(String) org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.fs.FileShell+zip(String,String,ArrayList<String>)",org.h2.store.fs.FileSystem+delete(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+delete(String),,182,8,9,"/** 
+ * Delete a file.
+ * @param fileName the file name
+ */
+","/**
+     * Delete a file.
+     *
+     * @param fileName the file name
+     */
+    public static void delete(String fileName) {
+        getFileSystem(fileName).delete(fileName);
+    }",True
+47,getLastModified(String),Method,,"org.h2.store.FileLock+save() org.h2.store.FileLock+waitUntilOld() org.h2.store.FileLock+lockSocket() org.h2.store.FileLock+lockSocket() org.h2.store.FileLock+run() org.h2.store.fs.FileSystemWrapper+getLastModified(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.ftp.server.FtpServer+appendFile(StringBuilder,String) org.h2.dev.ftp.server.FtpServer+formatLastModified(String)",org.h2.store.fs.FileSystem+getLastModified(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+getLastModified(String),,268,9,9,"/** 
+ * Get the last modified date of a file.
+ * @param fileName the file name
+ * @return the last modified date
+ */
+","/**
+     * Get the last modified date of a file.
+     *
+     * @param fileName the file name
+     * @return the last modified date
+     */
+    public static long getLastModified(String fileName) {
+        return getFileSystem(fileName).getLastModified(fileName);
+    }",True
+48,unwrap(String),Method,,org.h2.engine.ConnectionInfo+setBaseDir(String) org.h2.engine.ConnectionInfo+setBaseDir(String) org.h2.engine.ConnectionInfo+setBaseDir(String) org.h2.engine.ConnectionInfo+setBaseDir(String) org.h2.dev.fs.FileShell+getFile(String),org.h2.store.fs.FileSystem+unwrap(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.util.IOUtils+getFileSystem(String) org.h2.store.fs.FileSystem+unwrap(String),,315,10,9,"/** 
+ * Get the unwrapped file name (without wrapper prefixes if wrapping / delegating file systems are used).
+ * @param fileName the file name
+ * @return the unwrapped
+ */
+","/**
+     * Get the unwrapped file name (without wrapper prefixes if wrapping /
+     * delegating file systems are used).
+     *
+     * @param fileName the file name
+     * @return the unwrapped
+     */
+    public static String unwrap(String fileName) {
+        return getFileSystem(fileName).unwrap(fileName);
+    }",True
+49,getFileSystem(String),Method,"getFileName(String) canWrite(String) setReadOnly(String) createNewFile(String) openFileObject(String,String) getCanonicalPath(String) tryDelete(String) isReadOnly(String) exists(String) length(String) createTempFile(String,String,boolean,boolean) getParent(String) listFiles(String) isDirectory(String) isAbsolute(String) fileStartsWith(String,String) openFileInputStream(String) openFileOutputStream(String,boolean) rename(String,String) createDirectory(String) delete(String) getLastModified(String) unwrap(String)",,org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String),,113,3,10,,"private static FileSystem getFileSystem(String fileName) {
+        return FileSystem.getInstance(fileName);
+    }",True
+50,"trace(String,String,Object)",Method,"closeSilently(OutputStream) closeSilently(InputStream) setLength(RandomAccessFile,long)","org.h2.store.fs.FileSystemDisk+rename(String,String) org.h2.store.fs.FileSystemDisk+delete(String) org.h2.store.fs.FileSystemDisk+tryDelete(String) org.h2.store.fs.FileSystemDisk+openFileOutputStream(String,boolean) org.h2.store.fs.FileSystemDisk+openFileInputStream(String) org.h2.store.fs.FileSystemDisk+freeMemoryAndFinalize() org.h2.store.fs.FileSystemDisk+openFileObject(String,String) org.h2.store.fs.FileSystemDiskNio+openFileObject(String,String) org.h2.util.TempFileDeleter+addFile(String,Object) org.h2.util.TempFileDeleter+deleteFile(Reference<?>,String) org.h2.util.TempFileDeleter+stopAutoDelete(Reference<?>,String)",java.io.PrintStream+println(String) java.io.PrintStream+println(String),org.h2.constant.SysProperties+TRACE_IO java.lang.System+out,432,12,9,"/** 
+ * Trace input or output operations if enabled.
+ * @param method the method from where this method was called
+ * @param fileName the file name
+ * @param o the object to append to the message
+ */
+","/**
+     * Trace input or output operations if enabled.
+     *
+     * @param method the method from where this method was called
+     * @param fileName the file name
+     * @param o the object to append to the message
+     */
+    public static void trace(String method, String fileName, Object o) {
+        if (SysProperties.TRACE_IO) {
+            System.out.println(""IOUtils."" + method + "" "" + fileName + "" "" + o);
+        }
+    }",False
+51,"deleteRecursive(String,boolean)",Method,"deleteRecursive(String,boolean)","org.h2.fulltext.FullTextLucene+removeIndexFiles(Connection) org.h2.upgrade.DbUpgrade+upgrade(ConnectionInfo,Properties) org.h2.samples.ReadOnlyDatabaseInZip+main(String) org.h2.test.bench.TestPerformance+test(String) org.h2.test.db.TestFullText+testTransaction(boolean) org.h2.test.db.TestFullText+testTransaction(boolean) org.h2.test.db.TestFullText+testCreateDrop() org.h2.test.db.TestFullText+testCreateDrop() org.h2.test.db.TestFullText+testReopen(boolean) org.h2.test.db.TestFullText+testReopen(boolean) org.h2.test.db.TestFullText+testPerformance(boolean) org.h2.test.db.TestFunctions+test() org.h2.test.db.TestLob+test() org.h2.test.db.TestLob+testTempFilesDeleted() org.h2.test.db.TestUpgrade+deleteDb(String) org.h2.test.poweroff.TestRecoverKillLoop+runTest(int) org.h2.test.server.TestWeb+testTransfer() org.h2.test.synth.TestNestedJoins+deleteDerby() org.h2.test.synth.TestOuterJoins+deleteDerby() org.h2.test.TestAll+beforeTest() org.h2.test.TestAll+beforeTest() org.h2.test.TestAll+afterTest() org.h2.test.TestAll+afterTest() org.h2.test.TestBase+runTest(TestAll) org.h2.test.TestBase+runTest(TestAll) org.h2.test.unit.TestFileSystem+testMemFsDir() org.h2.test.unit.TestFileSystem+testSplitDatabaseInZip() org.h2.test.unit.TestFileSystem+testSplitDatabaseInZip() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestRecovery+testRunScript() org.h2.test.unit.TestTools+testRecover() org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.fs.FileShell+execute(String[])","org.h2.util.IOUtils+exists(String) org.h2.util.IOUtils+exists(String) org.h2.util.IOUtils+isDirectory(String) org.h2.util.IOUtils+isDirectory(String) org.h2.util.IOUtils+listFiles(String) org.h2.util.IOUtils+listFiles(String) org.h2.util.IOUtils+deleteRecursive(String,boolean) org.h2.util.IOUtils+deleteRecursive(String,boolean) org.h2.util.IOUtils+tryDelete(String) org.h2.util.IOUtils+tryDelete(String) org.h2.util.IOUtils+delete(String) org.h2.util.IOUtils+delete(String)",,579,20,9,"/** 
+ * Delete a directory or file and all subdirectories and files.
+ * @param path the path
+ * @param tryOnly whether errors should  be ignored
+ */
+","/**
+     * Delete a directory or file and all subdirectories and files.
+     *
+     * @param path the path
+     * @param tryOnly whether errors should  be ignored
+     */
+    public static void deleteRecursive(String path, boolean tryOnly) {
+        if (exists(path)) {
+            if (isDirectory(path)) {
+                for (String s : listFiles(path)) {
+                    deleteRecursive(s, tryOnly);
+                }
+            }
+            if (tryOnly) {
+                tryDelete(path);
+            } else {
+                delete(path);
+            }
+        }
+    }",True
+52,createDirectories(String),Method,createDirectories(String),"org.h2.message.TraceSystem+openWriter() org.h2.store.FileLock+lockSerialized() org.h2.store.FileLock+lockFile() org.h2.store.FileLock+lockSocket() org.h2.store.FileStore+FileStore(DataHandler,String,String) org.h2.store.fs.FileSystemDisk+openFileOutputStream(String,boolean) org.h2.test.server.TestInit+test() org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestFileSystem+testSimple(String) org.h2.test.unit.TestStreams+testLZFStreamClose() org.h2.dev.fs.FileShell+execute(String[]) org.h2.dev.ftp.server.FtpControl+processMakeDir(String) org.h2.dev.ftp.server.FtpServer+start()",org.h2.util.IOUtils+getParent(String) org.h2.util.IOUtils+getParent(String) org.h2.util.IOUtils+exists(String) org.h2.util.IOUtils+exists(String) org.h2.util.IOUtils+createDirectories(String) org.h2.util.IOUtils+createDirectories(String) org.h2.util.IOUtils+createDirectory(String) org.h2.util.IOUtils+createDirectory(String),,331,12,9,"/** 
+ * Create the directory and all required parent directories.
+ * @param dir the directory name
+ */
+","/**
+     * Create the directory and all required parent directories.
+     *
+     * @param dir the directory name
+     */
+    public static void createDirectories(String dir) {
+        String parent = getParent(dir);
+        if (!exists(parent)) {
+            createDirectories(parent);
+        }
+        createDirectory(dir);
+    }",True

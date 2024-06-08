@@ -1,0 +1,169 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,function,Field,"FunctionTable(Schema,Session,Expression,FunctionCall)",,,,36,1,18,,private final FunctionCall function;,False
+2,rowCount,Field,,,,,28,1,18,,private final long rowCount;,False
+3,functionExpr,Field,"FunctionTable(Schema,Session,Expression,FunctionCall)",,,,32,1,2,,private Expression functionExpr;,False
+4,"FunctionTable(Schema,Session,Expression,FunctionCall)",Method,,,"org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.TableFunction+getRowCount() org.h2.expression.function.TableFunction+getRowCount() org.h2.expression.function.FunctionCall+optimize(Session) org.h2.expression.function.FunctionCall+optimize(Session) org.h2.expression.function.FunctionCall+getValueType() org.h2.expression.function.FunctionCall+getValueType() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.FunctionCall+getArgs() org.h2.expression.function.FunctionCall+getArgs() org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+optimize(Session) org.h2.expression.function.FunctionCall+getValueForColumnList(Session,Expression[]) org.h2.expression.function.FunctionCall+getValueForColumnList(Session,Expression[]) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.expression.function.FunctionCall+getName() org.h2.expression.function.FunctionCall+getName() org.h2.value.ValueResultSet+getResult() org.h2.value.ValueResultSet+getResult() org.h2.result.ResultInterface+getVisibleColumnCount() org.h2.result.ResultInterface+getVisibleColumnCount() org.h2.table.Column+Column(String,TypeInfo) org.h2.result.ResultInterface+getColumnName(int) org.h2.result.ResultInterface+getColumnName(int) org.h2.result.ResultInterface+getColumnType(int) org.h2.result.ResultInterface+getColumnType(int) org.h2.table.Table+setColumns(Column[]) org.h2.table.Table+setColumns(Column[])",org.h2.table.FunctionTable+functionExpr org.h2.table.FunctionTable+functionExpr org.h2.table.FunctionTable+function org.h2.table.FunctionTable+function org.h2.table.FunctionTable+rowCount org.h2.table.FunctionTable+rowCount java.lang.Long+MAX_VALUE org.h2.value.Value+RESULT_SET org.h2.api.ErrorCode+FUNCTION_MUST_RETURN_RESULT_SET_1 org.h2.api.ErrorCode+FUNCTION_MUST_RETURN_RESULT_SET_1,1583,37,1,,"public FunctionTable(Schema schema, Session session,
+            Expression functionExpr, FunctionCall function) {
+        super(schema, 0, function.getName(), false, true);
+        this.functionExpr = functionExpr;
+        this.function = function;
+        if (function instanceof TableFunction) {
+            rowCount = ((TableFunction) function).getRowCount();
+        } else {
+            rowCount = Long.MAX_VALUE;
+        }
+        function.optimize(session);
+        int type = function.getValueType();
+        if (type != Value.RESULT_SET) {
+            throw DbException.get(
+                    ErrorCode.FUNCTION_MUST_RETURN_RESULT_SET_1, function.getName());
+        }
+        Expression[] args = function.getArgs();
+        int numParams = args.length;
+        Expression[] columnListArgs = new Expression[numParams];
+        for (int i = 0; i < numParams; i++) {
+            args[i] = args[i].optimize(session);
+            columnListArgs[i] = args[i];
+        }
+        ValueResultSet template = function.getValueForColumnList(
+                session, columnListArgs);
+        if (template == null) {
+            throw DbException.get(
+                    ErrorCode.FUNCTION_MUST_RETURN_RESULT_SET_1, function.getName());
+        }
+        ResultInterface result = template.getResult();
+        int columnCount = result.getVisibleColumnCount();
+        Column[] cols = new Column[columnCount];
+        for (int i = 0; i < columnCount; i++) {
+            cols[i] = new Column(result.getColumnName(i), result.getColumnType(i));
+        }
+        setColumns(cols);
+    }",False
+5,"lock(Session,boolean,boolean)",Method,,,,,153,5,1,,"@Override
+    public boolean lock(Session session, boolean exclusive, boolean forceLockEvenInMvcc) {
+        // nothing to do
+        return false;
+    }",True
+6,close(Session),Method,,,,,81,4,1,,"@Override
+    public void close(Session session) {
+        // nothing to do
+    }",True
+7,unlock(Session),Method,,,,,76,4,1,,"@Override
+    public void unlock(Session s) {
+        // nothing to do
+    }",True
+8,isLockedExclusively(),Method,,,,,80,4,1,,"@Override
+    public boolean isLockedExclusively() {
+        return false;
+    }",True
+9,"addIndex(Session,String,int,IndexColumn[],IndexType,boolean,String)",Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,253,6,1,,"@Override
+    public Index addIndex(Session session, String indexName, int indexId,
+            IndexColumn[] cols, IndexType indexType, boolean create,
+            String indexComment) {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True
+10,"removeRow(Session,Row)",Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,129,4,1,,"@Override
+    public void removeRow(Session session, Row row) {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True
+11,truncate(Session),Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,119,4,1,,"@Override
+    public void truncate(Session session) {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True
+12,canDrop(),Method,,,org.h2.message.DbException+throwInternalError(String) org.h2.message.DbException+throwInternalError(String) org.h2.engine.DbObjectBase+toString() org.h2.engine.DbObjectBase+toString(),,104,4,1,,"@Override
+    public boolean canDrop() {
+        throw DbException.throwInternalError(toString());
+    }",True
+13,"addRow(Session,Row)",Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,126,4,1,,"@Override
+    public void addRow(Session session, Row row) {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True
+14,checkSupportAlter(),Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,113,4,1,,"@Override
+    public void checkSupportAlter() {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True
+15,getTableType(),Method,,,,,74,4,1,,"@Override
+    public TableType getTableType() {
+        return null;
+    }",True
+16,getScanIndex(Session),Method,,,"org.h2.index.FunctionIndex+FunctionIndex(FunctionTable,IndexColumn[]) org.h2.table.IndexColumn+wrap(Column[]) org.h2.table.IndexColumn+wrap(Column[])",org.h2.table.Table+columns,131,4,1,,"@Override
+    public Index getScanIndex(Session session) {
+        return new FunctionIndex(this, IndexColumn.wrap(columns));
+    }",True
+17,getIndexes(),Method,,,,,79,4,1,,"@Override
+    public ArrayList<Index> getIndexes() {
+        return null;
+    }",True
+18,canGetRowCount(),Method,,"org.h2.index.FunctionIndex+getCost(Session,int[],TableFilter[],int,SortOrder,AllColumnsForPlan)",,org.h2.table.FunctionTable+rowCount java.lang.Long+MAX_VALUE,96,4,1,,"@Override
+    public boolean canGetRowCount() {
+        return rowCount != Long.MAX_VALUE;
+    }",False
+19,getRowCount(Session),Method,,org.h2.index.FunctionIndex+getRowCount(Session),,org.h2.table.FunctionTable+rowCount,87,4,1,,"@Override
+    public long getRowCount(Session session) {
+        return rowCount;
+    }",False
+20,getCreateSQL(),Method,,,,,71,4,1,,"@Override
+    public String getCreateSQL() {
+        return null;
+    }",True
+21,getDropSQL(),Method,,,,,69,4,1,,"@Override
+    public String getDropSQL() {
+        return null;
+    }",True
+22,checkRename(),Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,107,4,1,,"@Override
+    public void checkRename() {
+        throw DbException.getUnsupportedException(""ALIAS"");
+    }",True
+23,getResult(Session),Method,,"org.h2.index.FunctionIndex+find(Session,SearchRow,SearchRow)",org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+getValue(Session) org.h2.expression.Expression+getValue(Session) org.h2.value.ValueResultSet+getResult() org.h2.value.ValueResultSet+getResult(),org.h2.table.FunctionTable+functionExpr org.h2.table.FunctionTable+functionExpr org.h2.table.FunctionTable+functionExpr org.h2.value.ValueNull+INSTANCE,410,14,1,"/** 
+ * Read the result from the function.
+ * @param session the session
+ * @return the result
+ */
+","/**
+     * Read the result from the function.
+     *
+     * @param session the session
+     * @return the result
+     */
+    public ResultInterface getResult(Session session) {
+        functionExpr = functionExpr.optimize(session);
+        Value v = functionExpr.getValue(session);
+        if (v == ValueNull.INSTANCE) {
+            return null;
+        }
+        return ((ValueResultSet) v).getResult();
+    }",False
+24,getMaxDataModificationId(),Method,,,,java.lang.Long+MAX_VALUE,198,6,1,,"@Override
+    public long getMaxDataModificationId() {
+        // TODO optimization: table-as-a-function currently doesn't know the
+        // last modified date
+        return Long.MAX_VALUE;
+    }",True
+25,getUniqueIndex(),Method,,,,,72,4,1,,"@Override
+    public Index getUniqueIndex() {
+        return null;
+    }",True
+26,getSQL(boolean),Method,,,org.h2.expression.function.FunctionCall+getSQL(boolean) org.h2.expression.function.FunctionCall+getSQL(boolean),org.h2.table.FunctionTable+function,108,4,1,,"@Override
+    public String getSQL(boolean alwaysQuote) {
+        return function.getSQL(alwaysQuote);
+    }",False
+27,"getSQL(StringBuilder,boolean)",Method,,,java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.expression.function.FunctionCall+getSQL(boolean) org.h2.expression.function.FunctionCall+getSQL(boolean),org.h2.table.FunctionTable+function,154,4,1,,"@Override
+    public StringBuilder getSQL(StringBuilder builder, boolean alwaysQuote) {
+        return builder.append(function.getSQL(alwaysQuote));
+    }",False
+28,getRowCountApproximation(),Method,,"org.h2.index.FunctionIndex+getCost(Session,int[],TableFilter[],int,SortOrder,AllColumnsForPlan) org.h2.index.FunctionIndex+getRowCountApproximation()",,org.h2.table.FunctionTable+rowCount,85,4,1,,"@Override
+    public long getRowCountApproximation() {
+        return rowCount;
+    }",False
+29,getDiskSpaceUsed(),Method,,,,,70,4,1,,"@Override
+    public long getDiskSpaceUsed() {
+        return 0;
+    }",False
+30,isDeterministic(),Method,,,org.h2.expression.function.FunctionCall+isDeterministic() org.h2.expression.function.FunctionCall+isDeterministic(),org.h2.table.FunctionTable+function,97,4,1,,"@Override
+    public boolean isDeterministic() {
+        return function.isDeterministic();
+    }",False
+31,canReference(),Method,,,,,73,4,1,,"@Override
+    public boolean canReference() {
+        return false;
+    }",True

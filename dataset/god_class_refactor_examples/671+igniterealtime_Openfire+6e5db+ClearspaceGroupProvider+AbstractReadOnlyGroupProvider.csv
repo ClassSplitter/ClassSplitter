@@ -1,0 +1,224 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,URL_PREFIX,Field,,,,,65,1,28,,"protected static final String URL_PREFIX = ""socialGroupService/"";",False
+2,TYPE_ID_OWNER,Field,,,,,48,1,26,,"private static final String TYPE_ID_OWNER = ""0"";",False
+3,TYPE_ID_MEMBER,Field,,,,,49,1,26,,"private static final String TYPE_ID_MEMBER = ""1"";",False
+4,ClearspaceGroupProvider(),Method,,,,,40,2,1,,"public ClearspaceGroupProvider() {
+    }",False
+5,createGroup(String),Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,188,3,1,,"public Group createGroup(String name) throws UnsupportedOperationException, GroupAlreadyExistsException {
+        throw new UnsupportedOperationException(""Could not create groups."");
+    }",True
+6,deleteGroup(String),Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,158,3,1,,"public void deleteGroup(String name) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException(""Could not delete groups."");
+    }",True
+7,getGroup(String),Method,,,org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+translateGroup(Element) org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+translateGroup(Element) org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+getGroupByName(String) org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+getGroupByName(String),,125,3,1,,"public Group getGroup(String name) throws GroupNotFoundException {
+        return translateGroup(getGroupByName(name));
+    }",False
+8,"setName(String,String)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,202,3,1,,"public void setName(String oldName, String newName) throws UnsupportedOperationException, GroupAlreadyExistsException {
+        throw new UnsupportedOperationException(""Could not modify groups."");
+    }",True
+9,"setDescription(String,String)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,174,3,1,,"public void setDescription(String name, String description) throws GroupNotFoundException {
+        throw new UnsupportedOperationException(""Could not modify groups."");
+    }",True
+10,getGroupCount(),Method,,,"org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) java.lang.Integer+valueOf(String) java.lang.Integer+valueOf(String) java.lang.UnsupportedOperationException+UnsupportedOperationException(String,Throwable)",org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+URL_PREFIX,462,10,1,,"public int getGroupCount() {
+        try {
+            String path = URL_PREFIX + ""socialGroupCount"";
+            Element element = ClearspaceManager.getInstance().executeRequest(GET, path);
+            return Integer.valueOf(getReturn(element));
+        } catch (Exception e) {
+            // It is not supported exception, wrap it into an UnsupportedOperationException
+            throw new UnsupportedOperationException(""Unexpected error"", e);
+        }
+    }",False
+11,getSharedGroupsNames(),Method,,,org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+getGroupNames() org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+getGroupNames(),,172,4,1,,"public Collection<String> getSharedGroupsNames() {
+        // Return all social group names since every social group is a shared group
+        return getGroupNames();
+    }",False
+12,getGroupNames(),Method,,,"org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) java.lang.UnsupportedOperationException+UnsupportedOperationException(String,Throwable)",org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+URL_PREFIX,468,11,1,,"public Collection<String> getGroupNames() {
+        try {
+            String path = URL_PREFIX + ""socialGroupNames"";
+            Element element = ClearspaceManager.getInstance().executeRequest(GET, path);
+
+            return parseStringArray(element);
+        } catch (Exception e) {
+            // It is not supported exception, wrap it into an UnsupportedOperationException
+            throw new UnsupportedOperationException(""Unexpected error"", e);
+        }
+    }",False
+13,"getGroupNames(int,int)",Method,,,"org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) java.lang.UnsupportedOperationException+UnsupportedOperationException(String,Throwable)",org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+URL_PREFIX,538,11,1,,"public Collection<String> getGroupNames(int startIndex, int numResults) {
+        try {
+            String path = URL_PREFIX + ""socialGroupNamesBounded/"" + startIndex + ""/"" + numResults;
+            Element element = ClearspaceManager.getInstance().executeRequest(GET, path);
+
+            return parseStringArray(element);
+        } catch (Exception e) {
+            // It is not supported exception, wrap it into an UnsupportedOperationException
+            throw new UnsupportedOperationException(""Unexpected error"", e);
+        }
+    }",False
+14,getGroupNames(JID),Method,,,"org.jivesoftware.openfire.clearspace.ClearspaceManager+getUserID(JID) org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+getUserID(JID) org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) java.lang.UnsupportedOperationException+UnsupportedOperationException(String,Throwable) java.lang.UnsupportedOperationException+UnsupportedOperationException(String,Throwable)",org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+URL_PREFIX,683,14,1,,"public Collection<String> getGroupNames(JID user) {
+        try {
+            long userID = ClearspaceManager.getInstance().getUserID(user);
+            String path = URL_PREFIX + ""userSocialGroupNames/"" + userID;
+            Element element = ClearspaceManager.getInstance().executeRequest(GET, path);
+
+            return parseStringArray(element);
+        } catch (UserNotFoundException e) {
+            throw new UnsupportedOperationException(""User not found"", e);
+        } catch (Exception e) {
+            // It is not supported exception, wrap it into an UnsupportedOperationException
+            throw new UnsupportedOperationException(""Unexpected error"", e);
+        }
+    }",False
+15,"addMember(String,JID,boolean)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,194,3,1,,"public void addMember(String groupName, JID user, boolean administrator) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException(""Could not modify groups."");
+    }",True
+16,"updateMember(String,JID,boolean)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,197,3,1,,"public void updateMember(String groupName, JID user, boolean administrator) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException(""Could not modify groups."");
+    }",True
+17,"deleteMember(String,JID)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,174,3,1,,"public void deleteMember(String groupName, JID user) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException(""Could not modify groups."");
+    }",True
+18,isReadOnly(),Method,,,,,56,3,1,,"public boolean isReadOnly() {
+        return true;
+    }",True
+19,search(String),Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,136,3,1,,"public Collection<String> search(String query) {
+        throw new UnsupportedOperationException(""Group search is not supported"");
+    }",False
+20,"search(String,int,int)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,168,3,1,,"public Collection<String> search(String query, int startIndex, int numResults) {
+        throw new UnsupportedOperationException(""Group search is not supported"");
+    }",False
+21,isSearchSupported(),Method,,,,,64,3,1,,"public boolean isSearchSupported() {
+        return false;
+    }",False
+22,translateGroup(Element),Method,,,"org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+getText() org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+getText() org.dom4j.Node+getText() org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+getText() java.lang.Long+parseLong(String) java.lang.Long+parseLong(String) org.dom4j.Node+getText() org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+getText() java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) org.dom4j.Node+getText() org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+getText() org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+selectSingleNode(String) org.dom4j.Node+getText() org.dom4j.Node+getText() java.util.ArrayList+ArrayList() java.util.ArrayList+ArrayList() org.jivesoftware.openfire.XMPPServer+getInstance() org.jivesoftware.openfire.XMPPServer+getInstance() org.dom4j.Element+elements(String) org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+getGroupMembers(long) org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+getGroupMembers(long) org.dom4j.Element+elements(String) org.dom4j.Element+getText() org.dom4j.Element+element(String) org.dom4j.Element+element(String) org.dom4j.Element+element(String) org.dom4j.Element+element(String) org.dom4j.Element+getText() org.xmpp.packet.JID+escapeNode(String) org.xmpp.packet.JID+escapeNode(String) org.dom4j.Element+getText() org.dom4j.Element+element(String) org.dom4j.Element+element(String) org.dom4j.Element+getText() java.lang.String+equals(Object) java.lang.String+equals(Object) java.util.Collection+add(E) java.util.Collection+add(E) org.jivesoftware.openfire.XMPPServer+createJID(String,String) org.jivesoftware.openfire.XMPPServer+createJID(String,String) java.lang.String+equals(Object) java.lang.String+equals(Object) java.util.Collection+add(E) java.util.Collection+add(E) org.jivesoftware.openfire.XMPPServer+createJID(String,String) org.jivesoftware.openfire.XMPPServer+createJID(String,String) java.util.HashMap+HashMap() java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) java.util.Map+put(K,V) org.jivesoftware.openfire.group.Group+Group(String,String,Collection<JID>,Collection<JID>,Map<String,String>)",org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+TYPE_ID_OWNER org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+TYPE_ID_MEMBER,3432,79,2,"/** 
+ * Translate a XML respose of a group to a <code>Group</code>.
+ * @param responseNode the XML representation of a CS group.
+ * @return the group that corresponds to the XML.
+ */
+","/**
+     * Translate a XML respose of a group to a <code>Group</code>.
+     *
+     * @param responseNode the XML representation of a CS group.
+     * @return the group that corresponds to the XML.
+     */
+    private Group translateGroup(Element responseNode) {
+
+        Node groupNode = responseNode.selectSingleNode(""return"");
+
+        // Gets the CS DISPLAY NAME that is OF NAME
+        String name = groupNode.selectSingleNode(""displayName"").getText();
+
+        // Gets the CS NAME that is OF DISPLAY NAME
+        String displayName = groupNode.selectSingleNode(""name"").getText();
+
+        // Gets the group ID
+        long id = Long.parseLong(groupNode.selectSingleNode(""ID"").getText());
+
+        // Gets the group type
+        int type = Integer.parseInt(groupNode.selectSingleNode(""typeID"").getText());
+
+        // Gets the group description if it exist
+        String description = null;
+        Node tmpNode = groupNode.selectSingleNode(""description"");
+        if (tmpNode != null) {
+            description = tmpNode.getText();
+        }
+
+        // Get the members and administrators
+        Collection<JID> members = new ArrayList<JID>();
+        Collection<JID> administrators = new ArrayList<JID>();
+        try {
+            XMPPServer server = XMPPServer.getInstance();
+
+            // Gets the JID from the response
+            List<Element> membersElement = (List<Element>) getGroupMembers(id).elements(""return"");
+            for (Element memberElement : membersElement) {
+
+                String username = memberElement.element(""user"").element(""username"").getText();
+                // Escape username to accept usernames with @ or spaces
+                String escapedUsername = JID.escapeNode(username);
+
+                String typeID = memberElement.element(""typeID"").getText();
+
+                if (TYPE_ID_OWNER.equals(typeID)) {
+                    administrators.add(server.createJID(escapedUsername, null));
+                } else if (TYPE_ID_MEMBER.equals(typeID)) {
+                    members.add(server.createJID(escapedUsername, null));
+                } else {
+                    // nothing to do, waiting for approval
+                }
+            }
+        } catch (GroupNotFoundException e) {
+            // this won't happen, the group exists.
+        }
+
+        Map<String, String> properties = new HashMap<String, String>();
+
+        // Type 0 is OPEN
+        if (type == 0) {
+            properties.put(""sharedRoster.showInRoster"", ""everybody"");
+        } else {
+            // Types 1, 2 or 3 are MEMBER_ONLY, PRIVATE, SECRET
+            properties.put(""sharedRoster.showInRoster"", ""onlyGroup"");
+        }
+
+        properties.put(""sharedRoster.displayName"", displayName);
+        properties.put(""sharedRoster.groupList"", """");
+
+        // Creates the group
+        // There are some interesting things happening here.
+        // If this is the first time that this group is loaded from CS, the OF will save this properties.
+        // If this is not the first time and these properties haven't changed, then nothing happens
+        // If this is not the first time but these properties have changed, then OF will update it's saved data.
+        // And this is OK, event if this ""getGroup"" is to be used in a ""change group properties event"", the group should
+        // always show the last information.
+        return new Group(name, description, members, administrators, properties);
+    }",False
+23,getGroupByName(String),Method,,,"org.jivesoftware.openfire.clearspace.URLUTF8Encoder+encode(String) org.jivesoftware.openfire.clearspace.URLUTF8Encoder+encode(String) org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) org.jivesoftware.openfire.group.GroupNotFoundException+GroupNotFoundException(String,Throwable)",org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+URL_PREFIX,842,19,2,"/** 
+ * Returns a group by its name.
+ * @param name the name of the group to retrive.
+ * @return the group.                                                   
+ * @throws GroupNotFoundException if a group with that name doesn't exist or there is a problem getting it.
+ */
+","/**
+     * Returns a group by its name.
+     *
+     * @param name the name of the group to retrive.
+     * @return the group.                                                   
+     * @throws GroupNotFoundException if a group with that name doesn't exist or there is a problem getting it.
+     */
+    private Element getGroupByName(String name) throws GroupNotFoundException {
+        try {
+            // Encode potentially non-ASCII characters
+            name = URLUTF8Encoder.encode(name);
+            String path = URL_PREFIX + ""socialGroupsByName/"" + name;
+
+            return ClearspaceManager.getInstance().executeRequest(GET, path);
+        } catch (Exception e) {
+            // It is not supported exception, wrap it into a GroupNotFoundException
+            throw new GroupNotFoundException(""Unexpected error"", e);
+        }
+    }",False
+24,getGroupMembers(long),Method,,,"org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+getInstance() org.jivesoftware.openfire.clearspace.ClearspaceManager+executeRequest(HttpType,String) org.jivesoftware.openfire.group.GroupNotFoundException+GroupNotFoundException(String,Throwable)",org.jivesoftware.openfire.clearspace.ClearspaceGroupProvider+URL_PREFIX,822,17,2,"/** 
+ * Returns the all the members of the group. It continas the onwers and the members of the group.
+ * @param groupID the group id to return the members of.
+ * @return all the members of the group.
+ * @throws GroupNotFoundException if the groups doesn't exist or there is a problem getting the members.
+ */
+","/**
+     * Returns the all the members of the group. It continas the onwers and the members of the group.
+     *
+     * @param groupID the group id to return the members of.
+     * @return all the members of the group.
+     * @throws GroupNotFoundException if the groups doesn't exist or there is a problem getting the members.
+     */
+    private Element getGroupMembers(long groupID) throws GroupNotFoundException {
+        try {
+            // Gets the members and administrators
+            String path = URL_PREFIX + ""members/"" + groupID;
+            return ClearspaceManager.getInstance().executeRequest(GET, path);
+        } catch (Exception e) {
+            // It is not supported exception, wrap it into a GroupNotFoundException
+            throw new GroupNotFoundException(""Unexpected error"", e);
+        }
+    }",False

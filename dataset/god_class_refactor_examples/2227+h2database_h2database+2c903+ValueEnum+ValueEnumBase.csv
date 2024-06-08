@@ -1,0 +1,238 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,PRECISION,Field,,,,,39,1,25,,public static final int PRECISION = 10;,True
+2,DISPLAY_SIZE,Field,,,,,42,1,25,,public static final int DISPLAY_SIZE = 11;,True
+3,Validation,Field,,,,,30,1,10,,private static enum Validation,False
+4,enumerators,Field,"ValueEnum(String[],int)",,,,35,1,18,,private final String[] enumerators;,False
+5,label,Field,"ValueEnum(String[],int)",,,,27,1,18,,private final String label;,True
+6,ordinal,Field,"ValueEnum(String[],int)",,,,26,1,18,,private final int ordinal;,True
+7,"ValueEnum(String[],int)",Method,,,,org.h2.value.ValueEnum+label org.h2.value.ValueEnum+label org.h2.value.ValueEnum+enumerators org.h2.value.ValueEnum+enumerators org.h2.value.ValueEnum+ordinal org.h2.value.ValueEnum+ordinal,187,5,2,,"private ValueEnum(final String[] enumerators, final int ordinal) {
+        this.label = enumerators[ordinal];
+        this.enumerators = enumerators;
+        this.ordinal = ordinal;
+    }",False
+8,add(Value),Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+add(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+add(Value),org.h2.value.Value+INT org.h2.value.Value+INT,147,5,1,,"@Override
+    public Value add(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).add(iv);
+    }",True
+9,check(String[]),Method,"check(String[],String) check(String[],int) check(String[],Value) validate(String[],String) validate(String[],int)",org.h2.command.Parser+parseColumnWithType(String),"org.h2.value.ValueEnum+validate(String[]) org.h2.value.ValueEnum+validate(String[]) org.h2.message.DbException+get(int) org.h2.message.DbException+get(int) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[]) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[])",org.h2.api.ErrorCode+ENUM_EMPTY org.h2.api.ErrorCode+ENUM_DUPLICATE org.h2.api.ErrorCode+INVALID_VALUE_2,524,14,25,,"public static final void check(final String[] enumerators) {
+        switch (validate(enumerators)) {
+            case VALID:
+                return;
+            case EMPTY:
+                throw DbException.get(ErrorCode.ENUM_EMPTY);
+            case DUPLICATE:
+                throw DbException.get(ErrorCode.ENUM_DUPLICATE,
+                        toString(enumerators));
+            default:
+                throw DbException.get(ErrorCode.INVALID_VALUE_2,
+                        toString(enumerators));
+        }
+    }",False
+10,"check(String[],String)",Method,"get(String[],String)",,"org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+validate(String[],String) org.h2.value.ValueEnum+validate(String[],String) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[])",org.h2.api.ErrorCode+ENUM_VALUE_NOT_PERMITTED_2,386,11,26,,"private static final void check(final String[] enumerators, final String label) {
+        check(enumerators);
+
+        switch (validate(enumerators, label)) {
+            case VALID:
+                return;
+            default:
+                throw DbException.get(ErrorCode.ENUM_VALUE_NOT_PERMITTED_2,
+                        toString(enumerators), ""'"" + label + ""'"");
+        }
+    }",False
+11,"check(String[],int)",Method,"get(String[],int)",,"org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+validate(String[],int) org.h2.value.ValueEnum+validate(String[],int) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[]) java.lang.Integer+toString(int) java.lang.Integer+toString(int)",org.h2.api.ErrorCode+ENUM_VALUE_NOT_PERMITTED_2,395,11,26,,"private static final void check(final String[] enumerators, final int ordinal) {
+        check(enumerators);
+
+        switch (validate(enumerators, ordinal)) {
+            case VALID:
+                return;
+            default:
+                throw DbException.get(ErrorCode.ENUM_VALUE_NOT_PERMITTED_2,
+                        toString(enumerators), Integer.toString(ordinal));
+        }
+    }",False
+12,"check(String[],Value)",Method,"get(String[],Value)",,"org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+validate(String[],Value) org.h2.value.ValueEnum+validate(String[],Value) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueEnum+toString(String[]) org.h2.value.ValueEnum+toString(String[]) org.h2.value.Value+toString() org.h2.value.Value+toString()",org.h2.api.ErrorCode+ENUM_VALUE_NOT_PERMITTED_2,384,11,26,,"private static final void check(final String[] enumerators, final Value value) {
+        check(enumerators);
+
+        switch (validate(enumerators, value)) {
+            case VALID:
+                return;
+            default:
+                throw DbException.get(ErrorCode.ENUM_VALUE_NOT_PERMITTED_2,
+                        toString(enumerators), value.toString());
+        }
+    }",False
+13,"compareSecure(Value,CompareMode)",Method,,,"org.h2.value.ValueEnum+get(String[],Value) org.h2.value.ValueEnum+get(String[],Value) org.h2.util.MathUtils+compareInt(int,int) org.h2.util.MathUtils+compareInt(int,int) org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal()",org.h2.value.ValueEnum+enumerators,210,5,4,,"@Override
+    protected int compareSecure(final Value v, final CompareMode mode) {
+        final ValueEnum ev = ValueEnum.get(enumerators, v);
+        return MathUtils.compareInt(ordinal(), ev.ordinal());
+    }",False
+14,divide(Value),Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+divide(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+divide(Value),org.h2.value.Value+INT org.h2.value.Value+INT,153,5,1,,"@Override
+    public Value divide(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).divide(iv);
+    }",True
+15,equals(Object),Method,,,org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal() org.h2.value.ValueEnum+ordinal(),,164,5,1,,"@Override
+    public boolean equals(final Object other) {
+        return other instanceof ValueEnum &&
+            ordinal() == ((ValueEnum) other).ordinal();
+    }",True
+16,"get(String[],String)",Method,"get(String[],Value)",,"org.h2.value.ValueEnum+check(String[],String) org.h2.value.ValueEnum+check(String[],String) java.lang.String+equals(Object) java.lang.String+equals(Object) org.h2.value.ValueEnum+ValueEnum(String[],int) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String)",org.h2.api.ErrorCode+GENERAL_ERROR_1,363,10,9,,"public static ValueEnum get(final String[] enumerators, final String label) {
+        check(enumerators, label);
+
+        for (int i = 0; i < enumerators.length; i++) {
+            if (label.equals(enumerators[i]))
+                return new ValueEnum(enumerators, i);
+        }
+
+        throw DbException.get(ErrorCode.GENERAL_ERROR_1, ""Unexpected error"");
+    }",False
+17,"get(String[],int)",Method,"get(String[],Value)",org.h2.value.Transfer+readValue(),"org.h2.value.ValueEnum+check(String[],int) org.h2.value.ValueEnum+check(String[],int) org.h2.value.ValueEnum+ValueEnum(String[],int)",,171,4,9,,"public static ValueEnum get(final String[] enumerators, final int ordinal) {
+        check(enumerators, ordinal);
+        return new ValueEnum(enumerators, ordinal);
+    }",False
+18,"get(String[],Value)",Method,"compareSecure(Value,CompareMode)","org.h2.expression.ExpressionColumn+getValue(Session) org.h2.table.Column+validateConvertUpdateSequence(Session,Value)","org.h2.value.ValueEnum+check(String[],Value) org.h2.value.ValueEnum+check(String[],Value) org.h2.value.DataType+isStringType(int) org.h2.value.DataType+isStringType(int) org.h2.value.Value+getType() org.h2.value.Value+getType() org.h2.value.ValueEnum+get(String[],String) org.h2.value.ValueEnum+get(String[],String) org.h2.value.Value+getString() org.h2.value.Value+getString() org.h2.value.ValueEnum+get(String[],int) org.h2.value.ValueEnum+get(String[],int) org.h2.value.Value+getInt() org.h2.value.Value+getInt()",,308,9,9,,"public static ValueEnum get(final String[] enumerators, final Value value) {
+        check(enumerators, value);
+
+        if (DataType.isStringType(value.getType())) {
+            return get(enumerators, value.getString());
+        } else {
+            return get(enumerators, value.getInt());
+        }
+    }",False
+19,getDisplaySize(),Method,,,,org.h2.value.ValueEnum+DISPLAY_SIZE,78,4,1,,"@Override
+    public int getDisplaySize() {
+        return DISPLAY_SIZE;
+    }",True
+20,getEnumerators(),Method,,org.h2.value.Transfer+writeValue(Value),,org.h2.value.ValueEnum+enumerators,68,3,1,,"public String[] getEnumerators() {
+        return enumerators;
+    }",False
+21,getInt(),Method,,org.h2.value.Transfer+writeValue(Value),,org.h2.value.ValueEnum+ordinal,65,4,1,,"@Override
+    public int getInt() {
+        return ordinal;
+    }",True
+22,getLong(),Method,,,,org.h2.value.ValueEnum+ordinal,67,4,1,,"@Override
+    public long getLong() {
+        return ordinal;
+    }",True
+23,getObject(),Method,,,,org.h2.value.ValueEnum+ordinal,71,4,1,,"@Override
+    public Object getObject() {
+        return ordinal;
+    }",True
+24,getPrecision(),Method,,,,org.h2.value.ValueEnum+PRECISION,74,4,1,,"@Override
+    public long getPrecision() {
+        return PRECISION;
+    }",True
+25,getSignum(),Method,,,java.lang.Integer+signum(int) java.lang.Integer+signum(int),org.h2.value.ValueEnum+ordinal,84,4,1,,"@Override
+    public int getSignum() {
+        return Integer.signum(ordinal);
+    }",True
+26,getSQL(),Method,,,org.h2.value.ValueEnum+getString() org.h2.value.ValueEnum+getString(),,72,4,1,,"@Override
+    public String getSQL() {
+        return getString();
+    }",True
+27,getString(),Method,getSQL(),,,org.h2.value.ValueEnum+label,69,4,1,,"@Override
+    public String getString() {
+        return label;
+    }",True
+28,getType(),Method,,,,org.h2.value.Value+ENUM,69,4,1,,"@Override
+    public int getType() {
+        return Value.ENUM;
+    }",True
+29,hashCode(),Method,,,java.lang.Object+hashCode() java.lang.Object+hashCode(),org.h2.value.ValueEnum+enumerators org.h2.value.ValueEnum+ordinal,92,4,1,,"@Override
+    public int hashCode() {
+        return enumerators.hashCode() + ordinal;
+    }",False
+30,"isValid(String,String)",Method,,,"org.h2.value.ValueEnum+validate(String[],String) org.h2.value.ValueEnum+validate(String[],String)",org.h2.value.ValueEnum+Validation,155,3,9,,"public static boolean isValid(final String enumerators[], final String label) {
+        return validate(enumerators, label).equals(Validation.VALID);
+    }",False
+31,"isValid(String,int)",Method,,,"org.h2.value.ValueEnum+validate(String[],int) org.h2.value.ValueEnum+validate(String[],int)",org.h2.value.ValueEnum+Validation,156,3,9,,"public static boolean isValid(final String enumerators[], final int ordinal) {
+        return validate(enumerators, ordinal).equals(Validation.VALID);
+    }",False
+32,"isValid(String,Value)",Method,,,"org.h2.value.ValueEnum+validate(String[],Value) org.h2.value.ValueEnum+validate(String[],Value)",org.h2.value.ValueEnum+Validation,154,3,9,,"public static boolean isValid(final String enumerators[], final Value value) {
+        return validate(enumerators, value).equals(Validation.VALID);
+    }",False
+33,ordinal(),Method,"compareSecure(Value,CompareMode) compareSecure(Value,CompareMode) equals(Object) equals(Object)",,,org.h2.value.ValueEnum+ordinal,55,3,4,,"protected int ordinal() {
+        return ordinal;
+    }",True
+34,modulus(Value),Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+modulus(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+modulus(Value),org.h2.value.Value+INT org.h2.value.Value+INT,155,5,1,,"@Override
+    public Value modulus(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).modulus(iv);
+    }",True
+35,multiply(Value),Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+multiply(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+multiply(Value),org.h2.value.Value+INT org.h2.value.Value+INT,157,5,1,,"@Override
+    public Value multiply(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).multiply(iv);
+    }",True
+36,"set(PreparedStatement,int)",Method,,,"java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int)",org.h2.value.ValueEnum+ordinal,172,5,1,,"@Override
+    public void set(final PreparedStatement prep, final int parameterIndex)
+            throws SQLException {
+         prep.setInt(parameterIndex, ordinal);
+    }",True
+37,subtract(Value),Method,,,org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+subtract(Value) org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.Value+subtract(Value),org.h2.value.Value+INT org.h2.value.Value+INT,157,5,1,,"@Override
+    public Value subtract(final Value v) {
+        final Value iv = v.convertTo(Value.INT);
+        return convertTo(Value.INT).subtract(iv);
+    }",False
+38,toString(String[]),Method,"check(String[]) check(String[]) check(String[],String) check(String[],int) check(String[],Value)",,,,348,11,10,,"private static String toString(final String[] enumerators) {
+        String result = ""("";
+        for (int i = 0; i < enumerators.length; i++) {
+            result += ""'"" + enumerators[i] + ""'"";
+            if (i < enumerators.length - 1) {
+                result += "", "";
+            }
+        }
+        result += "")"";
+        return result;
+    }",False
+39,"validate(String[],String)",Method,"check(String[],String) isValid(String,String) validate(String[],Value)",,org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]) java.lang.String+toLowerCase() java.lang.String+trim() java.lang.String+trim() java.lang.String+toLowerCase() java.lang.String+equals(Object) java.lang.String+equals(Object),org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation,391,13,10,,"private static Validation validate(final String[] enumerators, final String label) {
+        check(enumerators);
+
+        final String cleanLabel = label.trim().toLowerCase();
+
+        for (int i = 0; i < enumerators.length; i++) {
+            if (cleanLabel.equals(enumerators[i])) {
+                return Validation.VALID;
+            }
+        }
+
+        return Validation.INVALID;
+    }",False
+40,validate(String[]),Method,check(String[]),,java.lang.String+equals(Object) java.lang.String+trim() java.lang.String+trim() java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object),org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation,698,21,10,,"private static Validation validate(final String[] enumerators) {
+        if (enumerators == null || enumerators.length == 0) {
+            return Validation.EMPTY;
+        }
+
+        for (int i = 0; i < enumerators.length; i++) {
+            if (enumerators[i] == null || enumerators[i].trim().equals("""")) {
+                return Validation.EMPTY;
+            }
+
+            if (i < enumerators.length - 1) {
+                for (int j = i + 1; j < enumerators.length; j++) {
+                    if (enumerators[i].equals(enumerators[j])) {
+                        return Validation.DUPLICATE;
+                    }
+                }
+            }
+        }
+
+        return Validation.VALID;
+    }",False
+41,"validate(String[],int)",Method,"check(String[],int) isValid(String,int) validate(String[],Value)",,org.h2.value.ValueEnum+check(String[]) org.h2.value.ValueEnum+check(String[]),org.h2.value.ValueEnum+Validation org.h2.value.ValueEnum+Validation,261,9,10,,"private static Validation validate(final String[] enumerators, final int ordinal) {
+        check(enumerators);
+
+        if (ordinal < 0 || ordinal >= enumerators.length) {
+            return Validation.INVALID;
+        }
+
+        return Validation.VALID;
+    }",False
+42,"validate(String[],Value)",Method,"check(String[],Value) isValid(String,Value)",,"org.h2.value.DataType+isStringType(int) org.h2.value.DataType+isStringType(int) org.h2.value.Value+getType() org.h2.value.Value+getType() org.h2.value.ValueEnum+validate(String[],String) org.h2.value.ValueEnum+validate(String[],String) org.h2.value.Value+getString() org.h2.value.Value+getString() org.h2.value.ValueEnum+validate(String[],int) org.h2.value.ValueEnum+validate(String[],int) org.h2.value.Value+getInt() org.h2.value.Value+getInt()",,289,7,10,,"private static Validation validate(final String[] enumerators, final Value value) {
+        if (DataType.isStringType(value.getType())) {
+            return validate(enumerators, value.getString());
+        } else {
+            return validate(enumerators, value.getInt());
+        }
+    }",False

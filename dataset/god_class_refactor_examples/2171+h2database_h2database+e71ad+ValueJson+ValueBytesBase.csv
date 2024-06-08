@@ -1,0 +1,285 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,NULL_BYTES,Field,,,,,230,3,26,,"private static final byte[] NULL_BYTES = ""null"".getBytes(StandardCharsets.ISO_8859_1),
+            TRUE_BYTES = ""true"".getBytes(StandardCharsets.ISO_8859_1),
+            FALSE_BYTES = ""false"".getBytes(StandardCharsets.ISO_8859_1);",False
+2,TRUE_BYTES,Field,,,,,230,3,26,,"private static final byte[] NULL_BYTES = ""null"".getBytes(StandardCharsets.ISO_8859_1),
+            TRUE_BYTES = ""true"".getBytes(StandardCharsets.ISO_8859_1),
+            FALSE_BYTES = ""false"".getBytes(StandardCharsets.ISO_8859_1);",False
+3,FALSE_BYTES,Field,,,,,230,3,26,,"private static final byte[] NULL_BYTES = ""null"".getBytes(StandardCharsets.ISO_8859_1),
+            TRUE_BYTES = ""true"".getBytes(StandardCharsets.ISO_8859_1),
+            FALSE_BYTES = ""false"".getBytes(StandardCharsets.ISO_8859_1);",False
+4,,Field,,,,,111,4,25,"/** 
+ * {@code null} JSON value.
+ */
+","/**
+     * {@code null} JSON value.
+     */
+    public static final ValueJson NULL = new ValueJson(NULL_BYTES);",False
+5,TRUE,Field,,,,,111,4,25,"/** 
+ * {@code true} JSON value.
+ */
+","/**
+     * {@code true} JSON value.
+     */
+    public static final ValueJson TRUE = new ValueJson(TRUE_BYTES);",False
+6,FALSE,Field,,,,,114,4,25,"/** 
+ * {@code false} JSON value.
+ */
+","/**
+     * {@code false} JSON value.
+     */
+    public static final ValueJson FALSE = new ValueJson(FALSE_BYTES);",False
+7,ZERO,Field,,,,,116,4,25,"/** 
+ * {@code 0} JSON value.
+ */
+","/**
+     * {@code 0} JSON value.
+     */
+    public static final ValueJson ZERO = new ValueJson(new byte[] { '0' });",False
+8,value,Field,"ValueJson(byte[]) equals(Object) compareTypeSafe(Value,CompareMode,CastDataProvider)",,,,27,1,18,,private final byte[] value;,True
+9,hash,Field,,,,,55,4,2,"/** 
+ * The hash code.
+ */
+","/**
+     * The hash code.
+     */
+    private int hash;",True
+10,ValueJson(byte[]),Method,,,,org.h2.value.ValueJson+value org.h2.value.ValueJson+value,67,3,2,,"private ValueJson(byte[] value) {
+        this.value = value;
+    }",False
+11,"getSQL(StringBuilder,int)",Method,,,"org.h2.util.json.JSONBytesSource+parse(byte[],JSONTarget<R>) org.h2.util.json.JSONBytesSource+parse(byte[],JSONTarget<R>) org.h2.util.json.JSONStringTarget+JSONStringTarget(boolean) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char)",org.h2.value.ValueJson+value,227,5,1,,"@Override
+    public StringBuilder getSQL(StringBuilder builder, int sqlFlags) {
+        String s = JSONBytesSource.parse(value, new JSONStringTarget(true));
+        return builder.append(""JSON '"").append(s).append('\'');
+    }",False
+12,getType(),Method,,,,org.h2.value.TypeInfo+TYPE_JSON,82,4,1,,"@Override
+    public TypeInfo getType() {
+        return TypeInfo.TYPE_JSON;
+    }",False
+13,getValueType(),Method,,,,org.h2.value.Value+JSON,74,4,1,,"@Override
+    public int getValueType() {
+        return Value.JSON;
+    }",False
+14,getString(),Method,,,"java.lang.String+String(byte[],Charset)",org.h2.value.ValueJson+value java.nio.charset.StandardCharsets+UTF_8,105,4,1,,"@Override
+    public String getString() {
+        return new String(value, StandardCharsets.UTF_8);
+    }",False
+15,getBytes(),Method,,,java.lang.Object+clone() java.lang.Object+clone(),org.h2.value.ValueJson+value,76,4,1,,"@Override
+    public byte[] getBytes() {
+        return value.clone();
+    }",True
+16,getBytesNoCopy(),Method,,,,org.h2.value.ValueJson+value,74,4,1,,"@Override
+    public byte[] getBytesNoCopy() {
+        return value;
+    }",True
+17,getObject(),Method,,,,org.h2.value.ValueJson+value,69,4,1,,"@Override
+    public Object getObject() {
+        return value;
+    }",True
+18,getItemType(),Method,,org.h2.expression.condition.IsJsonPredicate+getValue(Session),,org.h2.value.ValueJson+value,335,15,1,"/** 
+ * Returns JSON item type.
+ * @return JSON item type
+ */
+","/**
+     * Returns JSON item type.
+     *
+     * @return JSON item type
+     */
+    public JSONItemType getItemType() {
+        switch (value[0]) {
+        case '[':
+            return JSONItemType.ARRAY;
+        case '{':
+            return JSONItemType.OBJECT;
+        default:
+            return JSONItemType.SCALAR;
+        }
+    }",False
+19,getMemory(),Method,,,,org.h2.value.ValueJson+value,78,4,1,,"@Override
+    public int getMemory() {
+        return value.length + 24;
+    }",True
+20,hashCode(),Method,,,org.h2.util.Utils+getByteArrayHash(byte[]) org.h2.util.Utils+getByteArrayHash(byte[]),org.h2.value.ValueJson+hash org.h2.value.ValueJson+hash org.h2.value.ValueJson+value org.h2.value.ValueJson+hash,149,7,1,,"@Override
+    public int hashCode() {
+        if (hash == 0) {
+            hash = Utils.getByteArrayHash(value);
+        }
+        return hash;
+    }",True
+21,equals(Object),Method,,,"java.util.Arrays+equals(byte[],byte[]) java.util.Arrays+equals(byte[],byte[])",org.h2.value.ValueJson+value org.h2.value.ValueJson+value org.h2.value.ValueJson+value,151,4,1,,"@Override
+    public boolean equals(Object other) {
+        return other instanceof ValueJson && Arrays.equals(value, ((ValueJson) other).value);
+    }",True
+22,"compareTypeSafe(Value,CompareMode,CastDataProvider)",Method,,,"org.h2.util.Bits+compareNotNullUnsigned(byte[],byte[]) org.h2.util.Bits+compareNotNullUnsigned(byte[],byte[])",org.h2.value.ValueJson+value org.h2.value.ValueJson+value org.h2.value.ValueJson+value,176,4,1,,"@Override
+    public int compareTypeSafe(Value v, CompareMode mode, CastDataProvider provider) {
+        return Bits.compareNotNullUnsigned(value, ((ValueJson) v).value);
+    }",True
+23,fromJson(String),Method,,"org.h2.expression.Format+getValue(Value) org.h2.value.DataType+readValue(SessionInterface,ResultSet,int,int) org.h2.value.DataType+readValue(SessionInterface,ResultSet,int,int)","org.h2.util.json.JSONStringSource+normalize(String) org.h2.util.json.JSONStringSource+normalize(String) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.value.ValueJson+getInternal(byte[]) org.h2.value.ValueJson+getInternal(byte[])",org.h2.api.ErrorCode+DATA_CONVERSION_ERROR_1,534,18,9,"/** 
+ * Returns JSON value with the specified content.
+ * @param s JSON representation, will be normalized
+ * @return JSON value
+ * @throws DbException on invalid JSON
+ */
+","/**
+     * Returns JSON value with the specified content.
+     *
+     * @param s
+     *            JSON representation, will be normalized
+     * @return JSON value
+     * @throws DbException
+     *             on invalid JSON
+     */
+    public static ValueJson fromJson(String s) {
+        byte[] bytes;
+        try {
+            bytes = JSONStringSource.normalize(s);
+        } catch (RuntimeException ex) {
+            throw DbException.get(ErrorCode.DATA_CONVERSION_ERROR_1, s);
+        }
+        return getInternal(bytes);
+    }",False
+24,fromJson(byte[]),Method,,"org.h2.value.DataType+readValue(SessionInterface,ResultSet,int,int) org.h2.value.Transfer+readValue() org.h2.value.Value+convertToJson()","org.h2.util.json.JSONBytesSource+normalize(byte[]) org.h2.util.json.JSONBytesSource+normalize(byte[]) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.util.StringUtils+convertBytesToHex(byte[]) org.h2.util.StringUtils+convertBytesToHex(byte[]) org.h2.value.ValueJson+getInternal(byte[]) org.h2.value.ValueJson+getInternal(byte[])",org.h2.api.ErrorCode+DATA_CONVERSION_ERROR_1,558,17,9,"/** 
+ * Returns JSON value with the specified content.
+ * @param bytes JSON representation, will be normalized
+ * @return JSON value
+ * @throws DbException on invalid JSON
+ */
+","/**
+     * Returns JSON value with the specified content.
+     *
+     * @param bytes
+     *            JSON representation, will be normalized
+     * @return JSON value
+     * @throws DbException
+     *             on invalid JSON
+     */
+    public static ValueJson fromJson(byte[] bytes) {
+        try {
+            bytes = JSONBytesSource.normalize(bytes);
+        } catch (RuntimeException ex) {
+            throw DbException.get(ErrorCode.DATA_CONVERSION_ERROR_1, StringUtils.convertBytesToHex(bytes));
+        }
+        return getInternal(bytes);
+    }",False
+25,get(boolean),Method,,org.h2.value.Value+convertToJson(),,org.h2.value.ValueJson+TRUE org.h2.value.ValueJson+FALSE,247,10,9,"/** 
+ * Returns JSON value with the specified boolean content.
+ * @param bool boolean value
+ * @return JSON value
+ */
+","/**
+     * Returns JSON value with the specified boolean content.
+     *
+     * @param bool
+     *            boolean value
+     * @return JSON value
+     */
+    public static ValueJson get(boolean bool) {
+        return bool ? TRUE : FALSE;
+    }",False
+26,get(int),Method,,org.h2.value.Value+convertToJson(),org.h2.value.ValueJson+getNumber(String) org.h2.value.ValueJson+getNumber(String) java.lang.Integer+toString(int) java.lang.Integer+toString(int),org.h2.value.ValueJson+ZERO,284,10,9,"/** 
+ * Returns JSON value with the specified numeric content.
+ * @param number integer value
+ * @return JSON value
+ */
+","/**
+     * Returns JSON value with the specified numeric content.
+     *
+     * @param number
+     *            integer value
+     * @return JSON value
+     */
+    public static ValueJson get(int number) {
+        return number != 0 ? getNumber(Integer.toString(number)) : ZERO;
+    }",False
+27,get(long),Method,,org.h2.value.Value+convertToJson(),org.h2.value.ValueJson+getNumber(String) org.h2.value.ValueJson+getNumber(String) java.lang.Long+toString(long) java.lang.Long+toString(long),org.h2.value.ValueJson+ZERO,280,10,9,"/** 
+ * Returns JSON value with the specified numeric content.
+ * @param number long value
+ * @return JSON value
+ */
+","/**
+     * Returns JSON value with the specified numeric content.
+     *
+     * @param number
+     *            long value
+     * @return JSON value
+     */
+    public static ValueJson get(long number) {
+        return number != 0L ? getNumber(Long.toString(number)) : ZERO;
+    }",False
+28,get(BigDecimal),Method,,org.h2.value.Value+convertToJson(),"java.math.BigDecimal+signum() java.math.BigDecimal+signum() java.math.BigDecimal+scale() java.math.BigDecimal+scale() java.math.BigDecimal+toString() java.math.BigDecimal+toString() java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+length() java.lang.String+length() java.lang.StringBuilder+toString() java.lang.StringBuilder+append(CharSequence,int,int) java.lang.StringBuilder+append(CharSequence,int,int) java.lang.StringBuilder+StringBuilder(int) java.lang.StringBuilder+append(CharSequence,int,int) java.lang.StringBuilder+append(CharSequence,int,int) java.lang.StringBuilder+toString() org.h2.value.ValueJson+getNumber(String) org.h2.value.ValueJson+getNumber(String)",org.h2.value.ValueJson+ZERO,627,19,9,"/** 
+ * Returns JSON value with the specified numeric content.
+ * @param number big decimal value
+ * @return JSON value
+ */
+","/**
+     * Returns JSON value with the specified numeric content.
+     *
+     * @param number
+     *            big decimal value
+     * @return JSON value
+     */
+    public static ValueJson get(BigDecimal number) {
+        if (number.signum() == 0 && number.scale() == 0) {
+            return ZERO;
+        }
+        String s = number.toString();
+        int index = s.indexOf('E');
+        if (index >= 0 && s.charAt(++index) == '+') {
+            int length = s.length();
+            s = new StringBuilder(length - 1).append(s, 0, index).append(s, index + 1, length).toString();
+        }
+        return getNumber(s);
+    }",False
+29,get(String),Method,,org.h2.value.Value+convertToJson(),"org.h2.value.ValueJson+ValueJson(byte[]) java.io.ByteArrayOutputStream+toByteArray() org.h2.util.json.JSONByteArrayTarget+encodeString(ByteArrayOutputStream,String) org.h2.util.json.JSONByteArrayTarget+encodeString(ByteArrayOutputStream,String) java.io.ByteArrayOutputStream+ByteArrayOutputStream(int) java.lang.String+length() java.lang.String+length() java.io.ByteArrayOutputStream+toByteArray()",,366,11,9,"/** 
+ * Returns JSON value with the specified string content.
+ * @param string string value
+ * @return JSON value
+ */
+","/**
+     * Returns JSON value with the specified string content.
+     *
+     * @param string
+     *            string value
+     * @return JSON value
+     */
+    public static ValueJson get(String string) {
+        return new ValueJson(JSONByteArrayTarget.encodeString( //
+                new ByteArrayOutputStream(string.length() + 2), string).toByteArray());
+    }",False
+30,getInternal(byte[]),Method,fromJson(String) fromJson(byte[]),"org.h2.expression.aggregate.Aggregate+getAggregatedValue(Session,Object) org.h2.expression.function.Function+jsonObjectFinish(ByteArrayOutputStream,int) org.h2.expression.function.Function+jsonArray(Session,Expression[]) org.h2.value.Value+convertToJson()","java.util.Arrays+equals(byte[],byte[]) java.util.Arrays+equals(byte[],byte[]) java.util.Arrays+equals(byte[],byte[]) java.util.Arrays+equals(byte[],byte[]) java.util.Arrays+equals(byte[],byte[]) java.util.Arrays+equals(byte[],byte[]) org.h2.value.ValueJson+ValueJson(byte[])",org.h2.value.ValueJson+ZERO org.h2.value.ValueJson+TRUE_BYTES org.h2.value.ValueJson+TRUE org.h2.value.ValueJson+NULL_BYTES org.h2.value.ValueJson+NULL org.h2.value.ValueJson+FALSE_BYTES org.h2.value.ValueJson+FALSE,771,29,9,"/** 
+ * Returns JSON value with the specified content.
+ * @param bytes normalized JSON representation
+ * @return JSON value
+ */
+","/**
+     * Returns JSON value with the specified content.
+     *
+     * @param bytes
+     *            normalized JSON representation
+     * @return JSON value
+     */
+    public static ValueJson getInternal(byte[] bytes) {
+        int l = bytes.length;
+        switch (l) {
+        case 1:
+            if (bytes[0] == '0') {
+                return ZERO;
+            }
+            break;
+        case 4:
+            if (Arrays.equals(TRUE_BYTES, bytes)) {
+                return TRUE;
+            } else if (Arrays.equals(NULL_BYTES, bytes)) {
+                return NULL;
+            }
+            break;
+        case 5:
+            if (Arrays.equals(FALSE_BYTES, bytes)) {
+                return FALSE;
+            }
+        }
+        return new ValueJson(bytes);
+    }",False
+31,getNumber(String),Method,get(int) get(long) get(BigDecimal),,org.h2.value.ValueJson+ValueJson(byte[]) java.lang.String+getBytes(Charset) java.lang.String+getBytes(Charset),java.nio.charset.StandardCharsets+ISO_8859_1,123,3,10,,"private static ValueJson getNumber(String s) {
+        return new ValueJson(s.getBytes(StandardCharsets.ISO_8859_1));
+    }",False

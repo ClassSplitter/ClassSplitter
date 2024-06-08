@@ -1,0 +1,95 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,checkLimit(Buffer),Method,,,java.nio.Buffer+limit() java.nio.Buffer+limit() com.jme3.renderer.RendererException+RendererException(String) java.nio.Buffer+remaining() java.nio.Buffer+remaining() com.jme3.renderer.RendererException+RendererException(String),,425,11,10,,"private static void checkLimit(Buffer buffer) {
+        if (buffer == null) {
+            return;
+        }
+        if (buffer.limit() == 0) {
+            throw new RendererException(""Attempting to upload empty buffer (limit = 0), that's an error"");
+        }
+        if (buffer.remaining() == 0) {
+            throw new RendererException(""Attempting to upload empty buffer (remaining = 0), that's an error"");
+        }
+    }",False
+2,"glBlitFramebufferEXT(int,int,int,int,int,int,int,int,int,int)",Method,,,,,269,3,1,,"public void glBlitFramebufferEXT(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter) {
+        EXTFramebufferBlit.glBlitFramebufferEXT(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+    }",True
+3,"glBufferData(int,IntBuffer,int)",Method,,,com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer) com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer),,145,4,1,,"public void glBufferData(int target, IntBuffer data, int usage) {
+        checkLimit(data);
+        GL15.glBufferData(target, data, usage);
+    }",False
+4,"glBufferSubData(int,long,IntBuffer)",Method,,,com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer) com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer),,154,4,1,,"public void glBufferSubData(int target, long offset, IntBuffer data) {
+        checkLimit(data);
+        GL15.glBufferSubData(target, offset, data);
+    }",False
+5,"glDrawArraysInstancedARB(int,int,int,int)",Method,,,,,173,3,1,,"public void glDrawArraysInstancedARB(int mode, int first, int count, int primcount) {
+        ARBDrawInstanced.glDrawArraysInstancedARB(mode, first, count, primcount);
+    }",False
+6,glDrawBuffers(IntBuffer),Method,,,com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer) com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer),,109,4,1,,"public void glDrawBuffers(IntBuffer bufs) {
+        checkLimit(bufs);
+        GL20.glDrawBuffers(bufs);
+    }",False
+7,"glDrawElementsInstancedARB(int,int,int,long,int)",Method,,,,,242,3,1,,"public void glDrawElementsInstancedARB(int mode, int indices_count, int type, long indices_buffer_offset, int primcount) {
+        ARBDrawInstanced.glDrawElementsInstancedARB(mode, indices_count, type, indices_buffer_offset, primcount);
+    }",False
+8,"glGetMultisample(int,int,FloatBuffer)",Method,,,com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer) com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer),,167,4,1,,"public void glGetMultisample(int pname, int index, FloatBuffer val) {
+        checkLimit(val);
+        ARBTextureMultisample.glGetMultisample(pname, index, val);
+    }",False
+9,"glRenderbufferStorageMultisampleEXT(int,int,int,int,int)",Method,,,,,242,3,1,,"public void glRenderbufferStorageMultisampleEXT(int target, int samples, int internalformat, int width, int height) {
+        EXTFramebufferMultisample.glRenderbufferStorageMultisampleEXT(target, samples, internalformat, width, height);
+    }",True
+10,"glTexImage2DMultisample(int,int,int,int,int,boolean)",Method,,,,,266,3,1,,"public void glTexImage2DMultisample(int target, int samples, int internalformat, int width, int height, boolean fixedsamplelocations) {
+        ARBTextureMultisample.glTexImage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
+    }",False
+11,"glVertexAttribDivisorARB(int,int)",Method,,,,,137,3,1,,"public void glVertexAttribDivisorARB(int index, int divisor) {
+        ARBInstancedArrays.glVertexAttribDivisorARB(index, divisor);
+    }",False
+12,"glBindFramebufferEXT(int,int)",Method,,,,,131,3,1,,"public void glBindFramebufferEXT(int param1, int param2) {
+        EXTFramebufferObject.glBindFramebufferEXT(param1, param2);
+    }",True
+13,"glBindRenderbufferEXT(int,int)",Method,,,,,133,3,1,,"public void glBindRenderbufferEXT(int param1, int param2) {
+        EXTFramebufferObject.glBindRenderbufferEXT(param1, param2);
+    }",True
+14,glCheckFramebufferStatusEXT(int),Method,,,,,131,3,1,,"public int glCheckFramebufferStatusEXT(int param1) {
+        return EXTFramebufferObject.glCheckFramebufferStatusEXT(param1);
+    }",True
+15,glDeleteFramebuffersEXT(IntBuffer),Method,,,com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer) com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer),,151,4,1,,"public void glDeleteFramebuffersEXT(IntBuffer param1) {
+        checkLimit(param1);
+        EXTFramebufferObject.glDeleteFramebuffersEXT(param1);
+    }",True
+16,glDeleteRenderbuffersEXT(IntBuffer),Method,,,com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer) com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer),,153,4,1,,"public void glDeleteRenderbuffersEXT(IntBuffer param1) {
+        checkLimit(param1);
+        EXTFramebufferObject.glDeleteRenderbuffersEXT(param1);
+    }",True
+17,"glFramebufferRenderbufferEXT(int,int,int,int)",Method,,,,,187,3,1,,"public void glFramebufferRenderbufferEXT(int param1, int param2, int param3, int param4) {
+        EXTFramebufferObject.glFramebufferRenderbufferEXT(param1, param2, param3, param4);
+    }",True
+18,"glFramebufferTexture2DEXT(int,int,int,int,int)",Method,,,,,201,3,1,,"public void glFramebufferTexture2DEXT(int param1, int param2, int param3, int param4, int param5) {
+        EXTFramebufferObject.glFramebufferTexture2DEXT(param1, param2, param3, param4, param5);
+    }",True
+19,glGenFramebuffersEXT(IntBuffer),Method,,,com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer) com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer),,145,4,1,,"public void glGenFramebuffersEXT(IntBuffer param1) {
+        checkLimit(param1);
+        EXTFramebufferObject.glGenFramebuffersEXT(param1);
+    }",True
+20,glGenRenderbuffersEXT(IntBuffer),Method,,,com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer) com.jme3.renderer.lwjgl.LwjglGLExt+checkLimit(Buffer),,147,4,1,,"public void glGenRenderbuffersEXT(IntBuffer param1) {
+        checkLimit(param1);
+        EXTFramebufferObject.glGenRenderbuffersEXT(param1);
+    }",True
+21,glGenerateMipmapEXT(int),Method,,,,,109,3,1,,"public void glGenerateMipmapEXT(int param1) {
+        EXTFramebufferObject.glGenerateMipmapEXT(param1);
+    }",True
+22,"glRenderbufferStorageEXT(int,int,int,int)",Method,,,,,179,3,1,,"public void glRenderbufferStorageEXT(int param1, int param2, int param3, int param4) {
+        EXTFramebufferObject.glRenderbufferStorageEXT(param1, param2, param3, param4);
+    }",True
+23,"glFenceSync(int,int)",Method,,,,,127,4,1,,"@Override
+    public Object glFenceSync(int condition, int flags) {
+        return ARBSync.glFenceSync(condition, flags);
+    }",False
+24,"glClientWaitSync(Object,int,long)",Method,,,,,159,4,1,,"@Override
+    public int glClientWaitSync(Object sync, int flags, long timeout) {
+        return ARBSync.glClientWaitSync((GLSync) sync, flags, timeout);
+    }",False
+25,glDeleteSync(Object),Method,,,,,104,4,1,,"@Override
+    public void glDeleteSync(Object sync) {
+        ARBSync.glDeleteSync((GLSync) sync);
+    }",False

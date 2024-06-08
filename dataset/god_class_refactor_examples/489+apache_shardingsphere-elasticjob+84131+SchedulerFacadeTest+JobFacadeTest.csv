@@ -1,0 +1,225 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,configService,Field,,,,,53,2,2,,"@Mock
+    private ConfigurationService configService;",False
+2,leaderElectionService,Field,,,,,62,2,2,,"@Mock
+    private LeaderElectionService leaderElectionService;",False
+3,serverService,Field,,,,,46,2,2,,"@Mock
+    private ServerService serverService;",False
+4,shardingService,Field,,,,,50,2,2,,"@Mock
+    private ShardingService shardingService;",False
+5,executionContextService,Field,,,,,66,2,2,,"@Mock
+    private ExecutionContextService executionContextService;",False
+6,executionService,Field,,,,,52,2,2,,"@Mock
+    private ExecutionService executionService;",False
+7,failoverService,Field,,,,,50,2,2,,"@Mock
+    private FailoverService failoverService;",False
+8,statisticsService,Field,,,,,54,2,2,,"@Mock
+    private StatisticsService statisticsService;",False
+9,offsetService,Field,,,,,46,2,2,,"@Mock
+    private OffsetService offsetService;",False
+10,monitorService,Field,,,,,48,2,2,,"@Mock
+    private MonitorService monitorService;",False
+11,listenerManager,Field,,,,,50,2,2,,"@Mock
+    private ListenerManager listenerManager;",False
+12,caller,Field,,,,,32,2,2,,"@Mock
+    private Caller caller;",True
+13,jobConfig,Field,,,,,104,1,2,,"private JobConfiguration jobConfig = new JobConfiguration(""testJob"", TestJob.class, 3, ""0/1 * * * * ?"");",False
+14,schedulerFacade,Field,,,,,40,1,2,,private SchedulerFacade schedulerFacade;,False
+15,setUp(),Method,,,"com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+SchedulerFacade(CoordinatorRegistryCenter,JobConfiguration,List<ElasticJobListener>) com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestElasticJobListener+TestElasticJobListener()",com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+jobConfig com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+caller com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+leaderElectionService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+serverService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+shardingService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+executionContextService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+executionService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+failoverService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+statisticsService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+offsetService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+monitorService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+listenerManager,1300,17,1,,"@Before
+    public void setUp() throws NoSuchFieldException {
+        MockitoAnnotations.initMocks(this);
+        schedulerFacade = new SchedulerFacade(null, jobConfig, Collections.<ElasticJobListener> singletonList(new TestElasticJobListener(caller)));
+        ReflectionUtils.setFieldValue(schedulerFacade, ""configService"", configService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""leaderElectionService"", leaderElectionService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""serverService"", serverService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""shardingService"", shardingService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""executionContextService"", executionContextService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""executionService"", executionService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""failoverService"", failoverService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""statisticsService"", statisticsService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""offsetService"", offsetService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""monitorService"", monitorService);
+        ReflectionUtils.setFieldValue(schedulerFacade, ""listenerManager"", listenerManager);
+        
+    }",False
+16,testNew(),Method,,,"com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+SchedulerFacade(CoordinatorRegistryCenter,JobConfiguration,List<ElasticJobListener>) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestElasticJobListener+TestElasticJobListener() com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestDistributeOnceElasticJobListener+TestDistributeOnceElasticJobListener() java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.util.List+get(int) java.lang.Class+getDeclaredField(String) java.lang.Class+getDeclaredField(String)",com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+jobConfig com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+caller,783,9,1,,"@Test
+    public void testNew() throws NoSuchFieldException {
+        SchedulerFacade schedulerFacade = new SchedulerFacade(null, jobConfig, Arrays.asList(new TestElasticJobListener(caller), new TestDistributeOnceElasticJobListener()));
+        List<ElasticJobListener> actual = ReflectionUtils.getFieldValue(schedulerFacade, ReflectionUtils.getFieldWithName(SchedulerFacade.class, ""elasticJobListeners"", false));
+        assertThat(actual.size(), is(2));
+        assertThat(actual.get(0), instanceOf(TestElasticJobListener.class));
+        assertThat(actual.get(1), instanceOf(TestDistributeOnceElasticJobListener.class));
+        assertNotNull(ReflectionUtils.getFieldValue(actual.get(1), AbstractDistributeOnceElasticJobListener.class.getDeclaredField(""guaranteeService"")));
+    }",True
+17,testRegisterStartUpInfo(),Method,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+registerStartUpInfo() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+registerStartUpInfo(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+listenerManager com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+leaderElectionService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+serverService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+serverService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+statisticsService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+shardingService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+monitorService,528,12,1,,"@Test
+    public void testRegisterStartUpInfo() {
+        schedulerFacade.registerStartUpInfo();
+        verify(listenerManager).startAllListeners();
+        verify(leaderElectionService).leaderElection();
+        verify(configService).persistJobConfiguration();
+        verify(serverService).persistServerOnline();
+        verify(serverService).clearJobStoppedStatus();
+        verify(statisticsService).startProcessCountJob();
+        verify(shardingService).setReshardingFlag();
+        verify(monitorService).listen();
+    }",False
+18,testReleaseJobResource(),Method,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+releaseJobResource() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+releaseJobResource(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+monitorService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+statisticsService,197,6,1,,"@Test
+    public void testReleaseJobResource() {
+        schedulerFacade.releaseJobResource();
+        verify(monitorService).close();
+        verify(statisticsService).stopProcessCountJob();
+    }",False
+19,testResumeCrashedJobInfo(),Method,,,com.dangdang.ddframe.job.internal.sharding.ShardingService+getLocalHostShardingItems() com.dangdang.ddframe.job.internal.sharding.ShardingService+getLocalHostShardingItems() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+resumeCrashedJobInfo() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+resumeCrashedJobInfo(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+shardingService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+serverService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+shardingService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+executionService,407,8,1,,"@Test
+    public void testResumeCrashedJobInfo() {
+        when(shardingService.getLocalHostShardingItems()).thenReturn(Collections.<Integer>emptyList());
+        schedulerFacade.resumeCrashedJobInfo();
+        verify(serverService).persistServerOnline();
+        verify(shardingService).getLocalHostShardingItems();
+        verify(executionService).clearRunningInfo(Collections.<Integer>emptyList());
+    }",False
+20,testClearJobStoppedStatus(),Method,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+clearJobStoppedStatus() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+clearJobStoppedStatus(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+serverService,161,5,1,,"@Test
+    public void testClearJobStoppedStatus() {
+        schedulerFacade.clearJobStoppedStatus();
+        verify(serverService).clearJobStoppedStatus();
+    }",False
+21,testIsJobStoppedManually(),Method,,,com.dangdang.ddframe.job.internal.server.ServerService+isJobStoppedManually() com.dangdang.ddframe.job.internal.server.ServerService+isJobStoppedManually() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+isJobStoppedManually() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+isJobStoppedManually(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+serverService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade,185,5,1,,"@Test
+    public void testIsJobStoppedManually() {
+        when(serverService.isJobStoppedManually()).thenReturn(true);
+        assertTrue(schedulerFacade.isJobStoppedManually());
+    }",False
+22,testGetJobName(),Method,,,com.dangdang.ddframe.job.internal.config.ConfigurationService+getJobName() com.dangdang.ddframe.job.internal.config.ConfigurationService+getJobName() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+getJobName() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+getJobName(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade,175,5,1,,"@Test
+    public void testGetJobName() {
+        when(configService.getJobName()).thenReturn(""testJob"");
+        assertThat(schedulerFacade.getJobName(), is(""testJob""));
+    }",True
+23,testGetCron(),Method,,,com.dangdang.ddframe.job.internal.config.ConfigurationService+getCron() com.dangdang.ddframe.job.internal.config.ConfigurationService+getCron() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+getCron() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+getCron(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade,174,5,1,,"@Test
+    public void testGetCron() {
+        when(configService.getCron()).thenReturn(""0 * * * * *"");
+        assertThat(schedulerFacade.getCron(), is(""0 * * * * *""));
+    }",False
+24,testIsMisfire(),Method,,,com.dangdang.ddframe.job.internal.config.ConfigurationService+isMisfire() com.dangdang.ddframe.job.internal.config.ConfigurationService+isMisfire() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+isMisfire() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+isMisfire(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade,152,5,1,,"@Test
+    public void testIsMisfire() {
+        when(configService.isMisfire()).thenReturn(true);
+        assertTrue(schedulerFacade.isMisfire());
+    }",False
+25,testCheckMaxTimeDiffSecondsTolerable(),Method,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+checkMaxTimeDiffSecondsTolerable() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+checkMaxTimeDiffSecondsTolerable(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService,194,5,1,,"@Test
+    public void testCheckMaxTimeDiffSecondsTolerable() {
+        schedulerFacade.checkMaxTimeDiffSecondsTolerable();
+        verify(configService).checkMaxTimeDiffSecondsTolerable();
+    }",True
+26,testNewJobTriggerListener(),Method,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+newJobTriggerListener() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+newJobTriggerListener(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade,156,4,1,,"@Test
+    public void testNewJobTriggerListener() {
+        assertThat(schedulerFacade.newJobTriggerListener(), instanceOf(JobTriggerListener.class));
+    }",False
+27,testFailoverIfUnnecessary(),Method,,,com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+failoverIfNecessary(boolean) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+failoverIfNecessary(boolean),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+failoverService,234,6,1,,"@Test
+    public void testFailoverIfUnnecessary() {
+        when(configService.isFailover()).thenReturn(false);
+        schedulerFacade.failoverIfNecessary(false);
+        verify(failoverService, times(0)).failoverIfNecessary();
+    }",True
+28,testFailoverIfNecessaryButIsStopped(),Method,,,com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+failoverIfNecessary(boolean) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+failoverIfNecessary(boolean),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+failoverService,242,6,1,,"@Test
+    public void testFailoverIfNecessaryButIsStopped() {
+        when(configService.isFailover()).thenReturn(true);
+        schedulerFacade.failoverIfNecessary(true);
+        verify(failoverService, times(0)).failoverIfNecessary();
+    }",True
+29,testFailoverIfNecessary(),Method,,,com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+failoverIfNecessary(boolean) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+failoverIfNecessary(boolean),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+failoverService,221,6,1,,"@Test
+    public void testFailoverIfNecessary() {
+        when(configService.isFailover()).thenReturn(true);
+        schedulerFacade.failoverIfNecessary(false);
+        verify(failoverService).failoverIfNecessary();
+    }",True
+30,testRegisterJobBegin(),Method,,,com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext+JobExecutionMultipleShardingContext() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+registerJobBegin(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+registerJobBegin(JobExecutionMultipleShardingContext),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+executionService,284,6,1,,"@Test
+    public void testRegisterJobBegin() {
+        JobExecutionMultipleShardingContext shardingContext = new JobExecutionMultipleShardingContext();
+        schedulerFacade.registerJobBegin(shardingContext);
+        verify(executionService).registerJobBegin(shardingContext);
+    }",True
+31,testRegisterJobCompletedWhenFailoverDisabled(),Method,,,com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext+JobExecutionMultipleShardingContext() com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+registerJobCompleted(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+registerJobCompleted(JobExecutionMultipleShardingContext),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+executionService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+failoverService,478,8,1,,"@Test
+    public void testRegisterJobCompletedWhenFailoverDisabled() {
+        JobExecutionMultipleShardingContext shardingContext = new JobExecutionMultipleShardingContext();
+        when(configService.isFailover()).thenReturn(false);
+        schedulerFacade.registerJobCompleted(shardingContext);
+        verify(executionService).registerJobCompleted(shardingContext);
+        verify(failoverService, times(0)).updateFailoverComplete(shardingContext.getShardingItems());
+    }",True
+32,testRegisterJobCompletedWhenFailoverEnabled(),Method,,,com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext+JobExecutionMultipleShardingContext() com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.config.ConfigurationService+isFailover() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+registerJobCompleted(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+registerJobCompleted(JobExecutionMultipleShardingContext),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+configService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+executionService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+failoverService,466,8,1,,"@Test
+    public void testRegisterJobCompletedWhenFailoverEnabled() {
+        JobExecutionMultipleShardingContext shardingContext = new JobExecutionMultipleShardingContext();
+        when(configService.isFailover()).thenReturn(true);
+        schedulerFacade.registerJobCompleted(shardingContext);
+        verify(executionService).registerJobCompleted(shardingContext);
+        verify(failoverService).updateFailoverComplete(shardingContext.getShardingItems());
+    }",True
+33,testGetShardingContext(),Method,,,com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext+JobExecutionMultipleShardingContext() com.dangdang.ddframe.job.internal.execution.ExecutionContextService+getJobExecutionShardingContext() com.dangdang.ddframe.job.internal.execution.ExecutionContextService+getJobExecutionShardingContext() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+getShardingContext() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+getShardingContext(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+executionContextService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+shardingService,393,7,1,,"@Test
+    public void testGetShardingContext() {
+        JobExecutionMultipleShardingContext shardingContext = new JobExecutionMultipleShardingContext();
+        when(executionContextService.getJobExecutionShardingContext()).thenReturn(shardingContext);
+        assertThat(schedulerFacade.getShardingContext(), is(shardingContext));
+        verify(shardingService).shardingIfNecessary();
+    }",True
+34,testMisfireIfNecessary(),Method,,,com.dangdang.ddframe.job.internal.execution.ExecutionService+misfireIfNecessary(List<Integer>) com.dangdang.ddframe.job.internal.execution.ExecutionService+misfireIfNecessary(List<Integer>) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+misfireIfNecessary(List<Integer>) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+misfireIfNecessary(List<Integer>) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+executionService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade,230,5,1,,"@Test
+    public void testMisfireIfNecessary() {
+        when(executionService.misfireIfNecessary(Arrays.asList(0, 1))).thenReturn(true);
+        assertThat(schedulerFacade.misfireIfNecessary(Arrays.asList(0, 1)), is(true));
+    }",True
+35,testClearMisfire(),Method,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+clearMisfire(List<Integer>) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+clearMisfire(List<Integer>) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+executionService,175,5,1,,"@Test
+    public void testClearMisfire() {
+        schedulerFacade.clearMisfire(Arrays.asList(0, 1));
+        verify(executionService).clearMisfire(Arrays.asList(0, 1));
+    }",True
+36,testIsNeedSharding(),Method,,,com.dangdang.ddframe.job.internal.sharding.ShardingService+isNeedSharding() com.dangdang.ddframe.job.internal.sharding.ShardingService+isNeedSharding() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+isNeedSharding() com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+isNeedSharding(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+shardingService com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade,179,5,1,,"@Test
+    public void testIsNeedSharding() {
+        when(shardingService.isNeedSharding()).thenReturn(true);
+        assertThat(schedulerFacade.isNeedSharding(), is(true));
+    }",True
+37,testUpdateOffset(),Method,,,"com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+updateOffset(int,String) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+updateOffset(int,String)",com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+offsetService,158,5,1,,"@Test
+    public void testUpdateOffset() {
+        schedulerFacade.updateOffset(0, ""offset0"");
+        verify(offsetService).updateOffset(0, ""offset0"");
+    }",True
+38,testBeforeJobExecuted(),Method,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+beforeJobExecuted(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+beforeJobExecuted(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext+JobExecutionMultipleShardingContext(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+caller,172,5,1,,"@Test
+    public void testBeforeJobExecuted() {
+        schedulerFacade.beforeJobExecuted(new JobExecutionMultipleShardingContext());
+        verify(caller).before();
+    }",True
+39,testAfterJobExecuted(),Method,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+afterJobExecuted(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.internal.schedule.SchedulerFacade+afterJobExecuted(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext+JobExecutionMultipleShardingContext(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+schedulerFacade com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest+caller,169,5,1,,"@Test
+    public void testAfterJobExecuted() {
+        schedulerFacade.afterJobExecuted(new JobExecutionMultipleShardingContext());
+        verify(caller).after();
+    }",True
+40,TestElasticJobListener,MemberClass,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestElasticJobListener+beforeJobExecuted(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.Caller+before() com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.Caller+before() com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestElasticJobListener+afterJobExecuted(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.Caller+after() com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.Caller+after(),com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestElasticJobListener+caller com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestElasticJobListener+caller com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestElasticJobListener+caller,476,15,8,,"@RequiredArgsConstructor
+    static class TestElasticJobListener implements ElasticJobListener {
+        
+        private final Caller caller;
+        
+        @Override
+        public void beforeJobExecuted(final JobExecutionMultipleShardingContext shardingContext) {
+            caller.before();
+        }
+        
+        @Override
+        public void afterJobExecuted(final JobExecutionMultipleShardingContext shardingContext) {
+            caller.after();
+        }
+    }",True
+41,TestDistributeOnceElasticJobListener,MemberClass,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestDistributeOnceElasticJobListener+TestDistributeOnceElasticJobListener() com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestDistributeOnceElasticJobListener+doBeforeJobExecutedAtLastStarted(JobExecutionMultipleShardingContext) com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.TestDistributeOnceElasticJobListener+doAfterJobExecutedAtLastCompleted(JobExecutionMultipleShardingContext),,514,14,8,,"static class TestDistributeOnceElasticJobListener extends AbstractDistributeOnceElasticJobListener {
+        
+        TestDistributeOnceElasticJobListener() {
+            super(500000L, 500000L);
+        }
+        
+        @Override
+        public void doBeforeJobExecutedAtLastStarted(final JobExecutionMultipleShardingContext shardingContext) {
+        }
+        
+        @Override
+        public void doAfterJobExecutedAtLastCompleted(final JobExecutionMultipleShardingContext shardingContext) {
+        }
+    }",True
+42,Caller,MemberClass,,,com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.Caller+before() com.dangdang.ddframe.job.internal.schedule.SchedulerFacadeTest.Caller+after(),,87,6,0,,"interface Caller {
+        
+        void before();
+        
+        void after();
+    }",True

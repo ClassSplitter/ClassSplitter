@@ -1,0 +1,149 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,mValues,Field,,,,,48,1,2,,private List<Entry> mValues = new ArrayList<>();,False
+2,mFillFormatter,Field,,,,,66,1,2,,private FillFormatter mFillFormatter = new DefaultFillFormatter();,False
+3,results,Field,"RealmLineDataSet(RealmResults<T>,String,String)",,,,32,1,2,,private RealmResults<T> results;,True
+4,yValuesField,Field,"RealmLineDataSet(RealmResults<T>,String,String)",,,,28,1,2,,private String yValuesField;,True
+5,xIndexField,Field,"RealmLineDataSet(RealmResults<T>,String,String)",,,,27,1,2,,private String xIndexField;,True
+6,"RealmLineDataSet(RealmResults<T>,String,String)",Method,,,"java.util.List+add(E) java.util.List+add(E) com.github.mikephil.charting.data.Entry+Entry(float,int) com.github.mikephil.charting.data.realm.RealmLineDataSet+calcMinMax(int,int) com.github.mikephil.charting.data.realm.RealmLineDataSet+calcMinMax(int,int) java.util.List+size() java.util.List+size()",com.github.mikephil.charting.data.realm.RealmLineDataSet<T>+results com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet<T>+yValuesField com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField com.github.mikephil.charting.data.realm.RealmLineDataSet<T>+xIndexField com.github.mikephil.charting.data.realm.RealmLineDataSet+xIndexField com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+mValues com.github.mikephil.charting.data.realm.RealmLineDataSet+mValues,546,17,1,,"public RealmLineDataSet(RealmResults<T> result, String yValuesField, String xIndexField) {
+        super("""");
+        this.results = result;
+        this.yValuesField = yValuesField;
+        this.xIndexField = xIndexField;
+
+        results.sort(xIndexField, true);
+
+        for (T object : results) {
+
+            DynamicRealmObject dynamicObject = new DynamicRealmObject(object);
+
+            mValues.add(new Entry(dynamicObject.getFloat(yValuesField), dynamicObject.getInt(xIndexField)));
+        }
+
+        calcMinMax(0, mValues.size());
+    }",False
+7,getCubicIntensity(),Method,,,,,72,4,1,,"@Override
+    public float getCubicIntensity() {
+        return 0;
+    }",False
+8,isDrawCubicEnabled(),Method,,,,,79,4,1,,"@Override
+    public boolean isDrawCubicEnabled() {
+        return false;
+    }",False
+9,getCircleSize(),Method,,,,,69,4,1,,"@Override
+    public float getCircleSize() {
+        return 10;
+    }",False
+10,getCircleColor(int),Method,,,,android.graphics.Color+BLACK,86,4,1,,"@Override
+    public int getCircleColor(int index) {
+        return Color.BLACK;
+    }",False
+11,isDrawCirclesEnabled(),Method,,,,,80,4,1,,"@Override
+    public boolean isDrawCirclesEnabled() {
+        return true;
+    }",False
+12,getCircleHoleColor(),Method,,,,android.graphics.Color+BLACK,81,4,1,,"@Override
+    public int getCircleHoleColor() {
+        return Color.BLACK;
+    }",False
+13,isDrawCircleHoleEnabled(),Method,,,,,84,4,1,,"@Override
+    public boolean isDrawCircleHoleEnabled() {
+        return false;
+    }",False
+14,getDashPathEffect(),Method,,,,,84,4,1,,"@Override
+    public DashPathEffect getDashPathEffect() {
+        return null;
+    }",False
+15,isDashedLineEnabled(),Method,,,,,80,4,1,,"@Override
+    public boolean isDashedLineEnabled() {
+        return false;
+    }",False
+16,getFillFormatter(),Method,,,,com.github.mikephil.charting.data.realm.RealmLineDataSet+mFillFormatter,92,4,1,,"@Override
+    public FillFormatter getFillFormatter() {
+        return mFillFormatter;
+    }",False
+17,getFillColor(),Method,,,,,65,4,1,,"@Override
+    public int getFillColor() {
+        return 0;
+    }",False
+18,getFillAlpha(),Method,,,,,65,4,1,,"@Override
+    public int getFillAlpha() {
+        return 0;
+    }",False
+19,getLineWidth(),Method,,,,,67,4,1,,"@Override
+    public float getLineWidth() {
+        return 5;
+    }",False
+20,isDrawFilledEnabled(),Method,,,,,80,4,1,,"@Override
+    public boolean isDrawFilledEnabled() {
+        return false;
+    }",False
+21,setDrawFilled(boolean),Method,,,,,65,4,1,,"@Override
+    public void setDrawFilled(boolean enabled) {
+
+    }",False
+22,isVerticalHighlightIndicatorEnabled(),Method,,,,,96,4,1,,"@Override
+    public boolean isVerticalHighlightIndicatorEnabled() {
+        return false;
+    }",False
+23,isHorizontalHighlightIndicatorEnabled(),Method,,,,,98,4,1,,"@Override
+    public boolean isHorizontalHighlightIndicatorEnabled() {
+        return false;
+    }",False
+24,getHighlightLineWidth(),Method,,,,,76,4,1,,"@Override
+    public float getHighlightLineWidth() {
+        return 0;
+    }",False
+25,getDashPathEffectHighlight(),Method,,,,,93,4,1,,"@Override
+    public DashPathEffect getDashPathEffectHighlight() {
+        return null;
+    }",False
+26,getHighLightColor(),Method,,,,,70,4,1,,"@Override
+    public int getHighLightColor() {
+        return 0;
+    }",False
+27,getYMin(),Method,,,,com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField,99,4,1,,"@Override
+    public float getYMin() {
+        return results.min(yValuesField).floatValue();
+    }",True
+28,getYMax(),Method,,,,com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField,99,4,1,,"@Override
+    public float getYMax() {
+        return results.max(yValuesField).floatValue();
+    }",True
+29,getEntryCount(),Method,,,,com.github.mikephil.charting.data.realm.RealmLineDataSet+results,79,4,1,,"@Override
+    public int getEntryCount() {
+        return results.size();
+    }",True
+30,"calcMinMax(int,int)",Method,"RealmLineDataSet(RealmResults<T>,String,String)",,,,65,4,1,,"@Override
+    public void calcMinMax(int start, int end) {
+
+    }",True
+31,getEntryForXIndex(int),Method,,,"java.lang.Object+Object() com.github.mikephil.charting.data.Entry+Entry(float,int)",com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+xIndexField com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField com.github.mikephil.charting.data.realm.RealmLineDataSet+xIndexField,253,6,1,,"@Override
+    public Entry getEntryForXIndex(int xIndex) {
+
+        DynamicRealmObject o = new DynamicRealmObject(results.where().equalTo(xIndexField, xIndex).findFirst());
+        return new Entry(o.getFloat(yValuesField), o.getInt(xIndexField));
+    }",True
+32,getEntryForIndex(int),Method,,,java.util.List+get(int) java.util.List+get(int),com.github.mikephil.charting.data.realm.RealmLineDataSet+mValues,97,4,1,,"@Override
+    public Entry getEntryForIndex(int index) {
+        return mValues.get(index);
+    }",True
+33,getEntryIndex(int),Method,,,,,76,4,1,,"@Override
+    public int getEntryIndex(int xIndex) {
+        return 0;
+    }",True
+34,getEntryIndex(Entry),Method,,,java.util.List+indexOf(Object) java.util.List+indexOf(Object),com.github.mikephil.charting.data.realm.RealmLineDataSet+mValues,90,4,1,,"@Override
+    public int getEntryIndex(Entry e) {
+        return mValues.indexOf(e);
+    }",True
+35,getYValForXIndex(int),Method,,,java.lang.Object+Object(),com.github.mikephil.charting.data.realm.RealmLineDataSet+results com.github.mikephil.charting.data.realm.RealmLineDataSet+xIndexField com.github.mikephil.charting.data.realm.RealmLineDataSet+yValuesField,196,4,1,,"@Override
+    public float getYValForXIndex(int xIndex) {
+        return new DynamicRealmObject(results.where().greaterThanOrEqualTo(xIndexField, xIndex).findFirst()).getFloat(yValuesField);
+    }",True
+36,addEntry(Entry),Method,,,,,52,4,1,,"@Override
+    public void addEntry(Entry e) {
+
+    }",True
+37,removeEntry(Entry),Method,,,,,79,4,1,,"@Override
+    public boolean removeEntry(Entry e) {
+        return false;
+    }",True

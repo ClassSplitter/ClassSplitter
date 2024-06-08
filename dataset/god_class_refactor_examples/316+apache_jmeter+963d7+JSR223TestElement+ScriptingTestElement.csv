@@ -1,0 +1,290 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,LazyHolder,MemberClass,,,javax.script.ScriptEngineManager+ScriptEngineManager(),org.apache.jmeter.util.JSR223TestElement.LazyHolder+INSTANCE,188,6,10,"/** 
+ * Initialization On Demand Holder pattern
+ */
+","/**
+     * Initialization On Demand Holder pattern
+     */
+    private static class LazyHolder {
+        public static final ScriptEngineManager INSTANCE = new ScriptEngineManager();
+    }",False
+2,getInstance(),Method,getScriptEngine(),,,org.apache.jmeter.util.JSR223TestElement.LazyHolder+INSTANCE,156,6,9,"/** 
+ * @return ScriptEngineManager singleton
+ */
+","/**
+     * @return ScriptEngineManager singleton
+     */
+    public static ScriptEngineManager getInstance() {
+            return LazyHolder.INSTANCE;
+    }",False
+3,serialVersionUID,Field,,,,,50,1,26,,private static final long serialVersionUID = 233L;,False
+4,parameters,Field,,,,,26,1,2,,private String parameters;,True
+5,filename,Field,,,,,24,1,2,,private String filename;,True
+6,script,Field,,,,,22,1,2,,private String script;,True
+7,scriptLanguage,Field,,,,,30,1,2,,private String scriptLanguage;,True
+8,cacheKey,Field,setCacheKey(String),,,,29,1,2,,"private String cacheKey = """";",False
+9,compiledScriptsCache,Field,,,,,343,7,26,"/** 
+ * Cache of compiled scripts
+ */
+","/**
+     * Cache of compiled scripts
+     */
+    @SuppressWarnings(""unchecked"") // LRUMap does not support generics (yet)
+    private static final Map<String, CompiledScript> compiledScriptsCache = 
+            Collections.synchronizedMap(
+                    new LRUMap(JMeterUtils.getPropDefault(""jsr223.compiled_scripts_cache_size"", 100)));",False
+10,JSR223TestElement(),Method,,,org.apache.jmeter.util.JSR223TestElement+init() org.apache.jmeter.util.JSR223TestElement+init(),,67,4,1,,"public JSR223TestElement() {
+        super();
+        init();
+    }",False
+11,init(),Method,JSR223TestElement() readResolve() clone(),,,org.apache.jmeter.util.JSR223TestElement+parameters org.apache.jmeter.util.JSR223TestElement+filename org.apache.jmeter.util.JSR223TestElement+script org.apache.jmeter.util.JSR223TestElement+scriptLanguage org.apache.jmeter.util.JSR223TestElement+cacheKey,173,7,2,,"private void init() {
+        parameters=""""; // ensure variables are not null
+        filename="""";
+        script="""";
+        scriptLanguage="""";
+        cacheKey = """";
+    }",False
+12,readResolve(),Method,,,org.apache.jmeter.util.JSR223TestElement+init() org.apache.jmeter.util.JSR223TestElement+init(),,75,4,4,,"protected Object readResolve() {
+        init();
+        return this;
+    }",False
+13,clone(),Method,,,org.apache.jmeter.testelement.AbstractTestElement+clone() org.apache.jmeter.util.JSR223TestElement+init() org.apache.jmeter.util.JSR223TestElement+init(),,143,6,1,,"@Override
+    public Object clone() {
+        JSR223TestElement o = (JSR223TestElement) super.clone();
+        o.init();
+       return o;
+    }",False
+14,getScriptEngine(),Method,,org.apache.jmeter.assertions.JSR223Assertion+getResult(SampleResult) org.apache.jmeter.extractor.JSR223PostProcessor+process() org.apache.jmeter.modifiers.JSR223PreProcessor+process() org.apache.jmeter.timers.JSR223Timer+delay() org.apache.jmeter.visualizers.JSR223Listener+sampleOccurred(SampleEvent) org.apache.jmeter.protocol.java.sampler.JSR223Sampler+sample(Entry),org.apache.jmeter.util.JSR223TestElement+getScriptLanguage() org.apache.jmeter.util.JSR223TestElement+getScriptLanguage() javax.script.ScriptEngineManager+getEngineByName(String) org.apache.jmeter.util.JSR223TestElement+getInstance() org.apache.jmeter.util.JSR223TestElement+getInstance() javax.script.ScriptEngineManager+getEngineByName(String) javax.script.ScriptException+ScriptException(String),,344,10,4,,"protected ScriptEngine getScriptEngine() throws ScriptException {
+        final String lang = getScriptLanguage();
+
+        ScriptEngine scriptEngine = getInstance().getEngineByName(lang);
+        if (scriptEngine == null) {
+            throw new ScriptException(""Cannot find engine named: ""+lang);
+        }
+
+        return scriptEngine;
+    }",False
+15,populateBindings(Bindings),Method,"processFileOrScript(ScriptEngine,Bindings)",,"org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.util.JSR223TestElement+getFilename() org.apache.jmeter.util.JSR223TestElement+getFilename() org.apache.jmeter.util.JSR223TestElement+getParameters() org.apache.jmeter.util.JSR223TestElement+getParameters() org.apache.jorphan.logging.LoggingManager+getLoggerForShortName(String) org.apache.jorphan.logging.LoggingManager+getLoggerForShortName(String) java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jorphan.util.JOrphanUtils+split(String,String) org.apache.jorphan.util.JOrphanUtils+split(String,String) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.threads.JMeterContextService+getContext() org.apache.jmeter.threads.JMeterContextService+getContext() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.threads.JMeterContext+getVariables() org.apache.jmeter.threads.JMeterContext+getVariables() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.util.JMeterUtils+getJMeterProperties() org.apache.jmeter.util.JMeterUtils+getJMeterProperties() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.threads.JMeterContext+getCurrentSampler() org.apache.jmeter.threads.JMeterContext+getCurrentSampler() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object) org.apache.jmeter.threads.JMeterContext+getPreviousResult() org.apache.jmeter.threads.JMeterContext+getPreviousResult() javax.script.Bindings+put(String,Object) javax.script.Bindings+put(String,Object)",java.lang.System+out,1375,32,4,"/** 
+ * Populate variables to be passed to scripts
+ * @param bindings Bindings
+ */
+","/**
+     * Populate variables to be passed to scripts
+     * @param bindings Bindings
+     */
+    protected void populateBindings(Bindings bindings) {
+        final String label = getName();
+        final String fileName = getFilename();
+        final String scriptParameters = getParameters();
+        // Use actual class name for log
+        final Logger logger = LoggingManager.getLoggerForShortName(getClass().getName());
+        bindings.put(""log"", logger);
+        bindings.put(""Label"", label);
+        bindings.put(""FileName"", fileName);
+        bindings.put(""Parameters"", scriptParameters);
+        String [] args=JOrphanUtils.split(scriptParameters, "" "");//$NON-NLS-1$
+        bindings.put(""args"", args);
+        // Add variables for access to context and variables
+        JMeterContext jmctx = JMeterContextService.getContext();
+        bindings.put(""ctx"", jmctx);
+        JMeterVariables vars = jmctx.getVariables();
+        bindings.put(""vars"", vars);
+        Properties props = JMeterUtils.getJMeterProperties();
+        bindings.put(""props"", props);
+        // For use in debugging:
+        bindings.put(""OUT"", System.out);
+
+        // Most subclasses will need these:
+        Sampler sampler = jmctx.getCurrentSampler();
+        bindings.put(""sampler"", sampler);
+        SampleResult prev = jmctx.getPreviousResult();
+        bindings.put(""prev"", prev);
+    }",False
+16,"processFileOrScript(ScriptEngine,Bindings)",Method,,org.apache.jmeter.assertions.JSR223Assertion+getResult(SampleResult) org.apache.jmeter.extractor.JSR223PostProcessor+process() org.apache.jmeter.modifiers.JSR223PreProcessor+process() org.apache.jmeter.timers.JSR223Timer+delay() org.apache.jmeter.visualizers.JSR223Listener+sampleOccurred(SampleEvent) org.apache.jmeter.protocol.java.sampler.JSR223Sampler+sample(Entry),"javax.script.ScriptEngine+createBindings() javax.script.ScriptEngine+createBindings() org.apache.jmeter.util.JSR223TestElement+populateBindings(Bindings) org.apache.jmeter.util.JSR223TestElement+populateBindings(Bindings) java.io.File+File(String) org.apache.jmeter.util.JSR223TestElement+getFilename() org.apache.jmeter.util.JSR223TestElement+getFilename() java.lang.String+equals(Object) java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() java.lang.String+equals(Object) org.apache.jmeter.util.JSR223TestElement+getFilename() org.apache.jmeter.util.JSR223TestElement+getFilename() java.io.File+exists() java.io.File+exists() java.io.File+canRead() java.io.File+canRead() org.apache.jmeter.util.JSR223TestElement+getScriptLanguage() org.apache.jmeter.util.JSR223TestElement+getScriptLanguage() java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.File+lastModified() java.io.File+lastModified() java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.io.BufferedReader+BufferedReader(Reader,int) java.io.FileReader+FileReader(File) java.io.File+length() java.io.File+length() javax.script.Compilable+compile(Reader) javax.script.Compilable+compile(Reader) java.util.Map+put(K,V) java.util.Map+put(K,V) javax.script.CompiledScript+eval(Bindings) javax.script.CompiledScript+eval(Bindings) java.io.BufferedReader+BufferedReader(Reader,int) java.io.FileReader+FileReader(File) java.io.File+length() java.io.File+length() javax.script.ScriptEngine+eval(Reader,Bindings) javax.script.ScriptEngine+eval(Reader,Bindings) javax.script.ScriptException+ScriptException(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.util.JSR223TestElement+getScript() org.apache.jmeter.util.JSR223TestElement+getScript() java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) javax.script.Compilable+compile(String) javax.script.Compilable+compile(String) org.apache.jmeter.util.JSR223TestElement+getScript() org.apache.jmeter.util.JSR223TestElement+getScript() java.util.Map+put(K,V) java.util.Map+put(K,V) javax.script.CompiledScript+eval(Bindings) javax.script.CompiledScript+eval(Bindings) javax.script.ScriptEngine+eval(String,Bindings) javax.script.ScriptEngine+eval(String,Bindings) org.apache.jmeter.util.JSR223TestElement+getScript() org.apache.jmeter.util.JSR223TestElement+getScript() javax.script.ScriptException+ScriptException(String) org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.testelement.AbstractTestElement+getName()",org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+cacheKey org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+cacheKey org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+cacheKey org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache org.apache.jmeter.util.JSR223TestElement+cacheKey,4188,80,4,"/** 
+ * This method will run inline script or file script with special behaviour for file script: - If ScriptEngine implements Compilable script will be compiled and cached - If not if will be run
+ * @param scriptEngine ScriptEngine
+ * @param bindings {@link Bindings} might be null
+ * @return Object returned by script
+ * @throws IOException
+ * @throws ScriptException
+ */
+","/**
+     * This method will run inline script or file script with special behaviour for file script:
+     * - If ScriptEngine implements Compilable script will be compiled and cached
+     * - If not if will be run
+     * @param scriptEngine ScriptEngine
+     * @param bindings {@link Bindings} might be null
+     * @return Object returned by script
+     * @throws IOException
+     * @throws ScriptException
+     */
+    protected Object processFileOrScript(ScriptEngine scriptEngine, Bindings bindings) throws IOException, ScriptException {
+        if (bindings == null) {
+            bindings = scriptEngine.createBindings();
+        }
+        populateBindings(bindings);
+        File scriptFile = new File(getFilename()); 
+        // Hack as in bsh-2.0b5.jar BshScriptEngine implements Compilable but throws new Error
+        boolean supportsCompilable = scriptEngine instanceof Compilable 
+                && !(scriptEngine.getClass().getName().equals(""bsh.engine.BshScriptEngine""));
+        if (!StringUtils.isEmpty(getFilename())) {
+            if (scriptFile.exists() && scriptFile.canRead()) {
+                BufferedReader fileReader = null;
+                try {
+                    if (supportsCompilable) {
+                        String cacheKey = 
+                                getScriptLanguage()+""#""+
+                                scriptFile.getAbsolutePath()+""#""+
+                                        scriptFile.lastModified();
+                        CompiledScript compiledScript = 
+                                compiledScriptsCache.get(cacheKey);
+                        if (compiledScript==null) {
+                            synchronized (compiledScriptsCache) {
+                                compiledScript = 
+                                        compiledScriptsCache.get(cacheKey);
+                                if (compiledScript==null) {
+                                    // TODO Charset ?
+                                    fileReader = new BufferedReader(new FileReader(scriptFile), 
+                                            (int)scriptFile.length()); 
+                                    compiledScript = 
+                                            ((Compilable) scriptEngine).compile(fileReader);
+                                    compiledScriptsCache.put(cacheKey, compiledScript);
+                                }
+                            }
+                        }
+                        return compiledScript.eval(bindings);
+                    } else {
+                        // TODO Charset ?
+                        fileReader = new BufferedReader(new FileReader(scriptFile), 
+                                (int)scriptFile.length()); 
+                        return scriptEngine.eval(fileReader, bindings);                    
+                    }
+                } finally {
+                    IOUtils.closeQuietly(fileReader);
+                }
+            }  else {
+                throw new ScriptException(""Script file '""+scriptFile.getAbsolutePath()+""' does not exist or is unreadable for element:""+getName());
+            }
+        } else if (!StringUtils.isEmpty(getScript())){
+            if (supportsCompilable && !StringUtils.isEmpty(cacheKey)) {
+                CompiledScript compiledScript = 
+                        compiledScriptsCache.get(cacheKey);
+                if (compiledScript==null) {
+                    synchronized (compiledScriptsCache) {
+                        compiledScript = 
+                                compiledScriptsCache.get(cacheKey);
+                        if (compiledScript==null) {
+                            compiledScript = 
+                                    ((Compilable) scriptEngine).compile(getScript());
+                            compiledScriptsCache.put(cacheKey, compiledScript);
+                        }
+                    }
+                }
+                return compiledScript.eval(bindings);
+            } else {
+                return scriptEngine.eval(getScript(), bindings);
+            }
+        } else {
+            throw new ScriptException(""Both script file and script text are empty for element:""+getName());            
+        }
+    }",False
+17,getScript(),Method,"processFileOrScript(ScriptEngine,Bindings) processFileOrScript(ScriptEngine,Bindings) processFileOrScript(ScriptEngine,Bindings)",org.apache.jmeter.protocol.java.sampler.JSR223Sampler+sample(Entry),,org.apache.jmeter.util.JSR223TestElement+script,279,10,1,"/** 
+ * Return the script (TestBean version). Must be overridden for subclasses that don't implement TestBean otherwise the clone() method won't work.
+ * @return the script to execute
+ */
+","/**
+     * Return the script (TestBean version).
+     * Must be overridden for subclasses that don't implement TestBean
+     * otherwise the clone() method won't work.
+     *
+     * @return the script to execute
+     */
+    public String getScript(){
+        return script;
+    }",True
+18,setScript(String),Method,,,,org.apache.jmeter.util.JSR223TestElement+script,293,10,1,"/** 
+ * Set the script (TestBean version). Must be overridden for subclasses that don't implement TestBean otherwise the clone() method won't work.
+ * @param s the script to execute (may be blank)
+ */
+","/**
+     * Set the script (TestBean version).
+     * Must be overridden for subclasses that don't implement TestBean
+     * otherwise the clone() method won't work.
+     *
+     * @param s the script to execute (may be blank)
+     */
+    public void setScript(String s){
+        script=s;
+    }",True
+19,getParameters(),Method,populateBindings(Bindings),,,org.apache.jmeter.util.JSR223TestElement+parameters,64,3,1,,"public String getParameters() {
+        return parameters;
+    }",True
+20,setParameters(String),Method,,,,org.apache.jmeter.util.JSR223TestElement+parameters,67,3,1,,"public void setParameters(String s) {
+        parameters = s;
+    }",True
+21,getFilename(),Method,"populateBindings(Bindings) processFileOrScript(ScriptEngine,Bindings)",org.apache.jmeter.protocol.java.sampler.JSR223Sampler+sample(Entry),,org.apache.jmeter.util.JSR223TestElement+filename,60,3,1,,"public String getFilename() {
+        return filename;
+    }",True
+22,setFilename(String),Method,,,,org.apache.jmeter.util.JSR223TestElement+filename,63,3,1,,"public void setFilename(String s) {
+        filename = s;
+    }",True
+23,getScriptLanguage(),Method,"getScriptEngine() processFileOrScript(ScriptEngine,Bindings)",,,org.apache.jmeter.util.JSR223TestElement+scriptLanguage,72,3,1,,"public String getScriptLanguage() {
+        return scriptLanguage;
+    }",True
+24,setScriptLanguage(String),Method,,,,org.apache.jmeter.util.JSR223TestElement+scriptLanguage,75,3,1,,"public void setScriptLanguage(String s) {
+        scriptLanguage = s;
+    }",True
+25,getCacheKey(),Method,,,,org.apache.jmeter.util.JSR223TestElement+cacheKey,104,6,1,"/** 
+ * @return the cacheKey
+ */
+","/**
+     * @return the cacheKey
+     */
+    public String getCacheKey() {
+        return cacheKey;
+    }",False
+26,setCacheKey(String),Method,,,,org.apache.jmeter.util.JSR223TestElement+cacheKey org.apache.jmeter.util.JSR223TestElement+cacheKey,141,6,1,"/** 
+ * @param cacheKey the cacheKey to set
+ */
+","/**
+     * @param cacheKey the cacheKey to set
+     */
+    public void setCacheKey(String cacheKey) {
+        this.cacheKey = cacheKey;
+    }",False
+27,testStarted(),Method,,,,,139,6,1,"/** 
+ * @see org.apache.jmeter.testelement.TestStateListener#testStarted()
+ */
+","/**
+     * @see org.apache.jmeter.testelement.TestStateListener#testStarted()
+     */
+    public void testStarted() {
+        // NOOP
+    }",False
+28,testStarted(String),Method,,,,,169,6,1,"/** 
+ * @see org.apache.jmeter.testelement.TestStateListener#testStarted(java.lang.String)
+ */
+","/**
+     * @see org.apache.jmeter.testelement.TestStateListener#testStarted(java.lang.String)
+     */
+    public void testStarted(String host) {
+        // NOOP   
+    }",False
+29,testEnded(),Method,,,org.apache.jmeter.util.JSR223TestElement+testEnded(String) org.apache.jmeter.util.JSR223TestElement+testEnded(String),,142,6,1,"/** 
+ * @see org.apache.jmeter.testelement.TestStateListener#testEnded()
+ */
+","/**
+     * @see org.apache.jmeter.testelement.TestStateListener#testEnded()
+     */
+    public void testEnded() {
+        testEnded("""");
+    }",False
+30,testEnded(String),Method,testEnded(),,java.util.Map+clear() java.util.Map+clear(),org.apache.jmeter.util.JSR223TestElement+compiledScriptsCache,184,6,1,"/** 
+ * @see org.apache.jmeter.testelement.TestStateListener#testEnded(java.lang.String)
+ */
+","/**
+     * @see org.apache.jmeter.testelement.TestStateListener#testEnded(java.lang.String)
+     */
+    public void testEnded(String host) {
+        compiledScriptsCache.clear();
+    }",False

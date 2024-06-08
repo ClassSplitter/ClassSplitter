@@ -1,0 +1,135 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,DEFAULT_LOCK_TIME,Field,,,,,86,1,26,,"private static final Duration DEFAULT_LOCK_TIME = Duration.of(30, ChronoUnit.MINUTES);",True
+2,DEFAULT_LOCK_AT_LEAST_FOR,Field,,,,,92,1,26,,"private static final Duration DEFAULT_LOCK_AT_LEAST_FOR = Duration.of(5, ChronoUnit.MILLIS);",True
+3,embeddedValueResolver,Field,,,,,90,1,18,,private final StringValueResolver embeddedValueResolver = mock(StringValueResolver.class);,True
+4,extractor,Field,,,,,165,1,18,,"private final SpringLockConfigurationExtractor extractor = new SpringLockConfigurationExtractor(DEFAULT_LOCK_TIME, DEFAULT_LOCK_AT_LEAST_FOR, embeddedValueResolver);",True
+5,shouldLockForDefaultTimeIfNoAnnotation(),Method,,,net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock),net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+DEFAULT_LOCK_TIME,331,6,1,,"@Test
+    public void shouldLockForDefaultTimeIfNoAnnotation() throws NoSuchMethodException {
+        SchedulerLock annotation = getAnnotation(""annotatedMethodWithoutLockAtMostFor"");
+        TemporalAmount lockAtMostFor = extractor.getLockAtMostFor(annotation);
+        assertThat(lockAtMostFor).isEqualTo(DEFAULT_LOCK_TIME);
+    }",True
+6,shouldLockTimeFromAnnotation(),Method,,,"net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock) java.time.Duration+of(long,TemporalUnit) java.time.Duration+of(long,TemporalUnit)",net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,308,6,1,,"@Test
+    public void shouldLockTimeFromAnnotation() throws NoSuchMethodException {
+        SchedulerLock annotation = getAnnotation(""annotatedMethod"");
+        TemporalAmount lockAtMostFor = extractor.getLockAtMostFor(annotation);
+        assertThat(lockAtMostFor).isEqualTo(Duration.of(100, MILLIS));
+    }",True
+7,shouldLockTimeFromAnnotationWithString(),Method,,,"net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock) java.time.Duration+of(long,TemporalUnit) java.time.Duration+of(long,TemporalUnit)",net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+embeddedValueResolver net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,416,7,1,,"@Test
+    public void shouldLockTimeFromAnnotationWithString() throws NoSuchMethodException {
+        when(embeddedValueResolver.resolveStringValue(""${placeholder}"")).thenReturn(""5"");
+        SchedulerLock annotation = getAnnotation(""annotatedMethodWithString"");
+        TemporalAmount lockAtMostFor = extractor.getLockAtMostFor(annotation);
+        assertThat(lockAtMostFor).isEqualTo(Duration.of(5, MILLIS));
+    }",True
+8,shouldLockTimeFromAnnotationWithDurationString(),Method,,,"net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock) java.time.Duration+of(long,TemporalUnit) java.time.Duration+of(long,TemporalUnit)",net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+embeddedValueResolver net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,426,7,1,,"@Test
+    public void shouldLockTimeFromAnnotationWithDurationString() throws NoSuchMethodException {
+        when(embeddedValueResolver.resolveStringValue(""PT1S"")).thenReturn(""PT1S"");
+        SchedulerLock annotation = getAnnotation(""annotatedMethodWithDurationString"");
+        TemporalAmount lockAtMostFor = extractor.getLockAtMostFor(annotation);
+        assertThat(lockAtMostFor).isEqualTo(Duration.of(1, SECONDS));
+    }",True
+9,shouldGetZeroGracePeriodFromAnnotation(),Method,,,net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtLeastFor(SchedulerLock) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtLeastFor(SchedulerLock),net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor java.time.Duration+ZERO,323,6,1,,"@Test
+    public void shouldGetZeroGracePeriodFromAnnotation() throws NoSuchMethodException {
+        SchedulerLock annotation = getAnnotation(""annotatedMethodWithZeroGracePeriod"");
+        TemporalAmount gracePeriod = extractor.getLockAtLeastFor(annotation);
+        assertThat(gracePeriod).isEqualTo(Duration.ZERO);
+    }",True
+10,shouldGetPositiveGracePeriodFromAnnotation(),Method,,,"net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtLeastFor(SchedulerLock) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtLeastFor(SchedulerLock) java.time.Duration+of(long,TemporalUnit) java.time.Duration+of(long,TemporalUnit)",net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,341,6,1,,"@Test
+    public void shouldGetPositiveGracePeriodFromAnnotation() throws NoSuchMethodException {
+        SchedulerLock annotation = getAnnotation(""annotatedMethodWithPositiveGracePeriod"");
+        TemporalAmount gracePeriod = extractor.getLockAtLeastFor(annotation);
+        assertThat(gracePeriod).isEqualTo(Duration.of(10, MILLIS));
+    }",True
+11,shouldGetPositiveGracePeriodFromAnnotationWithString(),Method,,,"net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtLeastFor(SchedulerLock) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtLeastFor(SchedulerLock) java.time.Duration+of(long,TemporalUnit) java.time.Duration+of(long,TemporalUnit)",net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+embeddedValueResolver net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,440,7,1,,"@Test
+    public void shouldGetPositiveGracePeriodFromAnnotationWithString() throws NoSuchMethodException {
+        when(embeddedValueResolver.resolveStringValue(""10"")).thenReturn(""10"");
+        SchedulerLock annotation = getAnnotation(""annotatedMethodWithPositiveGracePeriodWithString"");
+        TemporalAmount gracePeriod = extractor.getLockAtLeastFor(annotation);
+        assertThat(gracePeriod).isEqualTo(Duration.of(10, MILLIS));
+    }",True
+12,shouldExtractComposedAnnotation(),Method,,,"net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+getAnnotation(String) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockAtMostFor(SchedulerLock) net.javacrumbs.shedlock.core.SchedulerLock+name() net.javacrumbs.shedlock.core.SchedulerLock+name() java.time.Duration+of(long,TemporalUnit) java.time.Duration+of(long,TemporalUnit)",net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,367,7,1,,"@Test
+    public void shouldExtractComposedAnnotation() throws NoSuchMethodException {
+        SchedulerLock annotation = getAnnotation(""composedAnnotation"");
+        TemporalAmount atMostFor = extractor.getLockAtMostFor(annotation);
+        assertThat(annotation.name()).isEqualTo(""lockName1"");
+        assertThat(atMostFor).isEqualTo(Duration.of(20, MILLIS));
+    }",True
+13,shouldFindAnnotationOnDynamicProxy(),Method,,,net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+doTestFindAnnotationOnProxy(Class<?>) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+doTestFindAnnotationOnProxy(Class<?>),,158,4,1,,"@Test
+    public void shouldFindAnnotationOnDynamicProxy() throws NoSuchMethodException {
+        doTestFindAnnotationOnProxy(DynamicProxyConfig.class);
+    }",True
+14,shouldFindAnnotationOnSubclassProxy(),Method,,,net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+doTestFindAnnotationOnProxy(Class<?>) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+doTestFindAnnotationOnProxy(Class<?>),,160,4,1,,"@Test
+    public void shouldFindAnnotationOnSubclassProxy() throws NoSuchMethodException {
+        doTestFindAnnotationOnProxy(SubclassProxyConfig.class);
+    }",True
+15,shouldNotLockUnannotatedMethod(),Method,,,net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockConfiguration(Runnable) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockConfiguration(Runnable),net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,343,6,1,,"@Test
+    public void shouldNotLockUnannotatedMethod() throws NoSuchMethodException {
+        ScheduledMethodRunnable runnable = new ScheduledMethodRunnable(this, ""methodWithoutAnnotation"");
+        Optional<LockConfiguration> lockConfiguration = extractor.getLockConfiguration(runnable);
+        assertThat(lockConfiguration).isEmpty();
+    }",True
+16,shouldGetNameAndLockTimeFromAnnotation(),Method,,,net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockConfiguration(Runnable) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockConfiguration(Runnable) net.javacrumbs.shedlock.core.LockConfiguration+getName() net.javacrumbs.shedlock.core.LockConfiguration+getName() net.javacrumbs.shedlock.core.LockConfiguration+getLockAtMostUntil() net.javacrumbs.shedlock.core.LockConfiguration+getLockAtMostUntil() net.javacrumbs.shedlock.core.LockConfiguration+getLockAtLeastUntil() net.javacrumbs.shedlock.core.LockConfiguration+getLockAtLeastUntil(),net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+embeddedValueResolver net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+DEFAULT_LOCK_AT_LEAST_FOR,681,9,1,,"@Test
+    public void shouldGetNameAndLockTimeFromAnnotation() throws NoSuchMethodException {
+        when(embeddedValueResolver.resolveStringValue(""lockName"")).thenReturn(""lockName"");
+        ScheduledMethodRunnable runnable = new ScheduledMethodRunnable(this, ""annotatedMethod"");
+        LockConfiguration lockConfiguration = extractor.getLockConfiguration(runnable).get();
+        assertThat(lockConfiguration.getName()).isEqualTo(""lockName"");
+        assertThat(lockConfiguration.getLockAtMostUntil()).isBeforeOrEqualTo(now().plus(100, MILLIS));
+        assertThat(lockConfiguration.getLockAtLeastUntil()).isAfter(now().plus(DEFAULT_LOCK_AT_LEAST_FOR).minus(1, SECONDS));
+    }",True
+17,shouldGetNameFromSpringVariable(),Method,,,net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockConfiguration(Runnable) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+getLockConfiguration(Runnable) net.javacrumbs.shedlock.core.LockConfiguration+getName() net.javacrumbs.shedlock.core.LockConfiguration+getName(),net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+embeddedValueResolver net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,462,7,1,,"@Test
+    public void shouldGetNameFromSpringVariable() throws NoSuchMethodException {
+        when(embeddedValueResolver.resolveStringValue(""${name}"")).thenReturn(""lockNameX"");
+        ScheduledMethodRunnable runnable = new ScheduledMethodRunnable(this, ""annotatedMethodWithNameVariable"");
+        LockConfiguration lockConfiguration = extractor.getLockConfiguration(runnable).get();
+        assertThat(lockConfiguration.getName()).isEqualTo(""lockNameX"");
+    }",True
+18,doTestFindAnnotationOnProxy(Class<?>),Method,shouldFindAnnotationOnDynamicProxy() shouldFindAnnotationOnSubclassProxy(),,"net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+findAnnotation(Object,Method) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+findAnnotation(Object,Method) java.lang.Class+getMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getMethod(String,Class[])",net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,388,6,2,,"private void doTestFindAnnotationOnProxy(Class<?> config) throws NoSuchMethodException {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(config)) {
+            BeanInterface bean = context.getBean(BeanInterface.class);
+            assertThat(extractor.findAnnotation(bean, bean.getClass().getMethod(""method""))).isNotNull();
+        }
+    }",True
+19,getAnnotation(String),Method,shouldLockForDefaultTimeIfNoAnnotation() shouldLockTimeFromAnnotation() shouldLockTimeFromAnnotationWithString() shouldLockTimeFromAnnotationWithDurationString() shouldGetZeroGracePeriodFromAnnotation() shouldGetPositiveGracePeriodFromAnnotation() shouldGetPositiveGracePeriodFromAnnotationWithString() shouldExtractComposedAnnotation(),,"net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+findAnnotation(Object,Method) net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractor+findAnnotation(Object,Method) java.lang.Class+getMethod(String,Class[]) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getMethod(String,Class[])",net.javacrumbs.shedlock.spring.internal.SpringLockConfigurationExtractorTest+extractor,169,3,2,,"private SchedulerLock getAnnotation(String method) throws NoSuchMethodException {
+        return extractor.findAnnotation(this, this.getClass().getMethod(method));
+    }",True
+20,annotatedMethod(),Method,,,,,97,4,1,,"@SchedulerLock(name = ""lockName"", lockAtMostFor = 100)
+    public void annotatedMethod() {
+
+    }",False
+21,annotatedMethodWithString(),Method,,,,,126,4,1,,"@SchedulerLock(name = ""lockName"", lockAtMostForString = ""${placeholder}"")
+    public void annotatedMethodWithString() {
+
+    }",False
+22,annotatedMethodWithDurationString(),Method,,,,,124,4,1,,"@SchedulerLock(name = ""lockName"", lockAtMostForString = ""PT1S"")
+    public void annotatedMethodWithDurationString() {
+
+    }",False
+23,annotatedMethodWithNameVariable(),Method,,,,,91,4,1,,"@SchedulerLock(name = ""${name}"")
+    public void annotatedMethodWithNameVariable() {
+
+    }",False
+24,annotatedMethodWithoutLockAtMostFor(),Method,,,,,96,4,1,,"@SchedulerLock(name = ""lockName"")
+    public void annotatedMethodWithoutLockAtMostFor() {
+
+    }",False
+25,annotatedMethodWithZeroGracePeriod(),Method,,,,,115,4,1,,"@SchedulerLock(name = ""lockName"", lockAtLeastFor = 0)
+    public void annotatedMethodWithZeroGracePeriod() {
+
+    }",False
+26,annotatedMethodWithPositiveGracePeriod(),Method,,,,,120,4,1,,"@SchedulerLock(name = ""lockName"", lockAtLeastFor = 10)
+    public void annotatedMethodWithPositiveGracePeriod() {
+
+    }",False
+27,annotatedMethodWithPositiveGracePeriodWithString(),Method,,,,,138,4,1,,"@SchedulerLock(name = ""lockName"", lockAtLeastForString = ""10"")
+    public void annotatedMethodWithPositiveGracePeriodWithString() {
+
+    }",False
+28,composedAnnotation(),Method,,,,,82,4,1,,"@ScheduledLocked(name = ""lockName1"")
+    public void composedAnnotation() {
+
+    }",False
+29,methodWithoutAnnotation(),Method,,,,,46,3,1,,"public void methodWithoutAnnotation() {
+
+    }",False

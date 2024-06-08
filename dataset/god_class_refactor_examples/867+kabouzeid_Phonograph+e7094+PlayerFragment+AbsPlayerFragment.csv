@@ -1,0 +1,317 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,TAG,Field,,,,,70,1,25,,public static final String TAG = PlayerFragment.class.getSimpleName();,False
+2,toolbar,Field,,,,,47,2,0,,"@Bind(R.id.player_toolbar)
+    Toolbar toolbar;",False
+3,slidingUpPanelLayout,Field,,,,,80,2,0,,"@Bind(R.id.player_sliding_layout)
+    SlidingUpPanelLayout slidingUpPanelLayout;",False
+4,recyclerView,Field,,,,,63,2,0,,"@Bind(R.id.player_recycler_view)
+    RecyclerView recyclerView;",False
+5,playingQueueCard,Field,,,,,61,2,0,,"@Bind(R.id.playing_queue_card)
+    CardView playingQueueCard;",False
+6,albumCoverContainer,Field,,,,,71,2,0,,"@Bind(R.id.album_cover_container)
+    SquareLayout albumCoverContainer;",False
+7,playerContent,Field,,,,,60,2,0,,"@Bind(R.id.player_content)
+    RelativeLayout playerContent;",False
+8,colorBackground,Field,,,,,54,2,0,,"@Bind(R.id.color_background)
+    View colorBackground;",False
+9,playerQueueSubheader,Field,,,,,69,2,0,,"@Bind(R.id.player_queue_subheader)
+    TextView playerQueueSubheader;",False
+10,currentSongViewHolder,Field,,,,,43,1,0,,MediaEntryViewHolder currentSongViewHolder;,False
+11,lastColor,Field,,,,,22,1,2,,private int lastColor;,False
+12,activity,Field,,,,,41,1,2,,private AbsMusicServiceActivity activity;,True
+13,callbacks,Field,,,,,28,1,2,,private Callbacks callbacks;,True
+14,playbackControlsFragment,Field,,,,,58,1,2,,private PlaybackControlsFragment playbackControlsFragment;,False
+15,playerAlbumCoverFragment,Field,,,,,58,1,2,,private PlayerAlbumCoverFragment playerAlbumCoverFragment;,False
+16,layoutManager,Field,,,,,42,1,2,,private LinearLayoutManager layoutManager;,False
+17,playingQueueAdapter,Field,,,,,48,1,2,,private PlayingQueueAdapter playingQueueAdapter;,False
+18,onAttach(Context),Method,,,android.support.v4.app.Fragment+onAttach(Activity) java.lang.RuntimeException+RuntimeException(String) java.lang.Class+getSimpleName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getSimpleName() java.lang.Class+getSimpleName() java.lang.Class+getSimpleName() java.lang.Class+getSimpleName() java.lang.Class+getSimpleName(),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+callbacks,467,10,1,,"@Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            activity = (AbsMusicServiceActivity) context;
+            callbacks = (Callbacks) context;
+        } catch (ClassCastException e) {
+            throw new RuntimeException(context.getClass().getSimpleName() + "" must be an instance of "" + AbsMusicServiceActivity.class.getSimpleName() + "" and implement "" + Callbacks.class.getSimpleName());
+        }
+    }",True
+19,onDetach(),Method,,,android.support.v4.app.Fragment+onDetach(),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+callbacks,121,6,1,,"@Override
+    public void onDetach() {
+        super.onDetach();
+        activity = null;
+        callbacks = null;
+    }",True
+20,onCreate(Bundle),Method,,,android.support.v4.app.Fragment+onCreate(Bundle),,113,4,1,,"@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }",True
+21,"onCreateView(LayoutInflater,ViewGroup,Bundle)",Method,,,"android.view.LayoutInflater+inflate(XmlPullParser,ViewGroup,boolean) android.view.LayoutInflater+inflate(XmlPullParser,ViewGroup,boolean)",,225,5,1,,"@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_player, container, false);
+    }",False
+22,"onViewCreated(View,Bundle)",Method,,,"android.support.v4.app.Fragment+onViewCreated(View,Bundle) com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+setUpPlayerToolbar() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+setUpPlayerToolbar() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+setUpSubFragments() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+setUpSubFragments() com.kabouzeid.gramophone.adapter.song.PlayingQueueAdapter+PlayingQueueAdapter(AppCompatActivity,ArrayList<Song>,int,boolean,CabHolder) android.support.v4.app.Fragment+getActivity() android.support.v4.app.Fragment+getActivity() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPlayingQueue() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPlayingQueue() android.support.v4.app.Fragment+getActivity() android.support.v4.app.Fragment+getActivity() android.content.res.Resources+getDisplayMetrics() android.support.v4.app.Fragment+getResources() android.support.v4.app.Fragment+getResources() android.content.res.Resources+getDisplayMetrics() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+setUpDragSort() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+setUpDragSort() android.view.View+findViewById(int) android.view.View+findViewById(int) android.view.ViewTreeObserver+addOnGlobalLayoutListener(OnGlobalLayoutListener) android.view.View+getViewTreeObserver() android.view.View+getViewTreeObserver() android.view.ViewTreeObserver+addOnGlobalLayoutListener(OnGlobalLayoutListener) +() +onGlobalLayout()",com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playingQueueAdapter com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+recyclerView com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playingQueueAdapter com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+layoutManager com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+layoutManager android.util.DisplayMetrics+density android.util.DisplayMetrics+density com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+recyclerView com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+layoutManager com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+slidingUpPanelLayout com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+slidingUpPanelLayout,1522,38,1,,"@Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+
+        setUpPlayerToolbar();
+        setUpSubFragments();
+
+        playingQueueAdapter = new PlayingQueueAdapter(
+                ((AppCompatActivity) getActivity()),
+                MusicPlayerRemote.getPlayingQueue(),
+                R.layout.item_list,
+                false,
+                null);
+        recyclerView.setAdapter(playingQueueAdapter);
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setChildSize((int) (getResources().getDisplayMetrics().density * 72));
+        recyclerView.setLayoutManager(layoutManager);
+
+        setUpDragSort();
+
+        //slidingUpPanelLayout.setParallaxOffset(Util.resolveDimensionPixelSize(activity, R.attr.actionBarSize) + getResources().getDimensionPixelSize(R.dimen.status_bar_padding));
+        slidingUpPanelLayout.setPanelSlideListener(this);
+        slidingUpPanelLayout.setAntiDragView(view.findViewById(R.id.draggable_area));
+
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                setUpPanelAndAlbumCoverHeight();
+            }
+        });
+
+        activity.addMusicServiceEventListener(this);
+
+        setUpCurrentSongView();
+    }",False
+23,onDestroyView(),Method,,,android.support.v4.app.Fragment+onDestroyView() com.kabouzeid.gramophone.ui.activities.base.AbsMusicServiceActivity+removeMusicServiceEventListener(MusicServiceEventListener) com.kabouzeid.gramophone.ui.activities.base.AbsMusicServiceActivity+removeMusicServiceEventListener(MusicServiceEventListener),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity,170,6,1,,"@Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        activity.removeMusicServiceEventListener(this);
+        ButterKnife.unbind(this);
+    }",False
+24,onPlayingMetaChanged(),Method,,,com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updatePlayerMenu() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updatePlayerMenu() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updateCurrentSong() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updateCurrentSong() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updateQueue() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updateQueue(),,136,6,1,,"@Override
+    public void onPlayingMetaChanged() {
+        updatePlayerMenu();
+        updateCurrentSong();
+        updateQueue();
+    }",False
+25,onQueueChanged(),Method,,,com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updateQueue() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updateQueue(),,73,4,1,,"@Override
+    public void onQueueChanged() {
+        updateQueue();
+    }",False
+26,onPlayStateChanged(),Method,,,,,55,4,1,,"@Override
+    public void onPlayStateChanged() {
+
+    }",True
+27,onRepeatModeChanged(),Method,,,,,56,4,1,,"@Override
+    public void onRepeatModeChanged() {
+
+    }",True
+28,onShuffleModeChanged(),Method,,,,,57,4,1,,"@Override
+    public void onShuffleModeChanged() {
+
+    }",True
+29,onMediaStoreChanged(),Method,,,,,56,4,1,,"@Override
+    public void onMediaStoreChanged() {
+
+    }",True
+30,updateQueue(),Method,onPlayingMetaChanged() onQueueChanged(),,"com.kabouzeid.gramophone.adapter.song.PlayingQueueAdapter+swapDataSet(ArrayList<Song>,int) com.kabouzeid.gramophone.adapter.song.PlayingQueueAdapter+swapDataSet(ArrayList<Song>,int) com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPlayingQueue() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPlayingQueue() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPosition() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPosition() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+resetToCurrentPosition() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+resetToCurrentPosition()",com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playingQueueAdapter com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+slidingUpPanelLayout,290,6,2,,"private void updateQueue() {
+        playingQueueAdapter.swapDataSet(MusicPlayerRemote.getPlayingQueue(), MusicPlayerRemote.getPosition());
+        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            resetToCurrentPosition();
+        }
+    }",False
+31,updateCurrentSong(),Method,onPlayingMetaChanged(),,com.kabouzeid.gramophone.helper.MusicPlayerRemote+getCurrentSong() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getCurrentSong() android.widget.TextView+setText(CharSequence) android.widget.TextView+setText(CharSequence) android.widget.TextView+setText(CharSequence) android.widget.TextView+setText(CharSequence),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+currentSongViewHolder com.kabouzeid.gramophone.adapter.base.MediaEntryViewHolder+title com.kabouzeid.gramophone.model.Song+title com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+currentSongViewHolder com.kabouzeid.gramophone.adapter.base.MediaEntryViewHolder+text com.kabouzeid.gramophone.model.Song+artistName,258,6,2,,"@SuppressWarnings(""ConstantConditions"")
+    private void updateCurrentSong() {
+        Song song = MusicPlayerRemote.getCurrentSong();
+        currentSongViewHolder.title.setText(song.title);
+        currentSongViewHolder.text.setText(song.artistName);
+    }",False
+32,setUpPanelAndAlbumCoverHeight(),Method,,,"android.content.res.Resources+getDimensionPixelSize(int) android.support.v4.app.Fragment+getResources() android.support.v4.app.Fragment+getResources() android.content.res.Resources+getDimensionPixelSize(int) android.view.View+getHeight() android.view.View+getHeight() android.content.res.Resources+getDisplayMetrics() android.support.v4.app.Fragment+getResources() android.support.v4.app.Fragment+getResources() android.content.res.Resources+getDisplayMetrics() android.view.View+getLayoutParams() android.view.View+getLayoutParams() android.view.View+getHeight() android.view.View+getHeight() com.kabouzeid.gramophone.views.SquareLayout+forceSquare(boolean) com.kabouzeid.gramophone.views.SquareLayout+forceSquare(boolean) java.lang.Math+max(int,int) java.lang.Math+max(int,int) com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+setAntiDragView(View) com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+setAntiDragView(View)",com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+slidingUpPanelLayout com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playerContent android.util.DisplayMetrics+density android.util.DisplayMetrics+density android.view.ViewGroup.LayoutParams+height com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+albumCoverContainer android.view.ViewGroup.LayoutParams+height com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+albumCoverContainer com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+albumCoverContainer com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+slidingUpPanelLayout com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+slidingUpPanelLayout,830,12,2,,"private void setUpPanelAndAlbumCoverHeight() {
+        int topMargin = getResources().getDimensionPixelSize(R.dimen.status_bar_padding);
+
+        final int availablePanelHeight = slidingUpPanelLayout.getHeight() - playerContent.getHeight() + topMargin;
+        final int minPanelHeight = (int) getResources().getDisplayMetrics().density * (72 + 24) + topMargin;
+        if (availablePanelHeight < minPanelHeight) {
+            albumCoverContainer.getLayoutParams().height = albumCoverContainer.getHeight() - (minPanelHeight - availablePanelHeight);
+            albumCoverContainer.forceSquare(false);
+        }
+        slidingUpPanelLayout.setPanelHeight(Math.max(minPanelHeight, availablePanelHeight));
+        ((AbsSlidingMusicPanelActivity) activity).setAntiDragView(slidingUpPanelLayout.findViewById(R.id.player_panel));
+    }",False
+33,setUpSubFragments(),Method,"onViewCreated(View,Bundle)",,com.kabouzeid.gramophone.ui.fragments.player.PlayerAlbumCoverFragment+setOnColorChangedListener(OnColorChangedListener) com.kabouzeid.gramophone.ui.fragments.player.PlayerAlbumCoverFragment+setOnColorChangedListener(OnColorChangedListener),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playerAlbumCoverFragment com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playerAlbumCoverFragment,386,6,2,,"private void setUpSubFragments() {
+        playbackControlsFragment = (PlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+        playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
+
+        playerAlbumCoverFragment.setOnColorChangedListener(this);
+    }",False
+34,setUpPlayerToolbar(),Method,"onViewCreated(View,Bundle)",,+() +onClick(View),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+toolbar com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+toolbar com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+toolbar,413,11,2,,"private void setUpPlayerToolbar() {
+        toolbar.inflateMenu(R.menu.menu_player);
+        toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.onBackPressed();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(this);
+    }",False
+35,setUpCurrentSongView(),Method,,,"com.kabouzeid.gramophone.adapter.base.MediaEntryViewHolder+MediaEntryViewHolder(View) android.view.View+findViewById(int) android.support.v4.app.Fragment+getView() android.support.v4.app.Fragment+getView() android.view.View+findViewById(int) android.view.View+setVisibility(int) android.view.View+setVisibility(int) android.view.View+setVisibility(int) android.view.View+setVisibility(int) android.widget.ImageView+setScaleType(ScaleType) android.widget.ImageView+setScaleType(ScaleType) android.widget.ImageView+setImageDrawable(Drawable) android.widget.ImageView+setImageDrawable(Drawable) com.kabouzeid.gramophone.util.Util+getTintedDrawable(Context,int,int) com.kabouzeid.gramophone.util.Util+getTintedDrawable(Context,int,int) com.kabouzeid.gramophone.util.ColorUtil+resolveColor(Context,int) com.kabouzeid.gramophone.util.ColorUtil+resolveColor(Context,int)",com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+currentSongViewHolder com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+currentSongViewHolder com.kabouzeid.gramophone.adapter.base.MediaEntryViewHolder+separator android.view.View+VISIBLE com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+currentSongViewHolder com.kabouzeid.gramophone.adapter.base.MediaEntryViewHolder+shortSeparator android.view.View+GONE com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+currentSongViewHolder com.kabouzeid.gramophone.adapter.base.MediaEntryViewHolder+image android.widget.ImageView.ScaleType+CENTER com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+currentSongViewHolder com.kabouzeid.gramophone.adapter.base.MediaEntryViewHolder+image com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity,584,9,2,,"@SuppressWarnings(""ConstantConditions"")
+    private void setUpCurrentSongView() {
+        currentSongViewHolder = new MediaEntryViewHolder(getView().findViewById(R.id.current_song));
+
+        currentSongViewHolder.separator.setVisibility(View.VISIBLE);
+        currentSongViewHolder.shortSeparator.setVisibility(View.GONE);
+        currentSongViewHolder.image.setScaleType(ImageView.ScaleType.CENTER);
+        currentSongViewHolder.image.setImageDrawable(Util.getTintedDrawable(activity, R.drawable.ic_volume_up_white_24dp, ColorUtil.resolveColor(activity, R.attr.icon_color)));
+    }",False
+36,updatePlayerMenu(),Method,onPlayingMetaChanged() onMenuItemClick(MenuItem),,"com.kabouzeid.gramophone.util.MusicUtil+isFavorite(Context,Song) com.kabouzeid.gramophone.util.MusicUtil+isFavorite(Context,Song) com.kabouzeid.gramophone.helper.MusicPlayerRemote+getCurrentSong() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getCurrentSong() com.kabouzeid.gramophone.util.Util+getTintedDrawable(Context,int,int) com.kabouzeid.gramophone.util.Util+getTintedDrawable(Context,int,int) com.kabouzeid.gramophone.util.ViewUtil+getToolbarIconColor(Context,boolean) com.kabouzeid.gramophone.util.ViewUtil+getToolbarIconColor(Context,boolean) android.support.v4.app.Fragment+getString(int) android.support.v4.app.Fragment+getString(int) android.support.v4.app.Fragment+getString(int) android.support.v4.app.Fragment+getString(int)",com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+toolbar,580,7,2,,"private void updatePlayerMenu() {
+        boolean isFavorite = MusicUtil.isFavorite(activity, MusicPlayerRemote.getCurrentSong());
+        Drawable favoriteIcon = Util.getTintedDrawable(activity, isFavorite ? R.drawable.ic_favorite_white_24dp : R.drawable.ic_favorite_outline_white_24dp, ViewUtil.getToolbarIconColor(activity, false));
+        toolbar.getMenu().findItem(R.id.action_toggle_favorite)
+                .setIcon(favoriteIcon)
+                .setTitle(isFavorite ? getString(R.string.action_remove_from_favorites) : getString(R.string.action_add_to_favorites));
+    }",False
+37,setUpDragSort(),Method,"onViewCreated(View,Bundle)",,"com.kabouzeid.gramophone.misc.DragSortRecycler+DragSortRecycler() com.kabouzeid.gramophone.misc.DragSortRecycler+setViewHandleId(int) com.kabouzeid.gramophone.misc.DragSortRecycler+setViewHandleId(int) com.kabouzeid.gramophone.misc.DragSortRecycler+setOnItemMovedListener(OnItemMovedListener) com.kabouzeid.gramophone.misc.DragSortRecycler+setOnItemMovedListener(OnItemMovedListener) +() +onItemMoved(int,int)",,695,16,2,,"private void setUpDragSort() {
+        DragSortRecycler dragSortRecycler = new DragSortRecycler();
+        dragSortRecycler.setViewHandleId(R.id.image);
+        dragSortRecycler.setOnItemMovedListener(new DragSortRecycler.OnItemMovedListener() {
+            @Override
+            public void onItemMoved(int from, int to) {
+                if (from == to) return;
+                MusicPlayerRemote.moveSong(from, to);
+            }
+        });
+
+        recyclerView.addItemDecoration(dragSortRecycler);
+        recyclerView.addOnItemTouchListener(dragSortRecycler);
+        recyclerView.addOnScrollListener(dragSortRecycler.getScrollListener());
+        recyclerView.setItemAnimator(null);
+    }",False
+38,getPaletteColor(),Method,,com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onPanelExpanded(View) com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onPaletteColorChanged(),,com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+lastColor,90,5,1,,"@Override
+    @ColorInt
+    public int getPaletteColor() {
+        return lastColor;
+    }",False
+39,animateColorChange(int),Method,onColorChanged(int),,"android.support.v4.app.Fragment+getView() android.support.v4.app.Fragment+getView() android.support.v4.app.Fragment+getView() android.support.v4.app.Fragment+getView() java.lang.Math+max(int,int) java.lang.Math+max(int,int) android.view.View+getWidth() android.view.View+getWidth() android.view.View+getHeight() android.view.View+getHeight() android.view.View+setBackgroundColor(int) android.view.View+setBackgroundColor(int) com.kabouzeid.gramophone.util.ViewUtil+createBackgroundColorTransition(View,int,int) com.kabouzeid.gramophone.util.ViewUtil+createBackgroundColorTransition(View,int,int) com.kabouzeid.gramophone.util.ViewUtil+createTextColorTransition(TextView,int,int) com.kabouzeid.gramophone.util.ViewUtil+createTextColorTransition(TextView,int,int) android.animation.AnimatorSet+AnimatorSet() android.animation.AnimatorSet+playTogether(Animator[]) android.animation.AnimatorSet+playTogether(Animator[]) android.animation.AnimatorSet+start() android.animation.AnimatorSet+setDuration(long) android.animation.AnimatorSet+setDuration(long) android.animation.AnimatorSet+start()",com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+slidingUpPanelLayout com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+lastColor android.os.Build.VERSION+SDK_INT com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+playPauseFab com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+playPauseFab com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+playPauseFab com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+playPauseFab com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+colorBackground com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+colorBackground com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+colorBackground com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+colorBackground com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+colorBackground com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+lastColor com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playerQueueSubheader com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+lastColor com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+lastColor,1389,23,2,,"@SuppressWarnings(""ConstantConditions"")
+    private void animateColorChange(final int newColor) {
+        slidingUpPanelLayout.setBackgroundColor(lastColor);
+        Animator backgroundAnimator;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int x = (int) (playbackControlsFragment.playPauseFab.getX() + playbackControlsFragment.playPauseFab.getWidth() / 2 + playbackControlsFragment.getView().getX());
+            int y = (int) (playbackControlsFragment.playPauseFab.getY() + playbackControlsFragment.playPauseFab.getHeight() / 2 + playbackControlsFragment.getView().getY());
+            float startRadius = 0;
+            float endRadius = Math.max(colorBackground.getWidth(), colorBackground.getHeight());
+            colorBackground.setBackgroundColor(newColor);
+            backgroundAnimator = ViewAnimationUtils.createCircularReveal(colorBackground, x, y, startRadius, endRadius);
+        } else {
+            backgroundAnimator = ViewUtil.createBackgroundColorTransition(colorBackground, lastColor, newColor);
+        }
+
+        Animator subHeaderAnimator = ViewUtil.createTextColorTransition(playerQueueSubheader, lastColor, newColor);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(backgroundAnimator, subHeaderAnimator);
+        animatorSet.setDuration(1000).start();
+
+        lastColor = newColor;
+    }",False
+40,onMenuItemClick(MenuItem),Method,,,"com.kabouzeid.gramophone.helper.MusicPlayerRemote+getCurrentSong() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getCurrentSong() android.view.MenuItem+getItemId() android.view.MenuItem+getItemId() android.support.v4.app.DialogFragment+show(FragmentManager,String) com.kabouzeid.gramophone.dialogs.SleepTimerDialog+SleepTimerDialog() android.support.v4.app.DialogFragment+show(FragmentManager,String) android.support.v4.app.Fragment+getFragmentManager() android.support.v4.app.Fragment+getFragmentManager() com.kabouzeid.gramophone.util.MusicUtil+toggleFavorite(Context,Song) com.kabouzeid.gramophone.util.MusicUtil+toggleFavorite(Context,Song) com.kabouzeid.gramophone.util.MusicUtil+isFavorite(Context,Song) com.kabouzeid.gramophone.util.MusicUtil+isFavorite(Context,Song) com.kabouzeid.gramophone.ui.fragments.player.PlayerAlbumCoverFragment+showHeartAnimation() com.kabouzeid.gramophone.ui.fragments.player.PlayerAlbumCoverFragment+showHeartAnimation() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updatePlayerMenu() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+updatePlayerMenu() android.support.v4.app.DialogFragment+show(FragmentManager,String) com.kabouzeid.gramophone.dialogs.SongShareDialog+create(Song) com.kabouzeid.gramophone.dialogs.SongShareDialog+create(Song) android.support.v4.app.DialogFragment+show(FragmentManager,String) android.support.v4.app.Fragment+getFragmentManager() android.support.v4.app.Fragment+getFragmentManager() com.kabouzeid.gramophone.util.NavigationUtil+openEqualizer(Activity) com.kabouzeid.gramophone.util.NavigationUtil+openEqualizer(Activity) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openAndShuffleQueue(ArrayList<Song>,boolean) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openAndShuffleQueue(ArrayList<Song>,boolean) com.kabouzeid.gramophone.loader.SongLoader+getAllSongs(Context) com.kabouzeid.gramophone.loader.SongLoader+getAllSongs(Context) android.support.v4.app.DialogFragment+show(FragmentManager,String) com.kabouzeid.gramophone.dialogs.AddToPlaylistDialog+create(Song) com.kabouzeid.gramophone.dialogs.AddToPlaylistDialog+create(Song) android.support.v4.app.DialogFragment+show(FragmentManager,String) android.support.v4.app.Fragment+getFragmentManager() android.support.v4.app.Fragment+getFragmentManager() android.support.v4.app.DialogFragment+show(FragmentManager,String) com.kabouzeid.gramophone.dialogs.PlayingQueueDialog+create() com.kabouzeid.gramophone.dialogs.PlayingQueueDialog+create() android.support.v4.app.DialogFragment+show(FragmentManager,String) android.support.v4.app.Fragment+getFragmentManager() android.support.v4.app.Fragment+getFragmentManager() android.content.Intent+Intent() android.content.Intent+putExtra(String,int) android.content.Intent+putExtra(String,int) android.support.v4.app.Fragment+startActivity(Intent) android.support.v4.app.Fragment+startActivity(Intent) android.support.v4.app.DialogFragment+show(FragmentManager,String) com.kabouzeid.gramophone.dialogs.SongDetailDialog+create(Song) com.kabouzeid.gramophone.dialogs.SongDetailDialog+create(Song) android.support.v4.app.DialogFragment+show(FragmentManager,String) android.support.v4.app.Fragment+getFragmentManager() android.support.v4.app.Fragment+getFragmentManager() com.kabouzeid.gramophone.util.NavigationUtil+goToAlbum(Activity,int,Pair[]) com.kabouzeid.gramophone.util.NavigationUtil+goToAlbum(Activity,int,Pair[]) com.kabouzeid.gramophone.util.NavigationUtil+goToArtist(Activity,int,Pair[]) com.kabouzeid.gramophone.util.NavigationUtil+goToArtist(Activity,int,Pair[])",com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playerAlbumCoverFragment com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.ui.activities.tageditor.AbsTagEditorActivity+EXTRA_ID com.kabouzeid.gramophone.model.Song+id com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.model.Song+albumId com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+activity com.kabouzeid.gramophone.model.Song+artistId,2136,46,1,,"@Override
+    public boolean onMenuItemClick(MenuItem item) {
+        final Song song = MusicPlayerRemote.getCurrentSong();
+        switch (item.getItemId()) {
+            case R.id.action_sleep_timer:
+                new SleepTimerDialog().show(getFragmentManager(), ""SET_SLEEP_TIMER"");
+                return true;
+            case R.id.action_toggle_favorite:
+                MusicUtil.toggleFavorite(activity, song);
+                if (MusicUtil.isFavorite(activity, song)) {
+                    playerAlbumCoverFragment.showHeartAnimation();
+                }
+                updatePlayerMenu();
+                return true;
+            case R.id.action_share:
+                SongShareDialog.create(song).show(getFragmentManager(), ""SHARE_SONG"");
+                return true;
+            case R.id.action_equalizer:
+                NavigationUtil.openEqualizer(activity);
+                return true;
+            case R.id.action_shuffle_all:
+                MusicPlayerRemote.openAndShuffleQueue(SongLoader.getAllSongs(activity), true);
+                return true;
+            case R.id.action_add_to_playlist:
+                AddToPlaylistDialog.create(song).show(getFragmentManager(), ""ADD_PLAYLIST"");
+                return true;
+            case R.id.action_playing_queue:
+                PlayingQueueDialog.create().show(getFragmentManager(), ""PLAY_QUEUE"");
+                return true;
+            case R.id.action_tag_editor:
+                Intent intent = new Intent(activity, SongTagEditorActivity.class);
+                intent.putExtra(AbsTagEditorActivity.EXTRA_ID, song.id);
+                startActivity(intent);
+                return true;
+            case R.id.action_details:
+                SongDetailDialog.create(song).show(getFragmentManager(), ""SONG_DETAIL"");
+                return true;
+            case R.id.action_go_to_album:
+                NavigationUtil.goToAlbum(activity, song.albumId);
+                return true;
+            case R.id.action_go_to_artist:
+                NavigationUtil.goToArtist(activity, song.artistId);
+                return true;
+        }
+        return false;
+    }",False
+41,hide(),Method,,com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onPanelExpanded(View),com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+hide() com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+hide(),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment,67,3,1,,"public void hide() {
+        playbackControlsFragment.hide();
+    }",False
+42,show(),Method,,com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onPanelCollapsed(View),com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+show() com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+show(),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment,67,3,1,,"public void show() {
+        playbackControlsFragment.show();
+    }",False
+43,onBackPressed(),Method,,com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onBackPressed(),,com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+slidingUpPanelLayout com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+slidingUpPanelLayout,283,7,1,,"public boolean onBackPressed() {
+        if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            return true;
+        }
+        return false;
+    }",False
+44,onColorChanged(int),Method,,,com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+animateColorChange(int) com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+animateColorChange(int) com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+setColor(int) com.kabouzeid.gramophone.ui.fragments.player.PlaybackControlsFragment+setColor(int) com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment.Callbacks+onPaletteColorChanged() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment.Callbacks+onPaletteColorChanged(),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playbackControlsFragment com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+callbacks,187,6,1,,"@Override
+    public void onColorChanged(int color) {
+        animateColorChange(color);
+        playbackControlsFragment.setColor(color);
+        callbacks.onPaletteColorChanged();
+    }",False
+45,"onPanelSlide(View,float)",Method,,,android.content.res.Resources+getDisplayMetrics() android.support.v4.app.Fragment+getResources() android.support.v4.app.Fragment+getResources() android.content.res.Resources+getDisplayMetrics(),android.os.Build.VERSION+SDK_INT android.util.DisplayMetrics+density android.util.DisplayMetrics+density com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+playingQueueCard,303,7,1,,"@Override
+    public void onPanelSlide(View view, float slide) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            float density = getResources().getDisplayMetrics().density;
+            playingQueueCard.setCardElevation(density * 6 * slide + 2 * density);
+        }
+    }",False
+46,onPanelCollapsed(View),Method,,,com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+resetToCurrentPosition() com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+resetToCurrentPosition(),,95,4,1,,"@Override
+    public void onPanelCollapsed(View view) {
+        resetToCurrentPosition();
+    }",False
+47,resetToCurrentPosition(),Method,updateQueue() onPanelCollapsed(View),,com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPosition() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPosition(),com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+recyclerView com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment+layoutManager,170,4,2,,"private void resetToCurrentPosition() {
+        recyclerView.stopScroll();
+        layoutManager.scrollToPositionWithOffset(MusicPlayerRemote.getPosition() + 1, 0);
+    }",False
+48,onPanelExpanded(View),Method,,,,,61,4,1,,"@Override
+    public void onPanelExpanded(View view) {
+
+    }",False
+49,onPanelAnchored(View),Method,,,,,61,4,1,,"@Override
+    public void onPanelAnchored(View view) {
+
+    }",False
+50,onPanelHidden(View),Method,,,,,59,4,1,,"@Override
+    public void onPanelHidden(View view) {
+
+    }",False
+51,Callbacks,MemberClass,,,com.kabouzeid.gramophone.ui.fragments.player.PlayerFragment.Callbacks+onPaletteColorChanged(),,72,3,1,,"public interface Callbacks {
+        void onPaletteColorChanged();
+    }",False

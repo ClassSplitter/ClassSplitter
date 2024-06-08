@@ -1,0 +1,983 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,classPool,Field,,,,,30,1,4,,protected ClassPool classPool;,True
+2,thisClass,Field,,,,,30,1,4,,protected CtClass   thisClass;,False
+3,thisMethod,Field,,,,,32,1,4,,protected MethodInfo thisMethod;,False
+4,resultStatic,Field,,,,,31,1,4,,protected boolean resultStatic;,False
+5,"MemberCodeGen(Bytecode,CtClass,ClassPool)",Method,,,,javassist.compiler.MemberCodeGen+classPool javassist.compiler.MemberCodeGen+thisClass javassist.compiler.MemberCodeGen+thisMethod,159,6,1,,"public MemberCodeGen(Bytecode b, CtClass cc, ClassPool cp) {
+        super(b);
+        classPool = cp;
+        thisClass = cc;
+        thisMethod = null;
+    }",False
+6,setThisMethod(CtMethod),Method,,"javassist.compiler.Javac+compileMethod(Parser,MethodDecl) javassist.compiler.Javac+compileBody(CtBehavior,String)",javassist.CtBehavior+getMethodInfo2() javassist.CtBehavior+getMethodInfo2(),javassist.compiler.MemberCodeGen+thisMethod,148,6,1,"/** 
+ * Records the currently compiled method.
+ */
+","/**
+     * Records the currently compiled method.
+     */
+    public void setThisMethod(CtMethod m) {
+        thisMethod = m.getMethodInfo2();
+    }",False
+7,getThisClass(),Method,,"javassist.compiler.Javac+compileField(FieldDecl) javassist.compiler.Javac+compileMethod(Parser,MethodDecl) javassist.compiler.Javac+compileMethod(Parser,MethodDecl)",,javassist.compiler.MemberCodeGen+thisClass,51,1,1,,public CtClass getThisClass() { return thisClass; },False
+8,getThisName(),Method,,"javassist.compiler.JvstCodeGen+recordParams(CtClass[],boolean,String,String,String,SymbolTable)",javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.CtClass+getName() javassist.CtClass+getName(),javassist.compiler.MemberCodeGen+thisClass,172,6,4,"/** 
+ * Returns the JVM-internal representation of this class name.
+ */
+","/**
+     * Returns the JVM-internal representation of this class name.
+     */
+    protected String getThisName() {
+        return javaToJvmName(thisClass.getName());
+    }",False
+9,getSuperName(),Method,,,javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.CtClass+getName() javassist.compiler.MemberCodeGen+getSuperclass(CtClass) javassist.compiler.MemberCodeGen+getSuperclass(CtClass) javassist.CtClass+getName(),javassist.compiler.MemberCodeGen+thisClass,214,6,4,"/** 
+ * Returns the JVM-internal representation of this super class name.
+ */
+","/**
+     * Returns the JVM-internal representation of this super class name.
+     */
+    protected String getSuperName() throws CompileError {
+        return javaToJvmName(getSuperclass(thisClass).getName());
+    }",False
+10,insertDefaultSuperCall(),Method,,,"javassist.bytecode.Bytecode+addAload(int) javassist.bytecode.Bytecode+addAload(int) javassist.bytecode.Bytecode+addInvokespecial(CtClass,String,String) javassist.bytecode.Bytecode+addInvokespecial(CtClass,String,String) javassist.compiler.MemberCodeGen+getSuperclass(CtClass) javassist.compiler.MemberCodeGen+getSuperclass(CtClass)",javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.MemberCodeGen+thisClass,175,4,4,,"protected void insertDefaultSuperCall() throws CompileError {
+        bytecode.addAload(0);
+        bytecode.addInvokespecial(getSuperclass(thisClass), ""<init>"", ""()V"");
+    }",False
+11,atTryStmnt(Stmnt),Method,,,"javassist.compiler.ast.ASTList+getLeft() javassist.compiler.ast.ASTList+getLeft() javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+currentPc() javassist.compiler.ast.Stmnt+accept(Visitor) javassist.compiler.ast.Stmnt+accept(Visitor) javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+currentPc() javassist.compiler.CompileError+CompileError(String) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+addIndex(int) javassist.bytecode.Bytecode+addIndex(int) javassist.compiler.CodeGen+getMaxLocals() javassist.compiler.CodeGen+getMaxLocals() javassist.compiler.CodeGen+incMaxLocals(int) javassist.compiler.CodeGen+incMaxLocals(int) javassist.compiler.ast.ASTree+getLeft() javassist.compiler.ast.ASTList+getRight() javassist.compiler.ast.ASTList+getRight() javassist.compiler.ast.ASTree+getLeft() javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+tail() javassist.compiler.ast.ASTList+tail() javassist.compiler.ast.Pair+getLeft() javassist.compiler.ast.Pair+getLeft() javassist.compiler.ast.Pair+getRight() javassist.compiler.ast.Pair+getRight() javassist.compiler.ast.Declarator+setLocalVar(int) javassist.compiler.ast.Declarator+setLocalVar(int) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.compiler.ast.Declarator+getClassName() javassist.compiler.ast.Declarator+getClassName() javassist.compiler.ast.Declarator+setClassName(String) javassist.compiler.ast.Declarator+setClassName(String) javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.CtClass+getName() javassist.CtClass+getName() javassist.bytecode.Bytecode+addExceptionHandler(int,int,int,CtClass) javassist.bytecode.Bytecode+addExceptionHandler(int,int,int,CtClass) javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+addAstore(int) javassist.bytecode.Bytecode+addAstore(int) javassist.compiler.ast.Stmnt+accept(Visitor) javassist.compiler.ast.Stmnt+accept(Visitor) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addIndex(int) javassist.bytecode.Bytecode+addIndex(int) javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+currentPc() javassist.compiler.ast.ASTree+getLeft() javassist.compiler.ast.ASTree+getRight() javassist.compiler.ast.ASTList+getRight() javassist.compiler.ast.ASTList+getRight() javassist.compiler.ast.ASTree+getRight() javassist.compiler.ast.ASTree+getLeft() javassist.compiler.CompileError+CompileError(String) javassist.bytecode.Bytecode+write16bit(int,int) javassist.bytecode.Bytecode+write16bit(int,int) javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+currentPc()",javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+GOTO javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+GOTO javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+hasReturned,1665,47,4,,"protected void atTryStmnt(Stmnt st) throws CompileError {
+        Stmnt body = (Stmnt)st.getLeft();
+        if (body == null)
+            return;
+
+        int start = bytecode.currentPc();
+        body.accept(this);
+        int end = bytecode.currentPc();
+        if (start == end)
+            throw new CompileError(""empty try block"");
+
+        bytecode.addOpcode(Opcode.GOTO);
+        int pc = bytecode.currentPc();
+        bytecode.addIndex(0);   // correct later
+
+        int var = getMaxLocals();
+        incMaxLocals(1);
+        ASTList catchList = (ASTList)st.getRight().getLeft();
+        while (catchList != null) {
+            Pair p = (Pair)catchList.head();
+            catchList = catchList.tail();
+            Declarator decl = (Declarator)p.getLeft();
+            Stmnt block = (Stmnt)p.getRight();
+
+            decl.setLocalVar(var);
+
+            CtClass type = lookupJvmClass(decl.getClassName());
+            decl.setClassName(javaToJvmName(type.getName()));
+            bytecode.addExceptionHandler(start, end, bytecode.currentPc(),
+                                         type);
+            bytecode.growStack(1);
+            bytecode.addAstore(var);
+            if (block != null)
+                block.accept(this);
+
+            bytecode.addOpcode(Opcode.GOTO);
+            bytecode.addIndex(pc - bytecode.currentPc());
+        }
+
+        Stmnt finallyBlock = (Stmnt)st.getRight().getRight().getLeft();
+        if (finallyBlock != null)
+            throw new CompileError(
+                        ""sorry, finally has not been supported yet"");
+
+        bytecode.write16bit(pc, bytecode.currentPc() - pc + 1);
+        hasReturned = false;
+    }",False
+12,atNewExpr(NewExpr),Method,,,"javassist.compiler.ast.NewExpr+isArray() javassist.compiler.ast.NewExpr+isArray() javassist.compiler.MemberCodeGen+atNewArrayExpr(NewExpr) javassist.compiler.MemberCodeGen+atNewArrayExpr(NewExpr) javassist.compiler.MemberCodeGen+lookupClass(ASTList) javassist.compiler.MemberCodeGen+lookupClass(ASTList) javassist.compiler.ast.NewExpr+getClassName() javassist.compiler.ast.NewExpr+getClassName() javassist.CtClass+getName() javassist.CtClass+getName() javassist.compiler.ast.NewExpr+getArguments() javassist.compiler.ast.NewExpr+getArguments() javassist.bytecode.Bytecode+addNew(String) javassist.bytecode.Bytecode+addNew(String) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.compiler.MemberCodeGen+atMethodCall2(CtClass,String,ASTList,boolean,boolean,int) javassist.compiler.MemberCodeGen+atMethodCall2(CtClass,String,ASTList,boolean,boolean,int) javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.compiler.MemberCodeGen+javaToJvmName(String)",javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+DUP javassist.bytecode.MethodInfo+nameInit javassist.compiler.CodeGen+exprType javassist.compiler.TokenId+CLASS javassist.compiler.CodeGen+arrayDim javassist.compiler.CodeGen+className,559,17,1,,"public void atNewExpr(NewExpr expr) throws CompileError {
+        if (expr.isArray())
+            atNewArrayExpr(expr);
+        else {
+            CtClass clazz = lookupClass(expr.getClassName());
+            String cname = clazz.getName();
+            ASTList args = expr.getArguments();
+            bytecode.addNew(cname);
+            bytecode.addOpcode(DUP);
+
+            atMethodCall2(clazz, MethodInfo.nameInit, args, false, true, -1);
+
+            exprType = CLASS;
+            arrayDim = 0;
+            className = javaToJvmName(cname);
+        }
+    }",False
+13,atNewArrayExpr(NewExpr),Method,atNewExpr(NewExpr),,"javassist.compiler.ast.NewExpr+getInitializer() javassist.compiler.ast.NewExpr+getInitializer() javassist.compiler.CompileError+CompileError(String) javassist.compiler.ast.NewExpr+getArrayType() javassist.compiler.ast.NewExpr+getArrayType() javassist.compiler.ast.NewExpr+getArraySize() javassist.compiler.ast.NewExpr+getArraySize() javassist.compiler.ast.NewExpr+getClassName() javassist.compiler.ast.NewExpr+getClassName() javassist.compiler.ast.ASTList+length() javassist.compiler.ast.ASTList+length() javassist.compiler.MemberCodeGen+atMultiNewArray(int,ASTList,ASTList) javassist.compiler.MemberCodeGen+atMultiNewArray(int,ASTList,ASTList) javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.MemberCodeGen+resolveClassName(ASTList) javassist.compiler.MemberCodeGen+resolveClassName(ASTList) javassist.bytecode.Bytecode+addAnewarray(String) javassist.bytecode.Bytecode+addAnewarray(String) javassist.compiler.MemberCodeGen+jvmToJavaName(String) javassist.compiler.MemberCodeGen+jvmToJavaName(String) javassist.compiler.MemberCodeGen+badNewExpr() javassist.compiler.MemberCodeGen+badNewExpr() javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+add(int)",javassist.compiler.CodeGen+exprType javassist.compiler.CodeGen+arrayDim javassist.compiler.TokenId+CLASS javassist.compiler.CodeGen+className javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+className javassist.compiler.CodeGen+className javassist.compiler.TokenId+BOOLEAN javassist.bytecode.Opcode+T_BOOLEAN javassist.compiler.TokenId+CHAR javassist.bytecode.Opcode+T_CHAR javassist.compiler.TokenId+FLOAT javassist.bytecode.Opcode+T_FLOAT javassist.compiler.TokenId+DOUBLE javassist.bytecode.Opcode+T_DOUBLE javassist.compiler.TokenId+BYTE javassist.bytecode.Opcode+T_BYTE javassist.compiler.TokenId+SHORT javassist.bytecode.Opcode+T_SHORT javassist.compiler.TokenId+INT javassist.bytecode.Opcode+T_INT javassist.compiler.TokenId+LONG javassist.bytecode.Opcode+T_LONG javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+NEWARRAY javassist.compiler.CodeGen+bytecode,1588,56,1,,"public void atNewArrayExpr(NewExpr expr) throws CompileError {
+        if (expr.getInitializer() != null)
+            throw new CompileError(""array initializer is not supported"");
+
+        int type = expr.getArrayType();
+        ASTList size = expr.getArraySize();
+        ASTList classname = expr.getClassName();
+        if (size.length() > 1) {
+            atMultiNewArray(type, classname, size);
+            return;
+        }
+
+        size.head().accept(this);
+        exprType = type;
+        arrayDim = 1;
+        if (type == CLASS) {
+            className = resolveClassName(classname);
+            bytecode.addAnewarray(jvmToJavaName(className));
+        }
+        else {
+            className = null;
+            int atype = 0;
+            switch (type) {
+            case BOOLEAN :
+                atype = T_BOOLEAN;
+                break;
+            case CHAR :
+                atype = T_CHAR;
+                break;
+            case FLOAT :
+                atype = T_FLOAT;
+                break;
+            case DOUBLE :
+                atype = T_DOUBLE;
+                break;
+            case BYTE :
+                atype = T_BYTE;
+                break;
+            case SHORT :
+                atype = T_SHORT;
+                break;
+            case INT :
+                atype = T_INT;
+                break;
+            case LONG :
+                atype = T_LONG;
+                break;
+            default :
+                badNewExpr();
+                break;
+            }
+
+            bytecode.addOpcode(NEWARRAY);
+            bytecode.add(atype);
+        }
+    }",False
+14,badNewExpr(),Method,atNewArrayExpr(NewExpr),,javassist.compiler.CompileError+CompileError(String),,114,3,10,,"private static void badNewExpr() throws CompileError {
+        throw new CompileError(""bad new expression"");
+    }",False
+15,"atMultiNewArray(int,ASTList,ASTList)",Method,atNewArrayExpr(NewExpr),,"javassist.compiler.ast.ASTList+length() javassist.compiler.ast.ASTList+length() javassist.compiler.ast.ASTList+tail() javassist.compiler.ast.ASTList+tail() javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.CompileError+CompileError(String) javassist.compiler.MemberCodeGen+resolveClassName(ASTList) javassist.compiler.MemberCodeGen+resolveClassName(ASTList) javassist.compiler.CodeGen+toJvmArrayName(String,int) javassist.compiler.CodeGen+toJvmArrayName(String,int) javassist.compiler.CodeGen+toJvmTypeName(int,int) javassist.compiler.CodeGen+toJvmTypeName(int,int) javassist.bytecode.Bytecode+addMultiNewarray(String,int) javassist.bytecode.Bytecode+addMultiNewarray(String,int)",javassist.compiler.CodeGen+exprType javassist.compiler.TokenId+INT javassist.compiler.CodeGen+exprType javassist.compiler.CodeGen+arrayDim javassist.compiler.TokenId+CLASS javassist.compiler.CodeGen+className javassist.compiler.CodeGen+className javassist.compiler.CodeGen+bytecode,836,28,4,,"protected void atMultiNewArray(int type, ASTList classname, ASTList size)
+        throws CompileError
+    {
+        int count, dim;
+        dim = size.length();
+        for (count = 0; size != null; size = size.tail()) {
+            ASTree s = size.head();
+            if (s == null)
+                break;          // int[][][] a = new int[3][4][];
+
+            ++count;
+            s.accept(this);
+            if (exprType != INT)
+                throw new CompileError(""bad type for array size"");
+        }
+
+        String desc;
+        exprType = type;
+        arrayDim = dim;
+        if (type == CLASS) {
+            className = resolveClassName(classname);
+            desc = toJvmArrayName(className, dim);
+        }
+        else
+            desc = toJvmTypeName(type, dim);
+
+        bytecode.addMultiNewarray(desc, count);
+    }",False
+16,atMethodCall(Expr),Method,,,"javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Expr+oprand2() javassist.compiler.ast.Expr+oprand2() javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Symbol+get() javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+currentPc() javassist.bytecode.Bytecode+addAload(int) javassist.bytecode.Bytecode+addAload(int) javassist.compiler.CompileError+CompileError(String) javassist.bytecode.Bytecode+addAload(int) javassist.bytecode.Bytecode+addAload(int) javassist.compiler.ast.Keyword+get() javassist.compiler.ast.Keyword+get() javassist.compiler.MemberCodeGen+getSuperclass(CtClass) javassist.compiler.MemberCodeGen+getSuperclass(CtClass) javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Expr+oprand2() javassist.compiler.ast.Expr+oprand2() javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Expr+getOperator() javassist.compiler.ast.Expr+getOperator() javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Keyword+get() javassist.compiler.ast.Keyword+get() javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.NoFieldException+getExpr() javassist.compiler.NoFieldException+getExpr() javassist.compiler.NoFieldException+getField() javassist.compiler.NoFieldException+getField() javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.compiler.MemberCodeGen+badMethod() javassist.compiler.MemberCodeGen+badMethod() javassist.compiler.MemberCodeGen+badMethod() javassist.compiler.MemberCodeGen+badMethod() javassist.compiler.CodeGen+fatal() javassist.compiler.CodeGen+fatal() javassist.compiler.MemberCodeGen+atMethodCall2(CtClass,String,ASTList,boolean,boolean,int) javassist.compiler.MemberCodeGen+atMethodCall2(CtClass,String,ASTList,boolean,boolean,int)",javassist.compiler.MemberCodeGen+thisClass javassist.compiler.CodeGen+inStaticMethod javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.bytecode.MethodInfo+nameInit javassist.compiler.MemberCodeGen+thisClass javassist.compiler.CodeGen+inStaticMethod javassist.compiler.CodeGen+bytecode javassist.compiler.TokenId+SUPER javassist.compiler.TokenId+MEMBER javassist.compiler.TokenId+SUPER javassist.compiler.CodeGen+exprType javassist.compiler.TokenId+CLASS javassist.compiler.CodeGen+arrayDim javassist.compiler.CodeGen+className javassist.compiler.CodeGen+arrayDim javassist.compiler.CodeGen+javaLangObject javassist.compiler.CodeGen+exprType javassist.compiler.TokenId+CLASS javassist.compiler.CodeGen+className,2686,75,4,,"protected void atMethodCall(Expr expr) throws CompileError {
+        String mname = null;
+        CtClass targetClass = null;
+        ASTree method = expr.oprand1();
+        ASTList args = (ASTList)expr.oprand2();
+        boolean isStatic = false;
+        boolean isSpecial = false;
+        int aload0pos = -1;
+
+        if (method instanceof Member) {
+            mname = ((Member)method).get();
+            targetClass = thisClass;
+            if (inStaticMethod)
+                isStatic = true;            // should be static
+            else {
+                aload0pos = bytecode.currentPc();
+                bytecode.addAload(0);       // this
+            }
+        }
+        else if (method instanceof Keyword) {   // constructor
+            isSpecial = true;
+            mname = MethodInfo.nameInit;        // <init>
+            targetClass = thisClass;
+            if (inStaticMethod)
+                throw new CompileError(""a constructor cannot be static"");
+            else
+                bytecode.addAload(0);   // this
+
+            if (((Keyword)method).get() == SUPER)
+                targetClass = getSuperclass(targetClass);
+        }
+        else if (method instanceof Expr) {
+            Expr e = (Expr)method;
+            mname = ((Symbol)e.oprand2()).get();
+            int op = e.getOperator();
+            if (op == MEMBER) {                 // static method
+                targetClass = lookupJavaClass(((Symbol)e.oprand1()).get());
+                isStatic = true;
+            }
+            else if (op == '.') {
+                ASTree target = e.oprand1();
+                if (target instanceof Keyword)
+                    if (((Keyword)target).get() == SUPER)
+                        isSpecial = true;
+
+                try {
+                    target.accept(this);
+                }
+                catch (NoFieldException nfe) {
+                    if (nfe.getExpr() != target)
+                        throw nfe;
+
+                    // it should be a static method.
+                    exprType = CLASS;
+                    arrayDim = 0;
+                    className = nfe.getField(); // JVM-internal
+                    isStatic = true;
+                }
+
+                if (arrayDim > 0)
+                    targetClass = lookupJavaClass(javaLangObject);
+                else if (exprType == CLASS /* && arrayDim == 0 */)
+                    targetClass = lookupJvmClass(className);
+                else
+                    badMethod();
+            }
+            else
+                badMethod();
+        }
+        else
+            fatal();
+
+        atMethodCall2(targetClass, mname, args, isStatic, isSpecial,
+                      aload0pos);
+    }",False
+17,badMethod(),Method,"atMethodCall(Expr) atMethodCall(Expr) setReturnType(String,boolean,boolean) setReturnType(String,boolean,boolean)",,javassist.compiler.CompileError+CompileError(String),,105,3,10,,"private static void badMethod() throws CompileError {
+        throw new CompileError(""bad method"");
+    }",False
+18,getSuperclass(CtClass),Method,getSuperName() insertDefaultSuperCall() atMethodCall(Expr),,javassist.CtClass+getSuperclass() javassist.CtClass+getSuperclass() javassist.compiler.CompileError+CompileError(String) javassist.CtClass+getName() javassist.CtClass+getName(),,305,9,10,,"private static CtClass getSuperclass(CtClass c) throws CompileError {
+        try {
+            return c.getSuperclass();
+        }
+        catch (NotFoundException e) {
+            throw new CompileError(""cannot find the super class of ""
+                                   + c.getName());
+        }
+    }",True
+19,"atMethodCall2(CtClass,String,ASTList,boolean,boolean,int)",Method,atNewExpr(NewExpr) atMethodCall(Expr),"javassist.expr.NewExpr+ProceedForNew.doit(JvstCodeGen,Bytecode,ASTList)","javassist.compiler.MemberCodeGen+getMethodArgsLength(ASTList) javassist.compiler.MemberCodeGen+getMethodArgsLength(ASTList) javassist.bytecode.Bytecode+getStackDepth() javassist.bytecode.Bytecode+getStackDepth() javassist.compiler.MemberCodeGen+atMethodArgs(ASTList,int[],int[],String[]) javassist.compiler.MemberCodeGen+atMethodArgs(ASTList,int[],int[],String[]) javassist.bytecode.Bytecode+getStackDepth() javassist.bytecode.Bytecode+getStackDepth() javassist.compiler.MemberCodeGen+lookupMethod(CtClass,MethodInfo,String,int[],int[],String[],boolean) javassist.compiler.MemberCodeGen+lookupMethod(CtClass,MethodInfo,String,int[],int[],String[],boolean) java.lang.String+equals(Object) java.lang.String+equals(Object) javassist.CtClass+getName() javassist.CtClass+getName() javassist.compiler.CompileError+CompileError(String) javassist.bytecode.MethodInfo+getDescriptor() javassist.bytecode.MethodInfo+getDescriptor() javassist.bytecode.MethodInfo+getAccessFlags() javassist.bytecode.MethodInfo+getAccessFlags() java.lang.String+equals(Object) java.lang.String+equals(Object) javassist.compiler.CompileError+CompileError(String) javassist.compiler.CompileError+CompileError(String) javassist.bytecode.Bytecode+write(int,int) javassist.bytecode.Bytecode+write(int,int) javassist.bytecode.Bytecode+addInvokestatic(CtClass,String,String) javassist.bytecode.Bytecode+addInvokestatic(CtClass,String,String) javassist.bytecode.Bytecode+addInvokespecial(CtClass,String,String) javassist.bytecode.Bytecode+addInvokespecial(CtClass,String,String) javassist.CtClass+isInterface() javassist.CtClass+isInterface() javassist.bytecode.Bytecode+addInvokeinterface(CtClass,String,String,int) javassist.bytecode.Bytecode+addInvokeinterface(CtClass,String,String,int) javassist.compiler.CompileError+CompileError(String) javassist.bytecode.Bytecode+addInvokevirtual(CtClass,String,String) javassist.bytecode.Bytecode+addInvokevirtual(CtClass,String,String) javassist.compiler.MemberCodeGen+setReturnType(String,boolean,boolean) javassist.compiler.MemberCodeGen+setReturnType(String,boolean,boolean)",javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.MemberCodeGen+thisMethod javassist.bytecode.MethodInfo+nameInit javassist.bytecode.MethodInfo+nameInit javassist.bytecode.AccessFlag+PRIVATE javassist.bytecode.AccessFlag+STATIC javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+NOP javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode,2715,75,1,,"public void atMethodCall2(CtClass targetClass, String mname,
+                        ASTList args, boolean isStatic, boolean isSpecial,
+                        int aload0pos)
+        throws CompileError
+    {
+        int nargs = getMethodArgsLength(args);
+        int[] types = new int[nargs];
+        int[] dims = new int[nargs];
+        String[] cnames = new String[nargs];
+
+        int stack = bytecode.getStackDepth();
+
+        atMethodArgs(args, types, dims, cnames);
+
+        // used by invokeinterface
+        int count = bytecode.getStackDepth() - stack + 1;
+
+        Object[] found = lookupMethod(targetClass, thisMethod, mname,
+                                      types, dims, cnames, false);
+        if (found == null) {
+            String msg;
+            if (mname.equals(MethodInfo.nameInit))
+                msg = ""constructor not found"";
+            else
+                msg = ""Method "" + mname + "" not found in ""
+                    + targetClass.getName();
+
+            throw new CompileError(msg);
+        }
+
+        CtClass declClass = (CtClass)found[0];
+        MethodInfo minfo = (MethodInfo)found[1];
+        String desc = minfo.getDescriptor();
+        int acc = minfo.getAccessFlags();
+
+        if (mname.equals(MethodInfo.nameInit)) {
+            isSpecial = true;
+            if (declClass != targetClass)
+                throw new CompileError(""no such a constructor"");
+        }
+        else if ((acc & AccessFlag.PRIVATE) != 0) {
+            isSpecial = true;
+            if (declClass != targetClass)
+                throw new CompileError(""Method "" + mname + ""is private"");
+        }
+
+        boolean popTarget = false;
+        if ((acc & AccessFlag.STATIC) != 0) {
+            if (!isStatic) {
+                /* this method is static but the target object is
+                   on stack.  It must be popped out.  If aload0pos >= 0,
+                   then the target object was pushed by aload_0.  It is
+                   overwritten by NOP.
+                */
+                isStatic = true;
+                if (aload0pos >= 0)
+                    bytecode.write(aload0pos, NOP);
+                else
+                    popTarget = true;
+            }
+
+            bytecode.addInvokestatic(declClass, mname, desc);
+        }
+        else if (isSpecial)
+            bytecode.addInvokespecial(declClass, mname, desc);
+        else if (declClass.isInterface())
+            bytecode.addInvokeinterface(declClass, mname, desc, count);
+        else
+            if (isStatic)
+                throw new CompileError(mname + "" is not static"");
+            else
+                bytecode.addInvokevirtual(declClass, mname, desc);
+
+        setReturnType(desc, isStatic, popTarget);
+    }",False
+20,getMethodArgsLength(ASTList),Method,"atMethodCall2(CtClass,String,ASTList,boolean,boolean,int)",,javassist.compiler.ast.ASTList+length(ASTList) javassist.compiler.ast.ASTList+length(ASTList),,89,3,1,,"public int getMethodArgsLength(ASTList args) {
+        return ASTList.length(args);
+    }",False
+21,"atMethodArgs(ASTList,int[],int[],String[])",Method,"atMethodCall2(CtClass,String,ASTList,boolean,boolean,int)",,javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.ast.ASTList+tail() javassist.compiler.ast.ASTList+tail(),javassist.compiler.CodeGen+exprType javassist.compiler.CodeGen+arrayDim javassist.compiler.CodeGen+className,410,13,1,,"public void atMethodArgs(ASTList args, int[] types, int[] dims,
+                             String[] cnames) throws CompileError {
+        int i = 0;
+        while (args != null) {
+            ASTree a = args.head();
+            a.accept(this);
+            types[i] = exprType;
+            dims[i] = arrayDim;
+            cnames[i] = className;
+            ++i;
+            args = args.tail();
+        }
+    }",False
+22,"setReturnType(String,boolean,boolean)",Method,"atMethodCall2(CtClass,String,ASTList,boolean,boolean,int)","javassist.compiler.JvstCodeGen+compileInvokeSpecial(ASTree,String,String,String,ASTList)","java.lang.String+indexOf(int) java.lang.String+indexOf(int) javassist.compiler.MemberCodeGen+badMethod() javassist.compiler.MemberCodeGen+badMethod() java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) javassist.compiler.MemberCodeGen+badMethod() javassist.compiler.MemberCodeGen+badMethod() java.lang.String+substring(int,int) java.lang.String+substring(int,int) javassist.compiler.MemberCodeGen+descToType(char) javassist.compiler.MemberCodeGen+descToType(char) javassist.compiler.CodeGen+is2word(int,int) javassist.compiler.CodeGen+is2word(int,int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int)",javassist.compiler.CodeGen+arrayDim javassist.compiler.CodeGen+exprType javassist.compiler.TokenId+CLASS javassist.compiler.CodeGen+className javassist.compiler.CodeGen+exprType javassist.compiler.CodeGen+className javassist.compiler.CodeGen+exprType javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+DUP2_X1 javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+POP2 javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+POP javassist.compiler.TokenId+VOID javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+POP javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+SWAP javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+POP,1191,45,0,,"void setReturnType(String desc, boolean isStatic, boolean popTarget)
+        throws CompileError
+    {
+        int i = desc.indexOf(')');
+        if (i < 0)
+            badMethod();
+
+        char c = desc.charAt(++i);
+        int dim = 0;
+        while (c == '[') {
+            ++dim;
+            c = desc.charAt(++i);
+        }
+
+        arrayDim = dim;
+        if (c == 'L') {
+            int j = desc.indexOf(';', i + 1);
+            if (j < 0)
+                badMethod();
+
+            exprType = CLASS;
+            className = desc.substring(i + 1, j);
+        }
+        else {
+            exprType = descToType(c);
+            className = null;
+        }
+
+        int etype = exprType;
+        if (isStatic) {
+            if (popTarget) {
+                if (is2word(etype, dim)) {
+                    bytecode.addOpcode(DUP2_X1);
+                    bytecode.addOpcode(POP2);
+                    bytecode.addOpcode(POP);
+                }
+                else if (etype == VOID)
+                    bytecode.addOpcode(POP);
+                else {
+                    bytecode.addOpcode(SWAP);
+                    bytecode.addOpcode(POP);
+                }
+            }
+        }
+    }",False
+23,"lookupMethod(CtClass,MethodInfo,String,int[],int[],String[],boolean)",Method,"atMethodCall2(CtClass,String,ASTList,boolean,boolean,int) lookupMethod(CtClass,MethodInfo,String,int[],int[],String[],boolean)",,"java.lang.String+equals(Object) javassist.bytecode.MethodInfo+getName() javassist.bytecode.MethodInfo+getName() java.lang.String+equals(Object) javassist.compiler.MemberCodeGen+compareSignature(String,int[],int[],String[]) javassist.compiler.MemberCodeGen+compareSignature(String,int[],int[],String[]) javassist.bytecode.MethodInfo+getDescriptor() javassist.bytecode.MethodInfo+getDescriptor() javassist.bytecode.ClassFile+getMethods() javassist.CtClass+getClassFile2() javassist.CtClass+getClassFile2() javassist.bytecode.ClassFile+getMethods() java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) java.lang.String+equals(Object) javassist.bytecode.MethodInfo+getName() javassist.bytecode.MethodInfo+getName() java.lang.String+equals(Object) javassist.compiler.MemberCodeGen+compareSignature(String,int[],int[],String[]) javassist.compiler.MemberCodeGen+compareSignature(String,int[],int[],String[]) javassist.bytecode.MethodInfo+getDescriptor() javassist.bytecode.MethodInfo+getDescriptor() javassist.CtClass+getSuperclass() javassist.CtClass+getSuperclass() javassist.compiler.MemberCodeGen+lookupMethod(CtClass,MethodInfo,String,int[],int[],String[],boolean) javassist.compiler.MemberCodeGen+lookupMethod(CtClass,MethodInfo,String,int[],int[],String[],boolean)",javassist.compiler.MemberCodeGen+YES javassist.compiler.MemberCodeGen+MAYBE javassist.compiler.MemberCodeGen+YES javassist.compiler.MemberCodeGen+MAYBE,2410,65,2,,"private Object[] lookupMethod(CtClass clazz, MethodInfo current,
+                                  String methodName,
+                                  int[] argTypes, int[] argDims,
+                                  String[] argClassNames, boolean onlyExact)
+        throws CompileError
+    {
+        Object[] maybe = null;
+
+        if (current != null)
+            if (current.getName().equals(methodName)) {
+                int res = compareSignature(current.getDescriptor(),
+                                           argTypes, argDims, argClassNames);
+                Object[] r = new Object[] { clazz, current };
+                if (res == YES)
+                    return r;
+                else if (res == MAYBE && maybe == null)
+                    maybe = r;
+            }
+
+        List list = clazz.getClassFile2().getMethods();
+        int n = list.size();
+        for (int i = 0; i < n; ++i) {
+            MethodInfo minfo = (MethodInfo)list.get(i);
+            if (minfo.getName().equals(methodName)) {
+                int res = compareSignature(minfo.getDescriptor(),
+                                           argTypes, argDims, argClassNames);
+                Object[] r = new Object[] { clazz, minfo };
+                if (res == YES)
+                    return r;
+                else if (res == MAYBE && maybe == null)
+                    maybe = r;
+            }
+        }
+
+        try {
+            CtClass pclazz = clazz.getSuperclass();
+            if (pclazz != null) {
+                Object[] r = lookupMethod(pclazz, null, methodName, argTypes,
+                                          argDims, argClassNames,
+                                          (onlyExact || maybe != null));
+                if (r != null)
+                    return r;
+            }
+        }
+        catch (NotFoundException e) {}
+
+        /* -- not necessary to search implemented interfaces.
+        try {
+            CtClass[] ifs = clazz.getInterfaces();
+            int size = ifs.length;
+            for (int i = 0; i < size; ++i) {
+                Object[] r = lookupMethod(ifs[i], methodName, argTypes,
+                                          argDims, argClassNames);
+                if (r != null)
+                    return r;
+            }
+        }
+        catch (NotFoundException e) {}
+        */
+
+        if (onlyExact)
+            return null;
+        else
+            return maybe;
+    }",True
+24,YES,Field,,,,,33,1,26,,private static final int YES = 2;,True
+25,MAYBE,Field,,,,,35,1,26,,private static final int MAYBE = 1;,False
+26,NO,Field,,,,,32,1,26,,private static final int NO = 0;,True
+27,"compareSignature(String,int[],int[],String[])",Method,"lookupMethod(CtClass,MethodInfo,String,int[],int[],String[],boolean) lookupMethod(CtClass,MethodInfo,String,int[],int[],String[],boolean)",,"javassist.bytecode.Descriptor+numOfParameters(String) javassist.bytecode.Descriptor+numOfParameters(String) java.lang.String+length() java.lang.String+length() java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+startsWith(String,int) java.lang.String+startsWith(String,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+equals(Object) java.lang.String+equals(Object) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.CtClass+subtypeOf(CtClass) javassist.CtClass+subtypeOf(CtClass) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.compiler.MemberCodeGen+descToType(char) javassist.compiler.MemberCodeGen+descToType(char)",javassist.compiler.MemberCodeGen+YES javassist.compiler.MemberCodeGen+NO javassist.compiler.MemberCodeGen+NO javassist.compiler.MemberCodeGen+NO javassist.compiler.TokenId+NULL javassist.compiler.MemberCodeGen+NO javassist.compiler.MemberCodeGen+NO javassist.compiler.MemberCodeGen+MAYBE javassist.compiler.MemberCodeGen+NO javassist.compiler.TokenId+CLASS javassist.compiler.MemberCodeGen+NO javassist.compiler.MemberCodeGen+MAYBE javassist.compiler.MemberCodeGen+NO javassist.compiler.MemberCodeGen+MAYBE javassist.compiler.TokenId+INT javassist.compiler.TokenId+SHORT javassist.compiler.TokenId+BYTE javassist.compiler.TokenId+CHAR javassist.compiler.MemberCodeGen+MAYBE javassist.compiler.MemberCodeGen+NO javassist.compiler.MemberCodeGen+NO,2410,74,2,,"private int compareSignature(String desc, int[] argTypes,
+                                 int[] argDims, String[] argClassNames)
+        throws CompileError
+    {
+        int result = YES;
+        int i = 1;
+        int nArgs = argTypes.length;
+        if (nArgs != Descriptor.numOfParameters(desc))
+            return NO;
+
+        int len = desc.length();
+        for (int n = 0; i < len; ++n) {
+            char c = desc.charAt(i++);
+            if (c == ')')
+                return (n == nArgs ? result : NO);
+            else if (n >= nArgs)
+                return NO;
+
+            int dim = 0;
+            while (c == '[') {
+                ++dim;
+                c = desc.charAt(i++);
+            }
+
+            if (argTypes[n] == NULL) {
+                if (dim == 0 && c != 'L')
+                    return NO;
+            }
+            else if (argDims[n] != dim) {
+                if (!(dim == 0 && c == 'L'
+                      && desc.startsWith(""java/lang/Object;"", i)))
+                    return NO;
+
+                // if the thread reaches here, c must be 'L'.
+                i = desc.indexOf(';', i) + 1;
+                result = MAYBE;
+                if (i <= 0)
+                    return NO;  // invalid descriptor?
+            }
+            else if (c == 'L') {        // not compare
+                int j = desc.indexOf(';', i);
+                if (j < 0 || argTypes[n] != CLASS)
+                    return NO;
+
+                String cname = desc.substring(i, j);
+                if (!cname.equals(argClassNames[n])) {
+                    CtClass clazz = lookupJvmClass(argClassNames[n]);
+                    try {
+                        if (clazz.subtypeOf(lookupJvmClass(cname)))
+                            result = MAYBE;
+                        else
+                            return NO;
+                    }
+                    catch (NotFoundException e) {
+                        result = MAYBE; // should be NO?
+                    }
+                }
+
+                i = j + 1;
+            }
+            else {
+                int t = descToType(c);
+                int at = argTypes[n];
+                if (t != at)
+                    if (t == INT
+                        && (at == SHORT || at == BYTE || at == CHAR))
+                        result = MAYBE;
+                    else
+                        return NO;
+            }
+        }
+
+        return NO;
+    }",True
+28,descToType(char),Method,"setReturnType(String,boolean,boolean) compareSignature(String,int[],int[],String[]) atFieldRead(CtField,boolean,boolean)","javassist.compiler.JvstCodeGen+setType(CtClass,int) javassist.compiler.JvstCodeGen+doNumCast(CtClass)",javassist.compiler.CodeGen+fatal() javassist.compiler.CodeGen+fatal(),javassist.compiler.TokenId+BOOLEAN javassist.compiler.TokenId+CHAR javassist.compiler.TokenId+BYTE javassist.compiler.TokenId+SHORT javassist.compiler.TokenId+INT javassist.compiler.TokenId+LONG javassist.compiler.TokenId+FLOAT javassist.compiler.TokenId+DOUBLE javassist.compiler.TokenId+VOID javassist.compiler.TokenId+CLASS javassist.compiler.TokenId+VOID,629,28,12,,"protected static int descToType(char c) throws CompileError {
+        switch (c) {
+        case 'Z' :
+            return BOOLEAN;
+        case 'C' :
+            return CHAR;
+        case 'B' :
+            return  BYTE;
+        case 'S' :
+            return SHORT;
+        case 'I' :
+            return INT;
+        case 'J' :
+            return LONG;
+        case 'F' :
+            return FLOAT;
+        case 'D' :
+            return DOUBLE;
+        case 'V' :
+            return VOID;
+        case 'L' :
+        case '[' :
+            return CLASS;
+        default :
+            fatal();
+            return VOID;
+        }
+    }",True
+29,"atFieldAssign(Expr,int,ASTree,ASTree,boolean)",Method,,,"javassist.compiler.MemberCodeGen+fieldAccess(ASTree) javassist.compiler.MemberCodeGen+fieldAccess(ASTree) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.compiler.MemberCodeGen+atFieldRead(CtField,boolean,boolean) javassist.compiler.MemberCodeGen+atFieldRead(CtField,boolean,boolean) javassist.compiler.CodeGen+atAssignCore(Expr,int,ASTree,int,int,String) javassist.compiler.CodeGen+atAssignCore(Expr,int,ASTree,int,int,String) javassist.compiler.CodeGen+is2word(int,int) javassist.compiler.CodeGen+is2word(int,int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+addIndex(int) javassist.bytecode.Bytecode+addIndex(int)",javassist.compiler.MemberCodeGen+resultStatic javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+DUP javassist.compiler.CodeGen+exprType javassist.compiler.CodeGen+arrayDim javassist.compiler.CodeGen+className javassist.bytecode.Opcode+DUP2 javassist.bytecode.Opcode+DUP javassist.bytecode.Opcode+DUP2_X1 javassist.bytecode.Opcode+DUP_X1 javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+PUTSTATIC javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+PUTFIELD javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+exprType javassist.compiler.CodeGen+arrayDim javassist.compiler.CodeGen+className,1141,40,4,,"protected void atFieldAssign(Expr expr, int op, ASTree left,
+                        ASTree right, boolean doDup) throws CompileError
+    {
+        CtField f = fieldAccess(left);
+        boolean is_static = resultStatic;
+        if (op != '=' && !is_static)
+            bytecode.addOpcode(DUP);
+
+        int fi = atFieldRead(f, is_static, op == '=');
+        int fType = exprType;
+        int fDim = arrayDim;
+        String cname = className;
+
+        atAssignCore(expr, op, right, fType, fDim, cname);
+
+        boolean is2w = is2word(fType, fDim);
+        if (doDup) {
+            int dup_code;
+            if (is_static)
+                dup_code = (is2w ? DUP2 : DUP);
+            else
+                dup_code = (is2w ? DUP2_X1 : DUP_X1);
+
+            bytecode.addOpcode(dup_code);
+        }
+
+        if (is_static) {
+            bytecode.add(PUTSTATIC);
+            bytecode.growStack(is2w ? -2 : -1);
+        }
+        else {
+            bytecode.add(PUTFIELD);
+            bytecode.growStack(is2w ? -3 : -2);
+        }
+
+        bytecode.addIndex(fi);
+        exprType = fType;
+        arrayDim = fDim;
+        className = cname;
+    }",False
+30,atMember(Member),Method,,,javassist.compiler.MemberCodeGen+atFieldRead(ASTree) javassist.compiler.MemberCodeGen+atFieldRead(ASTree),,86,3,1,,"public void atMember(Member mem) throws CompileError {
+        atFieldRead(mem);
+    }",False
+31,atFieldRead(ASTree),Method,atMember(Member),,"javassist.compiler.MemberCodeGen+fieldAccess(ASTree) javassist.compiler.MemberCodeGen+fieldAccess(ASTree) javassist.compiler.MemberCodeGen+atFieldRead(CtField,boolean,boolean) javassist.compiler.MemberCodeGen+atFieldRead(CtField,boolean,boolean)",javassist.compiler.MemberCodeGen+resultStatic,194,6,4,,"protected void atFieldRead(ASTree expr) throws CompileError
+    {
+        CtField f = fieldAccess(expr);
+        boolean is_static = resultStatic;
+        atFieldRead(f, is_static, false);
+    }",False
+32,"atFieldRead(CtField,boolean,boolean)",Method,"atFieldAssign(Expr,int,ASTree,ASTree,boolean) atFieldRead(ASTree) atFieldPlusPlus(int,boolean,ASTree,Expr,boolean)",,"javassist.CtField+getFieldInfo2() javassist.CtField+getFieldInfo2() javassist.bytecode.FieldInfo+getDescriptor() javassist.bytecode.FieldInfo+getDescriptor() javassist.compiler.MemberCodeGen+addFieldrefInfo(CtField,FieldInfo,String) javassist.compiler.MemberCodeGen+addFieldrefInfo(CtField,FieldInfo,String) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+charAt(int) javassist.compiler.MemberCodeGen+descToType(char) javassist.compiler.MemberCodeGen+descToType(char) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+addIndex(int) javassist.bytecode.Bytecode+addIndex(int)",javassist.compiler.CodeGen+arrayDim javassist.compiler.CodeGen+exprType javassist.compiler.CodeGen+className javassist.compiler.CodeGen+className javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+GETSTATIC javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+GETFIELD javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode,987,40,2,,"private int atFieldRead(CtField f, boolean isStatic, boolean noRead)
+        throws CompileError
+    {
+        FieldInfo finfo = f.getFieldInfo2();
+        String type = finfo.getDescriptor();
+
+        int fi = addFieldrefInfo(f, finfo, type);
+
+        int i = 0;
+        int dim = 0;
+        char c = type.charAt(i);
+        while (c == '[') {
+            ++dim;
+            c = type.charAt(++i);
+        }
+
+        arrayDim = dim;
+        boolean is2byte = (c == 'J' || c == 'D');
+        exprType = descToType(c);
+
+        if (c == 'L')
+            className = type.substring(i + 1, type.indexOf(';', i + 1));
+        else
+            className = null;
+
+        if (noRead)
+            return fi;
+
+        if (isStatic) {
+            bytecode.add(GETSTATIC);
+            bytecode.growStack(is2byte ? 2 : 1);
+        }
+        else {
+            bytecode.add(GETFIELD);
+            bytecode.growStack(is2byte ? 1 : 0);
+        }
+
+        bytecode.addIndex(fi);
+        return fi;
+    }",False
+33,"addFieldrefInfo(CtField,FieldInfo,String)",Method,"atFieldRead(CtField,boolean,boolean)",,"javassist.bytecode.Bytecode+getConstPool() javassist.bytecode.Bytecode+getConstPool() javassist.CtClass+getName() javassist.CtField+getDeclaringClass() javassist.CtField+getDeclaringClass() javassist.CtClass+getName() javassist.bytecode.ConstPool+addClassInfo(String) javassist.bytecode.ConstPool+addClassInfo(String) javassist.bytecode.FieldInfo+getName() javassist.bytecode.FieldInfo+getName() javassist.bytecode.ConstPool+addFieldrefInfo(int,String,String) javassist.bytecode.ConstPool+addFieldrefInfo(int,String,String)",javassist.compiler.CodeGen+bytecode,313,7,4,,"protected int addFieldrefInfo(CtField f, FieldInfo finfo, String type) {
+        ConstPool cp = bytecode.getConstPool();
+        String cname = f.getDeclaringClass().getName();
+        int ci = cp.addClassInfo(cname);
+        String name = finfo.getName();
+        return cp.addFieldrefInfo(ci, name, type);
+    }",False
+34,"atFieldPlusPlus(int,boolean,ASTree,Expr,boolean)",Method,,,"javassist.compiler.MemberCodeGen+fieldAccess(ASTree) javassist.compiler.MemberCodeGen+fieldAccess(ASTree) javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.compiler.MemberCodeGen+atFieldRead(CtField,boolean,boolean) javassist.compiler.MemberCodeGen+atFieldRead(CtField,boolean,boolean) javassist.compiler.CodeGen+is2word(int,int) javassist.compiler.CodeGen+is2word(int,int) javassist.compiler.CodeGen+atPlusPlusCore(int,boolean,int,boolean,Expr) javassist.compiler.CodeGen+atPlusPlusCore(int,boolean,int,boolean,Expr) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+add(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+growStack(int) javassist.bytecode.Bytecode+addIndex(int) javassist.bytecode.Bytecode+addIndex(int)",javassist.compiler.MemberCodeGen+resultStatic javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+DUP javassist.compiler.CodeGen+exprType javassist.compiler.CodeGen+arrayDim javassist.bytecode.Opcode+DUP2 javassist.bytecode.Opcode+DUP javassist.bytecode.Opcode+DUP2_X1 javassist.bytecode.Opcode+DUP_X1 javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+PUTSTATIC javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+PUTFIELD javassist.compiler.CodeGen+bytecode javassist.compiler.CodeGen+bytecode,918,32,4,,"protected void atFieldPlusPlus(int token, boolean isPost,
+                                   ASTree oprand, Expr expr, boolean doDup)
+        throws CompileError
+    {
+        CtField f = fieldAccess(oprand);
+        boolean is_static = resultStatic;
+        if (!is_static)
+            bytecode.addOpcode(DUP);
+
+        int fi = atFieldRead(f, is_static, false);
+        int t = exprType;
+        boolean is2w = is2word(t, arrayDim);
+
+        int dup_code;
+        if (is_static)
+            dup_code = (is2w ? DUP2 : DUP);
+        else
+            dup_code = (is2w ? DUP2_X1 : DUP_X1);
+
+        atPlusPlusCore(dup_code, doDup, token, isPost, expr);
+
+        if (is_static) {
+            bytecode.add(PUTSTATIC);
+            bytecode.growStack(is2w ? -2 : -1);
+        }
+        else {
+            bytecode.add(PUTFIELD);
+            bytecode.growStack(is2w ? -3 : -2);
+        }
+
+        bytecode.addIndex(fi);
+    }",False
+35,fieldAccess(ASTree),Method,"atFieldAssign(Expr,int,ASTree,ASTree,boolean) atFieldRead(ASTree) atFieldPlusPlus(int,boolean,ASTree,Expr,boolean)",,"javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Symbol+get() javassist.CtClass+getField(String) javassist.CtClass+getField(String) javassist.compiler.NoFieldException+NoFieldException(String,ASTree) javassist.Modifier+isStatic(int) javassist.Modifier+isStatic(int) javassist.CtField+getModifiers() javassist.CtField+getModifiers() javassist.compiler.CompileError+CompileError(String) javassist.bytecode.Bytecode+addAload(int) javassist.bytecode.Bytecode+addAload(int) javassist.compiler.ast.Expr+getOperator() javassist.compiler.ast.Expr+getOperator() javassist.compiler.MemberCodeGen+lookupJavaField(String,Symbol) javassist.compiler.MemberCodeGen+lookupJavaField(String,Symbol) javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Expr+oprand2() javassist.compiler.ast.Expr+oprand2() javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.ASTree+accept(Visitor) javassist.compiler.MemberCodeGen+lookupJvmField(String,Symbol) javassist.compiler.MemberCodeGen+lookupJvmField(String,Symbol) javassist.compiler.ast.Expr+oprand2() javassist.compiler.ast.Expr+oprand2() javassist.compiler.MemberCodeGen+badLvalue() javassist.compiler.MemberCodeGen+badLvalue() javassist.Modifier+isStatic(int) javassist.Modifier+isStatic(int) javassist.CtField+getModifiers() javassist.CtField+getModifiers() javassist.bytecode.Bytecode+addOpcode(int) javassist.bytecode.Bytecode+addOpcode(int) javassist.compiler.NoFieldException+getExpr() javassist.compiler.NoFieldException+getExpr() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Expr+oprand1() javassist.compiler.ast.Expr+oprand2() javassist.compiler.ast.Expr+oprand2() javassist.compiler.MemberCodeGen+lookupJvmField(String,Symbol) javassist.compiler.MemberCodeGen+lookupJvmField(String,Symbol) javassist.compiler.NoFieldException+getField() javassist.compiler.NoFieldException+getField() javassist.compiler.NoFieldException+NoFieldException(String,ASTree) javassist.compiler.NoFieldException+getField() javassist.compiler.NoFieldException+getField() javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Symbol+get() javassist.compiler.MemberCodeGen+badLvalue() javassist.compiler.MemberCodeGen+badLvalue() javassist.compiler.MemberCodeGen+badLvalue() javassist.compiler.MemberCodeGen+badLvalue()",javassist.compiler.MemberCodeGen+thisClass javassist.compiler.CodeGen+inStaticMethod javassist.compiler.CodeGen+bytecode javassist.compiler.TokenId+MEMBER javassist.compiler.CodeGen+exprType javassist.compiler.TokenId+CLASS javassist.compiler.CodeGen+arrayDim javassist.compiler.CodeGen+className javassist.compiler.CodeGen+bytecode javassist.bytecode.Opcode+POP javassist.compiler.MemberCodeGen+resultStatic,2461,67,4,,"protected CtField fieldAccess(ASTree expr) throws CompileError {
+        CtField f = null;
+        boolean is_static = false;
+        if (expr instanceof Member) {
+            String name = ((Member)expr).get();
+            try {
+                f = thisClass.getField(name);
+            }
+            catch (NotFoundException e) {
+                // EXPR might be part of a static member access?
+                throw new NoFieldException(name, expr);
+            }
+
+            is_static = Modifier.isStatic(f.getModifiers());
+            if (!is_static)
+                if (inStaticMethod)
+                    throw new CompileError(
+                                ""not available in a static method: "" + name);
+                else
+                    bytecode.addAload(0);       // this
+        }
+        else if (expr instanceof Expr) {
+            Expr e = (Expr)expr;
+            int op = e.getOperator();
+            if (op == MEMBER) {
+                f = lookupJavaField(((Symbol)e.oprand1()).get(),
+                                    (Symbol)e.oprand2());
+                is_static = true;
+            }
+            else if (op == '.') {
+                try {
+                    e.oprand1().accept(this);
+                    if (exprType == CLASS && arrayDim == 0)
+                        f = lookupJvmField(className, (Symbol)e.oprand2());
+                    else
+                        badLvalue();
+
+                    is_static = Modifier.isStatic(f.getModifiers());
+                    if (is_static)
+                        bytecode.addOpcode(POP);
+                }
+                catch (NoFieldException nfe) {
+                    if (nfe.getExpr() != e.oprand1())
+                        throw nfe;
+
+                    Symbol fname = (Symbol)e.oprand2();
+                    // it should be a static field.
+                    try {
+                        f = lookupJvmField(nfe.getField(), fname);
+                        is_static = true;
+                    }
+                    catch (CompileError ce) {
+                        // EXPR might be part of a qualified class name.
+                        throw new NoFieldException(nfe.getField() + ""/""
+                                                   + fname.get(), expr);
+                    }
+                }
+            }
+            else
+                badLvalue();
+        }
+        else
+            badLvalue();
+
+        resultStatic = is_static;
+        return f;
+    }",False
+36,badLvalue(),Method,fieldAccess(ASTree) fieldAccess(ASTree) fieldAccess(ASTree),,javassist.compiler.CompileError+CompileError(String),,106,3,10,,"private static void badLvalue() throws CompileError {
+        throw new CompileError(""bad l-value"");
+    }",False
+37,makeParamList(MethodDecl),Method,,"javassist.compiler.Javac+compileMethod(Parser,MethodDecl)",javassist.compiler.ast.MethodDecl+getParams() javassist.compiler.ast.MethodDecl+getParams() javassist.compiler.ast.ASTList+length() javassist.compiler.ast.ASTList+length() javassist.compiler.MemberCodeGen+lookupClass(Declarator) javassist.compiler.MemberCodeGen+lookupClass(Declarator) javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+tail() javassist.compiler.ast.ASTList+tail(),,482,16,1,,"public CtClass[] makeParamList(MethodDecl md) throws CompileError {
+        CtClass[] params;
+        ASTList plist = md.getParams();
+        if (plist == null)
+            params = new CtClass[0];
+        else {
+            int i = 0;
+            params = new CtClass[plist.length()];
+            while (plist != null) {
+                params[i++] = lookupClass((Declarator)plist.head());
+                plist = plist.tail();
+            }
+        }
+
+        return params;
+    }",False
+38,makeThrowsList(MethodDecl),Method,,"javassist.compiler.Javac+compileMethod(Parser,MethodDecl)",javassist.compiler.ast.MethodDecl+getThrows() javassist.compiler.ast.MethodDecl+getThrows() javassist.compiler.ast.ASTList+length() javassist.compiler.ast.ASTList+length() javassist.compiler.MemberCodeGen+lookupClass(ASTList) javassist.compiler.MemberCodeGen+lookupClass(ASTList) javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+tail() javassist.compiler.ast.ASTList+tail(),,461,16,1,,"public CtClass[] makeThrowsList(MethodDecl md) throws CompileError {
+        CtClass[] clist;
+        ASTList list = md.getThrows();
+        if (list == null)
+            return null;
+        else {
+            int i = 0;
+            clist = new CtClass[list.length()];
+            while (list != null) {
+                clist[i++] = lookupClass((ASTList)list.head());
+                list = list.tail();
+            }
+
+            return clist;
+        }
+    }",False
+39,getModifiers(ASTList),Method,,"javassist.compiler.Javac+compileField(FieldDecl) javassist.compiler.Javac+compileMethod(Parser,MethodDecl)",javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+head() javassist.compiler.ast.ASTList+tail() javassist.compiler.ast.ASTList+tail() javassist.compiler.ast.Keyword+get() javassist.compiler.ast.Keyword+get(),javassist.compiler.TokenId+STATIC javassist.Modifier+STATIC javassist.compiler.TokenId+FINAL javassist.Modifier+FINAL javassist.compiler.TokenId+SYNCHRONIZED javassist.Modifier+SYNCHRONIZED javassist.compiler.TokenId+ABSTRACT javassist.Modifier+ABSTRACT javassist.compiler.TokenId+PUBLIC javassist.Modifier+PUBLIC javassist.compiler.TokenId+PROTECTED javassist.Modifier+PROTECTED javassist.compiler.TokenId+PRIVATE javassist.Modifier+PRIVATE javassist.compiler.TokenId+VOLATILE javassist.Modifier+VOLATILE javassist.compiler.TokenId+TRANSIENT javassist.Modifier+TRANSIENT javassist.compiler.TokenId+STRICT javassist.Modifier+STRICT,1156,41,9,,"public static int getModifiers(ASTList mods) {
+        int m = 0;
+        while (mods != null) {
+            Keyword k = (Keyword)mods.head();
+            mods = mods.tail();
+            switch (k.get()) {
+            case STATIC :
+                m |= Modifier.STATIC;
+                break;
+            case FINAL :
+                m |= Modifier.FINAL;
+                break;
+            case SYNCHRONIZED :
+                m |= Modifier.SYNCHRONIZED;
+                break;
+            case ABSTRACT :
+                m |= Modifier.ABSTRACT;
+                break;
+            case PUBLIC :
+                m |= Modifier.PUBLIC;
+                break;
+            case PROTECTED :
+                m |= Modifier.PROTECTED;
+                break;
+            case PRIVATE :
+                m |= Modifier.PRIVATE;
+                break;
+            case VOLATILE :
+                m |= Modifier.VOLATILE;
+                break;
+            case TRANSIENT :
+                m |= Modifier.TRANSIENT;
+                break;
+            case STRICT :
+                m |= Modifier.STRICT;
+                break;
+            }
+        }
+
+        return m;
+    }",True
+40,resolveClassName(ASTList),Method,"atNewArrayExpr(NewExpr) atMultiNewArray(int,ASTList,ASTList)",,javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.CtClass+getName() javassist.compiler.MemberCodeGen+lookupClass(ASTList) javassist.compiler.MemberCodeGen+lookupClass(ASTList) javassist.CtClass+getName(),,202,6,4,,"protected String resolveClassName(ASTList name) throws CompileError {
+        if (name == null)
+            return null;
+        else
+            return javaToJvmName(lookupClass(name).getName());
+    }",False
+41,resolveClassName(String),Method,,,javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.compiler.MemberCodeGen+javaToJvmName(String) javassist.CtClass+getName() javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.CtClass+getName(),,213,6,4,,"protected String resolveClassName(String jvmName) throws CompileError {
+        if (jvmName == null)
+            return null;
+        else
+            return javaToJvmName(lookupJvmClass(jvmName).getName());
+    }",False
+42,lookupClass(Declarator),Method,makeParamList(MethodDecl),"javassist.compiler.Javac+compileField(FieldDecl) javassist.compiler.Javac+compileMethod(Parser,MethodDecl)","javassist.compiler.MemberCodeGen+lookupClass(int,int,String) javassist.compiler.MemberCodeGen+lookupClass(int,int,String) javassist.compiler.ast.Declarator+getType() javassist.compiler.ast.Declarator+getType() javassist.compiler.ast.Declarator+getArrayDim() javassist.compiler.ast.Declarator+getArrayDim() javassist.compiler.ast.Declarator+getClassName() javassist.compiler.ast.Declarator+getClassName()",,186,4,4,,"protected CtClass lookupClass(Declarator decl) throws CompileError {
+        return lookupClass(decl.getType(), decl.getArrayDim(),
+                           decl.getClassName());
+    }",True
+43,"lookupClass(int,int,String)",Method,lookupClass(Declarator),javassist.compiler.JvstCodeGen+atCastToWrapper(CastExpr),javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.compiler.MemberCodeGen+lookupJvmClass(String) javassist.CtClass+getName() javassist.CtClass+getName() javassist.compiler.CodeGen+fatal() javassist.compiler.CodeGen+fatal() javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.MemberCodeGen+lookupJavaClass(String),javassist.compiler.TokenId+CLASS javassist.compiler.TokenId+BOOLEAN javassist.compiler.TokenId+CHAR javassist.compiler.TokenId+BYTE javassist.compiler.TokenId+SHORT javassist.compiler.TokenId+INT javassist.compiler.TokenId+LONG javassist.compiler.TokenId+FLOAT javassist.compiler.TokenId+DOUBLE javassist.compiler.TokenId+VOID,1139,50,4,,"protected CtClass lookupClass(int type, int dim, String classname)
+        throws CompileError
+    {
+        String cname = """";
+        CtClass clazz;
+        switch (type) {
+        case CLASS :
+            clazz = lookupJvmClass(classname);
+            if (dim > 0)
+                cname = clazz.getName();
+            else
+                return clazz;
+
+            break;
+        case BOOLEAN :
+            cname = ""boolean"";
+            break;
+        case CHAR :
+            cname = ""char"";
+            break;
+        case BYTE :
+            cname = ""byte"";
+            break;
+        case SHORT :
+            cname = ""short"";
+            break;
+        case INT :
+            cname = ""int"";
+            break;
+        case LONG :
+            cname = ""long"";
+            break;
+        case FLOAT :
+            cname = ""float"";
+            break;
+        case DOUBLE :
+            cname = ""double"";
+            break;
+        case VOID :
+            cname = ""void"";
+            break;
+        default :
+            fatal();
+        }
+
+        while (dim-- > 0)
+            cname += ""[]"";
+
+        return lookupJavaClass(cname);
+    }",True
+44,lookupClass(ASTList),Method,atNewExpr(NewExpr) makeThrowsList(MethodDecl) resolveClassName(ASTList),,"javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.ast.Declarator+astToClassName(ASTList,char) javassist.compiler.ast.Declarator+astToClassName(ASTList,char)",,141,3,4,,"protected CtClass lookupClass(ASTList name) throws CompileError {
+        return lookupJavaClass(Declarator.astToClassName(name, '.'));
+    }",True
+45,lookupJvmClass(String),Method,"atTryStmnt(Stmnt) atMethodCall(Expr) compareSignature(String,int[],int[],String[]) compareSignature(String,int[],int[],String[]) resolveClassName(String) lookupClass(int,int,String)",,javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.MemberCodeGen+jvmToJavaName(String) javassist.compiler.MemberCodeGen+jvmToJavaName(String),,132,3,4,,"protected CtClass lookupJvmClass(String jvmName) throws CompileError {
+        return lookupJavaClass(jvmToJavaName(jvmName));
+    }",True
+46,lookupJavaClass(String),Method,"atMethodCall(Expr) atMethodCall(Expr) lookupClass(int,int,String) lookupClass(ASTList) lookupJvmClass(String) lookupJavaField(String,Symbol)",,javassist.ClassPool+get(String) javassist.ClassPool+get(String) java.lang.String+indexOf(int) java.lang.String+indexOf(int) javassist.ClassPool+get(String) javassist.ClassPool+get(String) javassist.compiler.CompileError+CompileError(String),javassist.compiler.MemberCodeGen+classPool javassist.compiler.MemberCodeGen+classPool,482,17,2,"/** 
+ * @param name      a qualified class name. e.g. java.lang.String
+ */
+","/**
+     * @param name      a qualified class name. e.g. java.lang.String
+     */
+    private CtClass lookupJavaClass(String name) throws CompileError {
+        try {
+            return classPool.get(name);
+        }
+        catch (NotFoundException e) {}
+
+        try {
+            if (name.indexOf('.') < 0)
+                return classPool.get(""java.lang."" + name);
+        }
+        catch (NotFoundException e) {}
+
+        throw new CompileError(""no such class: "" + name);
+    }",True
+47,"lookupField(ASTList,Symbol)",Method,,,"javassist.compiler.MemberCodeGen+lookupJavaField(String,Symbol) javassist.compiler.MemberCodeGen+lookupJavaField(String,Symbol) javassist.compiler.ast.Declarator+astToClassName(ASTList,char) javassist.compiler.ast.Declarator+astToClassName(ASTList,char)",,217,6,1,,"public CtField lookupField(ASTList className, Symbol fieldName)
+        throws CompileError
+    {
+        return lookupJavaField(Declarator.astToClassName(className, '.'),
+                            fieldName);
+    }",True
+48,"lookupJvmField(String,Symbol)",Method,fieldAccess(ASTree) fieldAccess(ASTree),,"javassist.compiler.MemberCodeGen+lookupJavaField(String,Symbol) javassist.compiler.MemberCodeGen+lookupJavaField(String,Symbol) javassist.compiler.MemberCodeGen+jvmToJavaName(String) javassist.compiler.MemberCodeGen+jvmToJavaName(String)",,174,5,1,,"public CtField lookupJvmField(String className, Symbol fieldName)
+        throws CompileError
+    {
+        return lookupJavaField(jvmToJavaName(className), fieldName);
+    }",True
+49,"lookupJavaField(String,Symbol)",Method,"fieldAccess(ASTree) lookupField(ASTList,Symbol) lookupJvmField(String,Symbol)",,javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.compiler.MemberCodeGen+lookupJavaClass(String) javassist.CtClass+getField(String) javassist.CtClass+getField(String) javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Symbol+get() javassist.compiler.CompileError+CompileError(String) javassist.compiler.ast.Symbol+get() javassist.compiler.ast.Symbol+get(),,423,13,2,"/** 
+ * @param name      a qualified class name. e.g. java.lang.String
+ */
+","/**
+     * @param name      a qualified class name. e.g. java.lang.String
+     */
+    private CtField lookupJavaField(String className, Symbol fieldName)
+        throws CompileError
+    {
+        CtClass cc = lookupJavaClass(className);
+        try {
+            return cc.getField(fieldName.get());
+        }
+        catch (NotFoundException e) {}
+        throw new CompileError(""no such field: "" + fieldName.get());
+    }",True
+50,javaToJvmName(String),Method,getThisName() getSuperName() atTryStmnt(Stmnt) atNewExpr(NewExpr) resolveClassName(ASTList) resolveClassName(String),"javassist.compiler.JvstCodeGen+recordParams(CtClass[],boolean,String,String,String,boolean,int,String,SymbolTable) javassist.compiler.JvstCodeGen+setType(CtClass,int)","java.lang.String+replace(char,char) java.lang.String+replace(char,char)",,107,3,12,,"protected static String javaToJvmName(String classname) {
+        return classname.replace('.', '/');
+    }",True
+51,jvmToJavaName(String),Method,"atNewArrayExpr(NewExpr) lookupJvmClass(String) lookupJvmField(String,Symbol)","javassist.compiler.JvstCodeGen+recordParams(CtClass[],boolean,String,String,String,boolean,int,String,SymbolTable)","java.lang.String+replace(char,char) java.lang.String+replace(char,char)",,107,3,12,,"protected static String jvmToJavaName(String classname) {
+        return classname.replace('/', '.');
+    }",True

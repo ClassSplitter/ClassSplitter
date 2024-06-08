@@ -1,0 +1,2715 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,MILLIS_PER_DAY,Field,,,,,122,4,25,"/** 
+ * The number of milliseconds per day.
+ */
+","/**
+     * The number of milliseconds per day.
+     */
+    public static final long MILLIS_PER_DAY = 24 * 60 * 60 * 1000L;",False
+2,SECONDS_PER_DAY,Field,,,,,110,4,25,"/** 
+ * The number of seconds per day.
+ */
+","/**
+     * The number of seconds per day.
+     */
+    public static final long SECONDS_PER_DAY = 24 * 60 * 60;",False
+3,UTC,Field,,,,,101,4,25,"/** 
+ * UTC time zone.
+ */
+","/**
+     * UTC time zone.
+     */
+    public static final TimeZone UTC = TimeZone.getTimeZone(""UTC"");",False
+4,NANOS_PER_SECOND,Field,,,,,121,4,25,"/** 
+ * The number of nanoseconds per second.
+ */
+","/**
+     * The number of nanoseconds per second.
+     */
+    public static final long NANOS_PER_SECOND = 1_000_000_000;
+
+",False
+5,NANOS_PER_MINUTE,Field,,,,,127,4,25,"/** 
+ * The number of nanoseconds per minute.
+ */
+","/**
+     * The number of nanoseconds per minute.
+     */
+    public static final long NANOS_PER_MINUTE = 60 * NANOS_PER_SECOND;",False
+6,NANOS_PER_HOUR,Field,,,,,123,4,25,"/** 
+ * The number of nanoseconds per hour.
+ */
+","/**
+     * The number of nanoseconds per hour.
+     */
+    public static final long NANOS_PER_HOUR = 60 * NANOS_PER_MINUTE;",False
+7,NANOS_PER_DAY,Field,,,,,128,4,25,"/** 
+ * The number of nanoseconds per day.
+ */
+","/**
+     * The number of nanoseconds per day.
+     */
+    public static final long NANOS_PER_DAY = MILLIS_PER_DAY * 1_000_000;
+
+",False
+8,SHIFT_YEAR,Field,,,,,40,1,26,,private static final int SHIFT_YEAR = 9;,False
+9,SHIFT_MONTH,Field,,,,,41,1,26,,private static final int SHIFT_MONTH = 5;,False
+10,EPOCH_DATE_VALUE,Field,,,,,139,4,25,"/** 
+ * Date value for 1970-01-01.
+ */
+","/**
+     * Date value for 1970-01-01.
+     */
+    public static final int EPOCH_DATE_VALUE = (1970 << SHIFT_YEAR) + (1 << SHIFT_MONTH) + 1;",False
+11,NORMAL_DAYS_PER_MONTH,Field,,,,,117,2,26,,"private static final int[] NORMAL_DAYS_PER_MONTH = { 0, 31, 28, 31, 30, 31,
+            30, 31, 31, 30, 31, 30, 31 };",False
+12,DAYS_OFFSET,Field,,,,,202,5,26,"/** 
+ * Offsets of month within a year, starting with March, April,...
+ */
+","/**
+     * Offsets of month within a year, starting with March, April,...
+     */
+    private static final int[] DAYS_OFFSET = { 0, 31, 61, 92, 122, 153, 184,
+            214, 245, 275, 306, 337, 366 };",False
+13,CONVERT_SCALE_TABLE,Field,,,,,223,5,26,"/** 
+ * Multipliers for  {@link #convertScale(long,int)}.
+ */
+","/**
+     * Multipliers for {@link #convertScale(long, int)}.
+     */
+    private static final int[] CONVERT_SCALE_TABLE = { 1_000_000_000, 100_000_000,
+            10_000_000, 1_000_000, 100_000, 10_000, 1_000, 100, 10 };
+
+",False
+14,CACHED_CALENDAR,Field,,,,,524,9,26,"/** 
+ * The thread local. Can not override initialValue because this would result in an inner class, which would not be garbage collected in a web container, and prevent the class loader of H2 from being garbage collected. Using a ThreadLocal on a system class like Calendar does not have that problem, and while it is still a small memory leak, it is not a class loader memory leak.
+ */
+","/**
+     * The thread local. Can not override initialValue because this would result
+     * in an inner class, which would not be garbage collected in a web
+     * container, and prevent the class loader of H2 from being garbage
+     * collected. Using a ThreadLocal on a system class like Calendar does not
+     * have that problem, and while it is still a small memory leak, it is not a
+     * class loader memory leak.
+     */
+    private static final ThreadLocal<GregorianCalendar> CACHED_CALENDAR = new ThreadLocal<>();",False
+15,CACHED_CALENDAR_NON_DEFAULT_TIMEZONE,Field,,,,,211,5,26,"/** 
+ * A cached instance of Calendar used when a timezone is specified.
+ */
+","/**
+     * A cached instance of Calendar used when a timezone is specified.
+     */
+    private static final ThreadLocal<GregorianCalendar> CACHED_CALENDAR_NON_DEFAULT_TIMEZONE =
+            new ThreadLocal<>();",False
+16,timeZone,Field,,,,,89,4,74,"/** 
+ * Cached local time zone.
+ */
+","/**
+     * Cached local time zone.
+     */
+    private static volatile TimeZone timeZone;",False
+17,zoneOffsetMillis,Field,,,,,575,9,10,"/** 
+ * Observed JVM behaviour is that if the timezone of the host computer is changed while the JVM is running, the zone offset does not change but keeps the initial value. So it is correct to measure this once and use this value throughout the JVM's lifecycle. In any case, it is safer to use a fixed value throughout the duration of the JVM's life, rather than have this offset change, possibly midway through a long-running query.
+ */
+","/**
+     * Observed JVM behaviour is that if the timezone of the host computer is
+     * changed while the JVM is running, the zone offset does not change but
+     * keeps the initial value. So it is correct to measure this once and use
+     * this value throughout the JVM's lifecycle. In any case, it is safer to
+     * use a fixed value throughout the duration of the JVM's life, rather than
+     * have this offset change, possibly midway through a long-running query.
+     */
+    private static int zoneOffsetMillis = createGregorianCalendar().get(Calendar.ZONE_OFFSET);",False
+18,DateTimeUtils(),Method,,,,,56,3,2,,"private DateTimeUtils() {
+        // utility class
+    }",False
+19,getTimeZone(),Method,dateValueFromDate(long),,java.util.TimeZone+getDefault() java.util.TimeZone+getDefault(),org.h2.util.DateTimeUtils+timeZone org.h2.util.DateTimeUtils+timeZone,261,12,8,"/** 
+ * Returns local time zone.
+ * @return local time zone
+ */
+","/**
+     * Returns local time zone.
+     *
+     * @return local time zone
+     */
+    static TimeZone getTimeZone() {
+        TimeZone tz = timeZone;
+        if (tz == null) {
+            timeZone = tz = TimeZone.getDefault();
+        }
+        return tz;
+    }",False
+20,resetCalendar(),Method,,org.h2.test.db.TestDateStorage+testDateTimeTimestampWithCalendar() org.h2.test.db.TestDateStorage+testDateTimeTimestampWithCalendar() org.h2.test.db.TestDateStorage+testAllTimeZones() org.h2.test.db.TestDateStorage+testAllTimeZones() org.h2.test.unit.TestDateTimeUtils+testUTC2Value(boolean) org.h2.test.unit.TestDateTimeUtils+testUTC2Value(boolean) org.h2.test.unit.TestTimeStampWithTimeZone+testConversions() org.h2.test.unit.TestTimeStampWithTimeZone+testConversions(),java.lang.ThreadLocal+remove() java.lang.ThreadLocal+remove() java.util.Calendar+get(int) org.h2.util.DateTimeUtils+createGregorianCalendar() org.h2.util.DateTimeUtils+createGregorianCalendar() java.util.Calendar+get(int),org.h2.util.DateTimeUtils+CACHED_CALENDAR org.h2.util.DateTimeUtils+timeZone org.h2.util.DateTimeUtils+zoneOffsetMillis java.util.Calendar+ZONE_OFFSET,308,9,9,"/** 
+ * Reset the cached calendar for default timezone, for example after changing the default timezone.
+ */
+","/**
+     * Reset the cached calendar for default timezone, for example after
+     * changing the default timezone.
+     */
+    public static void resetCalendar() {
+        CACHED_CALENDAR.remove();
+        timeZone = null;
+        zoneOffsetMillis = createGregorianCalendar().get(Calendar.ZONE_OFFSET);
+    }",False
+21,getCalendar(),Method,"getMillis(TimeZone,int,int,int,int,int,int,int)",org.h2.util.ToDateParser+queryCurrentYearAndMonth(),java.lang.ThreadLocal+get() java.lang.ThreadLocal+get() org.h2.util.DateTimeUtils+createGregorianCalendar() org.h2.util.DateTimeUtils+createGregorianCalendar() java.lang.ThreadLocal+set(T) java.lang.ThreadLocal+set(T) java.util.Calendar+clear() java.util.Calendar+clear(),org.h2.util.DateTimeUtils+CACHED_CALENDAR org.h2.util.DateTimeUtils+CACHED_CALENDAR,409,14,9,"/** 
+ * Get a calendar for the default timezone.
+ * @return a calendar instance. A cached instance is returned where possible
+ */
+","/**
+     * Get a calendar for the default timezone.
+     *
+     * @return a calendar instance. A cached instance is returned where possible
+     */
+    public static GregorianCalendar getCalendar() {
+        GregorianCalendar c = CACHED_CALENDAR.get();
+        if (c == null) {
+            c = createGregorianCalendar();
+            CACHED_CALENDAR.set(c);
+        }
+        c.clear();
+        return c;
+    }",False
+22,getCalendar(TimeZone),Method,"getMillis(TimeZone,int,int,int,int,int,int,int)",,java.lang.ThreadLocal+get() java.lang.ThreadLocal+get() java.lang.Object+equals(Object) java.util.GregorianCalendar+getTimeZone() java.util.GregorianCalendar+getTimeZone() java.lang.Object+equals(Object) org.h2.util.DateTimeUtils+createGregorianCalendar(TimeZone) org.h2.util.DateTimeUtils+createGregorianCalendar(TimeZone) java.lang.ThreadLocal+set(T) java.lang.ThreadLocal+set(T) java.util.Calendar+clear() java.util.Calendar+clear(),org.h2.util.DateTimeUtils+CACHED_CALENDAR_NON_DEFAULT_TIMEZONE org.h2.util.DateTimeUtils+CACHED_CALENDAR_NON_DEFAULT_TIMEZONE,552,15,10,"/** 
+ * Get a calendar for the given timezone.
+ * @param tz timezone for the calendar, is never null
+ * @return a calendar instance. A cached instance is returned where possible
+ */
+","/**
+     * Get a calendar for the given timezone.
+     *
+     * @param tz timezone for the calendar, is never null
+     * @return a calendar instance. A cached instance is returned where possible
+     */
+    private static GregorianCalendar getCalendar(TimeZone tz) {
+        GregorianCalendar c = CACHED_CALENDAR_NON_DEFAULT_TIMEZONE.get();
+        if (c == null || !c.getTimeZone().equals(tz)) {
+            c = createGregorianCalendar(tz);
+            CACHED_CALENDAR_NON_DEFAULT_TIMEZONE.set(c);
+        }
+        c.clear();
+        return c;
+    }",False
+23,createGregorianCalendar(),Method,resetCalendar() getCalendar(),"org.h2.jdbc.JdbcResultSet+extractObjectOfType(Class<T>,Value) org.h2.test.db.TestFunctions+testTruncate() org.h2.test.jdbc.TestResultSet+testDatetimeWithCalendar() org.h2.test.synth.TestCrashAPI+getRandomParam(Class<?>) org.h2.test.unit.TestDate+testDateTimeUtils() org.h2.test.unit.TestDate+testDateTimeUtils()",java.util.GregorianCalendar+GregorianCalendar(),,550,12,9,"/** 
+ * Creates a Gregorian calendar for the default timezone using the default locale. Dates in H2 are represented in a Gregorian calendar. So this method should be used instead of Calendar.getInstance() to ensure that the Gregorian calendar is used for all date processing instead of a default locale calendar that can be non-Gregorian in some locales.
+ * @return a new calendar instance.
+ */
+","/**
+     * Creates a Gregorian calendar for the default timezone using the default
+     * locale. Dates in H2 are represented in a Gregorian calendar. So this
+     * method should be used instead of Calendar.getInstance() to ensure that
+     * the Gregorian calendar is used for all date processing instead of a
+     * default locale calendar that can be non-Gregorian in some locales.
+     *
+     * @return a new calendar instance.
+     */
+    public static GregorianCalendar createGregorianCalendar() {
+        return new GregorianCalendar();
+    }",False
+24,createGregorianCalendar(TimeZone),Method,getCalendar(TimeZone),org.h2.test.jdbc.TestResultSet+testDatetimeWithCalendar() org.h2.test.unit.TestDate+testValidDate(),java.util.GregorianCalendar+GregorianCalendar(TimeZone),,619,13,9,"/** 
+ * Creates a Gregorian calendar for the given timezone using the default locale. Dates in H2 are represented in a Gregorian calendar. So this method should be used instead of Calendar.getInstance() to ensure that the Gregorian calendar is used for all date processing instead of a default locale calendar that can be non-Gregorian in some locales.
+ * @param tz timezone for the calendar, is never null
+ * @return a new calendar instance.
+ */
+","/**
+     * Creates a Gregorian calendar for the given timezone using the default
+     * locale. Dates in H2 are represented in a Gregorian calendar. So this
+     * method should be used instead of Calendar.getInstance() to ensure that
+     * the Gregorian calendar is used for all date processing instead of a
+     * default locale calendar that can be non-Gregorian in some locales.
+     *
+     * @param tz timezone for the calendar, is never null
+     * @return a new calendar instance.
+     */
+    public static GregorianCalendar createGregorianCalendar(TimeZone tz) {
+        return new GregorianCalendar(tz);
+    }",False
+25,"convertDate(Value,Calendar)",Method,,"org.h2.jdbc.JdbcResultSet+getDate(int,Calendar) org.h2.jdbc.JdbcResultSet+getDate(String,Calendar)","org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) java.util.Calendar+clone() java.util.Calendar+clone() java.util.Calendar+clear() java.util.Calendar+clear() java.util.Calendar+setLenient(boolean) java.util.Calendar+setLenient(boolean) org.h2.value.ValueDate+getDateValue() org.h2.value.ValueDate+getDateValue() org.h2.util.DateTimeUtils+convertToMillis(Calendar,int,int,int,int,int,int,int) org.h2.util.DateTimeUtils+convertToMillis(Calendar,int,int,int,int,int,int,int) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) java.sql.Date+Date(long)",org.h2.value.ValueNull+INSTANCE org.h2.value.Value+DATE,773,21,9,"/** 
+ * Convert the date to the specified time zone.
+ * @param value the date (might be ValueNull)
+ * @param calendar the calendar
+ * @return the date using the correct time zone
+ */
+","/**
+     * Convert the date to the specified time zone.
+     *
+     * @param value the date (might be ValueNull)
+     * @param calendar the calendar
+     * @return the date using the correct time zone
+     */
+    public static Date convertDate(Value value, Calendar calendar) {
+        if (value == ValueNull.INSTANCE) {
+            return null;
+        }
+        ValueDate d = (ValueDate) value.convertTo(Value.DATE);
+        Calendar cal = (Calendar) calendar.clone();
+        cal.clear();
+        cal.setLenient(true);
+        long dateValue = d.getDateValue();
+        long ms = convertToMillis(cal, yearFromDateValue(dateValue),
+                monthFromDateValue(dateValue), dayFromDateValue(dateValue), 0,
+                0, 0, 0);
+        return new Date(ms);
+    }",False
+26,"convertTime(Value,Calendar)",Method,,"org.h2.jdbc.JdbcResultSet+getTime(int,Calendar) org.h2.jdbc.JdbcResultSet+getTime(String,Calendar)",,,894,26,9,"/** 
+ * Convert the time to the specified time zone.
+ * @param value the time (might be ValueNull)
+ * @param calendar the calendar
+ * @return the time using the correct time zone
+ */
+","/**
+     * Convert the time to the specified time zone.
+     *
+     * @param value the time (might be ValueNull)
+     * @param calendar the calendar
+     * @return the time using the correct time zone
+     */
+    public static Time convertTime(Value value, Calendar calendar) {
+        if (value == ValueNull.INSTANCE) {
+            return null;
+        }
+        ValueTime t = (ValueTime) value.convertTo(Value.TIME);
+        Calendar cal = (Calendar) calendar.clone();
+        cal.clear();
+        cal.setLenient(true);
+        long nanos = t.getNanos();
+        long millis = nanos / 1_000_000;
+        nanos -= millis * 1_000_000;
+        long s = millis / 1_000;
+        millis -= s * 1_000;
+        long m = s / 60;
+        s -= m * 60;
+        long h = m / 60;
+        m -= h * 60;
+        return new Time(convertToMillis(cal, 1970, 1, 1, (int) h, (int) m, (int) s, (int) millis));
+    }",False
+27,"convertTimestamp(Value,Calendar)",Method,,"org.h2.jdbc.JdbcResultSet+getTimestamp(int,Calendar) org.h2.jdbc.JdbcResultSet+getTimestamp(String,Calendar)",,,1202,32,9,"/** 
+ * Convert the timestamp to the specified time zone.
+ * @param value the timestamp (might be ValueNull)
+ * @param calendar the calendar
+ * @return the timestamp using the correct time zone
+ */
+","/**
+     * Convert the timestamp to the specified time zone.
+     *
+     * @param value the timestamp (might be ValueNull)
+     * @param calendar the calendar
+     * @return the timestamp using the correct time zone
+     */
+    public static Timestamp convertTimestamp(Value value, Calendar calendar) {
+        if (value == ValueNull.INSTANCE) {
+            return null;
+        }
+        ValueTimestamp ts = (ValueTimestamp) value.convertTo(Value.TIMESTAMP);
+        Calendar cal = (Calendar) calendar.clone();
+        cal.clear();
+        cal.setLenient(true);
+        long dateValue = ts.getDateValue();
+        long nanos = ts.getTimeNanos();
+        long millis = nanos / 1_000_000;
+        nanos -= millis * 1_000_000;
+        long s = millis / 1_000;
+        millis -= s * 1_000;
+        long m = s / 60;
+        s -= m * 60;
+        long h = m / 60;
+        m -= h * 60;
+        long ms = convertToMillis(cal, yearFromDateValue(dateValue),
+                monthFromDateValue(dateValue), dayFromDateValue(dateValue),
+                (int) h, (int) m, (int) s, (int) millis);
+        Timestamp x = new Timestamp(ms);
+        x.setNanos((int) (nanos + millis * 1_000_000));
+        return x;
+    }",False
+28,"convertDate(Date,Calendar)",Method,,"org.h2.jdbc.JdbcPreparedStatement+setDate(int,java.sql.Date,Calendar)",java.util.Calendar+clone() java.util.Calendar+clone() java.util.Calendar+setTimeInMillis(long) java.util.Calendar+setTimeInMillis(long) java.util.Date+getTime() java.util.Date+getTime() org.h2.util.DateTimeUtils+dateValueFromCalendar(Calendar) org.h2.util.DateTimeUtils+dateValueFromCalendar(Calendar) org.h2.value.ValueDate+fromDateValue(long) org.h2.value.ValueDate+fromDateValue(long),,438,13,9,"/** 
+ * Convert a java.util.Date using the specified calendar.
+ * @param x the date
+ * @param calendar the calendar
+ * @return the date
+ */
+","/**
+     * Convert a java.util.Date using the specified calendar.
+     *
+     * @param x the date
+     * @param calendar the calendar
+     * @return the date
+     */
+    public static ValueDate convertDate(Date x, Calendar calendar) {
+        Calendar cal = (Calendar) calendar.clone();
+        cal.setTimeInMillis(x.getTime());
+        long dateValue = dateValueFromCalendar(cal);
+        return ValueDate.fromDateValue(dateValue);
+    }",False
+29,"convertTime(Time,Calendar)",Method,,"org.h2.jdbc.JdbcPreparedStatement+setTime(int,java.sql.Time,Calendar)",java.util.Calendar+clone() java.util.Calendar+clone() java.util.Calendar+setTimeInMillis(long) java.util.Calendar+setTimeInMillis(long) java.util.Date+getTime() java.util.Date+getTime() org.h2.util.DateTimeUtils+nanosFromCalendar(Calendar) org.h2.util.DateTimeUtils+nanosFromCalendar(Calendar) org.h2.value.ValueTime+fromNanos(long) org.h2.value.ValueTime+fromNanos(long),,414,13,9,"/** 
+ * Convert the time using the specified calendar.
+ * @param x the time
+ * @param calendar the calendar
+ * @return the time
+ */
+","/**
+     * Convert the time using the specified calendar.
+     *
+     * @param x the time
+     * @param calendar the calendar
+     * @return the time
+     */
+    public static ValueTime convertTime(Time x, Calendar calendar) {
+        Calendar cal = (Calendar) calendar.clone();
+        cal.setTimeInMillis(x.getTime());
+        long nanos = nanosFromCalendar(cal);
+        return ValueTime.fromNanos(nanos);
+    }",False
+30,"convertTimestamp(Timestamp,Calendar)",Method,,"org.h2.jdbc.JdbcPreparedStatement+setTimestamp(int,java.sql.Timestamp,Calendar) org.h2.test.unit.TestDate+testDateTimeUtils() org.h2.test.unit.TestDate+testDateTimeUtils() org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar)",,,575,16,9,"/** 
+ * Convert the timestamp using the specified calendar.
+ * @param x the time
+ * @param calendar the calendar
+ * @return the timestamp
+ */
+","/**
+     * Convert the timestamp using the specified calendar.
+     *
+     * @param x the time
+     * @param calendar the calendar
+     * @return the timestamp
+     */
+    public static ValueTimestamp convertTimestamp(Timestamp x,
+            Calendar calendar) {
+        Calendar cal = (Calendar) calendar.clone();
+        cal.setTimeInMillis(x.getTime());
+        long dateValue = dateValueFromCalendar(cal);
+        long nanos = nanosFromCalendar(cal);
+        nanos += x.getNanos() % 1_000_000;
+        return ValueTimestamp.fromDateValueAndNanos(dateValue, nanos);
+    }",False
+31,"parseDateValue(String,int,int)",Method,,org.h2.value.ValueDate+parse(String),"java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) java.lang.String+substring(int,int) java.lang.String+substring(int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.DateTimeUtils+isValidDate(int,int,int) org.h2.util.DateTimeUtils+isValidDate(int,int,int) java.lang.IllegalArgumentException+IllegalArgumentException(String) org.h2.util.DateTimeUtils+dateValue(long,int,int) org.h2.util.DateTimeUtils+dateValue(long,int,int)",,1589,43,9,"/** 
+ * Parse a date string. The format is: [+|-]year-month-day or [+|-]yyyyMMdd.
+ * @param s the string to parse
+ * @param start the parse index start
+ * @param end the parse index end
+ * @return the date value
+ * @throws IllegalArgumentException if there is a problem
+ */
+","/**
+     * Parse a date string. The format is: [+|-]year-month-day
+     * or [+|-]yyyyMMdd.
+     *
+     * @param s the string to parse
+     * @param start the parse index start
+     * @param end the parse index end
+     * @return the date value
+     * @throws IllegalArgumentException if there is a problem
+     */
+    public static long parseDateValue(String s, int start, int end) {
+        if (s.charAt(start) == '+') {
+            // +year
+            start++;
+        }
+        // start at position 1 to support ""-year""
+        int yEnd = s.indexOf('-', start + 1);
+        int mStart, mEnd, dStart;
+        if (yEnd > 0) {
+            // Standard [+|-]year-month-day format
+            mStart = yEnd + 1;
+            mEnd = s.indexOf('-', mStart);
+            if (mEnd <= mStart) {
+                throw new IllegalArgumentException(s);
+            }
+            dStart = mEnd + 1;
+        } else {
+            // Additional [+|-]yyyyMMdd format for compatibility
+            mEnd = dStart = end - 2;
+            yEnd = mStart = mEnd - 2;
+            // Accept only 3 or more digits in year for now
+            if (yEnd < start + 3) {
+                throw new IllegalArgumentException(s);
+            }
+        }
+        int year = Integer.parseInt(s.substring(start, yEnd));
+        int month = StringUtils.parseUInt31(s, mStart, mEnd);
+        int day = StringUtils.parseUInt31(s, dStart, end);
+        if (!isValidDate(year, month, day)) {
+            throw new IllegalArgumentException(year + ""-"" + month + ""-"" + day);
+        }
+        return dateValue(year, month, day);
+    }",False
+32,"parseTimeNanos(String,int,int)",Method,,org.h2.value.ValueTime+parse(String) org.h2.test.unit.TestDateTimeUtils+testParseTimeNanosDB2Format() org.h2.test.unit.TestDateTimeUtils+testParseTimeNanosDB2Format() org.h2.test.unit.TestDateTimeUtils+testParseTimeNanosDB2Format() org.h2.test.unit.TestDateTimeUtils+testParseTimeNanosDB2Format(),"java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) java.lang.IllegalArgumentException+IllegalArgumentException(String) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.DateTimeUtils+parseNanos(String,int,int) org.h2.util.DateTimeUtils+parseNanos(String,int,int) java.lang.IllegalArgumentException+IllegalArgumentException(String)",org.h2.util.DateTimeUtils+NANOS_PER_SECOND,3068,82,9,"/** 
+ * Parse a time string. The format is: hour:minute[:second[.nanos]], hhmm[ss[.nanos]], or hour.minute.second[.nanos].
+ * @param s the string to parse
+ * @param start the parse index start
+ * @param end the parse index end
+ * @return the time in nanoseconds
+ * @throws IllegalArgumentException if there is a problem
+ */
+","/**
+     * Parse a time string. The format is: hour:minute[:second[.nanos]],
+     * hhmm[ss[.nanos]], or hour.minute.second[.nanos].
+     *
+     * @param s the string to parse
+     * @param start the parse index start
+     * @param end the parse index end
+     * @return the time in nanoseconds
+     * @throws IllegalArgumentException if there is a problem
+     */
+    public static long parseTimeNanos(String s, int start, int end) {
+        int hour, minute, second, nanos;
+        int hEnd = s.indexOf(':', start);
+        int mStart, mEnd, sStart, sEnd;
+        if (hEnd > 0) {
+            mStart = hEnd + 1;
+            mEnd = s.indexOf(':', mStart);
+            if (mEnd >= mStart) {
+                // Standard hour:minute:second[.nanos] format
+                sStart = mEnd + 1;
+                sEnd = s.indexOf('.', sStart);
+            } else {
+                // Additional hour:minute format for compatibility
+                mEnd = end;
+                sStart = sEnd = -1;
+            }
+        } else {
+            int t = s.indexOf('.', start);
+            if (t < 0) {
+                // Additional hhmm[ss] format for compatibility
+                hEnd = mStart = start + 2;
+                mEnd = mStart + 2;
+                int len = end - start;
+                if (len == 6) {
+                    sStart = mEnd;
+                    sEnd = -1;
+                } else if (len == 4) {
+                    sStart = sEnd = -1;
+                } else {
+                    throw new IllegalArgumentException(s);
+                }
+            } else if (t >= start + 6) {
+                // Additional hhmmss.nanos format for compatibility
+                if (t - start != 6) {
+                    throw new IllegalArgumentException(s);
+                }
+                hEnd = mStart = start + 2;
+                mEnd = sStart = mStart + 2;
+                sEnd = t;
+            } else {
+                // Additional hour.minute.second[.nanos] IBM DB2 time format
+                hEnd = t;
+                mStart = hEnd + 1;
+                mEnd = s.indexOf('.', mStart);
+                if (mEnd <= mStart) {
+                    throw new IllegalArgumentException(s);
+                }
+                sStart = mEnd + 1;
+                sEnd = s.indexOf('.', sStart);
+            }
+        }
+        hour = StringUtils.parseUInt31(s, start, hEnd);
+        if (hour >= 24) {
+            throw new IllegalArgumentException(s);
+        }
+        minute = StringUtils.parseUInt31(s, mStart, mEnd);
+        if (sStart > 0) {
+            if (sEnd < 0) {
+                second = StringUtils.parseUInt31(s, sStart, end);
+                nanos = 0;
+            } else {
+                second = StringUtils.parseUInt31(s, sStart, sEnd);
+                nanos = parseNanos(s, sEnd + 1, end);
+            }
+        } else {
+            second = nanos = 0;
+        }
+        if (minute >= 60 || second >= 60) {
+            throw new IllegalArgumentException(s);
+        }
+        return ((((hour * 60L) + minute) * 60) + second) * NANOS_PER_SECOND + nanos;
+    }",False
+33,"parseNanos(String,int,int)",Method,"parseTimeNanos(String,int,int) parseInterval(IntervalQualifier,boolean,String) parseIntervalRemainingSeconds(String,int)",,,,591,17,10,,"private static int parseNanos(String s, int start, int end) {
+        if (start >= end) {
+            throw new IllegalArgumentException(s);
+        }
+        int nanos = 0, mul = 100_000_000;
+        do {
+            char c = s.charAt(start);
+            if (c < '0' || c > '9') {
+                throw new IllegalArgumentException(s);
+            }
+            nanos += mul * (c - '0');
+            // mul can become 0, but continue loop anyway to ensure that all
+            // remaining digits are valid
+            mul /= 10;
+        } while (++start < end);
+        return nanos;
+    }",False
+34,"findNthIndexOf(String,char,int)",Method,,,"java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int)",,366,11,10,"/** 
+ * See: https://stackoverflow.com/questions/3976616/how-to-find-nth-occurrence-of-character-in-a-string#answer-3976656
+ */
+","/**
+     * See:
+     * https://stackoverflow.com/questions/3976616/how-to-find-nth-occurrence-of-character-in-a-string#answer-3976656
+     */
+    private static int findNthIndexOf(String str, char chr, int n) {
+        int pos = str.indexOf(chr);
+        while (--n > 0 && pos != -1) {
+            pos = str.indexOf(chr, pos + 1);
+        }
+        return pos;
+    }",False
+35,"parseTimestamp(String,Mode,boolean)",Method,,"org.h2.value.ValueTimestamp+parse(String,Mode) org.h2.value.ValueTimestampTimeZone+parse(String)",,,3747,92,9,"/** 
+ * Parses timestamp value from the specified string.
+ * @param s string to parse
+ * @param mode database mode, or  {@code null}
+ * @param withTimeZone if  {@code true} return {@link ValueTimestampTimeZone} instead of{@link ValueTimestamp}
+ * @return parsed timestamp
+ */
+","/**
+     * Parses timestamp value from the specified string.
+     *
+     * @param s
+     *            string to parse
+     * @param mode
+     *            database mode, or {@code null}
+     * @param withTimeZone
+     *            if {@code true} return {@link ValueTimestampTimeZone} instead of
+     *            {@link ValueTimestamp}
+     * @return parsed timestamp
+     */
+    public static Value parseTimestamp(String s, Mode mode, boolean withTimeZone) {
+        int dateEnd = s.indexOf(' ');
+        if (dateEnd < 0) {
+            // ISO 8601 compatibility
+            dateEnd = s.indexOf('T');
+            if (dateEnd < 0 && mode != null && mode.allowDB2TimestampFormat) {
+                // DB2 also allows dash between date and time
+                dateEnd = findNthIndexOf(s, '-', 3);
+            }
+        }
+        int timeStart;
+        if (dateEnd < 0) {
+            dateEnd = s.length();
+            timeStart = -1;
+        } else {
+            timeStart = dateEnd + 1;
+        }
+        long dateValue = parseDateValue(s, 0, dateEnd);
+        long nanos;
+        short tzMinutes = 0;
+        if (timeStart < 0) {
+            nanos = 0;
+        } else {
+            int timeEnd = s.length();
+            TimeZone tz = null;
+            if (s.endsWith(""Z"")) {
+                tz = UTC;
+                timeEnd--;
+            } else {
+                int timeZoneStart = s.indexOf('+', dateEnd + 1);
+                if (timeZoneStart < 0) {
+                    timeZoneStart = s.indexOf('-', dateEnd + 1);
+                }
+                if (timeZoneStart >= 0) {
+                    // Allow [timeZoneName] part after time zone offset
+                    int offsetEnd = s.indexOf('[', timeZoneStart + 1);
+                    if (offsetEnd < 0) {
+                        offsetEnd = s.length();
+                    }
+                    String tzName = ""GMT"" + s.substring(timeZoneStart, offsetEnd);
+                    tz = TimeZone.getTimeZone(tzName);
+                    if (!tz.getID().startsWith(tzName)) {
+                        throw new IllegalArgumentException(
+                                tzName + "" ("" + tz.getID() + ""?)"");
+                    }
+                    if (s.charAt(timeZoneStart - 1) == ' ') {
+                        timeZoneStart--;
+                    }
+                    timeEnd = timeZoneStart;
+                } else {
+                    timeZoneStart = s.indexOf(' ', dateEnd + 1);
+                    if (timeZoneStart > 0) {
+                        String tzName = s.substring(timeZoneStart + 1);
+                        tz = TimeZone.getTimeZone(tzName);
+                        if (!tz.getID().startsWith(tzName)) {
+                            throw new IllegalArgumentException(tzName);
+                        }
+                        timeEnd = timeZoneStart;
+                    }
+                }
+            }
+            nanos = parseTimeNanos(s, dateEnd + 1, timeEnd);
+            if (tz != null) {
+                if (withTimeZone) {
+                    if (tz != UTC) {
+                        long millis = convertDateTimeValueToMillis(tz, dateValue, nanos / 1_000_000);
+                        tzMinutes = (short) (tz.getOffset(millis) / 60_000);
+                    }
+                } else {
+                    long millis = convertDateTimeValueToMillis(tz, dateValue, nanos / 1_000_000);
+                    dateValue = dateValueFromDate(millis);
+                    nanos = nanos % 1_000_000 + nanosFromDate(millis);
+                }
+            }
+        }
+        if (withTimeZone) {
+            return ValueTimestampTimeZone.fromDateValueAndNanos(dateValue, nanos, tzMinutes);
+        }
+        return ValueTimestamp.fromDateValueAndNanos(dateValue, nanos);
+    }",False
+36,"getTimeZoneOffsetMillis(TimeZone,long,long)",Method,,,,,722,18,9,"/** 
+ * Calculates the time zone offset in minutes for the specified time zone, date value, and nanoseconds since midnight.
+ * @param tz time zone, or  {@code null} for default
+ * @param dateValue date value
+ * @param timeNanos nanoseconds since midnight
+ * @return time zone offset in milliseconds
+ */
+","/**
+     * Calculates the time zone offset in minutes for the specified time zone, date
+     * value, and nanoseconds since midnight.
+     *
+     * @param tz
+     *            time zone, or {@code null} for default
+     * @param dateValue
+     *            date value
+     * @param timeNanos
+     *            nanoseconds since midnight
+     * @return time zone offset in milliseconds
+     */
+    public static int getTimeZoneOffsetMillis(TimeZone tz, long dateValue, long timeNanos) {
+        long msec = timeNanos / 1_000_000;
+        long utc = convertDateTimeValueToMillis(tz, dateValue, msec);
+        long local = absoluteDayFromDateValue(dateValue) * MILLIS_PER_DAY + msec;
+        return (int) (local - utc);
+    }",False
+37,"getMillis(long,long,short)",Method,,org.h2.value.Value+convertToDate(),,,607,15,9,"/** 
+ * Calculates the milliseconds since epoch for the specified date value, nanoseconds since midnight, and time zone offset.
+ * @param dateValue date value
+ * @param timeNanos nanoseconds since midnight
+ * @param offsetMins time zone offset in minutes
+ * @return milliseconds since epoch in UTC
+ */
+","/**
+     * Calculates the milliseconds since epoch for the specified date value,
+     * nanoseconds since midnight, and time zone offset.
+     * @param dateValue
+     *            date value
+     * @param timeNanos
+     *            nanoseconds since midnight
+     * @param offsetMins
+     *            time zone offset in minutes
+     * @return milliseconds since epoch in UTC
+     */
+    public static long getMillis(long dateValue, long timeNanos, short offsetMins) {
+        return absoluteDayFromDateValue(dateValue) * MILLIS_PER_DAY
+                + timeNanos / 1_000_000 - offsetMins * 60_000;
+    }",False
+38,"getMillis(TimeZone,int,int,int,int,int,int,int)",Method,"convertDateValueToDate(long) convertDateTimeValueToMillis(TimeZone,long,long)","org.h2.test.unit.TestDate+testDate(int,int,int)","org.h2.util.DateTimeUtils+getCalendar() org.h2.util.DateTimeUtils+getCalendar() org.h2.util.DateTimeUtils+getCalendar(TimeZone) org.h2.util.DateTimeUtils+getCalendar(TimeZone) java.util.Calendar+setLenient(boolean) java.util.Calendar+setLenient(boolean) org.h2.util.DateTimeUtils+convertToMillis(Calendar,int,int,int,int,int,int,int) org.h2.util.DateTimeUtils+convertToMillis(Calendar,int,int,int,int,int,int,int) java.lang.Throwable+toString() java.lang.Throwable+toString() java.lang.String+indexOf(String) java.lang.String+indexOf(String) java.lang.String+indexOf(String) java.lang.String+indexOf(String) java.util.GregorianCalendar+isLeapYear(int) java.util.GregorianCalendar+isLeapYear(int) java.util.Calendar+setLenient(boolean) java.util.Calendar+setLenient(boolean) org.h2.util.DateTimeUtils+convertToMillis(Calendar,int,int,int,int,int,int,int) org.h2.util.DateTimeUtils+convertToMillis(Calendar,int,int,int,int,int,int,int)",org.h2.util.DateTimeUtils+NORMAL_DAYS_PER_MONTH,2109,53,9,"/** 
+ * Calculate the milliseconds since 1970-01-01 (UTC) for the given date and time (in the specified timezone).
+ * @param tz the timezone of the parameters, or null for the defaulttimezone
+ * @param year the absolute year (positive or negative)
+ * @param month the month (1-12)
+ * @param day the day (1-31)
+ * @param hour the hour (0-23)
+ * @param minute the minutes (0-59)
+ * @param second the number of seconds (0-59)
+ * @param millis the number of milliseconds
+ * @return the number of milliseconds (UTC)
+ */
+","/**
+     * Calculate the milliseconds since 1970-01-01 (UTC) for the given date and
+     * time (in the specified timezone).
+     *
+     * @param tz the timezone of the parameters, or null for the default
+     *            timezone
+     * @param year the absolute year (positive or negative)
+     * @param month the month (1-12)
+     * @param day the day (1-31)
+     * @param hour the hour (0-23)
+     * @param minute the minutes (0-59)
+     * @param second the number of seconds (0-59)
+     * @param millis the number of milliseconds
+     * @return the number of milliseconds (UTC)
+     */
+    public static long getMillis(TimeZone tz, int year, int month, int day,
+            int hour, int minute, int second, int millis) {
+        GregorianCalendar c;
+        if (tz == null) {
+            c = getCalendar();
+        } else {
+            c = getCalendar(tz);
+        }
+        c.setLenient(false);
+        try {
+            return convertToMillis(c, year, month, day, hour, minute, second, millis);
+        } catch (IllegalArgumentException e) {
+            // special case: if the time simply doesn't exist because of
+            // daylight saving time changes, use the lenient version
+            String message = e.toString();
+            if (message.indexOf(""HOUR_OF_DAY"") > 0) {
+                if (hour < 0 || hour > 23) {
+                    throw e;
+                }
+            } else if (message.indexOf(""DAY_OF_MONTH"") > 0) {
+                int maxDay;
+                if (month == 2) {
+                    maxDay = c.isLeapYear(year) ? 29 : 28;
+                } else {
+                    maxDay = NORMAL_DAYS_PER_MONTH[month];
+                }
+                if (day < 1 || day > maxDay) {
+                    throw e;
+                }
+                // DAY_OF_MONTH is thrown for years > 2037
+                // using the timezone Brasilia and others,
+                // for example for 2042-10-12 00:00:00.
+                hour += 6;
+            }
+            c.setLenient(true);
+            return convertToMillis(c, year, month, day, hour, minute, second, millis);
+        }
+    }",False
+39,"convertToMillis(Calendar,int,int,int,int,int,int,int)",Method,"convertDate(Value,Calendar) getMillis(TimeZone,int,int,int,int,int,int,int) getMillis(TimeZone,int,int,int,int,int,int,int)",,"java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+set(int,int) java.util.Calendar+getTimeInMillis() java.util.Calendar+getTimeInMillis()",java.util.Calendar+ERA java.util.GregorianCalendar+BC java.util.Calendar+YEAR java.util.Calendar+ERA java.util.GregorianCalendar+AD java.util.Calendar+YEAR java.util.Calendar+MONTH java.util.Calendar+DAY_OF_MONTH java.util.Calendar+HOUR_OF_DAY java.util.Calendar+MINUTE java.util.Calendar+SECOND java.util.Calendar+MILLISECOND,726,18,10,,"private static long convertToMillis(Calendar cal, int year, int month, int day,
+            int hour, int minute, int second, int millis) {
+        if (year <= 0) {
+            cal.set(Calendar.ERA, GregorianCalendar.BC);
+            cal.set(Calendar.YEAR, 1 - year);
+        } else {
+            cal.set(Calendar.ERA, GregorianCalendar.AD);
+            cal.set(Calendar.YEAR, year);
+        }
+        // january is 0
+        cal.set(Calendar.MONTH, month - 1);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        cal.set(Calendar.HOUR_OF_DAY, hour);
+        cal.set(Calendar.MINUTE, minute);
+        cal.set(Calendar.SECOND, second);
+        cal.set(Calendar.MILLISECOND, millis);
+        return cal.getTimeInMillis();
+    }",False
+40,dateAndTimeFromValue(Value),Method,,"org.h2.expression.Function+getSimpleValue(Session,Value,Expression[],Value[]) org.h2.expression.Function+getSimpleValue(Session,Value,Expression[],Value[]) org.h2.expression.IntervalOperation+getDateTimeWithInterval(Value,Value,int,int) org.h2.util.DateTimeFunctions+extract(String,Value)",org.h2.value.ValueTimestamp+getDateValue() org.h2.value.ValueTimestamp+getDateValue() org.h2.value.ValueTimestamp+getTimeNanos() org.h2.value.ValueTimestamp+getTimeNanos() org.h2.value.ValueDate+getDateValue() org.h2.value.ValueDate+getDateValue() org.h2.value.ValueTime+getNanos() org.h2.value.ValueTime+getNanos() org.h2.value.ValueTimestampTimeZone+getDateValue() org.h2.value.ValueTimestampTimeZone+getDateValue() org.h2.value.ValueTimestampTimeZone+getTimeNanos() org.h2.value.ValueTimestampTimeZone+getTimeNanos() org.h2.value.Value+convertTo(int) org.h2.value.Value+convertTo(int) org.h2.value.ValueTimestamp+getDateValue() org.h2.value.ValueTimestamp+getDateValue() org.h2.value.ValueTimestamp+getTimeNanos() org.h2.value.ValueTimestamp+getTimeNanos(),org.h2.util.DateTimeUtils+EPOCH_DATE_VALUE org.h2.value.Value+TIMESTAMP,1207,29,9,"/** 
+ * Extracts date value and nanos of day from the specified value.
+ * @param value value to extract fields from
+ * @return array with date value and nanos of day
+ */
+","/**
+     * Extracts date value and nanos of day from the specified value.
+     *
+     * @param value
+     *            value to extract fields from
+     * @return array with date value and nanos of day
+     */
+    public static long[] dateAndTimeFromValue(Value value) {
+        long dateValue = EPOCH_DATE_VALUE;
+        long timeNanos = 0;
+        if (value instanceof ValueTimestamp) {
+            ValueTimestamp v = (ValueTimestamp) value;
+            dateValue = v.getDateValue();
+            timeNanos = v.getTimeNanos();
+        } else if (value instanceof ValueDate) {
+            dateValue = ((ValueDate) value).getDateValue();
+        } else if (value instanceof ValueTime) {
+            timeNanos = ((ValueTime) value).getNanos();
+        } else if (value instanceof ValueTimestampTimeZone) {
+            ValueTimestampTimeZone v = (ValueTimestampTimeZone) value;
+            dateValue = v.getDateValue();
+            timeNanos = v.getTimeNanos();
+        } else {
+            ValueTimestamp v = (ValueTimestamp) value.convertTo(Value.TIMESTAMP);
+            dateValue = v.getDateValue();
+            timeNanos = v.getTimeNanos();
+        }
+        return new long[] {dateValue, timeNanos};
+    }",False
+41,"dateTimeToValue(Value,long,long,boolean)",Method,,"org.h2.expression.IntervalOperation+getDateTimeWithInterval(Value,Value,int,int)","org.h2.value.ValueDate+fromDateValue(long) org.h2.value.ValueDate+fromDateValue(long) org.h2.value.ValueTime+fromNanos(long) org.h2.value.ValueTime+fromNanos(long) org.h2.value.ValueTimestampTimeZone+fromDateValueAndNanos(long,long,short) org.h2.value.ValueTimestampTimeZone+fromDateValueAndNanos(long,long,short) org.h2.value.ValueTimestampTimeZone+getTimeZoneOffsetMins() org.h2.value.ValueTimestampTimeZone+getTimeZoneOffsetMins() org.h2.value.ValueTimestamp+fromDateValueAndNanos(long,long) org.h2.value.ValueTimestamp+fromDateValueAndNanos(long,long)",,1475,33,9,"/** 
+ * Creates a new date-time value with the same type as original value. If original value is a ValueTimestampTimeZone, returned value will have the same time zone offset as original value.
+ * @param original original value
+ * @param dateValue date value for the returned value
+ * @param timeNanos nanos of day for the returned value
+ * @param forceTimestamp if  {@code true} return ValueTimestamp if original argument isValueDate or ValueTime
+ * @return new value with specified date value and nanos of day
+ */
+","/**
+     * Creates a new date-time value with the same type as original value. If
+     * original value is a ValueTimestampTimeZone, returned value will have the same
+     * time zone offset as original value.
+     *
+     * @param original
+     *            original value
+     * @param dateValue
+     *            date value for the returned value
+     * @param timeNanos
+     *            nanos of day for the returned value
+     * @param forceTimestamp
+     *            if {@code true} return ValueTimestamp if original argument is
+     *            ValueDate or ValueTime
+     * @return new value with specified date value and nanos of day
+     */
+    public static Value dateTimeToValue(Value original, long dateValue, long timeNanos, boolean forceTimestamp) {
+        if (!(original instanceof ValueTimestamp)) {
+            if (!forceTimestamp) {
+                if (original instanceof ValueDate) {
+                    return ValueDate.fromDateValue(dateValue);
+                }
+                if (original instanceof ValueTime) {
+                    return ValueTime.fromNanos(timeNanos);
+                }
+            }
+            if (original instanceof ValueTimestampTimeZone) {
+                return ValueTimestampTimeZone.fromDateValueAndNanos(dateValue, timeNanos,
+                        ((ValueTimestampTimeZone) original).getTimeZoneOffsetMins());
+            }
+        }
+        return ValueTimestamp.fromDateValueAndNanos(dateValue, timeNanos);
+    }",False
+42,getTimeLocalWithoutDst(java.util.Date),Method,,,java.util.Date+getTime() java.util.Date+getTime(),org.h2.util.DateTimeUtils+zoneOffsetMillis,326,10,9,"/** 
+ * Get the number of milliseconds since 1970-01-01 in the local timezone, but without daylight saving time into account.
+ * @param d the date
+ * @return the milliseconds
+ */
+","/**
+     * Get the number of milliseconds since 1970-01-01 in the local timezone,
+     * but without daylight saving time into account.
+     *
+     * @param d the date
+     * @return the milliseconds
+     */
+    public static long getTimeLocalWithoutDst(java.util.Date d) {
+        return d.getTime() + zoneOffsetMillis;
+    }",False
+43,getTimeUTCWithoutDst(long),Method,,org.h2.test.unit.TestDate+testDateTimeUtils() org.h2.test.unit.TestDate+testDateTimeUtils(),,org.h2.util.DateTimeUtils+zoneOffsetMillis,387,10,9,"/** 
+ * Convert the number of milliseconds since 1970-01-01 in the local timezone to UTC, but without daylight saving time into account.
+ * @param millis the number of milliseconds in the local timezone
+ * @return the number of milliseconds in UTC
+ */
+","/**
+     * Convert the number of milliseconds since 1970-01-01 in the local timezone
+     * to UTC, but without daylight saving time into account.
+     *
+     * @param millis the number of milliseconds in the local timezone
+     * @return the number of milliseconds in UTC
+     */
+    public static long getTimeUTCWithoutDst(long millis) {
+        return millis - zoneOffsetMillis;
+    }",False
+44,"getDayOfWeek(long,int)",Method,getIsoDayOfWeek(long) getSundayDayOfWeek(long),,"org.h2.util.DateTimeUtils+getDayOfWeekFromAbsolute(long,int) org.h2.util.DateTimeUtils+getDayOfWeekFromAbsolute(long,int) org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long)",,434,13,9,"/** 
+ * Returns day of week.
+ * @param dateValue the date value
+ * @param firstDayOfWeek first day of week, Monday as 1, Sunday as 7 or 0
+ * @return day of week
+ * @see #getIsoDayOfWeek(long)
+ */
+","/**
+     * Returns day of week.
+     *
+     * @param dateValue
+     *            the date value
+     * @param firstDayOfWeek
+     *            first day of week, Monday as 1, Sunday as 7 or 0
+     * @return day of week
+     * @see #getIsoDayOfWeek(long)
+     */
+    public static int getDayOfWeek(long dateValue, int firstDayOfWeek) {
+        return getDayOfWeekFromAbsolute(absoluteDayFromDateValue(dateValue), firstDayOfWeek);
+    }",False
+45,"getDayOfWeekFromAbsolute(long,int)",Method,"getDayOfWeek(long,int) getWeekOfYearBase(int,int,int)",,,,466,11,9,"/** 
+ * Get the day of the week from the absolute day value.
+ * @param absoluteValue the absolute day
+ * @param firstDayOfWeek the first day of the week
+ * @return the day of week
+ */
+","/**
+     * Get the day of the week from the absolute day value.
+     *
+     * @param absoluteValue the absolute day
+     * @param firstDayOfWeek the first day of the week
+     * @return the day of week
+     */
+    public static int getDayOfWeekFromAbsolute(long absoluteValue, int firstDayOfWeek) {
+        return absoluteValue >= 0 ? (int) ((absoluteValue - firstDayOfWeek + 11) % 7) + 1
+                : (int) ((absoluteValue - firstDayOfWeek - 2) % 7) + 7;
+    }",False
+46,getDayOfYear(long),Method,,,org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+absoluteDayFromYear(long) org.h2.util.DateTimeUtils+absoluteDayFromYear(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long),,325,10,9,"/** 
+ * Returns number of day in year.
+ * @param dateValue the date value
+ * @return number of day in year
+ */
+","/**
+     * Returns number of day in year.
+     *
+     * @param dateValue
+     *            the date value
+     * @return number of day in year
+     */
+    public static int getDayOfYear(long dateValue) {
+        return (int) (absoluteDayFromDateValue(dateValue) - absoluteDayFromYear(yearFromDateValue(dateValue))) + 1;
+    }",False
+47,getIsoDayOfWeek(long),Method,,,"org.h2.util.DateTimeUtils+getDayOfWeek(long,int) org.h2.util.DateTimeUtils+getDayOfWeek(long,int)",,309,11,9,"/** 
+ * Returns ISO day of week.
+ * @param dateValue the date value
+ * @return ISO day of week, Monday as 1 to Sunday as 7
+ * @see #getSundayDayOfWeek(long)
+ */
+","/**
+     * Returns ISO day of week.
+     *
+     * @param dateValue
+     *            the date value
+     * @return ISO day of week, Monday as 1 to Sunday as 7
+     * @see #getSundayDayOfWeek(long)
+     */
+    public static int getIsoDayOfWeek(long dateValue) {
+        return getDayOfWeek(dateValue, 1);
+    }",False
+48,getIsoWeekOfYear(long),Method,,,"org.h2.util.DateTimeUtils+getWeekOfYear(long,int,int) org.h2.util.DateTimeUtils+getWeekOfYear(long,int,int)",,343,12,9,"/** 
+ * Returns ISO number of week in year.
+ * @param dateValue the date value
+ * @return number of week in year
+ * @see #getIsoWeekYear(long)
+ * @see #getWeekOfYear(long,int,int)
+ */
+","/**
+     * Returns ISO number of week in year.
+     *
+     * @param dateValue
+     *            the date value
+     * @return number of week in year
+     * @see #getIsoWeekYear(long)
+     * @see #getWeekOfYear(long, int, int)
+     */
+    public static int getIsoWeekOfYear(long dateValue) {
+        return getWeekOfYear(dateValue, 1, 4);
+    }",False
+49,getIsoWeekYear(long),Method,,,"org.h2.util.DateTimeUtils+getWeekYear(long,int,int) org.h2.util.DateTimeUtils+getWeekYear(long,int,int)",,317,12,9,"/** 
+ * Returns ISO week year.
+ * @param dateValue the date value
+ * @return ISO week year
+ * @see #getIsoWeekOfYear(long)
+ * @see #getWeekYear(long,int,int)
+ */
+","/**
+     * Returns ISO week year.
+     *
+     * @param dateValue
+     *            the date value
+     * @return ISO week year
+     * @see #getIsoWeekOfYear(long)
+     * @see #getWeekYear(long, int, int)
+     */
+    public static int getIsoWeekYear(long dateValue) {
+        return getWeekYear(dateValue, 1, 4);
+    }",False
+50,getSundayDayOfWeek(long),Method,,"org.h2.expression.Function+getSimpleValue(Session,Value,Expression[],Value[])","org.h2.util.DateTimeUtils+getDayOfWeek(long,int) org.h2.util.DateTimeUtils+getDayOfWeek(long,int)",,318,11,9,"/** 
+ * Returns day of week with Sunday as 1.
+ * @param dateValue the date value
+ * @return day of week, Sunday as 1 to Monday as 7
+ * @see #getIsoDayOfWeek(long)
+ */
+","/**
+     * Returns day of week with Sunday as 1.
+     *
+     * @param dateValue
+     *            the date value
+     * @return day of week, Sunday as 1 to Monday as 7
+     * @see #getIsoDayOfWeek(long)
+     */
+    public static int getSundayDayOfWeek(long dateValue) {
+        return getDayOfWeek(dateValue, 0);
+    }",False
+51,"getWeekOfYear(long,int,int)",Method,getIsoWeekOfYear(long),,"org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int)",,1098,25,9,"/** 
+ * Returns number of week in year.
+ * @param dateValue the date value
+ * @param firstDayOfWeek first day of week, Monday as 1, Sunday as 7 or 0
+ * @param minimalDaysInFirstWeek minimal days in first week of year
+ * @return number of week in year
+ * @see #getIsoWeekOfYear(long)
+ */
+","/**
+     * Returns number of week in year.
+     *
+     * @param dateValue
+     *            the date value
+     * @param firstDayOfWeek
+     *            first day of week, Monday as 1, Sunday as 7 or 0
+     * @param minimalDaysInFirstWeek
+     *            minimal days in first week of year
+     * @return number of week in year
+     * @see #getIsoWeekOfYear(long)
+     */
+    public static int getWeekOfYear(long dateValue, int firstDayOfWeek, int minimalDaysInFirstWeek) {
+        long abs = absoluteDayFromDateValue(dateValue);
+        int year = yearFromDateValue(dateValue);
+        long base = getWeekOfYearBase(year, firstDayOfWeek, minimalDaysInFirstWeek);
+        if (abs - base < 0) {
+            base = getWeekOfYearBase(year - 1, firstDayOfWeek, minimalDaysInFirstWeek);
+        } else if (monthFromDateValue(dateValue) == 12 && 24 + minimalDaysInFirstWeek < dayFromDateValue(dateValue)) {
+            if (abs >= getWeekOfYearBase(year + 1, firstDayOfWeek, minimalDaysInFirstWeek)) {
+                return 1;
+            }
+        }
+        return (int) ((abs - base) / 7) + 1;
+    }",False
+52,"getWeekOfYearBase(int,int,int)",Method,"getWeekOfYear(long,int,int) getWeekOfYear(long,int,int) getWeekOfYear(long,int,int) getWeekYear(long,int,int) getWeekYear(long,int,int)",,"org.h2.util.DateTimeUtils+absoluteDayFromYear(long) org.h2.util.DateTimeUtils+absoluteDayFromYear(long) org.h2.util.DateTimeUtils+getDayOfWeekFromAbsolute(long,int) org.h2.util.DateTimeUtils+getDayOfWeekFromAbsolute(long,int)",,390,9,10,,"private static long getWeekOfYearBase(int year, int firstDayOfWeek, int minimalDaysInFirstWeek) {
+        long first = absoluteDayFromYear(year);
+        int daysInFirstWeek = 8 - getDayOfWeekFromAbsolute(first, firstDayOfWeek);
+        long base = first + daysInFirstWeek;
+        if (daysInFirstWeek >= minimalDaysInFirstWeek) {
+            base -= 7;
+        }
+        return base;
+    }",False
+53,"getWeekYear(long,int,int)",Method,getIsoWeekYear(long),,"org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int) org.h2.util.DateTimeUtils+getWeekOfYearBase(int,int,int)",,992,25,9,"/** 
+ * Returns week year.
+ * @param dateValue the date value
+ * @param firstDayOfWeek first day of week, Monday as 1, Sunday as 7 or 0
+ * @param minimalDaysInFirstWeek minimal days in first week of year
+ * @return week year
+ * @see #getIsoWeekYear(long)
+ */
+","/**
+     * Returns week year.
+     *
+     * @param dateValue
+     *            the date value
+     * @param firstDayOfWeek
+     *            first day of week, Monday as 1, Sunday as 7 or 0
+     * @param minimalDaysInFirstWeek
+     *            minimal days in first week of year
+     * @return week year
+     * @see #getIsoWeekYear(long)
+     */
+    public static int getWeekYear(long dateValue, int firstDayOfWeek, int minimalDaysInFirstWeek) {
+        long abs = absoluteDayFromDateValue(dateValue);
+        int year = yearFromDateValue(dateValue);
+        long base = getWeekOfYearBase(year, firstDayOfWeek, minimalDaysInFirstWeek);
+        if (abs - base < 0) {
+            return year - 1;
+        } else if (monthFromDateValue(dateValue) == 12 && 24 + minimalDaysInFirstWeek < dayFromDateValue(dateValue)) {
+            if (abs >= getWeekOfYearBase(year + 1, firstDayOfWeek, minimalDaysInFirstWeek)) {
+                return year + 1;
+            }
+        }
+        return year;
+    }",False
+54,"getDaysInMonth(int,int)",Method,"isValidDate(int,int,int) dateValueFromDenormalizedDate(long,long,int) incrementDateValue(long) decrementDateValue(long)",,,org.h2.util.DateTimeUtils+NORMAL_DAYS_PER_MONTH,644,19,9,"/** 
+ * Returns number of days in month.
+ * @param year the year
+ * @param month the month
+ * @return number of days in the specified month
+ */
+","/**
+     * Returns number of days in month.
+     *
+     * @param year the year
+     * @param month the month
+     * @return number of days in the specified month
+     */
+    public static int getDaysInMonth(int year, int month) {
+        if (month != 2) {
+            return NORMAL_DAYS_PER_MONTH[month];
+        }
+        // All leap years divisible by 4
+        return (year & 3) == 0
+                // All such years before 1582 are Julian and leap
+                && (year < 1582
+                        // Otherwise check Gregorian conditions
+                        || year % 100 != 0 || year % 400 == 0)
+                ? 29 : 28;
+    }",False
+55,"isValidDate(int,int,int)",Method,"parseDateValue(String,int,int)",org.h2.test.unit.TestDate+testAbsoluteDay() org.h2.test.unit.TestDate+testValidDate(),"org.h2.util.DateTimeUtils+getDaysInMonth(int,int) org.h2.util.DateTimeUtils+getDaysInMonth(int,int)",,620,18,9,"/** 
+ * Verify if the specified date is valid.
+ * @param year the year
+ * @param month the month (January is 1)
+ * @param day the day (1 is the first of the month)
+ * @return true if it is valid
+ */
+","/**
+     * Verify if the specified date is valid.
+     *
+     * @param year the year
+     * @param month the month (January is 1)
+     * @param day the day (1 is the first of the month)
+     * @return true if it is valid
+     */
+    public static boolean isValidDate(int year, int month, int day) {
+        if (month < 1 || month > 12 || day < 1) {
+            return false;
+        }
+        if (year == 1582 && month == 10) {
+            // special case: days 1582-10-05 .. 1582-10-14 don't exist
+            return day < 5 || (day > 14 && day <= 31);
+        }
+        return day <= getDaysInMonth(year, month);
+    }",False
+56,convertDateValueToDate(long),Method,,org.h2.value.ValueDate+getDate(),"org.h2.util.DateTimeUtils+getMillis(TimeZone,int,int,int,int,int,int,int) org.h2.util.DateTimeUtils+getMillis(TimeZone,int,int,int,int,int,int,int) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) java.sql.Date+Date(long)",,450,13,9,"/** 
+ * Convert an encoded date value to a java.util.Date, using the default timezone.
+ * @param dateValue the date value
+ * @return the date
+ */
+","/**
+     * Convert an encoded date value to a java.util.Date, using the default
+     * timezone.
+     *
+     * @param dateValue the date value
+     * @return the date
+     */
+    public static Date convertDateValueToDate(long dateValue) {
+        long millis = getMillis(null, yearFromDateValue(dateValue),
+                monthFromDateValue(dateValue), dayFromDateValue(dateValue), 0,
+                0, 0, 0);
+        return new Date(millis);
+    }",False
+57,"convertDateTimeValueToMillis(TimeZone,long,long)",Method,,,"org.h2.util.DateTimeUtils+getMillis(TimeZone,int,int,int,int,int,int,int) org.h2.util.DateTimeUtils+getMillis(TimeZone,int,int,int,int,int,int,int) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long)",,698,18,9,"/** 
+ * Convert an encoded date-time value to millis, using the supplied timezone.
+ * @param tz the timezone
+ * @param dateValue the date value
+ * @param ms milliseconds of day
+ * @return the date
+ */
+","/**
+     * Convert an encoded date-time value to millis, using the supplied timezone.
+     *
+     * @param tz the timezone
+     * @param dateValue the date value
+     * @param ms milliseconds of day
+     * @return the date
+     */
+    public static long convertDateTimeValueToMillis(TimeZone tz, long dateValue, long ms) {
+        long second = ms / 1000;
+        ms -= second * 1000;
+        int minute = (int) (second / 60);
+        second -= minute * 60;
+        int hour = minute / 60;
+        minute -= hour * 60;
+        return getMillis(tz, yearFromDateValue(dateValue), monthFromDateValue(dateValue), dayFromDateValue(dateValue),
+                hour, minute, (int) second, (int) ms);
+    }",False
+58,"convertDateValueToTimestamp(long,long)",Method,,org.h2.value.ValueTimestamp+getTimestamp(),,,621,15,9,"/** 
+ * Convert an encoded date value / time value to a timestamp, using the default timezone.
+ * @param dateValue the date value
+ * @param timeNanos the nanoseconds since midnight
+ * @return the timestamp
+ */
+","/**
+     * Convert an encoded date value / time value to a timestamp, using the
+     * default timezone.
+     *
+     * @param dateValue the date value
+     * @param timeNanos the nanoseconds since midnight
+     * @return the timestamp
+     */
+    public static Timestamp convertDateValueToTimestamp(long dateValue,
+            long timeNanos) {
+        Timestamp ts = new Timestamp(convertDateTimeValueToMillis(null, dateValue, timeNanos / 1_000_000));
+        // This method expects the complete nanoseconds value including milliseconds
+        ts.setNanos((int) (timeNanos % NANOS_PER_SECOND));
+        return ts;
+    }",False
+59,"convertTimestampTimeZoneToTimestamp(long,long,short)",Method,,org.h2.value.ValueTimestampTimeZone+getTimestamp(),"java.sql.Timestamp+Timestamp(long) org.h2.util.DateTimeUtils+getMillis(long,long,short) org.h2.util.DateTimeUtils+getMillis(long,long,short) java.sql.Timestamp+setNanos(int) java.sql.Timestamp+setNanos(int)",org.h2.util.DateTimeUtils+NANOS_PER_SECOND,587,14,9,"/** 
+ * Convert an encoded date value / time value to a timestamp using the specified time zone offset.
+ * @param dateValue the date value
+ * @param timeNanos the nanoseconds since midnight
+ * @param offsetMins time zone offset in minutes
+ * @return the timestamp
+ */
+","/**
+     * Convert an encoded date value / time value to a timestamp using the specified
+     * time zone offset.
+     *
+     * @param dateValue the date value
+     * @param timeNanos the nanoseconds since midnight
+     * @param offsetMins time zone offset in minutes
+     * @return the timestamp
+     */
+    public static Timestamp convertTimestampTimeZoneToTimestamp(long dateValue, long timeNanos, short offsetMins) {
+        Timestamp ts = new Timestamp(getMillis(dateValue, timeNanos, offsetMins));
+        ts.setNanos((int) (timeNanos % NANOS_PER_SECOND));
+        return ts;
+    }",False
+60,convertNanoToTime(long),Method,,org.h2.value.ValueTime+getTime(),,,595,18,9,"/** 
+ * Convert a time value to a time, using the default timezone.
+ * @param nanosSinceMidnight the nanoseconds since midnight
+ * @return the time
+ */
+","/**
+     * Convert a time value to a time, using the default timezone.
+     *
+     * @param nanosSinceMidnight the nanoseconds since midnight
+     * @return the time
+     */
+    public static Time convertNanoToTime(long nanosSinceMidnight) {
+        long millis = nanosSinceMidnight / 1_000_000;
+        long s = millis / 1_000;
+        millis -= s * 1_000;
+        long m = s / 60;
+        s -= m * 60;
+        long h = m / 60;
+        m -= h * 60;
+        long ms = getMillis(null, 1970, 1, 1, (int) (h % 24), (int) m, (int) s,
+                (int) millis);
+        return new Time(ms);
+    }",False
+61,yearFromDateValue(long),Method,"convertDate(Value,Calendar) getDayOfYear(long) getWeekOfYear(long,int,int) getWeekYear(long,int,int) convertDateValueToDate(long) convertDateTimeValueToMillis(TimeZone,long,long) incrementDateValue(long) decrementDateValue(long)","org.h2.api.TimestampWithTimeZone+getYear() org.h2.util.LocalDateTimeUtils+localDateFromDateValue(long) org.h2.test.unit.TestDate+testAbsoluteDay() org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar)",,org.h2.util.DateTimeUtils+SHIFT_YEAR,209,9,9,"/** 
+ * Get the year from a date value.
+ * @param x the date value
+ * @return the year
+ */
+","/**
+     * Get the year from a date value.
+     *
+     * @param x the date value
+     * @return the year
+     */
+    public static int yearFromDateValue(long x) {
+        return (int) (x >>> SHIFT_YEAR);
+    }",False
+62,monthFromDateValue(long),Method,"convertDate(Value,Calendar) getWeekOfYear(long,int,int) getWeekYear(long,int,int) convertDateValueToDate(long) convertDateTimeValueToMillis(TimeZone,long,long) incrementDateValue(long) decrementDateValue(long)","org.h2.api.TimestampWithTimeZone+getMonth() org.h2.expression.Function+getSimpleValue(Session,Value,Expression[],Value[]) org.h2.util.LocalDateTimeUtils+localDateFromDateValue(long) org.h2.test.unit.TestDate+testAbsoluteDay() org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar)",,org.h2.util.DateTimeUtils+SHIFT_MONTH,226,9,9,"/** 
+ * Get the month from a date value.
+ * @param x the date value
+ * @return the month (1..12)
+ */
+","/**
+     * Get the month from a date value.
+     *
+     * @param x the date value
+     * @return the month (1..12)
+     */
+    public static int monthFromDateValue(long x) {
+        return (int) (x >>> SHIFT_MONTH) & 15;
+    }",False
+63,dayFromDateValue(long),Method,"convertDate(Value,Calendar) getWeekOfYear(long,int,int) getWeekYear(long,int,int) convertDateValueToDate(long) convertDateTimeValueToMillis(TimeZone,long,long) incrementDateValue(long) decrementDateValue(long)","org.h2.api.TimestampWithTimeZone+getDay() org.h2.util.LocalDateTimeUtils+localDateFromDateValue(long) org.h2.test.unit.TestDate+testAbsoluteDay() org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar)",,,213,9,9,"/** 
+ * Get the day of month from a date value.
+ * @param x the date value
+ * @return the day (1..31)
+ */
+","/**
+     * Get the day of month from a date value.
+     *
+     * @param x the date value
+     * @return the day (1..31)
+     */
+    public static int dayFromDateValue(long x) {
+        return (int) (x & 31);
+    }",False
+64,"dateValue(long,int,int)",Method,"parseDateValue(String,int,int) dateValueFromDenormalizedDate(long,long,int) incrementDateValue(long) decrementDateValue(long)","org.h2.util.LocalDateTimeUtils+dateValueFromLocalDate(Object) org.h2.test.unit.TestDate+testAbsoluteDay() org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar) org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar)",,org.h2.util.DateTimeUtils+SHIFT_YEAR org.h2.util.DateTimeUtils+SHIFT_MONTH,333,11,9,"/** 
+ * Get the date value from a given date.
+ * @param year the year
+ * @param month the month (1..12)
+ * @param day the day (1..31)
+ * @return the date value
+ */
+","/**
+     * Get the date value from a given date.
+     *
+     * @param year the year
+     * @param month the month (1..12)
+     * @param day the day (1..31)
+     * @return the date value
+     */
+    public static long dateValue(long year, int month, int day) {
+        return (year << SHIFT_YEAR) | (month << SHIFT_MONTH) | day;
+    }",False
+65,"dateValueFromDenormalizedDate(long,long,int)",Method,,org.h2.test.unit.TestDateTimeUtils+testDateValueFromDenormalizedDate() org.h2.test.unit.TestDateTimeUtils+testDateValueFromDenormalizedDate() org.h2.test.unit.TestDateTimeUtils+testDateValueFromDenormalizedDate() org.h2.test.unit.TestDateTimeUtils+testDateValueFromDenormalizedDate() org.h2.test.unit.TestDateTimeUtils+testDateValueFromDenormalizedDate(),"org.h2.util.DateTimeUtils+getDaysInMonth(int,int) org.h2.util.DateTimeUtils+getDaysInMonth(int,int) org.h2.util.DateTimeUtils+dateValue(long,int,int) org.h2.util.DateTimeUtils+dateValue(long,int,int)",,1016,31,9,"/** 
+ * Get the date value from a given denormalized date with possible out of range values of month and/or day. Used after addition or subtraction month or years to (from) it to get a valid date.
+ * @param year the year
+ * @param month the month, if out of range month and year will be normalized
+ * @param day the day of the month, if out of range it will be saturated
+ * @return the date value
+ */
+","/**
+     * Get the date value from a given denormalized date with possible out of range
+     * values of month and/or day. Used after addition or subtraction month or years
+     * to (from) it to get a valid date.
+     *
+     * @param year
+     *            the year
+     * @param month
+     *            the month, if out of range month and year will be normalized
+     * @param day
+     *            the day of the month, if out of range it will be saturated
+     * @return the date value
+     */
+    public static long dateValueFromDenormalizedDate(long year, long month, int day) {
+        long mm1 = month - 1;
+        long yd = mm1 / 12;
+        if (mm1 < 0 && yd * 12 != mm1) {
+            yd--;
+        }
+        int y = (int) (year + yd);
+        int m = (int) (month - yd * 12);
+        if (day < 1) {
+            day = 1;
+        } else {
+            int max = getDaysInMonth(y, m);
+            if (day > max) {
+                day = max;
+            }
+        }
+        return dateValue(y, m, day);
+    }",False
+66,dateValueFromDate(long),Method,,"org.h2.value.ValueDate+get(Date) org.h2.value.ValueDate+fromMillis(long) org.h2.value.ValueTimestamp+fromMillisNanos(long,int) org.h2.value.ValueTimestamp+fromMillis(long) org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar)",java.util.TimeZone+getOffset(long) org.h2.util.DateTimeUtils+getTimeZone() org.h2.util.DateTimeUtils+getTimeZone() java.util.TimeZone+getOffset(long) org.h2.util.DateTimeUtils+dateValueFromAbsoluteDay(long) org.h2.util.DateTimeUtils+dateValueFromAbsoluteDay(long),org.h2.util.DateTimeUtils+MILLIS_PER_DAY org.h2.util.DateTimeUtils+MILLIS_PER_DAY,517,16,9,"/** 
+ * Convert a UTC datetime in millis to an encoded date in the default timezone.
+ * @param ms the milliseconds
+ * @return the date value
+ */
+","/**
+     * Convert a UTC datetime in millis to an encoded date in the default
+     * timezone.
+     *
+     * @param ms the milliseconds
+     * @return the date value
+     */
+    public static long dateValueFromDate(long ms) {
+        ms += getTimeZone().getOffset(ms);
+        long absoluteDay = ms / MILLIS_PER_DAY;
+        // Round toward negative infinity
+        if (ms < 0 && (absoluteDay * MILLIS_PER_DAY != ms)) {
+            absoluteDay--;
+        }
+        return dateValueFromAbsoluteDay(absoluteDay);
+    }",False
+67,dateValueFromCalendar(Calendar),Method,"convertDate(Date,Calendar)",,java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int),java.util.Calendar+YEAR java.util.Calendar+ERA java.util.GregorianCalendar+BC java.util.Calendar+MONTH java.util.Calendar+DAY_OF_MONTH org.h2.util.DateTimeUtils+SHIFT_YEAR org.h2.util.DateTimeUtils+SHIFT_MONTH,527,15,10,"/** 
+ * Calculate the encoded date value from a given calendar.
+ * @param cal the calendar
+ * @return the date value
+ */
+","/**
+     * Calculate the encoded date value from a given calendar.
+     *
+     * @param cal the calendar
+     * @return the date value
+     */
+    private static long dateValueFromCalendar(Calendar cal) {
+        int year = cal.get(Calendar.YEAR);
+        if (cal.get(Calendar.ERA) == GregorianCalendar.BC) {
+            year = 1 - year;
+        }
+        int month = cal.get(Calendar.MONTH) + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return ((long) year << SHIFT_YEAR) | (month << SHIFT_MONTH) | day;
+    }",False
+68,nanosFromDate(long),Method,,"org.h2.value.ValueTime+get(Time) org.h2.value.ValueTime+fromMillis(long) org.h2.value.ValueTimestamp+fromMillisNanos(long,int) org.h2.value.ValueTimestamp+fromMillis(long) org.h2.test.unit.TestDate+testDateTimeUtils() org.h2.test.unit.TestDate+testDateTimeUtils() org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar)",,,546,16,9,"/** 
+ * Convert a time in milliseconds in UTC to the nanoseconds since midnight (in the default timezone).
+ * @param ms the milliseconds
+ * @return the nanoseconds
+ */
+","/**
+     * Convert a time in milliseconds in UTC to the nanoseconds since midnight
+     * (in the default timezone).
+     *
+     * @param ms the milliseconds
+     * @return the nanoseconds
+     */
+    public static long nanosFromDate(long ms) {
+        ms += getTimeZone().getOffset(ms);
+        long absoluteDay = ms / MILLIS_PER_DAY;
+        // Round toward negative infinity
+        if (ms < 0 && (absoluteDay * MILLIS_PER_DAY != ms)) {
+            absoluteDay--;
+        }
+        return (ms - absoluteDay * MILLIS_PER_DAY) * 1_000_000;
+    }",False
+69,nanosFromCalendar(Calendar),Method,"convertTime(Time,Calendar)",,java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int),java.util.Calendar+HOUR_OF_DAY java.util.Calendar+MINUTE java.util.Calendar+SECOND java.util.Calendar+MILLISECOND,469,13,10,"/** 
+ * Convert a java.util.Calendar to nanoseconds since midnight.
+ * @param cal the calendar
+ * @return the nanoseconds
+ */
+","/**
+     * Convert a java.util.Calendar to nanoseconds since midnight.
+     *
+     * @param cal the calendar
+     * @return the nanoseconds
+     */
+    private static long nanosFromCalendar(Calendar cal) {
+        int h = cal.get(Calendar.HOUR_OF_DAY);
+        int m = cal.get(Calendar.MINUTE);
+        int s = cal.get(Calendar.SECOND);
+        int millis = cal.get(Calendar.MILLISECOND);
+        return ((((((h * 60L) + m) * 60) + s) * 1000) + millis) * 1000000;
+    }",False
+70,"normalizeTimestamp(long,long)",Method,,org.h2.value.Value+convertToTimestampTimeZone() org.h2.value.ValueTimestamp+add(Value) org.h2.value.ValueTimestamp+subtract(Value),"org.h2.value.ValueTimestamp+fromDateValueAndNanos(long,long) org.h2.value.ValueTimestamp+fromDateValueAndNanos(long,long) org.h2.util.DateTimeUtils+dateValueFromAbsoluteDay(long) org.h2.util.DateTimeUtils+dateValueFromAbsoluteDay(long)",org.h2.util.DateTimeUtils+NANOS_PER_DAY org.h2.util.DateTimeUtils+NANOS_PER_DAY org.h2.util.DateTimeUtils+NANOS_PER_DAY org.h2.util.DateTimeUtils+NANOS_PER_DAY org.h2.util.DateTimeUtils+NANOS_PER_DAY org.h2.util.DateTimeUtils+NANOS_PER_DAY,762,22,9,"/** 
+ * Calculate the normalized timestamp.
+ * @param absoluteDay the absolute day
+ * @param nanos the nanoseconds (may be negative or larger than one day)
+ * @return the timestamp
+ */
+","/**
+     * Calculate the normalized timestamp.
+     *
+     * @param absoluteDay the absolute day
+     * @param nanos the nanoseconds (may be negative or larger than one day)
+     * @return the timestamp
+     */
+    public static ValueTimestamp normalizeTimestamp(long absoluteDay,
+            long nanos) {
+        if (nanos > NANOS_PER_DAY || nanos < 0) {
+            long d;
+            if (nanos > NANOS_PER_DAY) {
+                d = nanos / NANOS_PER_DAY;
+            } else {
+                d = (nanos - NANOS_PER_DAY + 1) / NANOS_PER_DAY;
+            }
+            nanos -= d * NANOS_PER_DAY;
+            absoluteDay += d;
+        }
+        return ValueTimestamp.fromDateValueAndNanos(
+                dateValueFromAbsoluteDay(absoluteDay), nanos);
+    }",False
+71,"timestampTimeZoneFromLocalDateValueAndNanos(long,long)",Method,,org.h2.value.Value+convertToTimestampTimeZone() org.h2.value.Value+convertToTimestampTimeZone() org.h2.value.Value+convertToTimestampTimeZone(),,,1052,25,9,"/** 
+ * Converts local date value and nanoseconds to timestamp with time zone.
+ * @param dateValue date value
+ * @param timeNanos nanoseconds since midnight
+ * @return timestamp with time zone
+ */
+","/**
+     * Converts local date value and nanoseconds to timestamp with time zone.
+     *
+     * @param dateValue
+     *            date value
+     * @param timeNanos
+     *            nanoseconds since midnight
+     * @return timestamp with time zone
+     */
+    public static ValueTimestampTimeZone timestampTimeZoneFromLocalDateValueAndNanos(long dateValue, long timeNanos) {
+        int timeZoneOffset = getTimeZoneOffsetMillis(null, dateValue, timeNanos);
+        int offsetMins = timeZoneOffset / 60_000;
+        int correction = timeZoneOffset % 60_000;
+        if (correction != 0) {
+            timeNanos -= correction;
+            if (timeNanos < 0) {
+                timeNanos += NANOS_PER_DAY;
+                dateValue = decrementDateValue(dateValue);
+            } else if (timeNanos >= NANOS_PER_DAY) {
+                timeNanos -= NANOS_PER_DAY;
+                dateValue = incrementDateValue(dateValue);
+            }
+        }
+        return ValueTimestampTimeZone.fromDateValueAndNanos(dateValue, timeNanos, (short) offsetMins);
+    }",False
+72,timestampTimeZoneFromMillis(long),Method,,org.h2.util.CurrentTimestamp+get(),,,719,17,9,"/** 
+ * @param ms milliseconds since 1970-01-01 (UTC)
+ * @return timestamp with time zone with specified value and current time zone
+ */
+","/**
+     * @param ms milliseconds since 1970-01-01 (UTC)
+     * @return timestamp with time zone with specified value and current time zone
+     */
+    public static ValueTimestampTimeZone timestampTimeZoneFromMillis(long ms) {
+        int offset = getTimeZone().getOffset(ms);
+        ms += offset;
+        long absoluteDay = ms / MILLIS_PER_DAY;
+        // Round toward negative infinity
+        if (ms < 0 && (absoluteDay * MILLIS_PER_DAY != ms)) {
+            absoluteDay--;
+        }
+        return ValueTimestampTimeZone.fromDateValueAndNanos(
+                dateValueFromAbsoluteDay(absoluteDay),
+                (ms - absoluteDay * MILLIS_PER_DAY) * 1_000_000,
+                (short) (offset / 60_000));
+    }",False
+73,absoluteDayFromYear(long),Method,"getDayOfYear(long) getWeekOfYearBase(int,int,int)",org.h2.test.unit.TestDate+testAbsoluteDay(),,,551,19,9,"/** 
+ * Calculate the absolute day for a January, 1 of the specified year.
+ * @param year the year
+ * @return the absolute day
+ */
+","/**
+     * Calculate the absolute day for a January, 1 of the specified year.
+     *
+     * @param year
+     *            the year
+     * @return the absolute day
+     */
+    public static long absoluteDayFromYear(long year) {
+        year--;
+        long a = ((year * 1461L) >> 2) - 719_177;
+        if (year < 1582) {
+            // Julian calendar
+            a += 13;
+        } else if (year < 1900 || year > 2099) {
+            // Gregorian calendar (slow mode)
+            a += (year / 400) - (year / 100) + 15;
+        }
+        return a;
+    }",False
+74,absoluteDayFromDateValue(long),Method,"getDayOfWeek(long,int) getDayOfYear(long) getWeekOfYear(long,int,int) getWeekYear(long,int,int) incrementDateValue(long) decrementDateValue(long)","org.h2.expression.IntervalOperation+getDateTimeWithInterval(Value,Value,int,int) org.h2.expression.IntervalOperation+getDateTimeWithInterval(Value,Value,int,int) org.h2.util.DateTimeFunctions+extract(String,Value) org.h2.value.ValueTimestamp+add(Value) org.h2.value.ValueTimestamp+add(Value) org.h2.value.ValueTimestamp+subtract(Value) org.h2.value.ValueTimestamp+subtract(Value) org.h2.test.unit.TestDate+testValueTimestamp() org.h2.test.unit.TestDate+testAbsoluteDay() org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar) org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar)",,,821,24,9,"/** 
+ * Calculate the absolute day from an encoded date value.
+ * @param dateValue the date value
+ * @return the absolute day
+ */
+","/**
+     * Calculate the absolute day from an encoded date value.
+     *
+     * @param dateValue the date value
+     * @return the absolute day
+     */
+    public static long absoluteDayFromDateValue(long dateValue) {
+        long y = yearFromDateValue(dateValue);
+        int m = monthFromDateValue(dateValue);
+        int d = dayFromDateValue(dateValue);
+        if (m <= 2) {
+            y--;
+            m += 12;
+        }
+        long a = ((y * 1461L) >> 2) + DAYS_OFFSET[m - 3] + d - 719_484;
+        if (y <= 1582 && ((y < 1582) || (m * 100 + d < 10_15))) {
+            // Julian calendar (cutover at 1582-10-04 / 1582-10-15)
+            a += 13;
+        } else if (y < 1900 || y > 2099) {
+            // Gregorian calendar (slow mode)
+            a += (y / 400) - (y / 100) + 15;
+        }
+        return a;
+    }",False
+75,prolepticGregorianAbsoluteDayFromDateValue(long),Method,,,,,727,22,9,"/** 
+ * Calculate the absolute day from an encoded date value in proleptic Gregorian calendar.
+ * @param dateValue the date value
+ * @return the absolute day in proleptic Gregorian calendar
+ */
+","/**
+     * Calculate the absolute day from an encoded date value in proleptic Gregorian
+     * calendar.
+     *
+     * @param dateValue the date value
+     * @return the absolute day in proleptic Gregorian calendar
+     */
+    public static long prolepticGregorianAbsoluteDayFromDateValue(long dateValue) {
+        long y = yearFromDateValue(dateValue);
+        int m = monthFromDateValue(dateValue);
+        int d = dayFromDateValue(dateValue);
+        if (m <= 2) {
+            y--;
+            m += 12;
+        }
+        long a = ((y * 1461L) >> 2) + DAYS_OFFSET[m - 3] + d - 719_484;
+        if (y < 1900 || y > 2099) {
+            // Slow mode
+            a += (y / 400) - (y / 100) + 15;
+        }
+        return a;
+    }",False
+76,dateValueFromAbsoluteDay(long),Method,"dateValueFromDate(long) normalizeTimestamp(long,long) incrementDateValue(long) decrementDateValue(long)","org.h2.expression.IntervalOperation+getDateTimeWithInterval(Value,Value,int,int) org.h2.expression.IntervalOperation+getDateTimeWithInterval(Value,Value,int,int) org.h2.test.unit.TestDate+testAbsoluteDay() org.h2.test.unit.TestDate+testAbsoluteDay() org.h2.test.unit.TestDateTimeUtils+testUTC2ValueImpl(TimeZone,GregorianCalendar)",,,1130,40,9,"/** 
+ * Calculate the encoded date value from an absolute day.
+ * @param absoluteDay the absolute day
+ * @return the date value
+ */
+","/**
+     * Calculate the encoded date value from an absolute day.
+     *
+     * @param absoluteDay the absolute day
+     * @return the date value
+     */
+    public static long dateValueFromAbsoluteDay(long absoluteDay) {
+        long d = absoluteDay + 719_468;
+        long y100, offset;
+        if (d > 578_040) {
+            // Gregorian calendar
+            long y400 = d / 146_097;
+            d -= y400 * 146_097;
+            y100 = d / 36_524;
+            d -= y100 * 36_524;
+            offset = y400 * 400 + y100 * 100;
+        } else {
+            // Julian calendar
+            y100 = 0;
+            d += 292_200_000_002L;
+            offset = -800_000_000;
+        }
+        long y4 = d / 1461;
+        d -= y4 * 1461;
+        long y = d / 365;
+        d -= y * 365;
+        if (d == 0 && (y == 4 || y100 == 4)) {
+            y--;
+            d += 365;
+        }
+        y += offset + y4 * 4;
+        // month of a day
+        int m = ((int) d * 2 + 1) * 5 / 306;
+        d -= DAYS_OFFSET[m] - 1;
+        if (m >= 10) {
+            y++;
+            m -= 12;
+        }
+        return dateValue(y, m + 3, (int) d);
+    }",False
+77,incrementDateValue(long),Method,,"org.h2.value.ValueTimestamp+convertScale(boolean,int) org.h2.value.ValueTimestampTimeZone+convertScale(boolean,int) org.h2.test.unit.TestDate+testAbsoluteDay()","org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+dateValueFromAbsoluteDay(long) org.h2.util.DateTimeUtils+dateValueFromAbsoluteDay(long) org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+getDaysInMonth(int,int) org.h2.util.DateTimeUtils+getDaysInMonth(int,int) org.h2.util.DateTimeUtils+dateValue(long,int,int) org.h2.util.DateTimeUtils+dateValue(long,int,int)",,874,29,9,"/** 
+ * Return the next date value.
+ * @param dateValue the date value
+ * @return the next date value
+ */
+","/**
+     * Return the next date value.
+     *
+     * @param dateValue
+     *            the date value
+     * @return the next date value
+     */
+    public static long incrementDateValue(long dateValue) {
+        int year = yearFromDateValue(dateValue);
+        if (year == 1582) {
+            // Use slow way instead of rarely needed large custom code.
+            return dateValueFromAbsoluteDay(absoluteDayFromDateValue(dateValue) + 1);
+        }
+        int day = dayFromDateValue(dateValue);
+        if (day < 28) {
+            return dateValue + 1;
+        }
+        int month = monthFromDateValue(dateValue);
+        if (day < getDaysInMonth(year, month)) {
+            return dateValue + 1;
+        }
+        if (month < 12) {
+            month++;
+        } else {
+            month = 1;
+            year++;
+        }
+        return dateValue(year, month, 1);
+    }",False
+78,decrementDateValue(long),Method,,org.h2.test.unit.TestDate+testAbsoluteDay(),"org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+yearFromDateValue(long) org.h2.util.DateTimeUtils+dateValueFromAbsoluteDay(long) org.h2.util.DateTimeUtils+dateValueFromAbsoluteDay(long) org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+absoluteDayFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+dayFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+monthFromDateValue(long) org.h2.util.DateTimeUtils+dateValue(long,int,int) org.h2.util.DateTimeUtils+dateValue(long,int,int) org.h2.util.DateTimeUtils+getDaysInMonth(int,int) org.h2.util.DateTimeUtils+getDaysInMonth(int,int)",,791,25,9,"/** 
+ * Return the previous date value.
+ * @param dateValue the date value
+ * @return the previous date value
+ */
+","/**
+     * Return the previous date value.
+     *
+     * @param dateValue
+     *            the date value
+     * @return the previous date value
+     */
+    public static long decrementDateValue(long dateValue) {
+        int year = yearFromDateValue(dateValue);
+        if (year == 1582) {
+            // Use slow way instead of rarely needed large custom code.
+            return dateValueFromAbsoluteDay(absoluteDayFromDateValue(dateValue) - 1);
+        }
+        if (dayFromDateValue(dateValue) > 1) {
+            return dateValue - 1;
+        }
+        int month = monthFromDateValue(dateValue);
+        if (month > 1) {
+            month--;
+        } else {
+            month = 12;
+            year--;
+        }
+        return dateValue(year, month, getDaysInMonth(year, month));
+    }",False
+79,"appendDate(StringBuilder,long)",Method,"timestampTimeZoneToString(long,long,short)",org.h2.value.ValueDate+getString() org.h2.value.ValueTimestamp+getString(),,,658,20,9,"/** 
+ * Append a date to the string builder.
+ * @param buff the target string builder
+ * @param dateValue the date value
+ */
+","/**
+     * Append a date to the string builder.
+     *
+     * @param buff the target string builder
+     * @param dateValue the date value
+     */
+    public static void appendDate(StringBuilder buff, long dateValue) {
+        int y = yearFromDateValue(dateValue);
+        int m = monthFromDateValue(dateValue);
+        int d = dayFromDateValue(dateValue);
+        if (y > 0 && y < 10_000) {
+            StringUtils.appendZeroPadded(buff, 4, y);
+        } else {
+            buff.append(y);
+        }
+        buff.append('-');
+        StringUtils.appendZeroPadded(buff, 2, m);
+        buff.append('-');
+        StringUtils.appendZeroPadded(buff, 2, d);
+    }",False
+80,"appendTime(StringBuilder,long)",Method,"timestampTimeZoneToString(long,long,short)",org.h2.value.ValueTime+fromNanos(long) org.h2.value.ValueTime+getString() org.h2.value.ValueTimestamp+getString(),,,1323,39,9,"/** 
+ * Append a time to the string builder.
+ * @param buff the target string builder
+ * @param nanos the time in nanoseconds
+ */
+","/**
+     * Append a time to the string builder.
+     *
+     * @param buff the target string builder
+     * @param nanos the time in nanoseconds
+     */
+    public static void appendTime(StringBuilder buff, long nanos) {
+        if (nanos < 0) {
+            buff.append('-');
+            nanos = -nanos;
+        }
+        /*
+         * nanos now either in range from 0 to Long.MAX_VALUE or equals to
+         * Long.MIN_VALUE. We need to divide nanos by 1000000 with unsigned division to
+         * get correct result. The simplest way to do this with such constraints is to
+         * divide -nanos by -1000000.
+         */
+        long ms = -nanos / -1_000_000;
+        nanos -= ms * 1_000_000;
+        long s = ms / 1_000;
+        ms -= s * 1_000;
+        long m = s / 60;
+        s -= m * 60;
+        long h = m / 60;
+        m -= h * 60;
+        StringUtils.appendZeroPadded(buff, 2, h);
+        buff.append(':');
+        StringUtils.appendZeroPadded(buff, 2, m);
+        buff.append(':');
+        StringUtils.appendZeroPadded(buff, 2, s);
+        if (ms > 0 || nanos > 0) {
+            buff.append('.');
+            StringUtils.appendZeroPadded(buff, 3, ms);
+            if (nanos > 0) {
+                StringUtils.appendZeroPadded(buff, 6, nanos);
+            }
+            stripTrailingZeroes(buff);
+        }
+    }",False
+81,stripTrailingZeroes(StringBuilder),Method,"appendNanos(StringBuilder,long)",,java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.StringBuilder+charAt(int) java.lang.StringBuilder+charAt(int) java.lang.StringBuilder+charAt(int) java.lang.StringBuilder+charAt(int) java.lang.StringBuilder+setLength(int) java.lang.StringBuilder+setLength(int),,274,9,10,,"private static void stripTrailingZeroes(StringBuilder buff) {
+        int i = buff.length() - 1;
+        if (buff.charAt(i) == '0') {
+            while (buff.charAt(--i) == '0') {
+                // do nothing
+            }
+            buff.setLength(i + 1);
+        }
+    }",False
+82,"appendTimeZone(StringBuilder,short)",Method,"timestampTimeZoneToString(long,long,short)",,"java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long)",,623,22,9,"/** 
+ * Append a time zone to the string builder.
+ * @param buff the target string builder
+ * @param tz the time zone in minutes
+ */
+","/**
+     * Append a time zone to the string builder.
+     *
+     * @param buff the target string builder
+     * @param tz the time zone in minutes
+     */
+    public static void appendTimeZone(StringBuilder buff, short tz) {
+        if (tz < 0) {
+            buff.append('-');
+            tz = (short) -tz;
+        } else {
+            buff.append('+');
+        }
+        int hours = tz / 60;
+        tz -= hours * 60;
+        int mins = tz;
+        StringUtils.appendZeroPadded(buff, 2, hours);
+        if (mins != 0) {
+            buff.append(':');
+            StringUtils.appendZeroPadded(buff, 2, mins);
+        }
+    }",False
+83,"timestampTimeZoneToString(long,long,short)",Method,,org.h2.api.TimestampWithTimeZone+toString() org.h2.value.ValueTimestampTimeZone+getString(),"java.lang.StringBuilder+StringBuilder(int) org.h2.util.DateTimeUtils+appendDate(StringBuilder,long) org.h2.util.DateTimeUtils+appendDate(StringBuilder,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.DateTimeUtils+appendTime(StringBuilder,long) org.h2.util.DateTimeUtils+appendTime(StringBuilder,long) org.h2.util.DateTimeUtils+appendTimeZone(StringBuilder,short) org.h2.util.DateTimeUtils+appendTimeZone(StringBuilder,short) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString()",org.h2.value.ValueTimestampTimeZone+MAXIMUM_PRECISION,659,16,9,"/** 
+ * Formats timestamp with time zone as string.
+ * @param dateValue the year-month-day bit field
+ * @param timeNanos nanoseconds since midnight
+ * @param timeZoneOffsetMins the time zone offset in minutes
+ * @return formatted string
+ */
+","/**
+     * Formats timestamp with time zone as string.
+     *
+     * @param dateValue the year-month-day bit field
+     * @param timeNanos nanoseconds since midnight
+     * @param timeZoneOffsetMins the time zone offset in minutes
+     * @return formatted string
+     */
+    public static String timestampTimeZoneToString(long dateValue, long timeNanos, short timeZoneOffsetMins) {
+        StringBuilder buff = new StringBuilder(ValueTimestampTimeZone.MAXIMUM_PRECISION);
+        appendDate(buff, dateValue);
+        buff.append(' ');
+        appendTime(buff, timeNanos);
+        appendTimeZone(buff, timeZoneOffsetMins);
+        return buff.toString();
+    }",False
+84,timeZoneNameFromOffsetMins(int),Method,,"org.h2.util.ToChar+getTimeZone(Value,boolean)","java.lang.StringBuilder+StringBuilder(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString()",,717,24,9,"/** 
+ * Generates time zone name for the specified offset in minutes.
+ * @param offsetMins offset in minutes
+ * @return time zone name
+ */
+","/**
+     * Generates time zone name for the specified offset in minutes.
+     *
+     * @param offsetMins
+     *            offset in minutes
+     * @return time zone name
+     */
+    public static String timeZoneNameFromOffsetMins(int offsetMins) {
+        if (offsetMins == 0) {
+            return ""UTC"";
+        }
+        StringBuilder b = new StringBuilder(9);
+        b.append(""GMT"");
+        if (offsetMins < 0) {
+            b.append('-');
+            offsetMins = -offsetMins;
+        } else {
+            b.append('+');
+        }
+        StringUtils.appendZeroPadded(b, 2, offsetMins / 60);
+        b.append(':');
+        StringUtils.appendZeroPadded(b, 2, offsetMins % 60);
+        return b.toString();
+    }",False
+85,"parseFormattedInterval(IntervalQualifier,String)",Method,,org.h2.value.Value+convertToIntervalYearMonth(int) org.h2.value.Value+convertToIntervalDayTime(int),"org.h2.util.DateTimeUtils+skipWS(String,int) org.h2.util.DateTimeUtils+skipWS(String,int) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+skipWS(String,int) org.h2.util.DateTimeUtils+skipWS(String,int) java.lang.String+charAt(int) java.lang.String+charAt(int) org.h2.util.DateTimeUtils+skipWS(String,int) org.h2.util.DateTimeUtils+skipWS(String,int) java.lang.String+charAt(int) java.lang.String+charAt(int) org.h2.util.DateTimeUtils+skipWS(String,int) org.h2.util.DateTimeUtils+skipWS(String,int) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.String+length() java.lang.String+length() java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.String+substring(int,int) java.lang.String+substring(int,int) org.h2.util.DateTimeUtils+skipWS(String,int) org.h2.util.DateTimeUtils+skipWS(String,int) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWS(String,int) org.h2.util.DateTimeUtils+skipWS(String,int) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWS(String,int) org.h2.util.DateTimeUtils+skipWS(String,int) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWS(String,int) org.h2.util.DateTimeUtils+skipWS(String,int) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWS(String,int) org.h2.util.DateTimeUtils+skipWS(String,int) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.String+regionMatches(boolean,int,String,int,int) java.lang.String+regionMatches(boolean,int,String,int,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+skipWSEnd(String,int) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) org.h2.util.DateTimeUtils+parseInterval(IntervalQualifier,boolean,String) java.lang.IllegalArgumentException+IllegalArgumentException(String)",,5158,128,9,"/** 
+ * Parses the specified string as  {@code INTERVAL} value.
+ * @param qualifier the default qualifier to use if string does not have one
+ * @param s the string with type information to parse
+ * @return the interval value.Type of value can be different from the specified qualifier.
+ */
+","/**
+     * Parses the specified string as {@code INTERVAL} value.
+     *
+     * @param qualifier the default qualifier to use if string does not have one
+     * @param s the string with type information to parse
+     * @return the interval value.
+     *         Type of value can be different from the specified qualifier.
+     */
+    public static ValueInterval parseFormattedInterval(IntervalQualifier qualifier, String s) {
+        int i = 0;
+        i = skipWS(s, i);
+        if (!s.regionMatches(true, i, ""INTERVAL"", 0, 8)) {
+            return parseInterval(qualifier, false, s);
+        }
+        i = skipWS(s, i + 8);
+        boolean negative = false;
+        char ch = s.charAt(i);
+        if (ch == '-') {
+            negative = true;
+            i = skipWS(s, i + 1);
+            ch = s.charAt(i);
+        } else if (ch == '+') {
+            i = skipWS(s, i + 1);
+            ch = s.charAt(i);
+        }
+        if (ch != '\'') {
+            throw new IllegalArgumentException(s);
+        }
+        int start = ++i;
+        int l = s.length();
+        for (;;) {
+            if (i == l) {
+                throw new IllegalArgumentException(s);
+            }
+            if (s.charAt(i) == '\'') {
+                break;
+            }
+            i++;
+        }
+        String v = s.substring(start, i);
+        i = skipWS(s, i + 1);
+        if (s.regionMatches(true, i, ""YEAR"", 0, 4)) {
+            i += 4;
+            int j = skipWSEnd(s, i);
+            if (j == l) {
+                return parseInterval(IntervalQualifier.YEAR, negative, v);
+            }
+            if (j > i && s.regionMatches(true, j, ""TO"", 0, 2)) {
+                j += 2;
+                i = skipWS(s, j);
+                if (i > j && s.regionMatches(true, i, ""MONTH"", 0, 5)) {
+                    if (skipWSEnd(s, i + 5) == l) {
+                        return parseInterval(IntervalQualifier.YEAR_TO_MONTH, negative, v);
+                    }
+                }
+            }
+        } else if (s.regionMatches(true, i, ""MONTH"", 0, 5)) {
+            if (skipWSEnd(s, i + 5) == l) {
+                return parseInterval(IntervalQualifier.MONTH, negative, v);
+            }
+        } if (s.regionMatches(true, i, ""DAY"", 0, 3)) {
+            i += 3;
+            int j = skipWSEnd(s, i);
+            if (j == l) {
+                return parseInterval(IntervalQualifier.DAY, negative, v);
+            }
+            if (j > i && s.regionMatches(true, j, ""TO"", 0, 2)) {
+                j += 2;
+                i = skipWS(s, j);
+                if (i > j) {
+                    if (s.regionMatches(true, i, ""HOUR"", 0, 4)) {
+                        if (skipWSEnd(s, i + 4) == l) {
+                            return parseInterval(IntervalQualifier.DAY_TO_HOUR, negative, v);
+                        }
+                    } else if (s.regionMatches(true, i, ""MINUTE"", 0, 6)) {
+                        if (skipWSEnd(s, i + 6) == l) {
+                            return parseInterval(IntervalQualifier.DAY_TO_MINUTE, negative, v);
+                        }
+                    } else if (s.regionMatches(true, i, ""SECOND"", 0, 6)) {
+                        if (skipWSEnd(s, i + 6) == l) {
+                            return parseInterval(IntervalQualifier.DAY_TO_SECOND, negative, v);
+                        }
+                    }
+                }
+            }
+        } if (s.regionMatches(true, i, ""HOUR"", 0, 4)) {
+            i += 4;
+            int j = skipWSEnd(s, i);
+            if (j == l) {
+                return parseInterval(IntervalQualifier.HOUR, negative, v);
+            }
+            if (j > i && s.regionMatches(true, j, ""TO"", 0, 2)) {
+                j += 2;
+                i = skipWS(s, j);
+                if (i > j) {
+                    if (s.regionMatches(true, i, ""MINUTE"", 0, 6)) {
+                        if (skipWSEnd(s, i + 6) == l) {
+                            return parseInterval(IntervalQualifier.HOUR_TO_MINUTE, negative, v);
+                        }
+                    } else if (s.regionMatches(true, i, ""SECOND"", 0, 6)) {
+                        if (skipWSEnd(s, i + 6) == l) {
+                            return parseInterval(IntervalQualifier.HOUR_TO_SECOND, negative, v);
+                        }
+                    }
+                }
+            }
+        } if (s.regionMatches(true, i, ""MINUTE"", 0, 6)) {
+            i += 6;
+            int j = skipWSEnd(s, i);
+            if (j == l) {
+                return parseInterval(IntervalQualifier.MINUTE, negative, v);
+            }
+            if (j > i && s.regionMatches(true, j, ""TO"", 0, 2)) {
+                j += 2;
+                i = skipWS(s, j);
+                if (i > j && s.regionMatches(true, i, ""SECOND"", 0, 6)) {
+                    if (skipWSEnd(s, i + 6) == l) {
+                        return parseInterval(IntervalQualifier.MINUTE_TO_SECOND, negative, v);
+                    }
+                }
+            }
+        } if (s.regionMatches(true, i, ""SECOND"", 0, 6)) {
+            if (skipWSEnd(s, i + 6) == l) {
+                return parseInterval(IntervalQualifier.SECOND, negative, v);
+            }
+        }
+        throw new IllegalArgumentException(s);
+    }",True
+86,"skipWS(String,int)",Method,"parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String)",,java.lang.String+length() java.lang.String+length() java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.Character+isWhitespace(char) java.lang.Character+isWhitespace(char) java.lang.String+charAt(int) java.lang.String+charAt(int),,293,10,10,,"private static int skipWS(String s, int i) {
+        for (int l = s.length(); ; i++) {
+            if (i == l) {
+                throw new IllegalArgumentException(s);
+            }
+            if (!Character.isWhitespace(s.charAt(i))) {
+                return i;
+            }
+        }
+    }",True
+87,"skipWSEnd(String,int)",Method,"parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String)",,java.lang.String+length() java.lang.String+length() java.lang.Character+isWhitespace(char) java.lang.Character+isWhitespace(char) java.lang.String+charAt(int) java.lang.String+charAt(int),,267,10,10,,"private static int skipWSEnd(String s, int i) {
+        for (int l = s.length(); ; i++) {
+            if (i == l) {
+                return i;
+            }
+            if (!Character.isWhitespace(s.charAt(i))) {
+                return i;
+            }
+        }
+    }",True
+88,"parseInterval(IntervalQualifier,boolean,String)",Method,"parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String) parseFormattedInterval(IntervalQualifier,String)","org.h2.command.Parser+readInterval() org.h2.test.unit.TestDateTimeUtils+testParseIntervalImpl(IntervalQualifier,boolean,long,long,String,String)","org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+length() java.lang.String+length() java.lang.String+indexOf(int) java.lang.String+indexOf(int) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseNanos(String,int,int) org.h2.util.DateTimeUtils+parseNanos(String,int,int) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseInterval2(IntervalQualifier,String,char,int,boolean) org.h2.util.DateTimeUtils+parseInterval2(IntervalQualifier,String,char,int,boolean) org.h2.util.DateTimeUtils+parseInterval2(IntervalQualifier,String,char,int,boolean) org.h2.util.DateTimeUtils+parseInterval2(IntervalQualifier,String,char,int,boolean) java.lang.String+indexOf(int) java.lang.String+indexOf(int) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) java.lang.String+length() java.lang.String+length() java.lang.String+indexOf(int) java.lang.String+indexOf(int) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) java.lang.String+length() java.lang.String+length() java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemainingSeconds(String,int) org.h2.util.DateTimeUtils+parseIntervalRemainingSeconds(String,int) org.h2.util.DateTimeUtils+parseInterval2(IntervalQualifier,String,char,int,boolean) org.h2.util.DateTimeUtils+parseInterval2(IntervalQualifier,String,char,int,boolean) java.lang.String+indexOf(int) java.lang.String+indexOf(int) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemainingSeconds(String,int) org.h2.util.DateTimeUtils+parseIntervalRemainingSeconds(String,int) java.lang.String+indexOf(int) java.lang.String+indexOf(int) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalRemainingSeconds(String,int) org.h2.util.DateTimeUtils+parseIntervalRemainingSeconds(String,int) java.lang.IllegalArgumentException+IllegalArgumentException() org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long)",org.h2.util.DateTimeUtils+NANOS_PER_HOUR org.h2.util.DateTimeUtils+NANOS_PER_HOUR org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_HOUR org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_MINUTE java.lang.Long+MIN_VALUE,4803,118,9,"/** 
+ * Parses the specified string as  {@code INTERVAL} value.
+ * @param qualifier the qualifier of interval
+ * @param negative whether the interval is negative
+ * @param s the string to parse
+ * @return the interval value
+ */
+","/**
+     * Parses the specified string as {@code INTERVAL} value.
+     *
+     * @param qualifier the qualifier of interval
+     * @param negative whether the interval is negative
+     * @param s the string to parse
+     * @return the interval value
+     */
+    public static ValueInterval parseInterval(IntervalQualifier qualifier, boolean negative, String s) {
+        long leading, remaining;
+        switch (qualifier) {
+        case YEAR:
+        case MONTH:
+        case DAY:
+        case HOUR:
+        case MINUTE:
+            leading = parseIntervalLeading(s, 0, s.length(), negative);
+            remaining = 0;
+            break;
+        case SECOND: {
+            int dot = s.indexOf('.');
+            if (dot < 0) {
+                leading = parseIntervalLeading(s, 0, s.length(), negative);
+                remaining = 0;
+            } else {
+                leading = parseIntervalLeading(s, 0, dot, negative);
+                remaining = parseNanos(s, dot + 1, s.length());
+            }
+            break;
+        }
+        case YEAR_TO_MONTH:
+            return parseInterval2(qualifier, s, '-', 11, negative);
+        case DAY_TO_HOUR:
+            return parseInterval2(qualifier, s, ' ', 23, negative);
+        case DAY_TO_MINUTE: {
+            int space = s.indexOf(' ');
+            if (space < 0) {
+                leading = parseIntervalLeading(s, 0, s.length(), negative);
+                remaining = 0;
+            } else {
+                leading = parseIntervalLeading(s, 0, space, negative);
+                int colon = s.indexOf(':', space + 1);
+                if (colon < 0) {
+                    remaining = parseIntervalRemaining(s, space + 1, s.length(), 23) * 60;
+                } else {
+                    remaining = parseIntervalRemaining(s, space + 1, colon, 23) * 60
+                            + parseIntervalRemaining(s, colon + 1, s.length(), 59);
+                }
+            }
+            break;
+        }
+        case DAY_TO_SECOND: {
+            int space = s.indexOf(' ');
+            if (space < 0) {
+                leading = parseIntervalLeading(s, 0, s.length(), negative);
+                remaining = 0;
+            } else {
+                leading = parseIntervalLeading(s, 0, space, negative);
+                int colon = s.indexOf(':', space + 1);
+                if (colon < 0) {
+                    remaining = parseIntervalRemaining(s, space + 1, s.length(), 23) * NANOS_PER_HOUR;
+                } else {
+                    int colon2 = s.indexOf(':', colon + 1);
+                    if (colon2 < 0) {
+                        remaining = parseIntervalRemaining(s, space + 1, colon, 23) * NANOS_PER_HOUR
+                                + parseIntervalRemaining(s, colon + 1, s.length(), 59) * NANOS_PER_MINUTE;
+                    } else {
+                        remaining = parseIntervalRemaining(s, space + 1, colon, 23) * NANOS_PER_HOUR
+                                + parseIntervalRemaining(s, colon + 1, colon2, 59) * NANOS_PER_MINUTE
+                                + parseIntervalRemainingSeconds(s, colon2 + 1);
+                    }
+                }
+            }
+            break;
+        }
+        case HOUR_TO_MINUTE:
+            return parseInterval2(qualifier, s, ':', 59, negative);
+        case HOUR_TO_SECOND: {
+            int colon = s.indexOf(':');
+            if (colon < 0) {
+                leading = parseIntervalLeading(s, 0, s.length(), negative);
+                remaining = 0;
+            } else {
+                leading = parseIntervalLeading(s, 0, colon, negative);
+                int colon2 = s.indexOf(':', colon + 1);
+                if (colon2 < 0) {
+                    remaining = parseIntervalRemaining(s, colon + 1, s.length(), 59) * NANOS_PER_MINUTE;
+                } else {
+                    remaining = parseIntervalRemaining(s, colon + 1, colon2, 59) * NANOS_PER_MINUTE
+                            + parseIntervalRemainingSeconds(s, colon2 + 1);
+                }
+            }
+            break;
+        }
+        case MINUTE_TO_SECOND: {
+            int dash = s.indexOf(':');
+            if (dash < 0) {
+                leading = parseIntervalLeading(s, 0, s.length(), negative);
+                remaining = 0;
+            } else {
+                leading = parseIntervalLeading(s, 0, dash, negative);
+                remaining = parseIntervalRemainingSeconds(s, dash + 1);
+            }
+            break;
+        }
+        default:
+            throw new IllegalArgumentException();
+        }
+        negative = leading < 0;
+        if (negative) {
+            if (leading != Long.MIN_VALUE) {
+                leading = -leading;
+            } else {
+                leading = 0;
+            }
+        }
+        return ValueInterval.from(qualifier, negative, leading, remaining);
+    }",True
+89,"parseInterval2(IntervalQualifier,String,char,int,boolean)",Method,"parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String)",,"java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) java.lang.String+length() java.lang.String+length() org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalLeading(String,int,int,boolean) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) org.h2.util.DateTimeUtils+parseIntervalRemaining(String,int,int,int) java.lang.String+length() java.lang.String+length() org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long)",java.lang.Long+MIN_VALUE,782,21,8,,"static ValueInterval parseInterval2(IntervalQualifier qualifier, String s, char ch, int max, boolean negative) {
+        long leading;
+        long remaining;
+        int dash = s.indexOf(ch, 1);
+        if (dash < 0) {
+            leading = parseIntervalLeading(s, 0, s.length(), negative);
+            remaining = 0;
+        } else {
+            leading = parseIntervalLeading(s, 0, dash, negative);
+            remaining = parseIntervalRemaining(s, dash + 1, s.length(), max);
+        }
+        negative = leading < 0;
+        if (negative) {
+            if (leading != Long.MIN_VALUE) {
+                leading = -leading;
+            } else {
+                leading = 0;
+            }
+        }
+        return ValueInterval.from(qualifier, negative, leading, remaining);
+    }",True
+90,"parseIntervalLeading(String,int,int,boolean)",Method,"parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval2(IntervalQualifier,String,char,int,boolean) parseInterval2(IntervalQualifier,String,char,int,boolean)",,"java.lang.Long+parseLong(String) java.lang.Long+parseLong(String) java.lang.String+substring(int,int) java.lang.String+substring(int,int) java.lang.String+charAt(int) java.lang.String+charAt(int)",java.lang.Long+MIN_VALUE,319,7,10,,"private static long parseIntervalLeading(String s, int start, int end, boolean negative) {
+        long leading = Long.parseLong(s.substring(start, end));
+        if (leading == 0) {
+            return negative ^ s.charAt(start) == '-' ? Long.MIN_VALUE : 0;
+        }
+        return negative ? -leading : leading;
+    }",True
+91,"parseIntervalRemaining(String,int,int,int)",Method,"parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval2(IntervalQualifier,String,char,int,boolean)",,"org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) java.lang.IllegalArgumentException+IllegalArgumentException(String)",,247,7,10,,"private static long parseIntervalRemaining(String s, int start, int end, int max) {
+        int v = StringUtils.parseUInt31(s, start, end);
+        if (v > max) {
+            throw new IllegalArgumentException(s);
+        }
+        return v;
+    }",True
+92,"parseIntervalRemainingSeconds(String,int)",Method,"parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String) parseInterval(IntervalQualifier,boolean,String)",,"java.lang.String+indexOf(int,int) java.lang.String+indexOf(int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) java.lang.String+length() java.lang.String+length() org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.StringUtils+parseUInt31(String,int,int) org.h2.util.DateTimeUtils+parseNanos(String,int,int) org.h2.util.DateTimeUtils+parseNanos(String,int,int) java.lang.String+length() java.lang.String+length() java.lang.IllegalArgumentException+IllegalArgumentException(String)",org.h2.util.DateTimeUtils+NANOS_PER_SECOND,551,15,10,,"private static long parseIntervalRemainingSeconds(String s, int start) {
+        int seconds, nanos;
+        int dot = s.indexOf('.', start + 1);
+        if (dot < 0) {
+            seconds = StringUtils.parseUInt31(s, start, s.length());
+            nanos = 0;
+        } else {
+            seconds = StringUtils.parseUInt31(s, start, dot);
+            nanos = parseNanos(s, dot + 1, s.length());
+        }
+        if (seconds > 59) {
+            throw new IllegalArgumentException(s);
+        }
+        return seconds * NANOS_PER_SECOND + nanos;
+    }",True
+93,"intervalToString(IntervalQualifier,boolean,long,long)",Method,,org.h2.api.Interval+toString() org.h2.value.ValueInterval+getString(),"java.lang.StringBuilder+append(String) java.lang.StringBuilder+StringBuilder() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) org.h2.util.DateTimeUtils+appendNanos(StringBuilder,long) org.h2.util.DateTimeUtils+appendNanos(StringBuilder,long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.DateTimeUtils+appendSecondsWithNanos(StringBuilder,long) org.h2.util.DateTimeUtils+appendSecondsWithNanos(StringBuilder,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.DateTimeUtils+appendSecondsWithNanos(StringBuilder,long) org.h2.util.DateTimeUtils+appendSecondsWithNanos(StringBuilder,long) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(char) org.h2.util.DateTimeUtils+appendSecondsWithNanos(StringBuilder,long) org.h2.util.DateTimeUtils+appendSecondsWithNanos(StringBuilder,long) java.lang.StringBuilder+append(Object) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(Object) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString()",org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_MINUTE,2550,70,9,"/** 
+ * Formats interval as a string.
+ * @param qualifier qualifier of the interval
+ * @param negative whether interval is negative
+ * @param leading the value of leading field
+ * @param remaining the value of all remaining fields
+ * @return string representation of the specified interval
+ */
+","/**
+     * Formats interval as a string.
+     *
+     * @param qualifier qualifier of the interval
+     * @param negative whether interval is negative
+     * @param leading the value of leading field
+     * @param remaining the value of all remaining fields
+     * @return string representation of the specified interval
+     */
+    public static String intervalToString(IntervalQualifier qualifier, boolean negative, long leading, long remaining)
+    {
+        StringBuilder buff = new StringBuilder().append(""INTERVAL "");
+        buff.append('\'');
+        if (negative) {
+            buff.append('-');
+        }
+        switch (qualifier) {
+        case YEAR:
+        case MONTH:
+        case DAY:
+        case HOUR:
+        case MINUTE:
+            buff.append(leading);
+            break;
+        case SECOND:
+            buff.append(leading);
+            appendNanos(buff, remaining);
+            break;
+        case YEAR_TO_MONTH:
+            buff.append(leading).append('-').append(remaining);
+            break;
+        case DAY_TO_HOUR:
+            buff.append(leading).append(' ');
+            StringUtils.appendZeroPadded(buff, 2, remaining);
+            break;
+        case DAY_TO_MINUTE:
+            buff.append(leading).append(' ');
+            StringUtils.appendZeroPadded(buff, 2, remaining / 60);
+            buff.append(':');
+            StringUtils.appendZeroPadded(buff, 2, remaining % 60);
+            break;
+        case DAY_TO_SECOND: {
+            long nanos = remaining % NANOS_PER_MINUTE;
+            remaining /= NANOS_PER_MINUTE;
+            buff.append(leading).append(' ');
+            StringUtils.appendZeroPadded(buff, 2, remaining / 60);
+            buff.append(':');
+            StringUtils.appendZeroPadded(buff, 2, remaining % 60);
+            buff.append(':');
+            appendSecondsWithNanos(buff, nanos);
+            break;
+        }
+        case HOUR_TO_MINUTE:
+            buff.append(leading).append(':');
+            StringUtils.appendZeroPadded(buff, 2, remaining);
+            break;
+        case HOUR_TO_SECOND:
+            buff.append(leading).append(':');
+            StringUtils.appendZeroPadded(buff, 2, remaining / NANOS_PER_MINUTE);
+            buff.append(':');
+            appendSecondsWithNanos(buff, remaining % NANOS_PER_MINUTE);
+            break;
+        case MINUTE_TO_SECOND:
+            buff.append(leading).append(':');
+            appendSecondsWithNanos(buff, remaining);
+            break;
+        }
+        buff.append(""' "").append(qualifier);
+        return buff.toString();
+    }",True
+94,"appendSecondsWithNanos(StringBuilder,long)",Method,"intervalToString(IntervalQualifier,boolean,long,long) intervalToString(IntervalQualifier,boolean,long,long) intervalToString(IntervalQualifier,boolean,long,long)",,"org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.DateTimeUtils+appendNanos(StringBuilder,long) org.h2.util.DateTimeUtils+appendNanos(StringBuilder,long)",org.h2.util.DateTimeUtils+NANOS_PER_SECOND org.h2.util.DateTimeUtils+NANOS_PER_SECOND,208,4,10,,"private static void appendSecondsWithNanos(StringBuilder buff, long nanos) {
+        StringUtils.appendZeroPadded(buff, 2, nanos / NANOS_PER_SECOND);
+        appendNanos(buff, nanos % NANOS_PER_SECOND);
+    }",True
+95,"appendNanos(StringBuilder,long)",Method,"intervalToString(IntervalQualifier,boolean,long,long) appendSecondsWithNanos(StringBuilder,long)",,"java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.StringUtils+appendZeroPadded(StringBuilder,int,long) org.h2.util.DateTimeUtils+stripTrailingZeroes(StringBuilder) org.h2.util.DateTimeUtils+stripTrailingZeroes(StringBuilder)",,233,7,10,,"private static void appendNanos(StringBuilder buff, long nanos) {
+        if (nanos > 0) {
+            buff.append('.');
+            StringUtils.appendZeroPadded(buff, 9, nanos);
+            stripTrailingZeroes(buff);
+        }
+    }",True
+96,"convertScale(long,int)",Method,,"org.h2.value.ValueTime+convertScale(boolean,int) org.h2.value.ValueTimestamp+convertScale(boolean,int) org.h2.value.ValueTimestampTimeZone+convertScale(boolean,int)",,org.h2.util.DateTimeUtils+CONVERT_SCALE_TABLE,497,18,9,"/** 
+ * Converts scale of nanoseconds.
+ * @param nanosOfDay nanoseconds of day
+ * @param scale fractional seconds precision
+ * @return scaled value
+ */
+","/**
+     * Converts scale of nanoseconds.
+     *
+     * @param nanosOfDay nanoseconds of day
+     * @param scale fractional seconds precision
+     * @return scaled value
+     */
+    public static long convertScale(long nanosOfDay, int scale) {
+        if (scale >= 9) {
+            return nanosOfDay;
+        }
+        int m = CONVERT_SCALE_TABLE[scale];
+        long mod = nanosOfDay % m;
+        if (mod >= m >>> 1) {
+            nanosOfDay += m;
+        }
+        return nanosOfDay - mod;
+    }",False
+97,intervalToAbsolute(ValueInterval),Method,,"org.h2.expression.IntervalOperation+getDateTimeWithInterval(Value,Value,int,int) org.h2.expression.IntervalOperation+getDateTimeWithInterval(Value,Value,int,int) org.h2.expression.IntervalOperation+getDateTimeWithInterval(Value,Value,int,int) org.h2.util.DateTimeFunctions+extract(String,Value) org.h2.value.Value+convertToIntervalYearMonth(int) org.h2.value.Value+convertToIntervalDayTime(int) org.h2.value.ValueInterval+add(Value) org.h2.value.ValueInterval+add(Value) org.h2.value.ValueInterval+subtract(Value) org.h2.value.ValueInterval+subtract(Value)","org.h2.value.ValueInterval+getQualifier() org.h2.value.ValueInterval+getQualifier() java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+getLeading() org.h2.value.ValueInterval+getLeading() java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+getLeading() org.h2.value.ValueInterval+getLeading() java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+getLeading() org.h2.value.ValueInterval+getLeading() java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+getLeading() org.h2.value.ValueInterval+getLeading() java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+getLeading() org.h2.value.ValueInterval+getLeading() java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) java.lang.IllegalArgumentException+IllegalArgumentException() org.h2.value.ValueInterval+isNegative() org.h2.value.ValueInterval+isNegative() java.math.BigInteger+negate() java.math.BigInteger+negate()",org.h2.util.DateTimeUtils+NANOS_PER_DAY org.h2.util.DateTimeUtils+NANOS_PER_HOUR org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_SECOND org.h2.util.DateTimeUtils+NANOS_PER_HOUR org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_DAY org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_HOUR org.h2.util.DateTimeUtils+NANOS_PER_MINUTE,2045,54,9,"/** 
+ * Converts interval value to an absolute value.
+ * @param interval the interval value
+ * @return absolute value in months for year-month intervals,in nanoseconds for day-time intervals
+ */
+","/**
+     * Converts interval value to an absolute value.
+     *
+     * @param interval the interval value
+     * @return absolute value in months for year-month intervals,
+     *         in nanoseconds for day-time intervals
+     */
+    public static BigInteger intervalToAbsolute(ValueInterval interval) {
+        BigInteger r;
+        switch (interval.getQualifier()) {
+        case YEAR:
+            r = BigInteger.valueOf(interval.getLeading()).multiply(BigInteger.valueOf(12));
+            break;
+        case MONTH:
+            r = BigInteger.valueOf(interval.getLeading());
+            break;
+        case DAY:
+            r = BigInteger.valueOf(interval.getLeading()).multiply(BigInteger.valueOf(NANOS_PER_DAY));
+            break;
+        case HOUR:
+            r = BigInteger.valueOf(interval.getLeading()).multiply(BigInteger.valueOf(NANOS_PER_HOUR));
+            break;
+        case MINUTE:
+            r = BigInteger.valueOf(interval.getLeading()).multiply(BigInteger.valueOf(NANOS_PER_MINUTE));
+            break;
+        case SECOND:
+            r = intervalToAbsolute(interval, NANOS_PER_SECOND);
+            break;
+        case YEAR_TO_MONTH:
+            r = intervalToAbsolute(interval, 12);
+            break;
+        case DAY_TO_HOUR:
+            r = intervalToAbsolute(interval, 24, NANOS_PER_HOUR);
+            break;
+        case DAY_TO_MINUTE:
+            r = intervalToAbsolute(interval, 24 * 60, NANOS_PER_MINUTE);
+            break;
+        case DAY_TO_SECOND:
+            r = intervalToAbsolute(interval, NANOS_PER_DAY);
+            break;
+        case HOUR_TO_MINUTE:
+            r = intervalToAbsolute(interval, 60, NANOS_PER_MINUTE);
+            break;
+        case HOUR_TO_SECOND:
+            r = intervalToAbsolute(interval, NANOS_PER_HOUR);
+            break;
+        case MINUTE_TO_SECOND:
+            r = intervalToAbsolute(interval, NANOS_PER_MINUTE);
+            break;
+        default:
+            throw new IllegalArgumentException();
+        }
+        return interval.isNegative() ? r.negate() : r;
+    }",True
+98,"intervalToAbsolute(ValueInterval,long,long)",Method,intervalToAbsolute(ValueInterval) intervalToAbsolute(ValueInterval) intervalToAbsolute(ValueInterval),,"java.math.BigInteger+multiply(BigInteger) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) org.h2.util.DateTimeUtils+intervalToAbsolute(ValueInterval,long) java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long)",,218,3,10,,"private static BigInteger intervalToAbsolute(ValueInterval interval, long multiplier, long totalMultiplier) {
+        return intervalToAbsolute(interval, multiplier).multiply(BigInteger.valueOf(totalMultiplier));
+    }",True
+99,"intervalToAbsolute(ValueInterval,long)",Method,"intervalToAbsolute(ValueInterval) intervalToAbsolute(ValueInterval) intervalToAbsolute(ValueInterval) intervalToAbsolute(ValueInterval) intervalToAbsolute(ValueInterval) intervalToAbsolute(ValueInterval,long,long)",,java.math.BigInteger+add(BigInteger) java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+getLeading() org.h2.value.ValueInterval+getLeading() java.math.BigInteger+multiply(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) java.math.BigInteger+add(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+getRemaining() org.h2.value.ValueInterval+getRemaining(),,258,4,10,,"private static BigInteger intervalToAbsolute(ValueInterval interval, long multiplier) {
+        return BigInteger.valueOf(interval.getLeading()).multiply(BigInteger.valueOf(multiplier))
+                .add(BigInteger.valueOf(interval.getRemaining()));
+    }",True
+100,"intervalFromAbsolute(IntervalQualifier,BigInteger)",Method,,org.h2.value.Value+convertToIntervalYearMonth(int) org.h2.value.Value+convertToIntervalDayTime(int) org.h2.value.ValueInterval+add(Value) org.h2.value.ValueInterval+subtract(Value),"org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) java.math.BigInteger+signum() java.math.BigInteger+signum() org.h2.util.DateTimeUtils+leadingExact(BigInteger) org.h2.util.DateTimeUtils+leadingExact(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) java.math.BigInteger+signum() java.math.BigInteger+signum() org.h2.util.DateTimeUtils+leadingExact(BigInteger) org.h2.util.DateTimeUtils+leadingExact(BigInteger) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) java.math.BigInteger+signum() java.math.BigInteger+signum() org.h2.util.DateTimeUtils+leadingExact(BigInteger) org.h2.util.DateTimeUtils+leadingExact(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) java.math.BigInteger+signum() java.math.BigInteger+signum() org.h2.util.DateTimeUtils+leadingExact(BigInteger) org.h2.util.DateTimeUtils+leadingExact(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) java.math.BigInteger+signum() java.math.BigInteger+signum() org.h2.util.DateTimeUtils+leadingExact(BigInteger) org.h2.util.DateTimeUtils+leadingExact(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+divide(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) org.h2.util.DateTimeUtils+intervalFromAbsolute(IntervalQualifier,BigInteger,long) java.lang.IllegalArgumentException+IllegalArgumentException()",org.h2.util.DateTimeUtils+NANOS_PER_DAY org.h2.util.DateTimeUtils+NANOS_PER_HOUR org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_SECOND org.h2.util.DateTimeUtils+NANOS_PER_HOUR org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_DAY org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_HOUR org.h2.util.DateTimeUtils+NANOS_PER_MINUTE,2282,44,9,"/** 
+ * Converts absolute value to an interval value.
+ * @param qualifier the qualifier of interval
+ * @param absolute absolute value in months for year-month intervals,in nanoseconds for day-time intervals
+ * @return the interval value
+ */
+","/**
+     * Converts absolute value to an interval value.
+     *
+     * @param qualifier the qualifier of interval
+     * @param absolute absolute value in months for year-month intervals,
+     *                 in nanoseconds for day-time intervals
+     * @return the interval value
+     */
+    public static ValueInterval intervalFromAbsolute(IntervalQualifier qualifier, BigInteger absolute) {
+        switch (qualifier) {
+        case YEAR:
+            return ValueInterval.from(qualifier, absolute.signum() < 0,
+                    leadingExact(absolute.divide(BigInteger.valueOf(12))), 0);
+        case MONTH:
+            return ValueInterval.from(qualifier, absolute.signum() < 0, leadingExact(absolute), 0);
+        case DAY:
+            return ValueInterval.from(qualifier, absolute.signum() < 0,
+                    leadingExact(absolute.divide(BigInteger.valueOf(NANOS_PER_DAY))), 0);
+        case HOUR:
+            return ValueInterval.from(qualifier, absolute.signum() < 0,
+                    leadingExact(absolute.divide(BigInteger.valueOf(NANOS_PER_HOUR))), 0);
+        case MINUTE:
+            return ValueInterval.from(qualifier, absolute.signum() < 0,
+                    leadingExact(absolute.divide(BigInteger.valueOf(NANOS_PER_MINUTE))), 0);
+        case SECOND:
+            return intervalFromAbsolute(qualifier, absolute, NANOS_PER_SECOND);
+        case YEAR_TO_MONTH:
+            return intervalFromAbsolute(qualifier, absolute, 12);
+        case DAY_TO_HOUR:
+            return intervalFromAbsolute(qualifier, absolute.divide(BigInteger.valueOf(NANOS_PER_HOUR)), 24);
+        case DAY_TO_MINUTE:
+            return intervalFromAbsolute(qualifier, absolute.divide(BigInteger.valueOf(NANOS_PER_MINUTE)), 24 * 60);
+        case DAY_TO_SECOND:
+            return intervalFromAbsolute(qualifier, absolute, NANOS_PER_DAY);
+        case HOUR_TO_MINUTE:
+            return intervalFromAbsolute(qualifier, absolute.divide(BigInteger.valueOf(NANOS_PER_MINUTE)), 60);
+        case HOUR_TO_SECOND:
+            return intervalFromAbsolute(qualifier, absolute, NANOS_PER_HOUR);
+        case MINUTE_TO_SECOND:
+            return intervalFromAbsolute(qualifier, absolute, NANOS_PER_MINUTE);
+        default:
+            throw new IllegalArgumentException();
+        }
+    }",True
+101,"intervalFromAbsolute(IntervalQualifier,BigInteger,long)",Method,"intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger)",,"java.math.BigInteger+divideAndRemainder(BigInteger) java.math.BigInteger+divideAndRemainder(BigInteger) java.math.BigInteger+valueOf(long) java.math.BigInteger+valueOf(long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long) java.math.BigInteger+signum() java.math.BigInteger+signum() org.h2.util.DateTimeUtils+leadingExact(BigInteger) org.h2.util.DateTimeUtils+leadingExact(BigInteger) java.lang.Math+abs(long) java.lang.Math+abs(long) java.math.BigInteger+longValue() java.math.BigInteger+longValue()",,324,4,10,,"private static ValueInterval intervalFromAbsolute(IntervalQualifier qualifier, BigInteger absolute, long divisor) {
+        BigInteger[] dr = absolute.divideAndRemainder(BigInteger.valueOf(divisor));
+        return ValueInterval.from(qualifier, absolute.signum() < 0, leadingExact(dr[0]), Math.abs(dr[1].longValue()));
+    }",True
+102,leadingExact(BigInteger),Method,"intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger) intervalFromAbsolute(IntervalQualifier,BigInteger,long)",,,,387,7,10,,"private static long leadingExact(BigInteger absolute) {
+        if (absolute.compareTo(BigInteger.valueOf(999_999_999_999_999_999L)) > 0
+                || absolute.compareTo(BigInteger.valueOf(-999_999_999_999_999_999L)) < 0) {
+            throw DbException.get(ErrorCode.NUMERIC_VALUE_OUT_OF_RANGE_1, absolute.toString());
+        }
+        return Math.abs(absolute.longValue());
+    }",True
+103,"validateInterval(IntervalQualifier,boolean,long,long)",Method,,"org.h2.api.Interval+Interval(IntervalQualifier,boolean,long,long) org.h2.value.ValueInterval+from(IntervalQualifier,boolean,long,long)",,,2001,66,9,"/** 
+ * Ensures that all fields in interval are valid.
+ * @param qualifier qualifier
+ * @param negative whether interval is negative
+ * @param leading value of leading field
+ * @param remaining values of all remaining fields
+ * @return fixed value of negative field
+ */
+","/**
+     * Ensures that all fields in interval are valid.
+     *
+     * @param qualifier
+     *            qualifier
+     * @param negative
+     *            whether interval is negative
+     * @param leading
+     *            value of leading field
+     * @param remaining
+     *            values of all remaining fields
+     * @return fixed value of negative field
+     */
+    public static boolean validateInterval(IntervalQualifier qualifier, boolean negative, long leading, long remaining)
+    {
+        if (qualifier == null) {
+            throw new NullPointerException();
+        }
+        if (leading == 0L && remaining == 0L) {
+            return false;
+        }
+        // Upper bound for remaining value (exclusive)
+        long bound;
+        switch (qualifier) {
+        case YEAR:
+        case MONTH:
+        case DAY:
+        case HOUR:
+        case MINUTE:
+            bound = 1;
+            break;
+        case SECOND:
+            bound = NANOS_PER_SECOND;
+            break;
+        case YEAR_TO_MONTH:
+            bound = 12;
+            break;
+        case DAY_TO_HOUR:
+            bound = 24;
+            break;
+        case DAY_TO_MINUTE:
+            bound = 24 * 60;
+            break;
+        case DAY_TO_SECOND:
+            bound = NANOS_PER_DAY;
+            break;
+        case HOUR_TO_MINUTE:
+            bound = 60;
+            break;
+        case HOUR_TO_SECOND:
+            bound = NANOS_PER_HOUR;
+            break;
+        case MINUTE_TO_SECOND:
+            bound = NANOS_PER_MINUTE;
+            break;
+        default:
+            throw DbException.getInvalidValueException(""interval"", qualifier);
+        }
+        if (leading < 0L || leading >= 1_000_000_000_000_000_000L) {
+            throw DbException.getInvalidValueException(""interval"", Long.toString(leading));
+        }
+        if (remaining < 0L || remaining >= bound) {
+            throw DbException.getInvalidValueException(""interval"", Long.toString(remaining));
+        }
+        return negative;
+    }",True
+104,"yearsFromInterval(IntervalQualifier,boolean,long,long)",Method,,org.h2.api.Interval+getYears(),,,688,22,9,"/** 
+ * @param qualifier qualifier
+ * @param negative whether interval is negative
+ * @param leading value of leading field
+ * @param remaining values of all remaining fields
+ * @return years, or 0
+ */
+","/**
+     * @param qualifier
+     *            qualifier
+     * @param negative
+     *            whether interval is negative
+     * @param leading
+     *            value of leading field
+     * @param remaining
+     *            values of all remaining fields
+     * @return years, or 0
+     */
+    public static long yearsFromInterval(IntervalQualifier qualifier, boolean negative, long leading, long remaining) {
+        if (qualifier == IntervalQualifier.YEAR || qualifier == IntervalQualifier.YEAR_TO_MONTH) {
+            long v = leading;
+            if (negative) {
+                v = -v;
+            }
+            return v;
+        } else {
+            return 0;
+        }
+    }",True
+105,"monthsFromInterval(IntervalQualifier,boolean,long,long)",Method,,org.h2.api.Interval+getMonths(),,,735,26,9,"/** 
+ * @param qualifier qualifier
+ * @param negative whether interval is negative
+ * @param leading value of leading field
+ * @param remaining values of all remaining fields
+ * @return months, or 0
+ */
+","/**
+     * @param qualifier
+     *            qualifier
+     * @param negative
+     *            whether interval is negative
+     * @param leading
+     *            value of leading field
+     * @param remaining
+     *            values of all remaining fields
+     * @return months, or 0
+     */
+    public static long monthsFromInterval(IntervalQualifier qualifier, boolean negative, long leading, long remaining)
+    {
+        long v;
+        if (qualifier == IntervalQualifier.MONTH) {
+            v = leading;
+        } else if (qualifier == IntervalQualifier.YEAR_TO_MONTH){
+            v = remaining;
+        } else {
+            return 0;
+        }
+        if (negative) {
+            v = -v;
+        }
+        return v;
+    }",True
+106,"daysFromInterval(IntervalQualifier,boolean,long,long)",Method,,org.h2.api.Interval+getDays(),,,718,26,9,"/** 
+ * @param qualifier qualifier
+ * @param negative whether interval is negative
+ * @param leading value of leading field
+ * @param remaining values of all remaining fields
+ * @return months, or 0
+ */
+","/**
+     * @param qualifier
+     *            qualifier
+     * @param negative
+     *            whether interval is negative
+     * @param leading
+     *            value of leading field
+     * @param remaining
+     *            values of all remaining fields
+     * @return months, or 0
+     */
+    public static long daysFromInterval(IntervalQualifier qualifier, boolean negative, long leading, long remaining) {
+        switch (qualifier) {
+        case DAY:
+        case DAY_TO_HOUR:
+        case DAY_TO_MINUTE:
+        case DAY_TO_SECOND:
+            long v = leading;
+            if (negative) {
+                v = -v;
+            }
+            return v;
+        default:
+            return 0;
+        }
+    }",False
+107,"hoursFromInterval(IntervalQualifier,boolean,long,long)",Method,,org.h2.api.Interval+getHours(),,org.h2.util.DateTimeUtils+NANOS_PER_HOUR,951,36,9,"/** 
+ * @param qualifier qualifier
+ * @param negative whether interval is negative
+ * @param leading value of leading field
+ * @param remaining values of all remaining fields
+ * @return hours, or 0
+ */
+","/**
+     * @param qualifier
+     *            qualifier
+     * @param negative
+     *            whether interval is negative
+     * @param leading
+     *            value of leading field
+     * @param remaining
+     *            values of all remaining fields
+     * @return hours, or 0
+     */
+    public static long hoursFromInterval(IntervalQualifier qualifier, boolean negative, long leading, long remaining) {
+        long v;
+        switch (qualifier) {
+        case HOUR:
+        case HOUR_TO_MINUTE:
+        case HOUR_TO_SECOND:
+            v = leading;
+            break;
+        case DAY_TO_HOUR:
+            v = remaining;
+            break;
+        case DAY_TO_MINUTE:
+            v = remaining / 60;
+            break;
+        case DAY_TO_SECOND:
+            v = remaining / NANOS_PER_HOUR;
+            break;
+        default:
+            return 0;
+        }
+        if (negative) {
+            v = -v;
+        }
+        return v;
+    }",True
+108,"minutesFromInterval(IntervalQualifier,boolean,long,long)",Method,,org.h2.api.Interval+getMinutes(),,org.h2.util.DateTimeUtils+NANOS_PER_MINUTE org.h2.util.DateTimeUtils+NANOS_PER_MINUTE,1038,39,9,"/** 
+ * @param qualifier qualifier
+ * @param negative whether interval is negative
+ * @param leading value of leading field
+ * @param remaining values of all remaining fields
+ * @return minutes, or 0
+ */
+","/**
+     * @param qualifier
+     *            qualifier
+     * @param negative
+     *            whether interval is negative
+     * @param leading
+     *            value of leading field
+     * @param remaining
+     *            values of all remaining fields
+     * @return minutes, or 0
+     */
+    public static long minutesFromInterval(IntervalQualifier qualifier, boolean negative, long leading, long remaining)
+    {
+        long v;
+        switch (qualifier) {
+        case MINUTE:
+        case MINUTE_TO_SECOND:
+            v = leading;
+            break;
+        case DAY_TO_MINUTE:
+            v = remaining % 60;
+            break;
+        case DAY_TO_SECOND:
+            v = remaining / NANOS_PER_MINUTE % 60;
+            break;
+        case HOUR_TO_MINUTE:
+            v = remaining;
+            break;
+        case HOUR_TO_SECOND:
+            v = remaining / NANOS_PER_MINUTE;
+            break;
+        default:
+            return 0;
+        }
+        if (negative) {
+            v = -v;
+        }
+        return v;
+    }",True
+109,"nanosFromInterval(IntervalQualifier,boolean,long,long)",Method,,org.h2.api.Interval+getSecondsAndNanos(),,org.h2.util.DateTimeUtils+NANOS_PER_SECOND org.h2.util.DateTimeUtils+NANOS_PER_MINUTE,889,32,9,"/** 
+ * @param qualifier qualifier
+ * @param negative whether interval is negative
+ * @param leading value of leading field
+ * @param remaining values of all remaining fields
+ * @return nanoseconds, or 0
+ */
+","/**
+     * @param qualifier
+     *            qualifier
+     * @param negative
+     *            whether interval is negative
+     * @param leading
+     *            value of leading field
+     * @param remaining
+     *            values of all remaining fields
+     * @return nanoseconds, or 0
+     */
+    public static long nanosFromInterval(IntervalQualifier qualifier, boolean negative, long leading, long remaining) {
+        long v;
+        switch (qualifier) {
+        case SECOND:
+            v = leading * NANOS_PER_SECOND + remaining;
+            break;
+        case DAY_TO_SECOND:
+        case HOUR_TO_SECOND:
+            v = remaining % NANOS_PER_MINUTE;
+            break;
+        case MINUTE_TO_SECOND:
+            v = remaining;
+            break;
+        default:
+            return 0;
+        }
+        if (negative) {
+            v = -v;
+        }
+        return v;
+    }",True

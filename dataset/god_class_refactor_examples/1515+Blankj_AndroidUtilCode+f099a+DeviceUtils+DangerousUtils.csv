@@ -1,0 +1,413 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,DeviceUtils(),Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(String),,107,3,2,,"private DeviceUtils() {
+        throw new UnsupportedOperationException(""u can't instantiate me..."");
+    }",False
+2,isDeviceRooted(),Method,,,java.io.File+exists() java.io.File+File(String) java.io.File+exists(),,614,17,9,"/** 
+ * Return whether device is rooted.
+ * @return {@code true}: yes<br> {@code false}: no
+ */
+","/**
+     * Return whether device is rooted.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isDeviceRooted() {
+        String su = ""su"";
+        String[] locations = {""/system/bin/"", ""/system/xbin/"", ""/sbin/"", ""/system/sd/xbin/"",
+                ""/system/bin/failsafe/"", ""/data/local/xbin/"", ""/data/local/bin/"", ""/data/local/"",
+                ""/system/sbin/"", ""/usr/bin/"", ""/vendor/bin/""};
+        for (String location : locations) {
+            if (new File(location + su).exists()) {
+                return true;
+            }
+        }
+        return false;
+    }",False
+3,isAdbEnabled(),Method,,,com.blankj.utilcode.util.Utils+getApp() com.blankj.utilcode.util.Utils+getApp(),,372,12,9,"/** 
+ * Return whether ADB is enabled.
+ * @return {@code true}: yes<br> {@code false}: no
+ */
+","/**
+     * Return whether ADB is enabled.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static boolean isAdbEnabled() {
+        return Settings.Secure.getInt(
+                Utils.getApp().getContentResolver(),
+                Settings.Global.ADB_ENABLED, 0
+        ) > 0;
+    }",False
+4,getSDKVersionName(),Method,,,,,222,8,9,"/** 
+ * Return the version name of device's system.
+ * @return the version name of device's system
+ */
+","/**
+     * Return the version name of device's system.
+     *
+     * @return the version name of device's system
+     */
+    public static String getSDKVersionName() {
+        return android.os.Build.VERSION.RELEASE;
+    }",False
+5,getSDKVersionCode(),Method,,,,,211,8,9,"/** 
+ * Return version code of device's system.
+ * @return version code of device's system
+ */
+","/**
+     * Return version code of device's system.
+     *
+     * @return version code of device's system
+     */
+    public static int getSDKVersionCode() {
+        return android.os.Build.VERSION.SDK_INT;
+    }",False
+6,getAndroidID(),Method,,,com.blankj.utilcode.util.Utils+getApp() com.blankj.utilcode.util.Utils+getApp(),,370,13,9,"/** 
+ * Return the android id of device.
+ * @return the android id of device
+ */
+","/**
+     * Return the android id of device.
+     *
+     * @return the android id of device
+     */
+    @SuppressLint(""HardwareIds"")
+    public static String getAndroidID() {
+        String id = Settings.Secure.getString(
+                Utils.getApp().getContentResolver(),
+                Settings.Secure.ANDROID_ID
+        );
+        return id == null ? """" : id;
+    }",False
+7,getMacAddress(),Method,,,com.blankj.utilcode.util.DeviceUtils+getMacAddress(String[]) com.blankj.utilcode.util.DeviceUtils+getMacAddress(String[]),,422,11,9,"/** 
+ * Return the MAC address. <p>Must hold  {@code <uses-permission android:name=""android.permission.ACCESS_WIFI_STATE"" />}, {@code <uses-permission android:name=""android.permission.INTERNET"" />}</p>
+ * @return the MAC address
+ */
+","/**
+     * Return the MAC address.
+     * <p>Must hold {@code <uses-permission android:name=""android.permission.ACCESS_WIFI_STATE"" />},
+     * {@code <uses-permission android:name=""android.permission.INTERNET"" />}</p>
+     *
+     * @return the MAC address
+     */
+    @RequiresPermission(allOf = {ACCESS_WIFI_STATE, INTERNET})
+    public static String getMacAddress() {
+        return getMacAddress((String[]) null);
+    }",False
+8,getMacAddress(String),Method,,,"com.blankj.utilcode.util.DeviceUtils+getMacAddressByNetworkInterface() com.blankj.utilcode.util.DeviceUtils+getMacAddressByNetworkInterface() com.blankj.utilcode.util.DeviceUtils+isAddressNotInExcepts(String,String[]) com.blankj.utilcode.util.DeviceUtils+isAddressNotInExcepts(String,String[]) com.blankj.utilcode.util.DeviceUtils+getMacAddressByInetAddress() com.blankj.utilcode.util.DeviceUtils+getMacAddressByInetAddress() com.blankj.utilcode.util.DeviceUtils+isAddressNotInExcepts(String,String[]) com.blankj.utilcode.util.DeviceUtils+isAddressNotInExcepts(String,String[]) com.blankj.utilcode.util.DeviceUtils+getMacAddressByWifiInfo() com.blankj.utilcode.util.DeviceUtils+getMacAddressByWifiInfo() com.blankj.utilcode.util.DeviceUtils+isAddressNotInExcepts(String,String[]) com.blankj.utilcode.util.DeviceUtils+isAddressNotInExcepts(String,String[]) com.blankj.utilcode.util.DeviceUtils+getMacAddressByFile() com.blankj.utilcode.util.DeviceUtils+getMacAddressByFile() com.blankj.utilcode.util.DeviceUtils+isAddressNotInExcepts(String,String[]) com.blankj.utilcode.util.DeviceUtils+isAddressNotInExcepts(String,String[])",,1019,27,9,"/** 
+ * Return the MAC address. <p>Must hold  {@code <uses-permission android:name=""android.permission.ACCESS_WIFI_STATE"" />}, {@code <uses-permission android:name=""android.permission.INTERNET"" />}</p>
+ * @return the MAC address
+ */
+","/**
+     * Return the MAC address.
+     * <p>Must hold {@code <uses-permission android:name=""android.permission.ACCESS_WIFI_STATE"" />},
+     * {@code <uses-permission android:name=""android.permission.INTERNET"" />}</p>
+     *
+     * @return the MAC address
+     */
+    @RequiresPermission(allOf = {ACCESS_WIFI_STATE, INTERNET})
+    public static String getMacAddress(final String... excepts) {
+        String macAddress = getMacAddressByNetworkInterface();
+        if (isAddressNotInExcepts(macAddress, excepts)) {
+            return macAddress;
+        }
+        macAddress = getMacAddressByInetAddress();
+        if (isAddressNotInExcepts(macAddress, excepts)) {
+            return macAddress;
+        }
+        macAddress = getMacAddressByWifiInfo();
+        if (isAddressNotInExcepts(macAddress, excepts)) {
+            return macAddress;
+        }
+        macAddress = getMacAddressByFile();
+        if (isAddressNotInExcepts(macAddress, excepts)) {
+            return macAddress;
+        }
+        return """";
+    }",False
+9,"isAddressNotInExcepts(String,String)",Method,,,java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object),,377,11,10,,"private static boolean isAddressNotInExcepts(final String address, final String... excepts) {
+        if (excepts == null || excepts.length == 0) {
+            return !""02:00:00:00:00:00"".equals(address);
+        }
+        for (String filter : excepts) {
+            if (address.equals(filter)) {
+                return false;
+            }
+        }
+        return true;
+    }",False
+10,getMacAddressByWifiInfo(),Method,getMacAddress(String),,com.blankj.utilcode.util.Utils+getApp() com.blankj.utilcode.util.Utils+getApp() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),,560,14,10,,"@SuppressLint({""MissingPermission"", ""HardwareIds""})
+    private static String getMacAddressByWifiInfo() {
+        try {
+            final WifiManager wifi = (WifiManager) Utils.getApp()
+                    .getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            if (wifi != null) {
+                final WifiInfo info = wifi.getConnectionInfo();
+                if (info != null) return info.getMacAddress();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ""02:00:00:00:00:00"";
+    }",False
+11,getMacAddressByNetworkInterface(),Method,getMacAddress(String),,"java.net.NetworkInterface+getNetworkInterfaces() java.net.NetworkInterface+getNetworkInterfaces() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() java.lang.String+equalsIgnoreCase(String) java.net.NetworkInterface+getName() java.net.NetworkInterface+getName() java.lang.String+equalsIgnoreCase(String) java.net.NetworkInterface+getHardwareAddress() java.net.NetworkInterface+getHardwareAddress() java.lang.StringBuilder+StringBuilder() java.lang.StringBuilder+append(Object) java.lang.StringBuilder+append(Object) java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) java.lang.StringBuilder+substring(int,int) java.lang.StringBuilder+substring(int,int) java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace()",,868,20,10,,"private static String getMacAddressByNetworkInterface() {
+        try {
+            Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
+            while (nis.hasMoreElements()) {
+                NetworkInterface ni = nis.nextElement();
+                if (ni == null || !ni.getName().equalsIgnoreCase(""wlan0"")) continue;
+                byte[] macBytes = ni.getHardwareAddress();
+                if (macBytes != null && macBytes.length > 0) {
+                    StringBuilder sb = new StringBuilder();
+                    for (byte b : macBytes) {
+                        sb.append(String.format(""%02x:"", b));
+                    }
+                    return sb.substring(0, sb.length() - 1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ""02:00:00:00:00:00"";
+    }",False
+12,getMacAddressByInetAddress(),Method,getMacAddress(String),,"com.blankj.utilcode.util.DeviceUtils+getInetAddress() com.blankj.utilcode.util.DeviceUtils+getInetAddress() java.net.NetworkInterface+getByInetAddress(InetAddress) java.net.NetworkInterface+getByInetAddress(InetAddress) java.net.NetworkInterface+getHardwareAddress() java.net.NetworkInterface+getHardwareAddress() java.lang.StringBuilder+StringBuilder() java.lang.StringBuilder+append(Object) java.lang.StringBuilder+append(Object) java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) java.lang.StringBuilder+substring(int,int) java.lang.StringBuilder+substring(int,int) java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace()",,853,21,10,,"private static String getMacAddressByInetAddress() {
+        try {
+            InetAddress inetAddress = getInetAddress();
+            if (inetAddress != null) {
+                NetworkInterface ni = NetworkInterface.getByInetAddress(inetAddress);
+                if (ni != null) {
+                    byte[] macBytes = ni.getHardwareAddress();
+                    if (macBytes != null && macBytes.length > 0) {
+                        StringBuilder sb = new StringBuilder();
+                        for (byte b : macBytes) {
+                            sb.append(String.format(""%02x:"", b));
+                        }
+                        return sb.substring(0, sb.length() - 1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ""02:00:00:00:00:00"";
+    }",False
+13,getInetAddress(),Method,getMacAddressByInetAddress(),,java.net.NetworkInterface+getNetworkInterfaces() java.net.NetworkInterface+getNetworkInterfaces() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() java.net.NetworkInterface+isUp() java.net.NetworkInterface+isUp() java.net.NetworkInterface+getInetAddresses() java.net.NetworkInterface+getInetAddresses() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() java.net.InetAddress+isLoopbackAddress() java.net.InetAddress+isLoopbackAddress() java.net.InetAddress+getHostAddress() java.net.InetAddress+getHostAddress() java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),,932,21,10,,"private static InetAddress getInetAddress() {
+        try {
+            Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
+            while (nis.hasMoreElements()) {
+                NetworkInterface ni = nis.nextElement();
+                // To prevent phone of xiaomi return ""10.0.2.15""
+                if (!ni.isUp()) continue;
+                Enumeration<InetAddress> addresses = ni.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress inetAddress = addresses.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        String hostAddress = inetAddress.getHostAddress();
+                        if (hostAddress.indexOf(':') < 0) return inetAddress;
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }",False
+14,getMacAddressByFile(),Method,getMacAddress(String),,"com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) java.lang.String+length() java.lang.String+length()",com.blankj.utilcode.util.ShellUtils.CommandResult+result com.blankj.utilcode.util.ShellUtils.CommandResult+successMsg com.blankj.utilcode.util.ShellUtils.CommandResult+result com.blankj.utilcode.util.ShellUtils.CommandResult+successMsg,657,16,10,,"private static String getMacAddressByFile() {
+        ShellUtils.CommandResult result = ShellUtils.execCmd(""getprop wifi.interface"", false);
+        if (result.result == 0) {
+            String name = result.successMsg;
+            if (name != null) {
+                result = ShellUtils.execCmd(""cat /sys/class/net/"" + name + ""/address"", false);
+                if (result.result == 0) {
+                    String address = result.successMsg;
+                    if (address != null && address.length() > 0) {
+                        return address;
+                    }
+                }
+            }
+        }
+        return ""02:00:00:00:00:00"";
+    }",False
+15,getManufacturer(),Method,,,,,242,9,9,"/** 
+ * Return the manufacturer of the product/hardware. <p>e.g. Xiaomi</p>
+ * @return the manufacturer of the product/hardware
+ */
+","/**
+     * Return the manufacturer of the product/hardware.
+     * <p>e.g. Xiaomi</p>
+     *
+     * @return the manufacturer of the product/hardware
+     */
+    public static String getManufacturer() {
+        return Build.MANUFACTURER;
+    }",False
+16,getModel(),Method,,,"java.lang.String+replaceAll(String,String) java.lang.String+trim() java.lang.String+trim() java.lang.String+replaceAll(String,String)",,352,15,9,"/** 
+ * Return the model of device. <p>e.g. MI2SC</p>
+ * @return the model of device
+ */
+","/**
+     * Return the model of device.
+     * <p>e.g. MI2SC</p>
+     *
+     * @return the model of device
+     */
+    public static String getModel() {
+        String model = Build.MODEL;
+        if (model != null) {
+            model = model.trim().replaceAll(""\\s*"", """");
+        } else {
+            model = """";
+        }
+        return model;
+    }",False
+17,getABIs(),Method,,,,,576,16,9,"/** 
+ * Return an ordered list of ABIs supported by this device. The most preferred ABI is the first element in the list.
+ * @return an ordered list of ABIs supported by this device
+ */
+","/**
+     * Return an ordered list of ABIs supported by this device. The most preferred ABI is the first
+     * element in the list.
+     *
+     * @return an ordered list of ABIs supported by this device
+     */
+    public static String[] getABIs() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return Build.SUPPORTED_ABIS;
+        } else {
+            if (!TextUtils.isEmpty(Build.CPU_ABI2)) {
+                return new String[]{Build.CPU_ABI, Build.CPU_ABI2};
+            }
+            return new String[]{Build.CPU_ABI};
+        }
+    }",False
+18,shutdown(),Method,,,"com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) com.blankj.utilcode.util.Utils+getApp() com.blankj.utilcode.util.Utils+getApp()",,567,13,9,"/** 
+ * Shutdown the device <p>Requires root permission or hold  {@code android:sharedUserId=""android.uid.system""}, {@code <uses-permission android:name=""android.permission.SHUTDOWN/>}in manifest.</p>
+ */
+","/**
+     * Shutdown the device
+     * <p>Requires root permission
+     * or hold {@code android:sharedUserId=""android.uid.system""},
+     * {@code <uses-permission android:name=""android.permission.SHUTDOWN/>}
+     * in manifest.</p>
+     */
+    public static void shutdown() {
+        ShellUtils.execCmd(""reboot -p"", true);
+        Intent intent = new Intent(""android.intent.action.ACTION_REQUEST_SHUTDOWN"");
+        intent.putExtra(""android.intent.extra.KEY_CONFIRM"", false);
+        Utils.getApp().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }",True
+19,reboot(),Method,,,"com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) java.lang.Object+Object() com.blankj.utilcode.util.Utils+getApp() com.blankj.utilcode.util.Utils+getApp()",,458,13,9,"/** 
+ * Reboot the device. <p>Requires root permission or hold  {@code android:sharedUserId=""android.uid.system""} in manifest.</p>
+ */
+","/**
+     * Reboot the device.
+     * <p>Requires root permission
+     * or hold {@code android:sharedUserId=""android.uid.system""} in manifest.</p>
+     */
+    public static void reboot() {
+        ShellUtils.execCmd(""reboot"", true);
+        Intent intent = new Intent(Intent.ACTION_REBOOT);
+        intent.putExtra(""nowait"", 1);
+        intent.putExtra(""interval"", 1);
+        intent.putExtra(""window"", 0);
+        Utils.getApp().sendBroadcast(intent);
+    }",True
+20,reboot(String),Method,,,com.blankj.utilcode.util.Utils+getApp() com.blankj.utilcode.util.Utils+getApp(),,578,14,9,"/** 
+ * Reboot the device. <p>Requires root permission or hold  {@code android:sharedUserId=""android.uid.system""}, {@code <uses-permission android:name=""android.permission.REBOOT"" />}</p>
+ * @param reason code to pass to the kernel (e.g., ""recovery"") torequest special boot modes, or null.
+ */
+","/**
+     * Reboot the device.
+     * <p>Requires root permission
+     * or hold {@code android:sharedUserId=""android.uid.system""},
+     * {@code <uses-permission android:name=""android.permission.REBOOT"" />}</p>
+     *
+     * @param reason code to pass to the kernel (e.g., ""recovery"") to
+     *               request special boot modes, or null.
+     */
+    public static void reboot(final String reason) {
+        PowerManager pm = (PowerManager) Utils.getApp().getSystemService(Context.POWER_SERVICE);
+        //noinspection ConstantConditions
+        pm.reboot(reason);
+    }",True
+21,reboot2Recovery(),Method,,,"com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean)",,191,7,9,"/** 
+ * Reboot the device to recovery. <p>Requires root permission.</p>
+ */
+","/**
+     * Reboot the device to recovery.
+     * <p>Requires root permission.</p>
+     */
+    public static void reboot2Recovery() {
+        ShellUtils.execCmd(""reboot recovery"", true);
+    }",True
+22,reboot2Bootloader(),Method,,,"com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean) com.blankj.utilcode.util.ShellUtils+execCmd(String,boolean)",,197,7,9,"/** 
+ * Reboot the device to bootloader. <p>Requires root permission.</p>
+ */
+","/**
+     * Reboot the device to bootloader.
+     * <p>Requires root permission.</p>
+     */
+    public static void reboot2Bootloader() {
+        ShellUtils.execCmd(""reboot bootloader"", true);
+    }",True
+23,isTablet(),Method,,,com.blankj.utilcode.util.Utils+getApp() com.blankj.utilcode.util.Utils+getApp(),,349,10,9,"/** 
+ * Return whether device is tablet.
+ * @return {@code true}: yes<br> {@code false}: no
+ */
+","/**
+     * Return whether device is tablet.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isTablet() {
+        return (Utils.getApp().getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }",False
+24,isEmulator(),Method,,,java.lang.String+equals(Object) java.lang.String+equals(Object) com.blankj.utilcode.util.Utils+getApp() com.blankj.utilcode.util.Utils+getApp() java.lang.String+equals(Object) java.lang.String+toLowerCase() java.lang.String+toLowerCase() java.lang.String+equals(Object) com.blankj.utilcode.util.Utils+getApp() com.blankj.utilcode.util.Utils+getApp(),,1802,42,9,"/** 
+ * Return whether device is emulator.
+ * @return {@code true}: yes<br> {@code false}: no
+ */
+","/**
+     * Return whether device is emulator.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isEmulator() {
+        boolean checkProperty = Build.FINGERPRINT.startsWith(""generic"")
+                || Build.FINGERPRINT.toLowerCase().contains(""vbox"")
+                || Build.FINGERPRINT.toLowerCase().contains(""test-keys"")
+                || Build.MODEL.contains(""google_sdk"")
+                || Build.MODEL.contains(""Emulator"")
+                || Build.SERIAL.equalsIgnoreCase(""unknown"")
+                || Build.SERIAL.equalsIgnoreCase(""android"")
+                || Build.MODEL.contains(""Android SDK built for x86"")
+                || Build.MANUFACTURER.contains(""Genymotion"")
+                || (Build.BRAND.startsWith(""generic"") && Build.DEVICE.startsWith(""generic""))
+                || ""google_sdk"".equals(Build.PRODUCT);
+        if (checkProperty) return true;
+
+        boolean checkDebuggerConnected = Debug.isDebuggerConnected();
+        if (checkDebuggerConnected) return true;
+
+        String operatorName = """";
+        TelephonyManager tm = (TelephonyManager) Utils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        if (tm != null) {
+            String name = tm.getNetworkOperatorName();
+            if (name != null) {
+                operatorName = name;
+            }
+        }
+        boolean checkOperatorName = operatorName.toLowerCase().equals(""android"");
+        if (checkOperatorName) return true;
+
+        String url = ""tel:"" + ""123456"";
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(url));
+        intent.setAction(Intent.ACTION_DIAL);
+        boolean checkDial = intent.resolveActivity(Utils.getApp().getPackageManager()) != null;
+        if (checkDial) return true;
+
+        return false;
+    }",False

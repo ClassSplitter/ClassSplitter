@@ -1,0 +1,357 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,Log,Field,,,,,83,1,26,,private static final Logger Log = LoggerFactory.getLogger(JDBCGroupProvider.class);,False
+2,connectionString,Field,,,,,32,1,2,,private String connectionString;,False
+3,groupCountSQL,Field,,,,,29,1,2,,private String groupCountSQL;,False
+4,descriptionSQL,Field,,,,,30,1,2,,private String descriptionSQL;,False
+5,allGroupsSQL,Field,,,,,28,1,2,,private String allGroupsSQL;,False
+6,userGroupsSQL,Field,,,,,29,1,2,,private String userGroupsSQL;,False
+7,loadMembersSQL,Field,,,,,30,1,2,,private String loadMembersSQL;,False
+8,loadAdminsSQL,Field,,,,,29,1,2,,private String loadAdminsSQL;,False
+9,useConnectionProvider,Field,,,,,38,1,2,,private boolean useConnectionProvider;,False
+10,server,Field,,,,,53,1,2,,private XMPPServer server = XMPPServer.getInstance();,False
+11,JDBCGroupProvider(),Method,,,"org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+migrateProperty(String) org.jivesoftware.util.JiveGlobals+getBooleanProperty(String) org.jivesoftware.util.JiveGlobals+getBooleanProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) java.lang.Class+newInstance() java.lang.Class+forName(String) java.lang.Class+forName(String) java.lang.Class+newInstance() org.slf4j.Logger+error(String,Throwable) org.slf4j.Logger+error(String,Throwable) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String) org.jivesoftware.util.JiveGlobals+getProperty(String)",org.jivesoftware.openfire.group.JDBCGroupProvider+useConnectionProvider org.jivesoftware.openfire.group.JDBCGroupProvider+useConnectionProvider org.jivesoftware.openfire.group.JDBCGroupProvider+Log org.jivesoftware.openfire.group.JDBCGroupProvider+connectionString org.jivesoftware.openfire.group.JDBCGroupProvider+groupCountSQL org.jivesoftware.openfire.group.JDBCGroupProvider+allGroupsSQL org.jivesoftware.openfire.group.JDBCGroupProvider+userGroupsSQL org.jivesoftware.openfire.group.JDBCGroupProvider+descriptionSQL org.jivesoftware.openfire.group.JDBCGroupProvider+loadMembersSQL org.jivesoftware.openfire.group.JDBCGroupProvider+loadAdminsSQL,1921,37,1,"/** 
+ * Constructor of the JDBCGroupProvider class.
+ */
+","/**
+     * Constructor of the JDBCGroupProvider class.
+     */
+    public JDBCGroupProvider() {
+        // Convert XML based provider setup to Database based
+        JiveGlobals.migrateProperty(""jdbcProvider.driver"");
+        JiveGlobals.migrateProperty(""jdbcProvider.connectionString"");
+        JiveGlobals.migrateProperty(""jdbcGroupProvider.groupCountSQL"");
+        JiveGlobals.migrateProperty(""jdbcGroupProvider.allGroupsSQL"");
+        JiveGlobals.migrateProperty(""jdbcGroupProvider.userGroupsSQL"");
+        JiveGlobals.migrateProperty(""jdbcGroupProvider.descriptionSQL"");
+        JiveGlobals.migrateProperty(""jdbcGroupProvider.loadMembersSQL"");
+        JiveGlobals.migrateProperty(""jdbcGroupProvider.loadAdminsSQL"");
+
+        useConnectionProvider = JiveGlobals.getBooleanProperty(""jdbcGroupProvider.useConnectionProvider"");
+
+        if (!useConnectionProvider) {
+            // Load the JDBC driver and connection string.
+            String jdbcDriver = JiveGlobals.getProperty(""jdbcProvider.driver"");
+            try {
+                Class.forName(jdbcDriver).newInstance();
+            }
+            catch (Exception e) {
+                Log.error(""Unable to load JDBC driver: "" + jdbcDriver, e);
+                return;
+            }
+            connectionString = JiveGlobals.getProperty(""jdbcProvider.connectionString"");
+        }
+
+        // Load SQL statements
+        groupCountSQL = JiveGlobals.getProperty(""jdbcGroupProvider.groupCountSQL"");
+        allGroupsSQL = JiveGlobals.getProperty(""jdbcGroupProvider.allGroupsSQL"");
+        userGroupsSQL = JiveGlobals.getProperty(""jdbcGroupProvider.userGroupsSQL"");
+        descriptionSQL = JiveGlobals.getProperty(""jdbcGroupProvider.descriptionSQL"");
+        loadMembersSQL = JiveGlobals.getProperty(""jdbcGroupProvider.loadMembersSQL"");
+        loadAdminsSQL = JiveGlobals.getProperty(""jdbcGroupProvider.loadAdminsSQL"");
+    }",False
+12,createGroup(String),Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(),,363,9,1,"/** 
+ * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+ * @param name the name of the group to create.
+ * @throws UnsupportedOperationException when called.
+ */
+","/**
+     * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+     *
+     * @param name the name of the group to create.
+     * @throws UnsupportedOperationException when called.
+     */
+    public Group createGroup(String name) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }",True
+13,deleteGroup(String),Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(),,361,9,1,"/** 
+ * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+ * @param name the name of the group to delete
+ * @throws UnsupportedOperationException when called.
+ */
+","/**
+     * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+     *
+     * @param name the name of the group to delete
+     * @throws UnsupportedOperationException when called.
+     */
+    public void deleteGroup(String name) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }",True
+14,getConnection(),Method,,,org.jivesoftware.database.DbConnectionManager+getConnection() org.jivesoftware.database.DbConnectionManager+getConnection() java.sql.DriverManager+getConnection(String) java.sql.DriverManager+getConnection(String),org.jivesoftware.openfire.group.JDBCGroupProvider+useConnectionProvider org.jivesoftware.openfire.group.JDBCGroupProvider+connectionString,219,5,2,,"private Connection getConnection() throws SQLException {
+        if (useConnectionProvider)
+            return DbConnectionManager.getConnection();
+        return DriverManager.getConnection(connectionString);
+    }",False
+15,getGroup(String),Method,,,"org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() org.jivesoftware.openfire.group.GroupNotFoundException+GroupNotFoundException(String) java.sql.ResultSet+getString(int) java.sql.ResultSet+getString(int) org.slf4j.Logger+error(String,Throwable) org.slf4j.Logger+error(String,Throwable) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection) org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection) org.jivesoftware.openfire.group.JDBCGroupProvider+getMembers(String,boolean) org.jivesoftware.openfire.group.JDBCGroupProvider+getMembers(String,boolean) org.jivesoftware.openfire.group.JDBCGroupProvider+getMembers(String,boolean) org.jivesoftware.openfire.group.JDBCGroupProvider+getMembers(String,boolean) org.jivesoftware.openfire.group.Group+Group(String,String,Collection<JID>,Collection<JID>)",org.jivesoftware.openfire.group.JDBCGroupProvider+descriptionSQL org.jivesoftware.openfire.group.JDBCGroupProvider+Log,1004,27,1,,"public Group getGroup(String name) throws GroupNotFoundException {
+        String description = null;
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(descriptionSQL);
+            pstmt.setString(1, name);
+            rs = pstmt.executeQuery();
+            if (!rs.next()) {
+                throw new GroupNotFoundException(""Group with name ""
+                        + name + "" not found."");
+            }
+            description = rs.getString(1);
+        }
+        catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+        finally {
+            DbConnectionManager.closeConnection(rs, pstmt, con);
+        }
+        Collection<JID> members = getMembers(name, false);
+        Collection<JID> administrators = getMembers(name, true);
+        return new Group(name, description, members, administrators);
+    }",False
+16,"getMembers(String,boolean)",Method,,,"java.util.ArrayList+ArrayList() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getString(int) java.sql.ResultSet+getString(int) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) org.xmpp.packet.JID+JID(String) org.jivesoftware.openfire.XMPPServer+createJID(String,String) org.jivesoftware.openfire.XMPPServer+createJID(String,String) java.util.List+add(E) java.util.List+add(E) org.slf4j.Logger+error(String,Throwable) org.slf4j.Logger+error(String,Throwable) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection) org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection)",org.jivesoftware.openfire.group.JDBCGroupProvider+loadAdminsSQL org.jivesoftware.openfire.group.JDBCGroupProvider+loadAdminsSQL org.jivesoftware.openfire.group.JDBCGroupProvider+loadMembersSQL org.jivesoftware.openfire.group.JDBCGroupProvider+server org.jivesoftware.openfire.group.JDBCGroupProvider+Log,1368,42,2,,"private Collection<JID> getMembers(String groupName, boolean adminsOnly) {
+        List<JID> members = new ArrayList<JID>();
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = getConnection();
+            if (adminsOnly) {
+                if (loadAdminsSQL == null) {
+                    return members;
+                }
+                pstmt = con.prepareStatement(loadAdminsSQL);
+            }
+            else {
+                pstmt = con.prepareStatement(loadMembersSQL);
+            }
+
+            pstmt.setString(1, groupName);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String user = rs.getString(1);
+                if (user != null) {
+                    JID userJID;
+                    if (user.contains(""@"")) {
+                        userJID = new JID(user);
+                    }
+                    else {
+                        userJID = server.createJID(user, null); 
+                    }
+                    members.add(userJID);
+                }
+            }
+        }
+        catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+        finally {
+            DbConnectionManager.closeConnection(rs, pstmt, con);
+        }
+        return members;
+    }",False
+17,"setName(String,String)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(),,436,10,1,"/** 
+ * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+ * @param oldName the current name of the group.
+ * @param newName the desired new name of the group.
+ * @throws UnsupportedOperationException when called.
+ */
+","/**
+     * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+     *
+     * @param oldName the current name of the group.
+     * @param newName the desired new name of the group.
+     * @throws UnsupportedOperationException when called.
+     */
+    public void setName(String oldName, String newName) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }",True
+18,"setDescription(String,String)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(),,431,11,1,"/** 
+ * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+ * @param name the group name.
+ * @param description the group description.
+ * @throws UnsupportedOperationException when called.
+ */
+","/**
+     * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+     *
+     * @param name the group name.
+     * @param description the group description.
+     * @throws UnsupportedOperationException when called.
+     */
+    public void setDescription(String name, String description)
+            throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }",True
+19,getGroupCount(),Method,,,"org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getInt(int) java.sql.ResultSet+getInt(int) org.slf4j.Logger+error(String,Throwable) org.slf4j.Logger+error(String,Throwable) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection) org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection)",org.jivesoftware.openfire.group.JDBCGroupProvider+groupCountSQL org.jivesoftware.openfire.group.JDBCGroupProvider+Log,613,21,1,,"public int getGroupCount() {
+        int count = 0;
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(groupCountSQL);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        }
+        catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+        finally {
+            DbConnectionManager.closeConnection(rs, pstmt, con);
+        }
+        return count;
+    }",False
+20,getSharedGroupsNames(),Method,,,org.jivesoftware.openfire.group.Group+getSharedGroupsNames() org.jivesoftware.openfire.group.Group+getSharedGroupsNames(),,163,4,1,,"public Collection<String> getSharedGroupsNames() {
+        // Get the list of shared groups from the database
+        return Group.getSharedGroupsNames();
+    }",False
+21,getGroupNames(),Method,,,"java.util.ArrayList+ArrayList() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() java.util.List+add(E) java.util.List+add(E) java.sql.ResultSet+getString(int) java.sql.ResultSet+getString(int) org.slf4j.Logger+error(String,Throwable) org.slf4j.Logger+error(String,Throwable) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection) org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection)",org.jivesoftware.openfire.group.JDBCGroupProvider+allGroupsSQL org.jivesoftware.openfire.group.JDBCGroupProvider+Log,682,21,1,,"public Collection<String> getGroupNames() {
+        List<String> groupNames = new ArrayList<String>();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(allGroupsSQL);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                groupNames.add(rs.getString(1));
+            }
+        }
+        catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+        finally {
+            DbConnectionManager.closeConnection(rs, pstmt, con);
+        }
+        return groupNames;
+    }",False
+22,"getGroupNames(int,int)",Method,,,"java.util.ArrayList+ArrayList() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() org.jivesoftware.database.DbConnectionManager+createScrollablePreparedStatement(Connection,String) org.jivesoftware.database.DbConnectionManager+createScrollablePreparedStatement(Connection,String) java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() org.jivesoftware.database.DbConnectionManager+scrollResultSet(ResultSet,int) org.jivesoftware.database.DbConnectionManager+scrollResultSet(ResultSet,int) java.sql.ResultSet+next() java.sql.ResultSet+next() java.util.List+add(E) java.util.List+add(E) java.sql.ResultSet+getString(int) java.sql.ResultSet+getString(int) org.slf4j.Logger+error(String,Throwable) org.slf4j.Logger+error(String,Throwable) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection) org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection)",org.jivesoftware.openfire.group.JDBCGroupProvider+allGroupsSQL org.jivesoftware.openfire.group.JDBCGroupProvider+Log,868,24,1,,"public Collection<String> getGroupNames(int start, int num) {
+        List<String> groupNames = new ArrayList<String>();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = getConnection();
+            pstmt = DbConnectionManager.createScrollablePreparedStatement(con, allGroupsSQL);
+            rs = pstmt.executeQuery();
+            DbConnectionManager.scrollResultSet(rs, start);
+            int count = 0;
+            while (rs.next() && count < num) {
+                groupNames.add(rs.getString(1));
+                count++;
+            }
+        }
+        catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+        finally {
+            DbConnectionManager.closeConnection(rs, pstmt, con);
+        }
+        return groupNames;
+    }",False
+23,getGroupNames(JID),Method,,,"java.util.ArrayList+ArrayList() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() org.jivesoftware.openfire.group.JDBCGroupProvider+getConnection() java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) org.jivesoftware.openfire.XMPPServer+isLocal(JID) org.jivesoftware.openfire.XMPPServer+isLocal(JID) org.xmpp.packet.JID+getNode() org.xmpp.packet.JID+getNode() org.xmpp.packet.JID+toString() org.xmpp.packet.JID+toString() java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() java.util.List+add(E) java.util.List+add(E) java.sql.ResultSet+getString(int) java.sql.ResultSet+getString(int) org.slf4j.Logger+error(String,Throwable) org.slf4j.Logger+error(String,Throwable) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection) org.jivesoftware.database.DbConnectionManager+closeConnection(ResultSet,Statement,Connection)",org.jivesoftware.openfire.group.JDBCGroupProvider+userGroupsSQL org.jivesoftware.openfire.group.JDBCGroupProvider+server org.jivesoftware.openfire.group.JDBCGroupProvider+Log,781,22,1,,"public Collection<String> getGroupNames(JID user) {
+        List<String> groupNames = new ArrayList<String>();
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(userGroupsSQL);
+            pstmt.setString(1, server.isLocal(user) ? user.getNode() : user.toString());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                groupNames.add(rs.getString(1));
+            }
+        }
+        catch (SQLException e) {
+            Log.error(e.getMessage(), e);
+        }
+        finally {
+            DbConnectionManager.closeConnection(rs, pstmt, con);
+        }
+        return groupNames;
+    }",False
+24,"addMember(String,JID,boolean)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(),,510,13,1,"/** 
+ * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+ * @param groupName name of a group.
+ * @param user the JID of the user to add
+ * @param administrator true if is an administrator.
+ * @throws UnsupportedOperationException when called.
+ */
+","/**
+     * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+     *
+     * @param groupName name of a group.
+     * @param user the JID of the user to add
+     * @param administrator true if is an administrator.
+     * @throws UnsupportedOperationException when called.
+     */
+    public void addMember(String groupName, JID user, boolean administrator)
+            throws UnsupportedOperationException
+    {
+        throw new UnsupportedOperationException();
+    }",True
+25,"updateMember(String,JID,boolean)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(),,531,13,1,"/** 
+ * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+ * @param groupName the naame of a group.
+ * @param user the JID of the user with new privileges
+ * @param administrator true if is an administrator.
+ * @throws UnsupportedOperationException when called.
+ */
+","/**
+     * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+     *
+     * @param groupName the naame of a group.
+     * @param user the JID of the user with new privileges
+     * @param administrator true if is an administrator.
+     * @throws UnsupportedOperationException when called.
+     */
+    public void updateMember(String groupName, JID user, boolean administrator)
+            throws UnsupportedOperationException
+    {
+        throw new UnsupportedOperationException();
+    }",True
+26,"deleteMember(String,JID)",Method,,,java.lang.UnsupportedOperationException+UnsupportedOperationException(),,440,12,1,"/** 
+ * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+ * @param groupName the name of a group.
+ * @param user the JID of the user to delete.
+ * @throws UnsupportedOperationException when called.
+ */
+","/**
+     * Always throws an UnsupportedOperationException because JDBC groups are read-only.
+     *
+     * @param groupName the name of a group.
+     * @param user the JID of the user to delete.
+     * @throws UnsupportedOperationException when called.
+     */
+    public void deleteMember(String groupName, JID user)
+            throws UnsupportedOperationException
+    {
+        throw new UnsupportedOperationException();
+    }",True
+27,isReadOnly(),Method,,,,,210,8,1,"/** 
+ * Always returns true because JDBC groups are read-only.
+ * @return true because all JDBC functions are read-only.
+ */
+","/**
+     * Always returns true because JDBC groups are read-only.
+     *
+     * @return true because all JDBC functions are read-only.
+     */
+    public boolean isReadOnly() {
+        return true;
+    }",True
+28,search(String),Method,,,java.util.Collections+emptyList() java.util.Collections+emptyList(),,96,3,1,,"public Collection<String> search(String query) {
+        return Collections.emptyList();
+    }",True
+29,"search(String,int,int)",Method,,,java.util.Collections+emptyList() java.util.Collections+emptyList(),,128,3,1,,"public Collection<String> search(String query, int startIndex, int numResults) {
+        return Collections.emptyList();
+    }",True
+30,isSearchSupported(),Method,,,,,66,3,1,,"public boolean isSearchSupported() {
+        return false;
+    }",True

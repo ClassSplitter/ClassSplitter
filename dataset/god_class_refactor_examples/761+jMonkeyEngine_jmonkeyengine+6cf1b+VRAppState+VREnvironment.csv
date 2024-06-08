@@ -1,0 +1,905 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,logger,Field,,,,,82,1,26,,private static final Logger logger = Logger.getLogger(VRAppState.class.getName());,False
+2,vrBinding,Field,,,,,184,4,1,"/** 
+ * The underlying system VR API. By default set to  {@link VRConstants#SETTING_VRAPI_OPENVR_VALUE}.
+ */
+","/**
+     * The underlying system VR API. By default set to {@link VRConstants#SETTING_VRAPI_OPENVR_VALUE}.
+     */
+    public int vrBinding = VRConstants.SETTING_VRAPI_OPENVR_VALUE;",True
+3,DISABLE_VR,Field,,,,,144,4,1,"/** 
+ * Is the application has not to start within VR mode (default is <code>false</code>).
+ */
+","/**
+     * Is the application has not to start within VR mode (default is <code>false</code>).
+     */
+    public boolean DISABLE_VR = false;",False
+4,VRhardware,Field,,,,,43,1,2,,private VRAPI VRhardware            = null;,False
+5,guiManager,Field,,,,,43,1,2,,private VRGuiManager guiManager     = null;,True
+6,mouseManager,Field,,,,,43,1,2,,private VRMouseManager mouseManager = null;,True
+7,viewmanager,Field,,,,,43,1,2,,private VRViewManager viewmanager   = null;,True
+8,OS,Field,,,,,18,1,2,,private String OS;,True
+9,dummyCam,Field,,,,,24,1,2,,private Camera dummyCam;,True
+10,observer,Field,,,,,32,1,2,,private Spatial observer = null;,True
+11,VRSupportedOS,Field,,,,,30,1,2,,private boolean VRSupportedOS;,True
+12,forceVR,Field,,,,,43,1,2,,private boolean forceVR            = false;,True
+13,disableSwapBuffers,Field,,,,,42,1,2,,private boolean disableSwapBuffers = true;,True
+14,disableVR,Field,,,,,43,1,2,,private boolean disableVR          = false;,True
+15,seated,Field,,,,,23,1,2,,private boolean seated;,True
+16,nogui,Field,,,,,22,1,2,,private boolean nogui;,True
+17,instanceVR,Field,,,,,43,1,2,,private boolean instanceVR         = false;,True
+18,defaultFOV,Field,,,,,42,1,2,,private float defaultFOV           = 108f;,True
+19,defaultAspect,Field,,,,,40,1,2,,private float defaultAspect        = 1f;,True
+20,fFar,Field,,,,,28,1,2,,private float fFar  = 1000f;,False
+21,fNear,Field,,,,,27,1,2,,private float fNear = 0.1f;,False
+22,xWin,Field,,,,,27,1,2,,private int xWin    = 1920;,False
+23,yWin,Field,,,,,27,1,2,,private int yWin    = 1080;,False
+24,resMult,Field,,,,,27,1,2,,private float resMult = 1f;,False
+25,useCompositor,Field,,,,,37,1,2,,private boolean useCompositor = true;,True
+26,compositorOS,Field,,,,,29,1,2,,private boolean compositorOS;,True
+27,tempq,Field,,,,,44,1,2,,private Quaternion tempq = new Quaternion();,False
+28,application,Field,,,,,44,1,2,,private Application application      = null;,False
+29,stateManager,Field,,,,,44,1,2,,private AppStateManager stateManager = null;,False
+30,settings,Field,,,,,44,1,2,,private AppSettings settings         = null;,False
+31,VRAppState(),Method,,,com.jme3.renderer.Camera+Camera() jmevr.util.VRGuiManager+VRGuiManager() jmevr.util.VRViewManager+VRViewManager() jmevr.util.VRMouseManager+VRMouseManager(),com.jme3.app.VRAppState+dummyCam com.jme3.app.VRAppState+guiManager com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+mouseManager,421,18,1,"/** 
+ * Create a new default VR app state.
+ */
+","/**
+     * Create a new default VR app state.
+     */
+    public VRAppState() {
+        super();
+
+        dummyCam = new Camera();
+        
+        // Create the GUI manager.
+        guiManager = new VRGuiManager();
+        
+        // Create a new view manager.
+        viewmanager = new VRViewManager();
+
+        // Create a new mouse manager.
+        mouseManager = new VRMouseManager();
+      
+     }",False
+32,VRAppState(AppSettings),Method,,,com.jme3.app.VRAppState+processSettings(AppSettings) com.jme3.app.VRAppState+processSettings(AppSettings),com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings,248,9,1,"/** 
+ * Create a new VR app state with given settings. 
+ * @param settings the settings to use.
+ */
+","/**
+     * Create a new VR app state with given settings. 
+     * @param settings the settings to use.
+     */
+    public VRAppState(AppSettings settings){
+      this();
+      this.settings = settings;
+      processSettings(settings);
+    }",False
+33,simpleUpdate(float),Method,,,,,317,8,1,"/** 
+ * Simple update of the app state, this method should contains any spatial updates. This method is called by the  {@link #update(float) update()} method and should not be called manually.
+ * @param tpf the application time.
+ */
+","/**
+     * Simple update of the app state, this method should contains any spatial updates.
+     * This method is called by the {@link #update(float) update()} method and should not be called manually.
+     * @param tpf the application time.
+     */
+    public void simpleUpdate(float tpf) {
+    	return;
+    }",False
+34,simpleRender(RenderManager),Method,,,com.jme3.post.PreNormalCaching+resetCache(boolean) com.jme3.post.PreNormalCaching+resetCache(boolean) com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+isInVR(),,347,7,1,"/** 
+ * Rendering callback of the app state. This method is called by the  {@link #update(float) update()} method and should not be called manually.
+ * @param renderManager the {@link RenderManager render manager}.
+ */
+","/**
+     * Rendering callback of the app state. This method is called by the {@link #update(float) update()} method and should not be called manually.
+     * @param renderManager the {@link RenderManager render manager}.
+     */
+    public void simpleRender(RenderManager renderManager) {
+        PreNormalCaching.resetCache(isInVR());
+    }",False
+35,"setFrustrumNearFar(float,float)",Method,,,,com.jme3.app.VRAppState+fNear com.jme3.app.VRAppState+fFar,265,9,1,"/** 
+ * Set the frustrum values for the application.
+ * @param near the frustrum near value.
+ * @param far the frustrum far value.
+ */
+","/**
+     * Set the frustrum values for the application.
+     * @param near the frustrum near value.
+     * @param far the frustrum far value.
+     */
+    public void setFrustrumNearFar(float near, float far) {
+        fNear = near;
+        fFar = far;
+    }",False
+36,"setMirrorWindowSize(int,int)",Method,,,,com.jme3.app.VRAppState+xWin com.jme3.app.VRAppState+yWin,299,9,1,"/** 
+ * Set the mirror window size in pixel.
+ * @param width the width of the mirror window in pixel.
+ * @param height the height of the mirror window in pixel.
+ */
+","/**
+     * Set the mirror window size in pixel.
+     * @param width the width of the mirror window in pixel.
+     * @param height the height of the mirror window in pixel.
+     */
+    public void setMirrorWindowSize(int width, int height) {
+        xWin = width;
+        yWin = height;
+    }",False
+37,setResolutionMultiplier(float),Method,,,jmevr.util.VRViewManager+setResolutionMultiplier(float) jmevr.util.VRViewManager+setResolutionMultiplier(float),com.jme3.app.VRAppState+resMult com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+resMult,285,10,1,"/** 
+ * Set the resolution multiplier.
+ * @param val the resolution multiplier.
+ */
+","/**
+     * Set the resolution multiplier.
+     * @param val the resolution multiplier.
+     */
+    public void setResolutionMultiplier(float val) {
+        resMult = val;
+        if( viewmanager != null ){
+        	viewmanager.setResolutionMultiplier(resMult);
+        }
+    }",False
+38,compositorAllowed(),Method,,,,com.jme3.app.VRAppState+useCompositor com.jme3.app.VRAppState+compositorOS,247,7,1,"/** 
+ * Is the VR compositor is active.
+ * @return <code>true</code> if the VR compositor is active and <code>false</code> otherwise.
+ */
+","/**
+     * Is the VR compositor is active.
+     * @return <code>true</code> if the VR compositor is active and <code>false</code> otherwise.
+     */
+    public boolean compositorAllowed() {
+        return useCompositor && compositorOS;
+    }",True
+39,isVRSupported(),Method,,,,com.jme3.app.VRAppState+VRSupportedOS,239,7,1,"/** 
+ * Get if the system currently support VR.
+ * @return <code>true</code> if the system currently support VR and <code>false</Code> otherwise.
+ */
+","/**
+     * Get if the system currently support VR.
+     * @return <code>true</code> if the system currently support VR and <code>false</Code> otherwise.
+     */
+    public boolean isVRSupported() {
+        return VRSupportedOS;
+    }",True
+40,getCamera(),Method,,,com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+isInVR() jmevr.util.VRViewManager+getLeftCamera() jmevr.util.VRViewManager+getLeftCamera() com.jme3.app.Application+getCamera() com.jme3.app.Application+getCamera(),com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+dummyCam com.jme3.app.VRAppState+application,536,13,1,"/** 
+ * Get the  {@link Camera camera} attached to this application state. If the VR mode is  {@link #isInVR() active}, this method return a dummy camera, otherwise,  this method return the camera of the attached application.
+ * @return the camera attached to this application state.
+ */
+","/**
+     * Get the {@link Camera camera} attached to this application state. 
+     * If the VR mode is {@link #isInVR() active}, this method return a dummy camera, otherwise, 
+     * this method return the camera of the attached application.
+     * @return the camera attached to this application state.
+     */
+    public Camera getCamera() {
+        if( isInVR() && viewmanager != null && viewmanager.getLeftCamera() != null ) {
+            return dummyCam;
+        }
+        
+        return application.getCamera();
+    }",True
+41,setSeatedExperience(boolean),Method,,,com.jme3.input.vr.VRAPI+getCompositor() com.jme3.input.vr.VRAPI+getCompositor() com.jme3.system.jopenvr.VR_IVRCompositor_FnTable.SetTrackingSpace_callback+apply(int) com.jme3.input.vr.OpenVR+getCompositor() com.jme3.input.vr.OpenVR+getCompositor() com.jme3.system.jopenvr.VR_IVRCompositor_FnTable.SetTrackingSpace_callback+apply(int) com.jme3.system.jopenvr.VR_IVRCompositor_FnTable.SetTrackingSpace_callback+apply(int) com.jme3.input.vr.OpenVR+getCompositor() com.jme3.input.vr.OpenVR+getCompositor() com.jme3.system.jopenvr.VR_IVRCompositor_FnTable.SetTrackingSpace_callback+apply(int),com.jme3.app.VRAppState+seated com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+seated com.jme3.system.jopenvr.VR_IVRCompositor_FnTable+SetTrackingSpace com.jme3.app.VRAppState+VRhardware com.jme3.system.jopenvr.VR_IVRCompositor_FnTable+SetTrackingSpace com.jme3.system.jopenvr.JOpenVRLibrary.ETrackingUniverseOrigin+ETrackingUniverseOrigin_TrackingUniverseSeated com.jme3.system.jopenvr.VR_IVRCompositor_FnTable+SetTrackingSpace com.jme3.app.VRAppState+VRhardware com.jme3.system.jopenvr.VR_IVRCompositor_FnTable+SetTrackingSpace com.jme3.system.jopenvr.JOpenVRLibrary.ETrackingUniverseOrigin+ETrackingUniverseOrigin_TrackingUniverseStanding,852,16,1,"/** 
+ * Can be used to change seated experience during runtime.
+ * @param isSeated <code>true</code> if designed for sitting, <code>false</code> for standing/roomscale
+ * @see #isSeatedExperience()
+ */
+","/**
+     * Can be used to change seated experience during runtime.
+     * @param isSeated <code>true</code> if designed for sitting, <code>false</code> for standing/roomscale
+     * @see #isSeatedExperience()
+     */
+    public void setSeatedExperience(boolean isSeated) {
+        seated = isSeated;
+        if( VRhardware instanceof OpenVR ) {
+            if( VRhardware.getCompositor() == null ) return;
+            if( seated ) {
+                ((OpenVR)VRhardware).getCompositor().SetTrackingSpace.apply(JOpenVRLibrary.ETrackingUniverseOrigin.ETrackingUniverseOrigin_TrackingUniverseSeated);
+            } else {
+                ((OpenVR)VRhardware).getCompositor().SetTrackingSpace.apply(JOpenVRLibrary.ETrackingUniverseOrigin.ETrackingUniverseOrigin_TrackingUniverseStanding);                
+            }        
+        }
+    }",True
+42,isSeatedExperience(),Method,,,,com.jme3.app.VRAppState+seated,324,8,1,"/** 
+ * Check if the application is configured as a seated experience.
+ * @return <code>true</code> if the application is configured as a seated experience and <code>false</code> otherwise.
+ * @see #setSeatedExperience(boolean)
+ */
+","/**
+     * Check if the application is configured as a seated experience.
+     * @return <code>true</code> if the application is configured as a seated experience and <code>false</code> otherwise.
+     * @see #setSeatedExperience(boolean)
+     */
+    public boolean isSeatedExperience() {
+        return seated;
+    }",True
+43,resetSeatedPose(),Method,,,com.jme3.app.VRAppState+isSeatedExperience() com.jme3.app.VRAppState+isSeatedExperience() com.jme3.input.vr.VRAPI+reset() com.jme3.input.vr.VRAPI+reset(),com.jme3.app.VRAppState+VRSupportedOS com.jme3.app.VRAppState+VRhardware,213,7,1,"/** 
+ * Reset headset pose if seating experience.
+ */
+","/**
+     * Reset headset pose if seating experience.
+     */
+    public void resetSeatedPose(){
+        if( VRSupportedOS == false || isSeatedExperience() == false ) return;
+        VRhardware.reset();
+    }",True
+44,isInstanceVRRendering(),Method,,,com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+isInVR(),com.jme3.app.VRAppState+instanceVR,338,7,1,"/** 
+ * Check if the rendering is instanced (see <a href=""https://en.wikipedia.org/wiki/Geometry_instancing"">Geometry instancing</a>).
+ * @return <code>true</code> if the rendering is instanced and <code>false</code> otherwise.
+ */
+","/**
+     * Check if the rendering is instanced (see <a href=""https://en.wikipedia.org/wiki/Geometry_instancing"">Geometry instancing</a>).
+     * @return <code>true</code> if the rendering is instanced and <code>false</code> otherwise.
+     */
+    public boolean isInstanceVRRendering() {
+        return instanceVR && isInVR();
+    }",True
+45,isInVR(),Method,,,com.jme3.input.vr.VRAPI+isInitialized() com.jme3.input.vr.VRAPI+isInitialized(),com.jme3.app.VRAppState+DISABLE_VR com.jme3.app.VRAppState+forceVR com.jme3.app.VRAppState+VRSupportedOS com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+VRhardware,304,7,1,"/** 
+ * Check if the VR mode is enabled.
+ * @return <code>true</code> if the VR mode is enabled and <code>false</code> otherwise.
+ */
+","/**
+     * Check if the VR mode is enabled.
+     * @return <code>true</code> if the VR mode is enabled and <code>false</code> otherwise.
+     */
+    public boolean isInVR() {
+        return DISABLE_VR == false && (forceVR || VRSupportedOS && VRhardware != null && VRhardware.isInitialized());
+    }",True
+46,getDefaultFOV(),Method,,,,com.jme3.app.VRAppState+defaultFOV,215,8,1,"/** 
+ * Get the default Field Of View (FOV) value.
+ * @return the default Field Of View (FOV) value.
+ * @see #setDefaultFOV(float)
+ */
+","/**
+     * Get the default Field Of View (FOV) value.
+     * @return the default Field Of View (FOV) value.
+     * @see #setDefaultFOV(float)
+     */
+    public float getDefaultFOV() {
+		return defaultFOV;
+	}",True
+47,setDefaultFOV(float),Method,,,,com.jme3.app.VRAppState+defaultFOV com.jme3.app.VRAppState+defaultFOV,243,8,1,"/** 
+ * Set the default Field Of View (FOV) value.
+ * @param defaultFOV the default Field Of View (FOV) value.
+ * @see #getDefaultFOV()
+ */
+","/**
+     * Set the default Field Of View (FOV) value.
+     * @param defaultFOV the default Field Of View (FOV) value.
+     * @see #getDefaultFOV()
+     */
+	public void setDefaultFOV(float defaultFOV) {
+		this.defaultFOV = defaultFOV;
+	}",True
+48,getDefaultAspect(),Method,,,,com.jme3.app.VRAppState+defaultAspect,183,8,1,"/** 
+ * Get the default aspect ratio.
+ * @return the default aspect ratio.
+ * @see #setDefaultAspect(float)
+ */
+","/**
+	 * Get the default aspect ratio.
+	 * @return the default aspect ratio.
+	 * @see #setDefaultAspect(float)
+	 */
+	public float getDefaultAspect() {
+		return defaultAspect;
+	}",True
+49,setDefaultAspect(float),Method,,,,com.jme3.app.VRAppState+defaultAspect com.jme3.app.VRAppState+defaultAspect,223,8,1,"/** 
+ * Set the default aspect ratio.
+ * @param defaultAspect the default aspect ratio.
+ * @see #getDefaultAspect()
+ */
+","/**
+	 * Set the default aspect ratio.
+	 * @param defaultAspect the default aspect ratio.
+	 * @see #getDefaultAspect()
+	 */
+	public void setDefaultAspect(float defaultAspect) {
+		this.defaultAspect = defaultAspect;
+	}",True
+50,moveScreenProcessingToVR(),Method,,,com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+isInVR() jmevr.util.VRViewManager+moveScreenProcessingToEyes() jmevr.util.VRViewManager+moveScreenProcessingToEyes(),com.jme3.app.VRAppState+viewmanager,261,9,1,"/** 
+ * Move filters from the main scene into the eye's. This removes filters from the main scene.
+ */
+","/**
+     * Move filters from the main scene into the eye's.
+     * This removes filters from the main scene.
+     */
+    public void moveScreenProcessingToVR() {
+        if( isInVR() ) {
+        	viewmanager.moveScreenProcessingToEyes();
+        }
+    }",False
+51,hasTraditionalGUIOverlay(),Method,,,,com.jme3.app.VRAppState+nogui,267,7,1,"/** 
+ * Check if the application has a GUI overlay attached.
+ * @return <code>true</code> if the application has a GUI overlay attached and <code>false</code> otherwise.
+ */
+","/**
+     * Check if the application has a GUI overlay attached.
+     * @return <code>true</code> if the application has a GUI overlay attached and <code>false</code> otherwise.
+     */
+    public boolean hasTraditionalGUIOverlay() {
+        return !nogui;
+    }",True
+52,getObserver(),Method,,,com.jme3.app.VRAppState+getCamera() com.jme3.app.VRAppState+getCamera(),com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+observer,355,11,1,"/** 
+ * Get the scene observer. If no observer has been set, this method return the application  {@link #getCamera() camera}.
+ * @return the scene observer. 
+ * @see #setObserver(Spatial)
+ */
+","/**
+     * Get the scene observer. If no observer has been set, this method return the application {@link #getCamera() camera}.
+     * @return the scene observer. 
+     * @see #setObserver(Spatial)
+     */
+    public Object getObserver() {
+        if( observer == null ) {
+            return getCamera();
+        }
+        return observer;
+    }",True
+53,setObserver(Spatial),Method,,,,com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+observer,315,7,1,"/** 
+ * Set the scene observer. The VR headset will be linked to it. If no observer is set, the VR headset is linked to the the application  {@link #getCamera() camera}.
+ * @param observer the scene observer.
+ */
+","/**
+     * Set the scene observer. The VR headset will be linked to it. If no observer is set, the VR headset is linked to the the application {@link #getCamera() camera}.
+     * @param observer the scene observer.
+     */
+    public void setObserver(Spatial observer) {
+       this.observer = observer;
+    }",True
+54,getFinalObserverRotation(),Method,,,com.jme3.renderer.Camera+getRotation() com.jme3.app.VRAppState+getCamera() com.jme3.app.VRAppState+getCamera() com.jme3.renderer.Camera+getRotation() com.jme3.scene.Spatial+getWorldRotation() com.jme3.scene.Spatial+getWorldRotation() com.jme3.math.Quaternion+set(Quaternion) com.jme3.math.Quaternion+set(Quaternion) com.jme3.renderer.Camera+getRotation() com.jme3.renderer.Camera+getRotation() com.jme3.math.Quaternion+set(Quaternion) com.jme3.math.Quaternion+set(Quaternion) com.jme3.scene.Spatial+getWorldRotation() com.jme3.scene.Spatial+getWorldRotation() com.jme3.math.Quaternion+multLocal(Quaternion) com.jme3.math.Quaternion+multLocal(Quaternion) com.jme3.input.vr.VRAPI+getOrientation() com.jme3.input.vr.VRAPI+getOrientation(),com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+tempq com.jme3.app.VRAppState+dummyCam com.jme3.app.VRAppState+tempq com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+tempq com.jme3.app.VRAppState+VRhardware,659,18,1,"/** 
+ * Get the observer final rotation within the scene.
+ * @return the observer final rotation within the scene.
+ * @see #getFinalObserverPosition()
+ */
+","/**
+     * Get the observer final rotation within the scene.
+     * @return the observer final rotation within the scene.
+     * @see #getFinalObserverPosition()
+     */
+    public Quaternion getFinalObserverRotation() {
+        if( viewmanager == null ) {
+            if( observer == null ) {
+                return getCamera().getRotation();
+            } else return observer.getWorldRotation();
+        }        
+        if( observer == null ) {
+            tempq.set(dummyCam.getRotation());
+        } else {
+            tempq.set(observer.getWorldRotation());
+        }
+        return tempq.multLocal(VRhardware.getOrientation());
+    }",False
+55,getFinalObserverPosition(),Method,,,"com.jme3.renderer.Camera+getLocation() com.jme3.app.VRAppState+getCamera() com.jme3.app.VRAppState+getCamera() com.jme3.renderer.Camera+getLocation() com.jme3.scene.Spatial+getWorldTranslation() com.jme3.scene.Spatial+getWorldTranslation() com.jme3.input.vr.VRAPI+getPosition() com.jme3.input.vr.VRAPI+getPosition() com.jme3.math.Quaternion+mult(Vector3f,Vector3f) com.jme3.renderer.Camera+getRotation() com.jme3.renderer.Camera+getRotation() com.jme3.math.Quaternion+mult(Vector3f,Vector3f) com.jme3.math.Vector3f+addLocal(Vector3f) com.jme3.math.Vector3f+addLocal(Vector3f) com.jme3.renderer.Camera+getLocation() com.jme3.renderer.Camera+getLocation() com.jme3.math.Quaternion+mult(Vector3f,Vector3f) com.jme3.scene.Spatial+getWorldRotation() com.jme3.scene.Spatial+getWorldRotation() com.jme3.math.Quaternion+mult(Vector3f,Vector3f) com.jme3.math.Vector3f+addLocal(Vector3f) com.jme3.math.Vector3f+addLocal(Vector3f) com.jme3.scene.Spatial+getWorldTranslation() com.jme3.scene.Spatial+getWorldTranslation()",com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+dummyCam com.jme3.app.VRAppState+dummyCam com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+observer,761,20,1,"/** 
+ * Get the observer final position within the scene.
+ * @return the observer position.
+ * @see #getFinalObserverRotation()
+ */
+","/**
+     * Get the observer final position within the scene.
+     * @return the observer position.
+     * @see #getFinalObserverRotation()
+     */
+    public Vector3f getFinalObserverPosition() {
+        if( viewmanager == null ) {
+            if( observer == null ) {
+                return getCamera().getLocation();
+            } else return observer.getWorldTranslation();            
+        }
+        Vector3f pos = VRhardware.getPosition();
+        if( observer == null ) {
+            dummyCam.getRotation().mult(pos, pos);
+            return pos.addLocal(dummyCam.getLocation());
+        } else {
+            observer.getWorldRotation().mult(pos, pos);
+            return pos.addLocal(observer.getWorldTranslation());
+        }
+    }",False
+56,setVRHeightAdjustment(float),Method,,,jmevr.util.VRViewManager+setHeightAdjustment(float) jmevr.util.VRViewManager+setHeightAdjustment(float),com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager,300,8,1,"/** 
+ * Set the VR headset height from the ground.
+ * @param amount the VR headset height from the ground.
+ * @see #getVRHeightAdjustment()
+ */
+","/**
+     * Set the VR headset height from the ground.
+     * @param amount the VR headset height from the ground.
+     * @see #getVRHeightAdjustment()
+     */
+    public void setVRHeightAdjustment(float amount) {
+        if( viewmanager != null ) viewmanager.setHeightAdjustment(amount);
+    }",True
+57,getVRHeightAdjustment(),Method,,,jmevr.util.VRViewManager+getHeightAdjustment() jmevr.util.VRViewManager+getHeightAdjustment(),com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager,331,11,1,"/** 
+ * Get the VR headset height from the ground.
+ * @return the VR headset height from the ground.
+ * @see #setVRHeightAdjustment(float)
+ */
+","/**
+     * Get the VR headset height from the ground.
+     * @return the VR headset height from the ground.
+     * @see #setVRHeightAdjustment(float)
+     */
+    public float getVRHeightAdjustment() {
+        if( viewmanager != null ){
+        	return viewmanager.getHeightAdjustment();
+        }
+        return 0f;
+    }",True
+58,getLeftViewPort(),Method,,,com.jme3.app.Application+getViewPort() com.jme3.app.Application+getViewPort() jmevr.util.VRViewManager+getLeftViewport() jmevr.util.VRViewManager+getLeftViewport(),com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+application com.jme3.app.VRAppState+viewmanager,297,9,1,"/** 
+ * Get the VR headset left viewport.
+ * @return the VR headset left viewport.
+ * @see #getRightViewPort()
+ */
+","/**
+     * Get the VR headset left viewport.
+     * @return the VR headset left viewport.
+     * @see #getRightViewPort()
+     */
+    public ViewPort getLeftViewPort() {
+        if( viewmanager == null ) return application.getViewPort();
+        return viewmanager.getLeftViewport();
+    }",False
+59,getRightViewPort(),Method,,,com.jme3.app.Application+getViewPort() com.jme3.app.Application+getViewPort() jmevr.util.VRViewManager+getRightViewport() jmevr.util.VRViewManager+getRightViewport(),com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+application com.jme3.app.VRAppState+viewmanager,300,9,1,"/** 
+ * Get the VR headset right viewport.
+ * @return the VR headset right viewport.
+ * @see #getLeftViewPort()
+ */
+","/**
+     * Get the VR headset right viewport.
+     * @return the VR headset right viewport.
+     * @see #getLeftViewPort()
+     */
+    public ViewPort getRightViewPort() {
+        if( viewmanager == null ) return application.getViewPort();
+        return viewmanager.getRightViewport();
+    }",False
+60,setBackgroundColors(ColorRGBA),Method,,,com.jme3.renderer.ViewPort+setBackgroundColor(ColorRGBA) com.jme3.app.Application+getViewPort() com.jme3.app.Application+getViewPort() com.jme3.renderer.ViewPort+setBackgroundColor(ColorRGBA) jmevr.util.VRViewManager+getLeftViewport() jmevr.util.VRViewManager+getLeftViewport() com.jme3.renderer.ViewPort+setBackgroundColor(ColorRGBA) jmevr.util.VRViewManager+getLeftViewport() jmevr.util.VRViewManager+getLeftViewport() com.jme3.renderer.ViewPort+setBackgroundColor(ColorRGBA) jmevr.util.VRViewManager+getRightViewport() jmevr.util.VRViewManager+getRightViewport() com.jme3.renderer.ViewPort+setBackgroundColor(ColorRGBA) jmevr.util.VRViewManager+getRightViewport() jmevr.util.VRViewManager+getRightViewport() com.jme3.renderer.ViewPort+setBackgroundColor(ColorRGBA),com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+application com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager,536,12,1,"/** 
+ * Set the background color for both left and right view ports.
+ * @param clr the background color.
+ */
+","/**
+     * Set the background color for both left and right view ports.
+     * @param clr the background color.
+     */
+    public void setBackgroundColors(ColorRGBA clr) {
+        if( viewmanager == null ) {
+            application.getViewPort().setBackgroundColor(clr);
+        } else if( viewmanager.getLeftViewport() != null ) {
+        	viewmanager.getLeftViewport().setBackgroundColor(clr);
+            if( viewmanager.getRightViewport() != null ) viewmanager.getRightViewport().setBackgroundColor(clr);
+        }
+    }",False
+61,getApplication(),Method,,,,com.jme3.app.VRAppState+application,269,8,1,"/** 
+ * Get the  {@link Application} to which this app state is attached.
+ * @return the {@link Application} to which this app state is attached.
+ * @see #getStateManager()
+ */
+","/**
+     * Get the {@link Application} to which this app state is attached.
+     * @return the {@link Application} to which this app state is attached.
+     * @see #getStateManager()
+     */
+    public Application getApplication(){
+    	return application;
+    }",False
+62,getStateManager(),Method,,,,com.jme3.app.VRAppState+stateManager,310,8,1,"/** 
+ * Get the  {@link AppStateManager state manager} to which this app state is attached.
+ * @return the {@link AppStateManager state manager} to which this app state is attached.
+ * @see #getApplication()
+ */
+","/**
+     * Get the {@link AppStateManager state manager} to which this app state is attached.
+     * @return the {@link AppStateManager state manager} to which this app state is attached.
+     * @see #getApplication()
+     */
+    public AppStateManager getStateManager(){
+    	return stateManager;
+    }",False
+63,getVRHardware(),Method,,,,com.jme3.app.VRAppState+VRhardware,149,7,1,"/** 
+ * Get the VR underlying hardware.
+ * @return the VR underlying hardware.
+ */
+","/**
+	 * Get the VR underlying hardware.
+	 * @return the VR underlying hardware.
+	 */
+	public VRAPI getVRHardware() {
+	    return VRhardware;
+	}",False
+64,getVRinput(),Method,,,com.jme3.input.vr.VRAPI+getVRinput() com.jme3.input.vr.VRAPI+getVRinput(),com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+VRhardware,223,11,1,"/** 
+ * Get the VR dedicated input.
+ * @return the VR dedicated input.
+ */
+","/**
+	 * Get the VR dedicated input.
+	 * @return the VR dedicated input.
+	 */
+	public VRInputAPI getVRinput() {
+	    if( VRhardware == null ){
+	    	return null;
+	    }
+	    
+	    return VRhardware.getVRinput();
+	}",False
+65,getVRViewManager(),Method,,,,com.jme3.app.VRAppState+viewmanager,147,7,1,"/** 
+ * Get the VR view manager.
+ * @return the VR view manager.
+ */
+","/**
+	 * Get the VR view manager.
+	 * @return the VR view manager.
+	 */
+	public VRViewManager getVRViewManager() {
+	    return viewmanager;
+	}",False
+66,getVRGUIManager(),Method,,,,com.jme3.app.VRAppState+guiManager,190,7,1,"/** 
+ * Get the GUI manager attached to this application.
+ * @return the GUI manager attached to this application.
+ */
+","/**
+	 * Get the GUI manager attached to this application.
+	 * @return the GUI manager attached to this application.
+	 */
+	public VRGuiManager getVRGUIManager(){
+		return guiManager;
+	}",False
+67,getVRMouseManager(),Method,,,,com.jme3.app.VRAppState+mouseManager,206,7,1,"/** 
+ * Get the VR mouse manager attached to this application.
+ * @return the VR mouse manager attached to this application.
+ */
+","/**
+	 * Get the VR mouse manager attached to this application.
+	 * @return the VR mouse manager attached to this application.
+	 */
+	public VRMouseManager getVRMouseManager(){
+		return mouseManager;
+	}",False
+68,getSettings(),Method,,,,com.jme3.app.VRAppState+settings,249,8,1,"/** 
+ * Get the  {@link AppSettings settings} attached to this app state.
+ * @return the {@link AppSettings settings} attached to this app state.
+ * @see #setSettings(AppSettings)
+ */
+","/**
+	 * Get the {@link AppSettings settings} attached to this app state.
+	 * @return the {@link AppSettings settings} attached to this app state.
+	 * @see #setSettings(AppSettings)
+	 */
+	public AppSettings getSettings(){
+		return settings;
+	}",False
+69,setSettings(AppSettings),Method,,,com.jme3.app.VRAppState+processSettings(AppSettings) com.jme3.app.VRAppState+processSettings(AppSettings),com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings,298,9,1,"/** 
+ * Set the  {@link AppSettings settings} attached to this app state.
+ * @param settings the {@link AppSettings settings} attached to this app state.
+ * @see #getSettings()
+ */
+","/**
+	 * Set the {@link AppSettings settings} attached to this app state.
+	 * @param settings the {@link AppSettings settings} attached to this app state.
+	 * @see #getSettings()
+	 */
+	public void setSettings(AppSettings settings){
+		this.settings = settings;
+		processSettings(settings);
+	}",False
+70,update(float),Method,,,"jmevr.util.VRViewManager+update(float) jmevr.util.VRViewManager+update(float) com.jme3.renderer.Camera+setFrame(Vector3f,Quaternion) com.jme3.app.VRAppState+getCamera() com.jme3.app.VRAppState+getCamera() com.jme3.renderer.Camera+setFrame(Vector3f,Quaternion) com.jme3.scene.Spatial+getWorldTranslation() com.jme3.scene.Spatial+getWorldTranslation() com.jme3.scene.Spatial+getWorldRotation() com.jme3.scene.Spatial+getWorldRotation() com.jme3.util.SafeArrayList+iterator() com.jme3.renderer.ViewPort+getScenes() com.jme3.app.Application+getViewPort() com.jme3.app.Application+getViewPort() com.jme3.renderer.ViewPort+getScenes() com.jme3.util.SafeArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() com.jme3.scene.Spatial+updateLogicalState(float) com.jme3.scene.Spatial+updateLogicalState(float) com.jme3.scene.Spatial+updateGeometricState() com.jme3.scene.Spatial+updateGeometricState() com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+isInVR() jmevr.util.VRGuiManager+getPositioningMode() jmevr.util.VRGuiManager+getPositioningMode() com.jme3.util.SafeArrayList+iterator() com.jme3.renderer.ViewPort+getScenes() com.jme3.app.Application+getGuiViewPort() com.jme3.app.Application+getGuiViewPort() com.jme3.renderer.ViewPort+getScenes() com.jme3.util.SafeArrayList+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() com.jme3.scene.Spatial+updateGeometricState() com.jme3.scene.Spatial+updateGeometricState() jmevr.util.VRMouseManager+updateAnalogAsMouse(int,AnalogListener,String,String,float) com.jme3.app.VRAppState+getVRMouseManager() com.jme3.app.VRAppState+getVRMouseManager() jmevr.util.VRMouseManager+updateAnalogAsMouse(int,AnalogListener,String,String,float)",com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+observer com.jme3.app.VRAppState+application com.jme3.app.VRAppState+guiManager com.jme3.app.VRAppState+application,1476,35,1,,"@Override
+    public void update(float tpf) {    
+        
+        // update VR pose & cameras
+        if( viewmanager != null ) {
+        	viewmanager.update(tpf);    
+        } else if( observer != null ) {
+            getCamera().setFrame(observer.getWorldTranslation(), observer.getWorldRotation());
+        }
+        
+        //FIXME: check if this code is necessary.
+        // Updates scene and gui states.
+        Iterator<Spatial> spatialIter = application.getViewPort().getScenes().iterator();
+        Spatial spatial = null;
+        while(spatialIter.hasNext()){
+        	spatial = spatialIter.next();
+        	spatial.updateLogicalState(tpf);
+        	spatial.updateGeometricState();
+        }        
+        
+        if( isInVR() == false || guiManager.getPositioningMode() == POSITIONING_MODE.MANUAL ) {
+            // only update geometric state here if GUI is in manual mode, or not in VR
+            // it will get updated automatically in the viewmanager update otherwise
+        	spatialIter = application.getGuiViewPort().getScenes().iterator();
+            spatial = null;
+            while(spatialIter.hasNext()){
+            	spatial = spatialIter.next();
+            	spatial.updateGeometricState();
+            }    
+        }
+        
+        
+        // use the analog control on the first tracked controller to push around the mouse
+        getVRMouseManager().updateAnalogAsMouse(0, null, null, null, tpf);
+    }",False
+71,postRender(),Method,,,com.jme3.app.state.AbstractAppState+postRender() jmevr.util.VRViewManager+sendTextures() jmevr.util.VRViewManager+sendTextures(),com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager,194,8,1,,"@Override
+    public void postRender() {
+        super.postRender();
+        // update compositor?
+        if( viewmanager != null ) {
+        	viewmanager.sendTextures();
+        }
+    }",False
+72,"initialize(AppStateManager,Application)",Method,,,"com.jme3.app.state.AbstractAppState+initialize(AppStateManager,Application) java.util.logging.Logger+setLevel(Level) java.util.logging.Logger+getLogger(String) java.util.logging.Logger+getLogger(String) java.util.logging.Logger+setLevel(Level) jmevr.util.VRGuiManager+attach(VRAppState,Application) jmevr.util.VRGuiManager+attach(VRAppState,Application) jmevr.util.VRViewManager+attach(VRAppState,Application) jmevr.util.VRViewManager+attach(VRAppState,Application) jmevr.util.VRMouseManager+attach(VRAppState,Application) jmevr.util.VRMouseManager+attach(VRAppState,Application) com.jme3.renderer.Camera+setFrustumFar(float) com.jme3.app.Application+getCamera() com.jme3.app.Application+getCamera() com.jme3.renderer.Camera+setFrustumFar(float) com.jme3.renderer.Camera+setFrustumNear(float) com.jme3.app.Application+getCamera() com.jme3.app.Application+getCamera() com.jme3.renderer.Camera+setFrustumNear(float) com.jme3.renderer.Camera+clone() com.jme3.app.Application+getCamera() com.jme3.app.Application+getCamera() com.jme3.renderer.Camera+clone() com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+isInVR() java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) com.jme3.input.vr.VRAPI+initVRCompositor(boolean) com.jme3.input.vr.VRAPI+initVRCompositor(boolean) com.jme3.app.VRAppState+compositorAllowed() com.jme3.app.VRAppState+compositorAllowed() java.util.logging.Logger+warning(String) java.util.logging.Logger+warning(String) jmevr.util.VRViewManager+setResolutionMultiplier(float) jmevr.util.VRViewManager+setResolutionMultiplier(float) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) jmevr.util.VRViewManager+initialize() jmevr.util.VRViewManager+initialize()",com.jme3.app.VRAppState+application com.jme3.app.VRAppState+application com.jme3.app.VRAppState+stateManager com.jme3.app.VRAppState+stateManager java.util.logging.Level+SEVERE com.jme3.app.VRAppState+guiManager com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+mouseManager com.jme3.app.VRAppState+fFar com.jme3.app.VRAppState+fNear com.jme3.app.VRAppState+dummyCam com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+resMult com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+viewmanager com.jme3.app.VRAppState+viewmanager,1557,44,1,,"@Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+        
+        this.application  = app;
+        this.stateManager = stateManager;
+        
+        // disable annoying warnings about GUI stuff being updated, which is normal behavior
+        // for late GUI placement for VR purposes
+        Logger.getLogger(""com.jme3"").setLevel(Level.SEVERE);     
+        
+        // VR module attch
+        guiManager.attach(this, app);
+        viewmanager.attach(this, app);
+        mouseManager.attach(this,  app);
+        
+        app.getCamera().setFrustumFar(fFar);
+        app.getCamera().setFrustumNear(fNear);
+        dummyCam = app.getCamera().clone();
+        
+        if( isInVR() ) {
+        	
+        	logger.config(""VR mode enabled."");
+        	
+            if( VRhardware != null ) {
+                VRhardware.initVRCompositor(compositorAllowed());
+            } else {
+            	logger.warning(""No VR system found."");
+            }
+            
+            
+            viewmanager.setResolutionMultiplier(resMult);
+            //inputManager.addMapping(RESET_HMD, new KeyTrigger(KeyInput.KEY_F9));
+            //setLostFocusBehavior(LostFocusBehavior.Disabled);
+        } else {
+        	logger.config(""VR mode disabled."");
+            //viewPort.attachScene(rootNode);
+            //guiViewPort.attachScene(guiNode);
+        }
+        
+        if( viewmanager != null ) {
+        	viewmanager.initialize();
+        }
+    }",False
+73,stateAttached(AppStateManager),Method,,,"com.jme3.app.state.AbstractAppState+stateAttached(AppStateManager) com.jme3.system.AppSettings+AppSettings(boolean) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) java.lang.String+toLowerCase(Locale) java.lang.System+getProperty(String,String) java.lang.System+getProperty(String,String) java.lang.String+toLowerCase(Locale) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+equalsIgnoreCase(String) java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.String+equalsIgnoreCase(String) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) com.jme3.input.vr.OSVR+OSVR(VRAppState) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) com.jme3.input.vr.OpenVR+OpenVR(VRAppState) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) com.jme3.input.vr.VRAPI+initialize() com.jme3.input.vr.VRAPI+initialize() java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) java.util.logging.Logger+warning(String) java.util.logging.Logger+warning(String) java.awt.GraphicsEnvironment+getDefaultScreenDevice() java.awt.GraphicsEnvironment+getLocalGraphicsEnvironment() java.awt.GraphicsEnvironment+getLocalGraphicsEnvironment() java.awt.GraphicsEnvironment+getDefaultScreenDevice() com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+compositorAllowed() com.jme3.app.VRAppState+compositorAllowed() java.awt.GraphicsEnvironment+getScreenDevices() java.awt.GraphicsEnvironment+getLocalGraphicsEnvironment() java.awt.GraphicsEnvironment+getLocalGraphicsEnvironment() java.awt.GraphicsEnvironment+getScreenDevices() java.awt.GraphicsDevice+getDisplayModes() java.awt.GraphicsDevice+getDisplayModes() java.awt.DisplayMode+getHeight() java.awt.DisplayMode+getHeight() java.awt.DisplayMode+getWidth() java.awt.DisplayMode+getWidth() java.awt.DisplayMode+getRefreshRate() java.awt.DisplayMode+getRefreshRate() java.awt.DisplayMode+getBitDepth() java.awt.DisplayMode+getBitDepth() com.jme3.system.AppSettings+setWidth(int) com.jme3.system.AppSettings+setWidth(int) java.awt.DisplayMode+getWidth() java.awt.DisplayMode+getWidth() com.jme3.system.AppSettings+setHeight(int) com.jme3.system.AppSettings+setHeight(int) java.awt.DisplayMode+getHeight() java.awt.DisplayMode+getHeight() com.jme3.system.AppSettings+setBitsPerPixel(int) com.jme3.system.AppSettings+setBitsPerPixel(int) java.awt.DisplayMode+getBitDepth() java.awt.DisplayMode+getBitDepth() com.jme3.system.AppSettings+setFrequency(int) com.jme3.system.AppSettings+setFrequency(int) java.awt.DisplayMode+getRefreshRate() java.awt.DisplayMode+getRefreshRate() com.jme3.system.AppSettings+setSwapBuffers(boolean) com.jme3.system.AppSettings+setSwapBuffers(boolean) com.jme3.system.AppSettings+setVSync(boolean) com.jme3.system.AppSettings+setVSync(boolean) com.jme3.app.Application+setSettings(AppSettings) com.jme3.app.state.AppStateManager+getApplication() com.jme3.app.state.AppStateManager+getApplication() com.jme3.app.Application+setSettings(AppSettings) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) java.awt.DisplayMode+equals(DisplayMode) java.awt.GraphicsDevice+getDisplayMode() java.awt.GraphicsDevice+getDisplayMode() java.awt.DisplayMode+equals(DisplayMode) java.awt.GraphicsDevice+setDisplayMode(DisplayMode) java.awt.GraphicsDevice+setDisplayMode(DisplayMode) java.util.logging.Logger+log(Level,String,Throwable) java.util.logging.Logger+log(Level,String,Throwable) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+isInVR() java.util.logging.Logger+config(String) java.util.logging.Logger+config(String) com.jme3.app.VRAppState+compositorAllowed() com.jme3.app.VRAppState+compositorAllowed() java.util.logging.Logger+warning(String) java.util.logging.Logger+warning(String) com.jme3.app.VRAppState+isInVR() com.jme3.app.VRAppState+isInVR() com.jme3.system.AppSettings+setFrequency(int) com.jme3.system.AppSettings+setFrequency(int) java.awt.DisplayMode+getRefreshRate() java.awt.GraphicsDevice+getDisplayMode() java.awt.GraphicsDevice+getDisplayMode() java.awt.DisplayMode+getRefreshRate() com.jme3.system.AppSettings+setDepthBits(int) com.jme3.system.AppSettings+setDepthBits(int) com.jme3.system.AppSettings+setVSync(boolean) com.jme3.system.AppSettings+setVSync(boolean) java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.BufferedReader+BufferedReader(Reader) java.io.FileReader+FileReader(File) com.jme3.system.AppSettings+setWidth(int) com.jme3.system.AppSettings+setWidth(int) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) java.io.BufferedReader+readLine() java.io.BufferedReader+readLine() com.jme3.system.AppSettings+setHeight(int) com.jme3.system.AppSettings+setHeight(int) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) java.io.BufferedReader+readLine() java.io.BufferedReader+readLine() com.jme3.system.AppSettings+setFullscreen(boolean) com.jme3.system.AppSettings+setFullscreen(boolean) java.lang.String+contains(CharSequence) java.lang.String+toLowerCase(Locale) java.io.BufferedReader+readLine() java.io.BufferedReader+readLine() java.lang.String+toLowerCase(Locale) java.lang.String+contains(CharSequence) com.jme3.system.AppSettings+setFullscreen(boolean) com.jme3.system.AppSettings+setFullscreen(boolean) java.io.BufferedReader+close() java.io.BufferedReader+close() com.jme3.system.AppSettings+setWidth(int) com.jme3.system.AppSettings+setWidth(int) com.jme3.system.AppSettings+setHeight(int) com.jme3.system.AppSettings+setHeight(int) com.jme3.system.AppSettings+setWidth(int) com.jme3.system.AppSettings+setWidth(int) com.jme3.system.AppSettings+setHeight(int) com.jme3.system.AppSettings+setHeight(int) com.jme3.system.AppSettings+setFullscreen(boolean) com.jme3.system.AppSettings+setFullscreen(boolean) com.jme3.system.AppSettings+setResizable(boolean) com.jme3.system.AppSettings+setResizable(boolean) com.jme3.system.AppSettings+setSwapBuffers(boolean) com.jme3.system.AppSettings+setSwapBuffers(boolean) com.jme3.system.AppSettings+setSamples(int) com.jme3.system.AppSettings+setSamples(int) com.jme3.system.AppSettings+setWidth(int) com.jme3.system.AppSettings+setWidth(int) com.jme3.system.AppSettings+setHeight(int) com.jme3.system.AppSettings+setHeight(int) com.jme3.system.AppSettings+setBitsPerPixel(int) com.jme3.system.AppSettings+setBitsPerPixel(int) com.jme3.system.AppSettings+setFrameRate(int) com.jme3.system.AppSettings+setFrameRate(int) com.jme3.system.AppSettings+setFrequency(int) com.jme3.system.AppSettings+setFrequency(int) com.jme3.input.vr.VRAPI+getDisplayFrequency() com.jme3.input.vr.VRAPI+getDisplayFrequency() com.jme3.system.AppSettings+setFullscreen(boolean) com.jme3.system.AppSettings+setFullscreen(boolean) com.jme3.system.AppSettings+setVSync(boolean) com.jme3.system.AppSettings+setVSync(boolean) com.jme3.system.AppSettings+setSwapBuffers(boolean) com.jme3.system.AppSettings+setSwapBuffers(boolean) com.jme3.app.Application+setSettings(AppSettings) com.jme3.app.state.AppStateManager+getApplication() com.jme3.app.state.AppStateManager+getApplication() com.jme3.app.Application+setSettings(AppSettings) java.util.logging.Logger+config(String) java.util.logging.Logger+config(String)",com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+OS java.util.Locale+ENGLISH com.jme3.app.VRAppState+VRSupportedOS com.jme3.app.VRAppState+OS com.jme3.app.VRAppState+compositorOS com.jme3.app.VRAppState+OS com.jme3.app.VRAppState+VRSupportedOS com.jme3.app.VRAppState+disableVR com.jme3.app.VRAppState+vrBinding com.jme3.app.VRConstants+SETTING_VRAPI_OSVR_VALUE com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+vrBinding com.jme3.app.VRConstants+SETTING_VRAPI_OPENVR_VALUE com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+vrBinding com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+logger java.util.logging.Level+SEVERE com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+logger com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings java.util.Locale+ENGLISH com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+xWin com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+yWin com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+disableSwapBuffers com.jme3.app.VRAppState+settings com.jme3.app.VRAppState+logger,6783,148,1,,"@Override
+    public void stateAttached(AppStateManager stateManager) {
+        super.stateAttached(stateManager); //To change body of generated methods, choose Tools | Templates.
+        
+        if (settings == null) {
+            settings = new AppSettings(true);
+            logger.config(""Using default settings."");
+        } else {
+        	logger.config(""Using given settings."");
+        }
+        
+        // we are going to use OpenVR now, not the Oculus Rift
+        // OpenVR does support the Rift
+        OS            = System.getProperty(""os.name"", ""generic"").toLowerCase(Locale.ENGLISH);
+        VRSupportedOS = !OS.contains(""nux"") && System.getProperty(""sun.arch.data.model"").equalsIgnoreCase(""64""); //for the moment, linux/unix causes crashes, 64-bit only
+        compositorOS  = OS.contains(""indows"");
+        
+        if( VRSupportedOS && disableVR == false ) {
+        	if( vrBinding == VRConstants.SETTING_VRAPI_OSVR_VALUE ) {
+                VRhardware = new OSVR(this);
+                logger.config(""Creating OSVR wrapper [SUCCESS]"");
+            } else if( vrBinding == VRConstants.SETTING_VRAPI_OPENVR_VALUE ) {
+                VRhardware = new OpenVR(this);
+                logger.config(""Creating OpenVR wrapper [SUCCESS]"");
+            } else {
+            	logger.config(""Cannot create VR binding: ""+vrBinding+"" [FAILED]"");
+            }
+        	
+            if( VRhardware.initialize() ) {
+            	logger.config(""VR native wrapper initialized [SUCCESS]"");
+            } else {
+            	logger.warning(""VR native wrapper initialized [FAILED]"");
+            }
+            }
+        
+        GraphicsDevice defDev = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                                    
+        if( isInVR() && !compositorAllowed() ) {
+            // ""easy extended"" mode
+            // setup experimental JFrame on external device
+            // first, find the VR device
+            GraphicsDevice VRdev = null;
+            GraphicsDevice[] devs = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+            // pick the display that isn't the default one
+            for(GraphicsDevice gd : devs) {
+                if( gd != defDev ) {
+                    VRdev = gd;
+                    break;
+                }
+            }
+
+            // did we get the VR device?
+            if( VRdev != null ) {
+                // set properties for VR acceleration
+                try {   
+                    java.awt.DisplayMode useDM = null;
+                    int max = 0;
+                    for(java.awt.DisplayMode dm : VRdev.getDisplayModes()) {
+                        int check = dm.getHeight() + dm.getWidth() + dm.getRefreshRate() + dm.getBitDepth();
+                        if( check > max ) {
+                            max = check;
+                            useDM = dm;
+                        }
+                    }
+                    
+                    // create a window for the VR device
+                    settings.setWidth(useDM.getWidth());
+                    settings.setHeight(useDM.getHeight());
+                    settings.setBitsPerPixel(useDM.getBitDepth());
+                    settings.setFrequency(useDM.getRefreshRate());
+                    settings.setSwapBuffers(true);
+                    settings.setVSync(true); // allow vsync on this display
+                    stateManager.getApplication().setSettings(settings);
+                    logger.config(""Updated underlying application settings."");
+                    
+                    //VRdev.setFullScreenWindow(VRwindow);
+                    // make sure we are in the right display mode
+                    if( VRdev.getDisplayMode().equals(useDM) == false ) {
+                        VRdev.setDisplayMode(useDM);
+                    }
+                    
+                    return;
+                } catch(Exception e) { 
+                    logger.log(Level.SEVERE, e.getMessage(), e);
+                }
+            } else {
+            	logger.config(""Cannot access to external screen."");
+            }
+        } else {
+        	if (!isInVR()){
+        	  logger.config(""Cannot switch to VR mode (VR disabled by user)."");
+        	} else if (!compositorAllowed()){
+        	  logger.warning(""Cannot switch to VR mode (VR not supported)."");
+        	}
+        }
+        
+        if( !isInVR() ) {
+        	
+        	//FIXME: Handling GLFW workaround on MacOS
+        	boolean macOs = false;
+            if (macOs) {
+                // GLFW workaround on macs
+                settings.setFrequency(defDev.getDisplayMode().getRefreshRate());
+                settings.setDepthBits(24);
+                settings.setVSync(true);
+                // try and read resolution from file in local dir
+                File resfile = new File(""resolution.txt"");
+                if( resfile.exists() ) {
+                    try {
+                        BufferedReader br = new BufferedReader(new FileReader(resfile));
+                        settings.setWidth(Integer.parseInt(br.readLine()));
+                        settings.setHeight(Integer.parseInt(br.readLine()));
+                        try {
+                            settings.setFullscreen(br.readLine().toLowerCase(Locale.ENGLISH).contains(""full""));
+                        } catch(Exception e) {
+                            settings.setFullscreen(false);
+                        }
+                        br.close();
+                    } catch(Exception e) {
+                        settings.setWidth(1280);
+                        settings.setHeight(720);
+                    }
+                } else {
+                    settings.setWidth(1280);
+                    settings.setHeight(720);
+                    settings.setFullscreen(false);
+                }
+                settings.setResizable(false);
+            }
+            settings.setSwapBuffers(true);
+        } else {
+            // use basic mirroring window, skip settings window
+            settings.setSamples(1);
+            settings.setWidth(xWin);
+            settings.setHeight(yWin);
+            settings.setBitsPerPixel(32);     
+            settings.setFrameRate(0);
+            settings.setFrequency(VRhardware.getDisplayFrequency());
+            settings.setFullscreen(false);
+            settings.setVSync(false); // stop vsyncing on primary monitor!
+            settings.setSwapBuffers(disableSwapBuffers);
+        }
+
+        // Updating application settings
+        stateManager.getApplication().setSettings(settings);
+        logger.config(""Updated underlying application settings."");
+        
+    }",False
+74,cleanup(),Method,,,com.jme3.input.vr.VRAPI+destroy() com.jme3.input.vr.VRAPI+destroy(),com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+disableVR com.jme3.app.VRAppState+application com.jme3.app.VRAppState+application com.jme3.app.VRAppState+stateManager com.jme3.app.VRAppState+stateManager,274,11,1,,"@Override
+    public void cleanup() {
+        if( VRhardware != null ) {
+            VRhardware.destroy();
+            VRhardware = null;
+        }        
+        disableVR = true;
+        
+        this.application  = null;
+        this.stateManager = null;
+    }",False
+75,stateDetached(AppStateManager),Method,,,com.jme3.app.state.AbstractAppState+stateDetached(AppStateManager),,121,4,1,,"@Override
+    public void stateDetached(AppStateManager stateManager) {
+      super.stateDetached(stateManager);
+    }",False
+76,processSettings(AppSettings),Method,,,java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.input.vr.VRAPI+_setFlipEyes(boolean) com.jme3.input.vr.VRAPI+_setFlipEyes(boolean) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) jmevr.util.VRGuiManager+_enableGuiOverdraw(boolean) jmevr.util.VRGuiManager+_enableGuiOverdraw(boolean) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) jmevr.util.VRGuiManager+_enableCurvedSuface(boolean) jmevr.util.VRGuiManager+_enableCurvedSuface(boolean) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getBoolean(String) com.jme3.system.AppSettings+getBoolean(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getFloat(String) com.jme3.system.AppSettings+getFloat(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getFloat(String) com.jme3.system.AppSettings+getFloat(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) com.jme3.system.AppSettings+getInteger(String) com.jme3.system.AppSettings+getInteger(String),com.jme3.app.VRConstants+SETTING_USE_COMPOSITOR com.jme3.app.VRAppState+useCompositor com.jme3.app.VRConstants+SETTING_USE_COMPOSITOR com.jme3.app.VRAppState+useCompositor com.jme3.app.VRAppState+disableSwapBuffers com.jme3.app.VRConstants+SETTING_VR_FORCE com.jme3.app.VRAppState+forceVR com.jme3.app.VRConstants+SETTING_VR_FORCE com.jme3.app.VRConstants+SETTING_FLIP_EYES com.jme3.app.VRAppState+VRhardware com.jme3.app.VRAppState+VRhardware com.jme3.app.VRConstants+SETTING_FLIP_EYES com.jme3.app.VRConstants+SETTING_GUI_OVERDRAW com.jme3.app.VRAppState+guiManager com.jme3.app.VRConstants+SETTING_GUI_OVERDRAW com.jme3.app.VRConstants+SETTING_GUI_CURVED_SURFACE com.jme3.app.VRAppState+guiManager com.jme3.app.VRConstants+SETTING_GUI_CURVED_SURFACE com.jme3.app.VRConstants+SETTING_ENABLE_MIRROR_WINDOW com.jme3.app.VRAppState+useCompositor com.jme3.app.VRAppState+disableSwapBuffers com.jme3.app.VRAppState+disableSwapBuffers com.jme3.app.VRConstants+SETTING_ENABLE_MIRROR_WINDOW com.jme3.app.VRConstants+SETTING_DISABLE_VR com.jme3.app.VRAppState+DISABLE_VR com.jme3.app.VRConstants+SETTING_DISABLE_VR com.jme3.app.VRConstants+SETTING_SEATED_EXPERIENCE com.jme3.app.VRAppState+seated com.jme3.app.VRConstants+SETTING_SEATED_EXPERIENCE com.jme3.app.VRConstants+SETTING_NO_GUI com.jme3.app.VRAppState+nogui com.jme3.app.VRConstants+SETTING_NO_GUI com.jme3.app.VRConstants+SETTING_INSTANCE_RENDERING com.jme3.app.VRAppState+instanceVR com.jme3.app.VRConstants+SETTING_INSTANCE_RENDERING com.jme3.app.VRConstants+SETTING_DEFAULT_FOV com.jme3.app.VRAppState+defaultFOV com.jme3.app.VRConstants+SETTING_DEFAULT_FOV com.jme3.app.VRConstants+SETTING_DEFAULT_ASPECT_RATIO com.jme3.app.VRAppState+defaultAspect com.jme3.app.VRConstants+SETTING_DEFAULT_ASPECT_RATIO com.jme3.app.VRConstants+SETTING_VRAPI com.jme3.app.VRAppState+vrBinding com.jme3.app.VRConstants+SETTING_VRAPI,2906,69,4,"/** 
+ * Process the attached settings and apply changes to this app state.
+ * @param settings the app settings to process.
+ */
+","/**
+     * Process the attached settings and apply changes to this app state.
+     * @param settings the app settings to process.
+     */
+    protected void processSettings(AppSettings settings){
+    	if (settings != null){
+    		if (settings.get(VRConstants.SETTING_USE_COMPOSITOR) != null){
+    			useCompositor = settings.getBoolean(VRConstants.SETTING_USE_COMPOSITOR);
+                if( useCompositor == false ){
+                	disableSwapBuffers = false;
+                }
+    		}
+
+            if (settings.get(VRConstants.SETTING_VR_FORCE) != null){
+            	forceVR = settings.getBoolean(VRConstants.SETTING_VR_FORCE);
+    		}
+    		
+            if (settings.get(VRConstants.SETTING_FLIP_EYES) != null){
+                if( VRhardware != null ){
+                	VRhardware._setFlipEyes(settings.getBoolean(VRConstants.SETTING_FLIP_EYES));
+                } 
+    		}
+    	    
+            if (settings.get(VRConstants.SETTING_GUI_OVERDRAW) != null){
+            	guiManager._enableGuiOverdraw(settings.getBoolean(VRConstants.SETTING_GUI_OVERDRAW));
+    		}
+    	    
+            if (settings.get(VRConstants.SETTING_GUI_CURVED_SURFACE) != null){
+            	guiManager._enableCurvedSuface(settings.getBoolean(VRConstants.SETTING_GUI_CURVED_SURFACE));
+    		}
+    	    
+            if (settings.get(VRConstants.SETTING_ENABLE_MIRROR_WINDOW) != null){
+                if( useCompositor == false ) {
+                    disableSwapBuffers = false;
+                } else {
+                	disableSwapBuffers = !settings.getBoolean(VRConstants.SETTING_ENABLE_MIRROR_WINDOW);
+                }
+    		}
+    	    
+            if (settings.get(VRConstants.SETTING_DISABLE_VR) != null){
+                DISABLE_VR = settings.getBoolean(VRConstants.SETTING_DISABLE_VR);
+    		}
+    	    
+            if (settings.get(VRConstants.SETTING_SEATED_EXPERIENCE) != null){
+            	seated = settings.getBoolean(VRConstants.SETTING_SEATED_EXPERIENCE);
+    		}
+    	    
+            if (settings.get(VRConstants.SETTING_NO_GUI) != null){
+            	nogui = settings.getBoolean(VRConstants.SETTING_NO_GUI);
+    		}
+    	    
+            if (settings.get(VRConstants.SETTING_INSTANCE_RENDERING) != null){
+            	instanceVR = settings.getBoolean(VRConstants.SETTING_INSTANCE_RENDERING);
+    		}
+
+            if (settings.get(VRConstants.SETTING_DEFAULT_FOV) != null){
+            	defaultFOV = settings.getFloat(VRConstants.SETTING_DEFAULT_FOV);
+    		}
+            
+            if (settings.get(VRConstants.SETTING_DEFAULT_ASPECT_RATIO) != null){
+            	defaultAspect = settings.getFloat(VRConstants.SETTING_DEFAULT_ASPECT_RATIO);
+    		}
+            
+            if (settings.get(VRConstants.SETTING_VRAPI) != null){
+            	vrBinding = settings.getInteger(VRConstants.SETTING_VRAPI);
+    		}
+            
+    	}
+    }",False

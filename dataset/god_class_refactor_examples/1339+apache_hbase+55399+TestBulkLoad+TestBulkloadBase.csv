@@ -1,0 +1,265 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,CLASS_RULE,Field,,,,,119,3,25,,"@ClassRule
+  public static final HBaseClassTestRule CLASS_RULE =
+      HBaseClassTestRule.forClass(TestBulkLoad.class);",False
+2,testFolder,Field,,,,,78,2,9,,"@ClassRule
+  public static TemporaryFolder testFolder = new TemporaryFolder();",True
+3,TEST_UTIL,Field,,,,,73,1,10,,private static HBaseTestingUtility TEST_UTIL = new HBaseTestingUtility();,True
+4,log,Field,,,,,40,1,18,,private final WAL log = mock(WAL.class);,True
+5,conf,Field,,,,,63,1,18,,private final Configuration conf = HBaseConfiguration.create();,True
+6,random,Field,,,,,43,1,18,,private final Random random = new Random();,True
+7,randomBytes,Field,,,,,49,1,18,,private final byte[] randomBytes = new byte[100];,True
+8,family1,Field,,,,,56,1,18,,"private final byte[] family1 = Bytes.toBytes(""family1"");",False
+9,family2,Field,,,,,56,1,18,,"private final byte[] family2 = Bytes.toBytes(""family2"");",True
+10,family3,Field,,,,,56,1,18,,"private final byte[] family3 = Bytes.toBytes(""family3"");",True
+11,name,Field,,,,,46,2,1,,"@Rule
+  public TestName name = new TestName();",True
+12,before(),Method,,,java.util.Random+nextBytes(byte[]) java.util.Random+nextBytes(byte[]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+random org.apache.hadoop.hbase.regionserver.TestBulkLoad+randomBytes,158,5,1,,"@Before
+  public void before() throws IOException {
+    random.nextBytes(randomBytes);
+    // Mockito.when(log.append(htd, info, key, edits, inMemstore));
+  }",True
+13,verifyBulkLoadEvent(),Method,,,"org.apache.hadoop.hbase.TableName+valueOf(String,String) org.apache.hadoop.hbase.TableName+valueOf(String,String) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.util.Pair+getFirst() java.util.List+get(int) java.util.List+get(int) org.apache.hadoop.hbase.util.Pair+getFirst() org.apache.hadoop.hbase.util.Pair+getSecond() java.util.List+get(int) java.util.List+get(int) org.apache.hadoop.hbase.util.Pair+getSecond() java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEdit(byte[],byte[],byte[],List<String>) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEdit(byte[],byte[],byte[],List<String>) org.apache.hadoop.hbase.TableName+toBytes() org.apache.hadoop.hbase.TableName+toBytes() +answer(InvocationOnMock)",org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+log org.apache.hadoop.hbase.wal.WALEdit+BULK_LOAD,1209,27,1,,"@Test
+  public void verifyBulkLoadEvent() throws IOException {
+    TableName tableName = TableName.valueOf(""test"", ""test"");
+    List<Pair<byte[], String>> familyPaths = withFamilyPathsFor(family1);
+    byte[] familyName = familyPaths.get(0).getFirst();
+    String storeFileName = familyPaths.get(0).getSecond();
+    storeFileName = (new Path(storeFileName)).getName();
+    List<String> storeFileNames = new ArrayList<>();
+    storeFileNames.add(storeFileName);
+    when(log.appendMarker(any(), any(),
+      argThat(bulkLogWalEdit(WALEdit.BULK_LOAD, tableName.toBytes(), familyName, storeFileNames))))
+        .thenAnswer(new Answer() {
+          @Override
+          public Object answer(InvocationOnMock invocation) {
+            WALKeyImpl walKey = invocation.getArgument(1);
+            MultiVersionConcurrencyControl mvcc = walKey.getMvcc();
+            if (mvcc != null) {
+              MultiVersionConcurrencyControl.WriteEntry we = mvcc.begin();
+              walKey.setWriteEntry(we);
+            }
+            return 01L;
+          }
+        });
+    testRegionWithFamiliesAndSpecifiedTableName(tableName, family1)
+        .bulkLoadHFiles(familyPaths, false, null);
+    verify(log).sync(anyLong());
+  }",False
+14,bulkHLogShouldThrowNoErrorAndWriteMarkerWithBlankInput(),Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1,184,4,1,,"@Test
+  public void bulkHLogShouldThrowNoErrorAndWriteMarkerWithBlankInput() throws IOException {
+    testRegionWithFamilies(family1).bulkLoadHFiles(new ArrayList<>(),false, null);
+  }",False
+15,shouldBulkLoadSingleFamilyHLog(),Method,,,"org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) +answer(InvocationOnMock)",org.apache.hadoop.hbase.regionserver.TestBulkLoad+log org.apache.hadoop.hbase.wal.WALEdit+BULK_LOAD,785,18,1,,"@Test
+  public void shouldBulkLoadSingleFamilyHLog() throws IOException {
+    when(log.appendMarker(any(),
+            any(), argThat(bulkLogWalEditType(WALEdit.BULK_LOAD)))).thenAnswer(new Answer() {
+              @Override
+              public Object answer(InvocationOnMock invocation) {
+                WALKeyImpl walKey = invocation.getArgument(1);
+                MultiVersionConcurrencyControl mvcc = walKey.getMvcc();
+                if (mvcc != null) {
+                  MultiVersionConcurrencyControl.WriteEntry we = mvcc.begin();
+                  walKey.setWriteEntry(we);
+                }
+                return 01L;
+              }
+    });
+    testRegionWithFamilies(family1).bulkLoadHFiles(withFamilyPathsFor(family1), false, null);
+    verify(log).sync(anyLong());
+  }",False
+16,shouldBulkLoadManyFamilyHLog(),Method,,,"org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) +answer(InvocationOnMock)",org.apache.hadoop.hbase.regionserver.TestBulkLoad+log org.apache.hadoop.hbase.wal.WALEdit+BULK_LOAD,821,19,1,,"@Test
+  public void shouldBulkLoadManyFamilyHLog() throws IOException {
+    when(log.appendMarker(any(),
+            any(), argThat(bulkLogWalEditType(WALEdit.BULK_LOAD)))).thenAnswer(new Answer() {
+              @Override
+              public Object answer(InvocationOnMock invocation) {
+                WALKeyImpl walKey = invocation.getArgument(1);
+                MultiVersionConcurrencyControl mvcc = walKey.getMvcc();
+                if (mvcc != null) {
+                  MultiVersionConcurrencyControl.WriteEntry we = mvcc.begin();
+                  walKey.setWriteEntry(we);
+                }
+                return 01L;
+              }
+            });
+    testRegionWithFamilies(family1, family2).bulkLoadHFiles(withFamilyPathsFor(family1, family2),
+            false, null);
+    verify(log).sync(anyLong());
+  }",False
+17,shouldBulkLoadManyFamilyHLogEvenWhenTableNameNamespaceSpecified(),Method,,,"org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendMarker(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+bulkLogWalEditType(byte[]) +answer(InvocationOnMock)",org.apache.hadoop.hbase.regionserver.TestBulkLoad+log org.apache.hadoop.hbase.wal.WALEdit+BULK_LOAD,938,20,1,,"@Test
+  public void shouldBulkLoadManyFamilyHLogEvenWhenTableNameNamespaceSpecified() throws IOException {
+    when(log.appendMarker(any(),
+            any(), argThat(bulkLogWalEditType(WALEdit.BULK_LOAD)))).thenAnswer(new Answer() {
+              @Override
+              public Object answer(InvocationOnMock invocation) {
+                WALKeyImpl walKey = invocation.getArgument(1);
+                MultiVersionConcurrencyControl mvcc = walKey.getMvcc();
+                if (mvcc != null) {
+                  MultiVersionConcurrencyControl.WriteEntry we = mvcc.begin();
+                  walKey.setWriteEntry(we);
+                }
+                return 01L;
+              }
+    });
+    TableName tableName = TableName.valueOf(""test"", ""test"");
+    testRegionWithFamiliesAndSpecifiedTableName(tableName, family1, family2)
+        .bulkLoadHFiles(withFamilyPathsFor(family1, family2), false, null);
+    verify(log).sync(anyLong());
+  }",False
+18,shouldCrashIfBulkLoadFamiliesNotInTable(),Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family2,235,5,1,,"@Test(expected = DoNotRetryIOException.class)
+  public void shouldCrashIfBulkLoadFamiliesNotInTable() throws IOException {
+    testRegionWithFamilies(family1).bulkLoadHFiles(withFamilyPathsFor(family1, family2), false,
+      null);
+  }",False
+19,shouldCrashIfBulkLoadMultiFamiliesNotInTable(),Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family2 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family3,249,5,1,,"@Test(expected = DoNotRetryIOException.class)
+  public void shouldCrashIfBulkLoadMultiFamiliesNotInTable() throws IOException {
+    testRegionWithFamilies(family1).bulkLoadHFiles(withFamilyPathsFor(family1, family2, family3),
+      false, null);
+  }",False
+20,bulkHLogShouldThrowErrorWhenFamilySpecifiedAndHFileExistsButNotInTableDescriptor(),Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withFamilyPathsFor(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1,260,5,1,,"@Test(expected = DoNotRetryIOException.class)
+  public void bulkHLogShouldThrowErrorWhenFamilySpecifiedAndHFileExistsButNotInTableDescriptor()
+      throws IOException {
+    testRegionWithFamilies().bulkLoadHFiles(withFamilyPathsFor(family1), false, null);
+  }",False
+21,shouldThrowErrorIfBadFamilySpecifiedAsFamilyPath(),Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withInvalidColumnFamilyButProperHFileLocation(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withInvalidColumnFamilyButProperHFileLocation(byte[]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1,278,6,1,,"@Test(expected = DoNotRetryIOException.class)
+  public void shouldThrowErrorIfBadFamilySpecifiedAsFamilyPath() throws IOException {
+    testRegionWithFamilies()
+        .bulkLoadHFiles(asList(withInvalidColumnFamilyButProperHFileLocation(family1)),
+            false, null);
+  }",False
+22,shouldThrowErrorIfHFileDoesNotExist(),Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1,275,5,1,,"@Test(expected = FileNotFoundException.class)
+  public void shouldThrowErrorIfHFileDoesNotExist() throws IOException {
+    List<Pair<byte[], String>> list = asList(withMissingHFileForFamily(family1));
+    testRegionWithFamilies(family1).bulkLoadHFiles(list, false, null);
+  }",False
+23,shouldThrowErrorIfMultiHFileDoesNotExist(),Method,,,java.util.List+addAll(Collection) java.util.List+addAll(Collection) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) java.util.List+addAll(Collection) java.util.List+addAll(Collection) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+withMissingHFileForFamily(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamilies(byte[][]),org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family2 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family1 org.apache.hadoop.hbase.regionserver.TestBulkLoad+family2,386,7,1,,"@Test(expected = FileNotFoundException.class)
+  public void shouldThrowErrorIfMultiHFileDoesNotExist() throws IOException {
+    List<Pair<byte[], String>> list = new ArrayList<>();
+    list.addAll(asList(withMissingHFileForFamily(family1)));
+    list.addAll(asList(withMissingHFileForFamily(family2)));
+    testRegionWithFamilies(family1, family2).bulkLoadHFiles(list, false, null);
+  }",False
+24,withMissingHFileForFamily(byte[]),Method,shouldThrowErrorIfHFileDoesNotExist() shouldThrowErrorIfMultiHFileDoesNotExist() shouldThrowErrorIfMultiHFileDoesNotExist(),,org.apache.hadoop.hbase.regionserver.TestBulkLoad+getNotExistFilePath() org.apache.hadoop.hbase.regionserver.TestBulkLoad+getNotExistFilePath(),,129,3,2,,"private Pair<byte[], String> withMissingHFileForFamily(byte[] family) {
+    return new Pair<>(family, getNotExistFilePath());
+  }",True
+25,getNotExistFilePath(),Method,,,java.lang.Object+Object() org.apache.hadoop.hbase.HBaseCommonTestingUtility+getDataTestDir() org.apache.hadoop.hbase.HBaseCommonTestingUtility+getDataTestDir(),org.apache.hadoop.hbase.regionserver.TestBulkLoad+TEST_UTIL,149,4,2,,"private String getNotExistFilePath() {
+    Path path = new Path(TEST_UTIL.getDataTestDir(), ""does_not_exist"");
+    return path.toUri().getPath();
+  }",True
+26,withInvalidColumnFamilyButProperHFileLocation(byte[]),Method,shouldThrowErrorIfBadFamilySpecifiedAsFamilyPath(),,org.apache.hadoop.hbase.regionserver.TestBulkLoad+createHFileForFamilies(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+createHFileForFamilies(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+getNotExistFilePath() org.apache.hadoop.hbase.regionserver.TestBulkLoad+getNotExistFilePath(),,232,5,2,,"private Pair<byte[], String> withInvalidColumnFamilyButProperHFileLocation(byte[] family)
+      throws IOException {
+    createHFileForFamilies(family);
+    return new Pair<>(new byte[]{0x00, 0x01, 0x02}, getNotExistFilePath());
+  }",True
+27,"testRegionWithFamiliesAndSpecifiedTableName(TableName,byte[])",Method,,,"org.apache.hadoop.hbase.client.RegionInfoBuilder+build() org.apache.hadoop.hbase.client.RegionInfoBuilder+newBuilder(TableName) org.apache.hadoop.hbase.client.RegionInfoBuilder+newBuilder(TableName) org.apache.hadoop.hbase.client.RegionInfoBuilder+build() org.apache.hadoop.hbase.client.TableDescriptorBuilder+newBuilder(TableName) org.apache.hadoop.hbase.client.TableDescriptorBuilder+newBuilder(TableName) org.apache.hadoop.hbase.client.TableDescriptorBuilder+setColumnFamily(ColumnFamilyDescriptor) org.apache.hadoop.hbase.client.TableDescriptorBuilder+setColumnFamily(ColumnFamilyDescriptor) org.apache.hadoop.hbase.client.ColumnFamilyDescriptorBuilder+of(byte[]) org.apache.hadoop.hbase.client.ColumnFamilyDescriptorBuilder+of(byte[]) org.apache.hadoop.hbase.regionserver.ChunkCreator+initialize(int,boolean,long,float,float,HeapMemoryManager,float) org.apache.hadoop.hbase.regionserver.ChunkCreator+initialize(int,boolean,long,float,float,HeapMemoryManager,float) java.lang.Object+Object() org.apache.hadoop.hbase.client.TableDescriptorBuilder+build() org.apache.hadoop.hbase.client.TableDescriptorBuilder+build()",org.apache.hadoop.hbase.regionserver.MemStoreLAB+CHUNK_SIZE_DEFAULT org.apache.hadoop.hbase.regionserver.MemStoreLAB+INDEX_CHUNK_SIZE_PERCENTAGE_DEFAULT org.apache.hadoop.hbase.regionserver.TestBulkLoad+testFolder org.apache.hadoop.hbase.regionserver.TestBulkLoad+conf org.apache.hadoop.hbase.regionserver.TestBulkLoad+log,728,14,2,,"private HRegion testRegionWithFamiliesAndSpecifiedTableName(TableName tableName,
+    byte[]... families) throws IOException {
+    RegionInfo hRegionInfo = RegionInfoBuilder.newBuilder(tableName).build();
+    TableDescriptorBuilder builder = TableDescriptorBuilder.newBuilder(tableName);
+
+    for (byte[] family : families) {
+      builder.setColumnFamily(ColumnFamilyDescriptorBuilder.of(family));
+    }
+    ChunkCreator.initialize(MemStoreLAB.CHUNK_SIZE_DEFAULT, false, 0, 0,
+      0, null, MemStoreLAB.INDEX_CHUNK_SIZE_PERCENTAGE_DEFAULT);
+    // TODO We need a way to do this without creating files
+    return HRegion.createHRegion(hRegionInfo, new Path(testFolder.newFolder().toURI()), conf,
+      builder.build(), log);
+  }",True
+28,testRegionWithFamilies(byte[]),Method,,,"org.apache.hadoop.hbase.TableName+valueOf(byte[]) org.apache.hadoop.hbase.TableName+valueOf(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamiliesAndSpecifiedTableName(TableName,byte[][]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+testRegionWithFamiliesAndSpecifiedTableName(TableName,byte[][])",org.apache.hadoop.hbase.regionserver.TestBulkLoad+name,227,4,2,,"private HRegion testRegionWithFamilies(byte[]... families) throws IOException {
+    TableName tableName = TableName.valueOf(name.getMethodName());
+    return testRegionWithFamiliesAndSpecifiedTableName(tableName, families);
+  }",True
+29,getBlankFamilyPaths(),Method,withFamilyPathsFor(byte[]),,,,91,3,2,,"private List<Pair<byte[], String>> getBlankFamilyPaths(){
+    return new ArrayList<>();
+  }",True
+30,withFamilyPathsFor(byte[]),Method,,,org.apache.hadoop.hbase.regionserver.TestBulkLoad+getBlankFamilyPaths() org.apache.hadoop.hbase.regionserver.TestBulkLoad+getBlankFamilyPaths() java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.regionserver.TestBulkLoad+createHFileForFamilies(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad+createHFileForFamilies(byte[]),,308,7,2,,"private List<Pair<byte[], String>> withFamilyPathsFor(byte[]... families) throws IOException {
+    List<Pair<byte[], String>> familyPaths = getBlankFamilyPaths();
+    for (byte[] family : families) {
+      familyPaths.add(new Pair<>(family, createHFileForFamilies(family)));
+    }
+    return familyPaths;
+  }",True
+31,createHFileForFamilies(byte[]),Method,withInvalidColumnFamilyButProperHFileLocation(byte[]),,org.apache.hadoop.hbase.io.hfile.HFile+getWriterFactoryNoCache(Configuration) org.apache.hadoop.hbase.io.hfile.HFile+getWriterFactoryNoCache(Configuration) java.io.FileOutputStream+FileOutputStream(File) org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+withOutputStream(FSDataOutputStream) org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+withOutputStream(FSDataOutputStream) org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+withFileContext(HFileContext) org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+withFileContext(HFileContext) org.apache.hadoop.hbase.io.hfile.HFileContextBuilder+build() org.apache.hadoop.hbase.io.hfile.HFileContextBuilder+HFileContextBuilder() org.apache.hadoop.hbase.io.hfile.HFileContextBuilder+build() org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+create() org.apache.hadoop.hbase.io.hfile.HFile.WriterFactory+create() org.apache.hadoop.hbase.regionserver.CellSink+append(Cell) org.apache.hadoop.hbase.regionserver.CellSink+append(Cell) org.apache.hadoop.hbase.KeyValue+KeyValue(byte[]) org.apache.hadoop.hbase.ExtendedCellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.ExtendedCellBuilderFactory+create(CellBuilderType) java.io.Closeable+close() java.io.Closeable+close() java.io.File+getAbsolutePath() java.io.File+getAbsoluteFile() java.io.File+getAbsoluteFile() java.io.File+getAbsolutePath(),org.apache.hadoop.hbase.regionserver.TestBulkLoad+conf org.apache.hadoop.hbase.regionserver.TestBulkLoad+testFolder org.apache.hadoop.hbase.regionserver.TestBulkLoad+randomBytes org.apache.hadoop.hbase.regionserver.TestBulkLoad+randomBytes org.apache.hadoop.hbase.KeyValue+Type org.apache.hadoop.hbase.regionserver.TestBulkLoad+randomBytes,1019,26,2,,"private String createHFileForFamilies(byte[] family) throws IOException {
+    HFile.WriterFactory hFileFactory = HFile.getWriterFactoryNoCache(conf);
+    // TODO We need a way to do this without creating files
+    File hFileLocation = testFolder.newFile();
+    FSDataOutputStream out = new FSDataOutputStream(new FileOutputStream(hFileLocation), null);
+    try {
+      hFileFactory.withOutputStream(out);
+      hFileFactory.withFileContext(new HFileContextBuilder().build());
+      HFile.Writer writer = hFileFactory.create();
+      try {
+        writer.append(new KeyValue(ExtendedCellBuilderFactory.create(CellBuilderType.DEEP_COPY)
+          .setRow(randomBytes)
+          .setFamily(family)
+          .setQualifier(randomBytes)
+          .setTimestamp(0L)
+          .setType(KeyValue.Type.Put.getCode())
+          .setValue(randomBytes)
+          .build()));
+      } finally {
+        writer.close();
+      }
+    } finally {
+      out.close();
+    }
+    return hFileLocation.getAbsoluteFile().getAbsolutePath();
+  }",True
+32,bulkLogWalEditType(byte[]),Method,shouldBulkLoadSingleFamilyHLog() shouldBulkLoadManyFamilyHLog() shouldBulkLoadManyFamilyHLogEvenWhenTableNameNamespaceSpecified(),,org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+WalMatcher(byte[]),,112,3,10,,"private static Matcher<WALEdit> bulkLogWalEditType(byte[] typeBytes) {
+    return new WalMatcher(typeBytes);
+  }",True
+33,"bulkLogWalEdit(byte[],byte[],byte[],List<String>)",Method,verifyBulkLoadEvent(),,"org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+WalMatcher(byte[],byte[],byte[],List<String>)",,219,4,10,,"private static Matcher<WALEdit> bulkLogWalEdit(byte[] typeBytes, byte[] tableName,
+      byte[] familyName, List<String> storeFileNames) {
+    return new WalMatcher(typeBytes, tableName, familyName, storeFileNames);
+  }",True
+34,WalMatcher,MemberClass,,,"org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+WalMatcher(byte[]) org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+WalMatcher(byte[],byte[],byte[],List<String>) org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+matchesSafely(WALEdit) java.util.Arrays+equals(byte[],byte[]) java.util.Arrays+equals(byte[],byte[]) org.apache.hadoop.hbase.CellUtil+cloneQualifier(Cell) org.apache.hadoop.hbase.CellUtil+cloneQualifier(Cell) java.util.ArrayList+get(int) org.apache.hadoop.hbase.wal.WALEdit+getCells() org.apache.hadoop.hbase.wal.WALEdit+getCells() java.util.ArrayList+get(int) org.apache.hadoop.hbase.wal.WALEdit+getBulkLoadDescriptor(Cell) org.apache.hadoop.hbase.wal.WALEdit+getBulkLoadDescriptor(Cell) java.util.ArrayList+get(int) org.apache.hadoop.hbase.wal.WALEdit+getCells() org.apache.hadoop.hbase.wal.WALEdit+getCells() java.util.ArrayList+get(int) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.shaded.protobuf.ProtobufUtil+toTableName(TableName) org.apache.hadoop.hbase.shaded.protobuf.ProtobufUtil+toTableName(TableName) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+toBytes(ByteBuffer) org.apache.hadoop.hbase.util.Bytes+toBytes(ByteBuffer) java.util.List+size() java.util.List+size() org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+describeTo(Description)",org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+typeBytes org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+tableName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+familyName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+storeFileNames org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+typeBytes org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+tableName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+familyName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+storeFileNames org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+typeBytes org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+tableName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+tableName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+storeFileNames org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+familyName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+familyName org.apache.hadoop.hbase.regionserver.TestBulkLoad.WalMatcher+storeFileNames,1560,50,10,,"private static class WalMatcher extends TypeSafeMatcher<WALEdit> {
+    private final byte[] typeBytes;
+    private final byte[] tableName;
+    private final byte[] familyName;
+    private final List<String> storeFileNames;
+
+    public WalMatcher(byte[] typeBytes) {
+      this(typeBytes, null, null, null);
+    }
+
+    public WalMatcher(byte[] typeBytes, byte[] tableName, byte[] familyName,
+        List<String> storeFileNames) {
+      this.typeBytes = typeBytes;
+      this.tableName = tableName;
+      this.familyName = familyName;
+      this.storeFileNames = storeFileNames;
+    }
+
+    @Override
+    protected boolean matchesSafely(WALEdit item) {
+      assertTrue(Arrays.equals(CellUtil.cloneQualifier(item.getCells().get(0)), typeBytes));
+      BulkLoadDescriptor desc;
+      try {
+        desc = WALEdit.getBulkLoadDescriptor(item.getCells().get(0));
+      } catch (IOException e) {
+        return false;
+      }
+      assertNotNull(desc);
+
+      if (tableName != null) {
+        assertTrue(Bytes.equals(ProtobufUtil.toTableName(desc.getTableName()).getName(),
+          tableName));
+      }
+
+      if(storeFileNames != null) {
+        int index=0;
+        StoreDescriptor store = desc.getStores(0);
+        assertTrue(Bytes.equals(store.getFamilyName().toByteArray(), familyName));
+        assertTrue(Bytes.equals(Bytes.toBytes(store.getStoreHomeDir()), familyName));
+        assertEquals(storeFileNames.size(), store.getStoreFileCount());
+      }
+
+      return true;
+    }
+
+    @Override
+    public void describeTo(Description description) {
+
+    }
+  }",True

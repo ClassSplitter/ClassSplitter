@@ -1,0 +1,171 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,session,Field,"LazyResult(SessionLocal,Expression[])",,,,35,1,18,,private final SessionLocal session;,False
+2,expressions,Field,"LazyResult(SessionLocal,Expression[])",,,,39,1,18,,private final Expression[] expressions;,False
+3,rowId,Field,,,,,24,1,2,,private long rowId = -1;,True
+4,currentRow,Field,,,,,27,1,2,,private Value[] currentRow;,True
+5,nextRow,Field,,,,,24,1,2,,private Value[] nextRow;,True
+6,closed,Field,,,,,23,1,2,,private boolean closed;,False
+7,afterLast,Field,,,,,26,1,2,,private boolean afterLast;,True
+8,limit,Field,setLimit(long),,,,19,1,2,,private long limit;,False
+9,"LazyResult(SessionLocal,Expression[])",Method,,,,org.h2.result.LazyResult+session org.h2.result.LazyResult+session org.h2.result.LazyResult+expressions org.h2.result.LazyResult+expressions,145,4,1,,"public LazyResult(SessionLocal session, Expression[] expressions) {
+        this.session = session;
+        this.expressions = expressions;
+    }",False
+10,setLimit(long),Method,,"org.h2.command.query.SelectUnion+queryWithoutCache(long,ResultTarget)",,org.h2.result.LazyResult+limit org.h2.result.LazyResult+limit,68,3,1,,"public void setLimit(long limit) {
+        this.limit = limit;
+    }",False
+11,isLazy(),Method,,,,,66,4,1,,"@Override
+    public boolean isLazy() {
+        return true;
+    }",False
+12,reset(),Method,,,org.h2.message.DbException+getInternalError() org.h2.message.DbException+getInternalError(),org.h2.result.LazyResult+closed org.h2.result.LazyResult+rowId org.h2.result.LazyResult+afterLast org.h2.result.LazyResult+currentRow org.h2.result.LazyResult+nextRow,222,10,1,,"@Override
+    public void reset() {
+        if (closed) {
+            throw DbException.getInternalError();
+        }
+        rowId = -1L;
+        afterLast = false;
+        currentRow = null;
+        nextRow = null;
+    }",False
+13,currentRow(),Method,,"org.h2.command.query.Select+queryGroupSorted(int,ResultTarget,long,boolean) org.h2.command.query.Select+queryFlat(int,ResultTarget,long,long,boolean,boolean) org.h2.command.query.Select+queryFlat(int,ResultTarget,long,long,boolean,boolean)",,org.h2.result.LazyResult+currentRow,76,4,1,,"@Override
+    public Value[] currentRow() {
+        return currentRow;
+    }",True
+14,next(),Method,,"org.h2.command.query.Select+queryGroupSorted(int,ResultTarget,long,boolean) org.h2.command.query.Select+queryFlat(int,ResultTarget,long,long,boolean,boolean) org.h2.command.query.Select+queryFlat(int,ResultTarget,long,long,boolean,boolean)",org.h2.result.LazyResult+hasNext() org.h2.result.LazyResult+hasNext(),org.h2.result.LazyResult+rowId org.h2.result.LazyResult+currentRow org.h2.result.LazyResult+nextRow org.h2.result.LazyResult+nextRow org.h2.result.LazyResult+afterLast org.h2.result.LazyResult+rowId org.h2.result.LazyResult+currentRow org.h2.result.LazyResult+afterLast,326,15,1,,"@Override
+    public boolean next() {
+        if (hasNext()) {
+            rowId++;
+            currentRow = nextRow;
+            nextRow = null;
+            return true;
+        }
+        if (!afterLast) {
+            rowId++;
+            currentRow = null;
+            afterLast = true;
+        }
+        return false;
+    }",True
+15,skip(),Method,,"org.h2.command.query.Select+skipOffset(LazyResultSelect,long,boolean)",org.h2.result.LazyResult+skipNextRow() org.h2.result.LazyResult+skipNextRow(),org.h2.result.LazyResult+closed org.h2.result.LazyResult+afterLast org.h2.result.LazyResult+currentRow org.h2.result.LazyResult+nextRow org.h2.result.LazyResult+nextRow org.h2.result.LazyResult+afterLast,431,20,1,"/** 
+ * Go to the next row and skip it.
+ * @return true if a row exists
+ */
+","/**
+     * Go to the next row and skip it.
+     *
+     * @return true if a row exists
+     */
+    public boolean skip() {
+        if (closed || afterLast) {
+            return false;
+        }
+        currentRow = null;
+        if (nextRow != null) {
+            nextRow = null;
+            return true;
+        }
+        if (skipNextRow()) {
+            return true;
+        }
+        afterLast = true;
+        return false;
+    }",False
+16,hasNext(),Method,next(),,org.h2.result.LazyResult+fetchNextRow() org.h2.result.LazyResult+fetchNextRow(),org.h2.result.LazyResult+closed org.h2.result.LazyResult+afterLast org.h2.result.LazyResult+nextRow org.h2.result.LazyResult+limit org.h2.result.LazyResult+rowId org.h2.result.LazyResult+limit org.h2.result.LazyResult+nextRow org.h2.result.LazyResult+nextRow,265,10,1,,"@Override
+    public boolean hasNext() {
+        if (closed || afterLast) {
+            return false;
+        }
+        if (nextRow == null && (limit <= 0 || rowId + 1 < limit)) {
+            nextRow = fetchNextRow();
+        }
+        return nextRow != null;
+    }",False
+17,fetchNextRow(),Method,hasNext() skipNextRow(),,,,146,6,1028,"/** 
+ * Fetch next row or null if none available.
+ * @return next row or null
+ */
+","/**
+     * Fetch next row or null if none available.
+     *
+     * @return next row or null
+     */
+    protected abstract Value[] fetchNextRow();",False
+18,skipNextRow(),Method,skip(),,org.h2.result.LazyResult+fetchNextRow() org.h2.result.LazyResult+fetchNextRow(),,169,8,4,"/** 
+ * Skip next row.
+ * @return true if next row was available
+ */
+","/**
+     * Skip next row.
+     *
+     * @return true if next row was available
+     */
+    protected boolean skipNextRow() {
+        return fetchNextRow() != null;
+    }",False
+19,isAfterLast(),Method,,,,org.h2.result.LazyResult+afterLast,76,4,1,,"@Override
+    public boolean isAfterLast() {
+        return afterLast;
+    }",True
+20,getRowId(),Method,,,,org.h2.result.LazyResult+rowId,66,4,1,,"@Override
+    public long getRowId() {
+        return rowId;
+    }",True
+21,getRowCount(),Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,139,4,1,,"@Override
+    public long getRowCount() {
+        throw DbException.getUnsupportedException(""Row count is unknown for lazy result."");
+    }",False
+22,needToClose(),Method,,,,,71,4,1,,"@Override
+    public boolean needToClose() {
+        return true;
+    }",True
+23,isClosed(),Method,,,,org.h2.result.LazyResult+closed,70,4,1,,"@Override
+    public boolean isClosed() {
+        return closed;
+    }",False
+24,close(),Method,,,,org.h2.result.LazyResult+closed,64,4,1,,"@Override
+    public void close() {
+        closed = true;
+    }",False
+25,getAlias(int),Method,,,"org.h2.expression.Expression+getAlias(SessionLocal,int) org.h2.expression.Expression+getAlias(SessionLocal,int)",org.h2.result.LazyResult+expressions org.h2.result.LazyResult+session,103,4,1,,"@Override
+    public String getAlias(int i) {
+        return expressions[i].getAlias(session, i);
+    }",False
+26,getSchemaName(int),Method,,,org.h2.expression.Expression+getSchemaName() org.h2.expression.Expression+getSchemaName(),org.h2.result.LazyResult+expressions,103,4,1,,"@Override
+    public String getSchemaName(int i) {
+        return expressions[i].getSchemaName();
+    }",False
+27,getTableName(int),Method,,,org.h2.expression.Expression+getTableName() org.h2.expression.Expression+getTableName(),org.h2.result.LazyResult+expressions,101,4,1,,"@Override
+    public String getTableName(int i) {
+        return expressions[i].getTableName();
+    }",False
+28,getColumnName(int),Method,,,"org.h2.expression.Expression+getColumnName(SessionLocal,int) org.h2.expression.Expression+getColumnName(SessionLocal,int)",org.h2.result.LazyResult+expressions org.h2.result.LazyResult+session,113,4,1,,"@Override
+    public String getColumnName(int i) {
+        return expressions[i].getColumnName(session, i);
+    }",False
+29,getColumnType(int),Method,,,org.h2.expression.Expression+getType() org.h2.expression.Expression+getType(),org.h2.result.LazyResult+expressions,99,4,1,,"@Override
+    public TypeInfo getColumnType(int i) {
+        return expressions[i].getType();
+    }",False
+30,isAutoIncrement(int),Method,,,org.h2.expression.Expression+isAutoIncrement() org.h2.expression.Expression+isAutoIncrement(),org.h2.result.LazyResult+expressions,108,4,1,,"@Override
+    public boolean isAutoIncrement(int i) {
+        return expressions[i].isAutoIncrement();
+    }",False
+31,getNullable(int),Method,,,org.h2.expression.Expression+getNullable() org.h2.expression.Expression+getNullable(),org.h2.result.LazyResult+expressions,96,4,1,,"@Override
+    public int getNullable(int i) {
+        return expressions[i].getNullable();
+    }",False
+32,setFetchSize(int),Method,,,,,79,4,1,,"@Override
+    public void setFetchSize(int fetchSize) {
+        // ignore
+    }",False
+33,getFetchSize(),Method,,,,,109,5,1,,"@Override
+    public int getFetchSize() {
+        // We always fetch rows one by one.
+        return 1;
+    }",False
+34,createShallowCopy(Session),Method,,,,,157,5,1,,"@Override
+    public ResultInterface createShallowCopy(Session targetSession) {
+        // Copying is impossible with lazy result.
+        return null;
+    }",True

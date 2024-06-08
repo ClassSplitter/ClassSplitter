@@ -1,0 +1,461 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,MEMORY_PREFIX,Field,,,,,83,1,25,,"public static final String MEMORY_PREFIX = ""memFS:"", MEMORY_PREFIX_LZF = ""memLZF:"";",True
+2,MEMORY_PREFIX_LZF,Field,,,,,83,1,25,,"public static final String MEMORY_PREFIX = ""memFS:"", MEMORY_PREFIX_LZF = ""memLZF:"";",True
+3,MEMORY_FILES,Field,,,,,58,1,26,,private static final HashMap MEMORY_FILES = new HashMap();,False
+4,IS_FILE_SYSTEM_CASE_INSENSITIVE,Field,,,,,92,1,26,,private static final boolean IS_FILE_SYSTEM_CASE_INSENSITIVE = (File.separatorChar == '\\');,True
+5,"openRandomAccessFile(String,String)",Method,,"org.h2.store.FileStore+FileStore(DataHandler,String,String,byte[]) org.h2.store.FileStore+openFile()","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.RandomAccessFile+RandomAccessFile(String,String) org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+freeMemoryAndFinalize() org.h2.util.FileUtils+freeMemoryAndFinalize() java.io.RandomAccessFile+RandomAccessFile(String,String)",,476,11,9,,"public static RandomAccessFile openRandomAccessFile(String fileName, String mode) throws IOException {
+        fileName = translateFileName(fileName);
+        try {
+            RandomAccessFile file = new RandomAccessFile(fileName, mode);
+            trace(""openRandomAccessFile"", fileName, file);
+            return file;
+        } catch (IOException e) {
+            freeMemoryAndFinalize();
+            return new RandomAccessFile(fileName, mode);
+        }
+    }",True
+6,"setLength(RandomAccessFile,long)",Method,,org.h2.store.FileStore+setLength(long) org.h2.store.FileStore+setLength(long) org.h2.store.FileStore+length() org.h2.test.poweroff.Test+testFile(DataOutputStream),"org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+trace(String,String,Object) java.io.RandomAccessFile+setLength(long) java.io.RandomAccessFile+setLength(long) java.io.RandomAccessFile+length() java.io.RandomAccessFile+length() java.io.RandomAccessFile+getFilePointer() java.io.RandomAccessFile+getFilePointer() java.io.RandomAccessFile+seek(long) java.io.RandomAccessFile+seek(long) java.lang.Math+min(long,long) java.lang.Math+min(long,long) java.lang.Math+min(long,long) java.lang.Math+min(long,long) java.io.RandomAccessFile+write(byte[],int,int) java.io.RandomAccessFile+write(byte[],int,int) java.io.RandomAccessFile+seek(long) java.io.RandomAccessFile+seek(long)",,939,24,9,,"public static void setLength(RandomAccessFile file, long newLength) throws IOException {
+        try {
+            trace(""setLength"", null, file);
+            file.setLength(newLength);
+        } catch (IOException e) {
+            long length = file.length();
+            if (newLength < length) {
+                throw e;
+            } else {
+                long pos = file.getFilePointer();
+                file.seek(length);
+                long remaining = newLength - length;
+                int maxSize = 1024 * 1024;
+                int block = (int) Math.min(remaining, maxSize);
+                byte[] buffer = new byte[block];
+                while (remaining > 0) {
+                    int write = (int) Math.min(remaining, maxSize);
+                    file.write(buffer, 0, write);
+                    remaining -= write;
+                }
+                file.seek(pos);
+            }
+        }
+    }",False
+7,"openFileWriter(String,boolean)",Method,,"org.h2.command.dml.ScriptCommand+combineClob(Connection,int) org.h2.message.TraceObject+logAndConvert(Throwable) org.h2.message.TraceSystem+openWriter() org.h2.tools.ConvertTraceFile+convertFile(String,String,String) org.h2.tools.ConvertTraceFile+convertFile(String,String,String) org.h2.tools.Recover+getWriter(String,String) org.h2.tools.Script+execute(String,String,String,String)","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.FileWriter+FileWriter(String,boolean) org.h2.util.FileUtils+freeMemoryAndFinalize() org.h2.util.FileUtils+freeMemoryAndFinalize() java.io.FileWriter+FileWriter(String,boolean)",,356,9,9,,"public static FileWriter openFileWriter(String fileName, boolean append) throws IOException {
+        fileName = translateFileName(fileName);
+        try {
+            return new FileWriter(fileName, append);
+        } catch (IOException e) {
+            freeMemoryAndFinalize();
+            return new FileWriter(fileName, append);
+        }
+    }",True
+8,"fileStartsWith(String,String)",Method,,"org.h2.engine.Database+reserveLobFileObjectIds() org.h2.engine.Database+deleteOldTempFiles() org.h2.log.LogFile+openIfLogFile(LogSystem,String,String) org.h2.store.FileLister+getDatabaseFiles(String,String,boolean)",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.StringUtils+toUpperEnglish(String) org.h2.util.StringUtils+toUpperEnglish(String) org.h2.util.StringUtils+toUpperEnglish(String) org.h2.util.StringUtils+toUpperEnglish(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String),org.h2.util.FileUtils+IS_FILE_SYSTEM_CASE_INSENSITIVE,350,8,9,,"public static boolean fileStartsWith(String fileName, String prefix) {
+        fileName = translateFileName(fileName);
+        if (IS_FILE_SYSTEM_CASE_INSENSITIVE) {
+            fileName = StringUtils.toUpperEnglish(fileName);
+            prefix = StringUtils.toUpperEnglish(prefix);
+        }
+        return fileName.startsWith(prefix);
+    }",True
+9,openFileInputStream(String),Method,"copy(String,String)","org.h2.command.dml.BackupCommand+backupFile(ZipOutputStream,String,String) org.h2.command.dml.ScriptBase+openInput() org.h2.command.dml.ScriptCommand+combineBlob(Connection,int) org.h2.engine.Database+isTextStorage(String,boolean) org.h2.security.SecureSocketFactory+setKeystore() org.h2.server.ftp.FileObjectNative+read(long,OutputStream) org.h2.tools.Backup+execute(String,String,String,boolean) org.h2.tools.Csv+initRead() org.h2.tools.Restore+getOriginalDbName(String,String) org.h2.tools.Restore+execute(String,String,String,boolean) org.h2.tools.RunScript+execute(Connection,String,boolean,String)","java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.net.URL+URL(String) java.net.URL+openStream() java.net.URL+openStream() org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.FileInputStream+FileInputStream(String) org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+trace(String,String,Object)",,571,13,9,,"public static InputStream openFileInputStream(String fileName) throws IOException {
+        if (fileName.indexOf(':') > 1) {
+            // if the : is in position 1, a windows file access is assumed: C:.. or D:
+            // otherwise a URL is assumed
+            URL url = new URL(fileName);
+            InputStream in = url.openStream();
+            return in;
+        }
+        fileName = translateFileName(fileName);
+        FileInputStream in = new FileInputStream(fileName);
+        trace(""openFileInputStream"", fileName, in);
+        return in;
+    }",True
+10,openFileOutputStream(String),Method,"copy(String,String)","org.h2.command.dml.BackupCommand+backupTo(String) org.h2.command.dml.ScriptBase+openOutput() org.h2.command.dml.ScriptCommand+combineBlob(Connection,int) org.h2.security.SecureSocketFactory+setKeystore() org.h2.server.ftp.FileObjectNative+write(InputStream) org.h2.server.ftp.FtpServer+StreamRedirect.openOutput() org.h2.server.web.WebServer+saveSettings() org.h2.store.FileLock+save() org.h2.tools.Backup+execute(String,String,String,boolean) org.h2.tools.Recover+dumpLob(String,boolean) org.h2.tools.Restore+execute(String,String,String,boolean)","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.File+File(String) org.h2.util.FileUtils+createDirs(String) org.h2.util.FileUtils+createDirs(String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath() java.io.FileOutputStream+FileOutputStream(String) org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+freeMemoryAndFinalize() org.h2.util.FileUtils+freeMemoryAndFinalize() java.io.FileOutputStream+FileOutputStream(String)",,578,13,9,,"public static FileOutputStream openFileOutputStream(String fileName) throws IOException, SQLException {
+        fileName = translateFileName(fileName);
+        try {
+            File file = new File(fileName);
+            FileUtils.createDirs(file.getAbsolutePath());
+            FileOutputStream out = new FileOutputStream(fileName);
+            trace(""openFileOutputStream"", fileName, out);
+            return out;            
+        } catch (IOException e) {
+            freeMemoryAndFinalize();
+            return new FileOutputStream(fileName);
+        }
+    }",True
+11,freeMemoryAndFinalize(),Method,"openRandomAccessFile(String,String) openFileWriter(String,boolean) openFileOutputStream(String)",,"org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+trace(String,String,Object) java.lang.Runtime+getRuntime() java.lang.Runtime+getRuntime() java.lang.Runtime+freeMemory() java.lang.Runtime+freeMemory() java.lang.Runtime+gc() java.lang.Runtime+gc() java.lang.Runtime+freeMemory() java.lang.Runtime+freeMemory() java.lang.Runtime+runFinalization() java.lang.Runtime+runFinalization()",,429,14,10,,"private static void freeMemoryAndFinalize() {
+        trace(""freeMemoryAndFinalize"", null, null);
+        Runtime rt = Runtime.getRuntime();
+        long mem = rt.freeMemory();
+        for (int i = 0; i < 16; i++) {
+            rt.gc();
+            long now = rt.freeMemory();
+            rt.runFinalization();
+            if (now == mem) {
+                break;
+            }
+            mem = now;
+        }
+    }",True
+12,"rename(String,String)",Method,,"org.h2.log.LogSystem+loadActiveLogFiles() org.h2.message.TraceSystem+writeFile(String,Throwable) org.h2.tools.ChangePassword+execute(String,String,String,byte[],byte[],boolean) org.h2.tools.ChangePassword+execute(String,String,String,byte[],byte[],boolean) org.h2.tools.ChangePassword+copy(String,boolean,FileStore,byte[]) org.h2.value.ValueLob+renameFile(DataHandler,String,String)","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+getMemoryFile(String) org.h2.util.FileUtils+getMemoryFile(String) org.h2.util.MemoryFile+setName(String) org.h2.util.MemoryFile+setName(String) java.util.HashMap+put(K,V) java.util.HashMap+put(K,V) java.io.File+File(String) java.io.File+File(String) java.lang.String+equals(Object) java.io.File+getName() java.io.File+getName() java.lang.String+equals(Object) java.io.File+getName() java.io.File+getName() org.h2.message.Message+getInternalError(String) org.h2.message.Message+getInternalError(String) java.io.File+exists() java.io.File+exists() org.h2.message.Message+getSQLException(int,String[]) org.h2.message.Message+getSQLException(int,String[]) java.io.File+exists() java.io.File+exists() org.h2.message.Message+getSQLException(int,String[]) org.h2.message.Message+getSQLException(int,String[]) org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+trace(String,String,Object) java.io.File+renameTo(File) java.io.File+renameTo(File) org.h2.util.FileUtils+wait(int) org.h2.util.FileUtils+wait(int) org.h2.message.Message+getSQLException(int,String[]) org.h2.message.Message+getSQLException(int,String[])",org.h2.util.FileUtils+MEMORY_FILES org.h2.util.FileUtils+MEMORY_FILES org.h2.constant.ErrorCode+FILE_RENAME_FAILED_2 org.h2.constant.ErrorCode+FILE_RENAME_FAILED_2 org.h2.constant.SysProperties+MAX_FILE_RETRY org.h2.constant.ErrorCode+FILE_RENAME_FAILED_2,1428,34,9,,"public static void rename(String oldName, String newName) throws SQLException {
+        oldName = translateFileName(oldName);
+        newName = translateFileName(newName);
+        if (isInMemory(oldName)) {
+            MemoryFile f = getMemoryFile(oldName);
+            f.setName(newName);
+            synchronized (MEMORY_FILES) {
+                MEMORY_FILES.put(newName, f);
+            }
+            return;
+        }
+        File oldFile = new File(oldName);
+        File newFile = new File(newName);
+        if (oldFile.getName().equals(newFile.getName())) {
+            throw Message.getInternalError(""rename file old=new"");
+        }
+        if (!oldFile.exists()) {
+            throw Message.getSQLException(ErrorCode.FILE_RENAME_FAILED_2, new String[] { oldName + "" (not found)"",
+                    newName });
+        }
+        if (newFile.exists()) {
+            throw Message.getSQLException(ErrorCode.FILE_RENAME_FAILED_2,
+                    new String[] { oldName, newName + "" (exists)"" });
+        }
+        for (int i = 0; i < SysProperties.MAX_FILE_RETRY; i++) {
+            trace(""rename"", oldName + "" >"" + newName, null);
+            boolean ok = oldFile.renameTo(newFile);
+            if (ok) {
+                return;
+            }
+            wait(i);
+        }
+        throw Message.getSQLException(ErrorCode.FILE_RENAME_FAILED_2, new String[]{oldName, newName});
+    }",True
+13,loadProperties(String),Method,,"org.h2.server.web.WebServer+loadProperties() org.h2.store.FileLock+load() org.h2.tools.i18n.PrepareTranslation+buildHtml(String,String,String) org.h2.tools.i18n.PrepareTranslation+buildHtml(String,String,String) org.h2.tools.i18n.PrepareTranslation+extract(String,File,String) org.h2.tools.i18n.PrepareTranslation+prepare(String,String) org.h2.tools.i18n.PrepareTranslation+prepare(String,String) org.h2.tools.i18n.PrepareTranslation+prepare(Properties,Properties,File) org.h2.tools.i18n.PropertiesToUTF8+propertiesToTextUTF8(String,String)",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.SortedProperties+SortedProperties() java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.FileInputStream+FileInputStream(File) java.util.Properties+load(InputStream) java.util.Properties+load(InputStream) java.io.FileInputStream+close() java.io.FileInputStream+close(),,482,14,41,,"public static synchronized Properties loadProperties(String fileName) throws IOException {
+        fileName = translateFileName(fileName);
+        Properties prop = new SortedProperties();
+        File file = new File(fileName);
+        if (file.exists()) {
+            FileInputStream in = new FileInputStream(file);
+            try {
+                prop.load(in);
+            } finally {
+                in.close();
+            }
+        }
+        return prop;
+    }",False
+14,"getBooleanProperty(Properties,String,boolean)",Method,,org.h2.server.web.WebServer+init(String[]) org.h2.server.web.WebServer+init(String[]),"java.util.Properties+getProperty(String,String) java.util.Properties+getProperty(String,String) java.lang.Boolean+booleanValue() java.lang.Boolean+valueOf(String) java.lang.Boolean+valueOf(String) java.lang.Boolean+booleanValue() org.h2.message.TraceSystem+traceThrowable(Throwable) org.h2.message.TraceSystem+traceThrowable(Throwable)",,333,9,9,,"public static boolean getBooleanProperty(Properties prop, String key, boolean def) {
+        String value = prop.getProperty(key, """"+def);
+        try {
+            return Boolean.valueOf(value).booleanValue();
+        } catch (Exception e) {
+            TraceSystem.traceThrowable(e);
+            return def;
+        }
+    }",False
+15,"getIntProperty(Properties,String,int)",Method,,org.h2.server.web.WebServer+init(String[]),"java.util.Properties+getProperty(String,String) java.util.Properties+getProperty(String,String) org.h2.util.MathUtils+decodeInt(String) org.h2.util.MathUtils+decodeInt(String) org.h2.message.TraceSystem+traceThrowable(Throwable) org.h2.message.TraceSystem+traceThrowable(Throwable)",,310,9,9,,"public static int getIntProperty(Properties prop, String key, int def) {
+        String value = prop.getProperty(key, """"+def);
+        try {
+            return MathUtils.decodeInt(value);
+        } catch (Exception e) {
+            TraceSystem.traceThrowable(e);
+            return def;
+        }
+    }",False
+16,createDirs(String),Method,openFileOutputStream(String),"org.h2.message.TraceSystem+openWriter() org.h2.store.FileStore+FileStore(DataHandler,String,String,byte[])","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.File+getParent() java.io.File+getParent() java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.File+mkdirs() java.io.File+mkdirs() org.h2.util.FileUtils+wait(int) org.h2.util.FileUtils+wait(int) org.h2.message.Message+getSQLException(int,String) org.h2.message.Message+getSQLException(int,String)",org.h2.constant.SysProperties+MAX_FILE_RETRY org.h2.constant.ErrorCode+FILE_CREATION_FAILED_1,660,18,9,,"public static void createDirs(String fileName) throws SQLException {
+        fileName = translateFileName(fileName);
+        File f = new File(fileName);
+        if (!f.exists()) {
+            String parent = f.getParent();
+            if (parent == null) {
+                return;
+            }
+            File dir = new File(parent);
+            for (int i = 0; i < SysProperties.MAX_FILE_RETRY; i++) {
+                if (dir.exists() || dir.mkdirs()) {
+                    return;
+                }
+                wait(i);
+            }
+            throw Message.getSQLException(ErrorCode.FILE_CREATION_FAILED_1, parent);
+        }
+    }",True
+17,createNewFile(String),Method,,org.h2.store.FileLock+lockFile() org.h2.store.FileLock+lockFile() org.h2.store.FileLock+lockSocket() org.h2.store.FileLock+lockSocket(),org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+exists(String) org.h2.util.FileUtils+exists(String) org.h2.util.FileUtils+getMemoryFile(String) org.h2.util.FileUtils+getMemoryFile(String) java.io.File+File(String) java.io.File+createNewFile() java.io.File+createNewFile() org.h2.util.FileUtils+wait(int) org.h2.util.FileUtils+wait(int),org.h2.constant.SysProperties+MAX_FILE_RETRY,793,22,9,,"public static boolean createNewFile(String fileName) throws SQLException {
+        fileName = translateFileName(fileName);
+        if (isInMemory(fileName)) {
+            if (exists(fileName)) {
+                return false;
+            }
+            // creates the file (not thread safe)
+            getMemoryFile(fileName);
+            return true;
+        }
+        File file = new File(fileName);
+        for (int i = 0; i < SysProperties.MAX_FILE_RETRY; i++) {
+            try {
+                return file.createNewFile();
+            } catch (IOException e) {
+                // TODO file lock: check if 'access denied' exceptions are
+                // really a concurrent access problem
+                wait(i);
+            }
+        }
+        return false;
+    }",True
+18,delete(String),Method,deleteRecursive(String),"org.h2.command.dml.ScriptBase+deleteStore() org.h2.command.dml.ScriptCommand+combineBlob(Connection,int) org.h2.log.LogFile+close(boolean) org.h2.message.TraceSystem+enableIfRequired() org.h2.message.TraceSystem+writeFile(String,Throwable) org.h2.store.DiskFile+delete() org.h2.store.FileLock+unlock() org.h2.store.FileLock+lockFile() org.h2.store.FileLock+lockSocket() org.h2.tools.Backup+execute(String,String,String,boolean) org.h2.tools.ChangePassword+execute(String,String,String,byte[],byte[],boolean) org.h2.tools.ChangePassword+copy(String,boolean,FileStore,byte[]) org.h2.tools.ChangePassword+copy(String,boolean,FileStore,byte[]) org.h2.tools.CreateCluster+execute(String,String,String,String,String) org.h2.tools.DeleteDbFiles+process(String,boolean) org.h2.tools.Recover+dumpLob(String,boolean) org.h2.util.TempFileDeleter+deleteFile(Reference,String) org.h2.value.ValueLob+deleteFile(DataHandler,String) org.h2.test.db.TestPowerOff+testNoIndexFile() org.h2.test.unit.TestFile+doTest(boolean) org.h2.test.unit.TestFile+doTest(boolean) org.h2.test.unit.TestFile+doTest(boolean) org.h2.test.unit.TestFile+doTest(boolean)","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) java.util.HashMap+remove(Object) java.util.HashMap+remove(Object) java.io.File+File(String) java.io.File+exists() java.io.File+exists() org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+trace(String,String,Object) java.io.File+delete() java.io.File+delete() org.h2.util.FileUtils+wait(int) org.h2.util.FileUtils+wait(int) org.h2.message.Message+getSQLException(int,String) org.h2.message.Message+getSQLException(int,String)",org.h2.util.FileUtils+MEMORY_FILES org.h2.util.FileUtils+MEMORY_FILES org.h2.constant.SysProperties+MAX_FILE_RETRY org.h2.constant.ErrorCode+FILE_DELETE_FAILED_1,744,21,9,,"public static void delete(String fileName) throws SQLException {
+        fileName = translateFileName(fileName);
+        if (isInMemory(fileName)) {
+            synchronized (MEMORY_FILES) {
+                MEMORY_FILES.remove(fileName);
+            }
+            return;
+        }
+        File file = new File(fileName);
+        if (file.exists()) {
+            for (int i = 0; i < SysProperties.MAX_FILE_RETRY; i++) {
+                trace(""delete"", fileName, null);
+                boolean ok = file.delete();
+                if (ok) {
+                    return;
+                }
+                wait(i);
+            }
+            throw Message.getSQLException(ErrorCode.FILE_DELETE_FAILED_1, fileName);
+        }
+    }",True
+19,wait(int),Method,"rename(String,String) createDirs(String) createNewFile(String) delete(String)",,"java.lang.System+gc() java.lang.System+gc() java.lang.Math+min(int,int) java.lang.Math+min(int,int) java.lang.Thread+sleep(long) java.lang.Thread+sleep(long)",,311,12,10,,"private static void wait(int i) {
+        if (i > 8) {
+            System.gc();
+        }
+        try {
+            // sleep at most 256 ms
+            long sleep = Math.min(256, i * i);
+            Thread.sleep(sleep);
+        } catch (InterruptedException e) {
+            // ignore
+        }
+    }",True
+20,getFileName(String),Method,,"org.h2.command.dml.BackupCommand+backupTo(String) org.h2.command.dml.BackupCommand+backupDiskFile(ZipOutputStream,String,DiskFile) org.h2.engine.Database+close(boolean)",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.lang.System+getProperty(String) java.lang.System+getProperty(String) org.h2.util.FileUtils+getParent(String) org.h2.util.FileUtils+getParent(String) java.lang.String+endsWith(String) java.lang.String+endsWith(String) org.h2.util.FileUtils+normalize(String) org.h2.util.FileUtils+normalize(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) org.h2.message.Message+getInternalError(String) org.h2.message.Message+getInternalError(String) java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+length() java.lang.String+length(),,615,14,9,,"public static String getFileName(String name) throws SQLException {
+        name = translateFileName(name);
+        String separator = System.getProperty(""file.separator"");
+        String path = getParent(name);
+        if (!path.endsWith(separator)) {
+            path += separator;
+        }
+        String fullFileName = normalize(name);
+        if (!fullFileName.startsWith(path)) {
+            throw Message.getInternalError(""file utils error: "" + fullFileName+"" does not start with ""+path);
+        }
+        String fileName = fullFileName.substring(path.length());
+        return fileName;
+    }",False
+21,getFileInUserHome(String),Method,,org.h2.security.SecureSocketFactory+setKeystore() org.h2.server.web.WebServer+getPropertiesFileName(),"java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.io.File+File(String,String) java.io.File+getAbsolutePath() java.io.File+getAbsolutePath()",,286,8,9,,"public static String getFileInUserHome(String fileName) {
+        String userDir = System.getProperty(""user.home"");
+        if (userDir == null) {
+            return fileName;
+        }
+        File file = new File(userDir, fileName);
+        return file.getAbsolutePath();
+    }",False
+22,normalize(String),Method,getFileName(String),"org.h2.engine.ConnectionInfo+getName() org.h2.engine.ConnectionInfo+getName() org.h2.engine.Database+reserveLobFileObjectIds() org.h2.engine.Database+deleteOldTempFiles() org.h2.store.FileLister+getDatabaseFiles(String,String,boolean)","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) java.io.File+File(String) java.io.File+getCanonicalPath() java.io.File+getCanonicalPath() org.h2.message.Message+convertIOException(IOException,String) org.h2.message.Message+convertIOException(IOException,String)",,404,12,9,,"public static String normalize(String fileName) throws SQLException {
+        fileName = translateFileName(fileName);
+        if (isInMemory(fileName)) {
+            return fileName;
+        }
+        File f = new File(fileName);
+        try {
+            return f.getCanonicalPath();
+        } catch (IOException e) {
+            throw Message.convertIOException(e, fileName);
+        }
+    }",False
+23,tryDelete(String),Method,,"org.h2.engine.Database+deleteOldTempFiles() org.h2.tools.DeleteDbFiles+process(String,boolean)","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) java.util.HashMap+remove(Object) java.util.HashMap+remove(Object) org.h2.util.FileUtils+trace(String,String,Object) org.h2.util.FileUtils+trace(String,String,Object) java.io.File+delete() java.io.File+File(String) java.io.File+delete()",org.h2.util.FileUtils+MEMORY_FILES org.h2.util.FileUtils+MEMORY_FILES,361,11,9,,"public static void tryDelete(String fileName) {
+        fileName = translateFileName(fileName);
+        if (isInMemory(fileName)) {
+            synchronized (MEMORY_FILES) {
+                MEMORY_FILES.remove(fileName);
+            }
+            return;
+        }
+        trace(""tryDelete"", fileName, null);
+        new File(fileName).delete();
+    }",False
+24,isReadOnly(String),Method,,"org.h2.engine.Database+open(int,int) org.h2.message.TraceSystem+openWriter()",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) java.io.File+File(String) java.io.File+exists() java.io.File+exists() java.io.File+canWrite() java.io.File+canWrite(),,265,8,9,,"public static boolean isReadOnly(String fileName) {
+        fileName = translateFileName(fileName);
+        if (isInMemory(fileName)) {
+            return false;
+        }
+        File f = new File(fileName);
+        return f.exists() && !f.canWrite();
+    }",False
+25,exists(String),Method,"createNewFile(String) createTempFile(String,String,boolean,boolean)","org.h2.engine.Database+exists(String) org.h2.engine.Database+openFile(String,String,boolean) org.h2.engine.Database+open(int,int) org.h2.engine.SessionRemote+openFile(String,String,boolean) org.h2.message.TraceSystem+enableIfRequired() org.h2.message.TraceSystem+writeFile(String,Throwable) org.h2.message.TraceSystem+openWriter() org.h2.security.SecureSocketFactory+setKeystore() org.h2.store.DiskFile+DiskFile(Database,String,String,boolean,boolean,int) org.h2.store.FileLock+run() org.h2.store.FileStore+FileStore(DataHandler,String,String,byte[]) org.h2.tools.Backup+execute(String,String,String,boolean) org.h2.tools.Restore+execute(String,String,String,boolean) org.h2.util.TempFileDeleter+deleteFile(Reference,String)",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) java.util.HashMap+get(Object) java.util.HashMap+get(Object) java.io.File+exists() java.io.File+File(String) java.io.File+exists(),org.h2.util.FileUtils+MEMORY_FILES org.h2.util.FileUtils+MEMORY_FILES,314,9,9,,"public static boolean exists(String fileName) {
+        fileName = translateFileName(fileName);
+        if (isInMemory(fileName)) {
+            synchronized (MEMORY_FILES) {
+                return MEMORY_FILES.get(fileName) != null;
+            }
+        }
+        return new File(fileName).exists();
+    }",False
+26,getMemoryFile(String),Method,"rename(String,String) createNewFile(String) length(String) createTempFile(String,String,boolean,boolean)","org.h2.engine.Database+isTextStorage(String,boolean) org.h2.store.MemoryFileStore+MemoryFileStore(DataHandler,String,byte[])","java.util.HashMap+get(Object) java.util.HashMap+get(Object) java.lang.String+startsWith(String) java.lang.String+startsWith(String) org.h2.util.MemoryFile+MemoryFile(String,boolean) java.util.HashMap+put(K,V) java.util.HashMap+put(K,V)",org.h2.util.FileUtils+MEMORY_FILES org.h2.util.FileUtils+MEMORY_FILES org.h2.util.FileUtils+MEMORY_PREFIX_LZF org.h2.util.FileUtils+MEMORY_FILES,432,11,9,,"public static MemoryFile getMemoryFile(String fileName) {
+        synchronized (MEMORY_FILES) {
+            MemoryFile m = (MemoryFile) MEMORY_FILES.get(fileName);
+            if (m == null) {
+                boolean compress = fileName.startsWith(MEMORY_PREFIX_LZF);
+                m = new MemoryFile(fileName, compress);
+                MEMORY_FILES.put(fileName, m);
+            }
+            return m;
+        }
+    }",True
+27,length(String),Method,,"org.h2.message.TraceSystem+writeFile(String,Throwable) org.h2.security.SecureSocketFactory+setKeystore()",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.MemoryFile+length() org.h2.util.FileUtils+getMemoryFile(String) org.h2.util.FileUtils+getMemoryFile(String) org.h2.util.MemoryFile+length() java.io.File+length() java.io.File+File(String) java.io.File+length(),,247,7,9,,"public static long length(String fileName) {
+        fileName = translateFileName(fileName);
+        if (isInMemory(fileName)) {
+            return getMemoryFile(fileName).length();
+        }
+        return new File(fileName).length();
+    }",False
+28,isInMemory(String),Method,"rename(String,String) createNewFile(String) delete(String) normalize(String) tryDelete(String) isReadOnly(String) exists(String) length(String) createTempFile(String,String,boolean,boolean) getParent(String) listFiles(String) isDirectory(String)","org.h2.engine.Database+isTextStorage(String,boolean) org.h2.engine.Database+open(int,int) org.h2.store.FileLister+getDatabaseFiles(String,String,boolean) org.h2.store.FileStore+open(DataHandler,String,String,byte[],String,byte[],int)",java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String),org.h2.util.FileUtils+MEMORY_PREFIX org.h2.util.FileUtils+MEMORY_PREFIX_LZF,152,3,9,,"public static boolean isInMemory(String fileName) {
+        return fileName.startsWith(MEMORY_PREFIX) || fileName.startsWith(MEMORY_PREFIX_LZF);
+    }",False
+29,"createTempFile(String,String,boolean,boolean)",Method,,org.h2.engine.Database+createTempFile() org.h2.engine.SessionRemote+connect() org.h2.engine.SessionRemote+createTempFile(),"org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+exists(String) org.h2.util.FileUtils+exists(String) org.h2.util.FileUtils+getMemoryFile(String) org.h2.util.FileUtils+getMemoryFile(String) java.io.File+getName() java.io.File+File(String) java.io.File+getName() java.io.File+getParentFile() java.io.File+getAbsoluteFile() java.io.File+File(String) java.io.File+getAbsoluteFile() java.io.File+getParentFile() java.io.File+mkdirs() java.io.File+mkdirs() java.io.File+createTempFile(String,String,File) java.io.File+createTempFile(String,String,File) java.io.File+deleteOnExit() java.io.File+deleteOnExit() java.io.File+getCanonicalPath() java.io.File+getCanonicalPath()",,995,29,9,,"public static String createTempFile(String name, String suffix, boolean deleteOnExit, boolean inTempDir)
+            throws IOException, SQLException {
+        name = translateFileName(name);
+        name += ""."";
+        if (isInMemory(name)) {
+            for (int i = 0;; i++) {
+                String n = name + i + suffix;
+                if (!exists(n)) {
+                    // creates the file (not thread safe)
+                    getMemoryFile(n);
+                    return n;
+                }
+            }
+        }
+        String prefix = new File(name).getName();
+        File dir;
+        if (inTempDir) {
+            dir = null;
+        } else {
+            dir = new File(name).getAbsoluteFile().getParentFile();
+            dir.mkdirs();
+        }
+        File f = File.createTempFile(prefix, suffix, dir);
+        if (deleteOnExit) {
+            f.deleteOnExit();
+        }
+        // return f.getPath();
+        return f.getCanonicalPath();
+    }",False
+30,getParent(String),Method,getFileName(String),"org.h2.command.dml.BackupCommand+backupTo(String) org.h2.command.dml.BackupCommand+backupTo(String) org.h2.engine.Database+close(boolean) org.h2.engine.Database+reserveLobFileObjectIds() org.h2.engine.Database+deleteOldTempFiles() org.h2.log.LogSystem+loadActiveLogFiles() org.h2.tools.Backup+execute(String,String,String,boolean) org.h2.tools.RunScript+execute(Connection,String,boolean,String) org.h2.value.ValueLob+removeAllForTable(DataHandler,int)",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) java.io.File+getParent() java.io.File+File(String) java.io.File+getParent(),org.h2.util.FileUtils+MEMORY_PREFIX,236,7,9,,"public static String getParent(String fileName) {
+        fileName = translateFileName(fileName);
+        if (isInMemory(fileName)) {
+            return MEMORY_PREFIX;
+        }
+        return new File(fileName).getParent();
+    }",False
+31,listFiles(String),Method,deleteRecursive(String),"org.h2.engine.Database+reserveLobFileObjectIds() org.h2.engine.Database+deleteOldTempFiles() org.h2.log.LogSystem+loadActiveLogFiles() org.h2.store.FileLister+getDatabaseFiles(String,String,boolean) org.h2.value.ValueLob+getNewObjectId(DataHandler) org.h2.value.ValueLob+removeAllForTable(DataHandler,int) org.h2.value.ValueLob+removeAllForTable(DataHandler,String,int)","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) java.util.HashMap+size() java.util.HashMap+size() java.util.HashMap+size() java.util.HashMap+size() java.util.Collection+toArray(T[]) java.util.HashMap+values() java.util.HashMap+values() java.util.Collection+toArray(T[]) org.h2.util.MemoryFile+getName() org.h2.util.MemoryFile+getName() java.io.File+File(String) java.io.File+list() java.io.File+list() java.io.File+getCanonicalPath() java.io.File+getCanonicalPath() java.lang.String+endsWith(String) java.lang.String+endsWith(String) org.h2.message.Message+convertIOException(IOException,String) org.h2.message.Message+convertIOException(IOException,String)",org.h2.util.FileUtils+MEMORY_FILES org.h2.util.FileUtils+MEMORY_FILES org.h2.util.FileUtils+MEMORY_FILES org.h2.util.FileUtils+MEMORY_FILES java.io.File+separator java.io.File+separator,1128,31,9,,"public static String[] listFiles(String path) throws SQLException {
+        path = translateFileName(path);
+        if (isInMemory(path)) {
+            synchronized (MEMORY_FILES) {
+                String[] list = new String[MEMORY_FILES.size()];
+                MemoryFile[] l = new MemoryFile[MEMORY_FILES.size()];
+                MEMORY_FILES.values().toArray(l);
+                for (int i = 0; i < list.length; i++) {
+                    list[i] = l[i].getName();
+                }
+                return list;
+            }
+        }
+        File f = new File(path);
+        try {
+            String[] list = f.list();
+            if (list == null) {
+                return new String[0];
+            }
+            String base = f.getCanonicalPath();
+            if (!base.endsWith(File.separator)) {
+                base += File.separator;
+            }
+            for (int i = 0; i < list.length; i++) {
+                list[i] = base + list[i];
+            }
+            return list;
+        } catch (IOException e) {
+            throw Message.convertIOException(e, path);
+        }
+    }",False
+32,isDirectory(String),Method,deleteRecursive(String),"org.h2.value.ValueLob+removeAllForTable(DataHandler,String,int)",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isInMemory(String) org.h2.util.FileUtils+isInMemory(String) java.io.File+isDirectory() java.io.File+File(String) java.io.File+isDirectory(),,314,8,9,,"public static boolean isDirectory(String fileName) {
+        fileName = translateFileName(fileName);
+        if (isInMemory(fileName)) {
+            // TODO in memory file system currently doesn't support directories
+            return false;
+        }
+        return new File(fileName).isDirectory();
+    }",False
+33,"copy(String,String)",Method,,"org.h2.value.ValueLob+copyFile(DataHandler,String,String)","org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+openFileOutputStream(String) org.h2.util.FileUtils+openFileOutputStream(String) org.h2.util.FileUtils+openFileInputStream(String) org.h2.util.FileUtils+openFileInputStream(String) java.io.InputStream+read(byte[]) java.io.InputStream+read(byte[]) java.io.FileOutputStream+write(byte[],int,int) java.io.FileOutputStream+write(byte[],int,int) org.h2.message.Message+convertIOException(IOException,String) org.h2.message.Message+convertIOException(IOException,String) org.h2.util.IOUtils+closeSilently(InputStream) org.h2.util.IOUtils+closeSilently(InputStream) org.h2.util.IOUtils+closeSilently(OutputStream) org.h2.util.IOUtils+closeSilently(OutputStream)",org.h2.engine.Constants+IO_BUFFER_SIZE,870,23,9,,"public static void copy(String original, String copy) throws SQLException {
+        original = translateFileName(original);
+        copy = translateFileName(copy);
+        FileOutputStream out = null;
+        InputStream in = null;
+        try {
+            out = openFileOutputStream(copy);
+            in = openFileInputStream(original);
+            byte[] buffer = new byte[Constants.IO_BUFFER_SIZE];
+            while (true) {
+                int len = in.read(buffer);
+                if (len < 0) {
+                    break;
+                }
+                out.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            throw Message.convertIOException(e, ""original: "" + original + "" copy: "" + copy);
+        } finally {
+            IOUtils.closeSilently(in);
+            IOUtils.closeSilently(out);
+        }
+    }",True
+34,deleteRecursive(String),Method,deleteRecursive(String),org.h2.test.TestAll+beforeTest() org.h2.test.TestAll+afterTest(),org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+isDirectory(String) org.h2.util.FileUtils+isDirectory(String) org.h2.util.FileUtils+listFiles(String) org.h2.util.FileUtils+listFiles(String) org.h2.util.FileUtils+deleteRecursive(String) org.h2.util.FileUtils+deleteRecursive(String) org.h2.util.FileUtils+delete(String) org.h2.util.FileUtils+delete(String),,420,10,9,,"public static void deleteRecursive(String fileName) throws SQLException {
+        fileName = translateFileName(fileName);        
+        if (FileUtils.isDirectory(fileName)) {
+            String[] list = FileUtils.listFiles(fileName);
+            for (int i = 0; list != null && i < list.length; i++) {
+                deleteRecursive(list[i]);
+            }
+        }
+        FileUtils.delete(fileName);
+    }",True
+35,translateFileName(String),Method,"openRandomAccessFile(String,String) openFileWriter(String,boolean) fileStartsWith(String,String) openFileInputStream(String) openFileOutputStream(String) rename(String,String) rename(String,String) loadProperties(String) createDirs(String) createNewFile(String) delete(String) getFileName(String) normalize(String) tryDelete(String) isReadOnly(String) exists(String) length(String) createTempFile(String,String,boolean,boolean) getParent(String) listFiles(String) isDirectory(String) copy(String,String) copy(String,String) deleteRecursive(String) isAbsolute(String) getAbsolutePath(String) getLastModified(String) openFileReader(String) canWrite(String)","org.h2.server.ftp.FileObjectNative+get(String) org.h2.server.ftp.FtpServer+init(String[]) org.h2.store.FileLister+getDatabaseFiles(String,String,boolean) org.h2.tools.Backup+execute(String,String,String,boolean)",java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.String+substring(int) java.lang.String+substring(int),,282,7,9,,"public static String translateFileName(String fileName) {
+        if (fileName != null && fileName.startsWith(""~"")) {
+            String userDir = System.getProperty(""user.home"");
+            fileName = userDir + fileName.substring(1);
+        }
+        return fileName;
+    }",True
+36,isAbsolute(String),Method,,"org.h2.tools.RunScript+execute(Connection,boolean,String,Reader,String)",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.File+File(String) java.io.File+isAbsolute() java.io.File+isAbsolute(),,191,5,9,,"public static boolean isAbsolute(String fileName) {
+        fileName = translateFileName(fileName);        
+        File file = new File(fileName);
+        return file.isAbsolute();
+    }",False
+37,getAbsolutePath(String),Method,,"org.h2.command.dml.BackupCommand+backupFile(ZipOutputStream,String,String) org.h2.command.dml.BackupCommand+backupFile(ZipOutputStream,String,String) org.h2.engine.Database+getDatabasePath() org.h2.security.SecureSocketFactory+setKeystore() org.h2.tools.Backup+execute(String,String,String,boolean)",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.File+getAbsoluteFile() java.io.File+File(String) java.io.File+getAbsoluteFile() java.io.File+getAbsolutePath() java.io.File+getAbsolutePath(),,226,5,9,,"public static String getAbsolutePath(String fileName) {
+        fileName = translateFileName(fileName);        
+        File parent = new File(fileName).getAbsoluteFile();
+        return parent.getAbsolutePath();    
+    }",True
+38,getLastModified(String),Method,,org.h2.store.FileLock+save() org.h2.store.FileLock+waitUntilOld() org.h2.store.FileLock+run() org.h2.store.FileLock+lockSocket() org.h2.store.FileLock+lockSocket(),org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.File+lastModified() java.io.File+File(String) java.io.File+lastModified(),,165,4,9,,"public static long getLastModified(String fileName) {
+        fileName = translateFileName(fileName);     
+        return new File(fileName).lastModified();
+    }",True
+39,openFileReader(String),Method,,"org.h2.command.dml.ScriptCommand+combineClob(Connection,int) org.h2.tools.ConvertTraceFile+convertFile(String,String,String)",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.FileReader+FileReader(String),,176,4,9,,"public static Reader openFileReader(String fileName) throws IOException {
+        fileName = translateFileName(fileName);     
+        return new FileReader(fileName);
+    }",True
+40,canWrite(String),Method,,"org.h2.store.FileStore+FileStore(DataHandler,String,String,byte[])",org.h2.util.FileUtils+translateFileName(String) org.h2.util.FileUtils+translateFileName(String) java.io.File+canWrite() java.io.File+File(String) java.io.File+canWrite(),,157,4,9,,"public static boolean canWrite(String fileName) {
+        fileName = translateFileName(fileName);     
+        return new File(fileName).canWrite();
+    }",True
+41,"trace(String,String,Object)",Method,"openRandomAccessFile(String,String) setLength(RandomAccessFile,long) openFileInputStream(String) openFileOutputStream(String) freeMemoryAndFinalize() rename(String,String) delete(String) tryDelete(String)","org.h2.util.TempFileDeleter+addFile(String,Object) org.h2.util.TempFileDeleter+deleteFile(Reference,String) org.h2.util.TempFileDeleter+stopAutoDelete(Reference,String)",java.io.PrintStream+println(String) java.io.PrintStream+println(String),org.h2.constant.SysProperties+TRACE_IO java.lang.System+out,201,5,8,,"static void trace(String method, String fileName, Object o) {
+        if (SysProperties.TRACE_IO) {
+            System.out.println(""FileUtils."" + method + "" "" + fileName + "" "" + o);
+        }
+    }",True

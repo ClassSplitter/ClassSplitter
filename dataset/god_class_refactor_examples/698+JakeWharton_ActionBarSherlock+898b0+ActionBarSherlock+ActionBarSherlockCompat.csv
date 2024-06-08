@@ -1,0 +1,1541 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,TAG,Field,,,,,54,1,26,,"private static final String TAG = ""ActionBarSherlock"";",False
+2,DEBUG,Field,,,,,42,1,26,,private static final boolean DEBUG = true;,False
+3,DEFAULT_FEATURES,Field,,,,,137,2,28,"/** 
+ * Window features which are enabled by default. 
+ */
+","/** Window features which are enabled by default. */
+    protected static final int DEFAULT_FEATURES = (1 << Window.FEATURE_ACTION_BAR);",True
+4,OnCreatePanelMenuListener,MemberClass,,,"com.actionbarsherlock.ActionBarSherlock.OnCreatePanelMenuListener+onCreatePanelMenu(int,Menu)",,179,4,1,"/** 
+ * Activity interface for menu creation callback. 
+ */
+","/** Activity interface for menu creation callback. */
+    public interface OnCreatePanelMenuListener {
+        public boolean onCreatePanelMenu(int featureId, Menu menu);
+    }",False
+5,OnMenuItemSelectedListener,MemberClass,,,"com.actionbarsherlock.ActionBarSherlock.OnMenuItemSelectedListener+onMenuItemSelected(int,MenuItem)",,191,4,1,"/** 
+ * Activity interface for menu item selection callback. 
+ */
+","/** Activity interface for menu item selection callback. */
+    public interface OnMenuItemSelectedListener {
+        public boolean onMenuItemSelected(int featureId, MenuItem item);
+    }",False
+6,OnPreparePanelListener,MemberClass,,,"com.actionbarsherlock.ActionBarSherlock.OnPreparePanelListener+onPreparePanel(int,View,Menu)",,187,4,1,"/** 
+ * Activity interface for menu preparation callback. 
+ */
+","/** Activity interface for menu preparation callback. */
+    public interface OnPreparePanelListener {
+        public boolean onPreparePanel(int featureId, View view, Menu menu);
+    }",False
+7,OnActionModeFinishedListener,MemberClass,,,com.actionbarsherlock.ActionBarSherlock.OnActionModeFinishedListener+onActionModeFinished(ActionMode),,180,4,1,"/** 
+ * Activity interface for action mode finished callback. 
+ */
+","/** Activity interface for action mode finished callback. */
+    public interface OnActionModeFinishedListener {
+        public void onActionModeFinished(ActionMode mode);
+    }",False
+8,OnActionModeStartedListener,MemberClass,,,com.actionbarsherlock.ActionBarSherlock.OnActionModeStartedListener+onActionModeStarted(ActionMode),,177,4,1,"/** 
+ * Activity interface for action mode started callback. 
+ */
+","/** Activity interface for action mode started callback. */
+    public interface OnActionModeStartedListener {
+        public void onActionModeStarted(ActionMode mode);
+    }",False
+9,wrap(Activity),Method,,,"com.actionbarsherlock.ActionBarSherlock+ActionBarSherlock(Activity,boolean)",,321,9,9,"/** 
+ * Wrap an existing activity with a custom action bar implementation.
+ * @param activity Activity to wrap.
+ * @return Instance to interact with the action bar.
+ */
+","/**
+     * Wrap an existing activity with a custom action bar implementation.
+     *
+     * @param activity Activity to wrap.
+     * @return Instance to interact with the action bar.
+     */
+    public static ActionBarSherlock wrap(Activity activity) {
+        return new ActionBarSherlock(activity, false);
+    }",False
+10,asDelegateFor(Activity),Method,,,"com.actionbarsherlock.ActionBarSherlock+ActionBarSherlock(Activity,boolean)",,392,10,9,"/** 
+ * Act as a delegate for another class which is providing the services of an action bar along with its normal responsibility.
+ * @param activity Owning activity.
+ * @return Instance to interact with the action bar.
+ */
+","/**
+     * Act as a delegate for another class which is providing the services
+     * of an action bar along with its normal responsibility.
+     *
+     * @param activity Owning activity.
+     * @return Instance to interact with the action bar.
+     */
+    public static ActionBarSherlock asDelegateFor(Activity activity) {
+        return new ActionBarSherlock(activity, true);
+    }",False
+11,mActivity,Field,,,,,113,2,18,"/** 
+ * Activity which is displaying the action bar. Also used for context. 
+ */
+","/** Activity which is displaying the action bar. Also used for context. */
+    private final Activity mActivity;",False
+12,mIsDelegate,Field,,,,,113,2,18,"/** 
+ * Whether delegating actions for the activity or managing ourselves. 
+ */
+","/** Whether delegating actions for the activity or managing ourselves. */
+    private final boolean mIsDelegate;",True
+13,mReserveOverflow,Field,,,,,104,2,2,"/** 
+ * Whether or not the device has a dedicated menu key button. 
+ */
+","/** Whether or not the device has a dedicated menu key button. */
+    private boolean mReserveOverflow;",True
+14,mReserveOverflowSet,Field,,,,,107,2,2,"/** 
+ * Lazy-load indicator for  {@link #mReserveOverflow}. 
+ */
+","/** Lazy-load indicator for {@link #mReserveOverflow}. */
+    private boolean mReserveOverflowSet = false;",True
+15,mDecor,Field,,,,,100,2,2,"/** 
+ * Parent view of the window decoration (action bar, mode, etc.). 
+ */
+","/** Parent view of the window decoration (action bar, mode, etc.). */
+    private ViewGroup mDecor;",True
+16,mContentParent,Field,,,,,82,2,2,"/** 
+ * Parent view of the activity content. 
+ */
+","/** Parent view of the activity content. */
+    private ViewGroup mContentParent;",True
+17,mActionBar,Field,,,,,102,2,2,"/** 
+ * Implementation which backs the action bar interface API. 
+ */
+","/** Implementation which backs the action bar interface API. */
+    private ActionBarImpl mActionBar;",True
+18,mActionBarView,Field,,,,,103,2,2,"/** 
+ * Main action bar view which displays the core content. 
+ */
+","/** Main action bar view which displays the core content. */
+    private ActionBarView mActionBarView;",True
+19,mFeatures,Field,,,,,100,2,2,"/** 
+ * Relevant window and action bar features flags. 
+ */
+","/** Relevant window and action bar features flags. */
+    private int mFeatures = DEFAULT_FEATURES;",True
+20,mUiOptions,Field,,,,,77,2,2,"/** 
+ * Relevant user interface option flags. 
+ */
+","/** Relevant user interface option flags. */
+    private int mUiOptions = 0;",True
+21,mCircularProgressBar,Field,,,,,96,2,2,"/** 
+ * Decor indeterminate progress indicator. 
+ */
+","/** Decor indeterminate progress indicator. */
+    private IcsProgressBar mCircularProgressBar;",True
+22,mHorizontalProgressBar,Field,,,,,84,2,2,"/** 
+ * Decor progress indicator. 
+ */
+","/** Decor progress indicator. */
+    private IcsProgressBar mHorizontalProgressBar;",True
+23,mActionMode,Field,,,,,89,2,2,"/** 
+ * Current displayed context action bar, if any. 
+ */
+","/** Current displayed context action bar, if any. */
+    private ActionMode mActionMode;",True
+24,mActionModeView,Field,,,,,115,2,2,"/** 
+ * Parent view in which the context action bar is displayed. 
+ */
+","/** Parent view in which the context action bar is displayed. */
+    private ActionBarContextView mActionModeView;",True
+25,mIsTitleReady,Field,,,,,107,2,2,"/** 
+ * Whether or not the title is stable and can be displayed. 
+ */
+","/** Whether or not the title is stable and can be displayed. */
+    private boolean mIsTitleReady = false;",False
+26,mMenuInflater,Field,,,,,114,2,2,"/** 
+ * Reference to our custom menu inflater which supports action items. 
+ */
+","/** Reference to our custom menu inflater which supports action items. */
+    private MenuInflater mMenuInflater;",False
+27,mMenu,Field,,,,,87,2,2,"/** 
+ * Current menu instance for managing action items. 
+ */
+","/** Current menu instance for managing action items. */
+    private MenuBuilder mMenu;",False
+28,mNativeItemMap,Field,,,,,148,2,2,"/** 
+ * Map between native options items and sherlock items (pre-3.0 only). 
+ */
+","/** Map between native options items and sherlock items (pre-3.0 only). */
+    private HashMap<android.view.MenuItem, MenuItemImpl> mNativeItemMap;",False
+29,mLastCreateResult,Field,,,,,92,2,2,"/** 
+ * Result of the last dispatch of menu creation. 
+ */
+","/** Result of the last dispatch of menu creation. */
+    private boolean mLastCreateResult;",False
+30,mLastPrepareResult,Field,,,,,96,2,2,"/** 
+ * Result of the last dispatch of menu preparation. 
+ */
+","/** Result of the last dispatch of menu preparation. */
+    private boolean mLastPrepareResult;",False
+31,mMenuPresenterCallback,Field,,,,,474,13,18,"/** 
+ * Action bar menu-related callbacks. 
+ */
+","/** Action bar menu-related callbacks. */
+    private final MenuPresenter.Callback mMenuPresenterCallback = new MenuPresenter.Callback() {
+        @Override
+        public boolean onOpenSubMenu(MenuBuilder subMenu) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        @Override
+        public void onCloseMenu(MenuBuilder menu, boolean allMenusAreClosing) {
+            // TODO Auto-generated method stub
+        }
+    };",False
+32,mMenuBuilderCallback,Field,,,,,442,12,18,"/** 
+ * Menu callbacks triggered with actions on our items. 
+ */
+","/** Menu callbacks triggered with actions on our items. */
+    private final MenuBuilder.Callback mMenuBuilderCallback = new MenuBuilder.Callback() {
+        @Override
+        public void onMenuModeChange(MenuBuilder menu) {
+            reopenMenu(true);
+        }
+
+        @Override
+        public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+            return dispatchOptionsItemSelected(item);
+        }
+    };",False
+33,mNativeItemListener,Field,,,,,754,16,18,"/** 
+ * Native menu item callback which proxies to our callback. 
+ */
+","/** Native menu item callback which proxies to our callback. */
+    private final android.view.MenuItem.OnMenuItemClickListener mNativeItemListener = new android.view.MenuItem.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(android.view.MenuItem item) {
+            if (DEBUG) Log.d(TAG, ""[mNativeItemListener.onMenuItemClick] item: "" + item);
+
+            final MenuItemImpl sherlockItem = mNativeItemMap.get(item);
+            if (sherlockItem != null) {
+                sherlockItem.invoke();
+            } else {
+                Log.e(TAG, ""Options item \"""" + item + ""\"" not found in mapping"");
+            }
+
+            return true; //Do not allow continuation of native handling
+        }
+    };",False
+34,mWindowCallback,Field,,,,,347,7,18,"/** 
+ * Window callback for the home action item. 
+ */
+","/** Window callback for the home action item. */
+    private final com.actionbarsherlock.view.Window.Callback mWindowCallback = new com.actionbarsherlock.view.Window.Callback() {
+        @Override
+        public boolean onMenuItemSelected(int featureId, MenuItem item) {
+            return dispatchOptionsItemSelected(item);
+        }
+    };",True
+35,"ActionBarSherlock(Activity,boolean)",Method,,,,com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mIsDelegate,255,6,2,,"private ActionBarSherlock(Activity activity, boolean isDelegateOnly) {
+        if (DEBUG) Log.d(TAG, ""[<ctor>] activity: "" + activity + "", isDelegateOnly: "" + isDelegateOnly);
+
+        mActivity = activity;
+        mIsDelegate = isDelegateOnly;
+    }",False
+36,isReservingOverflow(),Method,,,com.actionbarsherlock.internal.view.menu.ActionMenuPresenter+reserveOverflow(Context) com.actionbarsherlock.internal.view.menu.ActionMenuPresenter+reserveOverflow(Context),com.actionbarsherlock.ActionBarSherlock+mReserveOverflowSet com.actionbarsherlock.ActionBarSherlock+mReserveOverflow com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mReserveOverflowSet com.actionbarsherlock.ActionBarSherlock+mReserveOverflow,405,12,2,"/** 
+ * Determine whether or not the device has a dedicated menu key.
+ * @return {@code true} if native menu key is present.
+ */
+","/**
+     * Determine whether or not the device has a dedicated menu key.
+     *
+     * @return {@code true} if native menu key is present.
+     */
+    private boolean isReservingOverflow() {
+        if (!mReserveOverflowSet) {
+            mReserveOverflow = ActionMenuPresenter.reserveOverflow(mActivity);
+            mReserveOverflowSet = true;
+        }
+        return mReserveOverflow;
+    }",True
+37,getActionBar(),Method,,,com.actionbarsherlock.ActionBarSherlock+initActionBar() com.actionbarsherlock.ActionBarSherlock+initActionBar(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBar,254,11,1,"/** 
+ * Get the current action bar instance.
+ * @return Action bar instance.
+ */
+","/**
+     * Get the current action bar instance.
+     *
+     * @return Action bar instance.
+     */
+    public ActionBar getActionBar() {
+        if (DEBUG) Log.d(TAG, ""[getActionBar]"");
+
+        initActionBar();
+        return mActionBar;
+    }",False
+38,initActionBar(),Method,,,"com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.internal.app.ActionBarImpl+ActionBarImpl(Activity,int) com.actionbarsherlock.internal.app.ActionBarImpl+setTitle(CharSequence) com.actionbarsherlock.internal.app.ActionBarImpl+setTitle(CharSequence)",com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mFeatures com.actionbarsherlock.ActionBarSherlock+mIsDelegate com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActivity,684,20,2,,"private void initActionBar() {
+        if (DEBUG) Log.d(TAG, ""[initActionBar]"");
+
+        // Initializing the window decor can change window feature flags.
+        // Make sure that we have the correct set before performing the test below.
+        if (mDecor == null) {
+            installDecor();
+        }
+
+        if ((mActionBar != null) || !hasFeature(Window.FEATURE_ACTION_BAR) || mActivity.isChild()) {
+            return;
+        }
+
+        mActionBar = new ActionBarImpl(mActivity, mFeatures);
+
+        if (!mIsDelegate) {
+            //We may never get another chance to set the title
+            mActionBar.setTitle(mActivity.getTitle());
+        }
+    }",True
+39,dispatchConfigurationChanged(Configuration),Method,,,com.actionbarsherlock.internal.app.ActionBarImpl+onConfigurationChanged(Configuration) com.actionbarsherlock.internal.app.ActionBarImpl+onConfigurationChanged(Configuration),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionBar,765,21,1,"/** 
+ * Notify action bar of a configuration change event. Should be dispatched after the call to the superclass implementation. <blockquote><pre>
+ * @Override public void onConfigurationChanged(Configuration newConfig) { super.onConfigurationChanged(newConfig); mSherlock.dispatchConfigurationChanged(newConfig); } </pre></blockquote>
+ * @param newConfig The new device configuration.
+ */
+","/**
+     * Notify action bar of a configuration change event. Should be dispatched
+     * after the call to the superclass implementation.
+     *
+     * <blockquote><pre>
+     * @Override
+     * public void onConfigurationChanged(Configuration newConfig) {
+     *     super.onConfigurationChanged(newConfig);
+     *     mSherlock.dispatchConfigurationChanged(newConfig);
+     * }
+     * </pre></blockquote>
+     *
+     * @param newConfig The new device configuration.
+     */
+    public void dispatchConfigurationChanged(Configuration newConfig) {
+        if (DEBUG) Log.d(TAG, ""[dispatchConfigurationChanged] newConfig: "" + newConfig);
+
+        if (mActionBar != null) {
+            mActionBar.onConfigurationChanged(newConfig);
+        }
+    }",True
+40,dispatchPostResume(),Method,,,com.actionbarsherlock.internal.app.ActionBarImpl+setShowHideAnimationEnabled(boolean) com.actionbarsherlock.internal.app.ActionBarImpl+setShowHideAnimationEnabled(boolean),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionBar,588,19,1,"/** 
+ * Notify the action bar that the activity has finished its resuming. This should be dispatched after the call to the superclass implementation. <blockquote><pre>
+ * @Override protected void onPostResume() { super.onPostResume(); mSherlock.dispatchPostResume(); } </pre></blockquote>
+ */
+","/**
+     * Notify the action bar that the activity has finished its resuming. This
+     * should be dispatched after the call to the superclass implementation.
+     *
+     * <blockquote><pre>
+     * @Override
+     * protected void onPostResume() {
+     *     super.onPostResume();
+     *     mSherlock.dispatchPostResume();
+     * }
+     * </pre></blockquote>
+     */
+    public void dispatchPostResume() {
+        if (DEBUG) Log.d(TAG, ""[dispatchPostResume]"");
+
+        if (mActionBar != null) {
+            mActionBar.setShowHideAnimationEnabled(true);
+        }
+    }",True
+41,dispatchPause(),Method,,,com.actionbarsherlock.internal.widget.AbsActionBarView+isOverflowMenuShowing() com.actionbarsherlock.internal.widget.AbsActionBarView+isOverflowMenuShowing() com.actionbarsherlock.internal.widget.AbsActionBarView+hideOverflowMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+hideOverflowMenu(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView,584,19,1,"/** 
+ * Notify the action bar that the activity is pausing. This should be dispatched before the call to the superclass implementation. <blockquote><pre>
+ * @Override protected void onPause() { mSherlock.dispatchPause(); super.onPause(); } </pre></blockquote>
+ */
+","/**
+     * Notify the action bar that the activity is pausing. This should be
+     * dispatched before the call to the superclass implementation.
+     *
+     * <blockquote><pre>
+     * @Override
+     * protected void onPause() {
+     *     mSherlock.dispatchPause();
+     *     super.onPause();
+     * }
+     * </pre></blockquote>
+     */
+    public void dispatchPause() {
+        if (DEBUG) Log.d(TAG, ""[dispatchPause]"");
+
+        if (mActionBarView != null && mActionBarView.isOverflowMenuShowing()) {
+            mActionBarView.hideOverflowMenu();
+        }
+    }",True
+42,dispatchStop(),Method,,,com.actionbarsherlock.internal.app.ActionBarImpl+setShowHideAnimationEnabled(boolean) com.actionbarsherlock.internal.app.ActionBarImpl+setShowHideAnimationEnabled(boolean),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionBar,526,19,1,"/** 
+ * Notify the action bar that the activity is stopping. This should be called before the superclass implementation. <blockquote><p>
+ * @Override protected void onStop() { mSherlock.dispatchStop(); super.onStop(); } </p></blockquote>
+ */
+","/**
+     * Notify the action bar that the activity is stopping. This should be
+     * called before the superclass implementation.
+     *
+     * <blockquote><p>
+     * @Override
+     * protected void onStop() {
+     *     mSherlock.dispatchStop();
+     *     super.onStop();
+     * }
+     * </p></blockquote>
+     */
+    public void dispatchStop() {
+        if (DEBUG) Log.d(TAG, ""[dispatchStop]"");
+
+        if (mActionBar != null) {
+            mActionBar.setShowHideAnimationEnabled(false);
+        }
+    }",True
+43,dispatchInvalidateOptionsMenu(),Method,,,"java.lang.Object+Object() com.actionbarsherlock.internal.view.menu.MenuBuilder+MenuBuilder(Context) com.actionbarsherlock.internal.view.menu.MenuBuilder+setCallback(Callback) com.actionbarsherlock.internal.view.menu.MenuBuilder+setCallback(Callback) com.actionbarsherlock.internal.view.menu.MenuBuilder+stopDispatchingItemsChanged() com.actionbarsherlock.internal.view.menu.MenuBuilder+stopDispatchingItemsChanged() com.actionbarsherlock.internal.view.menu.MenuBuilder+clear() com.actionbarsherlock.internal.view.menu.MenuBuilder+clear() com.actionbarsherlock.ActionBarSherlock+dispatchCreateOptionsMenu() com.actionbarsherlock.ActionBarSherlock+dispatchCreateOptionsMenu() com.actionbarsherlock.internal.app.ActionBarImpl+setMenu(Menu,Callback) com.actionbarsherlock.internal.app.ActionBarImpl+setMenu(Menu,Callback) com.actionbarsherlock.ActionBarSherlock+dispatchPrepareOptionsMenu() com.actionbarsherlock.ActionBarSherlock+dispatchPrepareOptionsMenu() com.actionbarsherlock.internal.app.ActionBarImpl+setMenu(Menu,Callback) com.actionbarsherlock.internal.app.ActionBarImpl+setMenu(Menu,Callback) com.actionbarsherlock.internal.view.menu.MenuBuilder+startDispatchingItemsChanged() com.actionbarsherlock.internal.view.menu.MenuBuilder+startDispatchingItemsChanged() com.actionbarsherlock.internal.view.menu.MenuBuilder+setQwertyMode(boolean) com.actionbarsherlock.internal.view.menu.MenuBuilder+setQwertyMode(boolean) com.actionbarsherlock.internal.view.menu.MenuBuilder+startDispatchingItemsChanged() com.actionbarsherlock.internal.view.menu.MenuBuilder+startDispatchingItemsChanged() com.actionbarsherlock.internal.app.ActionBarImpl+setMenu(Menu,Callback) com.actionbarsherlock.internal.app.ActionBarImpl+setMenu(Menu,Callback)",com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mMenuBuilderCallback com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mMenuPresenterCallback com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mMenuPresenterCallback com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mMenuPresenterCallback,1977,48,1,"/** 
+ * Indicate that the menu should be recreated by calling {@link OnCreateOptionsMenuListener#onCreateOptionsMenu(com.actionbarsherlock.view.Menu)}.
+ */
+","/**
+     * Indicate that the menu should be recreated by calling
+     * {@link OnCreateOptionsMenuListener#onCreateOptionsMenu(com.actionbarsherlock.view.Menu)}.
+     */
+    public void dispatchInvalidateOptionsMenu() {
+        if (DEBUG) Log.d(TAG, ""[dispatchInvalidateOptionsMenu]"");
+
+        if (mMenu == null) {
+            Context context = mActivity;
+            if (mActionBar != null) {
+                TypedValue outValue = new TypedValue();
+                mActivity.getTheme().resolveAttribute(R.attr.actionBarWidgetTheme, outValue, true);
+                if (outValue.resourceId != 0) {
+                    //We are unable to test if this is the same as our current theme
+                    //so we just wrap it and hope that if the attribute was specified
+                    //then the user is intentionally specifying an alternate theme.
+                    context = new ContextThemeWrapper(context, outValue.resourceId);
+                }
+            }
+            mMenu = new MenuBuilder(context);
+            mMenu.setCallback(mMenuBuilderCallback);
+        }
+
+        mMenu.stopDispatchingItemsChanged();
+        mMenu.clear();
+
+        if (!dispatchCreateOptionsMenu()) {
+            if (mActionBar != null) {
+                mActionBar.setMenu(null, mMenuPresenterCallback);
+            }
+            return;
+        }
+
+        if (!dispatchPrepareOptionsMenu()) {
+            if (mActionBar != null) {
+                mActionBar.setMenu(null, mMenuPresenterCallback);
+            }
+            mMenu.startDispatchingItemsChanged();
+            return;
+        }
+
+        //TODO figure out KeyEvent? See PhoneWindow#preparePanel
+        KeyCharacterMap kmap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD);
+        mMenu.setQwertyMode(kmap.getKeyboardType() != KeyCharacterMap.NUMERIC);
+        mMenu.startDispatchingItemsChanged();
+
+        mActionBar.setMenu(mMenu, mMenuPresenterCallback);
+    }",False
+44,dispatchOpenOptionsMenu(),Method,,,com.actionbarsherlock.ActionBarSherlock+isReservingOverflow() com.actionbarsherlock.ActionBarSherlock+isReservingOverflow() com.actionbarsherlock.internal.widget.AbsActionBarView+showOverflowMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+showOverflowMenu(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBarView,819,25,1,"/** 
+ * Notify the action bar that it should display its overflow menu if it is appropriate for the device. The implementation should conditionally call the superclass method only if this method returns  {@code false}. <blockquote><p>
+ * @Override public void openOptionsMenu() { if (!mSherlock.dispatchOpenOptionsMenu()) { super.openOptionsMenu(); } } </p></blockquote>
+ * @return {@code true} if the opening of the menu was handled internally.
+ */
+","/**
+     * Notify the action bar that it should display its overflow menu if it is
+     * appropriate for the device. The implementation should conditionally
+     * call the superclass method only if this method returns {@code false}.
+     *
+     * <blockquote><p>
+     * @Override
+     * public void openOptionsMenu() {
+     *     if (!mSherlock.dispatchOpenOptionsMenu()) {
+     *         super.openOptionsMenu();
+     *     }
+     * }
+     * </p></blockquote>
+     *
+     * @return {@code true} if the opening of the menu was handled internally.
+     */
+    public boolean dispatchOpenOptionsMenu() {
+        if (DEBUG) Log.d(TAG, ""[dispatchOpenOptionsMenu]"");
+
+        if (!isReservingOverflow()) {
+            return false;
+        }
+
+        return mActionBarView.showOverflowMenu();
+    }",False
+45,dispatchCloseOptionsMenu(),Method,,,com.actionbarsherlock.ActionBarSherlock+isReservingOverflow() com.actionbarsherlock.ActionBarSherlock+isReservingOverflow() com.actionbarsherlock.internal.widget.AbsActionBarView+hideOverflowMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+hideOverflowMenu(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBarView,827,25,1,"/** 
+ * Notify the action bar that it should close its overflow menu if it is appropriate for the device. This implementation should conditionally call the superclass method only if this method returns  {@code false}. <blockquote><pre>
+ * @Override public void closeOptionsMenu() { if (!mSherlock.dispatchCloseOptionsMenu()) { super.closeOptionsMenu(); } } </pre></blockquote>
+ * @return {@code true} if the closing of the menu was handled internally.
+ */
+","/**
+     * Notify the action bar that it should close its overflow menu if it is
+     * appropriate for the device. This implementation should conditionally
+     * call the superclass method only if this method returns {@code false}.
+     *
+     * <blockquote><pre>
+     * @Override
+     * public void closeOptionsMenu() {
+     *     if (!mSherlock.dispatchCloseOptionsMenu()) {
+     *         super.closeOptionsMenu();
+     *     }
+     * }
+     * </pre></blockquote>
+     *
+     * @return {@code true} if the closing of the menu was handled internally.
+     */
+    public boolean dispatchCloseOptionsMenu() {
+        if (DEBUG) Log.d(TAG, ""[dispatchCloseOptionsMenu]"");
+
+        if (!isReservingOverflow()) {
+            return false;
+        }
+
+        return mActionBarView.hideOverflowMenu();
+    }",False
+46,dispatchPostCreate(Bundle),Method,,,com.actionbarsherlock.ActionBarSherlock+initActionBar() com.actionbarsherlock.ActionBarSherlock+initActionBar(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mIsDelegate com.actionbarsherlock.ActionBarSherlock+mIsTitleReady com.actionbarsherlock.ActionBarSherlock+mDecor,1103,28,1,"/** 
+ * Notify the class that the activity has finished its creation. This should be called after the superclass implementation. <blockquote><pre>
+ * @Override protected void onPostCreate(Bundle savedInstanceState) { mSherlock.dispatchPostCreate(savedInstanceState); super.onPostCreate(savedInstanceState); } </pre></blockquote>
+ * @param savedInstanceState If the activity is being re-initialized afterpreviously being shut down then this Bundle contains the data it most recently supplied in {@link Activity#}onSaveInstanceState(Bundle)}. <strong>Note: Otherwise it is null.</strong>
+ */
+","/**
+     * Notify the class that the activity has finished its creation. This
+     * should be called after the superclass implementation.
+     *
+     * <blockquote><pre>
+     * @Override
+     * protected void onPostCreate(Bundle savedInstanceState) {
+     *     mSherlock.dispatchPostCreate(savedInstanceState);
+     *     super.onPostCreate(savedInstanceState);
+     * }
+     * </pre></blockquote>
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle
+     *                           contains the data it most recently supplied in
+     *                           {@link Activity#}onSaveInstanceState(Bundle)}.
+     *                           <strong>Note: Otherwise it is null.</strong>
+     */
+    public void dispatchPostCreate(Bundle savedInstanceState) {
+        if (DEBUG) Log.d(TAG, ""[dispatchOnPostCreate]"");
+
+        if (mIsDelegate) {
+            mIsTitleReady = true;
+        }
+        if (mDecor == null) {
+            initActionBar();
+        }
+    }",False
+47,"dispatchTitleChanged(CharSequence,int)",Method,,,com.actionbarsherlock.internal.app.ActionBarImpl+setTitle(CharSequence) com.actionbarsherlock.internal.app.ActionBarImpl+setTitle(CharSequence),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mIsDelegate com.actionbarsherlock.ActionBarSherlock+mIsTitleReady com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionBar,908,26,1,"/** 
+ * Notify the action bar that the title has changed and the action bar should be updated to reflect the change. This should be called before the superclass implementation. <blockquote><pre>
+ * @Override protected void onTitleChanged(CharSequence title, int color) { mSherlock.dispatchTitleChanged(title, color); super.onTitleChanged(title, color); } </pre></blockquote>
+ * @param title New activity title.
+ * @param color New activity color.
+ */
+","/**
+     * Notify the action bar that the title has changed and the action bar
+     * should be updated to reflect the change. This should be called before
+     * the superclass implementation.
+     *
+     * <blockquote><pre>
+     *  @Override
+     *  protected void onTitleChanged(CharSequence title, int color) {
+     *      mSherlock.dispatchTitleChanged(title, color);
+     *      super.onTitleChanged(title, color);
+     *  }
+     * </pre></blockquote>
+     *
+     * @param title New activity title.
+     * @param color New activity color.
+     */
+    public void dispatchTitleChanged(CharSequence title, int color) {
+        if (DEBUG) Log.d(TAG, ""[dispatchTitleChanged] title: "" + title + "", color: "" + color);
+
+        if (mIsDelegate && !mIsTitleReady) {
+            return;
+        }
+        if (mActionBar != null) {
+            mActionBar.setTitle(title);
+        }
+    }",False
+48,"dispatchKeyUp(int,KeyEvent)",Method,,,com.actionbarsherlock.ActionBarSherlock+isReservingOverflow() com.actionbarsherlock.ActionBarSherlock+isReservingOverflow() com.actionbarsherlock.internal.widget.AbsActionBarView+isOverflowMenuShowing() com.actionbarsherlock.internal.widget.AbsActionBarView+isOverflowMenuShowing() com.actionbarsherlock.internal.widget.AbsActionBarView+hideOverflowMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+hideOverflowMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+showOverflowMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+showOverflowMenu(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView,1190,32,1,"/** 
+ * Notify the action bar that the user has pressed a key. This is used to toggle the display of the overflow action item should one be forced on a device with a menu key. <blockquote><pre>
+ * @Override public boolean onKeyUp(int keyCode, KeyEvent event) { if (mSherlock.dispatchKeyUp(keyCode, event)) { return true; } return super.onKeyDown(keyCode, event); } </pre></blockquote>
+ * @param keyCode The value in event.getKeyCode().
+ * @param event Description of the key event.
+ * @return {@code true} if the event was handled.
+ */
+","/**
+     * Notify the action bar that the user has pressed a key. This is used to
+     * toggle the display of the overflow action item should one be forced on
+     * a device with a menu key.
+     *
+     * <blockquote><pre>
+     *  @Override
+     *  public boolean onKeyUp(int keyCode, KeyEvent event) {
+     *      if (mSherlock.dispatchKeyUp(keyCode, event)) {
+     *          return true;
+     *      }
+     *      return super.onKeyDown(keyCode, event);
+     *  }
+     * </pre></blockquote>
+     *
+     * @param keyCode The value in event.getKeyCode().
+     * @param event Description of the key event.
+     * @return {@code true} if the event was handled.
+     */
+    public boolean dispatchKeyUp(int keyCode, KeyEvent event) {
+        if (DEBUG) Log.d(TAG, ""[dispatchKeyUp] keyCode: "" + keyCode + "", event: "" + event);
+
+        if (isReservingOverflow() && (keyCode == KeyEvent.KEYCODE_MENU)) {
+            if (mActionBarView.isOverflowMenuShowing()) {
+                mActionBarView.hideOverflowMenu();
+            } else {
+                mActionBarView.showOverflowMenu();
+            }
+            return true;
+        }
+        return false;
+    }",False
+49,dispatchCreateOptionsMenu(),Method,,,"com.actionbarsherlock.ActionBarSherlock.OnCreatePanelMenuListener+onCreatePanelMenu(int,Menu) com.actionbarsherlock.ActionBarSherlock.OnCreatePanelMenuListener+onCreatePanelMenu(int,Menu)",com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mLastCreateResult com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mLastCreateResult com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mLastCreateResult,598,15,2,"/** 
+ * Internal method to trigger the menu creation process.
+ * @return {@code true} if menu creation should proceed.
+ */
+","/**
+     * Internal method to trigger the menu creation process.
+     *
+     * @return {@code true} if menu creation should proceed.
+     */
+    private boolean dispatchCreateOptionsMenu() {
+        if (DEBUG) Log.d(TAG, ""[dispatchCreateOptionsMenu]"");
+
+        mLastCreateResult = false;
+        if (mActivity instanceof OnCreatePanelMenuListener) {
+            OnCreatePanelMenuListener listener = (OnCreatePanelMenuListener)mActivity;
+            mLastCreateResult = listener.onCreatePanelMenu(Window.FEATURE_OPTIONS_PANEL, mMenu);
+        }
+        return mLastCreateResult;
+    }",False
+50,dispatchPrepareOptionsMenu(),Method,,,"com.actionbarsherlock.ActionBarSherlock.OnPreparePanelListener+onPreparePanel(int,View,Menu) com.actionbarsherlock.ActionBarSherlock.OnPreparePanelListener+onPreparePanel(int,View,Menu)",com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mLastPrepareResult com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mLastPrepareResult com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mLastPrepareResult,603,15,2,"/** 
+ * Internal method to trigger the menu preparation process.
+ * @return {@code true} if menu preparation should proceed.
+ */
+","/**
+     * Internal method to trigger the menu preparation process.
+     *
+     * @return {@code true} if menu preparation should proceed.
+     */
+    private boolean dispatchPrepareOptionsMenu() {
+        if (DEBUG) Log.d(TAG, ""[dispatchPrepareOptionsMenu]"");
+
+        mLastPrepareResult = false;
+        if (mActivity instanceof OnPreparePanelListener) {
+            OnPreparePanelListener listener = (OnPreparePanelListener)mActivity;
+            mLastPrepareResult = listener.onPreparePanel(Window.FEATURE_OPTIONS_PANEL, null, mMenu);
+        }
+        return mLastPrepareResult;
+    }",False
+51,dispatchPrepareOptionsMenu(android.view.Menu),Method,,,"com.actionbarsherlock.ActionBarSherlock+isReservingOverflow() com.actionbarsherlock.ActionBarSherlock+isReservingOverflow() com.actionbarsherlock.ActionBarSherlock+dispatchPrepareOptionsMenu() com.actionbarsherlock.ActionBarSherlock+dispatchPrepareOptionsMenu() java.util.HashMap+HashMap() com.actionbarsherlock.internal.view.menu.MenuBuilder+bindNativeOverflow(Menu,OnMenuItemClickListener,HashMap<MenuItem,MenuItemImpl>) com.actionbarsherlock.internal.view.menu.MenuBuilder+bindNativeOverflow(Menu,OnMenuItemClickListener,HashMap<MenuItem,MenuItemImpl>)",com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mNativeItemMap com.actionbarsherlock.ActionBarSherlock+mNativeItemMap com.actionbarsherlock.ActionBarSherlock+mNativeItemMap com.actionbarsherlock.ActionBarSherlock+mMenu com.actionbarsherlock.ActionBarSherlock+mNativeItemListener com.actionbarsherlock.ActionBarSherlock+mNativeItemMap,1247,35,1,"/** 
+ * Notify the action bar that the Activity has triggered a menu preparation which usually means that the user has requested the overflow menu via a hardware menu key. You should return the result of this method call and not call the superclass implementation. <blockquote><p>
+ * @Override public final boolean onPrepareOptionsMenu(android.view.Menu menu) { return mSherlock.dispatchPrepareOptionsMenu(menu); } </p></blockquote>
+ * @param menu Activity native menu
+ * @return {@code true} if menu display should proceed.
+ */
+","/**
+     * Notify the action bar that the Activity has triggered a menu preparation
+     * which usually means that the user has requested the overflow menu via a
+     * hardware menu key. You should return the result of this method call and
+     * not call the superclass implementation.
+     *
+     * <blockquote><p>
+     * @Override
+     * public final boolean onPrepareOptionsMenu(android.view.Menu menu) {
+     *     return mSherlock.dispatchPrepareOptionsMenu(menu);
+     * }
+     * </p></blockquote>
+     *
+     * @param menu Activity native menu
+     * @return {@code true} if menu display should proceed.
+     */
+    public boolean dispatchPrepareOptionsMenu(android.view.Menu menu) {
+        if (DEBUG) Log.d(TAG, ""[dispatchPrepareOptionsMenu] android.view.Menu: "" + menu);
+
+        if (isReservingOverflow()) {
+            return false;
+        }
+
+        if (!dispatchPrepareOptionsMenu()) {
+            return false;
+        }
+
+        if (mNativeItemMap == null) {
+            mNativeItemMap = new HashMap<android.view.MenuItem, MenuItemImpl>();
+        } else {
+            mNativeItemMap.clear();
+        }
+
+        return mMenu.bindNativeOverflow(menu, mNativeItemListener, mNativeItemMap);
+    }",False
+52,dispatchOptionsItemSelected(MenuItem),Method,,,"com.actionbarsherlock.ActionBarSherlock.OnMenuItemSelectedListener+onMenuItemSelected(int,MenuItem) com.actionbarsherlock.ActionBarSherlock.OnMenuItemSelectedListener+onMenuItemSelected(int,MenuItem)",com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActivity,679,16,2,"/** 
+ * Internal method for dispatching options menu selection to the owning activity callback.
+ * @param item Selected options menu item.
+ * @return {@code true} if the item selection was handled in the callback.
+ */
+","/**
+     * Internal method for dispatching options menu selection to the owning
+     * activity callback.
+     *
+     * @param item Selected options menu item.
+     * @return {@code true} if the item selection was handled in the callback.
+     */
+    private boolean dispatchOptionsItemSelected(MenuItem item) {
+        if (DEBUG) Log.d(TAG, ""[dispatchOptionsItemSelected] item: "" + item);
+
+        if (mActivity instanceof OnMenuItemSelectedListener) {
+            OnMenuItemSelectedListener listener = (OnMenuItemSelectedListener)mActivity;
+            return listener.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
+        }
+        return false;
+    }",False
+53,"dispatchMenuOpened(int,android.view.Menu)",Method,,,com.actionbarsherlock.internal.app.ActionBarImpl+dispatchMenuVisibilityChanged(boolean) com.actionbarsherlock.internal.app.ActionBarImpl+dispatchMenuVisibilityChanged(boolean),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionBar,1247,32,1,"/** 
+ * Notify the action bar that the overflow menu has been opened. The implementation should conditionally return  {@code true} if this methodreturns  {@code true}, otherwise return the result of the superclass method. <blockquote><p>
+ * @Override public final boolean onMenuOpened(int featureId, android.view.Menu menu) { if (mSherlock.dispatchMenuOpened(featureId, menu)) { return true; } return super.onMenuOpened(featureId, menu); } </p></blockquote>
+ * @param featureId Window feature which triggered the event.
+ * @param menu Activity native menu.
+ * @return {@code true} if the event was handled by this method.
+ */
+","/**
+     * Notify the action bar that the overflow menu has been opened. The
+     * implementation should conditionally return {@code true} if this method
+     * returns {@code true}, otherwise return the result of the superclass
+     * method.
+     *
+     * <blockquote><p>
+     * @Override
+     * public final boolean onMenuOpened(int featureId, android.view.Menu menu) {
+     *     if (mSherlock.dispatchMenuOpened(featureId, menu)) {
+     *         return true;
+     *     }
+     *     return super.onMenuOpened(featureId, menu);
+     * }
+     * </p></blockquote>
+     *
+     * @param featureId Window feature which triggered the event.
+     * @param menu Activity native menu.
+     * @return {@code true} if the event was handled by this method.
+     */
+    public boolean dispatchMenuOpened(int featureId, android.view.Menu menu) {
+        if (DEBUG) Log.d(TAG, ""[dispatchMenuOpened] featureId: "" + featureId + "", menu: "" + menu);
+
+        if (featureId == Window.FEATURE_ACTION_BAR || featureId == Window.FEATURE_OPTIONS_PANEL) {
+            if (mActionBar != null) {
+                mActionBar.dispatchMenuVisibilityChanged(true);
+            }
+            return true;
+        }
+
+        return false;
+    }",False
+54,"dispatchPanelClosed(int,android.view.Menu)",Method,,,com.actionbarsherlock.internal.app.ActionBarImpl+dispatchMenuVisibilityChanged(boolean) com.actionbarsherlock.internal.app.ActionBarImpl+dispatchMenuVisibilityChanged(boolean),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionBar,899,24,1,"/** 
+ * Notify the action bar that the overflow menu has been closed. This method should be called before the superclass implementation. <blockquote><p>
+ * @Override public void onPanelClosed(int featureId, android.view.Menu menu) { mSherlock.dispatchPanelClosed(featureId, menu); super.onPanelClosed(featureId, menu); } </p></blockquote>
+ * @param featureId
+ * @param menu
+ */
+","/**
+     * Notify the action bar that the overflow menu has been closed. This
+     * method should be called before the superclass implementation.
+     *
+     * <blockquote><p>
+     * @Override
+     * public void onPanelClosed(int featureId, android.view.Menu menu) {
+     *     mSherlock.dispatchPanelClosed(featureId, menu);
+     *     super.onPanelClosed(featureId, menu);
+     * }
+     * </p></blockquote>
+     *
+     * @param featureId
+     * @param menu
+     */
+    public void dispatchPanelClosed(int featureId, android.view.Menu menu){
+        if (DEBUG) Log.d(TAG, ""[dispatchPanelClosed] featureId: "" + featureId + "", menu: "" + menu);
+
+        if (featureId == Window.FEATURE_ACTION_BAR || featureId == Window.FEATURE_OPTIONS_PANEL) {
+            if (mActionBar != null) {
+                mActionBar.dispatchMenuVisibilityChanged(false);
+            }
+        }
+    }",False
+55,getFeatures(),Method,,,,com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mFeatures,444,13,1,"/** 
+ * Return the feature bits that are enabled. This is the set of features that were given to requestFeature(), and are being handled by this Window itself or its container. That is, it is the set of requested features that you can actually use.
+ * @return The feature bits.
+ */
+","/**
+     * Return the feature bits that are enabled. This is the set of features
+     * that were given to requestFeature(), and are being handled by this
+     * Window itself or its container. That is, it is the set of requested
+     * features that you can actually use.
+     *
+     * @return The feature bits.
+     */
+    public int getFeatures() {
+        if (DEBUG) Log.d(TAG, ""[getFeatures]"");
+
+        return mFeatures;
+    }",True
+56,hasFeature(int),Method,,,,com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mFeatures,386,11,1,"/** 
+ * Query for the availability of a certain feature.
+ * @param featureId The feature ID to check.
+ * @return {@code true} if feature is enabled, {@code false} otherwise.
+ */
+","/**
+     * Query for the availability of a certain feature.
+     *
+     * @param featureId The feature ID to check.
+     * @return {@code true} if feature is enabled, {@code false} otherwise.
+     */
+    public boolean hasFeature(int featureId) {
+        if (DEBUG) Log.d(TAG, ""[hasFeature] featureId: "" + featureId);
+
+        return (mFeatures & (1 << featureId)) != 0;
+    }",True
+57,requestFeature(int),Method,,,,com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mFeatures,1277,32,1,"/** 
+ * Enable extended screen features. This must be called before {@code setContentView()}. May be called as many times as desired as long as it is before  {@code setContentView()}. If not called, no extended features will be available. You can not turn off a feature once it is requested.
+ * @param featureId The desired features, defined as constants by Window.
+ * @return Returns true if the requested feature is supported and nowenabled.
+ */
+","/**
+     * Enable extended screen features. This must be called before
+     * {@code setContentView()}. May be called as many times as desired as long
+     * as it is before {@code setContentView()}. If not called, no extended
+     * features will be available. You can not turn off a feature once it is
+     * requested.
+     *
+     * @param featureId The desired features, defined as constants by Window.
+     * @return Returns true if the requested feature is supported and now
+     * enabled.
+     */
+    public boolean requestFeature(int featureId) {
+        if (DEBUG) Log.d(TAG, ""[requestFeature] featureId: "" + featureId);
+
+        if (mContentParent != null) {
+            throw new AndroidRuntimeException(""requestFeature() must be called before adding content"");
+        }
+
+        switch (featureId) {
+            case Window.FEATURE_ACTION_BAR:
+            case Window.FEATURE_ACTION_BAR_OVERLAY:
+            case Window.FEATURE_ACTION_MODE_OVERLAY:
+            case Window.FEATURE_INDETERMINATE_PROGRESS:
+            case Window.FEATURE_NO_TITLE:
+            case Window.FEATURE_PROGRESS:
+                mFeatures |= (1 << featureId);
+                return true;
+
+            default:
+                return false;
+        }
+    }",True
+58,setUiOptions(int),Method,,,,com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mUiOptions,326,10,1,"/** 
+ * Set extra options that will influence the UI for this window.
+ * @param uiOptions Flags specifying extra options for this window.
+ */
+","/**
+     * Set extra options that will influence the UI for this window.
+     *
+     * @param uiOptions Flags specifying extra options for this window.
+     */
+    public void setUiOptions(int uiOptions) {
+        if (DEBUG) Log.d(TAG, ""[setUiOptions] uiOptions: "" + uiOptions);
+
+        mUiOptions = uiOptions;
+    }",True
+59,"setUiOptions(int,int)",Method,,,,com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mUiOptions com.actionbarsherlock.ActionBarSherlock+mUiOptions,566,13,1,"/** 
+ * Set extra options that will influence the UI for this window. Only the bits filtered by mask will be modified.
+ * @param uiOptions Flags specifying extra options for this window.
+ * @param mask Flags specifying which options should be modified. Otherswill remain unchanged.
+ */
+","/**
+     * Set extra options that will influence the UI for this window. Only the
+     * bits filtered by mask will be modified.
+     *
+     * @param uiOptions Flags specifying extra options for this window.
+     * @param mask Flags specifying which options should be modified. Others
+     *             will remain unchanged.
+     */
+    public void setUiOptions(int uiOptions, int mask) {
+        if (DEBUG) Log.d(TAG, ""[setUiOptions] uiOptions: "" + uiOptions + "", mask: "" + mask);
+
+        mUiOptions = (mUiOptions & ~mask) | (uiOptions & mask);
+    }",True
+60,setContentView(int),Method,,,com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+initActionBar() com.actionbarsherlock.ActionBarSherlock+initActionBar(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mActivity,692,22,1,"/** 
+ * Set the content of the activity inside the action bar.
+ * @param layoutResId Layout resource ID.
+ */
+","/**
+     * Set the content of the activity inside the action bar.
+     *
+     * @param layoutResId Layout resource ID.
+     */
+    public void setContentView(int layoutResId) {
+        if (DEBUG) Log.d(TAG, ""[setContentView] layoutResId: "" + layoutResId);
+
+        if (mContentParent == null) {
+            installDecor();
+        } else {
+            mContentParent.removeAllViews();
+        }
+        mActivity.getLayoutInflater().inflate(layoutResId, mContentParent);
+
+        android.view.Window.Callback callback = mActivity.getWindow().getCallback();
+        if (callback != null) {
+            callback.onContentChanged();
+        }
+
+        initActionBar();
+    }",True
+61,setContentView(View),Method,,,"com.actionbarsherlock.ActionBarSherlock+setContentView(View,LayoutParams) com.actionbarsherlock.ActionBarSherlock+setContentView(View,LayoutParams) java.lang.Object+Object()",com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG,342,10,1,"/** 
+ * Set the content of the activity inside the action bar.
+ * @param view The desired content to display.
+ */
+","/**
+     * Set the content of the activity inside the action bar.
+     *
+     * @param view The desired content to display.
+     */
+    public void setContentView(View view) {
+        if (DEBUG) Log.d(TAG, ""[setContentView] view: "" + view);
+
+        setContentView(view, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    }",False
+62,"setContentView(View,ViewGroup.LayoutParams)",Method,,,com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+initActionBar() com.actionbarsherlock.ActionBarSherlock+initActionBar(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mActivity,764,23,1,"/** 
+ * Set the content of the activity inside the action bar.
+ * @param view The desired content to display.
+ * @param params Layout parameters to apply to the view.
+ */
+","/**
+     * Set the content of the activity inside the action bar.
+     *
+     * @param view The desired content to display.
+     * @param params Layout parameters to apply to the view.
+     */
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        if (DEBUG) Log.d(TAG, ""[setContentView] view: "" + view + "", params: "" + params);
+
+        if (mContentParent == null) {
+            installDecor();
+        } else {
+            mContentParent.removeAllViews();
+        }
+        mContentParent.addView(view, params);
+
+        android.view.Window.Callback callback = mActivity.getWindow().getCallback();
+        if (callback != null) {
+            callback.onContentChanged();
+        }
+
+        initActionBar();
+    }",False
+63,"addContentView(View,ViewGroup.LayoutParams)",Method,,,com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+initActionBar() com.actionbarsherlock.ActionBarSherlock+initActionBar(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mContentParent,700,18,1,"/** 
+ * Variation on  {@link #setContentView(android.view.View,android.view.ViewGroup.LayoutParams)}to add an additional content view to the screen. Added after any existing ones on the screen -- existing views are NOT removed.
+ * @param view The desired content to display.
+ * @param params Layout parameters for the view.
+ */
+","/**
+     * Variation on {@link #setContentView(android.view.View, android.view.ViewGroup.LayoutParams)}
+     * to add an additional content view to the screen. Added after any
+     * existing ones on the screen -- existing views are NOT removed.
+     *
+     * @param view The desired content to display.
+     * @param params Layout parameters for the view.
+     */
+    public void addContentView(View view, ViewGroup.LayoutParams params) {
+        if (DEBUG) Log.d(TAG, ""[addContentView] view: "" + view + "", params: "" + params);
+
+        if (mContentParent == null) {
+            installDecor();
+        }
+        mContentParent.addView(view, params);
+
+        initActionBar();
+    }",True
+64,installDecor(),Method,,,com.actionbarsherlock.ActionBarSherlock+generateLayout() com.actionbarsherlock.ActionBarSherlock+generateLayout() com.actionbarsherlock.internal.widget.ActionBarView+setWindowCallback(Callback) com.actionbarsherlock.internal.widget.ActionBarView+setWindowCallback(Callback) com.actionbarsherlock.internal.widget.ActionBarView+getTitle() com.actionbarsherlock.internal.widget.ActionBarView+getTitle() com.actionbarsherlock.internal.widget.ActionBarView+setWindowTitle(CharSequence) com.actionbarsherlock.internal.widget.ActionBarView+setWindowTitle(CharSequence) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.internal.widget.ActionBarView+initProgress() com.actionbarsherlock.internal.widget.ActionBarView+initProgress() com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.internal.widget.ActionBarView+initIndeterminateProgress() com.actionbarsherlock.internal.widget.ActionBarView+initIndeterminateProgress() com.actionbarsherlock.ActionBarSherlock+loadUiOptionsFromManifest(Activity) com.actionbarsherlock.ActionBarSherlock+loadUiOptionsFromManifest(Activity) com.actionbarsherlock.internal.widget.AbsActionBarView+setSplitView(ActionBarContainer) com.actionbarsherlock.internal.widget.AbsActionBarView+setSplitView(ActionBarContainer) com.actionbarsherlock.internal.widget.ActionBarView+setSplitActionBar(boolean) com.actionbarsherlock.internal.widget.ActionBarView+setSplitActionBar(boolean) com.actionbarsherlock.internal.widget.AbsActionBarView+setSplitWhenNarrow(boolean) com.actionbarsherlock.internal.widget.AbsActionBarView+setSplitWhenNarrow(boolean) com.actionbarsherlock.internal.widget.AbsActionBarView+setSplitView(ActionBarContainer) com.actionbarsherlock.internal.widget.AbsActionBarView+setSplitView(ActionBarContainer) com.actionbarsherlock.internal.widget.ActionBarContextView+setSplitActionBar(boolean) com.actionbarsherlock.internal.widget.ActionBarContextView+setSplitActionBar(boolean) com.actionbarsherlock.internal.widget.AbsActionBarView+setSplitWhenNarrow(boolean) com.actionbarsherlock.internal.widget.AbsActionBarView+setSplitWhenNarrow(boolean) +() +run(),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mWindowCallback com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mUiOptions com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mUiOptions com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mDecor,3179,61,2,,"private void installDecor() {
+        if (DEBUG) Log.d(TAG, ""[installDecor]"");
+
+        if (mDecor == null) {
+            mDecor = (ViewGroup)mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+        }
+        if (mContentParent == null) {
+            mContentParent = generateLayout();
+            mActionBarView = (ActionBarView)mDecor.findViewById(R.id.abs__action_bar);
+            if (mActionBarView != null) {
+                mActionBarView.setWindowCallback(mWindowCallback);
+                if (mActionBarView.getTitle() == null) {
+                    mActionBarView.setWindowTitle(mActivity.getTitle());
+                }
+                if (hasFeature(Window.FEATURE_PROGRESS)) {
+                    mActionBarView.initProgress();
+                }
+                if (hasFeature(Window.FEATURE_INDETERMINATE_PROGRESS)) {
+                    mActionBarView.initIndeterminateProgress();
+                }
+
+                //Since we don't require onCreate dispatching, parse for uiOptions here
+                mUiOptions = loadUiOptionsFromManifest(mActivity);
+
+                boolean splitActionBar = false;
+                final boolean splitWhenNarrow = (mUiOptions & ActivityInfo.UIOPTION_SPLIT_ACTION_BAR_WHEN_NARROW) != 0;
+                if (splitWhenNarrow) {
+                    splitActionBar = mActivity.getResources().getBoolean(R.bool.abs__split_action_bar_is_narrow);
+                } else {
+                    splitActionBar = mActivity.getTheme()
+                            .obtainStyledAttributes(R.styleable.SherlockTheme)
+                            .getBoolean(R.styleable.SherlockTheme_windowSplitActionBar, false);
+                }
+                final ActionBarContainer splitView = (ActionBarContainer)mDecor.findViewById(R.id.abs__split_action_bar);
+                if (splitView != null) {
+                    mActionBarView.setSplitView(splitView);
+                    mActionBarView.setSplitActionBar(splitActionBar);
+                    mActionBarView.setSplitWhenNarrow(splitWhenNarrow);
+
+                    mActionModeView = (ActionBarContextView)mDecor.findViewById(R.id.abs__action_context_bar);
+                    mActionModeView.setSplitView(splitView);
+                    mActionModeView.setSplitActionBar(splitActionBar);
+                    mActionModeView.setSplitWhenNarrow(splitWhenNarrow);
+                } else if (splitActionBar) {
+                    Log.e(TAG, ""Requested split action bar with incompatible window decor! Ignoring request."");
+                }
+
+                // Post the panel invalidate for later; avoid application onCreateOptionsMenu
+                // being called in the middle of onCreate or similar.
+                mDecor.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Invalidate if the panel menu hasn't been created before this.
+                        if (mMenu == null) {
+                            dispatchInvalidateOptionsMenu();
+                        }
+                    }
+                });
+            }
+        }
+    }",True
+65,loadUiOptionsFromManifest(Activity),Method,,,java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.Integer+intValue() java.lang.Integer+intValue() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.lang.Integer+toHexString(int) java.lang.Integer+toHexString(int),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG org.xmlpull.v1.XmlPullParser+END_DOCUMENT org.xmlpull.v1.XmlPullParser+START_TAG com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG,3960,74,10,,"private static int loadUiOptionsFromManifest(Activity activity) {
+        int uiOptions = 0;
+        try {
+            final String thisPackage = activity.getClass().getName();
+            if (DEBUG) Log.i(TAG, ""Parsing AndroidManifest.xml for "" + thisPackage);
+
+            final String packageName = activity.getApplicationInfo().packageName;
+            final AssetManager am = activity.createPackageContext(packageName, 0).getAssets();
+            final XmlResourceParser xml = am.openXmlResourceParser(""AndroidManifest.xml"");
+
+            int eventType = xml.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG) {
+                    String name = xml.getName();
+
+                    if (""application"".equals(name)) {
+                        //Check if the <application> has the attribute
+                        if (DEBUG) Log.d(TAG, ""Got <application>"");
+
+                        for (int i = xml.getAttributeCount() - 1; i >= 0; i--) {
+                            if (DEBUG) Log.d(TAG, xml.getAttributeName(i) + "": "" + xml.getAttributeValue(i));
+
+                            if (""uiOptions"".equals(xml.getAttributeName(i))) {
+                                uiOptions = xml.getAttributeIntValue(i, 0);
+                                break; //out of for loop
+                            }
+                        }
+                    } else if (""activity"".equals(name)) {
+                        //Check if the <activity> is us and has the attribute
+                        if (DEBUG) Log.d(TAG, ""Got <activity>"");
+                        Integer activityUiOptions = null;
+                        String activityPackage = null;
+                        boolean isOurActivity = false;
+
+                        for (int i = xml.getAttributeCount() - 1; i >= 0; i--) {
+                            if (DEBUG) Log.d(TAG, xml.getAttributeName(i) + "": "" + xml.getAttributeValue(i));
+
+                            //We need both uiOptions and name attributes
+                            String attrName = xml.getAttributeName(i);
+                            if (""uiOptions"".equals(attrName)) {
+                                activityUiOptions = xml.getAttributeIntValue(i, 0);
+                            } else if (""name"".equals(attrName)) {
+                                activityPackage = xml.getAttributeValue(i);
+                                //Handle FQCN or relative
+                                if (!activityPackage.startsWith(packageName) && activityPackage.startsWith(""."")) {
+                                    activityPackage = packageName + activityPackage;
+                                }
+                                if (!thisPackage.equals(activityPackage)) {
+                                    break; //out of for loop
+                                }
+                                isOurActivity = true;
+                            }
+
+                            //Make sure we have both attributes before processing
+                            if ((activityUiOptions != null) && (activityPackage != null)) {
+                                //Our activity, uiOptions specified, override with our value
+                                uiOptions = activityUiOptions.intValue();
+                            }
+                        }
+                        if (isOurActivity) {
+                            //If we matched our activity but it had no logo don't
+                            //do any more processing of the manifest
+                            break;
+                        }
+                    }
+                }
+                eventType = xml.nextToken();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (DEBUG) Log.i(TAG, ""Returning "" + Integer.toHexString(uiOptions));
+        return uiOptions;
+    }",True
+66,generateLayout(),Method,,,com.actionbarsherlock.ActionBarSherlock+requestFeature(int) com.actionbarsherlock.ActionBarSherlock+requestFeature(int) com.actionbarsherlock.ActionBarSherlock+requestFeature(int) com.actionbarsherlock.ActionBarSherlock+requestFeature(int) com.actionbarsherlock.ActionBarSherlock+requestFeature(int) com.actionbarsherlock.ActionBarSherlock+requestFeature(int) com.actionbarsherlock.ActionBarSherlock+requestFeature(int) com.actionbarsherlock.ActionBarSherlock+requestFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) java.lang.Object+Object() java.lang.RuntimeException+RuntimeException(String) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+hasFeature(int) com.actionbarsherlock.ActionBarSherlock+getCircularProgressBar(boolean) com.actionbarsherlock.ActionBarSherlock+getCircularProgressBar(boolean) com.actionbarsherlock.internal.widget.IcsProgressBar+setIndeterminate(boolean) com.actionbarsherlock.internal.widget.IcsProgressBar+setIndeterminate(boolean),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mDecor,2348,58,2,,"private ViewGroup generateLayout() {
+        if (DEBUG) Log.d(TAG, ""[generateLayout]"");
+
+        // Apply data from current theme.
+
+        TypedArray a = mActivity.getTheme().obtainStyledAttributes(R.styleable.SherlockTheme);
+
+        if (a.getBoolean(R.styleable.SherlockTheme_windowNoTitle, false)) {
+            requestFeature(Window.FEATURE_NO_TITLE);
+        } else if (a.getBoolean(R.styleable.SherlockTheme_windowActionBar, true)) {
+            // Don't allow an action bar if there is no title.
+            requestFeature(Window.FEATURE_ACTION_BAR);
+        }
+
+        if (a.getBoolean(R.styleable.SherlockTheme_windowActionBarOverlay, false)) {
+            requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        }
+
+        if (a.getBoolean(R.styleable.SherlockTheme_windowActionModeOverlay, false)) {
+            requestFeature(Window.FEATURE_ACTION_MODE_OVERLAY);
+        }
+
+        a.recycle();
+
+        int layoutResource;
+        if (hasFeature(Window.FEATURE_ACTION_BAR)) {
+            if (hasFeature(Window.FEATURE_ACTION_BAR_OVERLAY)) {
+                layoutResource = R.layout.abs__screen_action_bar_overlay;
+            } else {
+                layoutResource = R.layout.abs__screen_action_bar;
+            }
+        } else if (hasFeature(Window.FEATURE_ACTION_MODE_OVERLAY)) {
+            layoutResource = R.layout.abs__screen_simple_overlay_action_mode;
+        } else {
+            layoutResource = R.layout.abs__screen_simple;
+        }
+
+        View in = mActivity.getLayoutInflater().inflate(layoutResource, null);
+        mDecor.addView(in, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+
+        ViewGroup contentParent = (ViewGroup)mDecor.findViewById(R.id.abs__content);
+        if (contentParent == null) {
+            throw new RuntimeException(""Couldn't find content container view"");
+        }
+
+        //Make our new child the true content view (for fragments). VERY VOLATILE!
+        mDecor.setId(View.NO_ID);
+        contentParent.setId(android.R.id.content);
+
+        if (hasFeature(Window.FEATURE_INDETERMINATE_PROGRESS)) {
+            IcsProgressBar progress = getCircularProgressBar(false);
+            if (progress != null) {
+                progress.setIndeterminate(true);
+            }
+        }
+
+        return contentParent;
+    }",True
+67,setTitle(CharSequence),Method,,,"com.actionbarsherlock.ActionBarSherlock+dispatchTitleChanged(CharSequence,int) com.actionbarsherlock.ActionBarSherlock+dispatchTitleChanged(CharSequence,int)",com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG,228,8,1,"/** 
+ * Change the title associated with this activity.
+ */
+","/**
+     * Change the title associated with this activity.
+     */
+    public void setTitle(CharSequence title) {
+        if (DEBUG) Log.d(TAG, ""[setTitle] title: "" + title);
+
+        dispatchTitleChanged(title, 0);
+    }",False
+68,setTitle(int),Method,,,com.actionbarsherlock.ActionBarSherlock+setTitle(CharSequence) com.actionbarsherlock.ActionBarSherlock+setTitle(CharSequence),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mActivity,225,8,1,"/** 
+ * Change the title associated with this activity.
+ */
+","/**
+     * Change the title associated with this activity.
+     */
+    public void setTitle(int resId) {
+        if (DEBUG) Log.d(TAG, ""[setTitle] resId: "" + resId);
+
+        setTitle(mActivity.getString(resId));
+    }",False
+69,setProgressBarVisibility(boolean),Method,,,"com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int) com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int)",,498,12,1,"/** 
+ * Sets the visibility of the progress bar in the title. <p> In order for the progress bar to be shown, the feature must be requested via  {@link #requestWindowFeature(int)}.
+ * @param visible Whether to show the progress bars in the title.
+ */
+","/**
+     * Sets the visibility of the progress bar in the title.
+     * <p>
+     * In order for the progress bar to be shown, the feature must be requested
+     * via {@link #requestWindowFeature(int)}.
+     *
+     * @param visible Whether to show the progress bars in the title.
+     */
+    public void setProgressBarVisibility(boolean visible) {
+        setFeatureInt(Window.FEATURE_PROGRESS, visible ? Window.PROGRESS_VISIBILITY_ON :
+            Window.PROGRESS_VISIBILITY_OFF);
+    }",True
+70,setProgressBarIndeterminateVisibility(boolean),Method,,,"com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int) com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int)",,543,12,1,"/** 
+ * Sets the visibility of the indeterminate progress bar in the title. <p> In order for the progress bar to be shown, the feature must be requested via  {@link #requestWindowFeature(int)}.
+ * @param visible Whether to show the progress bars in the title.
+ */
+","/**
+     * Sets the visibility of the indeterminate progress bar in the title.
+     * <p>
+     * In order for the progress bar to be shown, the feature must be requested
+     * via {@link #requestWindowFeature(int)}.
+     *
+     * @param visible Whether to show the progress bars in the title.
+     */
+    public void setProgressBarIndeterminateVisibility(boolean visible) {
+        setFeatureInt(Window.FEATURE_INDETERMINATE_PROGRESS,
+                visible ? Window.PROGRESS_VISIBILITY_ON : Window.PROGRESS_VISIBILITY_OFF);
+    }",True
+71,setProgressBarIndeterminate(boolean),Method,,,"com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int) com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int)",,614,13,1,"/** 
+ * Sets whether the horizontal progress bar in the title should be indeterminate (the circular is always indeterminate). <p> In order for the progress bar to be shown, the feature must be requested via  {@link #requestWindowFeature(int)}.
+ * @param indeterminate Whether the horizontal progress bar should be indeterminate.
+ */
+","/**
+     * Sets whether the horizontal progress bar in the title should be indeterminate (the circular
+     * is always indeterminate).
+     * <p>
+     * In order for the progress bar to be shown, the feature must be requested
+     * via {@link #requestWindowFeature(int)}.
+     *
+     * @param indeterminate Whether the horizontal progress bar should be indeterminate.
+     */
+    public void setProgressBarIndeterminate(boolean indeterminate) {
+        setFeatureInt(Window.FEATURE_PROGRESS,
+                indeterminate ? Window.PROGRESS_INDETERMINATE_ON : Window.PROGRESS_INDETERMINATE_OFF);
+    }",True
+72,setProgress(int),Method,,,"com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int) com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int)",,587,13,1,"/** 
+ * Sets the progress for the progress bars in the title. <p> In order for the progress bar to be shown, the feature must be requested via  {@link #requestWindowFeature(int)}.
+ * @param progress The progress for the progress bar. Valid ranges are from0 to 10000 (both inclusive). If 10000 is given, the progress bar will be completely filled and will fade out.
+ */
+","/**
+     * Sets the progress for the progress bars in the title.
+     * <p>
+     * In order for the progress bar to be shown, the feature must be requested
+     * via {@link #requestWindowFeature(int)}.
+     *
+     * @param progress The progress for the progress bar. Valid ranges are from
+     *            0 to 10000 (both inclusive). If 10000 is given, the progress
+     *            bar will be completely filled and will fade out.
+     */
+    public void setProgress(int progress) {
+        setFeatureInt(Window.FEATURE_PROGRESS, progress + Window.PROGRESS_START);
+    }",True
+73,setSecondaryProgress(int),Method,,,"com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int) com.actionbarsherlock.ActionBarSherlock+setFeatureInt(int,int)",,835,17,1,"/** 
+ * Sets the secondary progress for the progress bar in the title. This progress is drawn between the primary progress (set via {@link #setProgress(int)} and the background. It can be ideal for mediascenarios such as showing the buffering progress while the default progress shows the play progress. <p> In order for the progress bar to be shown, the feature must be requested via  {@link #requestWindowFeature(int)}.
+ * @param secondaryProgress The secondary progress for the progress bar. Valid ranges are from0 to 10000 (both inclusive).
+ */
+","/**
+     * Sets the secondary progress for the progress bar in the title. This
+     * progress is drawn between the primary progress (set via
+     * {@link #setProgress(int)} and the background. It can be ideal for media
+     * scenarios such as showing the buffering progress while the default
+     * progress shows the play progress.
+     * <p>
+     * In order for the progress bar to be shown, the feature must be requested
+     * via {@link #requestWindowFeature(int)}.
+     *
+     * @param secondaryProgress The secondary progress for the progress bar. Valid ranges are from
+     *            0 to 10000 (both inclusive).
+     */
+    public void setSecondaryProgress(int secondaryProgress) {
+        setFeatureInt(Window.FEATURE_PROGRESS,
+                secondaryProgress + Window.PROGRESS_SECONDARY_START);
+    }",True
+74,"setFeatureInt(int,int)",Method,,,"com.actionbarsherlock.ActionBarSherlock+updateInt(int,int,boolean) com.actionbarsherlock.ActionBarSherlock+updateInt(int,int,boolean)",,106,3,2,,"private void setFeatureInt(int featureId, int value) {
+        updateInt(featureId, value, false);
+    }",True
+75,"updateInt(int,int,boolean)",Method,,,"com.actionbarsherlock.ActionBarSherlock+getFeatures() com.actionbarsherlock.ActionBarSherlock+getFeatures() com.actionbarsherlock.ActionBarSherlock+onIntChanged(int,int) com.actionbarsherlock.ActionBarSherlock+onIntChanged(int,int)",com.actionbarsherlock.ActionBarSherlock+mContentParent,481,15,2,,"private void updateInt(int featureId, int value, boolean fromResume) {
+        // Do nothing if the decor is not yet installed... an update will
+        // need to be forced when we eventually become active.
+        if (mContentParent == null) {
+            return;
+        }
+
+        final int featureMask = 1 << featureId;
+
+        if ((getFeatures() & featureMask) == 0 && !fromResume) {
+            return;
+        }
+
+        onIntChanged(featureId, value);
+    }",True
+76,"onIntChanged(int,int)",Method,,,com.actionbarsherlock.ActionBarSherlock+updateProgressBars(int) com.actionbarsherlock.ActionBarSherlock+updateProgressBars(int),,431,12,2,"/** 
+ * Called when an int feature changes, for the window to update its graphics.
+ * @param featureId The feature being changed.
+ * @param value The new integer value.
+ */
+","/**
+     * Called when an int feature changes, for the window to update its
+     * graphics.
+     *
+     * @param featureId The feature being changed.
+     * @param value The new integer value.
+     */
+    private void onIntChanged(int featureId, int value) {
+        if (featureId == Window.FEATURE_PROGRESS || featureId == Window.FEATURE_INDETERMINATE_PROGRESS) {
+            updateProgressBars(value);
+        }
+    }",True
+77,updateProgressBars(int),Method,,,"com.actionbarsherlock.ActionBarSherlock+getCircularProgressBar(boolean) com.actionbarsherlock.ActionBarSherlock+getCircularProgressBar(boolean) com.actionbarsherlock.ActionBarSherlock+getHorizontalProgressBar(boolean) com.actionbarsherlock.ActionBarSherlock+getHorizontalProgressBar(boolean) com.actionbarsherlock.internal.widget.IcsProgressBar+getProgress() com.actionbarsherlock.internal.widget.IcsProgressBar+getProgress() com.actionbarsherlock.internal.widget.IcsProgressBar+isIndeterminate() com.actionbarsherlock.internal.widget.IcsProgressBar+isIndeterminate() com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setIndeterminate(boolean) com.actionbarsherlock.internal.widget.IcsProgressBar+setIndeterminate(boolean) com.actionbarsherlock.internal.widget.IcsProgressBar+setIndeterminate(boolean) com.actionbarsherlock.internal.widget.IcsProgressBar+setIndeterminate(boolean) com.actionbarsherlock.internal.widget.IcsProgressBar+setProgress(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setProgress(int) com.actionbarsherlock.ActionBarSherlock+showProgressBars(IcsProgressBar,IcsProgressBar) com.actionbarsherlock.ActionBarSherlock+showProgressBars(IcsProgressBar,IcsProgressBar) com.actionbarsherlock.ActionBarSherlock+hideProgressBars(IcsProgressBar,IcsProgressBar) com.actionbarsherlock.ActionBarSherlock+hideProgressBars(IcsProgressBar,IcsProgressBar) com.actionbarsherlock.internal.widget.IcsProgressBar+setSecondaryProgress(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setSecondaryProgress(int) com.actionbarsherlock.ActionBarSherlock+showProgressBars(IcsProgressBar,IcsProgressBar) com.actionbarsherlock.ActionBarSherlock+showProgressBars(IcsProgressBar,IcsProgressBar)",com.actionbarsherlock.ActionBarSherlock+mFeatures,3452,62,2,"/** 
+ * Updates the progress bars that are shown in the title bar.
+ * @param value Can be one of {@link Window#PROGRESS_VISIBILITY_ON}, {@link Window#PROGRESS_VISIBILITY_OFF}, {@link Window#PROGRESS_INDETERMINATE_ON}, {@link Window#PROGRESS_INDETERMINATE_OFF}, or a value starting at  {@link Window#PROGRESS_START} through{@link Window#PROGRESS_END} for setting the defaultprogress (if  {@link Window#PROGRESS_END} is given,the progress bar widgets in the title will be hidden after an animation), a value between {@link Window#PROGRESS_SECONDARY_START} -{@link Window#PROGRESS_SECONDARY_END} for thesecondary progress (if {@link Window#PROGRESS_SECONDARY_END} is given, theprogress bar widgets will still be shown with the secondary progress bar will be completely filled in.)
+ */
+","/**
+     * Updates the progress bars that are shown in the title bar.
+     *
+     * @param value Can be one of {@link Window#PROGRESS_VISIBILITY_ON},
+     *            {@link Window#PROGRESS_VISIBILITY_OFF},
+     *            {@link Window#PROGRESS_INDETERMINATE_ON},
+     *            {@link Window#PROGRESS_INDETERMINATE_OFF}, or a value
+     *            starting at {@link Window#PROGRESS_START} through
+     *            {@link Window#PROGRESS_END} for setting the default
+     *            progress (if {@link Window#PROGRESS_END} is given,
+     *            the progress bar widgets in the title will be hidden after an
+     *            animation), a value between
+     *            {@link Window#PROGRESS_SECONDARY_START} -
+     *            {@link Window#PROGRESS_SECONDARY_END} for the
+     *            secondary progress (if
+     *            {@link Window#PROGRESS_SECONDARY_END} is given, the
+     *            progress bar widgets will still be shown with the secondary
+     *            progress bar will be completely filled in.)
+     */
+    private void updateProgressBars(int value) {
+        IcsProgressBar circularProgressBar = getCircularProgressBar(true);
+        IcsProgressBar horizontalProgressBar = getHorizontalProgressBar(true);
+
+        final int features = mFeatures;//getLocalFeatures();
+        if (value == Window.PROGRESS_VISIBILITY_ON) {
+            if ((features & (1 << Window.FEATURE_PROGRESS)) != 0) {
+                int level = horizontalProgressBar.getProgress();
+                int visibility = (horizontalProgressBar.isIndeterminate() || level < 10000) ?
+                        View.VISIBLE : View.INVISIBLE;
+                horizontalProgressBar.setVisibility(visibility);
+            }
+            if ((features & (1 << Window.FEATURE_INDETERMINATE_PROGRESS)) != 0) {
+                circularProgressBar.setVisibility(View.VISIBLE);
+            }
+        } else if (value == Window.PROGRESS_VISIBILITY_OFF) {
+            if ((features & (1 << Window.FEATURE_PROGRESS)) != 0) {
+                horizontalProgressBar.setVisibility(View.GONE);
+            }
+            if ((features & (1 << Window.FEATURE_INDETERMINATE_PROGRESS)) != 0) {
+                circularProgressBar.setVisibility(View.GONE);
+            }
+        } else if (value == Window.PROGRESS_INDETERMINATE_ON) {
+            horizontalProgressBar.setIndeterminate(true);
+        } else if (value == Window.PROGRESS_INDETERMINATE_OFF) {
+            horizontalProgressBar.setIndeterminate(false);
+        } else if (Window.PROGRESS_START <= value && value <= Window.PROGRESS_END) {
+            // We want to set the progress value before testing for visibility
+            // so that when the progress bar becomes visible again, it has the
+            // correct level.
+            horizontalProgressBar.setProgress(value - Window.PROGRESS_START);
+
+            if (value < Window.PROGRESS_END) {
+                showProgressBars(horizontalProgressBar, circularProgressBar);
+            } else {
+                hideProgressBars(horizontalProgressBar, circularProgressBar);
+            }
+        } else if (Window.PROGRESS_SECONDARY_START <= value && value <= Window.PROGRESS_SECONDARY_END) {
+            horizontalProgressBar.setSecondaryProgress(value - Window.PROGRESS_SECONDARY_START);
+
+            showProgressBars(horizontalProgressBar, circularProgressBar);
+        }
+    }",True
+78,"showProgressBars(IcsProgressBar,IcsProgressBar)",Method,,,com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+getProgress() com.actionbarsherlock.internal.widget.IcsProgressBar+getProgress() com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int),com.actionbarsherlock.ActionBarSherlock+mFeatures,678,12,2,,"private void showProgressBars(IcsProgressBar horizontalProgressBar, IcsProgressBar spinnyProgressBar) {
+        final int features = mFeatures;//getLocalFeatures();
+        if ((features & (1 << Window.FEATURE_INDETERMINATE_PROGRESS)) != 0 &&
+                spinnyProgressBar.getVisibility() == View.INVISIBLE) {
+            spinnyProgressBar.setVisibility(View.VISIBLE);
+        }
+        // Only show the progress bars if the primary progress is not complete
+        if ((features & (1 << Window.FEATURE_PROGRESS)) != 0 &&
+                horizontalProgressBar.getProgress() < 10000) {
+            horizontalProgressBar.setVisibility(View.VISIBLE);
+        }
+    }",True
+79,"hideProgressBars(IcsProgressBar,IcsProgressBar)",Method,,,com.actionbarsherlock.internal.widget.IcsProgressBar+startAnimation() com.actionbarsherlock.internal.widget.IcsProgressBar+startAnimation() com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+startAnimation() com.actionbarsherlock.internal.widget.IcsProgressBar+startAnimation() com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int),com.actionbarsherlock.ActionBarSherlock+mFeatures com.actionbarsherlock.ActionBarSherlock+mActivity,845,15,2,,"private void hideProgressBars(IcsProgressBar horizontalProgressBar, IcsProgressBar spinnyProgressBar) {
+        final int features = mFeatures;//getLocalFeatures();
+        Animation anim = AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_out);
+        anim.setDuration(1000);
+        if ((features & (1 << Window.FEATURE_INDETERMINATE_PROGRESS)) != 0 &&
+                spinnyProgressBar.getVisibility() == View.VISIBLE) {
+            spinnyProgressBar.startAnimation(anim);
+            spinnyProgressBar.setVisibility(View.INVISIBLE);
+        }
+        if ((features & (1 << Window.FEATURE_PROGRESS)) != 0 &&
+                horizontalProgressBar.getVisibility() == View.VISIBLE) {
+            horizontalProgressBar.startAnimation(anim);
+            horizontalProgressBar.setVisibility(View.INVISIBLE);
+        }
+    }",True
+80,getCircularProgressBar(boolean),Method,,,com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int),com.actionbarsherlock.ActionBarSherlock+mCircularProgressBar com.actionbarsherlock.ActionBarSherlock+mCircularProgressBar com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mCircularProgressBar com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mCircularProgressBar com.actionbarsherlock.ActionBarSherlock+mCircularProgressBar com.actionbarsherlock.ActionBarSherlock+mCircularProgressBar,538,13,2,,"private IcsProgressBar getCircularProgressBar(boolean shouldInstallDecor) {
+        if (mCircularProgressBar != null) {
+            return mCircularProgressBar;
+        }
+        if (mContentParent == null && shouldInstallDecor) {
+            installDecor();
+        }
+        mCircularProgressBar = (IcsProgressBar)mDecor.findViewById(R.id.abs__progress_circular);
+        if (mCircularProgressBar != null) {
+            mCircularProgressBar.setVisibility(View.INVISIBLE);
+        }
+        return mCircularProgressBar;
+    }",True
+81,getHorizontalProgressBar(boolean),Method,,,com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.ActionBarSherlock+installDecor() com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int) com.actionbarsherlock.internal.widget.IcsProgressBar+setVisibility(int),com.actionbarsherlock.ActionBarSherlock+mHorizontalProgressBar com.actionbarsherlock.ActionBarSherlock+mHorizontalProgressBar com.actionbarsherlock.ActionBarSherlock+mContentParent com.actionbarsherlock.ActionBarSherlock+mHorizontalProgressBar com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mHorizontalProgressBar com.actionbarsherlock.ActionBarSherlock+mHorizontalProgressBar com.actionbarsherlock.ActionBarSherlock+mHorizontalProgressBar,554,13,2,,"private IcsProgressBar getHorizontalProgressBar(boolean shouldInstallDecor) {
+        if (mHorizontalProgressBar != null) {
+            return mHorizontalProgressBar;
+        }
+        if (mContentParent == null && shouldInstallDecor) {
+            installDecor();
+        }
+        mHorizontalProgressBar = (IcsProgressBar)mDecor.findViewById(R.id.abs__progress_horizontal);
+        if (mHorizontalProgressBar != null) {
+            mHorizontalProgressBar.setVisibility(View.INVISIBLE);
+        }
+        return mHorizontalProgressBar;
+    }",True
+82,getMenuInflater(),Method,,,com.actionbarsherlock.ActionBarSherlock+initActionBar() com.actionbarsherlock.ActionBarSherlock+initActionBar() com.actionbarsherlock.view.MenuInflater+MenuInflater(Context) com.actionbarsherlock.internal.app.ActionBarImpl+getThemedContext() com.actionbarsherlock.internal.app.ActionBarImpl+getThemedContext() com.actionbarsherlock.view.MenuInflater+MenuInflater(Context),com.actionbarsherlock.ActionBarSherlock+DEBUG com.actionbarsherlock.ActionBarSherlock+TAG com.actionbarsherlock.ActionBarSherlock+mMenuInflater com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mMenuInflater com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mMenuInflater com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mMenuInflater,646,19,1,"/** 
+ * Get a menu inflater instance which supports the newer menu attributes.
+ * @return Menu inflater instance.
+ */
+","/**
+     * Get a menu inflater instance which supports the newer menu attributes.
+     *
+     * @return Menu inflater instance.
+     */
+    public MenuInflater getMenuInflater() {
+        if (DEBUG) Log.d(TAG, ""[getMenuInflater]"");
+
+        // Make sure that action views can get an appropriate theme.
+        if (mMenuInflater == null) {
+            initActionBar();
+            if (mActionBar != null) {
+                mMenuInflater = new MenuInflater(mActionBar.getThemedContext());
+            } else {
+                mMenuInflater = new MenuInflater(mActivity);
+            }
+        }
+        return mMenuInflater;
+    }",False
+83,reopenMenu(boolean),Method,,,com.actionbarsherlock.internal.widget.AbsActionBarView+isOverflowReserved() com.actionbarsherlock.internal.widget.AbsActionBarView+isOverflowReserved() com.actionbarsherlock.internal.widget.AbsActionBarView+isOverflowMenuShowing() com.actionbarsherlock.internal.widget.AbsActionBarView+isOverflowMenuShowing() com.actionbarsherlock.ActionBarSherlock+dispatchPrepareOptionsMenu() com.actionbarsherlock.ActionBarSherlock+dispatchPrepareOptionsMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+showOverflowMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+showOverflowMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+hideOverflowMenu() com.actionbarsherlock.internal.widget.AbsActionBarView+hideOverflowMenu(),com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView com.actionbarsherlock.ActionBarSherlock+mActionBarView,564,14,2,,"private void reopenMenu(boolean toggleMenuMode) {
+        if (mActionBarView != null && mActionBarView.isOverflowReserved()) {
+            if (!mActionBarView.isOverflowMenuShowing() || !toggleMenuMode) {
+                if (mActionBarView.getVisibility() == View.VISIBLE) {
+                    if (dispatchPrepareOptionsMenu()) {
+                        mActionBarView.showOverflowMenu();
+                    }
+                }
+            } else {
+                mActionBarView.hideOverflowMenu();
+            }
+            return;
+        }
+    }",True
+84,startActionMode(ActionMode.Callback),Method,,,"com.actionbarsherlock.internal.app.ActionBarImpl+startActionMode(Callback) com.actionbarsherlock.internal.app.ActionBarImpl+startActionMode(Callback) com.actionbarsherlock.view.ActionMode+finish() com.actionbarsherlock.view.ActionMode+finish() com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+ActionModeCallbackWrapper(Callback) com.actionbarsherlock.internal.widget.ActionBarContextView+killMode() com.actionbarsherlock.internal.widget.ActionBarContextView+killMode() com.actionbarsherlock.internal.view.StandaloneActionMode+StandaloneActionMode(Context,ActionBarContextView,Callback,boolean) com.actionbarsherlock.view.ActionMode.Callback+onCreateActionMode(ActionMode,Menu) com.actionbarsherlock.view.ActionMode.Callback+onCreateActionMode(ActionMode,Menu) com.actionbarsherlock.view.ActionMode+getMenu() com.actionbarsherlock.view.ActionMode+getMenu() com.actionbarsherlock.view.ActionMode+invalidate() com.actionbarsherlock.view.ActionMode+invalidate() com.actionbarsherlock.internal.widget.ActionBarContextView+initForMode(ActionMode) com.actionbarsherlock.internal.widget.ActionBarContextView+initForMode(ActionMode) com.actionbarsherlock.internal.widget.AbsActionBarView+setVisibility(int) com.actionbarsherlock.internal.widget.AbsActionBarView+setVisibility(int) com.actionbarsherlock.ActionBarSherlock.OnActionModeStartedListener+onActionModeStarted(ActionMode) com.actionbarsherlock.ActionBarSherlock.OnActionModeStartedListener+onActionModeStarted(ActionMode)",com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionBar com.actionbarsherlock.ActionBarSherlock+mActionMode com.actionbarsherlock.ActionBarSherlock+mActionMode com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mDecor com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionMode com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionMode com.actionbarsherlock.ActionBarSherlock+mActionMode com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActionMode com.actionbarsherlock.ActionBarSherlock+mActionMode,1766,44,1,"/** 
+ * Start an action mode.
+ * @param callback Callback that will manage lifecycle events for thiscontext mode.
+ * @return The ContextMode that was started, or null if it was canceled.
+ * @see ActionMode
+ */
+","/**
+     * Start an action mode.
+     *
+     * @param callback Callback that will manage lifecycle events for this
+     *                 context mode.
+     * @return The ContextMode that was started, or null if it was canceled.
+     * @see ActionMode
+     */
+    public ActionMode startActionMode(ActionMode.Callback callback) {
+        if (mActionBar != null) {
+            return mActionBar.startActionMode(callback);
+        }
+
+        if (mActionMode != null) {
+            mActionMode.finish();
+        }
+
+        final ActionMode.Callback wrappedCallback = new ActionModeCallbackWrapper(callback);
+        ActionMode mode = null;
+
+        if (mActionModeView == null) {
+            ViewStub stub = (ViewStub)mDecor.findViewById(R.id.abs__action_mode_bar_stub);
+            if (stub != null) {
+                mActionModeView = (ActionBarContextView)stub.inflate();
+            }
+        }
+        if (mActionModeView != null) {
+            mActionModeView.killMode();
+            mode = new StandaloneActionMode(mActivity, mActionModeView, wrappedCallback, true);
+            if (callback.onCreateActionMode(mode, mode.getMenu())) {
+                mode.invalidate();
+                mActionModeView.initForMode(mode);
+                mActionModeView.setVisibility(View.VISIBLE);
+                mActionMode = mode;
+                mActionModeView.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+            } else {
+                mActionMode = null;
+            }
+        }
+        if (mActionMode != null && mActivity instanceof OnActionModeStartedListener) {
+            ((OnActionModeStartedListener)mActivity).onActionModeStarted(mActionMode);
+        }
+        return mActionMode;
+    }",True
+85,ActionModeCallbackWrapper,MemberClass,,,"com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+ActionModeCallbackWrapper(Callback) com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+onCreateActionMode(ActionMode,Menu) com.actionbarsherlock.view.ActionMode.Callback+onCreateActionMode(ActionMode,Menu) com.actionbarsherlock.view.ActionMode.Callback+onCreateActionMode(ActionMode,Menu) com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+onPrepareActionMode(ActionMode,Menu) com.actionbarsherlock.view.ActionMode.Callback+onPrepareActionMode(ActionMode,Menu) com.actionbarsherlock.view.ActionMode.Callback+onPrepareActionMode(ActionMode,Menu) com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+onActionItemClicked(ActionMode,MenuItem) com.actionbarsherlock.view.ActionMode.Callback+onActionItemClicked(ActionMode,MenuItem) com.actionbarsherlock.view.ActionMode.Callback+onActionItemClicked(ActionMode,MenuItem) com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+onDestroyActionMode(ActionMode) com.actionbarsherlock.view.ActionMode.Callback+onDestroyActionMode(ActionMode) com.actionbarsherlock.view.ActionMode.Callback+onDestroyActionMode(ActionMode) com.actionbarsherlock.internal.widget.AbsActionBarView+setVisibility(int) com.actionbarsherlock.internal.widget.AbsActionBarView+setVisibility(int) com.actionbarsherlock.ActionBarSherlock.OnActionModeFinishedListener+onActionModeFinished(ActionMode) com.actionbarsherlock.ActionBarSherlock.OnActionModeFinishedListener+onActionModeFinished(ActionMode)",com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+mWrapped com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+mWrapped com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+mWrapped com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+mWrapped com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+mWrapped com.actionbarsherlock.ActionBarSherlock.ActionModeCallbackWrapper+mWrapped com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActionModeView com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActivity com.actionbarsherlock.ActionBarSherlock+mActionMode com.actionbarsherlock.ActionBarSherlock+mActionMode,1294,34,2,"/** 
+ * Clears out internal reference when the action mode is destroyed.
+ */
+","/**
+     * Clears out internal reference when the action mode is destroyed.
+     */
+    private class ActionModeCallbackWrapper implements ActionMode.Callback {
+        private final ActionMode.Callback mWrapped;
+
+        public ActionModeCallbackWrapper(ActionMode.Callback wrapped) {
+            mWrapped = wrapped;
+        }
+
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            return mWrapped.onCreateActionMode(mode, menu);
+        }
+
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return mWrapped.onPrepareActionMode(mode, menu);
+        }
+
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            return mWrapped.onActionItemClicked(mode, item);
+        }
+
+        public void onDestroyActionMode(ActionMode mode) {
+            mWrapped.onDestroyActionMode(mode);
+            if (mActionModeView != null) {
+                mActionModeView.setVisibility(View.GONE);
+                mActionModeView.removeAllViews();
+            }
+            if (mActivity instanceof OnActionModeFinishedListener) {
+                ((OnActionModeFinishedListener)mActivity).onActionModeFinished(mActionMode);
+            }
+            mActionMode = null;
+        }
+    }",False

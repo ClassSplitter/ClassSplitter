@@ -1,0 +1,687 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,mMatrixValueToPx,Field,,,,,106,2,4,"/** 
+ * matrix to map the values to the screen pixels 
+ */
+","/** matrix to map the values to the screen pixels */
+    protected Matrix mMatrixValueToPx = new Matrix();",False
+2,mMatrixOffset,Field,,,,,112,2,4,"/** 
+ * matrix for handling the different offsets of the chart 
+ */
+","/** matrix for handling the different offsets of the chart */
+    protected Matrix mMatrixOffset = new Matrix();",False
+3,mMatrixTouch,Field,,,,,91,2,20,"/** 
+ * matrix used for touch events 
+ */
+","/** matrix used for touch events */
+    protected final Matrix mMatrixTouch = new Matrix();",True
+4,mInvertYAxis,Field,,,,,119,2,2,"/** 
+ * if set to true, the y-axis is inverted and low values start at the top 
+ */
+","/** if set to true, the y-axis is inverted and low values start at the top */
+    private boolean mInvertYAxis = false;",True
+5,mMinScaleY,Field,,,,,75,2,2,"/** 
+ * minimum scale value on the y-axis 
+ */
+","/** minimum scale value on the y-axis */
+    private float mMinScaleY = 1f;",True
+6,mMinScaleX,Field,,,,,75,2,2,"/** 
+ * minimum scale value on the x-axis 
+ */
+","/** minimum scale value on the x-axis */
+    private float mMinScaleX = 1f;",True
+7,mScaleX,Field,,,,,86,2,2,"/** 
+ * contains the current scale factor of the x-axis 
+ */
+","/** contains the current scale factor of the x-axis */
+    private float mScaleX = 1f;",True
+8,mScaleY,Field,,,,,86,2,2,"/** 
+ * contains the current scale factor of the y-axis 
+ */
+","/** contains the current scale factor of the y-axis */
+    private float mScaleY = 1f;",True
+9,mTransOffsetX,Field,,,,,117,2,2,"/** 
+ * offset that allows the chart to be dragged over its bounds on the x-axis 
+ */
+","/** offset that allows the chart to be dragged over its bounds on the x-axis */
+    private float mTransOffsetX = 0f;",True
+10,mTransOffsetY,Field,,,,,117,2,2,"/** 
+ * offset that allows the chart to be dragged over its bounds on the x-axis 
+ */
+","/** offset that allows the chart to be dragged over its bounds on the x-axis */
+    private float mTransOffsetY = 0f;",True
+11,Transformer(),Method,,,,,29,3,1,,"public Transformer() {
+
+    }",False
+12,prepareMatrixValuePx(ChartInterface),Method,,"com.github.mikephil.charting.charts.BarLineChartBase+prepareMatrix() com.github.mikephil.charting.charts.BarLineChartBase+notifyDataSetChanged() com.github.mikephil.charting.charts.Chart+setOffsets(float,float,float,float)","com.github.mikephil.charting.interfaces.ChartInterface+getWidth() com.github.mikephil.charting.interfaces.ChartInterface+getWidth() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetRight() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetRight() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetLeft() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetLeft() com.github.mikephil.charting.interfaces.ChartInterface+getDeltaX() com.github.mikephil.charting.interfaces.ChartInterface+getDeltaX() com.github.mikephil.charting.interfaces.ChartInterface+getHeight() com.github.mikephil.charting.interfaces.ChartInterface+getHeight() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetTop() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetTop() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetBottom() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetBottom() com.github.mikephil.charting.interfaces.ChartInterface+getDeltaY() com.github.mikephil.charting.interfaces.ChartInterface+getDeltaY() android.graphics.Matrix+reset() android.graphics.Matrix+reset() android.graphics.Matrix+postTranslate(float,float) android.graphics.Matrix+postTranslate(float,float) com.github.mikephil.charting.interfaces.ChartInterface+getYChartMin() com.github.mikephil.charting.interfaces.ChartInterface+getYChartMin() android.graphics.Matrix+postScale(float,float) android.graphics.Matrix+postScale(float,float)",com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx,701,18,1,"/** 
+ * Prepares the matrix that transforms values to pixels. Calculates the scale factors from the charts size and offsets.
+ * @param chart
+ */
+","/**
+     * Prepares the matrix that transforms values to pixels. Calculates the
+     * scale factors from the charts size and offsets.
+     * 
+     * @param chart
+     */
+    public void prepareMatrixValuePx(ChartInterface chart) {
+
+        float scaleX = (float) ((chart.getWidth() - chart.getOffsetRight() - chart
+                .getOffsetLeft()) / chart.getDeltaX());
+        float scaleY = (float) ((chart.getHeight() - chart.getOffsetTop() - chart
+                .getOffsetBottom()) / chart.getDeltaY());
+
+        // setup all matrices
+        mMatrixValueToPx.reset();
+        mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
+        mMatrixValueToPx.postScale(scaleX, -scaleY);
+    }",False
+13,"prepareMatrixValuePx(ChartInterface,float,float)",Method,,,"android.graphics.Matrix+reset() android.graphics.Matrix+reset() android.graphics.Matrix+postTranslate(float,float) android.graphics.Matrix+postTranslate(float,float) com.github.mikephil.charting.interfaces.ChartInterface+getYChartMin() com.github.mikephil.charting.interfaces.ChartInterface+getYChartMin() android.graphics.Matrix+postScale(float,float) android.graphics.Matrix+postScale(float,float)",com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx,399,13,1,"/** 
+ * Prepares the transformation matrix with the specified scales.
+ * @param chart
+ * @param scaleX
+ * @param scaleY
+ */
+","/**
+     * Prepares the transformation matrix with the specified scales.
+     * 
+     * @param chart
+     * @param scaleX
+     * @param scaleY
+     */
+    public void prepareMatrixValuePx(ChartInterface chart, float scaleX, float scaleY) {
+
+        mMatrixValueToPx.reset();
+        mMatrixValueToPx.postTranslate(0, -chart.getYChartMin());
+        mMatrixValueToPx.postScale(scaleX, -scaleY);
+    }",False
+14,prepareMatrixOffset(ChartInterface),Method,,"com.github.mikephil.charting.charts.BarLineChartBase+prepareMatrix() com.github.mikephil.charting.charts.Chart+setOffsets(float,float,float,float)","android.graphics.Matrix+reset() android.graphics.Matrix+reset() android.graphics.Matrix+postTranslate(float,float) android.graphics.Matrix+postTranslate(float,float) com.github.mikephil.charting.interfaces.ChartInterface+getOffsetLeft() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetLeft() com.github.mikephil.charting.interfaces.ChartInterface+getHeight() com.github.mikephil.charting.interfaces.ChartInterface+getHeight() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetBottom() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetBottom() android.graphics.Matrix+setTranslate(float,float) android.graphics.Matrix+setTranslate(float,float) com.github.mikephil.charting.interfaces.ChartInterface+getOffsetLeft() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetLeft() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetTop() com.github.mikephil.charting.interfaces.ChartInterface+getOffsetTop() android.graphics.Matrix+postScale(float,float) android.graphics.Matrix+postScale(float,float)",com.github.mikephil.charting.renderer.Transformer+mMatrixOffset com.github.mikephil.charting.renderer.Transformer+mInvertYAxis com.github.mikephil.charting.renderer.Transformer+mMatrixOffset com.github.mikephil.charting.renderer.Transformer+mMatrixOffset com.github.mikephil.charting.renderer.Transformer+mMatrixOffset,763,26,1,"/** 
+ * Prepares the matrix that contains all offsets.
+ * @param chart
+ */
+","/**
+     * Prepares the matrix that contains all offsets.
+     * 
+     * @param chart
+     */
+    public void prepareMatrixOffset(ChartInterface chart) {
+
+        mMatrixOffset.reset();
+
+        // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
+
+        if (!mInvertYAxis)
+            mMatrixOffset.postTranslate(chart.getOffsetLeft(),
+                    chart.getHeight() - chart.getOffsetBottom());
+        else {
+            mMatrixOffset.setTranslate(chart.getOffsetLeft(), -chart.getOffsetTop());
+            mMatrixOffset.postScale(1.0f, -1.0f);
+        }
+
+        // mMatrixOffset.set(offset);
+
+        // mMatrixOffset.reset();
+        //
+        // mMatrixOffset.postTranslate(mOffsetLeft, getHeight() -
+        // mOffsetBottom);
+    }",False
+15,"generateTransformedValuesLineScatter(ArrayList<? extends Entry>,float)",Method,,"com.github.mikephil.charting.charts.LineChart+drawLinear(LineDataSet,ArrayList<Entry>) com.github.mikephil.charting.charts.LineChart+drawValues() com.github.mikephil.charting.charts.LineChart+drawAdditional() com.github.mikephil.charting.charts.ScatterChart+drawDataSet(int) com.github.mikephil.charting.charts.ScatterChart+drawValues()",java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getVal() com.github.mikephil.charting.data.Entry+getVal() com.github.mikephil.charting.renderer.Transformer+pointValuesToPixel(float[]) com.github.mikephil.charting.renderer.Transformer+pointValuesToPixel(float[]),,738,26,1,"/** 
+ * Transforms an arraylist of Entry into a float array containing the x and y values transformed with all matrices for the LINECHART or SCATTERCHART.
+ * @param entries
+ * @return
+ */
+","/**
+     * Transforms an arraylist of Entry into a float array containing the x and
+     * y values transformed with all matrices for the LINECHART or SCATTERCHART.
+     * 
+     * @param entries
+     * @return
+     */
+    public float[] generateTransformedValuesLineScatter(ArrayList<? extends Entry> entries,
+            float phaseY) {
+
+        float[] valuePoints = new float[entries.size() * 2];
+
+        for (int j = 0; j < valuePoints.length; j += 2) {
+
+            Entry e = entries.get(j / 2);
+
+            if (e != null) {
+                valuePoints[j] = e.getXIndex();
+                valuePoints[j + 1] = e.getVal() * phaseY;
+            }
+        }
+
+        pointValuesToPixel(valuePoints);
+
+        return valuePoints;
+    }",False
+16,"generateTransformedValuesBarChart(ArrayList<? extends Entry>,int,BarData,float)",Method,,com.github.mikephil.charting.charts.BarChart+drawValues(),java.util.ArrayList+size() java.util.ArrayList+size() com.github.mikephil.charting.data.ChartData+getDataSetCount() com.github.mikephil.charting.data.ChartData+getDataSetCount() com.github.mikephil.charting.data.BarData+getGroupSpace() com.github.mikephil.charting.data.BarData+getGroupSpace() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getXIndex() com.github.mikephil.charting.data.Entry+getVal() com.github.mikephil.charting.data.Entry+getVal() com.github.mikephil.charting.renderer.Transformer+pointValuesToPixel(float[]) com.github.mikephil.charting.renderer.Transformer+pointValuesToPixel(float[]),,1033,33,1,"/** 
+ * Transforms an arraylist of Entry into a float array containing the x and y values transformed with all matrices for the BARCHART.
+ * @param entries
+ * @param dataSet the dataset index
+ * @return
+ */
+","/**
+     * Transforms an arraylist of Entry into a float array containing the x and
+     * y values transformed with all matrices for the BARCHART.
+     * 
+     * @param entries
+     * @param dataSet the dataset index
+     * @return
+     */
+    public float[] generateTransformedValuesBarChart(ArrayList<? extends Entry> entries,
+            int dataSet, BarData bd, float phaseY) {
+
+        float[] valuePoints = new float[entries.size() * 2];
+
+        int setCount = bd.getDataSetCount();
+        float space = bd.getGroupSpace();
+
+        for (int j = 0; j < valuePoints.length; j += 2) {
+
+            Entry e = entries.get(j / 2);
+
+            // calculate the x-position, depending on datasetcount
+            float x = e.getXIndex() + (j / 2 * (setCount - 1)) + dataSet + 0.5f + space * (j / 2)
+                    + space / 2f;
+            float y = e.getVal();
+
+            valuePoints[j] = x;
+            valuePoints[j + 1] = y * phaseY;
+        }
+
+        pointValuesToPixel(valuePoints);
+
+        return valuePoints;
+    }",False
+17,pathValueToPixel(Path),Method,pathValuesToPixel(ArrayList<Path>),"com.github.mikephil.charting.charts.BarChart+drawHighlights() com.github.mikephil.charting.charts.LineChart+drawCubic(LineDataSet,ArrayList<Entry>) com.github.mikephil.charting.charts.LineChart+drawLinear(LineDataSet,ArrayList<Entry>) com.github.mikephil.charting.charts.LineChart+drawLinearFill(LineDataSet,ArrayList<Entry>) com.github.mikephil.charting.charts.ScatterChart+drawDataSet(int)",android.graphics.Path+transform(Matrix) android.graphics.Path+transform(Matrix) android.graphics.Path+transform(Matrix) android.graphics.Path+transform(Matrix) android.graphics.Path+transform(Matrix) android.graphics.Path+transform(Matrix),com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx com.github.mikephil.charting.renderer.Transformer+mMatrixTouch com.github.mikephil.charting.renderer.Transformer+mMatrixOffset,318,12,1,"/** 
+ * transform a path with all the given matrices VERY IMPORTANT: keep order to value-touch-offset
+ * @param path
+ */
+","/**
+     * transform a path with all the given matrices VERY IMPORTANT: keep order
+     * to value-touch-offset
+     * 
+     * @param path
+     */
+    public void pathValueToPixel(Path path) {
+
+        path.transform(mMatrixValueToPx);
+        path.transform(mMatrixTouch);
+        path.transform(mMatrixOffset);
+    }",False
+18,pathValuesToPixel(ArrayList<Path>),Method,,,java.util.ArrayList+size() java.util.ArrayList+size() com.github.mikephil.charting.renderer.Transformer+pathValueToPixel(Path) com.github.mikephil.charting.renderer.Transformer+pathValueToPixel(Path) java.util.ArrayList+get(int) java.util.ArrayList+get(int),,260,11,1,"/** 
+ * Transforms multiple paths will all matrices.
+ * @param paths
+ */
+","/**
+     * Transforms multiple paths will all matrices.
+     * 
+     * @param paths
+     */
+    public void pathValuesToPixel(ArrayList<Path> paths) {
+
+        for (int i = 0; i < paths.size(); i++) {
+            pathValueToPixel(paths.get(i));
+        }
+    }",False
+19,pointValuesToPixel(float[]),Method,"generateTransformedValuesLineScatter(ArrayList<? extends Entry>,float) generateTransformedValuesBarChart(ArrayList<? extends Entry>,int,BarData,float)","com.github.mikephil.charting.charts.BarChart+drawXLabels(float) com.github.mikephil.charting.charts.BarChart+drawVerticalGrid() com.github.mikephil.charting.charts.BarChart+drawValues() com.github.mikephil.charting.charts.BarLineChartBase+drawXLabels(float) com.github.mikephil.charting.charts.BarLineChartBase+drawYLabels() com.github.mikephil.charting.charts.BarLineChartBase+drawHorizontalGrid() com.github.mikephil.charting.charts.BarLineChartBase+drawVerticalGrid() com.github.mikephil.charting.charts.BarLineChartBase+drawLimitLines() com.github.mikephil.charting.charts.BarLineChartBase+getPosition(Entry) com.github.mikephil.charting.charts.BarLineChartBase+getPixelsForValues(float,float) com.github.mikephil.charting.charts.CandleStickChart+transformBody(float[],CandleEntry,float) com.github.mikephil.charting.charts.CandleStickChart+transformShadow(float[],CandleEntry) com.github.mikephil.charting.charts.CandleStickChart+drawHighlights() com.github.mikephil.charting.charts.CandleStickChart+drawHighlights() com.github.mikephil.charting.charts.Chart+getMarkerPosition(Entry,int) com.github.mikephil.charting.charts.LineChart+drawHighlights() com.github.mikephil.charting.charts.ScatterChart+drawHighlights()",android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+mapPoints(float[]),com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx com.github.mikephil.charting.renderer.Transformer+mMatrixTouch com.github.mikephil.charting.renderer.Transformer+mMatrixOffset,346,12,1,"/** 
+ * Transform an array of points with all matrices. VERY IMPORTANT: Keep matrix order ""value-touch-offset"" when transforming.
+ * @param pts
+ */
+","/**
+     * Transform an array of points with all matrices. VERY IMPORTANT: Keep
+     * matrix order ""value-touch-offset"" when transforming.
+     * 
+     * @param pts
+     */
+    public void pointValuesToPixel(float[] pts) {
+
+        mMatrixValueToPx.mapPoints(pts);
+        mMatrixTouch.mapPoints(pts);
+        mMatrixOffset.mapPoints(pts);
+    }",False
+20,rectValueToPixel(RectF),Method,rectValuesToPixel(ArrayList<RectF>),com.github.mikephil.charting.charts.BarChart+getBarBounds(BarEntry),android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF),com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx com.github.mikephil.charting.renderer.Transformer+mMatrixTouch com.github.mikephil.charting.renderer.Transformer+mMatrixOffset,238,11,1,"/** 
+ * Transform a rectangle with all matrices.
+ * @param r
+ */
+","/**
+     * Transform a rectangle with all matrices.
+     * 
+     * @param r
+     */
+    public void rectValueToPixel(RectF r) {
+
+        mMatrixValueToPx.mapRect(r);
+        mMatrixTouch.mapRect(r);
+        mMatrixOffset.mapRect(r);
+    }",False
+21,"rectValueToPixel(RectF,float)",Method,,"com.github.mikephil.charting.charts.BarChart+prepareBar(float,float,float)",android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF) android.graphics.Matrix+mapRect(RectF),android.graphics.RectF+top android.graphics.RectF+top android.graphics.RectF+bottom com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx com.github.mikephil.charting.renderer.Transformer+mMatrixTouch com.github.mikephil.charting.renderer.Transformer+mMatrixOffset,461,18,1,"/** 
+ * Transform a rectangle with all matrices with potential animation phases.
+ * @param r
+ * @param phaseY
+ */
+","/**
+     * Transform a rectangle with all matrices with potential animation phases.
+     * 
+     * @param r
+     * @param phaseY
+     */
+    public void rectValueToPixel(RectF r, float phaseY) {
+
+        // multiply the height of the rect with the phase
+        if (r.top > 0)
+            r.top *= phaseY;
+        else
+            r.bottom *= phaseY;
+
+        mMatrixValueToPx.mapRect(r);
+        mMatrixTouch.mapRect(r);
+        mMatrixOffset.mapRect(r);
+    }",False
+22,rectValuesToPixel(ArrayList<RectF>),Method,,,java.util.ArrayList+size() java.util.ArrayList+size() com.github.mikephil.charting.renderer.Transformer+rectValueToPixel(RectF) com.github.mikephil.charting.renderer.Transformer+rectValueToPixel(RectF) java.util.ArrayList+get(int) java.util.ArrayList+get(int),,248,10,1,"/** 
+ * transforms multiple rects with all matrices
+ * @param rects
+ */
+","/**
+     * transforms multiple rects with all matrices
+     * 
+     * @param rects
+     */
+    public void rectValuesToPixel(ArrayList<RectF> rects) {
+
+        for (int i = 0; i < rects.size(); i++)
+            rectValueToPixel(rects.get(i));
+    }",False
+23,pixelsToValue(float[]),Method,,"com.github.mikephil.charting.charts.BarChart+getHighlightByTouchPoint(float,float) com.github.mikephil.charting.charts.BarLineChartBase+getHighlightByTouchPoint(float,float) com.github.mikephil.charting.charts.BarLineChartBase+getValuesByTouchPoint(float,float)",android.graphics.Matrix+Matrix() android.graphics.Matrix+invert(Matrix) android.graphics.Matrix+invert(Matrix) android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+invert(Matrix) android.graphics.Matrix+invert(Matrix) android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+invert(Matrix) android.graphics.Matrix+invert(Matrix) android.graphics.Matrix+mapPoints(float[]) android.graphics.Matrix+mapPoints(float[]),com.github.mikephil.charting.renderer.Transformer+mMatrixOffset com.github.mikephil.charting.renderer.Transformer+mMatrixTouch com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx,515,20,1,"/** 
+ * Transforms the given array of touch positions (pixels) (x, y, x, y, ...) into values on the chart.
+ * @param pixels
+ */
+","/**
+     * Transforms the given array of touch positions (pixels) (x, y, x, y, ...)
+     * into values on the chart.
+     * 
+     * @param pixels
+     */
+    public void pixelsToValue(float[] pixels) {
+
+        Matrix tmp = new Matrix();
+
+        // invert all matrixes to convert back to the original value
+        mMatrixOffset.invert(tmp);
+        tmp.mapPoints(pixels);
+
+        mMatrixTouch.invert(tmp);
+        tmp.mapPoints(pixels);
+
+        mMatrixValueToPx.invert(tmp);
+        tmp.mapPoints(pixels);
+    }",False
+24,"zoomIn(float,float)",Method,,com.github.mikephil.charting.charts.BarLineChartBase+zoomIn(),"android.graphics.Matrix+Matrix() android.graphics.Matrix+set(Matrix) android.graphics.Matrix+set(Matrix) android.graphics.Matrix+postScale(float,float,float,float) android.graphics.Matrix+postScale(float,float,float,float)",com.github.mikephil.charting.renderer.Transformer+mMatrixTouch,328,16,1,"/** 
+ * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom center.
+ * @param x
+ * @param y
+ */
+","/**
+     * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom
+     * center.
+     * 
+     * @param x
+     * @param y
+     */
+    public Matrix zoomIn(float x, float y) {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        save.postScale(1.4f, 1.4f, x, y);
+
+        return save;
+    }",True
+25,"zoomOut(float,float)",Method,,com.github.mikephil.charting.charts.BarLineChartBase+zoomOut(),"android.graphics.Matrix+Matrix() android.graphics.Matrix+set(Matrix) android.graphics.Matrix+set(Matrix) android.graphics.Matrix+postScale(float,float,float,float) android.graphics.Matrix+postScale(float,float,float,float)",com.github.mikephil.charting.renderer.Transformer+mMatrixTouch,290,13,1,"/** 
+ * Zooms out by 0.7f, x and y are the coordinates (in pixels) of the zoom center.
+ */
+","/**
+     * Zooms out by 0.7f, x and y are the coordinates (in pixels) of the zoom
+     * center.
+     */
+    public Matrix zoomOut(float x, float y) {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        save.postScale(0.7f, 0.7f, x, y);
+
+        return save;
+    }",True
+26,"zoom(float,float,float,float)",Method,"setScaleMinima(float,float,ChartInterface)","com.github.mikephil.charting.charts.BarLineChartBase+zoom(float,float,float,float)","android.graphics.Matrix+Matrix() android.graphics.Matrix+set(Matrix) android.graphics.Matrix+set(Matrix) android.graphics.Matrix+postScale(float,float,float,float) android.graphics.Matrix+postScale(float,float,float,float)",com.github.mikephil.charting.renderer.Transformer+mMatrixTouch,571,20,1,"/** 
+ * Zooms in or out by the given scale factor. x and y are the coordinates (in pixels) of the zoom center.
+ * @param scaleX if < 1f --> zoom out, if > 1f --> zoom in
+ * @param scaleY if < 1f --> zoom out, if > 1f --> zoom in
+ * @param x
+ * @param y
+ */
+","/**
+     * Zooms in or out by the given scale factor. x and y are the coordinates
+     * (in pixels) of the zoom center.
+     * 
+     * @param scaleX if < 1f --> zoom out, if > 1f --> zoom in
+     * @param scaleY if < 1f --> zoom out, if > 1f --> zoom in
+     * @param x
+     * @param y
+     */
+    public Matrix zoom(float scaleX, float scaleY, float x, float y) {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        // Log.i(LOG_TAG, ""Zooming, x: "" + x + "", y: "" + y);
+
+        save.postScale(scaleX, scaleY, x, y);
+
+        return save;
+    }",True
+27,fitScreen(),Method,,com.github.mikephil.charting.charts.BarLineChartBase+fitScreen(),android.graphics.Matrix+Matrix() android.graphics.Matrix+set(Matrix) android.graphics.Matrix+set(Matrix) android.graphics.Matrix+getValues(float[]) android.graphics.Matrix+getValues(float[]) android.graphics.Matrix+setValues(float[]) android.graphics.Matrix+setValues(float[]),com.github.mikephil.charting.renderer.Transformer+mMatrixTouch android.graphics.Matrix+MTRANS_X android.graphics.Matrix+MTRANS_Y android.graphics.Matrix+MSCALE_X android.graphics.Matrix+MSCALE_Y,522,23,1,"/** 
+ * Resets all zooming and dragging and makes the chart fit exactly it's bounds.
+ */
+","/**
+     * Resets all zooming and dragging and makes the chart fit exactly it's
+     * bounds.
+     */
+    public Matrix fitScreen() {
+
+        Matrix save = new Matrix();
+        save.set(mMatrixTouch);
+
+        float[] vals = new float[9];
+
+        save.getValues(vals);
+
+        // reset all translations and scaling
+        vals[Matrix.MTRANS_X] = 0f;
+        vals[Matrix.MTRANS_Y] = 0f;
+        vals[Matrix.MSCALE_X] = 1f;
+        vals[Matrix.MSCALE_Y] = 1f;
+
+        save.setValues(vals);
+
+        return save;
+    }",True
+28,setInvertYAxisEnabled(boolean),Method,,com.github.mikephil.charting.charts.BarLineChartBase+setInvertYAxisEnabled(boolean),,com.github.mikephil.charting.renderer.Transformer+mInvertYAxis,273,9,1,"/** 
+ * If this is set to true, the y-axis is inverted which means that low values are on top of the chart, high values on bottom.
+ * @param enabled
+ */
+","/**
+     * If this is set to true, the y-axis is inverted which means that low
+     * values are on top of the chart, high values on bottom.
+     * 
+     * @param enabled
+     */
+    public void setInvertYAxisEnabled(boolean enabled) {
+        mInvertYAxis = enabled;
+    }",True
+29,isInvertYAxisEnabled(),Method,,com.github.mikephil.charting.charts.BarLineChartBase+prepareYLabels() com.github.mikephil.charting.charts.BarLineChartBase+prepareYLabels() com.github.mikephil.charting.charts.BarLineChartBase+isInvertYAxisEnabled(),,com.github.mikephil.charting.renderer.Transformer+mInvertYAxis,166,8,1,"/** 
+ * If this returns true, the y-axis is inverted.
+ * @return
+ */
+","/**
+     * If this returns true, the y-axis is inverted.
+     * 
+     * @return
+     */
+    public boolean isInvertYAxisEnabled() {
+        return mInvertYAxis;
+    }",True
+30,"centerViewPort(float[],ChartInterface)",Method,,"com.github.mikephil.charting.charts.BarLineChartBase+centerViewPort(int,float)",com.github.mikephil.charting.interfaces.ChartInterface+getChartView() com.github.mikephil.charting.interfaces.ChartInterface+getChartView() android.view.View+post(Runnable) android.view.View+post(Runnable) +() +run(),,970,32,33,"/** 
+ * Centers the viewport around the specified position (x-index and y-value) in the chart. Centering the viewport outside the bounds of the chart is not possible. Makes most sense in combination with the setScaleMinima(...) method.
+ * @param pts the position to center view viewport to
+ * @param chart
+ * @return save
+ */
+","/**
+     * Centers the viewport around the specified position (x-index and y-value)
+     * in the chart. Centering the viewport outside the bounds of the chart is
+     * not possible. Makes most sense in combination with the
+     * setScaleMinima(...) method.
+     * 
+     * @param pts the position to center view viewport to
+     * @param chart
+     * @return save
+     */
+    public synchronized void centerViewPort(final float[] pts, final ChartInterface chart) {
+
+        final View v = chart.getChartView();
+
+        v.post(new Runnable() {
+
+            @Override
+            public void run() {
+                Matrix save = new Matrix();
+                save.set(mMatrixTouch);
+
+                pointValuesToPixel(pts);
+
+                final float x = pts[0] - chart.getOffsetLeft();
+                final float y = pts[1] - chart.getOffsetTop();
+
+                save.postTranslate(-x, -y);
+
+                refresh(save, chart);
+            }
+        });
+    }",True
+31,"refresh(Matrix,ChartInterface)",Method,"setScaleMinima(float,float,ChartInterface)","com.github.mikephil.charting.charts.BarLineChartBase+zoomIn() com.github.mikephil.charting.charts.BarLineChartBase+zoomOut() com.github.mikephil.charting.charts.BarLineChartBase+zoom(float,float,float,float) com.github.mikephil.charting.charts.BarLineChartBase+fitScreen() com.github.mikephil.charting.listener.BarLineChartTouchListener+onTouch(View,MotionEvent)","android.graphics.Matrix+set(Matrix) android.graphics.Matrix+set(Matrix) com.github.mikephil.charting.renderer.Transformer+limitTransAndScale(Matrix,RectF) com.github.mikephil.charting.renderer.Transformer+limitTransAndScale(Matrix,RectF) com.github.mikephil.charting.interfaces.ChartInterface+getContentRect() com.github.mikephil.charting.interfaces.ChartInterface+getContentRect() android.view.View+invalidate() com.github.mikephil.charting.interfaces.ChartInterface+getChartView() com.github.mikephil.charting.interfaces.ChartInterface+getChartView() android.view.View+invalidate() android.graphics.Matrix+set(Matrix) android.graphics.Matrix+set(Matrix)",com.github.mikephil.charting.renderer.Transformer+mMatrixTouch com.github.mikephil.charting.renderer.Transformer+mMatrixTouch com.github.mikephil.charting.renderer.Transformer+mMatrixTouch,477,18,1,"/** 
+ * call this method to refresh the graph with a given matrix
+ * @param newMatrix
+ * @return
+ */
+","/**
+     * call this method to refresh the graph with a given matrix
+     * 
+     * @param newMatrix
+     * @return
+     */
+    public Matrix refresh(Matrix newMatrix, ChartInterface chart) {
+
+        mMatrixTouch.set(newMatrix);
+
+        // make sure scale and translation are within their bounds
+        limitTransAndScale(mMatrixTouch, chart.getContentRect());
+
+        chart.getChartView().invalidate();
+
+        newMatrix.set(mMatrixTouch);
+        return newMatrix;
+    }",True
+32,"limitTransAndScale(Matrix,RectF)",Method,"refresh(Matrix,ChartInterface)",,"android.graphics.Matrix+getValues(float[]) android.graphics.Matrix+getValues(float[]) java.lang.Math+max(float,float) java.lang.Math+max(float,float) java.lang.Math+max(float,float) java.lang.Math+max(float,float) android.graphics.RectF+width() android.graphics.RectF+width() android.graphics.RectF+height() android.graphics.RectF+height() java.lang.Math+min(float,float) java.lang.Math+min(float,float) java.lang.Math+max(float,float) java.lang.Math+max(float,float) java.lang.Math+max(float,float) java.lang.Math+max(float,float) java.lang.Math+min(float,float) java.lang.Math+min(float,float) android.graphics.Matrix+setValues(float[]) android.graphics.Matrix+setValues(float[])",android.graphics.Matrix+MTRANS_X android.graphics.Matrix+MSCALE_X android.graphics.Matrix+MTRANS_Y android.graphics.Matrix+MSCALE_Y com.github.mikephil.charting.renderer.Transformer+mScaleX com.github.mikephil.charting.renderer.Transformer+mMinScaleX com.github.mikephil.charting.renderer.Transformer+mScaleY com.github.mikephil.charting.renderer.Transformer+mMinScaleY com.github.mikephil.charting.renderer.Transformer+mScaleX com.github.mikephil.charting.renderer.Transformer+mTransOffsetX com.github.mikephil.charting.renderer.Transformer+mTransOffsetX com.github.mikephil.charting.renderer.Transformer+mScaleY com.github.mikephil.charting.renderer.Transformer+mTransOffsetY com.github.mikephil.charting.renderer.Transformer+mTransOffsetY android.graphics.Matrix+MTRANS_X android.graphics.Matrix+MSCALE_X com.github.mikephil.charting.renderer.Transformer+mScaleX android.graphics.Matrix+MTRANS_Y android.graphics.Matrix+MSCALE_Y com.github.mikephil.charting.renderer.Transformer+mScaleY,1510,52,2,"/** 
+ * limits the maximum scale and X translation of the given matrix
+ * @param matrix
+ */
+","/**
+     * limits the maximum scale and X translation of the given matrix
+     * 
+     * @param matrix
+     */
+    private void limitTransAndScale(Matrix matrix, RectF content) {
+
+        float[] vals = new float[9];
+        matrix.getValues(vals);
+
+        float curTransX = vals[Matrix.MTRANS_X];
+        float curScaleX = vals[Matrix.MSCALE_X];
+
+        float curTransY = vals[Matrix.MTRANS_Y];
+        float curScaleY = vals[Matrix.MSCALE_Y];
+
+        // min scale-x is 1f
+        mScaleX = Math.max(mMinScaleX, curScaleX);
+
+        // min scale-y is 1f
+        mScaleY = Math.max(mMinScaleY, curScaleY);
+
+        float width = 0f;
+        float height = 0f;
+
+        if (content != null) {
+            width = content.width();
+            height = content.height();
+        }
+
+        float maxTransX = -width * (mScaleX - 1f);
+        float newTransX = Math.min(Math.max(curTransX, maxTransX - mTransOffsetX), mTransOffsetX);
+
+        // if(curScaleX < mMinScaleX) {
+        // newTransX = (-width * (mScaleX - 1f)) / 2f;
+        // }
+
+        float maxTransY = height * (mScaleY - 1f);
+        float newTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
+
+        // if(curScaleY < mMinScaleY) {
+        // newTransY = (height * (mScaleY - 1f)) / 2f;
+        // }
+
+        vals[Matrix.MTRANS_X] = newTransX;
+        vals[Matrix.MSCALE_X] = mScaleX;
+
+        vals[Matrix.MTRANS_Y] = newTransY;
+        vals[Matrix.MSCALE_Y] = mScaleY;
+
+        matrix.setValues(vals);
+    }",True
+33,"setScaleMinima(float,float,ChartInterface)",Method,,"com.github.mikephil.charting.charts.BarLineChartBase+setScaleMinima(float,float)","com.github.mikephil.charting.renderer.Transformer+zoom(float,float,float,float) com.github.mikephil.charting.renderer.Transformer+zoom(float,float,float,float) com.github.mikephil.charting.renderer.Transformer+refresh(Matrix,ChartInterface) com.github.mikephil.charting.renderer.Transformer+refresh(Matrix,ChartInterface)",com.github.mikephil.charting.renderer.Transformer+mMinScaleX com.github.mikephil.charting.renderer.Transformer+mMinScaleY com.github.mikephil.charting.renderer.Transformer+mMinScaleX com.github.mikephil.charting.renderer.Transformer+mMinScaleY,545,20,1,"/** 
+ * Sets the minimum scale values for both axes. This limits the extent to which the user can zoom-out.
+ * @param scaleXmin
+ * @param scaleYmin
+ */
+","/**
+     * Sets the minimum scale values for both axes. This limits the extent to
+     * which the user can zoom-out.
+     * 
+     * @param scaleXmin
+     * @param scaleYmin
+     */
+    public void setScaleMinima(float scaleXmin, float scaleYmin, ChartInterface chart) {
+
+        if (scaleXmin < 1f)
+            scaleXmin = 1f;
+        if (scaleYmin < 1f)
+            scaleYmin = 1f;
+
+        mMinScaleX = scaleXmin;
+        mMinScaleY = scaleYmin;
+
+        Matrix save = zoom(mMinScaleX, mMinScaleY, 0f, 0f);
+        refresh(save, chart);
+    }",True
+34,getTouchMatrix(),Method,,com.github.mikephil.charting.charts.BarLineChartBase+init() com.github.mikephil.charting.charts.BarLineChartBase+calcModulus(),,com.github.mikephil.charting.renderer.Transformer+mMatrixTouch,67,3,1,,"public Matrix getTouchMatrix() {
+        return mMatrixTouch;
+    }",True
+35,getValueMatrix(),Method,,com.github.mikephil.charting.charts.PieRadarChartBase+applyCalculatedOffsets(),,com.github.mikephil.charting.renderer.Transformer+mMatrixValueToPx,71,3,1,,"public Matrix getValueMatrix() {
+        return mMatrixValueToPx;
+    }",False
+36,getOffsetMatrix(),Method,,com.github.mikephil.charting.charts.PieRadarChartBase+applyCalculatedOffsets(),,com.github.mikephil.charting.renderer.Transformer+mMatrixOffset,69,3,1,,"public Matrix getOffsetMatrix() {
+        return mMatrixOffset;
+    }",False
+37,getScaleX(),Method,,"com.github.mikephil.charting.charts.BarChart+drawValues() com.github.mikephil.charting.charts.BarLineChartBase+centerViewPort(int,float) com.github.mikephil.charting.charts.BarLineChartBase+getScaleX() com.github.mikephil.charting.charts.LineChart+drawValues() com.github.mikephil.charting.charts.ScatterChart+drawValues()",,com.github.mikephil.charting.renderer.Transformer+mScaleX,114,6,1,"/** 
+ * returns the current x-scale factor
+ */
+","/**
+     * returns the current x-scale factor
+     */
+    public float getScaleX() {
+        return mScaleX;
+    }",True
+38,getScaleY(),Method,,"com.github.mikephil.charting.charts.BarLineChartBase+centerViewPort(int,float) com.github.mikephil.charting.charts.BarLineChartBase+getScaleY()",,com.github.mikephil.charting.renderer.Transformer+mScaleY,114,6,1,"/** 
+ * returns the current y-scale factor
+ */
+","/**
+     * returns the current y-scale factor
+     */
+    public float getScaleY() {
+        return mScaleY;
+    }",True
+39,isFullyZoomedOut(),Method,,com.github.mikephil.charting.charts.BarLineChartBase+isFullyZoomedOut(),com.github.mikephil.charting.renderer.Transformer+isFullyZoomedOutX() com.github.mikephil.charting.renderer.Transformer+isFullyZoomedOutX() com.github.mikephil.charting.renderer.Transformer+isFullyZoomedOutY() com.github.mikephil.charting.renderer.Transformer+isFullyZoomedOutY(),,254,12,1,"/** 
+ * if the chart is fully zoomed out, return true
+ * @return
+ */
+","/**
+     * if the chart is fully zoomed out, return true
+     * 
+     * @return
+     */
+    public boolean isFullyZoomedOut() {
+
+        if (isFullyZoomedOutX() && isFullyZoomedOutY())
+            return true;
+        else
+            return false;
+    }",True
+40,isFullyZoomedOutY(),Method,isFullyZoomedOut(),com.github.mikephil.charting.charts.BarLineChartBase+prepareYLabels(),,com.github.mikephil.charting.renderer.Transformer+mScaleY com.github.mikephil.charting.renderer.Transformer+mMinScaleY com.github.mikephil.charting.renderer.Transformer+mMinScaleY,278,11,1,"/** 
+ * Returns true if the chart is fully zoomed out on it's y-axis (vertical).
+ * @return
+ */
+","/**
+     * Returns true if the chart is fully zoomed out on it's y-axis (vertical).
+     * 
+     * @return
+     */
+    public boolean isFullyZoomedOutY() {
+        if (mScaleY > mMinScaleY || mMinScaleY > 1f)
+            return false;
+        else
+            return true;
+    }",True
+41,isFullyZoomedOutX(),Method,isFullyZoomedOut(),,,com.github.mikephil.charting.renderer.Transformer+mScaleX com.github.mikephil.charting.renderer.Transformer+mMinScaleX com.github.mikephil.charting.renderer.Transformer+mMinScaleX,287,12,1,"/** 
+ * Returns true if the chart is fully zoomed out on it's x-axis (horizontal).
+ * @return
+ */
+","/**
+     * Returns true if the chart is fully zoomed out on it's x-axis
+     * (horizontal).
+     * 
+     * @return
+     */
+    public boolean isFullyZoomedOutX() {
+        if (mScaleX > mMinScaleX || mMinScaleX > 1f)
+            return false;
+        else
+            return true;
+    }",True
+42,setDragOffsetX(float),Method,,com.github.mikephil.charting.charts.BarLineChartBase+setDragOffsetX(float),com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.renderer.Transformer+mTransOffsetX,254,9,1,"/** 
+ * Set an offset in dp that allows the user to drag the chart over it's bounds on the x-axis.
+ * @param offset
+ */
+","/**
+     * Set an offset in dp that allows the user to drag the chart over it's
+     * bounds on the x-axis.
+     * 
+     * @param offset
+     */
+    public void setDragOffsetX(float offset) {
+        mTransOffsetX = Utils.convertDpToPixel(offset);
+    }",True
+43,setDragOffsetY(float),Method,,com.github.mikephil.charting.charts.BarLineChartBase+setDragOffsetY(float),com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.renderer.Transformer+mTransOffsetY,254,9,1,"/** 
+ * Set an offset in dp that allows the user to drag the chart over it's bounds on the y-axis.
+ * @param offset
+ */
+","/**
+     * Set an offset in dp that allows the user to drag the chart over it's
+     * bounds on the y-axis.
+     * 
+     * @param offset
+     */
+    public void setDragOffsetY(float offset) {
+        mTransOffsetY = Utils.convertDpToPixel(offset);
+    }",True
+44,hasNoDragOffset(),Method,,com.github.mikephil.charting.charts.BarLineChartBase+hasNoDragOffset(),,com.github.mikephil.charting.renderer.Transformer+mTransOffsetX com.github.mikephil.charting.renderer.Transformer+mTransOffsetY,223,8,1,"/** 
+ * Returns true if both drag offsets (x and y) are zero or smaller.
+ * @return
+ */
+","/**
+     * Returns true if both drag offsets (x and y) are zero or smaller.
+     * 
+     * @return
+     */
+    public boolean hasNoDragOffset() {
+        return mTransOffsetX <= 0 && mTransOffsetY <= 0 ? true : false;
+    }",True

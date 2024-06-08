@@ -1,0 +1,372 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,UPDATE_FREQUENCY,Field,,,,,64,1,26,,private static final int UPDATE_FREQUENCY = 24 * 60 * 60 * 1000;,False
+2,DEFAULT_REPOSITORIES,Field,,,,,92,1,26,,"private static final String DEFAULT_REPOSITORIES = ""http://dl.xposed.info/repo/full.xml.gz"";",False
+3,mInstance,Field,,,,,43,1,10,,private static RepoLoader mInstance = null;,False
+4,mListeners,Field,,,,,75,1,18,,private final List<RepoListener> mListeners = new CopyOnWriteArrayList<>();,True
+5,mLocalReleaseTypesCache,Field,,,,,81,1,18,,"private final Map<String, ReleaseType> mLocalReleaseTypesCache = new HashMap<>();",False
+6,mApp,Field,,,,,30,1,2,,private XposedApp mApp = null;,True
+7,mPref,Field,,,,,32,1,2,,private SharedPreferences mPref;,True
+8,mModulePref,Field,,,,,38,1,2,,private SharedPreferences mModulePref;,False
+9,mConMgr,Field,,,,,36,1,2,,private ConnectivityManager mConMgr;,True
+10,mIsLoading,Field,,,,,35,1,2,,private boolean mIsLoading = false;,True
+11,mReloadTriggeredOnce,Field,,,,,45,1,2,,private boolean mReloadTriggeredOnce = false;,True
+12,mRepositories,Field,,,,,51,1,2,,"private Map<Long, Repository> mRepositories = null;",False
+13,mGlobalReleaseType,Field,,,,,39,1,2,,private ReleaseType mGlobalReleaseType;,False
+14,mSwipeRefreshLayout,Field,setSwipeRefreshLayout(SwipeRefreshLayout),,,,47,1,2,,private SwipeRefreshLayout mSwipeRefreshLayout;,True
+15,RepoLoader(),Method,,,"de.robv.android.xposed.installer.XposedApp+getInstance() de.robv.android.xposed.installer.XposedApp+getInstance() de.robv.android.xposed.installer.XposedApp+getPreferences() de.robv.android.xposed.installer.XposedApp+getPreferences() de.robv.android.xposed.installer.repo.RepoDb+init(Context,RepoLoader) de.robv.android.xposed.installer.repo.RepoDb+init(Context,RepoLoader) de.robv.android.xposed.installer.util.RepoLoader+refreshRepositories() de.robv.android.xposed.installer.util.RepoLoader+refreshRepositories()",de.robv.android.xposed.installer.util.RepoLoader+mInstance de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mPref de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mModulePref de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mConMgr de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mGlobalReleaseType de.robv.android.xposed.installer.util.RepoLoader+mApp,539,11,2,,"private RepoLoader() {
+        mInstance = this;
+        mApp = XposedApp.getInstance();
+        mPref = mApp.getSharedPreferences(""repo"", Context.MODE_PRIVATE);
+        mModulePref = mApp.getSharedPreferences(""module_settings"", Context.MODE_PRIVATE);
+        mConMgr = (ConnectivityManager) mApp.getSystemService(Context.CONNECTIVITY_SERVICE);
+        mGlobalReleaseType = ReleaseType.fromString(XposedApp.getPreferences().getString(""release_type_global"", ""stable""));
+
+        RepoDb.init(mApp, this);
+        refreshRepositories();
+    }",False
+16,getInstance(),Method,,"de.robv.android.xposed.installer.DownloadDetailsActivity+onOptionsItemSelected(MenuItem) de.robv.android.xposed.installer.DownloadDetailsSettingsFragment+onPreferenceChange(Preference,Object) de.robv.android.xposed.installer.DownloadDetailsVersionsFragment+onActivityCreated(Bundle) de.robv.android.xposed.installer.DownloadFragment+onCreate(Bundle) de.robv.android.xposed.installer.ModulesBookmark+onCreate(Bundle) de.robv.android.xposed.installer.SettingsActivity+SettingsFragment.onPreferenceChange(Preference,Object) de.robv.android.xposed.installer.XposedApp+updateProgressIndicator(SwipeRefreshLayout) de.robv.android.xposed.installer.XposedApp+onActivityCreated(Activity,Bundle)",de.robv.android.xposed.installer.util.RepoLoader+RepoLoader(),de.robv.android.xposed.installer.util.RepoLoader+mInstance de.robv.android.xposed.installer.util.RepoLoader+mInstance,146,5,41,,"public static synchronized RepoLoader getInstance() {
+        if (mInstance == null)
+            new RepoLoader();
+        return mInstance;
+    }",False
+17,refreshRepositories(),Method,RepoLoader() setRepositories(String),,de.robv.android.xposed.installer.repo.RepoDb+getRepositories() de.robv.android.xposed.installer.repo.RepoDb+getRepositories() java.util.Map+size() java.util.Map+size() java.util.Map+values() java.util.Map+values() java.lang.String+equals(Object) java.lang.String+equals(Object) de.robv.android.xposed.installer.util.RepoLoader+clear(boolean) de.robv.android.xposed.installer.util.RepoLoader+clear(boolean) de.robv.android.xposed.installer.repo.RepoDb+insertRepository(String) de.robv.android.xposed.installer.repo.RepoDb+insertRepository(String) de.robv.android.xposed.installer.repo.RepoDb+getRepositories() de.robv.android.xposed.installer.repo.RepoDb+getRepositories(),de.robv.android.xposed.installer.util.RepoLoader+mRepositories de.robv.android.xposed.installer.util.RepoLoader+mPref de.robv.android.xposed.installer.util.RepoLoader+DEFAULT_REPOSITORIES de.robv.android.xposed.installer.util.RepoLoader+mRepositories de.robv.android.xposed.installer.util.RepoLoader+mRepositories de.robv.android.xposed.installer.repo.Repository+url de.robv.android.xposed.installer.util.RepoLoader+mRepositories,897,29,1,,"public boolean refreshRepositories() {
+        mRepositories = RepoDb.getRepositories();
+
+		// Unlikely case (usually only during initial load): DB state doesn't
+		// fit to configuration
+		boolean needReload = false;
+        String[] config = mPref.getString(""repositories"", DEFAULT_REPOSITORIES).split(""\\|"");
+        if (mRepositories.size() != config.length) {
+            needReload = true;
+        } else {
+            int i = 0;
+            for (Repository repo : mRepositories.values()) {
+                if (!repo.url.equals(config[i++])) {
+                    needReload = true;
+                    break;
+                }
+            }
+        }
+
+        if (!needReload)
+            return false;
+
+        clear(false);
+        for (String url : config) {
+            RepoDb.insertRepository(url);
+        }
+        mRepositories = RepoDb.getRepositories();
+        return true;
+    }",False
+18,setReleaseTypeGlobal(String),Method,,"de.robv.android.xposed.installer.SettingsActivity+SettingsFragment.onPreferenceChange(Preference,Object)",java.lang.Thread+start() +(String) +run(),de.robv.android.xposed.installer.util.RepoLoader+mGlobalReleaseType de.robv.android.xposed.installer.util.RepoLoader+mGlobalReleaseType,515,16,1,,"public void setReleaseTypeGlobal(String relTypeString) {
+        ReleaseType relType = ReleaseType.fromString(relTypeString);
+        if (mGlobalReleaseType == relType)
+            return;
+
+        mGlobalReleaseType = relType;
+
+        // Updating the latest version for all modules takes a moment
+        new Thread(""DBUpdate"") {
+            @Override
+            public void run() {
+                RepoDb.updateAllModulesLatestVersion();
+                notifyListeners();
+            }
+        }.start();
+    }",False
+19,"setReleaseTypeLocal(String,String)",Method,,"de.robv.android.xposed.installer.DownloadDetailsSettingsFragment+onPreferenceChange(Preference,Object)",de.robv.android.xposed.installer.util.RepoLoader+getReleaseTypeLocal(String) de.robv.android.xposed.installer.util.RepoLoader+getReleaseTypeLocal(String) de.robv.android.xposed.installer.repo.RepoDb+updateModuleLatestVersion(String) de.robv.android.xposed.installer.repo.RepoDb+updateModuleLatestVersion(String) de.robv.android.xposed.installer.util.RepoLoader+notifyListeners() de.robv.android.xposed.installer.util.RepoLoader+notifyListeners(),de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache,479,13,1,,"public void setReleaseTypeLocal(String packageName, String relTypeString) {
+        ReleaseType relType = (!TextUtils.isEmpty(relTypeString)) ? ReleaseType.fromString(relTypeString) : null;
+
+        if (getReleaseTypeLocal(packageName) == relType)
+            return;
+
+        synchronized (mLocalReleaseTypesCache) {
+            mLocalReleaseTypesCache.put(packageName, relType);
+        }
+
+        RepoDb.updateModuleLatestVersion(packageName);
+        notifyListeners();
+    }",False
+20,getReleaseTypeLocal(String),Method,"setReleaseTypeLocal(String,String) getMaxShownReleaseType(String)",,,de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache de.robv.android.xposed.installer.util.RepoLoader+mModulePref de.robv.android.xposed.installer.util.RepoLoader+mLocalReleaseTypesCache,555,12,2,,"private ReleaseType getReleaseTypeLocal(String packageName) {
+        synchronized (mLocalReleaseTypesCache) {
+            if (mLocalReleaseTypesCache.containsKey(packageName))
+                return mLocalReleaseTypesCache.get(packageName);
+
+            String value = mModulePref.getString(packageName + ""_release_type"",
+                    null);
+            ReleaseType result = (!TextUtils.isEmpty(value)) ? ReleaseType.fromString(value) : null;
+            mLocalReleaseTypesCache.put(packageName, result);
+            return result;
+        }
+    }",False
+21,getRepository(long),Method,,de.robv.android.xposed.installer.repo.RepoDb+getModuleByPackageName(String),java.util.Map+get(Object) java.util.Map+get(Object),de.robv.android.xposed.installer.util.RepoLoader+mRepositories,94,3,1,,"public Repository getRepository(long repoId) {
+        return mRepositories.get(repoId);
+    }",False
+22,getModule(String),Method,,de.robv.android.xposed.installer.DownloadDetailsActivity+onCreate(Bundle) de.robv.android.xposed.installer.ModulesBookmark+ModulesBookmarkFragment.getModules(),de.robv.android.xposed.installer.repo.RepoDb+getModuleByPackageName(String) de.robv.android.xposed.installer.repo.RepoDb+getModuleByPackageName(String),,110,3,1,,"public Module getModule(String packageName) {
+        return RepoDb.getModuleByPackageName(packageName);
+    }",False
+23,getLatestVersion(Module),Method,,"de.robv.android.xposed.installer.repo.RepoDb+insertModule(long,Module)",java.util.List+isEmpty() java.util.List+isEmpty() de.robv.android.xposed.installer.util.RepoLoader+isVersionShown(ModuleVersion) de.robv.android.xposed.installer.util.RepoLoader+isVersionShown(ModuleVersion),de.robv.android.xposed.installer.repo.Module+versions de.robv.android.xposed.installer.repo.Module+versions de.robv.android.xposed.installer.repo.ModuleVersion+downloadLink,335,10,1,,"public ModuleVersion getLatestVersion(Module module) {
+        if (module == null || module.versions.isEmpty())
+            return null;
+
+        for (ModuleVersion version : module.versions) {
+            if (version.downloadLink != null && isVersionShown(version))
+                return version;
+        }
+        return null;
+    }",False
+24,isVersionShown(ModuleVersion),Method,getLatestVersion(Module),de.robv.android.xposed.installer.DownloadDetailsVersionsFragment+onActivityCreated(Bundle),de.robv.android.xposed.installer.util.RepoLoader+getMaxShownReleaseType(String) de.robv.android.xposed.installer.util.RepoLoader+getMaxShownReleaseType(String),de.robv.android.xposed.installer.repo.ModuleVersion+relType de.robv.android.xposed.installer.repo.ModuleVersion+module de.robv.android.xposed.installer.repo.Module+packageName,183,4,1,,"public boolean isVersionShown(ModuleVersion version) {
+        return version.relType
+                .ordinal() <= getMaxShownReleaseType(version.module.packageName).ordinal();
+    }",False
+25,getMaxShownReleaseType(String),Method,isVersionShown(ModuleVersion),de.robv.android.xposed.installer.repo.RepoDb+updateModuleLatestVersion(String),de.robv.android.xposed.installer.util.RepoLoader+getReleaseTypeLocal(String) de.robv.android.xposed.installer.util.RepoLoader+getReleaseTypeLocal(String),de.robv.android.xposed.installer.util.RepoLoader+mGlobalReleaseType,257,7,1,,"public ReleaseType getMaxShownReleaseType(String packageName) {
+        ReleaseType localSetting = getReleaseTypeLocal(packageName);
+        if (localSetting != null)
+            return localSetting;
+        else
+            return mGlobalReleaseType;
+    }",False
+26,triggerReload(boolean),Method,triggerFirstLoadIfNecessary() setRepositories(String),de.robv.android.xposed.installer.DownloadDetailsActivity+onClick(View) de.robv.android.xposed.installer.DownloadDetailsActivity+onOptionsItemSelected(MenuItem) de.robv.android.xposed.installer.DownloadFragment+onRefresh(),de.robv.android.xposed.installer.util.RepoLoader+resetLastUpdateCheck() de.robv.android.xposed.installer.util.RepoLoader+resetLastUpdateCheck() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() de.robv.android.xposed.installer.XposedApp+updateProgressIndicator(SwipeRefreshLayout) de.robv.android.xposed.installer.XposedApp+updateProgressIndicator(SwipeRefreshLayout) java.lang.Thread+start() +(String) +run(),de.robv.android.xposed.installer.util.RepoLoader+mReloadTriggeredOnce de.robv.android.xposed.installer.util.RepoLoader+mPref de.robv.android.xposed.installer.util.RepoLoader+UPDATE_FREQUENCY de.robv.android.xposed.installer.util.RepoLoader+mConMgr de.robv.android.xposed.installer.util.RepoLoader+mIsLoading de.robv.android.xposed.installer.util.RepoLoader+mIsLoading de.robv.android.xposed.installer.util.RepoLoader+mApp de.robv.android.xposed.installer.util.RepoLoader+mSwipeRefreshLayout,1649,49,1,,"public void triggerReload(final boolean force) {
+        mReloadTriggeredOnce = true;
+
+        if (force) {
+            resetLastUpdateCheck();
+        } else {
+            long lastUpdateCheck = mPref.getLong(""last_update_check"", 0);
+            if (System.currentTimeMillis() < lastUpdateCheck + UPDATE_FREQUENCY)
+                return;
+        }
+
+        NetworkInfo netInfo = mConMgr.getActiveNetworkInfo();
+        if (netInfo == null || !netInfo.isConnected())
+            return;
+
+        synchronized (this) {
+            if (mIsLoading)
+                return;
+            mIsLoading = true;
+        }
+        mApp.updateProgressIndicator(mSwipeRefreshLayout);
+
+        new Thread(""RepositoryReload"") {
+            public void run() {
+                final List<String> messages = new LinkedList<>();
+                boolean hasChanged = downloadAndParseFiles(messages);
+
+                mPref.edit().putLong(""last_update_check"", System.currentTimeMillis()).apply();
+
+                if (!messages.isEmpty()) {
+                    XposedApp.runOnUiThread(new Runnable() {
+                        public void run() {
+                            for (String message : messages) {
+                                Toast.makeText(mApp, message, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+
+                if (hasChanged)
+                    notifyListeners();
+
+                synchronized (this) {
+                    mIsLoading = false;
+                }
+                mApp.updateProgressIndicator(mSwipeRefreshLayout);
+            }
+        }.start();
+    }",True
+27,setSwipeRefreshLayout(SwipeRefreshLayout),Method,,de.robv.android.xposed.installer.DownloadFragment+onRefresh(),,de.robv.android.xposed.installer.util.RepoLoader+mSwipeRefreshLayout de.robv.android.xposed.installer.util.RepoLoader+mSwipeRefreshLayout,137,3,1,,"public void setSwipeRefreshLayout(SwipeRefreshLayout mSwipeRefreshLayout) {
+        this.mSwipeRefreshLayout = mSwipeRefreshLayout;
+    }",True
+28,triggerFirstLoadIfNecessary(),Method,,"de.robv.android.xposed.installer.XposedApp+onActivityCreated(Activity,Bundle)",de.robv.android.xposed.installer.util.RepoLoader+triggerReload(boolean) de.robv.android.xposed.installer.util.RepoLoader+triggerReload(boolean),de.robv.android.xposed.installer.util.RepoLoader+mReloadTriggeredOnce,118,4,1,,"public void triggerFirstLoadIfNecessary() {
+        if (!mReloadTriggeredOnce)
+            triggerReload(false);
+    }",True
+29,resetLastUpdateCheck(),Method,triggerReload(boolean) clear(boolean),,,de.robv.android.xposed.installer.util.RepoLoader+mPref,100,3,1,,"public void resetLastUpdateCheck() {
+        mPref.edit().remove(""last_update_check"").apply();
+    }",True
+30,isLoading(),Method,,de.robv.android.xposed.installer.XposedApp+updateProgressIndicator(SwipeRefreshLayout),,de.robv.android.xposed.installer.util.RepoLoader+mIsLoading,74,3,33,,"public synchronized boolean isLoading() {
+        return mIsLoading;
+    }",True
+31,clear(boolean),Method,refreshRepositories(),de.robv.android.xposed.installer.repo.RepoDb+onCreate(SQLiteDatabase),de.robv.android.xposed.installer.repo.RepoDb+deleteRepositories() de.robv.android.xposed.installer.repo.RepoDb+deleteRepositories() java.util.LinkedHashMap+LinkedHashMap(int) de.robv.android.xposed.installer.util.RepoLoader+resetLastUpdateCheck() de.robv.android.xposed.installer.util.RepoLoader+resetLastUpdateCheck() de.robv.android.xposed.installer.util.RepoLoader+notifyListeners() de.robv.android.xposed.installer.util.RepoLoader+notifyListeners(),de.robv.android.xposed.installer.util.RepoLoader+mIsLoading de.robv.android.xposed.installer.util.RepoLoader+mRepositories,447,15,1,,"public void clear(boolean notify) {
+        synchronized (this) {
+            // TODO Stop reloading repository when it should be cleared
+            if (mIsLoading)
+                return;
+
+            RepoDb.deleteRepositories();
+            mRepositories = new LinkedHashMap<Long, Repository>(0);
+            DownloadsUtil.clearCache(null);
+            resetLastUpdateCheck();
+        }
+
+        if (notify)
+            notifyListeners();
+    }",True
+32,setRepositories(String),Method,,,java.lang.StringBuilder+StringBuilder() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() de.robv.android.xposed.installer.util.RepoLoader+refreshRepositories() de.robv.android.xposed.installer.util.RepoLoader+refreshRepositories() de.robv.android.xposed.installer.util.RepoLoader+triggerReload(boolean) de.robv.android.xposed.installer.util.RepoLoader+triggerReload(boolean),de.robv.android.xposed.installer.util.RepoLoader+mPref,386,11,1,,"public void setRepositories(String... repos) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < repos.length; i++) {
+            if (i > 0)
+                sb.append(""|"");
+            sb.append(repos[i]);
+        }
+        mPref.edit().putString(""repositories"", sb.toString()).apply();
+        if (refreshRepositories())
+            triggerReload(true);
+    }",False
+33,hasModuleUpdates(),Method,,de.robv.android.xposed.installer.WelcomeActivity+notifyDataSetChanged(),de.robv.android.xposed.installer.repo.RepoDb+hasModuleUpdates() de.robv.android.xposed.installer.repo.RepoDb+hasModuleUpdates(),,83,3,1,,"public boolean hasModuleUpdates() {
+        return RepoDb.hasModuleUpdates();
+    }",False
+34,getFrameworkUpdateVersion(),Method,,de.robv.android.xposed.installer.WelcomeActivity+notifyDataSetChanged(),de.robv.android.xposed.installer.repo.RepoDb+getFrameworkUpdateVersion() de.robv.android.xposed.installer.repo.RepoDb+getFrameworkUpdateVersion(),,100,3,1,,"public String getFrameworkUpdateVersion() {
+        return RepoDb.getFrameworkUpdateVersion();
+    }",False
+35,getRepoCacheFile(String),Method,downloadAndParseFiles(List<String>),,"de.robv.android.xposed.installer.util.HashUtil+md5(String) de.robv.android.xposed.installer.util.HashUtil+md5(String) java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.io.File+File(String,String)",de.robv.android.xposed.installer.util.RepoLoader+mApp,235,6,2,,"private File getRepoCacheFile(String repo) {
+        String filename = ""repo_"" + HashUtil.md5(repo) + "".xml"";
+        if (repo.endsWith("".gz""))
+            filename += "".gz"";
+        return new File(mApp.getCacheDir(), filename);
+    }",False
+36,downloadAndParseFiles(List<String>),Method,,,"java.util.concurrent.atomic.AtomicBoolean+AtomicBoolean(boolean) java.util.concurrent.atomic.AtomicInteger+AtomicInteger() java.util.concurrent.atomic.AtomicInteger+AtomicInteger() java.util.Map+entrySet() java.util.Map+entrySet() java.util.Map.Entry+getKey() java.util.Map.Entry+getKey() java.util.Map.Entry+getValue() java.util.Map.Entry+getValue() java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) de.robv.android.xposed.installer.util.RepoLoader+getRepoCacheFile(String) de.robv.android.xposed.installer.util.RepoLoader+getRepoCacheFile(String) java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) java.io.File+length() java.io.File+length() java.util.List+add(E) java.util.List+add(E) de.robv.android.xposed.installer.repo.RepoDb+beginTransation() de.robv.android.xposed.installer.repo.RepoDb+beginTransation() java.io.FileInputStream+FileInputStream(File) java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.util.zip.GZIPInputStream+GZIPInputStream(InputStream) de.robv.android.xposed.installer.repo.RepoParser+parse(InputStream,RepoParserCallback) de.robv.android.xposed.installer.repo.RepoParser+parse(InputStream,RepoParserCallback) +() +onRepositoryMetadata(Repository)",de.robv.android.xposed.installer.util.RepoLoader+mRepositories de.robv.android.xposed.installer.repo.Repository+partialUrl de.robv.android.xposed.installer.repo.Repository+version de.robv.android.xposed.installer.repo.Repository+partialUrl de.robv.android.xposed.installer.repo.Repository+version de.robv.android.xposed.installer.repo.Repository+url de.robv.android.xposed.installer.XposedApp+TAG de.robv.android.xposed.installer.util.SyncDownloadInfo+status de.robv.android.xposed.installer.util.SyncDownloadInfo+errorMessage de.robv.android.xposed.installer.util.SyncDownloadInfo+status de.robv.android.xposed.installer.util.SyncDownloadInfo+STATUS_SUCCESS de.robv.android.xposed.installer.util.SyncDownloadInfo+errorMessage de.robv.android.xposed.installer.util.SyncDownloadInfo+errorMessage,5744,122,2,,"private boolean downloadAndParseFiles(List<String> messages) {
+        // These variables don't need to be atomic, just mutable
+        final AtomicBoolean hasChanged = new AtomicBoolean(false);
+        final AtomicInteger insertCounter = new AtomicInteger();
+        final AtomicInteger deleteCounter = new AtomicInteger();
+
+        for (Entry<Long, Repository> repoEntry : mRepositories.entrySet()) {
+            final long repoId = repoEntry.getKey();
+            final Repository repo = repoEntry.getValue();
+
+            String url = (repo.partialUrl != null && repo.version != null) ? String.format(repo.partialUrl, repo.version) : repo.url;
+
+            File cacheFile = getRepoCacheFile(url);
+            SyncDownloadInfo info = DownloadsUtil.downloadSynchronously(url,
+                    cacheFile);
+
+            Log.i(XposedApp.TAG, String.format(
+                    ""RepoLoader -> Downloaded %s with status %d (error: %s), size %d bytes"",
+                    url, info.status, info.errorMessage, cacheFile.length()));
+
+            if (info.status != SyncDownloadInfo.STATUS_SUCCESS) {
+                if (info.errorMessage != null)
+                    messages.add(info.errorMessage);
+                continue;
+            }
+
+            InputStream in = null;
+            RepoDb.beginTransation();
+            try {
+                in = new FileInputStream(cacheFile);
+                if (url.endsWith("".gz""))
+                    in = new GZIPInputStream(in);
+
+                RepoParser.parse(in, new RepoParserCallback() {
+                    @Override
+                    public void onRepositoryMetadata(Repository repository) {
+                        if (!repository.isPartial) {
+                            RepoDb.deleteAllModules(repoId);
+                            hasChanged.set(true);
+                        }
+                    }
+
+                    @Override
+                    public void onNewModule(Module module) {
+                        RepoDb.insertModule(repoId, module);
+                        hasChanged.set(true);
+                        insertCounter.incrementAndGet();
+                    }
+
+                    @Override
+                    public void onRemoveModule(String packageName) {
+                        RepoDb.deleteModule(repoId, packageName);
+                        hasChanged.set(true);
+                        deleteCounter.decrementAndGet();
+                    }
+
+                    @Override
+                    public void onCompleted(Repository repository) {
+                        if (!repository.isPartial) {
+                            RepoDb.updateRepository(repoId, repository);
+                            repo.name = repository.name;
+                            repo.partialUrl = repository.partialUrl;
+                            repo.version = repository.version;
+                        } else {
+                            RepoDb.updateRepositoryVersion(repoId, repository.version);
+                            repo.version = repository.version;
+                        }
+
+                        Log.i(XposedApp.TAG, String.format(
+                                ""RepoLoader -> Updated repository %s to version %s (%d new / %d removed modules)"",
+                                repo.url, repo.version, insertCounter.get(),
+                                deleteCounter.get()));
+                    }
+                });
+
+                RepoDb.setTransactionSuccessful();
+            } catch (SQLiteException e) {
+                XposedApp.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new MaterialDialog.Builder(DownloadFragment.sActivity)
+                                .title(R.string.restart_needed)
+                                .content(R.string.cache_cleaned)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        Intent i = new Intent(DownloadFragment.sActivity, WelcomeActivity.class);
+                                        i.putExtra(""fragment"", 2);
+
+                                        PendingIntent pi = PendingIntent.getActivity(DownloadFragment.sActivity, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                                        AlarmManager mgr = (AlarmManager) mApp.getSystemService(Context.ALARM_SERVICE);
+                                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pi);
+                                        System.exit(0);
+                                    }
+                                })
+                                .positiveText(android.R.string.ok)
+                                .canceledOnTouchOutside(false)
+                                .show();
+                    }
+                });
+
+                DownloadsUtil.clearCache(url);
+            } catch (Throwable t) {
+                Log.e(XposedApp.TAG, ""RepoLoader -> Cannot load repository from "" + url, t);
+                messages.add(mApp.getString(R.string.repo_load_failed, url, t.getMessage()));
+                DownloadsUtil.clearCache(url);
+            } finally {
+                if (in != null)
+                    try {
+                        in.close();
+                    } catch (IOException ignored) {
+                    }
+                cacheFile.delete();
+                RepoDb.endTransation();
+            }
+        }
+
+        // TODO Set ModuleColumns.PREFERRED for modules which appear in multiple
+        // repositories
+        return hasChanged.get();
+    }",False
+37,"addListener(RepoListener,boolean)",Method,,de.robv.android.xposed.installer.DownloadDetailsActivity+onCreate(Bundle),java.util.List+contains(Object) java.util.List+contains(Object) java.util.List+add(E) java.util.List+add(E) de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader) de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader),de.robv.android.xposed.installer.util.RepoLoader+mListeners de.robv.android.xposed.installer.util.RepoLoader+mListeners,240,7,1,,"public void addListener(RepoListener listener, boolean triggerImmediately) {
+        if (!mListeners.contains(listener))
+            mListeners.add(listener);
+
+        if (triggerImmediately)
+            listener.onRepoReloaded(this);
+    }",True
+38,removeListener(RepoListener),Method,,de.robv.android.xposed.installer.DownloadDetailsActivity+onDestroy() de.robv.android.xposed.installer.DownloadFragment+onDestroyView() de.robv.android.xposed.installer.WelcomeActivity+onDestroy(),java.util.List+remove(Object) java.util.List+remove(Object),de.robv.android.xposed.installer.util.RepoLoader+mListeners,94,3,1,,"public void removeListener(RepoListener listener) {
+        mListeners.remove(listener);
+    }",True
+39,notifyListeners(),Method,"setReleaseTypeLocal(String,String) clear(boolean)",,de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader) de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader),de.robv.android.xposed.installer.util.RepoLoader+mListeners de.robv.android.xposed.installer.util.RepoLoader+mInstance,147,5,2,,"private void notifyListeners() {
+        for (RepoListener listener : mListeners) {
+            listener.onRepoReloaded(mInstance);
+        }
+    }",True
+40,RepoListener,MemberClass,,,de.robv.android.xposed.installer.util.RepoLoader.RepoListener+onRepoReloaded(RepoLoader),,216,7,1,,"public interface RepoListener {
+        /**
+         * Called whenever the list of modules from repositories has been
+         * successfully reloaded
+         */
+        void onRepoReloaded(RepoLoader loader);
+    }",True

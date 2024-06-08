@@ -1,0 +1,190 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,getRequestLine(),Method,,,+() +getUri(),,1004,31,1,,"public RequestLine getRequestLine() {
+        return new RequestLine() {
+            
+            @Override
+            public String getUri() {
+                return getUri().toString();
+            }
+            
+            @Override
+            public ProtocolVersion getProtocolVersion() {
+                return new ProtocolVersion(""HTTP"", 1, 1);
+            }
+            
+            @Override
+            public String getMethod() {
+                return mMethod;
+            }
+            
+            @Override
+            public String toString() {
+                String path = AsyncHttpRequest.this.getUri().getPath();
+                if (path.length() == 0)
+                    path = ""/"";
+                String query = AsyncHttpRequest.this.getUri().getRawQuery();
+                if (query != null && query.length() != 0) {
+                    path += ""?"" + query;
+                }
+                return String.format(""%s %s HTTP/1.1"", mMethod, path);
+            }
+        };
+    }",False
+2,getDefaultUserAgent(),Method,,,java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.System+getProperty(String),,195,4,20,,"protected final String getDefaultUserAgent() {
+        String agent = System.getProperty(""http.agent"");
+        return agent != null ? agent : (""Java"" + System.getProperty(""java.version""));
+    }",False
+3,mMethod,Field,,,,,23,1,2,,private String mMethod;,False
+4,getMethod(),Method,,"com.koushikdutta.async.http.ResponseCacheMiddleware+getSocket(GetSocketData) com.koushikdutta.async.http.ResponseCacheMiddleware+onBodyDecoder(OnBodyData) com.koushikdutta.async.http.ResponseCacheMiddleware+Entry.Entry(URI,RawHeaders,AsyncHttpRequest,ResponseHeaders)",,com.koushikdutta.async.http.AsyncHttpRequest+mMethod,57,3,1,,"public String getMethod() {
+       return mMethod; 
+    }",False
+5,"AsyncHttpRequest(URI,String)",Method,,,,,493,11,1,,"public AsyncHttpRequest(URI uri, String method) {
+        assert uri != null;
+        mMethod = method;
+        mHeaders = new RequestHeaders(uri, mRawHeaders);
+        mRawHeaders.setStatusLine(getRequestLine().toString());
+        mHeaders.setHost(uri.getHost());
+        mHeaders.setUserAgent(getDefaultUserAgent());
+        mHeaders.setAcceptEncoding(""gzip, deflate"");
+        mHeaders.getHeaders().set(""Connection"", ""keep-alive"");
+        mHeaders.getHeaders().set(""Accept"", ""*/*"");
+    }",False
+6,getUri(),Method,,"com.koushikdutta.async.http.AsyncHttpResponse+onStringAvailable(String) com.koushikdutta.async.http.AsyncSocketMiddleware+getSocket(GetSocketData) com.koushikdutta.async.http.AsyncSocketMiddleware+getSocket(GetSocketData) com.koushikdutta.async.http.AsyncSocketMiddleware+onRequestComplete(OnRequestCompleteData) com.koushikdutta.async.http.AsyncSocketMiddleware+onRequestComplete(OnRequestCompleteData) com.koushikdutta.async.http.ResponseCacheMiddleware+getSocket(GetSocketData) com.koushikdutta.async.http.ResponseCacheMiddleware+getSocket(GetSocketData) com.koushikdutta.async.http.ResponseCacheMiddleware+getSocket(GetSocketData) com.koushikdutta.async.http.ResponseCacheMiddleware+onBodyDecoder(OnBodyData) com.koushikdutta.async.http.ResponseCacheMiddleware+onBodyDecoder(OnBodyData) com.koushikdutta.async.http.SocketIOClient+onCompleted(Exception,AsyncHttpResponse,String)",com.koushikdutta.async.http.libcore.RequestHeaders+getUri() com.koushikdutta.async.http.libcore.RequestHeaders+getUri(),com.koushikdutta.async.http.AsyncHttpRequest+mHeaders,61,3,1,,"public URI getUri() {
+        return mHeaders.getUri();
+    }",False
+7,mRawHeaders,Field,,,,,50,1,2,,private RawHeaders mRawHeaders = new RawHeaders();,False
+8,mHeaders,Field,,,,,32,1,2,,private RequestHeaders mHeaders;,False
+9,mHandler,Field,,,,,76,1,2,,private Handler mHandler = Looper.myLooper() == null ? null : new Handler();,False
+10,getHandler(),Method,,"com.koushikdutta.async.http.AsyncHttpClient+executeFile(AsyncHttpRequest,String,FileCallback) com.koushikdutta.async.http.AsyncHttpClient+execute(AsyncHttpRequest,ResultConvert<T>,RequestCallback<T>)",,com.koushikdutta.async.http.AsyncHttpRequest+mHandler,60,3,1,,"public Handler getHandler() {
+        return mHandler;
+    }",False
+11,setHandler(Handler),Method,,"com.koushikdutta.async.http.SocketIOClient+connect(AsyncHttpClient,SocketIORequest,SocketIOConnectCallback)",,com.koushikdutta.async.http.AsyncHttpRequest+mHandler,75,3,1,,"public void setHandler(Handler handler) {
+        mHandler = handler;
+    }",False
+12,getHeaders(),Method,"addHeader(Header) addHeader(String,String) containsHeader(String) getAllHeaders() getAllHeaders() getAllHeaders() getFirstHeader(String) getHeaders(String) removeHeader(Header) removeHeaders(String) setHeader(String,String)","com.koushikdutta.async.http.AsyncHttpClient+onConnectCompleted(Exception,AsyncHttpResponse) com.koushikdutta.async.http.AsyncHttpResponse+setSocket(AsyncSocket) com.koushikdutta.async.http.AsyncHttpResponse+setSocket(AsyncSocket) com.koushikdutta.async.http.AsyncHttpResponse+setSocket(AsyncSocket) com.koushikdutta.async.http.ResponseCacheMiddleware+getSocket(GetSocketData) com.koushikdutta.async.http.ResponseCacheMiddleware+getSocket(GetSocketData) com.koushikdutta.async.http.ResponseCacheMiddleware+getSocket(GetSocketData) com.koushikdutta.async.http.ResponseCacheMiddleware+onBodyDecoder(OnBodyData) com.koushikdutta.async.http.ResponseCacheMiddleware+onBodyDecoder(OnBodyData) com.koushikdutta.async.http.WebSocketImpl+addWebSocketUpgradeHeaders(AsyncHttpRequest,String) com.koushikdutta.async.http.WebSocketImpl+addWebSocketUpgradeHeaders(AsyncHttpRequest,String)",,com.koushikdutta.async.http.AsyncHttpRequest+mHeaders,67,3,1,,"public RequestHeaders getHeaders() {
+        return mHeaders;
+    }",False
+13,getRequestString(),Method,,com.koushikdutta.async.http.AsyncHttpResponse+setSocket(AsyncSocket),com.koushikdutta.async.http.libcore.RawHeaders+toHeaderString() com.koushikdutta.async.http.libcore.RawHeaders+toHeaderString(),com.koushikdutta.async.http.AsyncHttpRequest+mRawHeaders,85,3,1,,"public String getRequestString() {
+        return mRawHeaders.toHeaderString();
+    }",False
+14,mFollowRedirect,Field,,,,,39,1,2,,private boolean mFollowRedirect = true;,False
+15,getFollowRedirect(),Method,,,,com.koushikdutta.async.http.AsyncHttpRequest+mFollowRedirect,74,3,1,,"public boolean getFollowRedirect() {
+        return mFollowRedirect;
+    }",False
+16,setFollowRedirect(boolean),Method,,,,com.koushikdutta.async.http.AsyncHttpRequest+mFollowRedirect,87,3,1,,"public void setFollowRedirect(boolean follow) {
+        mFollowRedirect = follow;
+    }",False
+17,mBody,Field,,,,,35,1,2,,private AsyncHttpRequestBody mBody;,False
+18,setBody(AsyncHttpRequestBody),Method,,com.koushikdutta.async.sample.MainActivity+getChartFile() com.koushikdutta.async.test.MultipartTests+testUpload(),,com.koushikdutta.async.http.AsyncHttpRequest+mBody,76,3,1,,"public void setBody(AsyncHttpRequestBody body) {
+        mBody = body;
+    }",False
+19,getBody(),Method,,com.koushikdutta.async.http.AsyncHttpResponse+setSocket(AsyncSocket),,com.koushikdutta.async.http.AsyncHttpRequest+mBody,67,3,1,,"public AsyncHttpRequestBody getBody() {
+        return mBody;
+    }",False
+20,onHandshakeException(AsyncSSLException),Method,,,,,61,2,1,,"public void onHandshakeException(AsyncSSLException e) {
+    }",False
+21,addHeader(Header),Method,create(HttpRequest),,"com.koushikdutta.async.http.libcore.RawHeaders+add(String,String) com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+add(String,String) org.apache.http.Header+getName() org.apache.http.Header+getName() org.apache.http.Header+getValue() org.apache.http.Header+getValue()",,134,4,1,,"@Override
+    public void addHeader(Header header) {
+        getHeaders().getHeaders().add(header.getName(), header.getValue());
+    }",True
+22,"addHeader(String,String)",Method,,,"com.koushikdutta.async.http.libcore.RawHeaders+add(String,String) com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+add(String,String)",,122,4,1,,"@Override
+    public void addHeader(String name, String value) {
+        getHeaders().getHeaders().add(name, value);
+    }",True
+23,containsHeader(String),Method,,,com.koushikdutta.async.http.libcore.RawHeaders+get(String) com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+get(String),,124,4,1,,"@Override
+    public boolean containsHeader(String name) {
+        return getHeaders().getHeaders().get(name) != null;
+    }",True
+24,getAllHeaders(),Method,,,"com.koushikdutta.async.http.libcore.RawHeaders+length() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+length() com.koushikdutta.async.http.libcore.RawHeaders+getFieldName(int) com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+getFieldName(int) com.koushikdutta.async.http.libcore.RawHeaders+getValue(int) com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+getValue(int) org.apache.http.message.BasicHeader+BasicHeader(String,String)",,387,10,1,,"@Override
+    public Header[] getAllHeaders() {
+        Header[] ret = new Header[getHeaders().getHeaders().length()];
+        for (int i = 0; i < ret.length; i++) {
+            String name = getHeaders().getHeaders().getFieldName(i);
+            String value = getHeaders().getHeaders().getValue(i);
+            ret[i] = new BasicHeader(name, value);
+        }
+        return ret;
+    }",True
+25,getFirstHeader(String),Method,,,"com.koushikdutta.async.http.libcore.RawHeaders+get(String) com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+get(String) org.apache.http.message.BasicHeader+BasicHeader(String,String)",,220,7,1,,"@Override
+    public Header getFirstHeader(String name) {
+        String value = getHeaders().getHeaders().get(name);
+        if (value == null)
+            return null;
+        return new BasicHeader(name, value);
+    }",True
+26,getHeaders(String),Method,getLastHeader(String),,"com.koushikdutta.async.http.libcore.RawHeaders+toMultimap() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+toMultimap() java.util.Map+get(Object) java.util.Map+get(Object) java.util.List+size() java.util.List+size() org.apache.http.message.BasicHeader+BasicHeader(String,String) java.util.List+get(int) java.util.List+get(int)",,414,11,1,,"@Override
+    public Header[] getHeaders(String name) {
+        Map<String, List<String>> map = getHeaders().getHeaders().toMultimap();
+        List<String> vals = map.get(name);
+        if (vals == null)
+            return new Header[0];
+        Header[] ret = new Header[vals.size()];
+        for (int i = 0; i < ret.length; i++)
+            ret[i] = new BasicHeader(name, vals.get(i));
+        return ret;
+    }",True
+27,getLastHeader(String),Method,,,com.koushikdutta.async.http.AsyncHttpRequest+getHeaders(String) com.koushikdutta.async.http.AsyncHttpRequest+getHeaders(String),,197,7,1,,"@Override
+    public Header getLastHeader(String name) {
+        Header[] vals = getHeaders(name);
+        if (vals.length == 0)
+            return null;
+        return vals[vals.length - 1];
+    }",True
+28,params,Field,setParams(HttpParams),,,,18,1,0,,HttpParams params;,True
+29,getParams(),Method,,,,com.koushikdutta.async.http.AsyncHttpRequest+params,74,4,1,,"@Override
+    public HttpParams getParams() {
+        return params;
+    }",True
+30,getProtocolVersion(),Method,,,"org.apache.http.ProtocolVersion+ProtocolVersion(String,int,int)",,115,4,1,,"@Override
+    public ProtocolVersion getProtocolVersion() {
+        return new ProtocolVersion(""HTTP"", 1, 1);
+    }",True
+31,headerIterator(),Method,,,,,103,5,1,,"@Override
+    public HeaderIterator headerIterator() {
+        assert false;
+        return null;
+    }",True
+32,headerIterator(String),Method,,,,,114,5,1,,"@Override
+    public HeaderIterator headerIterator(String name) {
+        assert false;
+        return null;
+    }",True
+33,removeHeader(Header),Method,,,com.koushikdutta.async.http.libcore.RawHeaders+removeAll(String) com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+removeAll(String) org.apache.http.Header+getName() org.apache.http.Header+getName(),,124,4,1,,"@Override
+    public void removeHeader(Header header) {
+        getHeaders().getHeaders().removeAll(header.getName());
+    }",True
+34,removeHeaders(String),Method,,,com.koushikdutta.async.http.libcore.RawHeaders+removeAll(String) com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+removeAll(String),,111,4,1,,"@Override
+    public void removeHeaders(String name) {
+        getHeaders().getHeaders().removeAll(name);
+    }",True
+35,setHeader(Header),Method,setHeaders(Header[]),,"com.koushikdutta.async.http.AsyncHttpRequest+setHeader(String,String) com.koushikdutta.async.http.AsyncHttpRequest+setHeader(String,String) org.apache.http.Header+getName() org.apache.http.Header+getName() org.apache.http.Header+getValue() org.apache.http.Header+getValue()",,114,4,1,,"@Override
+    public void setHeader(Header header) {
+        setHeader(header.getName(), header.getValue());
+    }",True
+36,"setHeader(String,String)",Method,setHeader(Header),,"com.koushikdutta.async.http.libcore.RawHeaders+set(String,String) com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.AsyncHttpRequest+getHeaders() com.koushikdutta.async.http.libcore.RequestHeaders+getHeaders() com.koushikdutta.async.http.libcore.RawHeaders+set(String,String)",,122,4,1,,"@Override
+    public void setHeader(String name, String value) {
+        getHeaders().getHeaders().set(name, value);
+    }",True
+37,setHeaders(Header[]),Method,,,com.koushikdutta.async.http.AsyncHttpRequest+setHeader(Header) com.koushikdutta.async.http.AsyncHttpRequest+setHeader(Header),,130,5,1,,"@Override
+    public void setHeaders(Header[] headers) {
+        for (Header header: headers)
+            setHeader(header);
+    }",True
+38,setParams(HttpParams),Method,,,,com.koushikdutta.async.http.AsyncHttpRequest+params com.koushikdutta.async.http.AsyncHttpRequest+params,92,4,1,,"@Override
+    public void setParams(HttpParams params) {
+        this.params = params;
+    }",True
+39,mTimeout,Field,,,,,13,1,0,,int mTimeout;,False
+40,getTimeout(),Method,,,,com.koushikdutta.async.http.AsyncHttpRequest+mTimeout,56,3,1,,"public int getTimeout() {
+        return mTimeout;
+    }",False
+41,setTimeout(int),Method,,,,com.koushikdutta.async.http.AsyncHttpRequest+mTimeout,71,3,1,,"public void setTimeout(int timeout) {
+        mTimeout = timeout;
+    }",False
+42,create(HttpRequest),Method,,,"com.koushikdutta.async.http.AsyncHttpRequest+AsyncHttpRequest(URI,String) java.net.URI+create(String) java.net.URI+create(String) org.apache.http.RequestLine+getUri() org.apache.http.HttpRequest+getRequestLine() org.apache.http.HttpRequest+getRequestLine() org.apache.http.RequestLine+getUri() org.apache.http.RequestLine+getMethod() org.apache.http.HttpRequest+getRequestLine() org.apache.http.HttpRequest+getRequestLine() org.apache.http.RequestLine+getMethod() org.apache.http.HttpMessage+getAllHeaders() org.apache.http.HttpMessage+getAllHeaders() com.koushikdutta.async.http.AsyncHttpRequest+addHeader(Header) com.koushikdutta.async.http.AsyncHttpRequest+addHeader(Header)",,324,7,9,,"public static AsyncHttpRequest create(HttpRequest request) {
+        AsyncHttpRequest ret = new AsyncHttpRequest(URI.create(request.getRequestLine().getUri()), request.getRequestLine().getMethod());
+        for (Header header: request.getAllHeaders()) {
+            ret.addHeader(header);
+        }
+        return ret;
+    }",False

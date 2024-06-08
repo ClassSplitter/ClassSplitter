@@ -1,0 +1,141 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,TYPE_IMPLEMENTS,Field,,,,,206,5,9,"/** 
+ * TODO: Add own mini repository for types incling names for forward and reverse direction (like ""is implemented by"" in this case)
+ */
+","/**
+   * TODO: Add own mini repository for types incling names for forward and
+   * reverse direction (like ""is implemented by"" in this case)
+   */
+  public static String TYPE_IMPLEMENTS = ""implements"";",False
+2,TYPE_REFINES,Field,,,,,46,1,9,,"public static String TYPE_REFINES = ""refines"";",False
+3,TYPE_UNSPECIFIED,Field,,,,,59,1,9,,"public static String TYPE_UNSPECIFIED = ""unspecified link"";",False
+4,id,Field,setId(long),,,,92,4,2,"/** 
+ * artificial id used as primary key to identify this link
+ */
+","/**
+   * artificial id used as primary key to identify this link
+   */
+  private long id;",False
+5,sourceArtifactId,Field,setSourceArtifactId(String),,,,32,1,2,,private String sourceArtifactId;,False
+6,sourceElementId,Field,setSourceElementId(String),,,,176,5,2,"/** 
+ * machine readable id of element (what that exactly is depends on the connector, could be the Signavio UUID for example)
+ */
+","/**
+   * machine readable id of element (what that exactly is depends on the
+   * connector, could be the Signavio UUID for example)
+   */
+  private String sourceElementId;",False
+7,sourceElementName,Field,setSourceElementName(String),,,,183,5,2,"/** 
+ * human readable name of element (what that exactly is depends on the connector, could be the Signavio Task name for example)
+ */
+","/**
+   * human readable name of element (what that exactly is depends on the
+   * connector, could be the Signavio Task name for example)
+   */
+  private String sourceElementName;",False
+8,sourceRevision,Field,setSourceRevision(Long),,,,28,1,2,,private Long sourceRevision;,False
+9,tagetArtifactId,Field,setTargetArtifactId(String),,,,31,1,2,,private String tagetArtifactId;,True
+10,targetElementId,Field,setTargetElementId(String),,,,31,1,2,,private String targetElementId;,True
+11,targetElementName,Field,setTargetElementName(String),,,,33,1,2,,private String targetElementName;,True
+12,targetRevision,Field,setTargetRevision(Long),,,,28,1,2,,private Long targetRevision;,True
+13,linkType,Field,setLinkType(String),,,,191,5,2,"/** 
+ * type of the link as String. Basically you could supply what you want, but often it make sense to just use the supplied constants if possible
+ */
+","/**
+   * type of the link as String. Basically you could supply what you want, but
+   * often it make sense to just use the supplied constants if possible
+   */
+  private String linkType;",True
+14,description,Field,setDescription(String),,,,111,4,2,"/** 
+ * additional description maybe supplied by the user for this link
+ */
+","/**
+   * additional description maybe supplied by the user for this link
+   */
+  private String description;",True
+15,linkedBothWays,Field,setLinkedBothWays(boolean),,,,200,5,2,"/** 
+ * indicate if the link is found in both directions, default is true. If false the link is only found when searching links for artifactId1
+ */
+","/**
+   * indicate if the link is found in both directions, default is true. If false
+   * the link is only found when searching links for artifactId1
+   */
+  private boolean linkedBothWays = true;",True
+16,getSourceArtifactId(),Method,,,,org.activiti.cycle.CycleLink+sourceArtifactId,72,3,1,,"public String getSourceArtifactId() {
+    return sourceArtifactId;
+  }",False
+17,setSourceArtifactId(String),Method,,"org.activiti.cycle.impl.db.CycleServiceDbXStreamImpl+addArtifactLink(String,String) org.activiti.cycle.impl.db.CycleServiceDbXStreamImpl+getArtifactLinks(String,String) org.activiti.cycle.impl.db.CycleServiceDbXStreamImpl+getArtifactLinks(String,Long) org.activiti.cycle.impl.db.CycleServiceDbXStreamImpl+getArtifactLinks(String,Long,String)",,org.activiti.cycle.CycleLink+sourceArtifactId org.activiti.cycle.CycleLink+sourceArtifactId,110,3,1,,"public void setSourceArtifactId(String sourceArtifactId) {
+    this.sourceArtifactId = sourceArtifactId;
+  }",False
+18,getSourceRevision(),Method,,,,org.activiti.cycle.CycleLink+sourceRevision,66,3,1,,"public Long getSourceRevision() {
+    return sourceRevision;
+  }",False
+19,setSourceRevision(Long),Method,,"org.activiti.cycle.impl.db.CycleServiceDbXStreamImpl+getArtifactLinks(String,Long) org.activiti.cycle.impl.db.CycleServiceDbXStreamImpl+getArtifactLinks(String,Long,String)",,org.activiti.cycle.CycleLink+sourceRevision org.activiti.cycle.CycleLink+sourceRevision,100,3,1,,"public void setSourceRevision(Long sourceRevision) {
+    this.sourceRevision = sourceRevision;
+  }",False
+20,getTargetArtifactId(),Method,,,,org.activiti.cycle.CycleLink+tagetArtifactId,71,3,1,,"public String getTargetArtifactId() {
+    return tagetArtifactId;
+  }",True
+21,setTargetArtifactId(String),Method,,"org.activiti.cycle.impl.db.CycleServiceDbXStreamImpl+addArtifactLink(String,String)",,org.activiti.cycle.CycleLink+tagetArtifactId org.activiti.cycle.CycleLink+tagetArtifactId,109,3,1,,"public void setTargetArtifactId(String targetArtifactId) {
+    this.tagetArtifactId = targetArtifactId;
+  }",True
+22,getTargetRevision(),Method,,,,org.activiti.cycle.CycleLink+targetRevision,66,3,1,,"public Long getTargetRevision() {
+    return targetRevision;
+  }",True
+23,setTargetRevision(Long),Method,,,,org.activiti.cycle.CycleLink+targetRevision org.activiti.cycle.CycleLink+targetRevision,100,3,1,,"public void setTargetRevision(Long targetRevision) {
+    this.targetRevision = targetRevision;
+  }",True
+24,getLinkType(),Method,,,,org.activiti.cycle.CycleLink+linkType,56,3,1,,"public String getLinkType() {
+    return linkType;
+  }",True
+25,setLinkType(String),Method,,"org.activiti.cycle.impl.db.CycleServiceDbXStreamImpl+getArtifactLinks(String,String) org.activiti.cycle.impl.db.CycleServiceDbXStreamImpl+getArtifactLinks(String,Long,String)",,org.activiti.cycle.CycleLink+linkType org.activiti.cycle.CycleLink+linkType,78,3,1,,"public void setLinkType(String linkType) {
+    this.linkType = linkType;
+  }",True
+26,getSourceElementId(),Method,,,,org.activiti.cycle.CycleLink+sourceElementId,70,3,1,,"public String getSourceElementId() {
+    return sourceElementId;
+  }",False
+27,setSourceElementId(String),Method,,,,org.activiti.cycle.CycleLink+sourceElementId org.activiti.cycle.CycleLink+sourceElementId,106,3,1,,"public void setSourceElementId(String sourceElementId) {
+    this.sourceElementId = sourceElementId;
+  }",False
+28,getTargetElementId(),Method,,,,org.activiti.cycle.CycleLink+targetElementId,70,3,1,,"public String getTargetElementId() {
+    return targetElementId;
+  }",True
+29,setTargetElementId(String),Method,,,,org.activiti.cycle.CycleLink+targetElementId org.activiti.cycle.CycleLink+targetElementId,106,3,1,,"public void setTargetElementId(String sourceElementId) {
+    this.targetElementId = sourceElementId;
+  }",True
+30,getDescription(),Method,,,,org.activiti.cycle.CycleLink+description,151,6,1,"/** 
+ * gets additional description maybe supplied by the user for this link
+ */
+","/**
+   * gets additional description maybe supplied by the user for this link
+   */
+  public String getDescription() {
+    return description;
+  }",True
+31,setDescription(String),Method,,,,org.activiti.cycle.CycleLink+description org.activiti.cycle.CycleLink+description,90,3,1,,"public void setDescription(String description) {
+    this.description = description;
+  }",True
+32,getSourceElementName(),Method,,,,org.activiti.cycle.CycleLink+sourceElementName,74,3,1,,"public String getSourceElementName() {
+    return sourceElementName;
+  }",False
+33,setSourceElementName(String),Method,,,,org.activiti.cycle.CycleLink+sourceElementName org.activiti.cycle.CycleLink+sourceElementName,114,3,1,,"public void setSourceElementName(String sourceElementName) {
+    this.sourceElementName = sourceElementName;
+  }",False
+34,getTargetElementName(),Method,,,,org.activiti.cycle.CycleLink+targetElementName,74,3,1,,"public String getTargetElementName() {
+    return targetElementName;
+  }",True
+35,setTargetElementName(String),Method,,,,org.activiti.cycle.CycleLink+targetElementName org.activiti.cycle.CycleLink+targetElementName,114,3,1,,"public void setTargetElementName(String targetElementName) {
+    this.targetElementName = targetElementName;
+  }",True
+36,getId(),Method,,,,org.activiti.cycle.CycleLink+id,42,3,1,,"public long getId() {
+    return id;
+  }",False
+37,setId(long),Method,,,,org.activiti.cycle.CycleLink+id org.activiti.cycle.CycleLink+id,52,3,1,,"public void setId(long id) {
+    this.id = id;
+  }",False
+38,isLinkedBothWays(),Method,,,,org.activiti.cycle.CycleLink+linkedBothWays,68,3,1,,"public boolean isLinkedBothWays() {
+    return linkedBothWays;
+  }",True
+39,setLinkedBothWays(boolean),Method,,,,org.activiti.cycle.CycleLink+linkedBothWays org.activiti.cycle.CycleLink+linkedBothWays,103,3,1,,"public void setLinkedBothWays(boolean linkedBothWays) {
+    this.linkedBothWays = linkedBothWays;
+  }",True

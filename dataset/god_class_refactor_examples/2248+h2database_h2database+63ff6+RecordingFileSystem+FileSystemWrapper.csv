@@ -1,0 +1,198 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,PREFIX,Field,,,,,111,4,25,"/** 
+ * The prefix used for a debugging file system.
+ */
+","/**
+     * The prefix used for a debugging file system.
+     */
+    public static final String PREFIX = ""rec:"";",False
+2,INSTANCE,Field,,,,,78,1,26,,private static final RecordingFileSystem INSTANCE = new RecordingFileSystem();,False
+3,recorder,Field,,,,,33,1,10,,private static Recorder recorder;,False
+4,trace,Field,setTrace(boolean),,,,22,1,2,,private boolean trace;,False
+5,register(),Method,,org.h2.test.TestAll+run(String) org.h2.test.todo.TestTempTableCrash+test() org.h2.test.unit.TestReopen+test(),org.h2.store.fs.FileSystem+register(FileSystem) org.h2.store.fs.FileSystem+register(FileSystem),org.h2.test.utils.RecordingFileSystem+INSTANCE,125,6,9,"/** 
+ * Register the file system.
+ */
+","/**
+     * Register the file system.
+     */
+    public static void register() {
+        FileSystem.register(INSTANCE);
+    }",False
+6,setRecorder(Recorder),Method,,org.h2.test.TestAll+run(String) org.h2.test.todo.TestTempTableCrash+test() org.h2.test.unit.TestReopen+test(),,org.h2.test.utils.RecordingFileSystem+recorder,196,8,9,"/** 
+ * Set the recorder class.
+ * @param recorder the recorder
+ */
+","/**
+     * Set the recorder class.
+     *
+     * @param recorder the recorder
+     */
+    public static void setRecorder(Recorder recorder) {
+        RecordingFileSystem.recorder = recorder;
+    }",False
+7,canWrite(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+canWrite(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+canWrite(String),,164,4,1,,"public boolean canWrite(String fileName) {
+        fileName = translateFileName(fileName);
+        return FileSystem.getInstance(fileName).canWrite(fileName);
+    }",True
+8,"copy(String,String)",Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.store.fs.FileSystem+copy(String,String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+copy(String,String)",org.h2.test.utils.Recorder+COPY,256,6,1,,"public void copy(String original, String copy) {
+        original = translateFileName(original);
+        copy = translateFileName(copy);
+        log(Recorder.COPY, original + "":"" + copy);
+        FileSystem.getInstance(original).copy(original, copy);
+    }",False
+9,createDirs(String),Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.store.fs.FileSystem+createDirs(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+createDirs(String)",org.h2.test.utils.Recorder+CREATE_DIRS,203,5,1,,"public void createDirs(String fileName) {
+        fileName = translateFileName(fileName);
+        log(Recorder.CREATE_DIRS, fileName);
+        FileSystem.getInstance(fileName).createDirs(fileName);
+    }",False
+10,createNewFile(String),Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.store.fs.FileSystem+createNewFile(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+createNewFile(String)",org.h2.test.utils.Recorder+CREATE_NEW_FILE,223,5,1,,"public boolean createNewFile(String fileName) {
+        fileName = translateFileName(fileName);
+        log(Recorder.CREATE_NEW_FILE, fileName);
+        return FileSystem.getInstance(fileName).createNewFile(fileName);
+    }",False
+11,"createTempFile(String,String,boolean,boolean)",Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.store.fs.FileSystem+createTempFile(String,String,boolean,boolean) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+createTempFile(String,String,boolean,boolean)",org.h2.test.utils.Recorder+CREATE_TEMP_FILE org.h2.test.utils.RecordingFileSystem+PREFIX,396,6,1,,"public String createTempFile(String prefix, String suffix, boolean deleteOnExit, boolean inTempDir)
+            throws IOException {
+        prefix = translateFileName(prefix);
+        log(Recorder.CREATE_TEMP_FILE, prefix + "":"" + suffix + "":"" + deleteOnExit + "":"" + inTempDir);
+        return PREFIX + FileSystem.getInstance(prefix).createTempFile(prefix, suffix, deleteOnExit, inTempDir);
+    }",False
+12,delete(String),Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.store.fs.FileSystem+delete(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+delete(String)",org.h2.test.utils.Recorder+DELETE,190,5,1,,"public void delete(String fileName) {
+        fileName = translateFileName(fileName);
+        log(Recorder.DELETE, fileName);
+        FileSystem.getInstance(fileName).delete(fileName);
+    }",False
+13,"deleteRecursive(String,boolean)",Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.store.fs.FileSystem+deleteRecursive(String,boolean) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+deleteRecursive(String,boolean)",org.h2.test.utils.Recorder+DELETE_RECURSIVE,250,5,1,,"public void deleteRecursive(String directory, boolean tryOnly) {
+        directory = translateFileName(directory);
+        log(Recorder.DELETE_RECURSIVE, directory);
+        FileSystem.getInstance(directory).deleteRecursive(directory, tryOnly);
+    }",False
+14,exists(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+exists(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+exists(String),,160,4,1,,"public boolean exists(String fileName) {
+        fileName = translateFileName(fileName);
+        return FileSystem.getInstance(fileName).exists(fileName);
+    }",True
+15,"fileStartsWith(String,String)",Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+fileStartsWith(String,String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+fileStartsWith(String,String)",,243,5,1,,"public boolean fileStartsWith(String fileName, String prefix) {
+        fileName = translateFileName(fileName);
+        prefix = translateFileName(prefix);
+        return FileSystem.getInstance(fileName).fileStartsWith(fileName, prefix);
+    }",True
+16,getAbsolutePath(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+getAbsolutePath(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getAbsolutePath(String),org.h2.test.utils.RecordingFileSystem+PREFIX,186,4,1,,"public String getAbsolutePath(String fileName) {
+        fileName = translateFileName(fileName);
+        return PREFIX + FileSystem.getInstance(fileName).getAbsolutePath(fileName);
+    }",True
+17,getFileName(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+getFileName(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getFileName(String),,149,4,1,,"public String getFileName(String name) {
+        name = translateFileName(name);
+        return FileSystem.getInstance(name).getFileName(name);
+    }",True
+18,getLastModified(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+getLastModified(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getLastModified(String),,175,4,1,,"public long getLastModified(String fileName) {
+        fileName = translateFileName(fileName);
+        return FileSystem.getInstance(fileName).getLastModified(fileName);
+    }",True
+19,getParent(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+getParent(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getParent(String),org.h2.test.utils.RecordingFileSystem+PREFIX,174,4,1,,"public String getParent(String fileName) {
+        fileName = translateFileName(fileName);
+        return PREFIX + FileSystem.getInstance(fileName).getParent(fileName);
+    }",True
+20,isAbsolute(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+isAbsolute(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+isAbsolute(String),,168,4,1,,"public boolean isAbsolute(String fileName) {
+        fileName = translateFileName(fileName);
+        return FileSystem.getInstance(fileName).isAbsolute(fileName);
+    }",True
+21,isDirectory(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+isDirectory(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+isDirectory(String),,170,4,1,,"public boolean isDirectory(String fileName) {
+        fileName = translateFileName(fileName);
+        return FileSystem.getInstance(fileName).isDirectory(fileName);
+    }",True
+22,isReadOnly(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+isReadOnly(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+isReadOnly(String),,168,4,1,,"public boolean isReadOnly(String fileName) {
+        fileName = translateFileName(fileName);
+        return FileSystem.getInstance(fileName).isReadOnly(fileName);
+    }",True
+23,setReadOnly(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+setReadOnly(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+setReadOnly(String),,170,4,1,,"public boolean setReadOnly(String fileName) {
+        fileName = translateFileName(fileName);
+        return FileSystem.getInstance(fileName).setReadOnly(fileName);
+    }",True
+24,length(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+length(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+length(String),,157,4,1,,"public long length(String fileName) {
+        fileName = translateFileName(fileName);
+        return FileSystem.getInstance(fileName).length(fileName);
+    }",True
+25,listFiles(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+listFiles(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+listFiles(String),org.h2.test.utils.RecordingFileSystem+PREFIX,300,8,1,,"public String[] listFiles(String directory) {
+        directory = translateFileName(directory);
+        String[] list = FileSystem.getInstance(directory).listFiles(directory);
+        for (int i = 0; i < list.length; i++) {
+            list[i] = PREFIX + list[i];
+        }
+        return list;
+    }",True
+26,normalize(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+normalize(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+normalize(String),org.h2.test.utils.RecordingFileSystem+PREFIX,174,4,1,,"public String normalize(String fileName) {
+        fileName = translateFileName(fileName);
+        return PREFIX + FileSystem.getInstance(fileName).normalize(fileName);
+    }",True
+27,openFileInputStream(String),Method,,,org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.store.fs.FileSystem+openFileInputStream(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+openFileInputStream(String),,209,4,1,,"public InputStream openFileInputStream(String fileName) throws IOException {
+        fileName = translateFileName(fileName);
+        return FileSystem.getInstance(fileName).openFileInputStream(fileName);
+    }",True
+28,"openFileObject(String,String)",Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileObject+RecordingFileObject(RecordingFileSystem,FileObject) org.h2.store.fs.FileSystem+openFileObject(String,String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+openFileObject(String,String)",,248,4,1,,"public FileObject openFileObject(String fileName, String mode) throws IOException {
+        fileName = translateFileName(fileName);
+        return new RecordingFileObject(this, FileSystem.getInstance(fileName).openFileObject(fileName, mode));
+    }",False
+29,"openFileOutputStream(String,boolean)",Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.store.fs.FileSystem+openFileOutputStream(String,boolean) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+openFileOutputStream(String,boolean)",org.h2.test.utils.Recorder+OPEN_OUTPUT_STREAM,269,5,1,,"public OutputStream openFileOutputStream(String fileName, boolean append) {
+        fileName = translateFileName(fileName);
+        log(Recorder.OPEN_OUTPUT_STREAM, fileName);
+        return FileSystem.getInstance(fileName).openFileOutputStream(fileName, append);
+    }",False
+30,"rename(String,String)",Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.store.fs.FileSystem+rename(String,String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+rename(String,String)",org.h2.test.utils.Recorder+RENAME,271,6,1,,"public void rename(String oldName, String newName) {
+        oldName = translateFileName(oldName);
+        newName = translateFileName(newName);
+        log(Recorder.RENAME, oldName + "":"" + newName);
+        FileSystem.getInstance(oldName).rename(oldName, newName);
+    }",False
+31,tryDelete(String),Method,,,"org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+translateFileName(String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.test.utils.RecordingFileSystem+log(int,String) org.h2.store.fs.FileSystem+tryDelete(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+getInstance(String) org.h2.store.fs.FileSystem+tryDelete(String)",org.h2.test.utils.Recorder+TRY_DELETE,210,5,1,,"public boolean tryDelete(String fileName) {
+        fileName = translateFileName(fileName);
+        log(Recorder.TRY_DELETE, fileName);
+        return FileSystem.getInstance(fileName).tryDelete(fileName);
+    }",False
+32,accepts(String),Method,,,java.lang.String+startsWith(String) java.lang.String+startsWith(String),org.h2.test.utils.RecordingFileSystem+PREFIX,94,3,4,,"protected boolean accepts(String fileName) {
+        return fileName.startsWith(PREFIX);
+    }",True
+33,translateFileName(String),Method,"canWrite(String) copy(String,String) copy(String,String) createDirs(String) createNewFile(String) createTempFile(String,String,boolean,boolean) delete(String) deleteRecursive(String,boolean) exists(String) fileStartsWith(String,String) fileStartsWith(String,String) getAbsolutePath(String) getFileName(String) getLastModified(String) getParent(String) isAbsolute(String) isDirectory(String) isReadOnly(String) setReadOnly(String) length(String) listFiles(String) normalize(String) openFileInputStream(String) openFileObject(String,String) openFileOutputStream(String,boolean) rename(String,String) rename(String,String) tryDelete(String)",,java.lang.String+startsWith(String) java.lang.String+startsWith(String) org.h2.message.DbException+throwInternalError(String) org.h2.message.DbException+throwInternalError(String) java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+length() java.lang.String+length(),org.h2.test.utils.RecordingFileSystem+PREFIX org.h2.test.utils.RecordingFileSystem+PREFIX org.h2.test.utils.RecordingFileSystem+PREFIX,251,6,2,,"private String translateFileName(String fileName) {
+        if (!fileName.startsWith(PREFIX)) {
+            DbException.throwInternalError(fileName + "" doesn't start with "" + PREFIX);
+        }
+        return fileName.substring(PREFIX.length());
+    }",True
+34,isTrace(),Method,,,,org.h2.test.utils.RecordingFileSystem+trace,54,3,1,,"public boolean isTrace() {
+        return trace;
+    }",False
+35,setTrace(boolean),Method,,,,org.h2.test.utils.RecordingFileSystem+trace org.h2.test.utils.RecordingFileSystem+trace,71,3,1,,"public void setTrace(boolean trace) {
+        this.trace = trace;
+    }",False
+36,"log(int,String)",Method,"copy(String,String) createDirs(String) createNewFile(String) createTempFile(String,String,boolean,boolean) delete(String) deleteRecursive(String,boolean) openFileOutputStream(String,boolean) rename(String,String) tryDelete(String)",,"org.h2.test.utils.RecordingFileSystem+log(int,String,byte[],long) org.h2.test.utils.RecordingFileSystem+log(int,String,byte[],long)",,194,9,0,"/** 
+ * Log the operation.
+ * @param op the operation
+ * @param fileName the file name
+ */
+","/**
+     * Log the operation.
+     *
+     * @param op the operation
+     * @param fileName the file name
+     */
+    void log(int op, String fileName) {
+        log(op, fileName, null, 0);
+    }",False
+37,"log(int,String,byte[],long)",Method,"log(int,String)","org.h2.test.utils.RecordingFileObject+setFileLength(long) org.h2.test.utils.RecordingFileObject+write(byte[],int,int)","org.h2.test.utils.Recorder+log(int,String,byte[],long) org.h2.test.utils.Recorder+log(int,String,byte[],long)",org.h2.test.utils.RecordingFileSystem+recorder org.h2.test.utils.RecordingFileSystem+recorder,337,13,0,"/** 
+ * Log the operation.
+ * @param op the operation
+ * @param fileName the file name
+ * @param data the data or null
+ * @param x the value or 0
+ */
+","/**
+     * Log the operation.
+     *
+     * @param op the operation
+     * @param fileName the file name
+     * @param data the data or null
+     * @param x the value or 0
+     */
+    void log(int op, String fileName, byte[] data, long x) {
+        if (recorder != null) {
+            recorder.log(op, fileName, data, x);
+        }
+    }",False

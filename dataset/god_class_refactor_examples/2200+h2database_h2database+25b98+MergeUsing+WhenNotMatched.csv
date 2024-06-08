@@ -1,0 +1,330 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,targetTable,Field,"MergeUsing(Session,TableFilter) setTargetTable(Table)",,,,26,1,2,,private Table targetTable;,False
+2,targetTableFilter,Field,"MergeUsing(Session,TableFilter) setTargetTableFilter(TableFilter)",,,,38,1,2,,private TableFilter targetTableFilter;,False
+3,columns,Field,,,,,25,1,2,,private Column[] columns;,False
+4,valuesExpressionList,Field,,,,,87,1,18,,private final ArrayList<Expression[]> valuesExpressionList = Utils.newSmallArrayList();,False
+5,query,Field,setQuery(Query),,,,20,1,2,,private Query query;,False
+6,sourceTableFilter,Field,setSourceTableFilter(TableFilter),,,,38,1,2,,private TableFilter sourceTableFilter;,False
+7,onCondition,Field,setOnCondition(Expression),,,,31,1,2,,private Expression onCondition;,False
+8,updateCommand,Field,setUpdateCommand(Update),,,,29,1,2,,private Update updateCommand;,True
+9,deleteCommand,Field,setDeleteCommand(Delete),,,,29,1,2,,private Delete deleteCommand;,True
+10,insertCommand,Field,setInsertCommand(Insert),,,,29,1,2,,private Insert insertCommand;,True
+11,queryAlias,Field,setQueryAlias(String) getQueryAlias(),,,,26,1,2,,private String queryAlias;,False
+12,countUpdatedRows,Field,,,,,29,1,2,,private int countUpdatedRows;,False
+13,targetMatchQuery,Field,,,,,32,1,2,,private Select targetMatchQuery;,False
+14,targetRowidsRemembered,Field,,,,,79,1,18,,"private final HashMap<Value, Integer> targetRowidsRemembered = new HashMap<>();",False
+15,updatedKeys,Field,,,,,58,1,18,,private final HashSet<Long> updatedKeys = new HashSet<>();,True
+16,sourceQueryRowNumber,Field,,,,,33,1,2,,private int sourceQueryRowNumber;,False
+17,"MergeUsing(Session,TableFilter)",Method,,,org.h2.table.TableFilter+getTable() org.h2.table.TableFilter+getTable(),org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetTableFilter,206,5,1,,"public MergeUsing(Session session, TableFilter targetTableFilter) {
+        super(session);
+        this.targetTable = targetTableFilter.getTable();
+        this.targetTableFilter = targetTableFilter;
+    }",False
+18,update(),Method,,,"java.util.HashMap+clear() java.util.HashMap+clear() org.h2.table.TableFilter+startQuery(Session) org.h2.table.TableFilter+startQuery(Session) org.h2.table.TableFilter+reset() org.h2.table.TableFilter+reset() org.h2.table.TableFilter+startQuery(Session) org.h2.table.TableFilter+startQuery(Session) org.h2.table.TableFilter+reset() org.h2.table.TableFilter+reset() org.h2.command.dml.MergeUsing+checkRights() org.h2.command.dml.MergeUsing+checkRights() org.h2.command.Prepared+setCurrentRowNumber(int) org.h2.command.Prepared+setCurrentRowNumber(int) java.util.HashSet+clear() java.util.HashSet+clear() org.h2.command.dml.Query+query(int) org.h2.command.dml.Query+query(int) org.h2.table.Table+fire(Session,int,boolean) org.h2.table.Table+fire(Session,int,boolean) org.h2.command.dml.MergeUsing+evaluateTriggerMasks() org.h2.command.dml.MergeUsing+evaluateTriggerMasks() org.h2.table.Table+lock(Session,boolean,boolean) org.h2.table.Table+lock(Session,boolean,boolean) org.h2.result.ResultInterface+next() org.h2.result.ResultInterface+next() org.h2.result.ResultInterface+currentRow() org.h2.result.ResultInterface+currentRow() org.h2.result.RowImpl+RowImpl(Value[],int) org.h2.command.Prepared+setCurrentRowNumber(int) org.h2.command.Prepared+setCurrentRowNumber(int) org.h2.command.dml.MergeUsing+merge(Row) org.h2.command.dml.MergeUsing+merge(Row) org.h2.result.ResultInterface+close() org.h2.result.ResultInterface+close() org.h2.table.Table+fire(Session,int,boolean) org.h2.table.Table+fire(Session,int,boolean) org.h2.command.dml.MergeUsing+evaluateTriggerMasks() org.h2.command.dml.MergeUsing+evaluateTriggerMasks()",org.h2.command.dml.MergeUsing+countUpdatedRows org.h2.command.dml.MergeUsing+targetRowidsRemembered org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+sourceQueryRowNumber org.h2.command.dml.MergeUsing+updatedKeys org.h2.command.dml.MergeUsing+query org.h2.command.dml.MergeUsing+targetTable org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+sourceQueryRowNumber org.h2.command.dml.MergeUsing+sourceQueryRowNumber org.h2.command.dml.MergeUsing+targetTable org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+countUpdatedRows,1242,38,1,,"@Override
+    public int update() {
+        countUpdatedRows = 0;
+
+        // clear list of source table keys & rowids we have processed already
+        targetRowidsRemembered.clear();
+
+        if (targetTableFilter != null) {
+            targetTableFilter.startQuery(session);
+            targetTableFilter.reset();
+        }
+
+        if (sourceTableFilter != null) {
+            sourceTableFilter.startQuery(session);
+            sourceTableFilter.reset();
+        }
+
+        sourceQueryRowNumber = 0;
+        checkRights();
+        setCurrentRowNumber(0);
+        // Just to be sure
+        updatedKeys.clear();
+        // process source select query data for row creation
+        ResultInterface rows = query.query(0);
+        targetTable.fire(session, evaluateTriggerMasks(), true);
+        targetTable.lock(session, true, false);
+        while (rows.next()) {
+            sourceQueryRowNumber++;
+            Value[] sourceRowValues = rows.currentRow();
+            Row sourceRow = new RowImpl(sourceRowValues, 0);
+            setCurrentRowNumber(sourceQueryRowNumber);
+
+            merge(sourceRow);
+        }
+        rows.close();
+        targetTable.fire(session, evaluateTriggerMasks(), false);
+        return countUpdatedRows;
+    }",False
+19,evaluateTriggerMasks(),Method,update() update(),,,org.h2.command.dml.MergeUsing+insertCommand org.h2.api.Trigger+INSERT org.h2.command.dml.MergeUsing+updateCommand org.h2.api.Trigger+UPDATE org.h2.command.dml.MergeUsing+deleteCommand org.h2.api.Trigger+DELETE,339,13,2,,"private int evaluateTriggerMasks() {
+        int masks = 0;
+        if (insertCommand != null) {
+            masks |= Trigger.INSERT;
+        }
+        if (updateCommand != null) {
+            masks |= Trigger.UPDATE;
+        }
+        if (deleteCommand != null) {
+            masks |= Trigger.DELETE;
+        }
+        return masks;
+    }",False
+20,checkRights(),Method,update(),,"org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.engine.User+checkRight(Table,int) org.h2.engine.Session+getUser() org.h2.engine.Session+getUser() org.h2.engine.User+checkRight(Table,int) org.h2.table.TableFilter+getTable() org.h2.table.TableFilter+getTable()",org.h2.command.dml.MergeUsing+insertCommand org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.engine.Right+INSERT org.h2.command.dml.MergeUsing+updateCommand org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.engine.Right+UPDATE org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.engine.Right+DELETE org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.engine.Right+SELECT org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.engine.Right+SELECT,585,16,2,,"private void checkRights() {
+        if (insertCommand != null) {
+            session.getUser().checkRight(targetTable, Right.INSERT);
+        }
+        if (updateCommand != null) {
+            session.getUser().checkRight(targetTable, Right.UPDATE);
+        }
+        if (deleteCommand != null) {
+            session.getUser().checkRight(targetTable, Right.DELETE);
+        }
+
+        // check the underlying tables
+        session.getUser().checkRight(targetTable, Right.SELECT);
+        session.getUser().checkRight(sourceTableFilter.getTable(),
+                Right.SELECT);
+    }",False
+21,merge(Row),Method,update(),,org.h2.table.TableFilter+set(Row) org.h2.table.TableFilter+set(Row) org.h2.command.dml.MergeUsing+isTargetRowFound() org.h2.command.dml.MergeUsing+isTargetRowFound() org.h2.command.dml.Update+update() org.h2.command.dml.Update+update() org.h2.command.dml.Delete+update() org.h2.command.dml.Delete+update() java.util.HashSet+clear() java.util.HashSet+clear() org.h2.command.dml.Insert+update() org.h2.command.dml.Insert+update(),org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+countUpdatedRows org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+countUpdatedRows org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+updatedKeys org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+countUpdatedRows org.h2.command.dml.MergeUsing+insertCommand,772,24,4,"/** 
+ * Merge the given row.
+ * @param sourceRow the row
+ */
+","/**
+     * Merge the given row.
+     *
+     * @param sourceRow the row
+     */
+    protected void merge(Row sourceRow) {
+        // put the column values into the table filter
+        sourceTableFilter.set(sourceRow);
+        if (isTargetRowFound()) {
+            if (updateCommand != null) {
+                countUpdatedRows += updateCommand.update();
+            }
+            // under oracle rules these updates & delete combinations are
+            // allowed together
+            if (deleteCommand != null) {
+                countUpdatedRows += deleteCommand.update();
+                updatedKeys.clear();
+            }
+        } else {
+            if (insertCommand != null) {
+                countUpdatedRows += insertCommand.update();
+            }
+        }
+    }",False
+22,isTargetRowFound(),Method,merge(Row),,"org.h2.command.dml.Query+query(int) org.h2.command.dml.Query+query(int) org.h2.result.ResultInterface+next() org.h2.result.ResultInterface+next() org.h2.result.ResultInterface+currentRow() org.h2.result.ResultInterface+currentRow() java.util.HashMap+get(Object) java.util.HashMap+get(Object) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.table.TableFilter+getTable() org.h2.table.TableFilter+getTable() java.util.HashMap+put(K,V) java.util.HashMap+put(K,V)",org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+targetRowidsRemembered org.h2.api.ErrorCode+DUPLICATE_KEY_1 org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetRowidsRemembered org.h2.command.dml.MergeUsing+sourceQueryRowNumber,1270,25,2,,"private boolean isTargetRowFound() {
+        boolean matched = false;
+        try (ResultInterface rows = targetMatchQuery.query(0)) {
+            while (rows.next()) {
+                Value targetRowId = rows.currentRow()[0];
+                Integer number = targetRowidsRemembered.get(targetRowId);
+                // throw and exception if we have processed this _ROWID_ before...
+                if (number != null) {
+                    throw DbException.get(ErrorCode.DUPLICATE_KEY_1,
+                            ""Merge using ON column expression, "" +
+                            ""duplicate _ROWID_ target record already updated, deleted or inserted:_ROWID_=""
+                                    + targetRowId + "":in:""
+                                    + targetTableFilter.getTable()
+                                    + "":conflicting source row number:""
+                                    + number);
+                }
+                // remember the source column values we have used before (they
+                // are the effective ON clause keys
+                // and should not be repeated
+                targetRowidsRemembered.put(targetRowId, sourceQueryRowNumber);
+                matched = true;
+            }
+        }
+        return matched;
+    }",False
+23,getPlanSQL(),Method,,,org.h2.util.StatementBuilder+StatementBuilder(String) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.schema.SchemaObjectBase+getSQL() org.h2.schema.SchemaObjectBase+getSQL() org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+appendExceptFirst(String) org.h2.util.StatementBuilder+appendExceptFirst(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.table.Column+getSQL() org.h2.table.Column+getSQL() org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) java.util.ArrayList+isEmpty() java.util.ArrayList+isEmpty() org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+resetCount() org.h2.util.StatementBuilder+resetCount() org.h2.util.StatementBuilder+appendExceptFirst(String) org.h2.util.StatementBuilder+appendExceptFirst(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.expression.Expression+getSQL() org.h2.expression.Expression+getSQL() org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(char) org.h2.util.StatementBuilder+append(String) org.h2.util.StatementBuilder+append(String) org.h2.command.Prepared+getPlanSQL() org.h2.command.Prepared+getPlanSQL() org.h2.util.StatementBuilder+toString() org.h2.util.StatementBuilder+toString(),org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+columns org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+query,1112,33,1,,"@Override
+    public String getPlanSQL() {
+        StatementBuilder buff = new StatementBuilder(""MERGE INTO "");
+        buff.append(targetTable.getSQL()).append('(');
+        for (Column c : columns) {
+            buff.appendExceptFirst("", "");
+            buff.append(c.getSQL());
+        }
+        buff.append(')').append('\n');
+        if (!valuesExpressionList.isEmpty()) {
+            buff.append(""VALUES "");
+            int row = 0;
+            for (Expression[] expr : valuesExpressionList) {
+                if (row++ > 0) {
+                    buff.append("", "");
+                }
+                buff.append('(');
+                buff.resetCount();
+                for (Expression e : expr) {
+                    buff.appendExceptFirst("", "");
+                    if (e == null) {
+                        buff.append(""DEFAULT"");
+                    } else {
+                        buff.append(e.getSQL());
+                    }
+                }
+                buff.append(')');
+            }
+        } else {
+            buff.append(query.getPlanSQL());
+        }
+        return buff.toString();
+    }",False
+24,prepare(),Method,,,"org.h2.expression.Expression+addFilterConditions(TableFilter,boolean) org.h2.expression.Expression+addFilterConditions(TableFilter,boolean) org.h2.expression.Expression+addFilterConditions(TableFilter,boolean) org.h2.expression.Expression+addFilterConditions(TableFilter,boolean) org.h2.expression.Expression+mapColumns(ColumnResolver,int,int) org.h2.expression.Expression+mapColumns(ColumnResolver,int,int) org.h2.expression.Expression+mapColumns(ColumnResolver,int,int) org.h2.expression.Expression+mapColumns(ColumnResolver,int,int) org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+createIndexConditions(Session,TableFilter) org.h2.expression.Expression+createIndexConditions(Session,TableFilter) org.h2.expression.Expression+createIndexConditions(Session,TableFilter) org.h2.expression.Expression+createIndexConditions(Session,TableFilter) java.util.ArrayList+isEmpty() java.util.ArrayList+isEmpty() java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.table.Table+getColumns() org.h2.table.Table+getColumns() java.util.ArrayList+isEmpty() java.util.ArrayList+isEmpty() org.h2.message.DbException+get(int) org.h2.message.DbException+get(int) org.h2.expression.Expression+optimize(Session) org.h2.expression.Expression+optimize(Session) org.h2.command.Prepared+prepare() org.h2.command.Prepared+prepare() org.h2.table.TableFilter+doneWithIndexConditions() org.h2.table.TableFilter+doneWithIndexConditions() org.h2.command.dml.Update+setSourceTableFilter(TableFilter) org.h2.command.dml.Update+setSourceTableFilter(TableFilter) org.h2.command.dml.Update+setCondition(Expression) org.h2.command.dml.Update+setCondition(Expression) org.h2.command.dml.MergeUsing+appendOnCondition(Update) org.h2.command.dml.MergeUsing+appendOnCondition(Update) org.h2.command.dml.Update+prepare() org.h2.command.dml.Update+prepare() org.h2.command.dml.Delete+setSourceTableFilter(TableFilter) org.h2.command.dml.Delete+setSourceTableFilter(TableFilter) org.h2.command.dml.Delete+setCondition(Expression) org.h2.command.dml.Delete+setCondition(Expression) org.h2.command.dml.MergeUsing+appendOnCondition(Delete) org.h2.command.dml.MergeUsing+appendOnCondition(Delete) org.h2.command.dml.Delete+prepare() org.h2.command.dml.Delete+prepare() org.h2.command.dml.Update+setUpdatedKeysCollector(HashSet<Long>) org.h2.command.dml.Update+setUpdatedKeysCollector(HashSet<Long>) org.h2.command.dml.Delete+setKeysFilter(HashSet<Long>) org.h2.command.dml.Delete+setKeysFilter(HashSet<Long>) org.h2.command.dml.Insert+setSourceTableFilter(TableFilter) org.h2.command.dml.Insert+setSourceTableFilter(TableFilter) org.h2.command.dml.Insert+prepare() org.h2.command.dml.Insert+prepare() org.h2.command.dml.Select+Select(Session) java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.expression.ExpressionColumn+ExpressionColumn(Database,String,String,String) org.h2.engine.Session+getDatabase() org.h2.engine.Session+getDatabase() org.h2.engine.DbObjectBase+getName() org.h2.schema.SchemaObjectBase+getSchema() org.h2.schema.SchemaObjectBase+getSchema() org.h2.engine.DbObjectBase+getName() org.h2.table.TableFilter+getTableAlias() org.h2.table.TableFilter+getTableAlias() org.h2.command.dml.Select+setExpressions(ArrayList<Expression>) org.h2.command.dml.Select+setExpressions(ArrayList<Expression>) org.h2.command.dml.Select+addTableFilter(TableFilter,boolean) org.h2.command.dml.Select+addTableFilter(TableFilter,boolean) org.h2.command.dml.Select+addCondition(Expression) org.h2.command.dml.Select+addCondition(Expression) org.h2.command.dml.Select+init() org.h2.command.dml.Select+init() org.h2.command.dml.Select+prepare() org.h2.command.dml.Select+prepare()",org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.expression.Expression+MAP_INITIAL org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+targetTableFilter org.h2.expression.Expression+MAP_INITIAL org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+onCondition org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+onCondition org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+onCondition org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+columns org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+columns org.h2.command.dml.MergeUsing+columns org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+valuesExpressionList org.h2.command.dml.MergeUsing+columns org.h2.api.ErrorCode+COLUMN_COUNT_DOES_NOT_MATCH org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+query org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updatedKeys org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+updatedKeys org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.Prepared+session org.h2.command.Prepared+session org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+targetMatchQuery org.h2.command.dml.MergeUsing+targetMatchQuery,3110,73,1,,"@Override
+    public void prepare() {
+        onCondition.addFilterConditions(sourceTableFilter, true);
+        onCondition.addFilterConditions(targetTableFilter, true);
+
+        onCondition.mapColumns(sourceTableFilter, 2, Expression.MAP_INITIAL);
+        onCondition.mapColumns(targetTableFilter, 1, Expression.MAP_INITIAL);
+
+        // only do the optimize now - before we have already gathered the
+        // unoptimized column data
+        onCondition = onCondition.optimize(session);
+        onCondition.createIndexConditions(session, sourceTableFilter);
+        onCondition.createIndexConditions(session, targetTableFilter);
+
+        if (columns == null) {
+            if (!valuesExpressionList.isEmpty()
+                    && valuesExpressionList.get(0).length == 0) {
+                // special case where table is used as a sequence
+                columns = new Column[0];
+            } else {
+                columns = targetTable.getColumns();
+            }
+        }
+        if (!valuesExpressionList.isEmpty()) {
+            for (Expression[] expr : valuesExpressionList) {
+                if (expr.length != columns.length) {
+                    throw DbException
+                            .get(ErrorCode.COLUMN_COUNT_DOES_NOT_MATCH);
+                }
+                for (int i = 0; i < expr.length; i++) {
+                    Expression e = expr[i];
+                    if (e != null) {
+                        expr[i] = e.optimize(session);
+                    }
+                }
+            }
+        } else {
+            query.prepare();
+        }
+
+        // Prepare each of the sub-commands ready to aid in the MERGE
+        // collaboration
+        targetTableFilter.doneWithIndexConditions();
+        if (updateCommand != null) {
+            updateCommand.setSourceTableFilter(sourceTableFilter);
+            updateCommand.setCondition(appendOnCondition(updateCommand));
+            updateCommand.prepare();
+        }
+        if (deleteCommand != null) {
+            deleteCommand.setSourceTableFilter(sourceTableFilter);
+            deleteCommand.setCondition(appendOnCondition(deleteCommand));
+            deleteCommand.prepare();
+            if (updateCommand != null) {
+                updateCommand.setUpdatedKeysCollector(updatedKeys);
+                deleteCommand.setKeysFilter(updatedKeys);
+            }
+        }
+        if (insertCommand != null) {
+            insertCommand.setSourceTableFilter(sourceTableFilter);
+            insertCommand.prepare();
+        }
+
+        // setup the targetMatchQuery - for detecting if the target row exists
+        targetMatchQuery = new Select(session);
+        ArrayList<Expression> expressions = new ArrayList<>(1);
+        expressions.add(new ExpressionColumn(session.getDatabase(), targetTable.getSchema().getName(),
+                targetTableFilter.getTableAlias(), ""_ROWID_""));
+        targetMatchQuery.setExpressions(expressions);
+        targetMatchQuery.addTableFilter(targetTableFilter, true);
+        targetMatchQuery.addCondition(onCondition);
+        targetMatchQuery.init();
+        targetMatchQuery.prepare();
+    }",False
+25,appendOnCondition(Update),Method,prepare(),,"org.h2.command.dml.Update+getCondition() org.h2.command.dml.Update+getCondition() org.h2.expression.ConditionAndOr+ConditionAndOr(int,Expression,Expression) org.h2.command.dml.Update+getCondition() org.h2.command.dml.Update+getCondition()",org.h2.command.dml.MergeUsing+onCondition org.h2.expression.ConditionAndOr+AND org.h2.command.dml.MergeUsing+onCondition,274,7,2,,"private Expression appendOnCondition(Update updateCommand) {
+        if (updateCommand.getCondition() == null) {
+            return onCondition;
+        }
+        return new ConditionAndOr(ConditionAndOr.AND,
+                updateCommand.getCondition(), onCondition);
+    }",True
+26,appendOnCondition(Delete),Method,prepare(),,"org.h2.command.dml.Delete+getCondition() org.h2.command.dml.Delete+getCondition() org.h2.expression.ConditionAndOr+ConditionAndOr(int,Expression,Expression) org.h2.command.dml.Delete+getCondition() org.h2.command.dml.Delete+getCondition()",org.h2.command.dml.MergeUsing+onCondition org.h2.expression.ConditionAndOr+AND org.h2.command.dml.MergeUsing+onCondition,274,7,2,,"private Expression appendOnCondition(Delete deleteCommand) {
+        if (deleteCommand.getCondition() == null) {
+            return onCondition;
+        }
+        return new ConditionAndOr(ConditionAndOr.AND,
+                deleteCommand.getCondition(), onCondition);
+    }",True
+27,setSourceTableFilter(TableFilter),Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int) org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+sourceTableFilter org.h2.command.dml.MergeUsing+sourceTableFilter,123,3,1,,"public void setSourceTableFilter(TableFilter sourceTableFilter) {
+        this.sourceTableFilter = sourceTableFilter;
+    }",False
+28,getSourceTableFilter(),Method,,,,org.h2.command.dml.MergeUsing+sourceTableFilter,83,3,1,,"public TableFilter getSourceTableFilter() {
+        return sourceTableFilter;
+    }",False
+29,setOnCondition(Expression),Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+onCondition org.h2.command.dml.MergeUsing+onCondition,94,3,1,,"public void setOnCondition(Expression condition) {
+        this.onCondition = condition;
+    }",False
+30,getOnCondition(),Method,,,,org.h2.command.dml.MergeUsing+onCondition,70,3,1,,"public Expression getOnCondition() {
+        return onCondition;
+    }",False
+31,getUpdateCommand(),Method,,,,org.h2.command.dml.MergeUsing+updateCommand,72,3,1,,"public Prepared getUpdateCommand() {
+        return updateCommand;
+    }",True
+32,setUpdateCommand(Update),Method,,org.h2.command.Parser+parseWhenMatched(MergeUsing),,org.h2.command.dml.MergeUsing+updateCommand org.h2.command.dml.MergeUsing+updateCommand,102,3,1,,"public void setUpdateCommand(Update updateCommand) {
+        this.updateCommand = updateCommand;
+    }",True
+33,getDeleteCommand(),Method,,,,org.h2.command.dml.MergeUsing+deleteCommand,72,3,1,,"public Prepared getDeleteCommand() {
+        return deleteCommand;
+    }",True
+34,setDeleteCommand(Delete),Method,,org.h2.command.Parser+parseWhenMatched(MergeUsing),,org.h2.command.dml.MergeUsing+deleteCommand org.h2.command.dml.MergeUsing+deleteCommand,102,3,1,,"public void setDeleteCommand(Delete deleteCommand) {
+        this.deleteCommand = deleteCommand;
+    }",True
+35,getInsertCommand(),Method,,,,org.h2.command.dml.MergeUsing+insertCommand,70,3,1,,"public Insert getInsertCommand() {
+        return insertCommand;
+    }",True
+36,setInsertCommand(Insert),Method,,org.h2.command.Parser+parseWhenNotMatched(MergeUsing),,org.h2.command.dml.MergeUsing+insertCommand org.h2.command.dml.MergeUsing+insertCommand,102,3,1,,"public void setInsertCommand(Insert insertCommand) {
+        this.insertCommand = insertCommand;
+    }",True
+37,setQueryAlias(String),Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+queryAlias org.h2.command.dml.MergeUsing+queryAlias,81,4,1,,"public void setQueryAlias(String alias) {
+        this.queryAlias = alias;
+
+    }",False
+38,getQueryAlias(),Method,,,,org.h2.command.dml.MergeUsing+queryAlias org.h2.command.dml.MergeUsing+queryAlias,70,4,1,,"public String getQueryAlias() {
+        return this.queryAlias;
+
+    }",False
+39,getQuery(),Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int) org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+query,53,3,1,,"public Query getQuery() {
+        return query;
+    }",False
+40,setQuery(Query),Method,,"org.h2.command.Parser+parseMergeUsing(TableFilter,int) org.h2.command.Parser+parseMergeUsing(TableFilter,int)",,org.h2.command.dml.MergeUsing+query org.h2.command.dml.MergeUsing+query,69,3,1,,"public void setQuery(Query query) {
+        this.query = query;
+    }",False
+41,setTargetTableFilter(TableFilter),Method,,,,org.h2.command.dml.MergeUsing+targetTableFilter org.h2.command.dml.MergeUsing+targetTableFilter,123,3,1,,"public void setTargetTableFilter(TableFilter targetTableFilter) {
+        this.targetTableFilter = targetTableFilter;
+    }",False
+42,getTargetTableFilter(),Method,,org.h2.command.Parser+parseWhenMatched(MergeUsing) org.h2.command.Parser+parseWhenMatched(MergeUsing),,org.h2.command.dml.MergeUsing+targetTableFilter,83,3,1,,"public TableFilter getTargetTableFilter() {
+        return targetTableFilter;
+    }",False
+43,getTargetTable(),Method,,org.h2.command.Parser+parseWhenNotMatched(MergeUsing) org.h2.command.Parser+parseWhenNotMatched(MergeUsing),,org.h2.command.dml.MergeUsing+targetTable,65,3,1,,"public Table getTargetTable() {
+        return targetTable;
+    }",False
+44,setTargetTable(Table),Method,,,,org.h2.command.dml.MergeUsing+targetTable org.h2.command.dml.MergeUsing+targetTable,93,3,1,,"public void setTargetTable(Table targetTable) {
+        this.targetTable = targetTable;
+    }",False
+45,isTransactional(),Method,,,,,75,4,1,,"@Override
+    public boolean isTransactional() {
+        return true;
+    }",False
+46,queryMeta(),Method,,,,,77,4,1,,"@Override
+    public ResultInterface queryMeta() {
+        return null;
+    }",False
+47,getType(),Method,,,,org.h2.command.CommandInterface+MERGE,81,4,1,,"@Override
+    public int getType() {
+        return CommandInterface.MERGE;
+    }",False

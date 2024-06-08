@@ -1,0 +1,861 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,TRIGGER_PREFIX,Field,,,,,51,1,26,,"private static final String TRIGGER_PREFIX = ""FT_"";",False
+2,SCHEMA,Field,,,,,42,1,26,,"private static final String SCHEMA = ""FT"";",False
+3,FIELD_QUERY,Field,,,,,138,4,26,"/** 
+ * The column name of the result set returned by the search method.
+ */
+","/**
+     * The column name of the result set returned by the search method.
+     */
+    private static final String FIELD_QUERY = ""QUERY"";",False
+4,FIELD_SCHEMA,Field,,,,,142,4,26,"/** 
+ * A column name of the result set returned by the searchData method.
+ */
+","/**
+     * A column name of the result set returned by the searchData method.
+     */
+    private static final String FIELD_SCHEMA = ""SCHEMA"";",False
+5,FIELD_TABLE,Field,,,,,140,4,26,"/** 
+ * A column name of the result set returned by the searchData method.
+ */
+","/**
+     * A column name of the result set returned by the searchData method.
+     */
+    private static final String FIELD_TABLE = ""TABLE"";",False
+6,FIELD_COLUMNS,Field,,,,,144,4,26,"/** 
+ * A column name of the result set returned by the searchData method.
+ */
+","/**
+     * A column name of the result set returned by the searchData method.
+     */
+    private static final String FIELD_COLUMNS = ""COLUMNS"";",False
+7,FIELD_KEYS,Field,,,,,138,4,26,"/** 
+ * A column name of the result set returned by the searchData method.
+ */
+","/**
+     * A column name of the result set returned by the searchData method.
+     */
+    private static final String FIELD_KEYS = ""KEYS"";",False
+8,setting,Field,,,,,33,1,2,,private FullTextSettings setting;,True
+9,index,Field,,,,,24,1,2,,private IndexInfo index;,True
+10,dataTypes,Field,,,,,24,1,2,,private int[] dataTypes;,True
+11,prepInsertWord,Field,,,,,71,1,2,,"private PreparedStatement prepInsertWord, prepInsertRow, prepInsertMap;",True
+12,prepInsertRow,Field,,,,,71,1,2,,"private PreparedStatement prepInsertWord, prepInsertRow, prepInsertMap;",True
+13,prepInsertMap,Field,,,,,71,1,2,,"private PreparedStatement prepInsertWord, prepInsertRow, prepInsertMap;",True
+14,prepDeleteRow,Field,,,,,55,1,2,,"private PreparedStatement prepDeleteRow, prepDeleteMap;",True
+15,prepDeleteMap,Field,,,,,55,1,2,,"private PreparedStatement prepDeleteRow, prepDeleteMap;",True
+16,prepSelectRow,Field,,,,,40,1,2,,private PreparedStatement prepSelectRow;,True
+17,"createIndex(Connection,String,String,String)",Method,,org.h2.test.db.TestFullText+testCreateDrop(),"org.h2.fulltext.FullText+init(Connection) org.h2.fulltext.FullText+init(Connection) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+execute() java.sql.PreparedStatement+execute() org.h2.fulltext.FullText+createTrigger(Connection,String,String) org.h2.fulltext.FullText+createTrigger(Connection,String,String) org.h2.fulltext.FullText+indexExistingRows(Connection,String,String) org.h2.fulltext.FullText+indexExistingRows(Connection,String,String)",org.h2.fulltext.FullText+SCHEMA,877,20,9,"/** 
+ * Create a new full text index for a table and column list. Each table may only have one index at any time.
+ * @param conn the connection
+ * @param schema the schema name of the table (case sensitive)
+ * @param table the table name (case sensitive)
+ * @param columnList the column list (null for all columns)
+ */
+","/**
+     * Create a new full text index for a table and column list. Each table may
+     * only have one index at any time.
+     *
+     * @param conn the connection
+     * @param schema the schema name of the table (case sensitive)
+     * @param table the table name (case sensitive)
+     * @param columnList the column list (null for all columns)
+     */
+    public static void createIndex(Connection conn, String schema, String table, String columnList) throws SQLException {
+        init(conn);
+        PreparedStatement prep = conn.prepareStatement(""INSERT INTO "" + SCHEMA
+                + "".INDEXES(SCHEMA, TABLE, COLUMNS) VALUES(?, ?, ?)"");
+        prep.setString(1, schema);
+        prep.setString(2, table);
+        prep.setString(3, columnList);
+        prep.execute();
+        createTrigger(conn, schema, table);
+        indexExistingRows(conn, schema, table);
+    }",False
+18,"dropIndex(Connection,String,String)",Method,,org.h2.test.db.TestFullText+testCreateDrop(),"org.h2.fulltext.FullText+init(Connection) org.h2.fulltext.FullText+init(Connection) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getInt(int) java.sql.ResultSet+getInt(int) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+execute() java.sql.PreparedStatement+execute() org.h2.fulltext.FullText+createOrDropTrigger(Connection,String,String,boolean) org.h2.fulltext.FullText+createOrDropTrigger(Connection,String,String,boolean) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+executeUpdate() java.sql.PreparedStatement+executeUpdate() java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+executeUpdate() java.sql.PreparedStatement+executeUpdate()",org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA,1628,42,9,"/** 
+ * Drop an existing full text index for a table. This method returns silently if no index for this table exists.
+ * @param conn the connection
+ * @param schema the schema name of the table (case sensitive)
+ * @param table the table name (case sensitive)
+ */
+","/**
+     * Drop an existing full text index for a table. This method returns
+     * silently if no index for this table exists.
+     *
+     * @param conn the connection
+     * @param schema the schema name of the table (case sensitive)
+     * @param table the table name (case sensitive)
+     */
+    public static void dropIndex(Connection conn, String schema, String table) throws SQLException {
+        init(conn);
+        PreparedStatement prep = conn.prepareStatement(""SELECT ID FROM "" + SCHEMA
+                + "".INDEXES WHERE SCHEMA=? AND TABLE=?"");
+        prep.setString(1, schema);
+        prep.setString(2, table);
+        ResultSet rs = prep.executeQuery();
+        if (!rs.next()) {
+            return;
+        }
+        int indexId = rs.getInt(1);
+        prep = conn.prepareStatement(""DELETE FROM "" + SCHEMA
+                + "".INDEXES WHERE ID=?"");
+        prep.setInt(1, indexId);
+        prep.execute();
+        createOrDropTrigger(conn, schema, table, false);
+        prep = conn.prepareStatement(""DELETE FROM "" + SCHEMA +
+                "".ROWS WHERE INDEXID=? AND ROWNUM<10000"");
+        while (true) {
+            prep.setInt(1, indexId);
+            int deleted = prep.executeUpdate();
+            if (deleted == 0) {
+                break;
+            }
+        }
+        prep = conn.prepareStatement(""DELETE FROM "" + SCHEMA + "".MAP M "" +
+                ""WHERE NOT EXISTS (SELECT * FROM "" + SCHEMA + "".ROWS R WHERE R.ID=M.ROWID) AND ROWID<10000"");
+        while (true) {
+            int deleted = prep.executeUpdate();
+            if (deleted == 0) {
+                break;
+            }
+        }
+    }",False
+19,"createTrigger(Connection,String,String)",Method,"createIndex(Connection,String,String,String) reindex(Connection)",,"org.h2.fulltext.FullText+createOrDropTrigger(Connection,String,String,boolean) org.h2.fulltext.FullText+createOrDropTrigger(Connection,String,String,boolean)",,163,3,10,,"private static void createTrigger(Connection conn, String schema, String table) throws SQLException {
+        createOrDropTrigger(conn, schema, table, true);
+    }",False
+20,"createOrDropTrigger(Connection,String,String,boolean)",Method,"dropIndex(Connection,String,String) createTrigger(Connection,String,String)",,java.sql.Connection+createStatement() java.sql.Connection+createStatement() org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.lang.StringBuffer+StringBuffer(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.Class+getName() java.lang.Class+getName() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.lang.StringBuffer+toString() java.lang.StringBuffer+toString(),org.h2.fulltext.FullText+TRIGGER_PREFIX,866,16,10,,"private static void createOrDropTrigger(Connection conn, String schema, String table, boolean create) throws SQLException {
+        Statement stat = conn.createStatement();
+        String trigger = StringUtils.quoteIdentifier(schema) + "".""
+                + StringUtils.quoteIdentifier(TRIGGER_PREFIX + table);
+        stat.execute(""DROP TRIGGER IF EXISTS "" + trigger);
+        if (create) {
+            StringBuffer buff = new StringBuffer(""CREATE TRIGGER IF NOT EXISTS "");
+            buff.append(trigger);
+            buff.append("" AFTER INSERT, UPDATE, DELETE ON "");
+            buff.append(StringUtils.quoteIdentifier(schema) + ""."" + StringUtils.quoteIdentifier(table));
+            buff.append("" FOR EACH ROW CALL \"""");
+            buff.append(FullText.class.getName());
+            buff.append(""\"""");
+            stat.execute(buff.toString());
+        }
+    }",False
+21,"indexExistingRows(Connection,String,String)",Method,"createIndex(Connection,String,String,String) reindex(Connection)",,"org.h2.fulltext.FullText+FullText() org.h2.fulltext.FullText+init(Connection,String,String,String,boolean,int) org.h2.fulltext.FullText+init(Connection,String,String,String,boolean,int) java.lang.StringBuffer+StringBuffer(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) java.sql.Statement+executeQuery(String) java.sql.Connection+createStatement() java.sql.Connection+createStatement() java.sql.Statement+executeQuery(String) java.lang.StringBuffer+toString() java.lang.StringBuffer+toString() java.sql.ResultSetMetaData+getColumnCount() java.sql.ResultSet+getMetaData() java.sql.ResultSet+getMetaData() java.sql.ResultSetMetaData+getColumnCount() java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getObject(int) java.sql.ResultSet+getObject(int) org.h2.fulltext.FullText+fire(Connection,Object[],Object[]) org.h2.fulltext.FullText+fire(Connection,Object[],Object[])",org.h2.api.Trigger+INSERT,769,15,10,,"private static void indexExistingRows(Connection conn, String schema, String table) throws SQLException {
+        FullText existing = new FullText();
+        existing.init(conn, schema, null, table, false, INSERT);
+        StringBuffer buff = new StringBuffer(""SELECT * FROM "");
+        buff.append(StringUtils.quoteIdentifier(schema) + ""."" + StringUtils.quoteIdentifier(table));
+        ResultSet rs = conn.createStatement().executeQuery(buff.toString());
+        int columnCount = rs.getMetaData().getColumnCount();
+        while (rs.next()) {
+            Object[] row = new Object[columnCount];
+            for (int i = 0; i < columnCount; i++) {
+                row[i] = rs.getObject(i + 1);
+            }
+            existing.fire(conn, null, row);
+        }
+    }",False
+22,reindex(Connection),Method,,,"org.h2.fulltext.FullText+init(Connection) org.h2.fulltext.FullText+init(Connection) org.h2.fulltext.FullText+removeAllTriggers(Connection) org.h2.fulltext.FullText+removeAllTriggers(Connection) org.h2.fulltext.FullTextSettings+getInstance(Connection) org.h2.fulltext.FullTextSettings+getInstance(Connection) java.util.HashMap+clear() org.h2.fulltext.FullTextSettings+getWordList() org.h2.fulltext.FullTextSettings+getWordList() java.util.HashMap+clear() java.sql.Connection+createStatement() java.sql.Connection+createStatement() java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+executeQuery(String) java.sql.Statement+executeQuery(String) java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getString(String) java.sql.ResultSet+getString(String) java.sql.ResultSet+getString(String) java.sql.ResultSet+getString(String) org.h2.fulltext.FullText+createTrigger(Connection,String,String) org.h2.fulltext.FullText+createTrigger(Connection,String,String) org.h2.fulltext.FullText+indexExistingRows(Connection,String,String) org.h2.fulltext.FullText+indexExistingRows(Connection,String,String)",org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA,898,22,9,"/** 
+ * Re-creates the full text index for this database
+ * @param conn the connection
+ */
+","/**
+     * Re-creates the full text index for this database
+     *
+     * @param conn the connection
+     */
+    public static void reindex(Connection conn) throws SQLException {
+        init(conn);
+        removeAllTriggers(conn);
+        FullTextSettings setting = FullTextSettings.getInstance(conn);
+        setting.getWordList().clear();
+        Statement stat = conn.createStatement();
+        stat.execute(""TRUNCATE TABLE "" + SCHEMA + "".WORDS"");
+        stat.execute(""TRUNCATE TABLE "" + SCHEMA + "".ROWS"");
+        stat.execute(""TRUNCATE TABLE "" + SCHEMA + "".MAP"");
+        ResultSet rs = stat.executeQuery(""SELECT * FROM "" + SCHEMA + "".INDEXES"");
+        while (rs.next()) {
+            String schema = rs.getString(""SCHEMA"");
+            String table = rs.getString(""TABLE"");
+            createTrigger(conn, schema, table);
+            indexExistingRows(conn, schema, table);
+        }
+    }",False
+23,"setIgnoreList(Connection,String)",Method,,,"org.h2.fulltext.FullText+init(Connection) org.h2.fulltext.FullText+init(Connection) org.h2.fulltext.FullTextSettings+getInstance(Connection) org.h2.fulltext.FullTextSettings+getInstance(Connection) org.h2.fulltext.FullText+setIgnoreList(FullTextSettings,String) org.h2.fulltext.FullText+setIgnoreList(FullTextSettings,String) java.sql.Connection+createStatement() java.sql.Connection+createStatement() java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+execute() java.sql.PreparedStatement+execute()",org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA,892,19,9,"/** 
+ * Change the ignore list. The ignore list is a comma separated list of common words that must not be indexed. The default ignore list is empty. If indexes already exist at the time this list is changed, reindex must be called.
+ * @param conn the connection
+ * @param commaSeparatedList the list
+ */
+","/**
+     * Change the ignore list. The ignore list is a comma separated list of
+     * common words that must not be indexed. The default ignore list is empty.
+     * If indexes already exist at the time this list is changed, reindex must
+     * be called.
+     *
+     * @param conn the connection
+     * @param commaSeparatedList the list
+     */
+    public static void setIgnoreList(Connection conn, String commaSeparatedList) throws SQLException {
+        init(conn);
+        FullTextSettings setting = FullTextSettings.getInstance(conn);
+        setIgnoreList(setting, commaSeparatedList);
+        Statement stat = conn.createStatement();
+        stat.execute(""TRUNCATE TABLE "" + SCHEMA + "".IGNORELIST"");
+        PreparedStatement prep = conn.prepareStatement(""INSERT INTO "" + SCHEMA + "".IGNORELIST VALUES(?)"");
+        prep.setString(1, commaSeparatedList);
+        prep.execute();
+    }",True
+24,"setIgnoreList(FullTextSettings,String)",Method,"setIgnoreList(Connection,String) init(Connection)",,"org.h2.util.StringUtils+arraySplit(String,char,boolean) org.h2.util.StringUtils+arraySplit(String,char,boolean) org.h2.fulltext.FullTextSettings+getIgnoreList() org.h2.fulltext.FullTextSettings+getIgnoreList() org.h2.fulltext.FullTextSettings+convertWord(String) org.h2.fulltext.FullTextSettings+convertWord(String) java.util.HashSet+add(E) java.util.HashSet+add(E)",,439,11,10,,"private static void setIgnoreList(FullTextSettings setting, String commaSeparatedList) {
+        String[] list = StringUtils.arraySplit(commaSeparatedList, ',', true);
+        HashSet set = setting.getIgnoreList();
+        for (int i = 0; i < list.length; i++) {
+            String word = list[i];
+            word = setting.convertWord(word);
+            if (word != null) {
+                set.add(list[i]);
+            }
+        }
+    }",True
+25,removeAllTriggers(Connection),Method,reindex(Connection) dropAll(Connection),,java.sql.Connection+createStatement() java.sql.Connection+createStatement() java.sql.Statement+executeQuery(String) java.sql.Statement+executeQuery(String) java.sql.Connection+createStatement() java.sql.Connection+createStatement() java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getString(String) java.sql.ResultSet+getString(String) java.sql.ResultSet+getString(String) java.sql.ResultSet+getString(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String),org.h2.fulltext.FullText+TRIGGER_PREFIX,644,13,10,,"private static void removeAllTriggers(Connection conn) throws SQLException {
+        Statement stat = conn.createStatement();
+        ResultSet rs = stat.executeQuery(""SELECT * FROM INFORMATION_SCHEMA.TRIGGERS"");
+        Statement stat2 = conn.createStatement();
+        while (rs.next()) {
+            String schema = rs.getString(""TRIGGER_SCHEMA"");
+            String name = rs.getString(""TRIGGER_NAME"");
+            if (name.startsWith(TRIGGER_PREFIX)) {
+                name = StringUtils.quoteIdentifier(schema) + ""."" + StringUtils.quoteIdentifier(name);
+                stat2.execute(""DROP TRIGGER "" + name);
+            }
+        }
+    }",True
+26,dropAll(Connection),Method,,,org.h2.fulltext.FullText+init(Connection) org.h2.fulltext.FullText+init(Connection) java.sql.Connection+createStatement() java.sql.Connection+createStatement() java.sql.Statement+execute(String) java.sql.Statement+execute(String) org.h2.fulltext.FullText+removeAllTriggers(Connection) org.h2.fulltext.FullText+removeAllTriggers(Connection) org.h2.fulltext.FullTextSettings+getInstance(Connection) org.h2.fulltext.FullTextSettings+getInstance(Connection) org.h2.fulltext.FullTextSettings+removeAllIndexes() org.h2.fulltext.FullTextSettings+removeAllIndexes() java.util.HashSet+clear() org.h2.fulltext.FullTextSettings+getIgnoreList() org.h2.fulltext.FullTextSettings+getIgnoreList() java.util.HashSet+clear() java.util.HashMap+clear() org.h2.fulltext.FullTextSettings+getWordList() org.h2.fulltext.FullTextSettings+getWordList() java.util.HashMap+clear(),org.h2.fulltext.FullText+SCHEMA,528,15,9,"/** 
+ * Drops all full text indexes from the database.
+ * @param conn the connection
+ */
+","/**
+     * Drops all full text indexes from the database.
+     *
+     * @param conn the connection
+     */
+    public static void dropAll(Connection conn) throws SQLException {
+        init(conn);
+        Statement stat = conn.createStatement();
+        stat.execute(""DROP SCHEMA IF EXISTS "" + SCHEMA);
+        removeAllTriggers(conn);
+        FullTextSettings setting = FullTextSettings.getInstance(conn);
+        setting.removeAllIndexes();
+        setting.getIgnoreList().clear();
+        setting.getWordList().clear();
+    }",True
+27,init(Connection),Method,"createIndex(Connection,String,String,String) dropIndex(Connection,String,String) reindex(Connection) setIgnoreList(Connection,String) dropAll(Connection)",,"java.sql.Connection+createStatement() java.sql.Connection+createStatement() java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.lang.Class+getName() java.lang.Class+getName() java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.lang.Class+getName() java.lang.Class+getName() java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.lang.Class+getName() java.lang.Class+getName() java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.lang.Class+getName() java.lang.Class+getName() java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.lang.Class+getName() java.lang.Class+getName() java.sql.Statement+execute(String) java.sql.Statement+execute(String) java.lang.Class+getName() java.lang.Class+getName() org.h2.fulltext.FullTextSettings+getInstance(Connection) org.h2.fulltext.FullTextSettings+getInstance(Connection) java.sql.Statement+executeQuery(String) java.sql.Statement+executeQuery(String) java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getString(int) java.sql.ResultSet+getString(int) org.h2.fulltext.FullText+setIgnoreList(FullTextSettings,String) org.h2.fulltext.FullText+setIgnoreList(FullTextSettings,String) java.sql.Statement+executeQuery(String) java.sql.Statement+executeQuery(String) org.h2.fulltext.FullTextSettings+getWordList() org.h2.fulltext.FullTextSettings+getWordList() java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getString(String) java.sql.ResultSet+getString(String) java.sql.ResultSet+getInt(String) java.sql.ResultSet+getInt(String) org.h2.fulltext.FullTextSettings+convertWord(String) org.h2.fulltext.FullTextSettings+convertWord(String) java.util.HashMap+put(K,V) java.util.HashMap+put(K,V) org.h2.util.ObjectUtils+getInteger(int) org.h2.util.ObjectUtils+getInteger(int)",org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA,3118,57,9,"/** 
+ * Initializes full text search functionality for this database. This adds the following Java functions to the database: <ul> <li>FT_CREATE_INDEX(schemaNameString, tableNameString, columnListString) </li><li>FT_SEARCH(queryString, limitInt, offsetInt): result set </li><li>FT_REINDEX() </li><li>FT_DROP_ALL() </li></ul> It also adds a schema FULLTEXT to the database where bookkeeping information is stored. This function may be called from a Java application, or by using the SQL statements: <pre> CREATE ALIAS IF NOT EXISTS FULLTEXT_INIT FOR &quot;org.h2.fulltext.FullText.init&quot;; CALL FULLTEXT_INIT(); </pre>
+ * @param conn the connection
+ */
+","/**
+     * Initializes full text search functionality for this database. This adds
+     * the following Java functions to the database:
+     * <ul>
+     * <li>FT_CREATE_INDEX(schemaNameString, tableNameString, columnListString)
+     * </li><li>FT_SEARCH(queryString, limitInt, offsetInt): result set
+     * </li><li>FT_REINDEX()
+     * </li><li>FT_DROP_ALL()
+     * </li></ul>
+     * It also adds a schema FULLTEXT to the database where bookkeeping
+     * information is stored. This function may be called from a Java
+     * application, or by using the SQL statements:
+     * <pre>
+     * CREATE ALIAS IF NOT EXISTS FULLTEXT_INIT FOR
+     *      &quot;org.h2.fulltext.FullText.init&quot;;
+     * CALL FULLTEXT_INIT();
+     * </pre>
+     *
+     * @param conn the connection
+     */
+    public static void init(Connection conn) throws SQLException {
+        Statement stat = conn.createStatement();
+        stat.execute(""CREATE SCHEMA IF NOT EXISTS "" + SCHEMA);
+        stat.execute(""CREATE TABLE IF NOT EXISTS "" + SCHEMA
+                        + "".INDEXES(ID INT AUTO_INCREMENT PRIMARY KEY, SCHEMA VARCHAR, TABLE VARCHAR, COLUMNS VARCHAR, UNIQUE(SCHEMA, TABLE))"");
+        stat.execute(""CREATE TABLE IF NOT EXISTS "" + SCHEMA
+                + "".WORDS(ID INT AUTO_INCREMENT PRIMARY KEY, NAME VARCHAR, UNIQUE(NAME))"");
+        stat.execute(""CREATE TABLE IF NOT EXISTS "" + SCHEMA
+                + "".ROWS(ID IDENTITY, HASH INT, INDEXID INT, KEY VARCHAR, UNIQUE(HASH, INDEXID, KEY))"");
+
+        stat.execute(""CREATE TABLE IF NOT EXISTS "" + SCHEMA
+                        + "".MAP(ROWID INT, WORDID INT, PRIMARY KEY(WORDID, ROWID))"");
+
+        stat.execute(""CREATE TABLE IF NOT EXISTS "" + SCHEMA + "".IGNORELIST(LIST VARCHAR)"");
+        stat.execute(""CREATE ALIAS IF NOT EXISTS FT_CREATE_INDEX FOR \"""" + FullText.class.getName() + "".createIndex\"""");
+        stat.execute(""CREATE ALIAS IF NOT EXISTS FT_DROP_INDEX FOR \"""" + FullText.class.getName() + "".dropIndex\"""");
+        stat.execute(""CREATE ALIAS IF NOT EXISTS FT_SEARCH FOR \"""" + FullText.class.getName() + "".search\"""");
+        stat.execute(""CREATE ALIAS IF NOT EXISTS FT_SEARCH_DATA FOR \"""" + FullText.class.getName() + "".searchData\"""");
+        stat.execute(""CREATE ALIAS IF NOT EXISTS FT_REINDEX FOR \"""" + FullText.class.getName() + "".reindex\"""");
+        stat.execute(""CREATE ALIAS IF NOT EXISTS FT_DROP_ALL FOR \"""" + FullText.class.getName() + "".dropAll\"""");
+        FullTextSettings setting = FullTextSettings.getInstance(conn);
+        ResultSet rs = stat.executeQuery(""SELECT * FROM "" + SCHEMA + "".IGNORELIST"");
+        while (rs.next()) {
+            String commaSeparatedList = rs.getString(1);
+            setIgnoreList(setting, commaSeparatedList);
+        }
+        rs = stat.executeQuery(""SELECT * FROM "" + SCHEMA + "".WORDS"");
+        HashMap map = setting.getWordList();
+        while (rs.next()) {
+            String word = rs.getString(""NAME"");
+            int id = rs.getInt(""ID"");
+            word = setting.convertWord(word);
+            if (word != null) {
+                map.put(word, ObjectUtils.getInteger(id));
+            }
+        }
+    }",True
+28,"init(Connection,String,String,String,boolean,int)",Method,"indexExistingRows(Connection,String,String)",,"org.h2.fulltext.FullTextSettings+getInstance(Connection) org.h2.fulltext.FullTextSettings+getInstance(Connection) java.util.ArrayList+ArrayList() java.sql.Connection+getMetaData() java.sql.Connection+getMetaData() java.sql.DatabaseMetaData+getColumns(String,String,String,String) java.sql.DatabaseMetaData+getColumns(String,String,String,String) java.util.ArrayList+ArrayList() java.sql.ResultSet+next() java.sql.ResultSet+next() java.util.ArrayList+add(E) java.util.ArrayList+add(E) java.sql.ResultSet+getString(String) java.sql.ResultSet+getString(String) java.util.ArrayList+size() java.util.ArrayList+size() org.h2.fulltext.IndexInfo+IndexInfo() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+toArray(T[]) java.util.ArrayList+toArray(T[]) java.sql.DatabaseMetaData+getColumns(String,String,String,String) java.sql.DatabaseMetaData+getColumns(String,String,String,String) java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getInt(String) java.sql.ResultSet+getInt(String) java.util.ArrayList+size() java.util.ArrayList+size() java.sql.DatabaseMetaData+getPrimaryKeys(String,String,String) java.sql.DatabaseMetaData+getPrimaryKeys(String,String,String) java.sql.ResultSet+next() java.sql.ResultSet+next() java.util.ArrayList+add(E) java.util.ArrayList+add(E) java.sql.ResultSet+getString(String) java.sql.ResultSet+getString(String) java.util.ArrayList+size() java.util.ArrayList+size() java.sql.SQLException+SQLException(String) java.util.ArrayList+ArrayList() java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getInt(int) java.sql.ResultSet+getInt(int) java.sql.ResultSet+getString(int) java.sql.ResultSet+getString(int) org.h2.util.StringUtils+arraySplit(String,char,boolean) org.h2.util.StringUtils+arraySplit(String,char,boolean) java.util.ArrayList+add(E) java.util.ArrayList+add(E) java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+addAll(Collection) java.util.ArrayList+addAll(Collection) java.util.ArrayList+size() java.util.ArrayList+size() org.h2.fulltext.FullText+setColumns(int[],ArrayList,ArrayList) org.h2.fulltext.FullText+setColumns(int[],ArrayList,ArrayList) java.util.ArrayList+size() java.util.ArrayList+size() org.h2.fulltext.FullText+setColumns(int[],ArrayList,ArrayList) org.h2.fulltext.FullText+setColumns(int[],ArrayList,ArrayList) org.h2.fulltext.FullTextSettings+addIndexInfo(IndexInfo) org.h2.fulltext.FullTextSettings+addIndexInfo(IndexInfo) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) java.sql.Connection+prepareStatement(String) org.h2.fulltext.FullTextSettings+setPrepSelectMapByWordId(PreparedStatement) org.h2.fulltext.FullTextSettings+setPrepSelectMapByWordId(PreparedStatement) org.h2.fulltext.FullTextSettings+setPrepSelectRowById(PreparedStatement) org.h2.fulltext.FullTextSettings+setPrepSelectRowById(PreparedStatement)",org.h2.fulltext.FullText+setting org.h2.fulltext.FullText+dataTypes org.h2.fulltext.FullText+index org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+schemaName org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+tableName org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+columnNames org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+columnNames org.h2.fulltext.FullText+dataTypes org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+id org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+keys org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+keys org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+indexColumns org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+indexColumns org.h2.fulltext.FullText+setting org.h2.fulltext.FullText+index org.h2.fulltext.FullText+prepInsertWord org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+prepInsertRow org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+prepInsertMap org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+prepDeleteRow org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+prepDeleteMap org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+prepSelectRow org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+SCHEMA org.h2.fulltext.FullText+setting org.h2.fulltext.FullText+setting,3518,75,1,"/** 
+ * INTERNAL
+ */
+","/**
+     * INTERNAL
+     */
+    public void init(Connection conn, String schemaName, String triggerName, String tableName, boolean before, int type) throws SQLException {
+        setting = FullTextSettings.getInstance(conn);
+        ArrayList keyList = new ArrayList();
+        DatabaseMetaData meta = conn.getMetaData();
+        ResultSet rs = meta.getColumns(null, schemaName, tableName, null);
+        ArrayList columnList = new ArrayList();
+        while (rs.next()) {
+            columnList.add(rs.getString(""COLUMN_NAME""));
+        }
+        dataTypes = new int[columnList.size()];
+        index = new IndexInfo();
+        index.schemaName = schemaName;
+        index.tableName = tableName;
+        index.columnNames = new String[columnList.size()];
+        columnList.toArray(index.columnNames);
+        rs = meta.getColumns(null, schemaName, tableName, null);
+        for (int i = 0; rs.next(); i++) {
+            dataTypes[i] = rs.getInt(""DATA_TYPE"");
+        }
+        if (keyList.size() == 0) {
+            rs = meta.getPrimaryKeys(null, schemaName, tableName);
+            while (rs.next()) {
+                keyList.add(rs.getString(""COLUMN_NAME""));
+            }
+        }
+        if (keyList.size() == 0) {
+            throw new SQLException(""No primary key for table "" + tableName);
+        }
+        ArrayList indexList = new ArrayList();
+        PreparedStatement prep = conn.prepareStatement(
+                ""SELECT ID, COLUMNS FROM "" + SCHEMA + "".INDEXES WHERE SCHEMA=? AND TABLE=?"");
+        prep.setString(1, schemaName);
+        prep.setString(2, tableName);
+        rs = prep.executeQuery();
+        if (rs.next()) {
+            index.id = rs.getInt(1);
+            String columns = rs.getString(2);
+            if (columns != null) {
+                String[] list = StringUtils.arraySplit(columns, ',', true);
+                for (int i = 0; i < list.length; i++) {
+                    indexList.add(list[i]);
+                }
+            }
+        }
+        if (indexList.size() == 0) {
+            indexList.addAll(columnList);
+        }
+        index.keys = new int[keyList.size()];
+        setColumns(index.keys, keyList, columnList);
+        index.indexColumns = new int[indexList.size()];
+        setColumns(index.indexColumns, indexList, columnList);
+        setting.addIndexInfo(index);
+        prepInsertWord = conn.prepareStatement(
+                ""INSERT INTO "" + SCHEMA + "".WORDS(NAME) VALUES(?)"");
+        prepInsertRow = conn.prepareStatement(
+                ""INSERT INTO "" + SCHEMA + "".ROWS(HASH, INDEXID, KEY) VALUES(?, ?, ?)"");
+        prepInsertMap = conn.prepareStatement(
+                ""INSERT INTO "" + SCHEMA + "".MAP(ROWID, WORDID) VALUES(?, ?)"");
+        prepDeleteRow = conn.prepareStatement(
+                ""DELETE FROM "" + SCHEMA + "".ROWS WHERE HASH=? AND INDEXID=? AND KEY=?"");
+        prepDeleteMap = conn.prepareStatement(
+                ""DELETE FROM "" + SCHEMA + "".MAP WHERE ROWID=? AND WORDID=?"");
+        prepSelectRow = conn.prepareStatement(
+                ""SELECT ID FROM "" + SCHEMA + "".ROWS WHERE HASH=? AND INDEXID=? AND KEY=?"");
+
+        PreparedStatement prepSelectMapByWordId = conn.prepareStatement(
+                ""SELECT ROWID FROM "" + SCHEMA + "".MAP WHERE WORDID=?"");
+        PreparedStatement prepSelectRowById = conn.prepareStatement(
+                ""SELECT KEY, INDEXID FROM "" + SCHEMA + "".ROWS WHERE ID=?"");
+        setting.setPrepSelectMapByWordId(prepSelectMapByWordId);
+        setting.setPrepSelectRowById(prepSelectRowById);
+    }",True
+29,"setColumns(int[],ArrayList,ArrayList)",Method,"init(Connection,String,String,String,boolean,int) init(Connection,String,String,String,boolean,int)",,"java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.lang.String+equals(Object) java.lang.String+equals(Object) java.sql.SQLException+SQLException(String,String)",,617,16,2,,"private void setColumns(int[] index, ArrayList keys, ArrayList columns) throws SQLException {
+        for (int i = 0; i < keys.size(); i++) {
+            String key = (String) keys.get(i);
+            int found = -1;
+            for (int j = 0; found == -1 && j < columns.size(); j++) {
+                String column = (String) columns.get(j);
+                if (column.equals(key)) {
+                    found = j;
+                }
+            }
+            if (found < 0) {
+                throw new SQLException(""FULLTEXT"", ""Column not found: "" + key);
+            }
+            index[i] = found;
+        }
+    }",True
+30,"fire(Connection,Object[],Object[])",Method,"indexExistingRows(Connection,String,String)",,"org.h2.fulltext.FullText+delete(FullTextSettings,Object[]) org.h2.fulltext.FullText+delete(FullTextSettings,Object[]) org.h2.fulltext.FullText+insert(FullTextSettings,Object[]) org.h2.fulltext.FullText+insert(FullTextSettings,Object[])",org.h2.fulltext.FullText+setting org.h2.fulltext.FullText+setting,281,11,1,"/** 
+ * INTERNAL
+ */
+","/**
+     * INTERNAL
+     */
+    public void fire(Connection conn, Object[] oldRow, Object[] newRow) throws SQLException {
+        if (oldRow != null) {
+            delete(setting, oldRow);
+        }
+        if (newRow != null) {
+            insert(setting, newRow);
+        }
+    }",True
+31,getKey(Object[]),Method,"insert(FullTextSettings,Object[]) delete(FullTextSettings,Object[])",,"java.lang.StringBuffer+StringBuffer() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.h2.fulltext.FullText+quoteSQL(Object,int) org.h2.fulltext.FullText+quoteSQL(Object,int) java.lang.StringBuffer+toString() java.lang.StringBuffer+toString()",org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+keys org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+keys org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+columnNames org.h2.fulltext.FullText+dataTypes,687,19,2,,"private String getKey(Object[] row) throws SQLException {
+        StringBuffer buff = new StringBuffer();
+        for (int i = 0; i < index.keys.length; i++) {
+            if (i > 0) {
+                buff.append("" AND "");
+            }
+            int columnIndex = index.keys[i];
+            buff.append(StringUtils.quoteIdentifier(index.columnNames[columnIndex]));
+            Object o = row[columnIndex];
+            if (o == null) {
+                buff.append("" IS NULL"");
+            } else {
+                buff.append(""="");
+                buff.append(quoteSQL(o, dataTypes[columnIndex]));
+            }
+        }
+        String key = buff.toString();
+        return key;
+    }",True
+32,quoteString(String),Method,"quoteSQL(Object,int)",,java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.lang.StringBuffer+StringBuffer(int) java.lang.String+length() java.lang.String+length() java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) java.lang.String+length() java.lang.String+length() java.lang.String+charAt(int) java.lang.String+charAt(int) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) java.lang.StringBuffer+toString() java.lang.StringBuffer+toString(),,487,16,2,,"private String quoteString(String data) {
+        if (data.indexOf('\'') < 0) {
+            return ""'"" + data + ""'"";
+        }
+        StringBuffer buff = new StringBuffer(data.length() + 2);
+        buff.append('\'');
+        for (int i = 0; i < data.length(); i++) {
+            char ch = data.charAt(i);
+            if (ch == '\'') {
+                buff.append(ch);
+            }
+            buff.append(ch);
+        }
+        buff.append('\'');
+        return buff.toString();
+    }",True
+33,quoteBinary(byte[]),Method,"quoteSQL(Object,int)",,org.h2.util.ByteUtils+convertBytesToString(byte[]) org.h2.util.ByteUtils+convertBytesToString(byte[]),,112,3,2,,"private String quoteBinary(byte[] data) {
+        return ""'"" + ByteUtils.convertBytesToString(data) + ""'"";
+    }",True
+34,"asString(Object,int)",Method,"getWordIds(FullTextSettings,Object[])",org.h2.fulltext.FullTextLucene+insert(Object[]),"java.lang.Object+toString() java.lang.Object+toString() java.sql.Clob+getCharacterStream() java.sql.Clob+getCharacterStream() org.h2.util.IOUtils+readStringAndClose(Reader,int) org.h2.util.IOUtils+readStringAndClose(Reader,int) org.h2.message.Message+convert(Throwable) org.h2.message.Message+convert(Throwable) java.sql.SQLException+SQLException(String,String)",java.sql.Types+BIT org.h2.value.DataType+TYPE_BOOLEAN java.sql.Types+INTEGER java.sql.Types+BIGINT java.sql.Types+DECIMAL java.sql.Types+DOUBLE java.sql.Types+FLOAT java.sql.Types+NUMERIC java.sql.Types+REAL java.sql.Types+SMALLINT java.sql.Types+TINYINT java.sql.Types+DATE java.sql.Types+TIME java.sql.Types+TIMESTAMP java.sql.Types+LONGVARCHAR java.sql.Types+CHAR java.sql.Types+VARCHAR java.sql.Types+CLOB java.sql.Types+VARBINARY java.sql.Types+LONGVARBINARY java.sql.Types+BINARY java.sql.Types+JAVA_OBJECT java.sql.Types+OTHER java.sql.Types+BLOB java.sql.Types+STRUCT java.sql.Types+REF java.sql.Types+NULL java.sql.Types+ARRAY org.h2.value.DataType+TYPE_DATALINK java.sql.Types+DISTINCT,1659,57,12,"/** 
+ * INTERNAL. Convert the object to a string.
+ * @param data the object
+ * @param type the SQL type
+ * @return the string
+ */
+","/**
+     * INTERNAL.
+     * Convert the object to a string.
+     *
+     * @param data the object
+     * @param type the SQL type
+     * @return the string
+     */
+    protected static String asString(Object data, int type) throws SQLException {
+        if (data == null) {
+            return ""NULL"";
+        }
+        switch (type) {
+        case Types.BIT:
+        case DataType.TYPE_BOOLEAN:
+        case Types.INTEGER:
+        case Types.BIGINT:
+        case Types.DECIMAL:
+        case Types.DOUBLE:
+        case Types.FLOAT:
+        case Types.NUMERIC:
+        case Types.REAL:
+        case Types.SMALLINT:
+        case Types.TINYINT:
+        case Types.DATE:
+        case Types.TIME:
+        case Types.TIMESTAMP:
+        case Types.LONGVARCHAR:
+        case Types.CHAR:
+        case Types.VARCHAR:
+            return data.toString();
+        case Types.CLOB:
+            try {
+                if (data instanceof Clob) {
+                    data = ((Clob) data).getCharacterStream();
+                }
+                return IOUtils.readStringAndClose((Reader) data, -1);
+            } catch (IOException e) {
+                throw Message.convert(e);
+            }
+        case Types.VARBINARY:
+        case Types.LONGVARBINARY:
+        case Types.BINARY:
+        case Types.JAVA_OBJECT:
+        case Types.OTHER:
+        case Types.BLOB:
+        case Types.STRUCT:
+        case Types.REF:
+        case Types.NULL:
+        case Types.ARRAY:
+        case DataType.TYPE_DATALINK:
+        case Types.DISTINCT:
+            throw new SQLException(""FULLTEXT"", ""Unsupported column data type: "" + type);
+        default:
+            return """";
+        }
+    }",False
+35,"quoteSQL(Object,int)",Method,getKey(Object[]),,"java.lang.Object+toString() java.lang.Object+toString() org.h2.fulltext.FullText+quoteString(String) org.h2.fulltext.FullText+quoteString(String) java.lang.Object+toString() java.lang.Object+toString() org.h2.fulltext.FullText+quoteBinary(byte[]) org.h2.fulltext.FullText+quoteBinary(byte[]) java.sql.SQLException+SQLException(String,String)",java.sql.Types+BIT org.h2.value.DataType+TYPE_BOOLEAN java.sql.Types+INTEGER java.sql.Types+BIGINT java.sql.Types+DECIMAL java.sql.Types+DOUBLE java.sql.Types+FLOAT java.sql.Types+NUMERIC java.sql.Types+REAL java.sql.Types+SMALLINT java.sql.Types+TINYINT java.sql.Types+DATE java.sql.Types+TIME java.sql.Types+TIMESTAMP java.sql.Types+LONGVARCHAR java.sql.Types+CHAR java.sql.Types+VARCHAR java.sql.Types+VARBINARY java.sql.Types+LONGVARBINARY java.sql.Types+BINARY java.sql.Types+CLOB java.sql.Types+JAVA_OBJECT java.sql.Types+OTHER java.sql.Types+BLOB java.sql.Types+STRUCT java.sql.Types+REF java.sql.Types+NULL java.sql.Types+ARRAY org.h2.value.DataType+TYPE_DATALINK java.sql.Types+DISTINCT,1269,43,2,,"private String quoteSQL(Object data, int type) throws SQLException {
+        if (data == null) {
+            return ""NULL"";
+        }
+        switch (type) {
+        case Types.BIT:
+        case DataType.TYPE_BOOLEAN:
+        case Types.INTEGER:
+        case Types.BIGINT:
+        case Types.DECIMAL:
+        case Types.DOUBLE:
+        case Types.FLOAT:
+        case Types.NUMERIC:
+        case Types.REAL:
+        case Types.SMALLINT:
+        case Types.TINYINT:
+            return data.toString();
+        case Types.DATE:
+        case Types.TIME:
+        case Types.TIMESTAMP:
+        case Types.LONGVARCHAR:
+        case Types.CHAR:
+        case Types.VARCHAR:
+            return quoteString(data.toString());
+        case Types.VARBINARY:
+        case Types.LONGVARBINARY:
+        case Types.BINARY:
+            return quoteBinary((byte[]) data);
+        case Types.CLOB:
+        case Types.JAVA_OBJECT:
+        case Types.OTHER:
+        case Types.BLOB:
+        case Types.STRUCT:
+        case Types.REF:
+        case Types.NULL:
+        case Types.ARRAY:
+        case DataType.TYPE_DATALINK:
+        case Types.DISTINCT:
+            throw new SQLException(""FULLTEXT"", ""Unsupported key data type: "" + type);
+        default:
+            return """";
+        }
+    }",False
+36,"addWords(FullTextSettings,HashSet,String)",Method,"getWordIds(FullTextSettings,Object[]) search(Connection,String,int,int,boolean)",,"java.util.StringTokenizer+StringTokenizer(String,String) java.util.StringTokenizer+hasMoreTokens() java.util.StringTokenizer+hasMoreTokens() java.util.StringTokenizer+nextToken() java.util.StringTokenizer+nextToken() org.h2.fulltext.FullTextSettings+convertWord(String) org.h2.fulltext.FullTextSettings+convertWord(String) java.util.HashSet+add(E) java.util.HashSet+add(E)",,419,10,10,,"private static void addWords(FullTextSettings setting, HashSet set, String text) {
+        StringTokenizer tokenizer = new StringTokenizer(text, "" \t\n\r\f+\""*%&/()=?'!,.;:-_#@|^~`{}[]"");
+        while (tokenizer.hasMoreTokens()) {
+            String word = tokenizer.nextToken();
+            word = setting.convertWord(word);
+            if (word != null) {
+                set.add(word);
+            }
+        }
+    }",True
+37,"getWordIds(FullTextSettings,Object[])",Method,"insert(FullTextSettings,Object[]) delete(FullTextSettings,Object[])",,"java.util.HashSet+HashSet() org.h2.fulltext.FullText+asString(Object,int) org.h2.fulltext.FullText+asString(Object,int) org.h2.fulltext.FullText+addWords(FullTextSettings,HashSet,String) org.h2.fulltext.FullText+addWords(FullTextSettings,HashSet,String) org.h2.fulltext.FullTextSettings+getWordList() org.h2.fulltext.FullTextSettings+getWordList() java.util.HashSet+size() java.util.HashSet+size() java.util.HashSet+iterator() java.util.HashSet+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.Iterator+next() java.util.Iterator+next() java.util.HashMap+get(Object) java.util.HashMap+get(Object) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+execute() java.sql.PreparedStatement+execute() org.h2.util.JdbcUtils+getGeneratedKeys(Statement) org.h2.util.JdbcUtils+getGeneratedKeys(Statement) java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getInt(int) java.sql.ResultSet+getInt(int) java.util.HashMap+put(K,V) java.util.HashMap+put(K,V) org.h2.util.ObjectUtils+getInteger(int) org.h2.util.ObjectUtils+getInteger(int) java.lang.Integer+intValue() java.lang.Integer+intValue() java.util.Arrays+sort(int[]) java.util.Arrays+sort(int[])",org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+indexColumns org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+indexColumns org.h2.fulltext.FullText+dataTypes org.h2.fulltext.FullText+prepInsertWord org.h2.fulltext.FullText+prepInsertWord org.h2.fulltext.FullText+prepInsertWord,1168,29,2,,"private int[] getWordIds(FullTextSettings setting, Object[] row) throws SQLException {
+        HashSet words = new HashSet();
+        for (int i = 0; i < index.indexColumns.length; i++) {
+            int idx = index.indexColumns[i];
+            String data = asString(row[idx], dataTypes[idx]);
+            addWords(setting, words, data);
+        }
+        HashMap allWords = setting.getWordList();
+        int[] wordIds = new int[words.size()];
+        Iterator it = words.iterator();
+        for (int i = 0; it.hasNext(); i++) {
+            String word = (String) it.next();
+            Integer wId = (Integer) allWords.get(word);
+            int wordId;
+            if (wId == null) {
+                prepInsertWord.setString(1, word);
+                prepInsertWord.execute();
+                ResultSet rs = JdbcUtils.getGeneratedKeys(prepInsertWord);
+                rs.next();
+                wordId = rs.getInt(1);
+                allWords.put(word, ObjectUtils.getInteger(wordId));
+            } else {
+                wordId = wId.intValue();
+            }
+            wordIds[i] = wordId;
+        }
+        Arrays.sort(wordIds);
+        return wordIds;
+    }",True
+38,"insert(FullTextSettings,Object[])",Method,"fire(Connection,Object[],Object[])",,"org.h2.fulltext.FullText+getKey(Object[]) org.h2.fulltext.FullText+getKey(Object[]) java.lang.String+hashCode() java.lang.String+hashCode() java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+execute() java.sql.PreparedStatement+execute() org.h2.util.JdbcUtils+getGeneratedKeys(Statement) org.h2.util.JdbcUtils+getGeneratedKeys(Statement) java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getInt(int) java.sql.ResultSet+getInt(int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) org.h2.fulltext.FullText+getWordIds(FullTextSettings,Object[]) org.h2.fulltext.FullText+getWordIds(FullTextSettings,Object[]) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+execute() java.sql.PreparedStatement+execute()",org.h2.fulltext.FullText+prepInsertRow org.h2.fulltext.FullText+prepInsertRow org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+id org.h2.fulltext.FullText+prepInsertRow org.h2.fulltext.FullText+prepInsertRow org.h2.fulltext.FullText+prepInsertRow org.h2.fulltext.FullText+prepInsertMap org.h2.fulltext.FullText+prepInsertMap org.h2.fulltext.FullText+prepInsertMap,668,17,2,,"private void insert(FullTextSettings setting, Object[] row) throws SQLException {
+        String key = getKey(row);
+        int hash = key.hashCode();
+        prepInsertRow.setInt(1, hash);
+        prepInsertRow.setInt(2, index.id);
+        prepInsertRow.setString(3, key);
+        prepInsertRow.execute();
+        ResultSet rs = JdbcUtils.getGeneratedKeys(prepInsertRow);
+        rs.next();
+        int rowId = rs.getInt(1);
+        prepInsertMap.setInt(1, rowId);
+        int[] wordIds = getWordIds(setting, row);
+        for (int i = 0; i < wordIds.length; i++) {
+            prepInsertMap.setInt(2, wordIds[i]);
+            prepInsertMap.execute();
+        }
+    }",True
+39,"delete(FullTextSettings,Object[])",Method,"fire(Connection,Object[],Object[])",,"org.h2.fulltext.FullText+getKey(Object[]) org.h2.fulltext.FullText+getKey(Object[]) java.lang.String+hashCode() java.lang.String+hashCode() java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getInt(int) java.sql.ResultSet+getInt(int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) org.h2.fulltext.FullText+getWordIds(FullTextSettings,Object[]) org.h2.fulltext.FullText+getWordIds(FullTextSettings,Object[]) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+executeUpdate() java.sql.PreparedStatement+executeUpdate() java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+setString(int,String) java.sql.PreparedStatement+executeUpdate() java.sql.PreparedStatement+executeUpdate()",org.h2.fulltext.FullText+prepSelectRow org.h2.fulltext.FullText+prepSelectRow org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+id org.h2.fulltext.FullText+prepSelectRow org.h2.fulltext.FullText+prepSelectRow org.h2.fulltext.FullText+prepDeleteMap org.h2.fulltext.FullText+prepDeleteMap org.h2.fulltext.FullText+prepDeleteMap org.h2.fulltext.FullText+prepDeleteRow org.h2.fulltext.FullText+prepDeleteRow org.h2.fulltext.FullText+index org.h2.fulltext.IndexInfo+id org.h2.fulltext.FullText+prepDeleteRow org.h2.fulltext.FullText+prepDeleteRow,850,21,2,,"private void delete(FullTextSettings setting, Object[] row) throws SQLException {
+        String key = getKey(row);
+        int hash = key.hashCode();
+        prepSelectRow.setInt(1, hash);
+        prepSelectRow.setInt(2, index.id);
+        prepSelectRow.setString(3, key);
+        ResultSet rs = prepSelectRow.executeQuery();
+        if (rs.next()) {
+            int rowId = rs.getInt(1);
+            prepDeleteMap.setInt(1, rowId);
+            int[] wordIds = getWordIds(setting, row);
+            for (int i = 0; i < wordIds.length; i++) {
+                prepDeleteMap.setInt(2, wordIds[i]);
+                prepDeleteMap.executeUpdate();
+            }
+            prepDeleteRow.setInt(1, hash);
+            prepDeleteRow.setInt(2, index.id);
+            prepDeleteRow.setString(3, key);
+            prepDeleteRow.executeUpdate();
+        }
+    }",True
+40,"searchData(Connection,String,int,int)",Method,,,"org.h2.fulltext.FullText+search(Connection,String,int,int,boolean) org.h2.fulltext.FullText+search(Connection,String,int,int,boolean)",,992,22,9,"/** 
+ * Searches from the full text index for this database. The result contains the primary key data as an array. The returned result set has the following columns: <ul> <li>SCHEMA (varchar): The schema name. Example: PUBLIC </li> <li>TABLE (varchar): The table name. Example: TEST </li> <li>COLUMNS (array of varchar): Comma separated list of quoted column names. The column names are quoted if necessary. Example: (ID) </li> <li>KEYS (array of values): Comma separated list of values. Example: (1) </li> </ul>
+ * @param conn the connection
+ * @param text the search query
+ * @param limit the maximum number of rows or 0 for no limit
+ * @param offset the offset or 0 for no offset
+ * @return the result set
+ */
+","/**
+     * Searches from the full text index for this database. The result contains
+     * the primary key data as an array. The returned result set has the
+     * following columns:
+     * <ul>
+     * <li>SCHEMA (varchar): The schema name. Example: PUBLIC </li>
+     * <li>TABLE (varchar): The table name. Example: TEST </li>
+     * <li>COLUMNS (array of varchar): Comma separated list of quoted column
+     * names. The column names are quoted if necessary. Example: (ID) </li>
+     * <li>KEYS (array of values): Comma separated list of values. Example: (1)
+     * </li>
+     * </ul>
+     *
+     * @param conn the connection
+     * @param text the search query
+     * @param limit the maximum number of rows or 0 for no limit
+     * @param offset the offset or 0 for no offset
+     * @return the result set
+     */
+    public static ResultSet searchData(Connection conn, String text, int limit, int offset) throws SQLException {
+        return search(conn, text, limit, offset, true);
+    }",True
+41,"search(Connection,String,int,int)",Method,,,"org.h2.fulltext.FullText+search(Connection,String,int,int,boolean) org.h2.fulltext.FullText+search(Connection,String,int,int,boolean)",,701,17,9,"/** 
+ * Searches from the full text index for this database. The returned result set has the following column: <ul><li>QUERY (varchar): The query to use to get the data. The query does not include 'SELECT * FROM '. Example: PUBLIC.TEST WHERE ID = 1 </li></ul>
+ * @param conn the connection
+ * @param text the search query
+ * @param limit the maximum number of rows or 0 for no limit
+ * @param offset the offset or 0 for no offset
+ * @return the result set
+ */
+","/**
+     * Searches from the full text index for this database.
+     * The returned result set has the following column:
+     * <ul><li>QUERY (varchar): The query to use to get the data.
+     * The query does not include 'SELECT * FROM '. Example:
+     * PUBLIC.TEST WHERE ID = 1
+     * </li></ul>
+     *
+     * @param conn the connection
+     * @param text the search query
+     * @param limit the maximum number of rows or 0 for no limit
+     * @param offset the offset or 0 for no offset
+     * @return the result set
+     */
+    public static ResultSet search(Connection conn, String text, int limit, int offset) throws SQLException {
+        return search(conn, text, limit, offset, false);
+    }",True
+42,createResultSet(boolean),Method,"search(Connection,String,int,int,boolean)","org.h2.fulltext.FullTextLucene+search(Connection,String,int,int,boolean)","org.h2.tools.SimpleResultSet+SimpleResultSet() org.h2.tools.SimpleResultSet+addColumn(String,int,int,int) org.h2.tools.SimpleResultSet+addColumn(String,int,int,int) org.h2.tools.SimpleResultSet+addColumn(String,int,int,int) org.h2.tools.SimpleResultSet+addColumn(String,int,int,int) org.h2.tools.SimpleResultSet+addColumn(String,int,int,int) org.h2.tools.SimpleResultSet+addColumn(String,int,int,int) org.h2.tools.SimpleResultSet+addColumn(String,int,int,int) org.h2.tools.SimpleResultSet+addColumn(String,int,int,int) org.h2.tools.SimpleResultSet+addColumn(String,int,int,int) org.h2.tools.SimpleResultSet+addColumn(String,int,int,int)",org.h2.fulltext.FullText+FIELD_SCHEMA java.sql.Types+VARCHAR org.h2.fulltext.FullText+FIELD_TABLE java.sql.Types+VARCHAR org.h2.fulltext.FullText+FIELD_COLUMNS java.sql.Types+ARRAY org.h2.fulltext.FullText+FIELD_KEYS java.sql.Types+ARRAY org.h2.fulltext.FullText+FIELD_QUERY java.sql.Types+VARCHAR,802,19,8,"/** 
+ * Create an empty search result and initialize the columns.
+ * @param data true if the result set should contain the primary key data asan array.
+ * @return the empty result set
+ */
+","/**
+     * Create an empty search result and initialize the columns.
+     *
+     * @param data true if the result set should contain the primary key data as
+     *            an array.
+     * @return the empty result set
+     */
+    static SimpleResultSet createResultSet(boolean data) throws SQLException {
+        SimpleResultSet result = new SimpleResultSet();
+        if (data) {
+            result.addColumn(FullText.FIELD_SCHEMA, Types.VARCHAR, 0, 0);
+            result.addColumn(FullText.FIELD_TABLE, Types.VARCHAR, 0, 0);
+            result.addColumn(FullText.FIELD_COLUMNS, Types.ARRAY, 0, 0);
+            result.addColumn(FullText.FIELD_KEYS, Types.ARRAY, 0, 0);
+        } else {
+            result.addColumn(FullText.FIELD_QUERY, Types.VARCHAR, 0, 0);
+        }
+        return result;
+    }",False
+43,"search(Connection,String,int,int,boolean)",Method,"searchData(Connection,String,int,int) search(Connection,String,int,int)",,"org.h2.fulltext.FullText+createResultSet(boolean) org.h2.fulltext.FullText+createResultSet(boolean) java.lang.String+startsWith(String) java.sql.DatabaseMetaData+getURL() java.sql.Connection+getMetaData() java.sql.Connection+getMetaData() java.sql.DatabaseMetaData+getURL() java.lang.String+startsWith(String) org.h2.fulltext.FullTextSettings+getInstance(Connection) org.h2.fulltext.FullTextSettings+getInstance(Connection) java.util.HashSet+HashSet() org.h2.fulltext.FullText+addWords(FullTextSettings,HashSet,String) org.h2.fulltext.FullText+addWords(FullTextSettings,HashSet,String) org.h2.fulltext.FullTextSettings+getWordList() org.h2.fulltext.FullTextSettings+getWordList() org.h2.fulltext.FullTextSettings+getPrepSelectMapByWordId() org.h2.fulltext.FullTextSettings+getPrepSelectMapByWordId() java.util.HashSet+iterator() java.util.HashSet+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.util.HashSet+HashSet() java.util.Iterator+next() java.util.Iterator+next() java.util.HashMap+get(Object) java.util.HashMap+get(Object) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.lang.Integer+intValue() java.lang.Integer+intValue() java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() org.h2.util.ObjectUtils+getInteger(int) org.h2.util.ObjectUtils+getInteger(int) java.sql.ResultSet+getInt(int) java.sql.ResultSet+getInt(int) java.util.HashSet+contains(Object) java.util.HashSet+contains(Object) java.util.HashSet+add(E) java.util.HashSet+add(E) java.util.HashSet+size() java.util.HashSet+size() org.h2.fulltext.FullTextSettings+getPrepSelectRowById() org.h2.fulltext.FullTextSettings+getPrepSelectRowById() java.util.HashSet+iterator() java.util.HashSet+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.lang.Integer+intValue() java.util.Iterator+next() java.util.Iterator+next() java.lang.Integer+intValue() java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+setInt(int,int) java.sql.PreparedStatement+executeQuery() java.sql.PreparedStatement+executeQuery() java.sql.ResultSet+next() java.sql.ResultSet+next() java.sql.ResultSet+getString(int) java.sql.ResultSet+getString(int) java.sql.ResultSet+getInt(int) java.sql.ResultSet+getInt(int) org.h2.fulltext.FullTextSettings+getIndexInfo(long) org.h2.fulltext.FullTextSettings+getIndexInfo(long) org.h2.fulltext.FullText+parseKey(Connection,String) org.h2.fulltext.FullText+parseKey(Connection,String) org.h2.tools.SimpleResultSet+addRow(Object[]) org.h2.tools.SimpleResultSet+addRow(Object[]) java.lang.StringBuffer+StringBuffer() java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(char) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) org.h2.util.StringUtils+quoteIdentifier(String) org.h2.util.StringUtils+quoteIdentifier(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+append(String) java.lang.StringBuffer+toString() java.lang.StringBuffer+toString() org.h2.tools.SimpleResultSet+addRow(Object[]) org.h2.tools.SimpleResultSet+addRow(Object[])",org.h2.fulltext.IndexInfo+schemaName org.h2.fulltext.IndexInfo+tableName org.h2.fulltext.IndexInfo+schemaName org.h2.fulltext.IndexInfo+tableName,3113,75,10,,"private static ResultSet search(Connection conn, String text, int limit, int offset, boolean data) throws SQLException {
+        SimpleResultSet result = createResultSet(data);
+        if (conn.getMetaData().getURL().startsWith(""jdbc:columnlist:"")) {
+            // this is just to query the result set columns
+            return result;
+        }
+        FullTextSettings setting = FullTextSettings.getInstance(conn);
+        HashSet words = new HashSet();
+        addWords(setting, words, text);
+        HashSet rIds = null, lastRowIds = null;
+        HashMap allWords = setting.getWordList();
+
+        PreparedStatement prepSelectMapByWordId = setting.getPrepSelectMapByWordId();
+        for (Iterator it = words.iterator(); it.hasNext();) {
+            lastRowIds = rIds;
+            rIds = new HashSet();
+            String word = (String) it.next();
+            Integer wId = (Integer) allWords.get(word);
+            if (wId == null) {
+                continue;
+            }
+            prepSelectMapByWordId.setInt(1, wId.intValue());
+            ResultSet rs = prepSelectMapByWordId.executeQuery();
+            while (rs.next()) {
+                Integer rId = ObjectUtils.getInteger(rs.getInt(1));
+                if (lastRowIds == null || lastRowIds.contains(rId)) {
+                    rIds.add(rId);
+                }
+            }
+        }
+        if (rIds == null || rIds.size() == 0) {
+            return result;
+        }
+        PreparedStatement prepSelectRowById = setting.getPrepSelectRowById();
+        int rowCount = 0;
+        for (Iterator it = rIds.iterator(); it.hasNext();) {
+            int rowId = ((Integer) it.next()).intValue();
+            prepSelectRowById.setInt(1, rowId);
+            ResultSet rs = prepSelectRowById.executeQuery();
+            if (!rs.next()) {
+                continue;
+            }
+            if (offset > 0) {
+                offset--;
+            } else {
+                String key = rs.getString(1);
+                int indexId = rs.getInt(2);
+                IndexInfo index = setting.getIndexInfo(indexId);
+                if (data) {
+                    Object[][] columnData = parseKey(conn, key);
+                    Object[] row = new Object[] {
+                        index.schemaName,
+                        index.tableName,
+                        columnData[0],
+                        columnData[1]
+                    };
+                    result.addRow(row);
+                } else {
+                    StringBuffer buff = new StringBuffer();
+                    buff.append(StringUtils.quoteIdentifier(index.schemaName));
+                    buff.append('.');
+                    buff.append(StringUtils.quoteIdentifier(index.tableName));
+                    buff.append("" WHERE "");
+                    buff.append(key);
+                    String query = buff.toString();
+                    result.addRow(new String[] { query });
+                }
+                rowCount++;
+                if (limit > 0 && rowCount >= limit) {
+                    break;
+                }
+            }
+        }
+        return result;
+    }",False
+44,"parseKey(Connection,String)",Method,"search(Connection,String,int,int,boolean)","org.h2.fulltext.FullTextLucene+search(Connection,String,int,int,boolean)","java.util.ArrayList+ArrayList() java.util.ArrayList+ArrayList() org.h2.jdbc.JdbcConnection+getSession() org.h2.jdbc.JdbcConnection+getSession() org.h2.command.Parser+Parser(Session) org.h2.command.Parser+parseExpression(String) org.h2.command.Parser+parseExpression(String) org.h2.fulltext.FullText+addColumnData(ArrayList,ArrayList,Expression) org.h2.fulltext.FullText+addColumnData(ArrayList,ArrayList,Expression) java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+toArray(T[]) java.util.ArrayList+toArray(T[]) java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+toArray(T[]) java.util.ArrayList+toArray(T[])",,940,24,8,"/** 
+ * Parse a primary key condition into the primary key columns.
+ * @param conn the database connection
+ * @param key the primary key condition as a string
+ * @return an array containing the column name list and the data list
+ */
+","/**
+     * Parse a primary key condition into the primary key columns.
+     *
+     * @param conn the database connection
+     * @param key the primary key condition as a string
+     * @return an array containing the column name list and the data list
+     */
+    static Object[][] parseKey(Connection conn, String key) throws SQLException {
+        ArrayList columns = new ArrayList();
+        ArrayList data = new ArrayList();
+        JdbcConnection c = (JdbcConnection) conn;
+        Session session = (Session) c.getSession();
+        Parser p = new Parser(session);
+        Expression expr = p.parseExpression(key);
+        addColumnData(columns, data, expr);
+        Object[] col = new Object[columns.size()];
+        columns.toArray(col);
+        Object[] dat = new Object[columns.size()];
+        data.toArray(dat);
+        Object[][] columnData = new Object[][] {
+                col, dat
+        };
+        return columnData;
+    }",False
+45,"addColumnData(ArrayList,ArrayList,Expression)",Method,"parseKey(Connection,String) addColumnData(ArrayList,ArrayList,Expression) addColumnData(ArrayList,ArrayList,Expression)",,"org.h2.expression.ConditionAndOr+getExpression(boolean) org.h2.expression.ConditionAndOr+getExpression(boolean) org.h2.expression.ConditionAndOr+getExpression(boolean) org.h2.expression.ConditionAndOr+getExpression(boolean) org.h2.fulltext.FullText+addColumnData(ArrayList,ArrayList,Expression) org.h2.fulltext.FullText+addColumnData(ArrayList,ArrayList,Expression) org.h2.fulltext.FullText+addColumnData(ArrayList,ArrayList,Expression) org.h2.fulltext.FullText+addColumnData(ArrayList,ArrayList,Expression) org.h2.expression.Comparison+getExpression(boolean) org.h2.expression.Comparison+getExpression(boolean) org.h2.expression.Comparison+getExpression(boolean) org.h2.expression.Comparison+getExpression(boolean) org.h2.expression.ExpressionColumn+getColumnName() org.h2.expression.ExpressionColumn+getColumnName() java.util.ArrayList+add(E) java.util.ArrayList+add(E) java.util.ArrayList+add(E) java.util.ArrayList+add(E) java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.value.Value+getString() org.h2.expression.ValueExpression+getValue(Session) org.h2.expression.ValueExpression+getValue(Session) org.h2.value.Value+getString()",,880,20,10,,"private static void addColumnData(ArrayList columns, ArrayList data, Expression expr) {
+        if (expr instanceof ConditionAndOr) {
+            ConditionAndOr and = (ConditionAndOr) expr;
+            Expression left = and.getExpression(true);
+            Expression right = and.getExpression(false);
+            addColumnData(columns, data, left);
+            addColumnData(columns, data, right);
+        } else {
+            Comparison comp = (Comparison) expr;
+            ExpressionColumn ec = (ExpressionColumn) comp.getExpression(true);
+            ValueExpression ev = (ValueExpression) comp.getExpression(false);
+            String columnName = ec.getColumnName();
+            columns.add(columnName);
+            if (ev == null) {
+                data.add(null);
+            } else {
+                data.add(ev.getValue(null).getString());
+            }
+        }
+    }",False
+46,close(),Method,,,org.h2.fulltext.FullTextSettings+removeIndexInfo(IndexInfo) org.h2.fulltext.FullTextSettings+removeIndexInfo(IndexInfo),org.h2.fulltext.FullText+setting org.h2.fulltext.FullText+index,119,6,1,"/** 
+ * INTERNAL
+ */
+","/**
+     * INTERNAL
+     */
+    public void close() throws SQLException {
+        setting.removeIndexInfo(index);
+    }",True
+47,remove(),Method,,,org.h2.fulltext.FullTextSettings+removeIndexInfo(IndexInfo) org.h2.fulltext.FullTextSettings+removeIndexInfo(IndexInfo),org.h2.fulltext.FullText+setting org.h2.fulltext.FullText+index,120,6,1,"/** 
+ * INTERNAL
+ */
+","/**
+     * INTERNAL
+     */
+    public void remove() throws SQLException {
+        setting.removeIndexInfo(index);
+    }",True

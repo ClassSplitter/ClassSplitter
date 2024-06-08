@@ -1,0 +1,490 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,BLOCK_COMPARISON_SIZE,Field,,,,,53,1,26,,private static final int BLOCK_COMPARISON_SIZE = 512;,False
+2,"rangeCheckUnknown(long,long)",Method,"rangeInputStream(InputStream,long,long,long) rangeReader(Reader,long,long,long)",,"org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object)",,322,8,10,,"private static void rangeCheckUnknown(long zeroBasedOffset, long length) {
+        if (zeroBasedOffset < 0) {
+            throw DbException.getInvalidValueException(""offset"", zeroBasedOffset + 1);
+        }
+        if (length < 0) {
+            throw DbException.getInvalidValueException(""length"", length);
+        }
+    }",False
+3,"rangeInputStream(InputStream,long,long,long)",Method,,"org.h2.value.ValueLobDatabase+getInputStream(long,long) org.h2.value.ValueLobFetchOnDemand+getInputStream(long,long) org.h2.value.ValueLobFile+getInputStream(long,long) org.h2.value.ValueLobInMemory+getInputStream(long,long)","org.h2.value.Value+rangeCheck(long,long,long) org.h2.value.Value+rangeCheck(long,long,long) org.h2.value.ValueLob+rangeCheckUnknown(long,long) org.h2.value.ValueLob+rangeCheckUnknown(long,long) org.h2.store.RangeInputStream+RangeInputStream(InputStream,long,long) org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object)",,891,22,12,"/** 
+ * Create an input stream that is s subset of the given stream.
+ * @param inputStream the source input stream
+ * @param oneBasedOffset the offset (1 means no offset)
+ * @param length the length of the result, in bytes
+ * @param dataSize the length of the input, in bytes
+ * @return the smaller input stream
+ */
+","/**
+     * Create an input stream that is s subset of the given stream.
+     *
+     * @param inputStream the source input stream
+     * @param oneBasedOffset the offset (1 means no offset)
+     * @param length the length of the result, in bytes
+     * @param dataSize the length of the input, in bytes
+     * @return the smaller input stream
+     */
+    protected static InputStream rangeInputStream(InputStream inputStream, long oneBasedOffset, long length,
+            long dataSize) {
+        if (dataSize > 0) {
+            rangeCheck(oneBasedOffset - 1, length, dataSize);
+        } else {
+            rangeCheckUnknown(oneBasedOffset - 1, length);
+        }
+        try {
+            return new RangeInputStream(inputStream, oneBasedOffset - 1, length);
+        } catch (IOException e) {
+            throw DbException.getInvalidValueException(""offset"", oneBasedOffset);
+        }
+    }",False
+4,"rangeReader(Reader,long,long,long)",Method,"getReader(long,long)",,"org.h2.value.Value+rangeCheck(long,long,long) org.h2.value.Value+rangeCheck(long,long,long) org.h2.value.ValueLob+rangeCheckUnknown(long,long) org.h2.value.ValueLob+rangeCheckUnknown(long,long) org.h2.store.RangeReader+RangeReader(Reader,long,long) org.h2.message.DbException+getInvalidValueException(String,Object) org.h2.message.DbException+getInvalidValueException(String,Object)",,828,21,10,"/** 
+ * Create a reader that is s subset of the given reader.
+ * @param reader the input reader
+ * @param oneBasedOffset the offset (1 means no offset)
+ * @param length the length of the result, in bytes
+ * @param dataSize the length of the input, in bytes
+ * @return the smaller input stream
+ */
+","/**
+     * Create a reader that is s subset of the given reader.
+     *
+     * @param reader the input reader
+     * @param oneBasedOffset the offset (1 means no offset)
+     * @param length the length of the result, in bytes
+     * @param dataSize the length of the input, in bytes
+     * @return the smaller input stream
+     */
+    private static Reader rangeReader(Reader reader, long oneBasedOffset, long length, long dataSize) {
+        if (dataSize > 0) {
+            rangeCheck(oneBasedOffset - 1, length, dataSize);
+        } else {
+            rangeCheckUnknown(oneBasedOffset - 1, length);
+        }
+        try {
+            return new RangeReader(reader, oneBasedOffset - 1, length);
+        } catch (IOException e) {
+            throw DbException.getInvalidValueException(""offset"", oneBasedOffset);
+        }
+    }",False
+5,"compare(ValueLob,ValueLob)",Method,"compareTypeSafe(Value,CompareMode,CastDataProvider)","org.h2.value.ValueLobDatabase+compareTypeSafe(Value,CompareMode,CastDataProvider) org.h2.value.ValueLobFetchOnDemand+compareTypeSafe(Value,CompareMode,CastDataProvider) org.h2.value.ValueLobInMemory+compareTypeSafe(Value,CompareMode,CastDataProvider)",,,3126,71,12,"/** 
+ * Compares LOBs of the same type.
+ * @param v1 first LOB value
+ * @param v2 second LOB value
+ * @return result of comparison
+ */
+","/**
+     * Compares LOBs of the same type.
+     *
+     * @param v1 first LOB value
+     * @param v2 second LOB value
+     * @return result of comparison
+     */
+    protected static int compare(ValueLob v1, ValueLob v2) {
+        int valueType = v1.getValueType();
+        assert valueType == v2.getValueType();
+        long minPrec = Math.min(v1.getType().getPrecision(), v2.getType().getPrecision());
+        if (valueType == Value.BLOB) {
+            try (InputStream is1 = v1.getInputStream(); InputStream is2 = v2.getInputStream()) {
+                byte[] buf1 = new byte[BLOCK_COMPARISON_SIZE];
+                byte[] buf2 = new byte[BLOCK_COMPARISON_SIZE];
+                for (; minPrec >= BLOCK_COMPARISON_SIZE; minPrec -= BLOCK_COMPARISON_SIZE) {
+                    if (IOUtils.readFully(is1, buf1, BLOCK_COMPARISON_SIZE) != BLOCK_COMPARISON_SIZE
+                            || IOUtils.readFully(is2, buf2, BLOCK_COMPARISON_SIZE) != BLOCK_COMPARISON_SIZE) {
+                        throw DbException.getUnsupportedException(""Invalid LOB"");
+                    }
+                    int cmp = Bits.compareNotNullUnsigned(buf1, buf2);
+                    if (cmp != 0) {
+                        return cmp;
+                    }
+                }
+                for (;;) {
+                    int c1 = is1.read(), c2 = is2.read();
+                    if (c1 < 0) {
+                        return c2 < 0 ? 0 : -1;
+                    }
+                    if (c2 < 0) {
+                        return 1;
+                    }
+                    if (c1 != c2) {
+                        return (c1 & 0xFF) < (c2 & 0xFF) ? -1 : 1;
+                    }
+                }
+            } catch (IOException ex) {
+                throw DbException.convert(ex);
+            }
+        } else {
+            try (Reader reader1 = v1.getReader(); Reader reader2 = v2.getReader()) {
+                char[] buf1 = new char[BLOCK_COMPARISON_SIZE];
+                char[] buf2 = new char[BLOCK_COMPARISON_SIZE];
+                for (; minPrec >= BLOCK_COMPARISON_SIZE; minPrec -= BLOCK_COMPARISON_SIZE) {
+                    if (IOUtils.readFully(reader1, buf1, BLOCK_COMPARISON_SIZE) != BLOCK_COMPARISON_SIZE
+                            || IOUtils.readFully(reader2, buf2, BLOCK_COMPARISON_SIZE) != BLOCK_COMPARISON_SIZE) {
+                        throw DbException.getUnsupportedException(""Invalid LOB"");
+                    }
+                    int cmp = Bits.compareNotNull(buf1, buf2);
+                    if (cmp != 0) {
+                        return cmp;
+                    }
+                }
+                for (;;) {
+                    int c1 = reader1.read(), c2 = reader2.read();
+                    if (c1 < 0) {
+                        return c2 < 0 ? 0 : -1;
+                    }
+                    if (c2 < 0) {
+                        return 1;
+                    }
+                    if (c1 != c2) {
+                        return c1 < c2 ? -1 : 1;
+                    }
+                }
+            } catch (IOException ex) {
+                throw DbException.convert(ex);
+            }
+        }
+    }",True
+6,valueType,Field,"ValueLob(int,long)","org.h2.value.ValueLobFetchOnDemand+getInputStream(long,long)",,,89,4,20,"/** 
+ * the value type (Value.BLOB or CLOB)
+ */
+","/**
+     * the value type (Value.BLOB or CLOB)
+     */
+    protected final int valueType;",False
+7,type,Field,getType() getType(),,,,22,1,2,,private TypeInfo type;,False
+8,precision,Field,"ValueLob(int,long)","org.h2.value.ValueLobDatabase+convertPrecision(long) org.h2.value.ValueLobFetchOnDemand+convertPrecision(long) org.h2.value.ValueLobFile+ValueLobFile(DataHandler,Reader,long) org.h2.value.ValueLobFile+ValueLobFile(DataHandler,byte[],int,InputStream,long) org.h2.value.ValueLobInMemory+convertPrecision(long)",,,149,5,4,"/** 
+ * Length in characters for character large objects or length in bytes for binary large objects.
+ */
+","/**
+     * Length in characters for character large objects or length in bytes for
+     * binary large objects.
+     */
+    protected long precision;",False
+9,otherPrecision,Field,,,,,159,5,64,"/** 
+ * Length in characters for binary large objects or length in bytes for character large objects.
+ */
+","/**
+     * Length in characters for binary large objects or length in bytes for
+     * character large objects.
+     */
+    volatile long otherPrecision = -1L;",False
+10,hash,Field,,,,,99,4,2,"/** 
+ * Cache the hashCode because it can be expensive to compute.
+ */
+","/**
+     * Cache the hashCode because it can be expensive to compute.
+     */
+    private int hash;",False
+11,"ValueLob(int,long)",Method,,,,org.h2.value.ValueLob+valueType org.h2.value.ValueLob+valueType org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision,119,4,4,,"protected ValueLob(int type, long precision) {
+        this.valueType = type;
+        this.precision = precision;
+    }",False
+12,isLinkedToTable(),Method,,org.h2.engine.SessionLocal+removeAtCommit(ValueLob) org.h2.engine.SessionLocal+removeAtCommitStop(ValueLob),,,248,9,1,"/** 
+ * Check if this value is linked to a specific table. For values that are kept fully in memory, this method returns false.
+ * @return true if it is
+ */
+","/**
+     * Check if this value is linked to a specific table. For values that are
+     * kept fully in memory, this method returns false.
+     *
+     * @return true if it is
+     */
+    public boolean isLinkedToTable() {
+        return false;
+    }",False
+13,remove(),Method,,"org.h2.command.CommandRemote+close() org.h2.engine.SessionLocal+setVariable(String,Value) org.h2.engine.SessionLocal+endTransaction(boolean) org.h2.expression.ParameterRemote+setValue(Value,boolean) org.h2.value.ValueLobInMemory+copy(DataHandler,int)",,,161,5,1,"/** 
+ * Remove the underlying resource, if any. For values that are kept fully in memory this method has no effect.
+ */
+","/**
+     * Remove the underlying resource, if any. For values that are kept fully in
+     * memory this method has no effect.
+     */
+    public void remove() {}",False
+14,"copy(DataHandler,int)",Method,,"org.h2.engine.SessionLocal+setVariable(String,Value) org.h2.mvstore.db.MVPrimaryIndex+add(SessionLocal,Row) org.h2.value.ValueLobInMemory+copy(DataHandler,int)",java.lang.UnsupportedOperationException+UnsupportedOperationException(),,407,11,1,"/** 
+ * Copy a large value, to be used in the given table. For values that are kept fully in memory this method has no effect.
+ * @param database the data handler
+ * @param tableId the table where this object is used
+ * @return the new value or itself
+ */
+","/**
+     * Copy a large value, to be used in the given table. For values that are
+     * kept fully in memory this method has no effect.
+     *
+     * @param database the data handler
+     * @param tableId the table where this object is used
+     * @return the new value or itself
+     */
+    public ValueLob copy(DataHandler database, int tableId) {
+        throw new UnsupportedOperationException();
+    }",True
+15,getType(),Method,,"org.h2.mvstore.db.LobStorageMap+copyLob(ValueLob,int,long) org.h2.mvstore.db.ValueDataType+write(WriteBuffer,Value) org.h2.tools.Recover+getSQL(StringBuilder,String,Value) org.h2.value.Transfer+writeValue(Value) org.h2.value.Transfer+writeValue(Value)","org.h2.value.TypeInfo+TypeInfo(int,long,int,ExtTypeInfo)",org.h2.value.ValueLob+type org.h2.value.ValueLob+type org.h2.value.ValueLob+type org.h2.value.ValueLob+type org.h2.value.ValueLob+valueType org.h2.value.ValueLob+precision,217,8,1,,"@Override
+    public TypeInfo getType() {
+        TypeInfo type = this.type;
+        if (type == null) {
+            this.type = type = new TypeInfo(valueType, precision, 0, null);
+        }
+        return type;
+    }",False
+16,getValueType(),Method,,"org.h2.mvstore.db.LobStorageMap+copyLob(ValueLob,int,long) org.h2.pagestore.db.LobStorageBackend+copyLob(ValueLob,int,long) org.h2.tools.Recover+getSQL(StringBuilder,String,Value) org.h2.util.JdbcUtils+setLob(PreparedStatement,int,ValueLob)",,org.h2.value.ValueLob+valueType,73,4,1,,"@Override
+    public int getValueType() {
+        return valueType;
+    }",True
+17,getString(),Method,"getSQL(StringBuilder,int) getSQL(StringBuilder,int)",,org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+charLength() org.h2.value.ValueLob+charLength() org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+readString(int) java.lang.String+length() java.lang.String+length() org.h2.value.ValueLob+getStringTooLong(long) org.h2.value.ValueLob+getStringTooLong(long),org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.value.ValueLob+precision org.h2.engine.Constants+MAX_STRING_LENGTH org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+otherPrecision org.h2.engine.Constants+MAX_STRING_LENGTH org.h2.value.ValueLob+precision org.h2.engine.Constants+MAX_STRING_LENGTH java.lang.Integer+MAX_VALUE org.h2.value.ValueLob+otherPrecision org.h2.engine.Constants+MAX_STRING_LENGTH,862,26,1,,"@Override
+    public String getString() {
+        if (valueType == CLOB) {
+            if (precision > Constants.MAX_STRING_LENGTH) {
+                throw getStringTooLong(precision);
+            }
+            return readString((int) precision);
+        }
+        long p = otherPrecision;
+        if (p >= 0L) {
+            if (p > Constants.MAX_STRING_LENGTH) {
+                throw getStringTooLong(p);
+            }
+            return readString((int) p);
+        }
+        // 1 Java character may be encoded with up to 3 bytes
+        if (precision > Constants.MAX_STRING_LENGTH * 3) {
+            throw getStringTooLong(charLength());
+        }
+        String s = readString(Integer.MAX_VALUE);
+        otherPrecision = p = s.length();
+        if (p > Constants.MAX_STRING_LENGTH) {
+            throw getStringTooLong(p);
+        }
+        return s;
+    }",True
+18,getStringTooLong(long),Method,getString() getString() getString() getString(),,"org.h2.message.DbException+getValueTooLongException(String,String,long) org.h2.message.DbException+getValueTooLongException(String,String,long) org.h2.value.ValueLob+readString(int) org.h2.value.ValueLob+readString(int)",,161,3,2,,"private DbException getStringTooLong(long precision) {
+        return DbException.getValueTooLongException(""CHARACTER VARYING"", readString(81), precision);
+    }",False
+19,readString(int),Method,getString() getString() getString() getStringTooLong(long),,"org.h2.util.IOUtils+readStringAndClose(Reader,int) org.h2.util.IOUtils+readStringAndClose(Reader,int) org.h2.value.ValueLob+getReader() org.h2.value.ValueLob+getReader() org.h2.message.DbException+convertIOException(IOException,String) org.h2.message.DbException+convertIOException(IOException,String) org.h2.value.Value+toString() org.h2.value.Value+toString()",,230,7,2,,"private String readString(int len) {
+        try {
+            return IOUtils.readStringAndClose(getReader(), len);
+        } catch (IOException e) {
+            throw DbException.convertIOException(e, toString());
+        }
+    }",False
+20,getReader(),Method,"readString(int) getReader(long,long) charLength()","org.h2.util.JdbcUtils+setLob(PreparedStatement,int,ValueLob) org.h2.value.Value+convertToClob(TypeInfo,int,Object) org.h2.value.ValueLobDatabase+convertPrecision(long) org.h2.value.ValueLobFetchOnDemand+convertPrecision(long) org.h2.value.ValueLobInMemory+copy(DataHandler,int) org.h2.value.ValueLobInMemory+convertPrecision(long) org.h2.test.db.TestLob+testLimitsLarge(byte[],String,ValueLobInMemory)",org.h2.util.IOUtils+getReader(InputStream) org.h2.util.IOUtils+getReader(InputStream) org.h2.value.ValueLob+getInputStream() org.h2.value.ValueLob+getInputStream(),,99,4,1,,"@Override
+    public Reader getReader() {
+        return IOUtils.getReader(getInputStream());
+    }",False
+21,"getReader(long,long)",Method,,,"org.h2.value.ValueLob+rangeReader(Reader,long,long,long) org.h2.value.ValueLob+rangeReader(Reader,long,long,long) org.h2.value.ValueLob+getReader() org.h2.value.ValueLob+getReader()",org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.value.ValueLob+precision,186,4,1,,"@Override
+    public Reader getReader(long oneBasedOffset, long length) {
+        return rangeReader(getReader(), oneBasedOffset, length, valueType == Value.CLOB ? precision : -1);
+    }",False
+22,getBytes(),Method,,,org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+octetLength() org.h2.value.ValueLob+octetLength() org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+getBinaryTooLong(long) org.h2.value.ValueLob+getBinaryTooLong(long),org.h2.value.ValueLob+valueType org.h2.value.Value+BLOB org.h2.value.ValueLob+precision org.h2.engine.Constants+MAX_STRING_LENGTH org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+otherPrecision org.h2.engine.Constants+MAX_STRING_LENGTH org.h2.value.ValueLob+precision org.h2.engine.Constants+MAX_STRING_LENGTH java.lang.Integer+MAX_VALUE org.h2.value.ValueLob+otherPrecision org.h2.engine.Constants+MAX_STRING_LENGTH,791,25,1,,"@Override
+    public byte[] getBytes() {
+        if (valueType == BLOB) {
+            if (precision > Constants.MAX_STRING_LENGTH) {
+                throw getBinaryTooLong(precision);
+            }
+            return readBytes((int) precision);
+        }
+        long p = otherPrecision;
+        if (p >= 0L) {
+            if (p > Constants.MAX_STRING_LENGTH) {
+                throw getBinaryTooLong(p);
+            }
+            return readBytes((int) p);
+        }
+        if (precision > Constants.MAX_STRING_LENGTH) {
+            throw getBinaryTooLong(octetLength());
+        }
+        byte[] b = readBytes(Integer.MAX_VALUE);
+        otherPrecision = p = b.length;
+        if (p > Constants.MAX_STRING_LENGTH) {
+            throw getBinaryTooLong(p);
+        }
+        return b;
+    }",False
+23,getBinaryTooLong(long),Method,getBytes() getBytes() getBytes() getBytes(),,"org.h2.message.DbException+getValueTooLongException(String,String,long) org.h2.message.DbException+getValueTooLongException(String,String,long) org.h2.util.StringUtils+convertBytesToHex(byte[]) org.h2.util.StringUtils+convertBytesToHex(byte[]) org.h2.value.ValueLob+readBytes(int) org.h2.value.ValueLob+readBytes(int)",,204,4,2,,"private DbException getBinaryTooLong(long precision) {
+        return DbException.getValueTooLongException(""BINARY VARYING"", StringUtils.convertBytesToHex(readBytes(41)),
+                precision);
+    }",False
+24,readBytes(int),Method,getBytes() getBytes() getBytes() getBinaryTooLong(long),,"org.h2.util.IOUtils+readBytesAndClose(InputStream,int) org.h2.util.IOUtils+readBytesAndClose(InputStream,int) org.h2.value.ValueLob+getInputStream() org.h2.value.ValueLob+getInputStream() org.h2.message.DbException+convertIOException(IOException,String) org.h2.message.DbException+convertIOException(IOException,String) org.h2.value.Value+toString() org.h2.value.Value+toString()",,233,7,2,,"private byte[] readBytes(int len) {
+        try {
+            return IOUtils.readBytesAndClose(getInputStream(), len);
+        } catch (IOException e) {
+            throw DbException.convertIOException(e, toString());
+        }
+    }",False
+25,getInputStream(),Method,getReader() readBytes(int) octetLength(),"org.h2.util.JdbcUtils+setLob(PreparedStatement,int,ValueLob)",,,59,2,1025,,"@Override
+    public abstract InputStream getInputStream();",False
+26,"getInputStream(long,long)",Method,,,,,91,2,1025,,"@Override
+    public abstract InputStream getInputStream(long oneBasedOffset, long length);",True
+27,hashCode(),Method,equals(Object) equals(Object),,org.h2.util.Utils+getByteArrayHash(byte[]) org.h2.util.Utils+getByteArrayHash(byte[]) org.h2.value.Value+getBytesNoCopy() org.h2.value.Value+getBytesNoCopy(),org.h2.value.ValueLob+hash org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+hash org.h2.value.ValueLob+hash,395,12,1,,"@Override
+    public int hashCode() {
+        if (hash == 0) {
+            if (precision > 4096) {
+                // TODO: should calculate the hash code when saving, and store
+                // it in the database file
+                return (int) (precision ^ (precision >>> 32));
+            }
+            hash = Utils.getByteArrayHash(getBytesNoCopy());
+        }
+        return hash;
+    }",False
+28,"compareTypeSafe(Value,CompareMode,CastDataProvider)",Method,equals(Object),,"org.h2.value.ValueLob+compare(ValueLob,ValueLob) org.h2.value.ValueLob+compare(ValueLob,ValueLob)",,229,8,1,,"@Override
+    public int compareTypeSafe(Value v, CompareMode mode, CastDataProvider provider) {
+        if (v == this) {
+            return 0;
+        }
+        ValueLob v2 = (ValueLob) v;
+        return compare(this, v2);
+    }",True
+29,"getSQL(StringBuilder,int)",Method,,,"java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) org.h2.value.ValueLobDatabase+getTableId() org.h2.value.ValueLobDatabase+getTableId() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) org.h2.value.ValueLobDatabase+getLobId() org.h2.value.ValueLobDatabase+getLobId() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.value.ValueLob+getString() org.h2.value.ValueLob+getString() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) org.h2.value.ValueLob+getString() org.h2.value.ValueLob+getString() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) org.h2.util.StringUtils+convertBytesToHex(StringBuilder,byte[]) org.h2.util.StringUtils+convertBytesToHex(StringBuilder,byte[]) org.h2.value.Value+getBytesNoCopy() org.h2.value.Value+getBytesNoCopy() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(long) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+convertBytesToHex(StringBuilder,byte[]) org.h2.util.StringUtils+convertBytesToHex(StringBuilder,byte[]) org.h2.value.Value+getBytesNoCopy() org.h2.value.Value+getBytesNoCopy() java.lang.StringBuilder+append(char)",org.h2.util.HasSQL+REPLACE_LOBS_FOR_TRACE org.h2.value.ValueLob+precision org.h2.engine.SysProperties+MAX_TRACE_DATA_LENGTH org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.value.ValueLob+precision org.h2.value.ValueLob+precision org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.util.HasSQL+REPLACE_LOBS_FOR_TRACE org.h2.util.HasSQL+NO_CASTS org.h2.value.ValueLob+precision org.h2.util.HasSQL+REPLACE_LOBS_FOR_TRACE org.h2.util.HasSQL+NO_CASTS org.h2.value.ValueLob+precision,1679,33,1,,"@Override
+    public StringBuilder getSQL(StringBuilder builder, int sqlFlags) {
+        if ((sqlFlags & REPLACE_LOBS_FOR_TRACE) != 0
+                && (!(this instanceof ValueLobInMemory) || precision > SysProperties.MAX_TRACE_DATA_LENGTH)) {
+            if (valueType == Value.CLOB) {
+                builder.append(""SPACE("").append(precision);
+            } else {
+                builder.append(""CAST(REPEAT(CHAR(0), "").append(precision).append("") AS BINARY VARYING"");
+            }
+            ValueLobDatabase lobDb = (ValueLobDatabase) this;
+            builder.append("" /* table: "").append(lobDb.getTableId()).append("" id: "").append(lobDb.getLobId())
+                    .append("" */)"");
+        } else {
+            if (valueType == Value.CLOB) {
+                if ((sqlFlags & (REPLACE_LOBS_FOR_TRACE | NO_CASTS)) == 0) {
+                    StringUtils.quoteStringSQL(builder.append(""CAST(""), getString())
+                            .append("" AS CHARACTER LARGE OBJECT("").append(precision).append(""))"");
+                } else {
+                    StringUtils.quoteStringSQL(builder, getString());
+                }
+            } else {
+                if ((sqlFlags & (REPLACE_LOBS_FOR_TRACE | NO_CASTS)) == 0) {
+                    builder.append(""CAST(X'"");
+                    StringUtils.convertBytesToHex(builder, getBytesNoCopy()).append(""' AS BINARY LARGE OBJECT("")
+                            .append(precision).append(""))"");
+                } else {
+                    builder.append(""X'"");
+                    StringUtils.convertBytesToHex(builder, getBytesNoCopy()).append('\'');
+                }
+            }
+        }
+        return builder;
+    }",True
+30,getPrecision(),Method,,"org.h2.util.JdbcUtils+setLob(PreparedStatement,int,ValueLob) org.h2.value.Value+convertToClob(TypeInfo,int,Object) org.h2.value.Value+convertToBlob(TypeInfo,int,Object)",,org.h2.value.ValueLob+precision,142,8,1,"/** 
+ * Returns the precision.
+ * @return the precision
+ */
+","/**
+     * Returns the precision.
+     *
+     * @return the precision
+     */
+    public long getPrecision() {
+        return precision;
+    }",False
+31,equals(Object),Method,,,"org.h2.value.ValueLob+hashCode() org.h2.value.ValueLob+hashCode() org.h2.value.ValueLob+hashCode() org.h2.value.ValueLob+hashCode() org.h2.value.ValueLob+compareTypeSafe(Value,CompareMode,CastDataProvider) org.h2.value.ValueLob+compareTypeSafe(Value,CompareMode,CastDataProvider)",,308,9,1,,"@Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ValueLob))
+            return false;
+        ValueLob otherLob = (ValueLob) other;
+        if (hashCode() != otherLob.hashCode())
+            return false;
+        return compareTypeSafe((Value) other, null, null) == 0;
+    }",False
+32,getMemory(),Method,,,,,64,4,1,,"@Override
+    public int getMemory() {
+        return 140;
+    }",False
+33,getDataHandler(),Method,,"org.h2.value.Value+convertToBlob(TypeInfo,int,Object)",,,169,8,1,"/** 
+ * Returns the data handler.
+ * @return the data handler, or {@code null}
+ */
+","/**
+     * Returns the data handler.
+     *
+     * @return the data handler, or {@code null}
+     */
+    public DataHandler getDataHandler() {
+        return null;
+    }",False
+34,copyToTemp(),Method,,,,,215,9,1,"/** 
+ * Create an independent copy of this temporary value. The file will not be deleted automatically.
+ * @return the value
+ */
+","/**
+     * Create an independent copy of this temporary value. The file will not be
+     * deleted automatically.
+     *
+     * @return the value
+     */
+    public ValueLob copyToTemp() {
+        return this;
+    }",False
+35,copyToResult(),Method,,"org.h2.result.LocalResult+cloneLobs(Value[]) org.h2.server.TcpServerThread+sendRows(ResultInterface,long)",,,213,8,1,"/** 
+ * Create an independent copy of this value, that will be bound to a result.
+ * @return the value (this for small objects)
+ */
+","/**
+     * Create an independent copy of this value, that will be bound to a result.
+     *
+     * @return the value (this for small objects)
+     */
+    public ValueLob copyToResult() {
+        return this;
+    }",False
+36,convertPrecision(long),Method,,"org.h2.value.Value+convertToClob(TypeInfo,int,Object) org.h2.value.Value+convertToBlob(TypeInfo,int,Object)",java.lang.UnsupportedOperationException+UnsupportedOperationException(),,261,9,0,"/** 
+ * Convert the precision to the requested value.
+ * @param precision the new precision
+ * @return the truncated or this value
+ */
+","/**
+     * Convert the precision to the requested value.
+     *
+     * @param precision the new precision
+     * @return the truncated or this value
+     */
+    ValueLob convertPrecision(long precision) {
+        throw new UnsupportedOperationException();
+    }",False
+37,charLength(),Method,getString(),,"org.h2.value.ValueLob+getReader() org.h2.value.ValueLob+getReader() java.io.Reader+skip(long) java.io.Reader+skip(long) java.io.Reader+read() java.io.Reader+read() org.h2.message.DbException+convertIOException(IOException,String) org.h2.message.DbException+convertIOException(IOException,String)",org.h2.value.ValueLob+valueType org.h2.value.Value+CLOB org.h2.value.ValueLob+precision org.h2.value.ValueLob+otherPrecision java.lang.Long+MAX_VALUE org.h2.value.ValueLob+otherPrecision,628,23,1,,"@Override
+    public long charLength() {
+        if (valueType == CLOB) {
+            return precision;
+        }
+        long p = otherPrecision;
+        if (p < 0L) {
+            try (Reader r = getReader()) {
+                p = 0L;
+                for (;;) {
+                    p += r.skip(Long.MAX_VALUE);
+                    if (r.read() < 0) {
+                        break;
+                    }
+                    p++;
+                }
+            } catch (IOException e) {
+                throw DbException.convertIOException(e, null);
+            }
+            otherPrecision = p;
+        }
+        return p;
+    }",True
+38,octetLength(),Method,getBytes(),,"org.h2.value.ValueLob+getInputStream() org.h2.value.ValueLob+getInputStream() java.io.InputStream+skip(long) java.io.InputStream+skip(long) java.io.InputStream+read() java.io.InputStream+read() org.h2.message.DbException+convertIOException(IOException,String) org.h2.message.DbException+convertIOException(IOException,String)",org.h2.value.ValueLob+valueType org.h2.value.Value+BLOB org.h2.value.ValueLob+precision org.h2.value.ValueLob+otherPrecision java.lang.Long+MAX_VALUE org.h2.value.ValueLob+otherPrecision,642,23,1,,"@Override
+    public long octetLength() {
+        if (valueType == BLOB) {
+            return precision;
+        }
+        long p = otherPrecision;
+        if (p < 0L) {
+            try (InputStream is = getInputStream()) {
+                p = 0L;
+                for (;;) {
+                    p += is.skip(Long.MAX_VALUE);
+                    if (is.read() < 0) {
+                        break;
+                    }
+                    p++;
+                }
+            } catch (IOException e) {
+                throw DbException.convertIOException(e, null);
+            }
+            otherPrecision = p;
+        }
+        return p;
+    }",True

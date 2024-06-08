@@ -1,0 +1,813 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,ROW_COUNT_APPROXIMATION,Field,,,,,56,1,26,,private static final long ROW_COUNT_APPROXIMATION = 100;,True
+2,querySQL,Field,"replace(String,Column[],SessionLocal,boolean,boolean,boolean) init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean) initColumnsAndTables(SessionLocal,boolean)",,,,24,1,2,,private String querySQL;,False
+3,tables,Field,,,,,32,1,2,,private ArrayList<Table> tables;,True
+4,columnTemplates,Field,"replace(String,Column[],SessionLocal,boolean,boolean,boolean) init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean)",,,,33,1,2,,private Column[] columnTemplates;,False
+5,viewQuery,Field,,,,,24,1,2,,private Query viewQuery;,True
+6,index,Field,,,,,24,1,2,,private ViewIndex index;,True
+7,allowRecursive,Field,"replace(String,Column[],SessionLocal,boolean,boolean,boolean) init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean)",,,,31,1,2,,private boolean allowRecursive;,False
+8,createException,Field,,,,,36,1,2,,private DbException createException;,False
+9,lastModificationCheck,Field,,,,,35,1,2,,private long lastModificationCheck;,True
+10,maxDataModificationId,Field,,,,,35,1,2,,private long maxDataModificationId;,True
+11,owner,Field,setOwner(User),,,,19,1,2,,private User owner;,True
+12,topQuery,Field,setTopQuery(Query),,,,23,1,2,,private Query topQuery;,True
+13,recursiveResult,Field,setRecursiveResult(ResultInterface),,,,40,1,2,,private ResultInterface recursiveResult;,False
+14,isRecursiveQueryDetected,Field,"init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean) initColumnsAndTables(SessionLocal,boolean)",,,,41,1,2,,private boolean isRecursiveQueryDetected;,False
+15,isTableExpression,Field,"init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean)",,,,34,1,2,,private boolean isTableExpression;,False
+16,isSubquery,Field,"TableView(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,boolean,boolean)",,,,27,1,2,,private boolean isSubquery;,True
+17,"TableView(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,boolean,boolean)",Method,,,"org.h2.engine.DbObject+setTemporary(boolean) org.h2.engine.DbObject+setTemporary(boolean) org.h2.table.TableView+init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean) org.h2.table.TableView+init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean)",org.h2.table.TableView+isSubquery org.h2.table.TableView+isSubquery,536,9,1,,"public TableView(Schema schema, int id, String name, String querySQL,
+            ArrayList<Parameter> params, Column[] columnTemplates, SessionLocal session,
+            boolean allowRecursive, boolean literalsChecked, boolean isTableExpression, boolean isTemporary,
+            boolean isSubquery) {
+        super(schema, id, name, false, true);
+        setTemporary(isTemporary);
+        this.isSubquery = isSubquery;
+        init(querySQL, params, columnTemplates, session, allowRecursive, literalsChecked, isTableExpression);
+    }",False
+18,"replace(String,Column[],SessionLocal,boolean,boolean,boolean)",Method,,org.h2.command.ddl.CreateView+update(Schema),"org.h2.table.TableView+init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean) org.h2.table.TableView+init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean) org.h2.table.TableView+recompile(SessionLocal,boolean,boolean) org.h2.table.TableView+recompile(SessionLocal,boolean,boolean) org.h2.table.TableView+init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean) org.h2.table.TableView+init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean) org.h2.table.TableView+recompile(SessionLocal,boolean,boolean) org.h2.table.TableView+recompile(SessionLocal,boolean,boolean)",org.h2.table.TableView+querySQL org.h2.table.TableView+querySQL org.h2.table.TableView+columnTemplates org.h2.table.TableView+columnTemplates org.h2.table.TableView+allowRecursive org.h2.table.TableView+allowRecursive org.h2.table.TableView+isTableExpression org.h2.table.TableView+isTableExpression,1135,25,1,"/** 
+ * Try to replace the SQL statement of the view and re-compile this and all dependent views.
+ * @param querySQL the SQL statement
+ * @param newColumnTemplates the columns
+ * @param session the session
+ * @param recursive whether this is a recursive view
+ * @param force if errors should be ignored
+ * @param literalsChecked if literals have been checked
+ */
+","/**
+     * Try to replace the SQL statement of the view and re-compile this and all
+     * dependent views.
+     *
+     * @param querySQL the SQL statement
+     * @param newColumnTemplates the columns
+     * @param session the session
+     * @param recursive whether this is a recursive view
+     * @param force if errors should be ignored
+     * @param literalsChecked if literals have been checked
+     */
+    public void replace(String querySQL,  Column[] newColumnTemplates, SessionLocal session,
+            boolean recursive, boolean force, boolean literalsChecked) {
+        String oldQuerySQL = this.querySQL;
+        Column[] oldColumnTemplates = this.columnTemplates;
+        boolean oldRecursive = this.allowRecursive;
+        init(querySQL, null, newColumnTemplates, session, recursive, literalsChecked, isTableExpression);
+        DbException e = recompile(session, force, true);
+        if (e != null) {
+            init(oldQuerySQL, null, oldColumnTemplates, session, oldRecursive,
+                    literalsChecked, isTableExpression);
+            recompile(session, true, false);
+            throw e;
+        }
+    }",False
+19,"init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean)",Method,"TableView(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,boolean,boolean) replace(String,Column[],SessionLocal,boolean,boolean,boolean) replace(String,Column[],SessionLocal,boolean,boolean,boolean)",,"org.h2.index.ViewIndex+ViewIndex(TableView,String,ArrayList<Parameter>,boolean) org.h2.table.TableView+initColumnsAndTables(SessionLocal,boolean) org.h2.table.TableView+initColumnsAndTables(SessionLocal,boolean)",org.h2.table.TableView+querySQL org.h2.table.TableView+querySQL org.h2.table.TableView+columnTemplates org.h2.table.TableView+columnTemplates org.h2.table.TableView+allowRecursive org.h2.table.TableView+allowRecursive org.h2.table.TableView+isRecursiveQueryDetected org.h2.table.TableView+isRecursiveQueryDetected org.h2.table.TableView+isTableExpression org.h2.table.TableView+isTableExpression org.h2.table.TableView+index,586,11,34,,"private synchronized void init(String querySQL, ArrayList<Parameter> params,
+            Column[] columnTemplates, SessionLocal session, boolean allowRecursive, boolean literalsChecked,
+            boolean isTableExpression) {
+        this.querySQL = querySQL;
+        this.columnTemplates = columnTemplates;
+        this.allowRecursive = allowRecursive;
+        this.isRecursiveQueryDetected = false;
+        this.isTableExpression = isTableExpression;
+        index = new ViewIndex(this, querySQL, params, allowRecursive);
+        initColumnsAndTables(session, literalsChecked);
+    }",False
+20,"compileViewQuery(SessionLocal,String,boolean)",Method,"recompile(SessionLocal,boolean,boolean) initColumnsAndTables(SessionLocal,boolean)",,"org.h2.engine.SessionLocal+setParsingCreateView(boolean) org.h2.engine.SessionLocal+setParsingCreateView(boolean) org.h2.engine.SessionLocal+prepare(String,boolean,boolean) org.h2.engine.SessionLocal+prepare(String,boolean,boolean) org.h2.engine.SessionLocal+setParsingCreateView(boolean) org.h2.engine.SessionLocal+setParsingCreateView(boolean) org.h2.message.DbException+getSyntaxError(String,int) org.h2.message.DbException+getSyntaxError(String,int) org.h2.command.query.Query+setNeverLazy(boolean) org.h2.command.query.Query+setNeverLazy(boolean)",org.h2.table.TableView+isTableExpression org.h2.table.TableView+allowRecursive,629,18,2,,"private Query compileViewQuery(SessionLocal session, String sql, boolean literalsChecked) {
+        Prepared p;
+        session.setParsingCreateView(true);
+        try {
+            p = session.prepare(sql, false, literalsChecked);
+        } finally {
+            session.setParsingCreateView(false);
+        }
+        if (!(p instanceof Query)) {
+            throw DbException.getSyntaxError(sql, 0);
+        }
+        Query q = (Query) p;
+        // only potentially recursive cte queries need to be non-lazy
+        if (isTableExpression && allowRecursive) {
+            q.setNeverLazy(true);
+        }
+        return q;
+    }",False
+21,"recompile(SessionLocal,boolean,boolean)",Method,"replace(String,Column[],SessionLocal,boolean,boolean,boolean) replace(String,Column[],SessionLocal,boolean,boolean,boolean) recompile(SessionLocal,boolean,boolean)",org.h2.command.ddl.AlterView+update() org.h2.engine.Database+recompileInvalidViews(),"org.h2.table.TableView+compileViewQuery(SessionLocal,String,boolean) org.h2.table.TableView+compileViewQuery(SessionLocal,String,boolean) org.h2.table.Table+getDependentViews() org.h2.table.Table+getDependentViews() org.h2.table.TableView+initColumnsAndTables(SessionLocal,boolean) org.h2.table.TableView+initColumnsAndTables(SessionLocal,boolean) org.h2.table.TableView+recompile(SessionLocal,boolean,boolean) org.h2.table.TableView+recompile(SessionLocal,boolean,boolean) org.h2.table.TableView+clearIndexCaches(Database) org.h2.table.TableView+clearIndexCaches(Database)",org.h2.table.TableView+querySQL org.h2.engine.DbObject+database org.h2.table.TableView+createException,1134,31,33,"/** 
+ * Re-compile the view query and all views that depend on this object.
+ * @param session the session
+ * @param force if exceptions should be ignored
+ * @param clearIndexCache if we need to clear view index cache
+ * @return the exception if re-compiling this or any dependent view failed(only when force is disabled)
+ */
+","/**
+     * Re-compile the view query and all views that depend on this object.
+     *
+     * @param session the session
+     * @param force if exceptions should be ignored
+     * @param clearIndexCache if we need to clear view index cache
+     * @return the exception if re-compiling this or any dependent view failed
+     *         (only when force is disabled)
+     */
+    public synchronized DbException recompile(SessionLocal session, boolean force,
+            boolean clearIndexCache) {
+        try {
+            compileViewQuery(session, querySQL, false);
+        } catch (DbException e) {
+            if (!force) {
+                return e;
+            }
+        }
+        ArrayList<TableView> dependentViews = new ArrayList<>(getDependentViews());
+        initColumnsAndTables(session, false);
+        for (TableView v : dependentViews) {
+            DbException e = v.recompile(session, force, false);
+            if (e != null && !force) {
+                return e;
+            }
+        }
+        if (clearIndexCache) {
+            clearIndexCaches(database);
+        }
+        return force ? null : createException;
+    }",False
+22,"initColumnsAndTables(SessionLocal,boolean)",Method,"init(String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean) recompile(SessionLocal,boolean,boolean)",,"org.h2.table.TableView+removeCurrentViewFromOtherTables() org.h2.table.TableView+removeCurrentViewFromOtherTables() org.h2.table.Table+setTableExpression(boolean) org.h2.table.Table+setTableExpression(boolean) org.h2.table.TableView+compileViewQuery(SessionLocal,String,boolean) org.h2.table.TableView+compileViewQuery(SessionLocal,String,boolean) org.h2.command.Prepared+getPlanSQL(int) org.h2.command.Prepared+getPlanSQL(int) org.h2.command.query.Query+getTables() org.h2.command.query.Query+getTables() org.h2.command.query.Query+getExpressions() org.h2.command.query.Query+getExpressions() org.h2.command.query.Query+getColumnCount() org.h2.command.query.Query+getColumnCount() java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.table.Column+getName() org.h2.table.Column+getName() org.h2.table.Column+getType() org.h2.table.Column+getType() org.h2.expression.Expression+getAlias(SessionLocal,int) org.h2.expression.Expression+getAlias(SessionLocal,int) org.h2.expression.Expression+getColumnNameForView(SessionLocal,int) org.h2.expression.Expression+getColumnNameForView(SessionLocal,int) org.h2.value.TypeInfo+getValueType() org.h2.value.TypeInfo+getValueType() org.h2.expression.Expression+getType() org.h2.expression.Expression+getType() java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.table.Column+Column(String,TypeInfo,Table,int) java.util.ArrayList+toArray(T[]) java.util.ArrayList+toArray(T[]) org.h2.message.DbException+getErrorCode() org.h2.message.DbException+getErrorCode() org.h2.message.DbException+addSQL(String) org.h2.message.DbException+addSQL(String) org.h2.table.TableView+getCreateSQL() org.h2.table.TableView+getCreateSQL() org.h2.table.TableView+isRecursiveQueryExceptionDetected(DbException) org.h2.table.TableView+isRecursiveQueryExceptionDetected(DbException) org.h2.util.Utils+newSmallArrayList() org.h2.util.Utils+newSmallArrayList() org.h2.table.Column+getClone() org.h2.table.Column+getClone() org.h2.index.ViewIndex+setRecursive(boolean) org.h2.index.ViewIndex+setRecursive(boolean) org.h2.table.Table+setColumns(Column[]) org.h2.table.Table+setColumns(Column[]) org.h2.engine.DbObject+getId() org.h2.engine.DbObject+getId() org.h2.table.TableView+addDependentViewToTables() org.h2.table.TableView+addDependentViewToTables()",org.h2.table.TableView+isTableExpression org.h2.table.TableView+querySQL org.h2.table.TableView+querySQL org.h2.table.TableView+querySQL org.h2.util.HasSQL+DEFAULT_SQL_FLAGS org.h2.table.TableView+tables org.h2.value.TypeInfo+TYPE_UNKNOWN org.h2.table.TableView+columnTemplates org.h2.table.TableView+columnTemplates org.h2.table.TableView+columnTemplates org.h2.table.TableView+columnTemplates org.h2.table.TableView+isSubquery org.h2.value.Value+UNKNOWN org.h2.table.TableView+createException org.h2.table.TableView+viewQuery org.h2.api.ErrorCode+COLUMN_ALIAS_IS_NOT_SPECIFIED_1 org.h2.table.TableView+createException org.h2.table.TableView+createException org.h2.table.TableView+isRecursiveQueryDetected org.h2.table.TableView+isRecursiveQueryDetected org.h2.table.TableView+tables org.h2.table.TableView+allowRecursive org.h2.table.TableView+columnTemplates org.h2.table.TableView+columnTemplates org.h2.table.TableView+columnTemplates org.h2.table.TableView+columnTemplates org.h2.table.TableView+index org.h2.table.TableView+createException,2735,60,2,,"private void initColumnsAndTables(SessionLocal session, boolean literalsChecked) {
+        Column[] cols;
+        removeCurrentViewFromOtherTables();
+        setTableExpression(isTableExpression);
+        try {
+            Query compiledQuery = compileViewQuery(session, querySQL, literalsChecked);
+            this.querySQL = compiledQuery.getPlanSQL(DEFAULT_SQL_FLAGS);
+            tables = new ArrayList<>(compiledQuery.getTables());
+            ArrayList<Expression> expressions = compiledQuery.getExpressions();
+            final int count = compiledQuery.getColumnCount();
+            ArrayList<Column> list = new ArrayList<>(count);
+            for (int i = 0; i < count; i++) {
+                Expression expr = expressions.get(i);
+                String name = null;
+                TypeInfo type = TypeInfo.TYPE_UNKNOWN;
+                if (columnTemplates != null && columnTemplates.length > i) {
+                    name = columnTemplates[i].getName();
+                    type = columnTemplates[i].getType();
+                }
+                if (name == null) {
+                    name = isSubquery ? expr.getAlias(session, i) : expr.getColumnNameForView(session, i);
+                }
+                if (type.getValueType() == Value.UNKNOWN) {
+                    type = expr.getType();
+                }
+                list.add(new Column(name, type, this, i));
+            }
+            cols = list.toArray(new Column[0]);
+            createException = null;
+            viewQuery = compiledQuery;
+        } catch (DbException e) {
+            if (e.getErrorCode() == ErrorCode.COLUMN_ALIAS_IS_NOT_SPECIFIED_1) {
+                throw e;
+            }
+            e.addSQL(getCreateSQL());
+            createException = e;
+            // If it can't be compiled, then it's a 'zero column table'
+            // this avoids problems when creating the view when opening the
+            // database.
+            // If it can not be compiled - it could also be a recursive common
+            // table expression query.
+            if (isRecursiveQueryExceptionDetected(createException)) {
+                this.isRecursiveQueryDetected = true;
+            }
+            tables = Utils.newSmallArrayList();
+            cols = new Column[0];
+            if (allowRecursive && columnTemplates != null) {
+                cols = new Column[columnTemplates.length];
+                for (int i = 0; i < columnTemplates.length; i++) {
+                    cols[i] = columnTemplates[i].getClone();
+                }
+                index.setRecursive(true);
+                createException = null;
+            }
+        }
+        setColumns(cols);
+        if (getId() != 0) {
+            addDependentViewToTables();
+        }
+    }",False
+23,isView(),Method,,,,,66,4,1,,"@Override
+    public boolean isView() {
+        return true;
+    }",True
+24,isInvalid(),Method,,"org.h2.engine.Database+recompileInvalidViews() org.h2.engine.Database+recompileInvalidViews() org.h2.table.InformationSchemaTable+views(SessionLocal,ArrayList<Row>,String,Table,String) org.h2.table.TableFilter+getPlanSQL(StringBuilder,boolean,int)",,org.h2.table.TableView+createException,174,8,1,"/** 
+ * Check if this view is currently invalid.
+ * @return true if it is
+ */
+","/**
+     * Check if this view is currently invalid.
+     *
+     * @return true if it is
+     */
+    public boolean isInvalid() {
+        return createException != null;
+    }",False
+25,"getBestPlanItem(SessionLocal,int[],TableFilter[],int,SortOrder,AllColumnsForPlan)",Method,"getScanIndex(SessionLocal) getScanIndex(SessionLocal,int[],TableFilter[],int,SortOrder,AllColumnsForPlan)",,"org.h2.table.TableView.CacheKey+CacheKey(int[],TableView) org.h2.engine.SessionLocal+getViewIndexCache(boolean) org.h2.engine.SessionLocal+getViewIndexCache(boolean) java.util.Map+get(Object) java.util.Map+get(Object) org.h2.index.ViewIndex+isExpired() org.h2.index.ViewIndex+isExpired() org.h2.index.ViewIndex+ViewIndex(TableView,ViewIndex,SessionLocal,int[],TableFilter[],int,SortOrder) java.util.Map+put(K,V) java.util.Map+put(K,V) org.h2.table.PlanItem+PlanItem() org.h2.index.ViewIndex+getCost(SessionLocal,int[],TableFilter[],int,SortOrder,AllColumnsForPlan) org.h2.index.ViewIndex+getCost(SessionLocal,int[],TableFilter[],int,SortOrder,AllColumnsForPlan) org.h2.table.PlanItem+setIndex(Index) org.h2.table.PlanItem+setIndex(Index)",org.h2.table.TableView+topQuery org.h2.table.TableView+index org.h2.table.PlanItem+cost,757,16,1,,"@Override
+    public PlanItem getBestPlanItem(SessionLocal session, int[] masks,
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            AllColumnsForPlan allColumnsSet) {
+        final CacheKey cacheKey = new CacheKey(masks, this);
+        Map<Object, ViewIndex> indexCache = session.getViewIndexCache(topQuery != null);
+        ViewIndex i = indexCache.get(cacheKey);
+        if (i == null || i.isExpired()) {
+            i = new ViewIndex(this, index, session, masks, filters, filter, sortOrder);
+            indexCache.put(cacheKey, i);
+        }
+        PlanItem item = new PlanItem();
+        item.cost = i.getCost(session, masks, filters, filter, sortOrder, allColumnsSet);
+        item.setIndex(i);
+        return item;
+    }",True
+26,isQueryComparable(),Method,,,org.h2.table.Table+isQueryComparable() org.h2.table.Table+isQueryComparable() org.h2.table.Table+isQueryComparable() org.h2.command.query.Query+isEverything(ExpressionVisitor) org.h2.command.query.Query+isEverything(ExpressionVisitor),org.h2.table.TableView+tables org.h2.table.TableView+topQuery org.h2.table.TableView+topQuery org.h2.expression.ExpressionVisitor+QUERY_COMPARABLE_VISITOR,438,16,1,,"@Override
+    public boolean isQueryComparable() {
+        if (!super.isQueryComparable()) {
+            return false;
+        }
+        for (Table t : tables) {
+            if (!t.isQueryComparable()) {
+                return false;
+            }
+        }
+        if (topQuery != null &&
+                !topQuery.isEverything(ExpressionVisitor.QUERY_COMPARABLE_VISITOR)) {
+            return false;
+        }
+        return true;
+    }",True
+27,getTopQuery(),Method,,"org.h2.index.ViewIndex+ViewIndex(TableView,ViewIndex,SessionLocal,int[],TableFilter[],int,SortOrder)",,org.h2.table.TableView+topQuery,59,3,1,,"public Query getTopQuery() {
+        return topQuery;
+    }",False
+28,getDropSQL(),Method,,,"java.lang.StringBuilder+toString() java.lang.StringBuilder+append(String) org.h2.table.TableView+getSQL(StringBuilder,int) org.h2.table.TableView+getSQL(StringBuilder,int) java.lang.StringBuilder+StringBuilder(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+toString()",org.h2.util.HasSQL+DEFAULT_SQL_FLAGS,163,4,1,,"@Override
+    public String getDropSQL() {
+        return getSQL(new StringBuilder(""DROP VIEW IF EXISTS ""), DEFAULT_SQL_FLAGS).append("" CASCADE"").toString();
+    }",False
+29,"getCreateSQLForCopy(Table,String)",Method,,,"org.h2.table.TableView+getCreateSQL(boolean,boolean,String) org.h2.table.TableView+getCreateSQL(boolean,boolean,String)",,141,4,1,,"@Override
+    public String getCreateSQLForCopy(Table table, String quotedName) {
+        return getCreateSQL(false, true, quotedName);
+    }",False
+30,getCreateSQL(),Method,"initColumnsAndTables(SessionLocal,boolean)",,"org.h2.table.TableView+getCreateSQL(boolean,boolean) org.h2.table.TableView+getCreateSQL(boolean,boolean)",,92,4,1,,"@Override
+    public String getCreateSQL() {
+        return getCreateSQL(false, true);
+    }",False
+31,"getCreateSQL(boolean,boolean)",Method,getCreateSQL(),"org.h2.command.ddl.AlterTableAlterColumn+copyData(Table,ArrayList<Sequence>,boolean)","org.h2.table.TableView+getCreateSQL(boolean,boolean,String) org.h2.table.TableView+getCreateSQL(boolean,boolean,String) org.h2.schema.SchemaObject+getSQL(int) org.h2.schema.SchemaObject+getSQL(int)",org.h2.util.HasSQL+DEFAULT_SQL_FLAGS,378,10,1,"/** 
+ * Generate ""CREATE"" SQL statement for the view.
+ * @param orReplace if true, then include the OR REPLACE clause
+ * @param force if true, then include the FORCE clause
+ * @return the SQL statement
+ */
+","/**
+     * Generate ""CREATE"" SQL statement for the view.
+     *
+     * @param orReplace if true, then include the OR REPLACE clause
+     * @param force if true, then include the FORCE clause
+     * @return the SQL statement
+     */
+    public String getCreateSQL(boolean orReplace, boolean force) {
+        return getCreateSQL(orReplace, force, getSQL(DEFAULT_SQL_FLAGS));
+    }",False
+32,"getCreateSQL(boolean,boolean,String)",Method,"getCreateSQLForCopy(Table,String) getCreateSQL(boolean,boolean)",,"java.lang.StringBuilder+StringBuilder(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) org.h2.util.StringUtils+quoteStringSQL(StringBuilder,String) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.table.Column+writeColumns(StringBuilder,Column[],int) org.h2.table.Column+writeColumns(StringBuilder,Column[],int) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) org.h2.table.Column+writeColumns(StringBuilder,Column[],int) org.h2.table.Column+writeColumns(StringBuilder,Column[],int) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+toString() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+toString()",org.h2.table.TableView+isTableExpression org.h2.engine.DbObject+comment org.h2.engine.DbObject+comment org.h2.table.Table+columns org.h2.table.Table+columns org.h2.table.Table+columns org.h2.util.HasSQL+DEFAULT_SQL_FLAGS org.h2.table.TableView+columnTemplates org.h2.table.TableView+columnTemplates org.h2.util.HasSQL+DEFAULT_SQL_FLAGS org.h2.table.TableView+querySQL,1055,28,2,,"private String getCreateSQL(boolean orReplace, boolean force, String quotedName) {
+        StringBuilder builder = new StringBuilder(""CREATE "");
+        if (orReplace) {
+            builder.append(""OR REPLACE "");
+        }
+        if (force) {
+            builder.append(""FORCE "");
+        }
+        builder.append(""VIEW "");
+        if (isTableExpression) {
+            builder.append(""TABLE_EXPRESSION "");
+        }
+        builder.append(quotedName);
+        if (comment != null) {
+            builder.append("" COMMENT "");
+            StringUtils.quoteStringSQL(builder, comment);
+        }
+        if (columns != null && columns.length > 0) {
+            builder.append('(');
+            Column.writeColumns(builder, columns, DEFAULT_SQL_FLAGS);
+            builder.append(')');
+        } else if (columnTemplates != null) {
+            builder.append('(');
+            Column.writeColumns(builder, columnTemplates, DEFAULT_SQL_FLAGS);
+            builder.append(')');
+        }
+        return builder.append("" AS\n"").append(querySQL).toString();
+    }",False
+33,close(SessionLocal),Method,,,,,86,4,1,,"@Override
+    public void close(SessionLocal session) {
+        // nothing to do
+    }",True
+34,"addIndex(SessionLocal,String,int,IndexColumn[],int,IndexType,boolean,String)",Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,268,5,1,,"@Override
+    public Index addIndex(SessionLocal session, String indexName, int indexId, IndexColumn[] cols,
+            int uniqueColumnCount, IndexType indexType, boolean create, String indexComment) {
+        throw DbException.getUnsupportedException(""VIEW"");
+    }",True
+35,isInsertable(),Method,,,,,73,4,1,,"@Override
+    public boolean isInsertable() {
+        return false;
+    }",True
+36,"removeRow(SessionLocal,Row)",Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,133,4,1,,"@Override
+    public void removeRow(SessionLocal session, Row row) {
+        throw DbException.getUnsupportedException(""VIEW"");
+    }",True
+37,"addRow(SessionLocal,Row)",Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,130,4,1,,"@Override
+    public void addRow(SessionLocal session, Row row) {
+        throw DbException.getUnsupportedException(""VIEW"");
+    }",True
+38,checkSupportAlter(),Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,112,4,1,,"@Override
+    public void checkSupportAlter() {
+        throw DbException.getUnsupportedException(""VIEW"");
+    }",True
+39,truncate(SessionLocal),Method,,,org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),,123,4,1,,"@Override
+    public long truncate(SessionLocal session) {
+        throw DbException.getUnsupportedException(""VIEW"");
+    }",True
+40,getRowCount(SessionLocal),Method,,,org.h2.message.DbException+getInternalError(String) org.h2.message.DbException+getInternalError(String) org.h2.engine.DbObject+toString() org.h2.engine.DbObject+toString(),,123,4,1,,"@Override
+    public long getRowCount(SessionLocal session) {
+        throw DbException.getInternalError(toString());
+    }",True
+41,canGetRowCount(SessionLocal),Method,,,,,160,5,1,,"@Override
+    public boolean canGetRowCount(SessionLocal session) {
+        // TODO view: could get the row count, but not that easy
+        return false;
+    }",True
+42,canDrop(),Method,,,,,67,4,1,,"@Override
+    public boolean canDrop() {
+        return true;
+    }",False
+43,getTableType(),Method,,,,,84,4,1,,"@Override
+    public TableType getTableType() {
+        return TableType.VIEW;
+    }",False
+44,removeChildrenAndResources(SessionLocal),Method,"createTableViewMaybeRecursive(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,Database)",,"org.h2.table.TableView+removeCurrentViewFromOtherTables() org.h2.table.TableView+removeCurrentViewFromOtherTables() org.h2.table.Table+removeChildrenAndResources(SessionLocal) org.h2.engine.Database+removeMeta(SessionLocal,int) org.h2.engine.Database+removeMeta(SessionLocal,int) org.h2.engine.DbObject+getId() org.h2.engine.DbObject+getId() org.h2.table.TableView+clearIndexCaches(Database) org.h2.table.TableView+clearIndexCaches(Database) org.h2.engine.DbObject+invalidate() org.h2.engine.DbObject+invalidate()",org.h2.engine.DbObject+database org.h2.table.TableView+querySQL org.h2.table.TableView+index org.h2.engine.DbObject+database,329,10,1,,"@Override
+    public void removeChildrenAndResources(SessionLocal session) {
+        removeCurrentViewFromOtherTables();
+        super.removeChildrenAndResources(session);
+        database.removeMeta(session, getId());
+        querySQL = null;
+        index = null;
+        clearIndexCaches(database);
+        invalidate();
+    }",False
+45,clearIndexCaches(Database),Method,"recompile(SessionLocal,boolean,boolean) removeChildrenAndResources(SessionLocal)",org.h2.engine.Database+recompileInvalidViews(),org.h2.engine.Database+getSessions(boolean) org.h2.engine.Database+getSessions(boolean) org.h2.engine.SessionLocal+clearViewIndexCache() org.h2.engine.SessionLocal+clearViewIndexCache(),,278,10,9,"/** 
+ * Clear the cached indexes for all sessions.
+ * @param database the database
+ */
+","/**
+     * Clear the cached indexes for all sessions.
+     *
+     * @param database the database
+     */
+    public static void clearIndexCaches(Database database) {
+        for (SessionLocal s : database.getSessions(true)) {
+            s.clearViewIndexCache();
+        }
+    }",False
+46,"getSQL(StringBuilder,int)",Method,getDropSQL(),,"org.h2.engine.DbObject+isTemporary() org.h2.engine.DbObject+isTemporary() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char) org.h2.util.StringUtils+indent(StringBuilder,String,int,boolean) org.h2.util.StringUtils+indent(StringBuilder,String,int,boolean) java.lang.StringBuilder+append(char) org.h2.schema.SchemaObject+getSQL(StringBuilder,int)",org.h2.table.TableView+querySQL org.h2.table.TableView+querySQL,307,8,1,,"@Override
+    public StringBuilder getSQL(StringBuilder builder, int sqlFlags) {
+        if (isTemporary() && querySQL != null) {
+            builder.append(""(\n"");
+            return StringUtils.indent(builder, querySQL, 4, true).append(')');
+        }
+        return super.getSQL(builder, sqlFlags);
+    }",False
+47,getQuery(),Method,,"org.h2.command.ddl.AlterTableAlterColumn+checkViewsAreValid(DbObject) org.h2.table.InformationSchemaTable+views(SessionLocal,ArrayList<Row>,String,Table,String)",,org.h2.table.TableView+querySQL,57,3,1,,"public String getQuery() {
+        return querySQL;
+    }",False
+48,getScanIndex(SessionLocal),Method,,,"org.h2.table.PlanItem+getIndex() org.h2.table.TableView+getBestPlanItem(SessionLocal,int[],TableFilter[],int,SortOrder,AllColumnsForPlan) org.h2.table.TableView+getBestPlanItem(SessionLocal,int[],TableFilter[],int,SortOrder,AllColumnsForPlan) org.h2.table.PlanItem+getIndex()",,149,4,1,,"@Override
+    public Index getScanIndex(SessionLocal session) {
+        return getBestPlanItem(session, null, null, -1, null, null).getIndex();
+    }",True
+49,"getScanIndex(SessionLocal,int[],TableFilter[],int,SortOrder,AllColumnsForPlan)",Method,,,"java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.util.HasSQL+getTraceSQL() org.h2.util.HasSQL+getTraceSQL() org.h2.table.TableView+getBestPlanItem(SessionLocal,int[],TableFilter[],int,SortOrder,AllColumnsForPlan) org.h2.table.TableView+getBestPlanItem(SessionLocal,int[],TableFilter[],int,SortOrder,AllColumnsForPlan) org.h2.table.PlanItem+getIndex() org.h2.table.PlanItem+getIndex()",org.h2.table.TableView+createException org.h2.table.TableView+createException org.h2.api.ErrorCode+VIEW_IS_INVALID_2 org.h2.table.TableView+createException,532,11,1,,"@Override
+    public Index getScanIndex(SessionLocal session, int[] masks,
+            TableFilter[] filters, int filter, SortOrder sortOrder,
+            AllColumnsForPlan allColumnsSet) {
+        if (createException != null) {
+            String msg = createException.getMessage();
+            throw DbException.get(ErrorCode.VIEW_IS_INVALID_2, createException, getTraceSQL(), msg);
+        }
+        PlanItem item = getBestPlanItem(session, masks, filters, filter, sortOrder, allColumnsSet);
+        return item.getIndex();
+    }",False
+50,canReference(),Method,,,,,73,4,1,,"@Override
+    public boolean canReference() {
+        return false;
+    }",True
+51,getIndexes(),Method,,,,,79,4,1,,"@Override
+    public ArrayList<Index> getIndexes() {
+        return null;
+    }",True
+52,getMaxDataModificationId(),Method,,,org.h2.engine.Database+getModificationDataId() org.h2.engine.Database+getModificationDataId() org.h2.command.query.Query+getMaxDataModificationId() org.h2.command.query.Query+getMaxDataModificationId(),org.h2.table.TableView+createException java.lang.Long+MAX_VALUE org.h2.table.TableView+viewQuery java.lang.Long+MAX_VALUE org.h2.engine.DbObject+database org.h2.table.TableView+lastModificationCheck org.h2.table.TableView+maxDataModificationId org.h2.table.TableView+maxDataModificationId org.h2.table.TableView+viewQuery org.h2.table.TableView+lastModificationCheck org.h2.table.TableView+maxDataModificationId,701,18,1,,"@Override
+    public long getMaxDataModificationId() {
+        if (createException != null) {
+            return Long.MAX_VALUE;
+        }
+        if (viewQuery == null) {
+            return Long.MAX_VALUE;
+        }
+        // if nothing was modified in the database since the last check, and the
+        // last is known, then we don't need to check again
+        // this speeds up nested views
+        long dbMod = database.getModificationDataId();
+        if (dbMod > lastModificationCheck && maxDataModificationId <= dbMod) {
+            maxDataModificationId = viewQuery.getMaxDataModificationId();
+            lastModificationCheck = dbMod;
+        }
+        return maxDataModificationId;
+    }",False
+53,removeCurrentViewFromOtherTables(),Method,"initColumnsAndTables(SessionLocal,boolean) removeChildrenAndResources(SessionLocal)",,org.h2.table.Table+removeDependentView(TableView) org.h2.table.Table+removeDependentView(TableView) java.util.ArrayList+clear() java.util.ArrayList+clear(),org.h2.table.TableView+tables org.h2.table.TableView+tables org.h2.table.TableView+tables,219,8,2,,"private void removeCurrentViewFromOtherTables() {
+        if (tables != null) {
+            for (Table t : tables) {
+                t.removeDependentView(this);
+            }
+            tables.clear();
+        }
+    }",False
+54,addDependentViewToTables(),Method,"initColumnsAndTables(SessionLocal,boolean)",,org.h2.table.Table+addDependentView(TableView) org.h2.table.Table+addDependentView(TableView),org.h2.table.TableView+tables,128,5,2,,"private void addDependentViewToTables() {
+        for (Table t : tables) {
+            t.addDependentView(this);
+        }
+    }",False
+55,setOwner(User),Method,"createTempView(SessionLocal,User,String,Column[],Query,Query)",,,org.h2.table.TableView+owner org.h2.table.TableView+owner,69,3,2,,"private void setOwner(User owner) {
+        this.owner = owner;
+    }",True
+56,getOwner(),Method,,"org.h2.engine.User+hasTableRight(Table,int)",,org.h2.table.TableView+owner,52,3,1,,"public User getOwner() {
+        return owner;
+    }",True
+57,"createTempView(SessionLocal,User,String,Column[],Query,Query)",Method,,"org.h2.command.query.Query+toTable(String,Column[],ArrayList<Parameter>,boolean,Query)","org.h2.engine.Database+getMainSchema() org.h2.engine.SessionLocal+getDatabase() org.h2.engine.SessionLocal+getDatabase() org.h2.engine.Database+getMainSchema() org.h2.command.Prepared+getPlanSQL(int) org.h2.command.Prepared+getPlanSQL(int) org.h2.table.TableView+TableView(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,boolean,boolean) org.h2.command.Prepared+getParameters() org.h2.command.Prepared+getParameters() org.h2.table.TableView+setTopQuery(Query) org.h2.table.TableView+setTopQuery(Query) org.h2.table.TableView+setOwner(User) org.h2.table.TableView+setOwner(User) org.h2.engine.DbObject+setTemporary(boolean) org.h2.engine.DbObject+setTemporary(boolean)",org.h2.util.HasSQL+DEFAULT_SQL_FLAGS org.h2.table.TableView+createException org.h2.table.TableView+createException,1116,27,9,"/** 
+ * Create a temporary view out of the given query.
+ * @param session the session
+ * @param owner the owner of the query
+ * @param name the view name
+ * @param columnTemplates column templates, or {@code null}
+ * @param query the prepared query
+ * @param topQuery the top level query
+ * @return the view table
+ */
+","/**
+     * Create a temporary view out of the given query.
+     *
+     * @param session the session
+     * @param owner the owner of the query
+     * @param name the view name
+     * @param columnTemplates column templates, or {@code null}
+     * @param query the prepared query
+     * @param topQuery the top level query
+     * @return the view table
+     */
+    public static TableView createTempView(SessionLocal session, User owner,
+            String name, Column[] columnTemplates, Query query, Query topQuery) {
+        Schema mainSchema = session.getDatabase().getMainSchema();
+        String querySQL = query.getPlanSQL(DEFAULT_SQL_FLAGS);
+        TableView v = new TableView(mainSchema, 0, name,
+                querySQL, query.getParameters(), columnTemplates, session,
+                false, true /* literals have already been checked when parsing original query */,
+                false, true, true);
+        if (v.createException != null) {
+            throw v.createException;
+        }
+        v.setTopQuery(topQuery);
+        v.setOwner(owner);
+        v.setTemporary(true);
+        return v;
+    }",True
+58,setTopQuery(Query),Method,"createTempView(SessionLocal,User,String,Column[],Query,Query)",,,org.h2.table.TableView+topQuery org.h2.table.TableView+topQuery,82,3,2,,"private void setTopQuery(Query topQuery) {
+        this.topQuery = topQuery;
+    }",True
+59,getRowCountApproximation(SessionLocal),Method,,,,org.h2.table.TableView+ROW_COUNT_APPROXIMATION,120,4,1,,"@Override
+    public long getRowCountApproximation(SessionLocal session) {
+        return ROW_COUNT_APPROXIMATION;
+    }",True
+60,getParameterOffset(ArrayList<Parameter>),Method,,"org.h2.index.ViewIndex+setupQueryParameters(SessionLocal,SearchRow,SearchRow,SearchRow) org.h2.index.ViewIndex+getQuery(SessionLocal,int[])","org.h2.table.TableView+getMaxParameterIndex(ArrayList<Parameter>) org.h2.table.TableView+getMaxParameterIndex(ArrayList<Parameter>) org.h2.command.Prepared+getParameters() org.h2.command.Prepared+getParameters() java.lang.Math+max(int,int) java.lang.Math+max(int,int) org.h2.table.TableView+getMaxParameterIndex(ArrayList<Parameter>) org.h2.table.TableView+getMaxParameterIndex(ArrayList<Parameter>)",org.h2.table.TableView+topQuery org.h2.table.TableView+topQuery,510,13,1,"/** 
+ * Get the index of the first parameter.
+ * @param additionalParameters additional parameters
+ * @return the index of the first parameter
+ */
+","/**
+     * Get the index of the first parameter.
+     *
+     * @param additionalParameters additional parameters
+     * @return the index of the first parameter
+     */
+    public int getParameterOffset(ArrayList<Parameter> additionalParameters) {
+        int result = topQuery == null ? -1 : getMaxParameterIndex(topQuery.getParameters());
+        if (additionalParameters != null) {
+            result = Math.max(result, getMaxParameterIndex(additionalParameters));
+        }
+        return result + 1;
+    }",True
+61,getMaxParameterIndex(ArrayList<Parameter>),Method,getParameterOffset(ArrayList<Parameter>) getParameterOffset(ArrayList<Parameter>),,"java.lang.Math+max(int,int) java.lang.Math+max(int,int) org.h2.expression.Parameter+getIndex() org.h2.expression.Parameter+getIndex()",,279,9,10,,"private static int getMaxParameterIndex(ArrayList<Parameter> parameters) {
+        int result = -1;
+        for (Parameter p : parameters) {
+            if (p != null) {
+                result = Math.max(result, p.getIndex());
+            }
+        }
+        return result;
+    }",False
+62,isRecursive(),Method,,"org.h2.command.query.Select+getPlanSQL(int) org.h2.table.TableFilter+getPlanSQL(StringBuilder,boolean,int)",,org.h2.table.TableView+allowRecursive,67,3,1,,"public boolean isRecursive() {
+        return allowRecursive;
+    }",False
+63,isDeterministic(),Method,,,org.h2.command.query.Query+isEverything(ExpressionVisitor) org.h2.command.query.Query+isEverything(ExpressionVisitor),org.h2.table.TableView+allowRecursive org.h2.table.TableView+viewQuery org.h2.table.TableView+viewQuery org.h2.expression.ExpressionVisitor+DETERMINISTIC_VISITOR,221,7,1,,"@Override
+    public boolean isDeterministic() {
+        if (allowRecursive || viewQuery == null) {
+            return false;
+        }
+        return viewQuery.isEverything(ExpressionVisitor.DETERMINISTIC_VISITOR);
+    }",False
+64,setRecursiveResult(ResultInterface),Method,,"org.h2.index.ViewIndex+findRecursive(SearchRow,SearchRow) org.h2.index.ViewIndex+findRecursive(SearchRow,SearchRow) org.h2.index.ViewIndex+findRecursive(SearchRow,SearchRow)",org.h2.result.ResultInterface+close() org.h2.result.ResultInterface+close(),org.h2.table.TableView+recursiveResult org.h2.table.TableView+recursiveResult org.h2.table.TableView+recursiveResult org.h2.table.TableView+recursiveResult,185,6,1,,"public void setRecursiveResult(ResultInterface value) {
+        if (recursiveResult != null) {
+            recursiveResult.close();
+        }
+        this.recursiveResult = value;
+    }",False
+65,getRecursiveResult(),Method,,"org.h2.index.ViewIndex+findRecursive(SearchRow,SearchRow)",,org.h2.table.TableView+recursiveResult,83,3,1,,"public ResultInterface getRecursiveResult() {
+        return recursiveResult;
+    }",False
+66,addDependencies(HashSet<DbObject>),Method,,,org.h2.table.Table+addDependencies(HashSet<DbObject>) org.h2.table.Table+getTableType() org.h2.table.Table+getTableType() org.h2.table.Table+addDependencies(HashSet<DbObject>) org.h2.table.Table+addDependencies(HashSet<DbObject>),org.h2.table.TableView+tables org.h2.table.TableView+tables,346,11,1,,"@Override
+    public void addDependencies(HashSet<DbObject> dependencies) {
+        super.addDependencies(dependencies);
+        if (tables != null) {
+            for (Table t : tables) {
+                if (TableType.VIEW != t.getTableType()) {
+                    t.addDependencies(dependencies);
+                }
+            }
+        }
+    }",True
+67,CacheKey,MemberClass,,,"org.h2.table.TableView.CacheKey+CacheKey(int[],TableView) org.h2.table.TableView.CacheKey+hashCode() java.util.Arrays+hashCode(int[]) java.util.Arrays+hashCode(int[]) java.lang.Object+hashCode() java.lang.Object+hashCode() org.h2.table.TableView.CacheKey+equals(Object) java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Object+getClass() java.util.Arrays+equals(int[],int[]) java.util.Arrays+equals(int[],int[])",org.h2.table.TableView.CacheKey+masks org.h2.table.TableView.CacheKey+view org.h2.table.TableView.CacheKey+masks org.h2.table.TableView.CacheKey+view org.h2.table.TableView.CacheKey+masks org.h2.table.TableView.CacheKey+view org.h2.table.TableView.CacheKey+view org.h2.table.TableView.CacheKey+view org.h2.table.TableView.CacheKey+masks org.h2.table.TableView.CacheKey+masks,1061,40,26,"/** 
+ * The key of the index cache for views.
+ */
+","/**
+     * The key of the index cache for views.
+     */
+    private static final class CacheKey {
+
+        private final int[] masks;
+        private final TableView view;
+
+        CacheKey(int[] masks, TableView view) {
+            this.masks = masks;
+            this.view = view;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + Arrays.hashCode(masks);
+            result = prime * result + view.hashCode();
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            CacheKey other = (CacheKey) obj;
+            if (view != other.view) {
+                return false;
+            }
+            return Arrays.equals(masks, other.masks);
+        }
+    }",False
+68,isRecursiveQueryDetected(),Method,"createTableViewMaybeRecursive(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,Database)",,,org.h2.table.TableView+isRecursiveQueryDetected,194,8,1,"/** 
+ * Was query recursion detected during compiling.
+ * @return true if yes
+ */
+","/**
+     * Was query recursion detected during compiling.
+     *
+     * @return true if yes
+     */
+    public boolean isRecursiveQueryDetected() {
+        return isRecursiveQueryDetected;
+    }",False
+69,isRecursiveQueryExceptionDetected(DbException),Method,"initColumnsAndTables(SessionLocal,boolean)",,org.h2.message.DbException+getErrorCode() org.h2.message.DbException+getErrorCode() java.lang.String+contains(CharSequence) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() java.lang.String+contains(CharSequence) org.h2.engine.DbObject+getName() org.h2.engine.DbObject+getName(),org.h2.api.ErrorCode+TABLE_OR_VIEW_NOT_FOUND_1 org.h2.api.ErrorCode+TABLE_OR_VIEW_NOT_FOUND_DATABASE_EMPTY_1 org.h2.api.ErrorCode+TABLE_OR_VIEW_NOT_FOUND_WITH_CANDIDATES_2,617,16,2,"/** 
+ * Does exception indicate query recursion?
+ */
+","/**
+     * Does exception indicate query recursion?
+     */
+    private boolean isRecursiveQueryExceptionDetected(DbException exception) {
+        if (exception == null) {
+            return false;
+        }
+        int errorCode = exception.getErrorCode();
+        if (errorCode != ErrorCode.TABLE_OR_VIEW_NOT_FOUND_1 &&
+                errorCode != ErrorCode.TABLE_OR_VIEW_NOT_FOUND_DATABASE_EMPTY_1 &&
+                errorCode != ErrorCode.TABLE_OR_VIEW_NOT_FOUND_WITH_CANDIDATES_2
+        ) {
+            return false;
+        }
+        return exception.getMessage().contains(""\"""" + this.getName() + ""\"""");
+    }",False
+70,getTables(),Method,,org.h2.command.ddl.DropView+update(),,org.h2.table.TableView+tables,61,3,1,,"public List<Table> getTables() {
+        return tables;
+    }",False
+71,"createTableViewMaybeRecursive(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,Database)",Method,,org.h2.command.ddl.CreateView+update(Schema),"org.h2.table.TableView+createShadowTableForRecursiveTableExpression(boolean,SessionLocal,String,Schema,List<Column>,Database) org.h2.table.TableView+createShadowTableForRecursiveTableExpression(boolean,SessionLocal,String,Schema,List<Column>,Database) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.h2.table.Column+getName() org.h2.table.Column+getName() org.h2.engine.SessionLocal+prepare(String,boolean,boolean) org.h2.engine.SessionLocal+prepare(String,boolean,boolean) org.h2.command.Prepared+setSession(SessionLocal) org.h2.command.Prepared+setSession(SessionLocal) org.h2.table.TableView+createQueryColumnTemplateList(String[],Query,String[]) org.h2.table.TableView+createQueryColumnTemplateList(String[],Query,String[]) java.util.ArrayList+toArray(T[]) java.util.ArrayList+toArray(T[]) org.h2.table.TableView+destroyShadowTableForRecursiveExpression(boolean,SessionLocal,Table) org.h2.table.TableView+destroyShadowTableForRecursiveExpression(boolean,SessionLocal,Table) org.h2.table.TableView+TableView(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,boolean,boolean) java.util.List+toArray(T[]) java.util.List+toArray(T[]) org.h2.table.TableView+isRecursiveQueryDetected() org.h2.table.TableView+isRecursiveQueryDetected() org.h2.engine.Database+addSchemaObject(SessionLocal,SchemaObject) org.h2.engine.Database+addSchemaObject(SessionLocal,SchemaObject) org.h2.table.Table+lock(SessionLocal,int) org.h2.table.Table+lock(SessionLocal,int) org.h2.engine.Database+removeSchemaObject(SessionLocal,SchemaObject) org.h2.engine.SessionLocal+getDatabase() org.h2.engine.SessionLocal+getDatabase() org.h2.engine.Database+removeSchemaObject(SessionLocal,SchemaObject) org.h2.table.TableView+removeChildrenAndResources(SessionLocal) org.h2.table.TableView+removeChildrenAndResources(SessionLocal) org.h2.engine.SessionLocal+removeLocalTempTable(Table) org.h2.engine.SessionLocal+removeLocalTempTable(Table) org.h2.table.TableView+TableView(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,boolean,boolean)",org.h2.table.Table+EXCLUSIVE_LOCK,3041,70,9,"/** 
+ * Create a view.
+ * @param schema the schema
+ * @param id the view id
+ * @param name the view name
+ * @param querySQL the query
+ * @param parameters the parameters
+ * @param columnTemplates the columns
+ * @param session the session
+ * @param literalsChecked whether literals in the query are checked
+ * @param isTableExpression if this is a table expression
+ * @param isTemporary whether the view is persisted
+ * @param db the database
+ * @return the view
+ */
+","/**
+     * Create a view.
+     *
+     * @param schema the schema
+     * @param id the view id
+     * @param name the view name
+     * @param querySQL the query
+     * @param parameters the parameters
+     * @param columnTemplates the columns
+     * @param session the session
+     * @param literalsChecked whether literals in the query are checked
+     * @param isTableExpression if this is a table expression
+     * @param isTemporary whether the view is persisted
+     * @param db the database
+     * @return the view
+     */
+    public static TableView createTableViewMaybeRecursive(Schema schema, int id, String name, String querySQL,
+            ArrayList<Parameter> parameters, Column[] columnTemplates, SessionLocal session,
+            boolean literalsChecked, boolean isTableExpression, boolean isTemporary, Database db) {
+
+
+        Table recursiveTable = createShadowTableForRecursiveTableExpression(isTemporary, session, name,
+                schema, Arrays.asList(columnTemplates), db);
+
+        List<Column> columnTemplateList;
+        String[] querySQLOutput = new String[1];
+        ArrayList<String> columnNames = new ArrayList<>();
+        for (Column columnTemplate: columnTemplates) {
+            columnNames.add(columnTemplate.getName());
+        }
+
+        try {
+            Prepared withQuery = session.prepare(querySQL, false, false);
+            if (!isTemporary) {
+                withQuery.setSession(session);
+            }
+            columnTemplateList = TableView.createQueryColumnTemplateList(columnNames.toArray(new String[1]),
+                    (Query) withQuery, querySQLOutput);
+
+        } finally {
+            destroyShadowTableForRecursiveExpression(isTemporary, session, recursiveTable);
+        }
+
+        // build with recursion turned on
+        TableView view = new TableView(schema, id, name, querySQL,
+                parameters, columnTemplateList.toArray(columnTemplates), session,
+                true/* try recursive */, literalsChecked, isTableExpression, isTemporary, false);
+
+        // is recursion really detected ? if not - recreate it without recursion flag
+        // and no recursive index
+        if (!view.isRecursiveQueryDetected()) {
+            if (!isTemporary) {
+                db.addSchemaObject(session, view);
+                view.lock(session, Table.EXCLUSIVE_LOCK);
+                session.getDatabase().removeSchemaObject(session, view);
+
+                // during database startup - this method does not normally get called - and it
+                // needs to be to correctly un-register the table which the table expression
+                // uses...
+                view.removeChildrenAndResources(session);
+            } else {
+                session.removeLocalTempTable(view);
+            }
+            view = new TableView(schema, id, name, querySQL, parameters,
+                    columnTemplates, session,
+                    false/* detected not recursive */, literalsChecked, isTableExpression, isTemporary, false);
+        }
+
+        return view;
+    }",False
+72,"createQueryColumnTemplateList(String[],Query,String[])",Method,"createTableViewMaybeRecursive(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,Database)",org.h2.command.Parser+readDerivedTableWithCorrelation(),"org.h2.command.query.Query+prepare() org.h2.command.query.Query+prepare() org.h2.util.StringUtils+cache(String) org.h2.util.StringUtils+cache(String) org.h2.command.Prepared+getPlanSQL(int) org.h2.command.Prepared+getPlanSQL(int) org.h2.command.Prepared+getSession() org.h2.command.Prepared+getSession() org.h2.command.query.Query+getExpressions() org.h2.command.query.Query+getExpressions() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.expression.Expression+getColumnNameForView(SessionLocal,int) org.h2.expression.Expression+getColumnNameForView(SessionLocal,int) java.util.List+add(E) java.util.List+add(E) org.h2.table.Column+Column(String,TypeInfo) org.h2.expression.Expression+getType() org.h2.expression.Expression+getType()",org.h2.util.HasSQL+ADD_PLAN_INFORMATION,1685,32,9,"/** 
+ * Creates a list of column templates from a query (usually from WITH query, but could be any query)
+ * @param cols - an optional list of column names (can be specified by WITHclause overriding usual select names)
+ * @param theQuery - the query object we want the column list for
+ * @param querySQLOutput - array of length 1 to receive extra 'output' fieldin addition to return value - containing the SQL query of the Query object
+ * @return a list of column object returned by withQuery
+ */
+","/**
+     * Creates a list of column templates from a query (usually from WITH query,
+     * but could be any query)
+     *
+     * @param cols - an optional list of column names (can be specified by WITH
+     *            clause overriding usual select names)
+     * @param theQuery - the query object we want the column list for
+     * @param querySQLOutput - array of length 1 to receive extra 'output' field
+     *            in addition to return value - containing the SQL query of the
+     *            Query object
+     * @return a list of column object returned by withQuery
+     */
+    public static List<Column> createQueryColumnTemplateList(String[] cols,
+            Query theQuery, String[] querySQLOutput) {
+        List<Column> columnTemplateList = new ArrayList<>();
+        theQuery.prepare();
+        // String array of length 1 is to receive extra 'output' field in addition to
+        // return value
+        querySQLOutput[0] = StringUtils.cache(theQuery.getPlanSQL(ADD_PLAN_INFORMATION));
+        SessionLocal session = theQuery.getSession();
+        ArrayList<Expression> withExpressions = theQuery.getExpressions();
+        for (int i = 0; i < withExpressions.size(); ++i) {
+            Expression columnExp = withExpressions.get(i);
+            // use the passed in column name if supplied, otherwise use alias
+            // (if found) otherwise use column name derived from column
+            // expression
+            String columnName = cols != null && cols.length > i ? cols[i] : columnExp.getColumnNameForView(session, i);
+            columnTemplateList.add(new Column(columnName, columnExp.getType()));
+
+        }
+        return columnTemplateList;
+    }",True
+73,"createShadowTableForRecursiveTableExpression(boolean,SessionLocal,String,Schema,List<Column>,Database)",Method,"createTableViewMaybeRecursive(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,Database)",,"org.h2.command.ddl.CreateTableData+CreateTableData() org.h2.engine.Database+allocateObjectId() org.h2.engine.Database+allocateObjectId() org.h2.schema.Schema+createTable(CreateTableData) org.h2.schema.Schema+createTable(CreateTableData) org.h2.engine.Database+unlockMeta(SessionLocal) org.h2.engine.Database+unlockMeta(SessionLocal) org.h2.engine.Database+addSchemaObject(SessionLocal,SchemaObject) org.h2.engine.Database+addSchemaObject(SessionLocal,SchemaObject) org.h2.engine.SessionLocal+addLocalTempTable(Table) org.h2.engine.SessionLocal+addLocalTempTable(Table)",org.h2.command.ddl.CreateTableData+id org.h2.command.ddl.CreateTableData+columns org.h2.command.ddl.CreateTableData+tableName org.h2.command.ddl.CreateTableData+temporary org.h2.command.ddl.CreateTableData+persistData org.h2.command.ddl.CreateTableData+persistIndexes org.h2.command.ddl.CreateTableData+session,1531,38,9,"/** 
+ * Create a table for a recursive query.
+ * @param isTemporary whether the table is persisted
+ * @param targetSession the session
+ * @param cteViewName the name
+ * @param schema the schema
+ * @param columns the columns
+ * @param db the database
+ * @return the table
+ */
+","/**
+     * Create a table for a recursive query.
+     *
+     * @param isTemporary whether the table is persisted
+     * @param targetSession the session
+     * @param cteViewName the name
+     * @param schema the schema
+     * @param columns the columns
+     * @param db the database
+     * @return the table
+     */
+    public static Table createShadowTableForRecursiveTableExpression(boolean isTemporary, SessionLocal targetSession,
+            String cteViewName, Schema schema, List<Column> columns, Database db) {
+
+        // create table data object
+        CreateTableData recursiveTableData = new CreateTableData();
+        recursiveTableData.id = db.allocateObjectId();
+        recursiveTableData.columns = new ArrayList<>(columns);
+        recursiveTableData.tableName = cteViewName;
+        recursiveTableData.temporary = isTemporary;
+        recursiveTableData.persistData = true;
+        recursiveTableData.persistIndexes = !isTemporary;
+        recursiveTableData.session = targetSession;
+
+        // this gets a meta table lock that is not released
+        Table recursiveTable = schema.createTable(recursiveTableData);
+
+        if (!isTemporary) {
+            // this unlock is to prevent lock leak from schema.createTable()
+            db.unlockMeta(targetSession);
+            synchronized (targetSession) {
+                db.addSchemaObject(targetSession, recursiveTable);
+            }
+        } else {
+            targetSession.addLocalTempTable(recursiveTable);
+        }
+        return recursiveTable;
+    }",False
+74,"destroyShadowTableForRecursiveExpression(boolean,SessionLocal,Table)",Method,"createTableViewMaybeRecursive(Schema,int,String,String,ArrayList<Parameter>,Column[],SessionLocal,boolean,boolean,boolean,Database)",,"org.h2.table.Table+lock(SessionLocal,int) org.h2.table.Table+lock(SessionLocal,int) org.h2.engine.Database+removeSchemaObject(SessionLocal,SchemaObject) org.h2.engine.SessionLocal+getDatabase() org.h2.engine.SessionLocal+getDatabase() org.h2.engine.Database+removeSchemaObject(SessionLocal,SchemaObject) org.h2.engine.SessionLocal+removeLocalTempTable(Table) org.h2.engine.SessionLocal+removeLocalTempTable(Table) org.h2.engine.Database+unlockMeta(SessionLocal) org.h2.engine.SessionLocal+getDatabase() org.h2.engine.SessionLocal+getDatabase() org.h2.engine.Database+unlockMeta(SessionLocal)",org.h2.table.Table+EXCLUSIVE_LOCK,875,22,9,"/** 
+ * Remove a table for a recursive query.
+ * @param isTemporary whether the table is persisted
+ * @param targetSession the session
+ * @param recursiveTable the table
+ */
+","/**
+     * Remove a table for a recursive query.
+     *
+     * @param isTemporary whether the table is persisted
+     * @param targetSession the session
+     * @param recursiveTable the table
+     */
+    public static void destroyShadowTableForRecursiveExpression(boolean isTemporary, SessionLocal targetSession,
+            Table recursiveTable) {
+        if (recursiveTable != null) {
+            if (!isTemporary) {
+                recursiveTable.lock(targetSession, Table.EXCLUSIVE_LOCK);
+                targetSession.getDatabase().removeSchemaObject(targetSession, recursiveTable);
+
+            } else {
+                targetSession.removeLocalTempTable(recursiveTable);
+            }
+
+            // both removeSchemaObject and removeLocalTempTable hold meta locks - release them here
+            targetSession.getDatabase().unlockMeta(targetSession);
+        }
+    }",False

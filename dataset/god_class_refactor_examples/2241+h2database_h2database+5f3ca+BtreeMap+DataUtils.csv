@@ -1,0 +1,594 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,store,Field,"BtreeMap(BtreeMapStore,String,Class<K>,Class<V>)",,,,34,1,18,,private final BtreeMapStore store;,False
+2,name,Field,"BtreeMap(BtreeMapStore,String,Class<K>,Class<V>)",,,,26,1,18,,private final String name;,False
+3,keyType,Field,,,,,30,1,18,,private final KeyType keyType;,False
+4,valueType,Field,,,,,34,1,18,,private final ValueType valueType;,False
+5,root,Field,,,,,18,1,2,,private Page root;,False
+6,"BtreeMap(BtreeMapStore,String,Class<K>,Class<V>)",Method,,,org.h2.dev.store.btree.BtreeMap.IntegerType+IntegerType() org.h2.dev.store.btree.BtreeMap.StringType+StringType() java.lang.RuntimeException+RuntimeException(String) java.lang.Class+toString() java.lang.Class+toString() org.h2.dev.store.btree.BtreeMap.IntegerType+IntegerType() org.h2.dev.store.btree.BtreeMap.StringType+StringType() java.lang.RuntimeException+RuntimeException(String) java.lang.Class+toString() java.lang.Class+toString(),"org.h2.dev.store.btree.BtreeMap<K,V>+store org.h2.dev.store.btree.BtreeMap+store org.h2.dev.store.btree.BtreeMap<K,V>+name org.h2.dev.store.btree.BtreeMap+name org.h2.dev.store.btree.BtreeMap+keyType org.h2.dev.store.btree.BtreeMap+keyType org.h2.dev.store.btree.BtreeMap+valueType org.h2.dev.store.btree.BtreeMap+valueType",730,18,2,,"private BtreeMap(BtreeMapStore store, String name, Class<K> keyClass, Class<V> valueClass) {
+        this.store = store;
+        this.name = name;
+        if (keyClass == Integer.class) {
+            keyType = new IntegerType();
+        } else if (keyClass == String.class) {
+            keyType = new StringType();
+        } else {
+            throw new RuntimeException(""Unsupported key class "" + keyClass.toString());
+        }
+        if (valueClass == Integer.class) {
+            valueType = new IntegerType();
+        } else if (valueClass == String.class) {
+            valueType = new StringType();
+        } else {
+            throw new RuntimeException(""Unsupported value class "" + keyClass.toString());
+        }
+    }",False
+7,getClass(String),Method,,,java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.String+equals(Object) java.lang.RuntimeException+RuntimeException(String),,385,14,8,"/** 
+ * Get the class with the given tag name.
+ * @param name the tag name
+ * @return the class
+ */
+","/**
+     * Get the class with the given tag name.
+     *
+     * @param name the tag name
+     * @return the class
+     */
+    static Class<?> getClass(String name) {
+        if (name.equals(""i"")) {
+            return Integer.class;
+        } else if (name.equals(""s"")) {
+            return String.class;
+        }
+        throw new RuntimeException(""Unknown class name "" + name);
+    }",False
+8,"open(BtreeMapStore,String,Class<K>,Class<V>)",Method,,"org.h2.dev.store.btree.BtreeMapStore+openMap(String,Class<K>,Class<V>) org.h2.dev.store.btree.BtreeMapStore+open()","org.h2.dev.store.btree.BtreeMap+BtreeMap(BtreeMapStore,String,Class<K>,Class<V>)",,466,14,8,"/** 
+ * Open a map.
+ * @param < K > the key type
+ * @param < V > the value type
+ * @param store the tree store
+ * @param name the name of the map
+ * @param keyClass the key class
+ * @param valueClass the value class
+ * @return the map
+ */
+","/**
+     * Open a map.
+     *
+     * @param <K> the key type
+     * @param <V> the value type
+     * @param store the tree store
+     * @param name the name of the map
+     * @param keyClass the key class
+     * @param valueClass the value class
+     * @return the map
+     */
+    static <K, V> BtreeMap<K, V> open(BtreeMapStore store, String name, Class<K> keyClass, Class<V> valueClass) {
+        return new BtreeMap<K, V>(store, name, keyClass, valueClass);
+    }",False
+9,"put(K,V)",Method,,org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testDefragment() org.h2.test.unit.TestTreeMapStore+testReuseSpace() org.h2.test.unit.TestTreeMapStore+testRandom() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store(),"org.h2.dev.store.btree.BtreeMap+isChanged() org.h2.dev.store.btree.BtreeMap+isChanged() org.h2.dev.store.btree.BtreeMapStore+markChanged(String,BtreeMap<?,?>) org.h2.dev.store.btree.BtreeMapStore+markChanged(String,BtreeMap<?,?>) org.h2.dev.store.btree.Page+put(BtreeMap<?,?>,Page,Object,Object) org.h2.dev.store.btree.Page+put(BtreeMap<?,?>,Page,Object,Object)",org.h2.dev.store.btree.BtreeMap+store org.h2.dev.store.btree.BtreeMap+name org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,276,12,1,"/** 
+ * Store a key-value pair.
+ * @param key the key
+ * @param data the value
+ */
+","/**
+     * Store a key-value pair.
+     *
+     * @param key the key
+     * @param data the value
+     */
+    public void put(K key, V data) {
+        if (!isChanged()) {
+            store.markChanged(name, this);
+        }
+        root = Page.put(this, root, key, data);
+    }",False
+10,get(K),Method,,"org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testRandom() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testKeyValueClasses() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.dev.store.btree.BtreeMapStore+openMap(String,Class<K>,Class<V>) org.h2.dev.store.btree.BtreeMapStore+readMeta()",org.h2.dev.store.btree.Page+find(Object) org.h2.dev.store.btree.Page+find(Object),org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,276,13,1,"/** 
+ * Get a value.
+ * @param key the key
+ * @return the value, or null if not found
+ */
+","/**
+     * Get a value.
+     *
+     * @param key the key
+     * @return the value, or null if not found
+     */
+    @SuppressWarnings(""unchecked"")
+    public V get(K key) {
+        if (root == null) {
+            return null;
+        }
+        return (V) root.find(key);
+    }",False
+11,getPage(K),Method,,,org.h2.dev.store.btree.Page+findPage(Object) org.h2.dev.store.btree.Page+findPage(Object),org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,269,12,1,"/** 
+ * Get the page for the given value.
+ * @param key the key
+ * @return the value, or null if not found
+ */
+","/**
+     * Get the page for the given value.
+     *
+     * @param key the key
+     * @return the value, or null if not found
+     */
+    public Page getPage(K key) {
+        if (root == null) {
+            return null;
+        }
+        return root.findPage(key);
+    }",False
+12,remove(K),Method,,org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testBtreeStore() org.h2.test.unit.TestTreeMapStore+testDefragment() org.h2.test.unit.TestTreeMapStore+testReuseSpace() org.h2.test.unit.TestTreeMapStore+testRandom() org.h2.test.unit.TestTreeMapStore+testSimple() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store(),"org.h2.dev.store.btree.BtreeMap+isChanged() org.h2.dev.store.btree.BtreeMap+isChanged() org.h2.dev.store.btree.BtreeMapStore+markChanged(String,BtreeMap<?,?>) org.h2.dev.store.btree.BtreeMapStore+markChanged(String,BtreeMap<?,?>) org.h2.dev.store.btree.Page+remove(Page,Object) org.h2.dev.store.btree.Page+remove(Page,Object)",org.h2.dev.store.btree.BtreeMap+store org.h2.dev.store.btree.BtreeMap+name org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,276,13,1,"/** 
+ * Remove a key-value pair.
+ * @param key the key
+ */
+","/**
+     * Remove a key-value pair.
+     *
+     * @param key the key
+     */
+    public void remove(K key) {
+        if (!isChanged()) {
+            store.markChanged(name, this);
+        }
+        if (root != null) {
+            root = Page.remove(root, key);
+        }
+    }",False
+13,isChanged(),Method,"put(K,V) remove(K)",org.h2.dev.store.btree.BtreeMapStore+store(),org.h2.dev.store.btree.Page+getId() org.h2.dev.store.btree.Page+getId(),org.h2.dev.store.btree.BtreeMap+root org.h2.dev.store.btree.BtreeMap+root,155,8,0,"/** 
+ * Was this map changed.
+ * @return true if yes
+ */
+","/**
+     * Was this map changed.
+     *
+     * @return true if yes
+     */
+    boolean isChanged() {
+        return root != null && root.getId() < 0;
+    }",False
+14,ValueType,MemberClass,,,"org.h2.dev.store.btree.BtreeMap.ValueType+length(Object) org.h2.dev.store.btree.BtreeMap.ValueType+write(ByteBuffer,Object) org.h2.dev.store.btree.BtreeMap.ValueType+read(ByteBuffer) org.h2.dev.store.btree.BtreeMap.ValueType+getName()",,730,37,8,"/** 
+ * A value type.
+ */
+","/**
+     * A value type.
+     */
+    static interface ValueType {
+
+        /**
+         * Get the length in bytes.
+         *
+         * @param obj the object
+         * @return the length
+         */
+        int length(Object obj);
+
+        /**
+         * Write the object.
+         *
+         * @param buff the target buffer
+         * @param x the value
+         */
+        void write(ByteBuffer buff, Object x);
+
+        /**
+         * Read an object.
+         *
+         * @param buff the source buffer
+         * @return the object
+         */
+        Object read(ByteBuffer buff);
+
+        /**
+         * Get the tag name of the class.
+         *
+         * @return the tag name
+         */
+        String getName();
+
+    }",False
+15,KeyType,MemberClass,,,"org.h2.dev.store.btree.BtreeMap.KeyType+compare(Object,Object)",,339,14,8,"/** 
+ * A key type.
+ */
+","/**
+     * A key type.
+     */
+    static interface KeyType extends ValueType {
+
+        /**
+         * Compare two keys.
+         *
+         * @param a the first key
+         * @param b the second key
+         * @return -1 if the first key is smaller, 1 if larger, and 0 if equal
+         */
+        int compare(Object a, Object b);
+    }",False
+16,"compare(Object,Object)",Method,,org.h2.dev.store.btree.BtreeMapStore+findKey(Object),"org.h2.dev.store.btree.BtreeMap.KeyType+compare(Object,Object) org.h2.dev.store.btree.BtreeMap.KeyType+compare(Object,Object)",org.h2.dev.store.btree.BtreeMap+keyType,257,10,0,"/** 
+ * Compare two keys.
+ * @param a the first key
+ * @param b the second key
+ * @return -1 if the first key is smaller, 1 if bigger, 0 if equal
+ */
+","/**
+     * Compare two keys.
+     *
+     * @param a the first key
+     * @param b the second key
+     * @return -1 if the first key is smaller, 1 if bigger, 0 if equal
+     */
+    int compare(Object a, Object b) {
+        return keyType.compare(a, b);
+    }",False
+17,IntegerType,MemberClass,,,"org.h2.dev.store.btree.BtreeMap.IntegerType+compare(Object,Object) java.lang.Integer+compareTo(Integer) java.lang.Integer+compareTo(Integer) org.h2.dev.store.btree.BtreeMap.IntegerType+length(Object) org.h2.dev.store.btree.BtreeMap+getVarIntLen(int) org.h2.dev.store.btree.BtreeMap+getVarIntLen(int) org.h2.dev.store.btree.BtreeMap.IntegerType+read(ByteBuffer) org.h2.dev.store.btree.BtreeMap+readVarInt(ByteBuffer) org.h2.dev.store.btree.BtreeMap+readVarInt(ByteBuffer) org.h2.dev.store.btree.BtreeMap.IntegerType+write(ByteBuffer,Object) org.h2.dev.store.btree.BtreeMap+writeVarInt(ByteBuffer,int) org.h2.dev.store.btree.BtreeMap+writeVarInt(ByteBuffer,int) org.h2.dev.store.btree.BtreeMap.IntegerType+getName()",,582,26,8,"/** 
+ * An integer type.
+ */
+","/**
+     * An integer type.
+     */
+    static class IntegerType implements KeyType {
+
+        public int compare(Object a, Object b) {
+            return ((Integer) a).compareTo((Integer) b);
+        }
+
+        public int length(Object obj) {
+            return getVarIntLen((Integer) obj);
+        }
+
+        public Integer read(ByteBuffer buff) {
+            return readVarInt(buff);
+        }
+
+        public void write(ByteBuffer buff, Object x) {
+            writeVarInt(buff, (Integer) x);
+        }
+
+        public String getName() {
+            return ""i"";
+        }
+
+    }",False
+18,StringType,MemberClass,,,"org.h2.dev.store.btree.BtreeMap.StringType+compare(Object,Object) java.lang.String+compareTo(String) java.lang.Object+toString() java.lang.Object+toString() java.lang.String+compareTo(String) java.lang.Object+toString() java.lang.Object+toString() org.h2.dev.store.btree.BtreeMap.StringType+length(Object) java.lang.String+getBytes(String) java.lang.Object+toString() java.lang.Object+toString() java.lang.String+getBytes(String) org.h2.dev.store.btree.BtreeMap+getVarIntLen(int) org.h2.dev.store.btree.BtreeMap+getVarIntLen(int) java.lang.RuntimeException+RuntimeException(Throwable) org.h2.dev.store.btree.BtreeMap.StringType+read(ByteBuffer) org.h2.dev.store.btree.BtreeMap+readVarInt(ByteBuffer) org.h2.dev.store.btree.BtreeMap+readVarInt(ByteBuffer) java.nio.ByteBuffer+get(byte[]) java.nio.ByteBuffer+get(byte[]) java.lang.String+String(byte[],String) java.lang.RuntimeException+RuntimeException(Throwable) org.h2.dev.store.btree.BtreeMap.StringType+write(ByteBuffer,Object) java.lang.String+getBytes(String) java.lang.Object+toString() java.lang.Object+toString() java.lang.String+getBytes(String) org.h2.dev.store.btree.BtreeMap+writeVarInt(ByteBuffer,int) org.h2.dev.store.btree.BtreeMap+writeVarInt(ByteBuffer,int) java.nio.ByteBuffer+put(byte[]) java.nio.ByteBuffer+put(byte[]) java.lang.RuntimeException+RuntimeException(Throwable) org.h2.dev.store.btree.BtreeMap.StringType+getName()",,1232,44,8,"/** 
+ * A string type.
+ */
+","/**
+     * A string type.
+     */
+    static class StringType implements KeyType {
+
+        public int compare(Object a, Object b) {
+            return a.toString().compareTo(b.toString());
+        }
+
+        public int length(Object obj) {
+            try {
+                byte[] bytes = obj.toString().getBytes(""UTF-8"");
+                return getVarIntLen(bytes.length) + bytes.length;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public String read(ByteBuffer buff) {
+            int len = readVarInt(buff);
+            byte[] bytes = new byte[len];
+            buff.get(bytes);
+            try {
+                return new String(bytes, ""UTF-8"");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public void write(ByteBuffer buff, Object x) {
+            try {
+                byte[] bytes = x.toString().getBytes(""UTF-8"");
+                writeVarInt(buff, bytes.length);
+                buff.put(bytes);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public String getName() {
+            return ""s"";
+        }
+
+    }",False
+19,getKeyType(),Method,,org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+length() org.h2.dev.store.btree.BtreeMapStore+length(),,org.h2.dev.store.btree.BtreeMap+keyType,128,8,0,"/** 
+ * Get the key type.
+ * @return the key type
+ */
+","/**
+     * Get the key type.
+     *
+     * @return the key type
+     */
+    KeyType getKeyType() {
+        return keyType;
+    }",False
+20,getValueType(),Method,,org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+length(),,org.h2.dev.store.btree.BtreeMap+valueType,138,8,0,"/** 
+ * Get the value type.
+ * @return the value type
+ */
+","/**
+     * Get the value type.
+     *
+     * @return the value type
+     */
+    ValueType getValueType() {
+        return valueType;
+    }",False
+21,getTransaction(),Method,,"org.h2.dev.store.btree.BtreeMapStore+create(BtreeMap<?,?>,Object[],Object[],long[]) org.h2.dev.store.btree.BtreeMapStore+copyOnWrite()",org.h2.dev.store.btree.BtreeMapStore+getTransaction() org.h2.dev.store.btree.BtreeMapStore+getTransaction(),org.h2.dev.store.btree.BtreeMap+store,68,3,0,,"long getTransaction() {
+        return store.getTransaction();
+    }",False
+22,registerTempPage(Page),Method,,"org.h2.dev.store.btree.BtreeMapStore+create(BtreeMap<?,?>,Object[],Object[],long[])",org.h2.dev.store.btree.BtreeMapStore+registerTempPage(Page) org.h2.dev.store.btree.BtreeMapStore+registerTempPage(Page),org.h2.dev.store.btree.BtreeMap+store,217,9,0,"/** 
+ * Register a page and get the next temporary page id.
+ * @param p the new page
+ * @return the page id
+ */
+","/**
+     * Register a page and get the next temporary page id.
+     *
+     * @param p the new page
+     * @return the page id
+     */
+    long registerTempPage(Page p) {
+        return store.registerTempPage(p);
+    }",False
+23,readPage(long),Method,setRoot(long),"org.h2.dev.store.btree.BtreeMapStore+find(Object) org.h2.dev.store.btree.BtreeMapStore+findPage(Object) org.h2.dev.store.btree.BtreeMapStore+min(Page,ArrayList<CursorPos>,Object) org.h2.dev.store.btree.BtreeMapStore+nextKey(ArrayList<CursorPos>) org.h2.dev.store.btree.BtreeMapStore+put(BtreeMap<?,?>,Page,Object,Object) org.h2.dev.store.btree.BtreeMapStore+remove(Page,Object) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+lengthIncludingTempChildren() org.h2.dev.store.btree.BtreeMapStore+updatePageIds(long) org.h2.dev.store.btree.BtreeMapStore+storeTemp(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+countTemp()","org.h2.dev.store.btree.BtreeMapStore+readPage(BtreeMap<?,?>,long) org.h2.dev.store.btree.BtreeMapStore+readPage(BtreeMap<?,?>,long)",org.h2.dev.store.btree.BtreeMap+store,167,9,0,"/** 
+ * Read a node.
+ * @param id the node id
+ * @return the node
+ */
+","/**
+     * Read a node.
+     *
+     * @param id the node id
+     * @return the node
+     */
+    Page readPage(long id) {
+        return store.readPage(this, id);
+    }",False
+24,removePage(long),Method,,org.h2.dev.store.btree.BtreeMapStore+copyOnWrite(),org.h2.dev.store.btree.BtreeMapStore+removePage(long) org.h2.dev.store.btree.BtreeMapStore+removePage(long),org.h2.dev.store.btree.BtreeMap+store,136,8,0,"/** 
+ * Remove a node.
+ * @param id the node id
+ */
+","/**
+     * Remove a node.
+     *
+     * @param id the node id
+     */
+    void removePage(long id) {
+        store.removePage(id);
+    }",False
+25,setRoot(long),Method,,"org.h2.dev.store.btree.BtreeMapStore+openMap(String,Class<K>,Class<V>) org.h2.dev.store.btree.BtreeMapStore+readMeta()",org.h2.dev.store.btree.BtreeMap+readPage(long) org.h2.dev.store.btree.BtreeMap+readPage(long),org.h2.dev.store.btree.BtreeMap+root,168,8,0,"/** 
+ * Set the position of the root page.
+ * @param rootPos the position
+ */
+","/**
+     * Set the position of the root page.
+     *
+     * @param rootPos the position
+     */
+    void setRoot(long rootPos) {
+        root = readPage(rootPos);
+    }",False
+26,keyIterator(K),Method,,org.h2.test.unit.TestTreeMapStore+testRandom() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.test.unit.TestTreeMapStore+testIterate() org.h2.dev.store.btree.BtreeMapStore+readMeta(),"org.h2.dev.store.btree.BtreeMap.Cursor+Cursor(Page,K)",org.h2.dev.store.btree.BtreeMap+root,209,9,1,"/** 
+ * Iterate over all keys.
+ * @param from the first key to return
+ * @return the iterator
+ */
+","/**
+     * Iterate over all keys.
+     *
+     * @param from the first key to return
+     * @return the iterator
+     */
+    public Iterator<K> keyIterator(K from) {
+        return new Cursor(root, from);
+    }",False
+27,Cursor,MemberClass,,,"java.util.ArrayList+ArrayList() org.h2.dev.store.btree.BtreeMap.Cursor+Cursor(Page,K) org.h2.dev.store.btree.Page+min(Page,ArrayList<CursorPos>,Object) org.h2.dev.store.btree.Page+min(Page,ArrayList<CursorPos>,Object) org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.BtreeMap.Cursor+next() org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.BtreeMap.Cursor+fetchNext() org.h2.dev.store.btree.Page+nextKey(ArrayList<CursorPos>) org.h2.dev.store.btree.Page+nextKey(ArrayList<CursorPos>) org.h2.dev.store.btree.BtreeMap.Cursor+hasNext() org.h2.dev.store.btree.BtreeMap.Cursor+remove() java.lang.UnsupportedOperationException+UnsupportedOperationException()",org.h2.dev.store.btree.BtreeMap.Cursor+parents org.h2.dev.store.btree.BtreeMap.Cursor+current org.h2.dev.store.btree.BtreeMap.Cursor+parents org.h2.dev.store.btree.BtreeMap.Cursor+current org.h2.dev.store.btree.BtreeMap.Cursor+current org.h2.dev.store.btree.BtreeMap.Cursor+parents org.h2.dev.store.btree.BtreeMap.Cursor+current,838,34,0,"/** 
+ * A cursor to iterate over elements in ascending order.
+ */
+","/**
+     * A cursor to iterate over elements in ascending order.
+     */
+    class Cursor implements Iterator<K> {
+        private ArrayList<Page.CursorPos> parents = new ArrayList<Page.CursorPos>();
+        private K current;
+
+        Cursor(Page root, K from) {
+            Page.min(root, parents, from);
+            fetchNext();
+        }
+
+        public K next() {
+            K c = current;
+            if (c != null) {
+                fetchNext();
+            }
+            return c == null ? null : c;
+        }
+
+        @SuppressWarnings(""unchecked"")
+        private void fetchNext() {
+            current = (K) Page.nextKey(parents);
+        }
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+    }",False
+28,getRoot(),Method,,org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store(),,org.h2.dev.store.btree.BtreeMap+root,121,8,0,"/** 
+ * Get the root node.
+ * @return the root node
+ */
+","/**
+     * Get the root node.
+     *
+     * @return the root node
+     */
+    Page getRoot() {
+        return root;
+    }",False
+29,getName(),Method,,org.h2.dev.store.btree.BtreeMapStore+store() org.h2.dev.store.btree.BtreeMapStore+store(),,org.h2.dev.store.btree.BtreeMap+name,117,8,0,"/** 
+ * Get the map name.
+ * @return the name
+ */
+","/**
+     * Get the map name.
+     *
+     * @return the name
+     */
+    String getName() {
+        return name;
+    }",False
+30,readVarLong(ByteBuffer),Method,,,java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get(),,447,20,8,"/** 
+ * Read a variable size long.
+ * @param buff the source buffer
+ * @return the value
+ */
+","/**
+     * Read a variable size long.
+     *
+     * @param buff the source buffer
+     * @return the value
+     */
+    static long readVarLong(ByteBuffer buff) {
+        long x = buff.get();
+        if (x >= 0) {
+            return x;
+        }
+        x &= 0x7f;
+        for (int s = 7;; s += 7) {
+            long b = buff.get();
+            x |= (b & 0x7f) << s;
+            if (b >= 0) {
+                return x;
+            }
+        }
+    }",True
+31,readVarInt(ByteBuffer),Method,IntegerType.read(ByteBuffer) StringType.read(ByteBuffer),org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+read(ByteBuffer),"java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() org.h2.dev.store.btree.BtreeMap+readVarIntRest(ByteBuffer,int) org.h2.dev.store.btree.BtreeMap+readVarIntRest(ByteBuffer,int)",,349,14,8,"/** 
+ * Read a variable size int.
+ * @param buff the source buffer
+ * @return the value
+ */
+","/**
+     * Read a variable size int.
+     *
+     * @param buff the source buffer
+     * @return the value
+     */
+    static int readVarInt(ByteBuffer buff) {
+        int b = buff.get();
+        if (b >= 0) {
+            return b;
+        }
+        // a separate function so that this one can be inlined
+        return readVarIntRest(buff, b);
+    }",True
+32,"readVarIntRest(ByteBuffer,int)",Method,readVarInt(ByteBuffer),,java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get() java.nio.ByteBuffer+get(),,491,19,10,,"private static int readVarIntRest(ByteBuffer buff, int b) {
+        int x = b & 0x7f;
+        b = buff.get();
+        if (b >= 0) {
+            return x | (b << 7);
+        }
+        x |= (b & 0x7f) << 7;
+        b = buff.get();
+        if (b >= 0) {
+            return x | (b << 14);
+        }
+        x |= (b & 0x7f) << 14;
+        b = buff.get();
+        if (b >= 0) {
+            return x | b << 21;
+        }
+        x |= ((b & 0x7f) << 21) | (buff.get() << 28);
+        return x;
+    }",True
+33,getVarIntLen(int),Method,IntegerType.length(Object) StringType.length(Object),org.h2.dev.store.btree.BtreeMapStore+length() org.h2.dev.store.btree.BtreeMapStore+length(),,,454,18,8,"/** 
+ * Get the length of the variable size int.
+ * @param x the value
+ * @return the length in bytes
+ */
+","/**
+     * Get the length of the variable size int.
+     *
+     * @param x the value
+     * @return the length in bytes
+     */
+    static int getVarIntLen(int x) {
+        if ((x & (-1 << 7)) == 0) {
+            return 1;
+        } else if ((x & (-1 << 14)) == 0) {
+            return 2;
+        } else if ((x & (-1 << 21)) == 0) {
+            return 3;
+        } else if ((x & (-1 << 28)) == 0) {
+            return 4;
+        }
+        return 5;
+    }",True
+34,getVarLongLen(long),Method,,,,,330,16,8,"/** 
+ * Get the length of the variable size long.
+ * @param x the value
+ * @return the length in bytes
+ */
+","/**
+     * Get the length of the variable size long.
+     *
+     * @param x the value
+     * @return the length in bytes
+     */
+    static int getVarLongLen(long x) {
+        int i = 1;
+        while (true) {
+            x >>>= 7;
+            if (x == 0) {
+                return i;
+            }
+            i++;
+        }
+    }",True
+35,"writeVarInt(ByteBuffer,int)",Method,"IntegerType.write(ByteBuffer,Object) StringType.write(ByteBuffer,Object)",org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer) org.h2.dev.store.btree.BtreeMapStore+write(ByteBuffer),java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte),,320,13,8,"/** 
+ * Write a variable size int.
+ * @param buff the target buffer
+ * @param x the value
+ */
+","/**
+     * Write a variable size int.
+     *
+     * @param buff the target buffer
+     * @param x the value
+     */
+    static void writeVarInt(ByteBuffer buff, int x) {
+        while ((x & ~0x7f) != 0) {
+            buff.put((byte) (0x80 | (x & 0x7f)));
+            x >>>= 7;
+        }
+        buff.put((byte) x);
+    }",True
+36,"writeVarLong(ByteBuffer,long)",Method,,,java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte) java.nio.ByteBuffer+put(byte),,322,13,8,"/** 
+ * Write a variable size int.
+ * @param buff the target buffer
+ * @param x the value
+ */
+","/**
+     * Write a variable size int.
+     *
+     * @param buff the target buffer
+     * @param x the value
+     */
+    static void writeVarLong(ByteBuffer buff, long x) {
+        while ((x & ~0x7f) != 0) {
+            buff.put((byte) (0x80 | (x & 0x7f)));
+            x >>>= 7;
+        }
+        buff.put((byte) x);
+    }",True

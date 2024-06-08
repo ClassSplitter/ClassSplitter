@@ -1,0 +1,245 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,handler,Field,,,,,35,1,2,,private NettyClientHandler handler;,False
+2,channel,Field,,,,,32,2,2,,"@Mock
+  private Channel channel;",True
+3,ctx,Field,inboundHeadersShouldForwardToStream() inboundDataShouldForwardToStream(),,,,42,2,2,,"@Mock
+  private ChannelHandlerContext ctx;",True
+4,future,Field,,,,,37,2,2,,"@Mock
+  private ChannelFuture future;",True
+5,promise,Field,,,,,39,2,2,,"@Mock
+  private ChannelPromise promise;",True
+6,stream,Field,,,,,41,2,2,,"@Mock
+  private NettyClientStream stream;",False
+7,method,Field,,,,,46,2,2,,"@Mock
+  private MethodDescriptor<?, ?> method;",False
+8,frameListener,Field,,,,,49,2,2,,"@Mock
+  private Http2FrameListener frameListener;",True
+9,frameWriter,Field,,,,,37,1,2,,private Http2FrameWriter frameWriter;,True
+10,frameReader,Field,,,,,37,1,2,,private Http2FrameReader frameReader;,True
+11,content,Field,,,,,24,1,2,,private ByteBuf content;,False
+12,setup(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientHandler+NettyClientHandler(String,boolean,Http2StreamRemovalPolicy) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockFuture(boolean) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockFuture(boolean) com.google.net.stubby.MethodDescriptor+getName() com.google.net.stubby.MethodDescriptor+getName() com.google.net.stubby.MethodDescriptor+getHeaders() com.google.net.stubby.MethodDescriptor+getHeaders() com.google.net.stubby.newtransport.AbstractStream+state() com.google.net.stubby.newtransport.AbstractStream+state() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+serializeSettings(Http2Settings) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+serializeSettings(Http2Settings) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockContext()",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameWriter com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameReader com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+content com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+channel com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+method com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+method com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx,1039,28,1,,"@Before
+  public void setup() throws Exception {
+    MockitoAnnotations.initMocks(this);
+
+    frameWriter = new DefaultHttp2FrameWriter();
+    frameReader = new DefaultHttp2FrameReader();
+    handler = new NettyClientHandler(""www.fake.com"", true, immediateRemovalPolicy());
+    content = Unpooled.copiedBuffer(""hello world"", UTF_8);
+
+    when(channel.isActive()).thenReturn(true);
+    mockContext();
+    mockFuture(true);
+
+    when(method.getName()).thenReturn(""fakemethod"");
+    when(method.getHeaders()).thenReturn(ImmutableMap.of(""auth"", ""sometoken""));
+    when(stream.state()).thenReturn(StreamState.OPEN);
+
+    // Simulate activation of the handler to force writing of the initial settings
+    handler.handlerAdded(ctx);
+
+    // Simulate receipt of initial remote settings.
+    ByteBuf serializedSettings = serializeSettings(new Http2Settings());
+    handler.channelRead(ctx, serializedSettings);
+
+    // Reset the context to clear any interactions resulting from the HTTP/2
+    // connection preface handshake.
+    mockContext();
+  }",False
+13,createStreamShouldSucceed(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.CreateStreamCommand+CreateStreamCommand(MethodDescriptor<?,?>,NettyClientStream) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext()",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+method com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameReader com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameListener com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameListener,1094,27,1,,"@Test
+  public void createStreamShouldSucceed() throws Exception {
+    handler.write(ctx, new CreateStreamCommand(method, stream), promise);
+    verify(promise).setSuccess();
+    verify(stream).id(eq(3));
+
+    // Capture and verify the written headers frame.
+    ByteBuf serializedHeaders = captureWrite(ctx);
+    ChannelHandlerContext ctx = newContext();
+    frameReader.readFrame(ctx, serializedHeaders, frameListener);
+    ArgumentCaptor<Http2Headers> captor = ArgumentCaptor.forClass(Http2Headers.class);
+    verify(frameListener).onHeadersRead(eq(ctx),
+        eq(3),
+        captor.capture(),
+        eq(0),
+        eq(Http2CodecUtil.DEFAULT_PRIORITY_WEIGHT),
+        eq(false),
+        eq(0),
+        eq(false));
+    Http2Headers headers = captor.getValue();
+    assertEquals(""https"", headers.scheme());
+    assertEquals(HTTP_METHOD, headers.method());
+    assertEquals(""www.fake.com"", headers.authority());
+    assertEquals(CONTENT_TYPE_PROTORPC, headers.get(CONTENT_TYPE_HEADER));
+    assertEquals(""/fakemethod"", headers.path());
+    assertEquals(""sometoken"", headers.get(""auth""));
+  }",False
+14,cancelShouldSucceed(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+createStream() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+createStream() com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.CancelStreamCommand+CancelStreamCommand(NettyClientStream) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+rstStreamFrame(int,int) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+rstStreamFrame(int,int)",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx,295,10,1,,"@Test
+  public void cancelShouldSucceed() throws Exception {
+    createStream();
+
+    handler.write(ctx, new CancelStreamCommand(stream), promise);
+
+    ByteBuf expected = rstStreamFrame(3, Http2Error.CANCEL.code());
+    verify(ctx).write(eq(expected), eq(promise));
+    verify(ctx).flush();
+  }",False
+15,cancelForUnknownStreamShouldFail(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientStream+id() com.google.net.stubby.newtransport.netty.NettyClientStream+id() com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.CancelStreamCommand+CancelStreamCommand(NettyClientStream)",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise,234,6,1,,"@Test
+  public void cancelForUnknownStreamShouldFail() throws Exception {
+    when(stream.id()).thenReturn(3);
+    handler.write(ctx, new CancelStreamCommand(stream), promise);
+    verify(promise).setFailure(any(Throwable.class));
+  }",False
+16,sendFrameShouldSucceed(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+createStream() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+createStream() com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.SendGrpcFrameCommand+SendGrpcFrameCommand(NettyClientStream,ByteBuf,boolean)",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+content com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx,366,10,1,,"@Test
+  public void sendFrameShouldSucceed() throws Exception {
+    createStream();
+
+    // Send a frame and verify that it was written.
+    handler.write(ctx, new SendGrpcFrameCommand(stream, content, true), promise);
+    verify(promise, never()).setFailure(any(Throwable.class));
+    verify(ctx).write(any(ByteBuf.class), eq(promise));
+    verify(ctx).flush();
+  }",False
+17,sendForUnknownStreamShouldFail(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientStream+id() com.google.net.stubby.newtransport.netty.NettyClientStream+id() com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.SendGrpcFrameCommand+SendGrpcFrameCommand(NettyClientStream,ByteBuf,boolean)",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+content com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise,248,6,1,,"@Test
+  public void sendForUnknownStreamShouldFail() throws Exception {
+    when(stream.id()).thenReturn(3);
+    handler.write(ctx, new SendGrpcFrameCommand(stream, content, true), promise);
+    verify(promise).setFailure(any(Throwable.class));
+  }",False
+18,inboundHeadersShouldForwardToStream(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+createStream() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+createStream() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+headersFrame(int,Http2Headers) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+headersFrame(int,Http2Headers)",com.google.net.stubby.newtransport.HttpUtil+CONTENT_TYPE_HEADER com.google.net.stubby.newtransport.HttpUtil+CONTENT_TYPE_PROTORPC com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream,455,11,1,,"@Test
+  public void inboundHeadersShouldForwardToStream() throws Exception {
+    createStream();
+
+    // Read a headers frame first.
+    Http2Headers headers = DefaultHttp2Headers.newBuilder().status(""200"")
+        .set(HttpUtil.CONTENT_TYPE_HEADER, HttpUtil.CONTENT_TYPE_PROTORPC).build();
+    ByteBuf headersFrame = headersFrame(3, headers);
+    handler.channelRead(this.ctx, headersFrame);
+    verify(stream).inboundHeadersRecieved(headers, false);
+  }",False
+19,inboundDataShouldForwardToStream(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+createStream() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+createStream() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+dataFrame(int,boolean) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+dataFrame(int,boolean)",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+content com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise,397,10,1,,"@Test
+  public void inboundDataShouldForwardToStream() throws Exception {
+    createStream();
+
+    // Create a data frame and then trigger the handler to read it.
+    // Need to retain to simulate what is done by the stream.
+    ByteBuf frame = dataFrame(3, false).retain();
+    handler.channelRead(this.ctx, frame);
+    verify(stream).inboundDataReceived(eq(content), eq(false), eq(promise));
+  }",False
+20,createShouldQueueStream(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+setMaxConcurrentStreams(int) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+setMaxConcurrentStreams(int) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.CreateStreamCommand+CreateStreamCommand(MethodDescriptor<?,?>,NettyClientStream)",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+method com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameListener com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx,532,16,1,,"@Test
+  public void createShouldQueueStream() throws Exception {
+    // Disallow stream creation to force the stream to get added to the pending queue.
+    setMaxConcurrentStreams(0);
+    handler.write(ctx, new CreateStreamCommand(method, stream), promise);
+
+    // Make sure the write never occurred.
+    verify(frameListener, never()).onHeadersRead(eq(ctx),
+        eq(3),
+        any(Http2Headers.class),
+        eq(0),
+        eq(Http2CodecUtil.DEFAULT_PRIORITY_WEIGHT),
+        eq(false),
+        eq(0),
+        eq(false));
+  }",False
+21,receivedGoAwayShouldFailQueuedStreams(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+setMaxConcurrentStreams(int) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+setMaxConcurrentStreams(int) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.CreateStreamCommand+CreateStreamCommand(MethodDescriptor<?,?>,NettyClientStream) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+goAwayFrame(int) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+goAwayFrame(int)",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+method com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise,346,9,1,,"@Test
+  public void receivedGoAwayShouldFailQueuedStreams() throws Exception {
+    // Force a stream to get added to the pending queue.
+    setMaxConcurrentStreams(0);
+    handler.write(ctx, new CreateStreamCommand(method, stream), promise);
+
+    handler.channelRead(ctx, goAwayFrame(0));
+    verify(promise).setFailure(any(Throwable.class));
+  }",False
+22,receivedGoAwayShouldFailUnknownStreams(),Method,,,"com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.CreateStreamCommand+CreateStreamCommand(MethodDescriptor<?,?>,NettyClientStream) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+goAwayFrame(int) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+goAwayFrame(int)",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+method com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream,598,12,1,,"@Test
+  public void receivedGoAwayShouldFailUnknownStreams() throws Exception {
+    // Force a stream to get added to the pending queue.
+    handler.write(ctx, new CreateStreamCommand(method, stream), promise);
+
+    // Read a GOAWAY that indicates our stream was never processed by the server.
+    handler.channelRead(ctx, goAwayFrame(0));
+    ArgumentCaptor<Status> captor = ArgumentCaptor.forClass(Status.class);
+    InOrder inOrder = inOrder(stream);
+    inOrder.verify(stream, calls(1)).setStatus(captor.capture());
+    assertEquals(Transport.Code.UNAVAILABLE, captor.getValue().getCode());
+  }",False
+23,setMaxConcurrentStreams(int),Method,createShouldQueueStream() receivedGoAwayShouldFailQueuedStreams(),,com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+serializeSettings(Http2Settings) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+serializeSettings(Http2Settings) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockContext(),com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx,282,6,2,,"private void setMaxConcurrentStreams(int max) throws Exception {
+    ByteBuf serializedSettings = serializeSettings(new Http2Settings().maxConcurrentStreams(max));
+    handler.channelRead(ctx, serializedSettings);
+    // Reset the context to clear this write.
+    mockContext();
+  }",False
+24,"headersFrame(int,Http2Headers)",Method,inboundHeadersShouldForwardToStream(),,com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext),com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameWriter com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise,219,5,2,,"private ByteBuf headersFrame(int streamId, Http2Headers headers) {
+    ChannelHandlerContext ctx = newContext();
+    frameWriter.writeHeaders(ctx, streamId, headers, 0, false, promise);
+    return captureWrite(ctx);
+  }",False
+25,"dataFrame(int,boolean)",Method,inboundDataShouldForwardToStream(),,com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newPromise() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newPromise() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext),com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+content com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameWriter com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+content,310,7,2,,"private ByteBuf dataFrame(int streamId, boolean endStream) {
+    // Need to retain the content since the frameWriter releases it.
+    content.retain();
+    ChannelHandlerContext ctx = newContext();
+    frameWriter.writeData(ctx, streamId, content, 0, endStream, newPromise());
+    return captureWrite(ctx);
+  }",False
+26,goAwayFrame(int),Method,receivedGoAwayShouldFailQueuedStreams() receivedGoAwayShouldFailUnknownStreams(),,com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newPromise() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newPromise() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext),com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameWriter,215,5,2,,"private ByteBuf goAwayFrame(int lastStreamId) {
+    ChannelHandlerContext ctx = newContext();
+    frameWriter.writeGoAway(ctx, lastStreamId, 0, Unpooled.EMPTY_BUFFER, newPromise());
+    return captureWrite(ctx);
+  }",True
+27,"rstStreamFrame(int,int)",Method,cancelShouldSucceed(),,com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newPromise() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newPromise() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext),com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameWriter,213,5,2,,"private ByteBuf rstStreamFrame(int streamId, int errorCode) {
+    ChannelHandlerContext ctx = newContext();
+    frameWriter.writeRstStream(ctx, streamId, errorCode, newPromise());
+    return captureWrite(ctx);
+  }",True
+28,serializeSettings(Http2Settings),Method,setup() setMaxConcurrentStreams(int),,com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newPromise() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+newPromise() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext) com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+captureWrite(ChannelHandlerContext),com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+frameWriter,199,5,2,,"private ByteBuf serializeSettings(Http2Settings settings) {
+    ChannelHandlerContext ctx = newContext();
+    frameWriter.writeSettings(ctx, settings, newPromise());
+    return captureWrite(ctx);
+  }",True
+29,newContext(),Method,"createStreamShouldSucceed() headersFrame(int,Http2Headers) dataFrame(int,boolean) goAwayFrame(int) rstStreamFrame(int,int) serializeSettings(Http2Settings)",,,,207,5,2,,"private ChannelHandlerContext newContext() {
+    ChannelHandlerContext ctx = Mockito.mock(ChannelHandlerContext.class);
+    when(ctx.alloc()).thenReturn(UnpooledByteBufAllocator.DEFAULT);
+    return ctx;
+  }",True
+30,newPromise(),Method,"dataFrame(int,boolean) goAwayFrame(int) rstStreamFrame(int,int) serializeSettings(Http2Settings)",,,,88,3,2,,"private ChannelPromise newPromise() {
+    return Mockito.mock(ChannelPromise.class);
+  }",True
+31,captureWrite(ChannelHandlerContext),Method,"createStreamShouldSucceed() headersFrame(int,Http2Headers) dataFrame(int,boolean) goAwayFrame(int) rstStreamFrame(int,int) serializeSettings(Http2Settings)",,,,236,5,2,,"private ByteBuf captureWrite(ChannelHandlerContext ctx) {
+    ArgumentCaptor<ByteBuf> captor = ArgumentCaptor.forClass(ByteBuf.class);
+    verify(ctx).write(captor.capture(), any(ChannelPromise.class));
+    return captor.getValue();
+  }",True
+32,createStream(),Method,cancelShouldSucceed() sendFrameShouldSucceed() inboundHeadersShouldForwardToStream() inboundDataShouldForwardToStream(),,"com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.NettyClientHandler+write(ChannelHandlerContext,Object,ChannelPromise) com.google.net.stubby.newtransport.netty.CreateStreamCommand+CreateStreamCommand(MethodDescriptor<?,?>,NettyClientStream) com.google.net.stubby.newtransport.netty.NettyClientStream+id() com.google.net.stubby.newtransport.netty.NettyClientStream+id() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockContext() com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+mockContext()",com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+handler com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+method com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+stream,278,7,2,,"private void createStream() throws Exception {
+    // Create the stream.
+    handler.write(ctx, new CreateStreamCommand(method, stream), promise);
+    when(stream.id()).thenReturn(3);
+    // Reset the context mock to clear recording of sent headers frame.
+    mockContext();
+  }",False
+33,mockContext(),Method,setup() setup() setMaxConcurrentStreams(int) createStream(),,,com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+channel com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+future com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+future com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+future com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+future com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+ctx com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+promise,475,11,2,,"private void mockContext() {
+    Mockito.reset(ctx);
+    Mockito.reset(promise);
+    when(ctx.alloc()).thenReturn(UnpooledByteBufAllocator.DEFAULT);
+    when(ctx.channel()).thenReturn(channel);
+    when(ctx.write(any())).thenReturn(future);
+    when(ctx.write(any(), eq(promise))).thenReturn(future);
+    when(ctx.writeAndFlush(any())).thenReturn(future);
+    when(ctx.writeAndFlush(any(), eq(promise))).thenReturn(future);
+    when(ctx.newPromise()).thenReturn(promise);
+  }",True
+34,mockFuture(boolean),Method,setup(),,java.lang.Exception+Exception(String) +answer(InvocationOnMock),com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+future com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+future com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+future com.google.net.stubby.newtransport.netty.NettyClientHandlerTest+future,663,17,2,,"private void mockFuture(boolean succeeded) {
+    when(future.isDone()).thenReturn(true);
+    when(future.isCancelled()).thenReturn(false);
+    when(future.isSuccess()).thenReturn(succeeded);
+    if (!succeeded) {
+      when(future.cause()).thenReturn(new Exception(""fake""));
+    }
+
+    doAnswer(new Answer<ChannelFuture>() {
+      @Override
+      public ChannelFuture answer(InvocationOnMock invocation) throws Throwable {
+        ChannelFutureListener listener = (ChannelFutureListener) invocation.getArguments()[0];
+        listener.operationComplete(future);
+        return future;
+      }
+    }).when(future).addListener(any(ChannelFutureListener.class));
+  }",True

@@ -1,0 +1,339 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,mTypeface,Field,,,,,73,2,2,"/** 
+ * the typeface to use for the labels 
+ */
+","/** the typeface to use for the labels */
+    private Typeface mTypeface;",True
+2,mTextSize,Field,AxisBase(),,,,68,2,2,"/** 
+ * the size of the label text 
+ */
+","/** the size of the label text */
+    private float mTextSize = 10f;",True
+3,mTextColor,Field,,,,,70,2,2,"/** 
+ * the text color to use 
+ */
+","/** the text color to use */
+    private int mTextColor = Color.BLACK;",True
+4,mGridColor,Field,,,,,36,1,2,,private int mGridColor = Color.GRAY;,False
+5,mAxisLineColor,Field,,,,,40,1,2,,private int mAxisLineColor = Color.GRAY;,False
+6,mAxisLineWidth,Field,,,,,34,1,2,,private float mAxisLineWidth = 1f;,False
+7,mEnabled,Field,,,,,96,2,4,"/** 
+ * flag that indicates if this axis is enabled or not 
+ */
+","/** flag that indicates if this axis is enabled or not */
+    protected boolean mEnabled = true;",False
+8,mDrawGridLines,Field,,,,,115,2,4,"/** 
+ * flag indicating if the grid lines for this axis should be drawn 
+ */
+","/** flag indicating if the grid lines for this axis should be drawn */
+    protected boolean mDrawGridLines = true;",False
+9,mDrawAxisLine,Field,,,,,117,2,4,"/** 
+ * flag that indicates if the line alongside the axis is drawn or not 
+ */
+","/** flag that indicates if the line alongside the axis is drawn or not */
+    protected boolean mDrawAxisLine = true;",False
+10,mXOffset,Field,AxisBase(),,,,98,2,4,"/** 
+ * the offset in pixels this axis labels have on the x-axis 
+ */
+","/** the offset in pixels this axis labels have on the x-axis */
+    protected float mXOffset = 5f;",True
+11,mYOffset,Field,AxisBase(),,,,98,2,4,"/** 
+ * the offset in pixels this axis labels have on the Y-axis 
+ */
+","/** the offset in pixels this axis labels have on the Y-axis */
+    protected float mYOffset = 5f;",True
+12,AxisBase(),Method,,,com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.AxisBase+mTextSize com.github.mikephil.charting.components.AxisBase+mTextSize com.github.mikephil.charting.components.AxisBase+mXOffset com.github.mikephil.charting.components.AxisBase+mXOffset com.github.mikephil.charting.components.AxisBase+mYOffset com.github.mikephil.charting.components.AxisBase+mYOffset,214,6,1,"/** 
+ * default constructor 
+ */
+","/** default constructor */
+    public AxisBase() {
+        this.mTextSize = Utils.convertDpToPixel(10f);
+        this.mXOffset = Utils.convertDpToPixel(5f);
+        this.mYOffset = Utils.convertDpToPixel(5f);
+    }",False
+13,setTextSize(float),Method,,com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onCreate(Bundle),com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.AxisBase+mTextSize,321,15,1,"/** 
+ * sets the size of the label text in pixels min = 6f, max = 24f, default 10f
+ * @param size
+ */
+","/**
+     * sets the size of the label text in pixels min = 6f, max = 24f, default
+     * 10f
+     * 
+     * @param size
+     */
+    public void setTextSize(float size) {
+
+        if (size > 24f)
+            size = 24f;
+        if (size < 6f)
+            size = 6f;
+
+        mTextSize = Utils.convertDpToPixel(size);
+    }",True
+14,getTextSize(),Method,,"com.github.mikephil.charting.renderer.XAxisRenderer+renderAxis(Canvas) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+computeAxis(float,ArrayList<String>) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.XAxisRendererRadarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRendererRadarChart+renderAxis(Canvas)",,com.github.mikephil.charting.components.AxisBase+mTextSize,165,8,1,"/** 
+ * returns the text size that is currently set for the labels
+ * @return
+ */
+","/**
+     * returns the text size that is currently set for the labels
+     * 
+     * @return
+     */
+    public float getTextSize() {
+        return mTextSize;
+    }",True
+15,setTypeface(Typeface),Method,,"com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.DrawChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.DrawChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.fragments.BarChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.ComplexityFragment+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.ScatterChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.ScatterChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.SineCosineFragment+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity+ChartDataAdapter.getView(int,View,ViewGroup) com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity+ChartDataAdapter.getView(int,View,ViewGroup) com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity+ChartDataAdapter.getView(int,View,ViewGroup) com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.listviewitems.LineChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.listviewitems.LineChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.listviewitems.LineChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.ScatterChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.ScatterChartActivity+onCreate(Bundle)",,com.github.mikephil.charting.components.AxisBase+mTypeface,166,8,1,"/** 
+ * sets the typeface that should be used for the labels
+ * @param t
+ */
+","/**
+     * sets the typeface that should be used for the labels
+     * 
+     * @param t
+     */
+    public void setTypeface(Typeface t) {
+        mTypeface = t;
+    }",True
+16,getTypeface(),Method,,"com.github.mikephil.charting.renderer.XAxisRenderer+renderAxis(Canvas) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+computeAxis(float,ArrayList<String>) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.XAxisRendererRadarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRendererRadarChart+renderAxis(Canvas)",,com.github.mikephil.charting.components.AxisBase+mTypeface,158,8,1,"/** 
+ * returns the typeface that is used for the labels
+ * @return
+ */
+","/**
+     * returns the typeface that is used for the labels
+     * 
+     * @return
+     */
+    public Typeface getTypeface() {
+        return mTypeface;
+    }",True
+17,setTextColor(int),Method,,"com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle)",,com.github.mikephil.charting.components.AxisBase+mTextColor,257,9,1,"/** 
+ * Sets the text color to use for the labels. Make sure to use getResources().getColor(...) when using a color from the resources.
+ * @param color
+ */
+","/**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     * 
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mTextColor = color;
+    }",True
+18,getTextColor(),Method,,com.github.mikephil.charting.renderer.XAxisRenderer+renderAxis(Canvas) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.XAxisRendererRadarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRendererRadarChart+renderAxis(Canvas),,com.github.mikephil.charting.components.AxisBase+mTextColor,157,8,1,"/** 
+ * Returns the text color that is set for the labels.
+ * @return
+ */
+","/**
+     * Returns the text color that is set for the labels.
+     * 
+     * @return
+     */
+    public int getTextColor() {
+        return mTextColor;
+    }",True
+19,setDrawGridLines(boolean),Method,,"com.xxmassdeveloper.mpchartexample.AnotherBarActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.AnotherBarActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.CandleStickChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.CombinedChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.CombinedChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.fragments.ScatterChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.ListViewBarChartActivity+ChartDataAdapter.getView(int,View,ViewGroup) com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.listviewitems.LineChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.listviewitems.LineChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.ScatterChartActivity+onCreate(Bundle)",,com.github.mikephil.charting.components.AxisBase+mDrawGridLines,205,8,1,"/** 
+ * Set this to true to enable drawing the grid lines for this axis.
+ * @param enabled
+ */
+","/**
+     * Set this to true to enable drawing the grid lines for this axis.
+     * 
+     * @param enabled
+     */
+    public void setDrawGridLines(boolean enabled) {
+        mDrawGridLines = enabled;
+    }",False
+20,isDrawGridLinesEnabled(),Method,,com.github.mikephil.charting.renderer.XAxisRenderer+renderGridLines(Canvas) com.github.mikephil.charting.renderer.XAxisRendererBarChart+renderGridLines(Canvas) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+renderGridLines(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+renderGridLines(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+renderGridLines(Canvas),,com.github.mikephil.charting.components.AxisBase+mDrawGridLines,185,8,1,"/** 
+ * Returns true if drawing grid lines is enabled for this axis.
+ * @return
+ */
+","/**
+     * Returns true if drawing grid lines is enabled for this axis.
+     * 
+     * @return
+     */
+    public boolean isDrawGridLinesEnabled() {
+        return mDrawGridLines;
+    }",False
+21,setDrawAxisLine(boolean),Method,,"com.xxmassdeveloper.mpchartexample.CandleStickChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.listviewitems.BarChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.listviewitems.LineChartItem+getView(int,View,Context)",,com.github.mikephil.charting.components.AxisBase+mDrawAxisLine,210,8,1,"/** 
+ * Set this to true if the line alongside the axis should be drawn or not.
+ * @param enabled
+ */
+","/**
+     * Set this to true if the line alongside the axis should be drawn or not.
+     * 
+     * @param enabled
+     */
+    public void setDrawAxisLine(boolean enabled) {
+        mDrawAxisLine = enabled;
+    }",False
+22,isDrawAxisLineEnabled(),Method,,com.github.mikephil.charting.renderer.XAxisRenderer+drawAxisLine(Canvas) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+drawAxisLine(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+drawAxisLine(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+drawAxisLine(Canvas),,com.github.mikephil.charting.components.AxisBase+mDrawAxisLine,183,8,1,"/** 
+ * Returns true if the line alongside the axis should be drawn.
+ * @return
+ */
+","/**
+     * Returns true if the line alongside the axis should be drawn.
+     * 
+     * @return
+     */
+    public boolean isDrawAxisLineEnabled() {
+        return mDrawAxisLine;
+    }",False
+23,setGridColor(int),Method,,,,com.github.mikephil.charting.components.AxisBase+mGridColor,223,9,1,"/** 
+ * Sets the color of the grid lines for this axis (the horizontal lines coming from each label).
+ * @param color
+ */
+","/**
+     * Sets the color of the grid lines for this axis (the horizontal lines
+     * coming from each label).
+     * 
+     * @param color
+     */
+    public void setGridColor(int color) {
+        mGridColor = color;
+    }",False
+24,getGridColor(),Method,,com.github.mikephil.charting.renderer.XAxisRenderer+renderGridLines(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+renderGridLines(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+renderGridLines(Canvas),,com.github.mikephil.charting.components.AxisBase+mGridColor,210,9,1,"/** 
+ * Returns the color of the grid lines for this axis (the horizontal lines coming from each label).
+ * @return
+ */
+","/**
+     * Returns the color of the grid lines for this axis (the horizontal lines
+     * coming from each label).
+     * 
+     * @return
+     */
+    public int getGridColor() {
+        return mGridColor;
+    }",False
+25,setAxisLineWidth(float),Method,,,com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.AxisBase+mAxisLineWidth,214,8,1,"/** 
+ * Sets the width of the border surrounding the chart in dp.
+ * @param width
+ */
+","/**
+     * Sets the width of the border surrounding the chart in dp.
+     * 
+     * @param width
+     */
+    public void setAxisLineWidth(float width) {
+        mAxisLineWidth = Utils.convertDpToPixel(width);
+    }",False
+26,getAxisLineWidth(),Method,,com.github.mikephil.charting.renderer.XAxisRenderer+drawAxisLine(Canvas) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+drawAxisLine(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+drawAxisLine(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+drawAxisLine(Canvas),,com.github.mikephil.charting.components.AxisBase+mAxisLineWidth,178,8,1,"/** 
+ * Returns the width of the axis line (line alongside the axis).
+ * @return
+ */
+","/**
+     * Returns the width of the axis line (line alongside the axis).
+     * 
+     * @return
+     */
+    public float getAxisLineWidth() {
+        return mAxisLineWidth;
+    }",False
+27,setAxisLineColor(int),Method,,,,com.github.mikephil.charting.components.AxisBase+mAxisLineColor,182,8,1,"/** 
+ * Sets the color of the border surrounding the chart.
+ * @param color
+ */
+","/**
+     * Sets the color of the border surrounding the chart.
+     * 
+     * @param color
+     */
+    public void setAxisLineColor(int color) {
+        mAxisLineColor = color;
+    }",False
+28,getAxisLineColor(),Method,,com.github.mikephil.charting.renderer.XAxisRenderer+drawAxisLine(Canvas) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+drawAxisLine(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+drawAxisLine(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+drawAxisLine(Canvas),,com.github.mikephil.charting.components.AxisBase+mAxisLineColor,176,8,1,"/** 
+ * Returns the color of the axis line (line alongside the axis).
+ * @return
+ */
+","/**
+     * Returns the color of the axis line (line alongside the axis).
+     * 
+     * @return
+     */
+    public int getAxisLineColor() {
+        return mAxisLineColor;
+    }",False
+29,setEnabled(boolean),Method,,"com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.CandleStickChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.fragments.BarChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.BarChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.ComplexityFragment+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.ComplexityFragment+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.ScatterChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.SineCosineFragment+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.SineCosineFragment+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity1+setData(int,float) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.ScatterChartActivity+onCreate(Bundle)",,com.github.mikephil.charting.components.AxisBase+mEnabled,197,8,1,"/** 
+ * Set this to true to enable this axis from being drawn to the screen.
+ * @param enabled
+ */
+","/**
+     * Set this to true to enable this axis from being drawn to the screen.
+     * 
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }",False
+30,isEnabled(),Method,,com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onOptionsItemSelected(MenuItem) com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.renderer.XAxisRenderer+renderAxis(Canvas) com.github.mikephil.charting.renderer.XAxisRenderer+renderGridLines(Canvas) com.github.mikephil.charting.renderer.XAxisRendererBarChart+renderGridLines(Canvas) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+renderGridLines(Canvas) com.github.mikephil.charting.renderer.XAxisRendererRadarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+renderGridLines(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+renderGridLines(Canvas) com.github.mikephil.charting.renderer.YAxisRendererRadarChart+renderAxis(Canvas),,com.github.mikephil.charting.components.AxisBase+mEnabled,158,8,1,"/** 
+ * Returns true if the axis is enabled (will be drawn).
+ * @return
+ */
+","/**
+     * Returns true if the axis is enabled (will be drawn).
+     * 
+     * @return
+     */
+    public boolean isEnabled() {
+        return mEnabled;
+    }",False
+31,getXOffset(),Method,,"com.github.mikephil.charting.components.YAxis+getRequiredWidthSpace(Paint) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+computeAxis(float,ArrayList<String>) com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart+renderAxis(Canvas) com.github.mikephil.charting.renderer.YAxisRenderer+renderAxis(Canvas)",,com.github.mikephil.charting.components.AxisBase+mXOffset,229,9,1,"/** 
+ * Returns the used offset on the x-axis for drawing the axis labels. This offset is applied before and after the label.
+ * @return
+ */
+","/**
+     * Returns the used offset on the x-axis for drawing the axis labels. This
+     * offset is applied before and after the label.
+     * 
+     * @return
+     */
+    public float getXOffset() {
+        return mXOffset;
+    }",True
+32,setXOffset(float),Method,,,com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.AxisBase+mXOffset,207,8,1,"/** 
+ * Sets the used x-axis offset for the labels on this axis.
+ * @param xOffset
+ */
+","/**
+     * Sets the used x-axis offset for the labels on this axis.
+     * 
+     * @param xOffset
+     */
+    public void setXOffset(float xOffset) {
+        mXOffset = Utils.convertDpToPixel(xOffset);
+    }",True
+33,getYOffset(),Method,,com.github.mikephil.charting.components.YAxis+getRequiredHeightSpace(Paint) com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart+renderAxis(Canvas),,com.github.mikephil.charting.components.AxisBase+mYOffset,229,9,1,"/** 
+ * Returns the used offset on the x-axis for drawing the axis labels. This offset is applied before and after the label.
+ * @return
+ */
+","/**
+     * Returns the used offset on the x-axis for drawing the axis labels. This
+     * offset is applied before and after the label.
+     * 
+     * @return
+     */
+    public float getYOffset() {
+        return mYOffset;
+    }",True
+34,setYOffset(float),Method,,,com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.AxisBase+mYOffset,207,8,1,"/** 
+ * Sets the used x-axis offset for the labels on this axis.
+ * @param xOffset
+ */
+","/**
+     * Sets the used x-axis offset for the labels on this axis.
+     * 
+     * @param xOffset
+     */
+    public void setYOffset(float yOffset) {
+        mYOffset = Utils.convertDpToPixel(yOffset);
+    }",True
+35,getLongestLabel(),Method,,,,,169,6,1025,"/** 
+ * Returns the longest formatted label (in terms of characters), this axis contains.
+ * @return
+ */
+","/**
+     * Returns the longest formatted label (in terms of characters), this axis contains.
+     * 
+     * @return
+     */
+    public abstract String getLongestLabel();",False

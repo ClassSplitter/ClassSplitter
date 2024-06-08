@@ -1,0 +1,496 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,TAG,Field,,,,,68,1,25,,public static final String TAG = MainActivity.class.getSimpleName();,False
+2,APP_INTRO_REQUEST,Field,,,,,48,1,25,,public static final int APP_INTRO_REQUEST = 100;,False
+3,toolbar,Field,,,,,40,2,0,,"@Bind(R.id.toolbar)
+    Toolbar toolbar;",True
+4,tabs,Field,,,,,36,2,0,,"@Bind(R.id.tabs)
+    TabLayout tabs;",True
+5,appbar,Field,,,,,43,2,0,,"@Bind(R.id.appbar)
+    AppBarLayout appbar;",True
+6,pager,Field,,,,,38,2,0,,"@Bind(R.id.pager)
+    ViewPager pager;",True
+7,navigationView,Field,,,,,62,2,0,,"@Bind(R.id.navigation_view)
+    NavigationView navigationView;",False
+8,drawerLayout,Field,,,,,56,2,0,,"@Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;",False
+9,navigationDrawerHeader,Field,,,,,50,2,2,,"@Nullable
+    private View navigationDrawerHeader;",False
+10,pagerAdapter,Field,,,,,46,1,2,,private MusicLibraryPagerAdapter pagerAdapter;,True
+11,cab,Field,,,,,24,1,2,,private MaterialCab cab;,True
+12,blockRequestPermissions,Field,,,,,40,1,2,,private boolean blockRequestPermissions;,False
+13,onCreate(Bundle),Method,,,"com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onCreate(Bundle) com.kabouzeid.gramophone.util.Util+setStatusBarTranslucent(Window) com.kabouzeid.gramophone.util.Util+setStatusBarTranslucent(Window) com.kabouzeid.gramophone.ui.activities.base.AbsThemeActivity+setStatusbarColorAuto() com.kabouzeid.gramophone.ui.activities.base.AbsThemeActivity+setStatusbarColorAuto() com.kabouzeid.gramophone.ui.activities.base.AbsThemeActivity+setNavigationbarColorAuto() com.kabouzeid.gramophone.ui.activities.base.AbsThemeActivity+setNavigationbarColorAuto() com.kabouzeid.gramophone.ui.activities.base.AbsThemeActivity+setTaskDescriptionColorAuto() com.kabouzeid.gramophone.ui.activities.base.AbsThemeActivity+setTaskDescriptionColorAuto() com.kabouzeid.gramophone.ui.activities.MainActivity+setUpDrawerLayout() com.kabouzeid.gramophone.ui.activities.MainActivity+setUpDrawerLayout() com.kabouzeid.gramophone.ui.activities.MainActivity+setUpToolbar() com.kabouzeid.gramophone.ui.activities.MainActivity+setUpToolbar() com.kabouzeid.gramophone.ui.activities.MainActivity+setUpViewPager() com.kabouzeid.gramophone.ui.activities.MainActivity+setUpViewPager() com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) com.kabouzeid.gramophone.dialogs.ChangelogDialog+setChangelogRead(Context) com.kabouzeid.gramophone.dialogs.ChangelogDialog+setChangelogRead(Context) android.os.Handler+postDelayed(Runnable,long) android.os.Handler+Handler() android.os.Handler+postDelayed(Runnable,long) +() +run()",android.os.Build.VERSION+SDK_INT com.kabouzeid.gramophone.ui.activities.MainActivity+drawerLayout com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView com.kabouzeid.gramophone.ui.activities.MainActivity+blockRequestPermissions,1222,34,4,,"@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            Util.setStatusBarTranslucent(getWindow());
+            drawerLayout.setFitsSystemWindows(false);
+            navigationView.setFitsSystemWindows(false);
+            findViewById(R.id.drawer_content_container).setFitsSystemWindows(false);
+        }
+
+        setStatusbarColorAuto();
+        setNavigationbarColorAuto();
+        setTaskDescriptionColorAuto();
+
+        setUpDrawerLayout();
+        setUpToolbar();
+        setUpViewPager();
+
+        if (!PreferenceUtil.getInstance(this).introShown()) {
+            PreferenceUtil.getInstance(this).setIntroShown();
+            ChangelogDialog.setChangelogRead(this);
+            blockRequestPermissions = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivityForResult(new Intent(MainActivity.this, AppIntroActivity.class), APP_INTRO_REQUEST);
+                }
+            }, 200);
+        } else {
+            checkShowChangelog();
+        }
+    }",False
+14,"onActivityResult(int,int,Intent)",Method,,,com.kabouzeid.gramophone.ui.activities.base.AbsBaseActivity+hasPermissions() com.kabouzeid.gramophone.ui.activities.base.AbsBaseActivity+hasPermissions() com.kabouzeid.gramophone.ui.activities.MainActivity+requestPermissions() com.kabouzeid.gramophone.ui.activities.MainActivity+requestPermissions(),com.kabouzeid.gramophone.ui.activities.MainActivity+APP_INTRO_REQUEST com.kabouzeid.gramophone.ui.activities.MainActivity+blockRequestPermissions,354,10,4,,"@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == APP_INTRO_REQUEST) {
+            blockRequestPermissions = false;
+            if (!hasPermissions()) {
+                requestPermissions();
+            }
+        }
+    }",False
+15,requestPermissions(),Method,"onActivityResult(int,int,Intent)",,com.kabouzeid.gramophone.ui.activities.base.AbsBaseActivity+requestPermissions(),com.kabouzeid.gramophone.ui.activities.MainActivity+blockRequestPermissions,123,4,4,,"@Override
+    protected void requestPermissions() {
+        if (!blockRequestPermissions) super.requestPermissions();
+    }",False
+16,createContentView(),Method,,,android.view.ViewGroup+addView(View) android.view.ViewGroup+addView(View) com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+wrapSlidingMusicPanel(int) com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+wrapSlidingMusicPanel(int),,409,8,4,,"@Override
+    protected View createContentView() {
+        @SuppressLint(""InflateParams"")
+        View contentView = getLayoutInflater().inflate(R.layout.activity_main_drawer_layout, null);
+        ViewGroup drawerContent = ButterKnife.findById(contentView, R.id.drawer_content_container);
+        drawerContent.addView(wrapSlidingMusicPanel(R.layout.activity_main_content));
+        return contentView;
+    }",False
+17,setUpViewPager(),Method,onCreate(Bundle),,"com.kabouzeid.gramophone.adapter.MusicLibraryPagerAdapter+MusicLibraryPagerAdapter(Context,FragmentManager) android.support.v4.view.ViewPager+setAdapter(PagerAdapter) android.support.v4.view.ViewPager+setAdapter(PagerAdapter) android.support.v4.view.ViewPager+setOffscreenPageLimit(int) android.support.v4.view.ViewPager+setOffscreenPageLimit(int) com.kabouzeid.gramophone.adapter.MusicLibraryPagerAdapter+getCount() com.kabouzeid.gramophone.adapter.MusicLibraryPagerAdapter+getCount() com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) android.support.v4.view.ViewPager+setCurrentItem(int) android.support.v4.view.ViewPager+setCurrentItem(int)",com.kabouzeid.gramophone.ui.activities.MainActivity+pagerAdapter com.kabouzeid.gramophone.ui.activities.MainActivity+pager com.kabouzeid.gramophone.ui.activities.MainActivity+pagerAdapter com.kabouzeid.gramophone.ui.activities.MainActivity+pager com.kabouzeid.gramophone.ui.activities.MainActivity+pagerAdapter com.kabouzeid.gramophone.ui.activities.MainActivity+tabs com.kabouzeid.gramophone.ui.activities.MainActivity+pager com.kabouzeid.gramophone.ui.activities.MainActivity+tabs com.kabouzeid.gramophone.ui.activities.MainActivity+tabs com.kabouzeid.gramophone.ui.activities.MainActivity+tabs com.kabouzeid.gramophone.ui.activities.MainActivity+pager,977,18,2,,"private void setUpViewPager() {
+        pagerAdapter = new MusicLibraryPagerAdapter(this, getSupportFragmentManager());
+        pager.setAdapter(pagerAdapter);
+        pager.setOffscreenPageLimit(pagerAdapter.getCount() - 1); // => all
+
+        tabs.setupWithViewPager(pager);
+
+        int primaryColor = ThemeStore.primaryColor(this);
+        int normalColor = ToolbarContentTintHelper.toolbarSubtitleColor(this, primaryColor);
+        int selectedColor = ToolbarContentTintHelper.toolbarTitleColor(this, primaryColor);
+        TabLayoutUtil.setTabIconColors(tabs, normalColor, selectedColor);
+        tabs.setTabTextColors(normalColor, selectedColor);
+        tabs.setSelectedTabIndicatorColor(ThemeStore.accentColor(this));
+
+        int startPosition = PreferenceUtil.getInstance(this).getDefaultStartPage();
+        startPosition = startPosition == -1 ? PreferenceUtil.getInstance(this).getLastStartPage() : startPosition;
+        pager.setCurrentItem(startPosition);
+    }",True
+18,setUpToolbar(),Method,onCreate(Bundle),,,com.kabouzeid.gramophone.ui.activities.MainActivity+appbar com.kabouzeid.gramophone.ui.activities.MainActivity+toolbar com.kabouzeid.gramophone.ui.activities.MainActivity+toolbar com.kabouzeid.gramophone.ui.activities.MainActivity+toolbar,359,8,2,,"private void setUpToolbar() {
+        int primaryColor = ThemeStore.primaryColor(this);
+        appbar.setBackgroundColor(primaryColor);
+        toolbar.setBackgroundColor(primaryColor);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        setTitle(getResources().getString(R.string.app_name));
+        setSupportActionBar(toolbar);
+    }",True
+19,setUpNavigationView(),Method,setUpDrawerLayout(),,+onNavigationItemSelected(MenuItem),com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView,2208,47,2,,"private void setUpNavigationView() {
+        navigationView.setCheckedItem(R.id.nav_library);
+
+        int accentColor = ThemeStore.accentColor(this);
+        NavigationViewUtil.setItemIconColors(navigationView, ATHUtil.resolveColor(this, R.attr.iconColor, ThemeStore.textColorSecondary(this)), accentColor);
+        NavigationViewUtil.setItemTextColors(navigationView, ThemeStore.textColorPrimary(this), accentColor);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                drawerLayout.closeDrawers();
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_library:
+                        // TODO
+                        break;
+                    case R.id.nav_folders:
+                        // TODO
+                        break;
+                    case R.id.support_development:
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                DonationDialog.create().show(getSupportFragmentManager(), ""DONATION_DIALOG"");
+                            }
+                        }, 200);
+                        break;
+                    case R.id.nav_settings:
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                            }
+                        }, 200);
+                        break;
+                    case R.id.nav_about:
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                            }
+                        }, 200);
+                        break;
+                }
+                return true;
+            }
+        });
+    }",False
+20,setUpDrawerLayout(),Method,onCreate(Bundle),,com.kabouzeid.gramophone.ui.activities.MainActivity+setUpNavigationView() com.kabouzeid.gramophone.ui.activities.MainActivity+setUpNavigationView() android.support.v4.widget.DrawerLayout+setDrawerListener(DrawerListener) android.support.v4.widget.DrawerLayout+setDrawerListener(DrawerListener),com.kabouzeid.gramophone.ui.activities.MainActivity+drawerLayout,117,4,2,,"private void setUpDrawerLayout() {
+        setUpNavigationView();
+        drawerLayout.setDrawerListener(this);
+    }",False
+21,updateNavigationDrawerHeader(),Method,onPlayingMetaChanged(),,java.util.ArrayList+isEmpty() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPlayingQueue() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getPlayingQueue() java.util.ArrayList+isEmpty() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getCurrentSong() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getCurrentSong() android.view.View+setOnClickListener(OnClickListener) android.view.View+setOnClickListener(OnClickListener) +() +onClick(View),com.kabouzeid.gramophone.ui.activities.MainActivity+navigationDrawerHeader com.kabouzeid.gramophone.ui.activities.MainActivity+navigationDrawerHeader com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView com.kabouzeid.gramophone.ui.activities.MainActivity+navigationDrawerHeader,1436,28,2,,"private void updateNavigationDrawerHeader() {
+        if (!MusicPlayerRemote.getPlayingQueue().isEmpty()) {
+            Song song = MusicPlayerRemote.getCurrentSong();
+            if (navigationDrawerHeader == null) {
+                navigationDrawerHeader = navigationView.inflateHeaderView(R.layout.navigation_drawer_header);
+                //noinspection ConstantConditions
+                navigationDrawerHeader.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        drawerLayout.closeDrawers();
+                        if (getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                            expandPanel();
+                        }
+                    }
+                });
+            }
+            ((TextView) navigationDrawerHeader.findViewById(R.id.title)).setText(song.title);
+            ((TextView) navigationDrawerHeader.findViewById(R.id.text)).setText(song.artistName);
+            SongGlideRequest.Builder.from(Glide.with(this), song)
+                    .checkIgnoreMediaStore(this).build()
+                    .into(((ImageView) navigationDrawerHeader.findViewById(R.id.image)));
+        } else {
+            if (navigationDrawerHeader != null) {
+                navigationView.removeHeaderView(navigationDrawerHeader);
+                navigationDrawerHeader = null;
+            }
+        }
+    }",False
+22,enableViews(),Method,,,com.kabouzeid.gramophone.ui.activities.base.AbsBaseActivity+enableViews() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityFragment+enableViews() com.kabouzeid.gramophone.ui.activities.MainActivity+getCurrentFragment() com.kabouzeid.gramophone.ui.activities.MainActivity+getCurrentFragment() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityFragment+enableViews(),com.kabouzeid.gramophone.ui.activities.MainActivity+toolbar,267,9,1,,"@Override
+    public void enableViews() {
+        try {
+            super.enableViews();
+            toolbar.setEnabled(true);
+            ((AbsMainActivityFragment) getCurrentFragment()).enableViews();
+        } catch (NullPointerException ignored) {
+        }
+    }",False
+23,disableViews(),Method,,,com.kabouzeid.gramophone.ui.activities.base.AbsBaseActivity+disableViews() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityFragment+disableViews() com.kabouzeid.gramophone.ui.activities.MainActivity+getCurrentFragment() com.kabouzeid.gramophone.ui.activities.MainActivity+getCurrentFragment() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityFragment+disableViews(),,232,8,1,,"@Override
+    public void disableViews() {
+        try {
+            super.disableViews();
+            ((AbsMainActivityFragment) getCurrentFragment()).disableViews();
+        } catch (NullPointerException ignored) {
+        }
+    }",False
+24,onPlayingMetaChanged(),Method,,,com.kabouzeid.gramophone.ui.activities.base.AbsMusicServiceActivity+onPlayingMetaChanged() com.kabouzeid.gramophone.ui.activities.MainActivity+updateNavigationDrawerHeader() com.kabouzeid.gramophone.ui.activities.MainActivity+updateNavigationDrawerHeader(),,134,5,1,,"@Override
+    public void onPlayingMetaChanged() {
+        super.onPlayingMetaChanged();
+        updateNavigationDrawerHeader();
+    }",False
+25,"onServiceConnected(ComponentName,IBinder)",Method,,,"com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onServiceConnected(ComponentName,IBinder) com.kabouzeid.gramophone.ui.activities.MainActivity+handlePlaybackIntent(Intent) com.kabouzeid.gramophone.ui.activities.MainActivity+handlePlaybackIntent(Intent)",,181,5,1,,"@Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        super.onServiceConnected(name, service);
+        handlePlaybackIntent(getIntent());
+    }",False
+26,onCreateOptionsMenu(Menu),Method,,,"com.kabouzeid.gramophone.ui.activities.MainActivity+isPlaylistPage() com.kabouzeid.gramophone.ui.activities.MainActivity+isPlaylistPage() android.view.Menu+add(int,int,int,CharSequence) android.view.Menu+add(int,int,int,CharSequence) com.kabouzeid.gramophone.ui.activities.MainActivity+getCurrentFragment() com.kabouzeid.gramophone.ui.activities.MainActivity+getCurrentFragment() android.support.v4.app.Fragment+isAdded() android.support.v4.app.Fragment+isAdded() android.view.Menu+findItem(int) android.view.Menu+findItem(int) com.kabouzeid.gramophone.util.Util+isLandscape(Resources) com.kabouzeid.gramophone.util.Util+isLandscape(Resources) android.view.MenuItem+setTitle(CharSequence) android.view.MenuItem+setTitle(CharSequence) com.kabouzeid.gramophone.ui.activities.MainActivity+setUpGridSizeMenu(AbsMainActivityRecyclerViewCustomGridSizeFragment,SubMenu) com.kabouzeid.gramophone.ui.activities.MainActivity+setUpGridSizeMenu(AbsMainActivityRecyclerViewCustomGridSizeFragment,SubMenu) android.view.MenuItem+getSubMenu() android.view.MenuItem+getSubMenu() android.view.Menu+findItem(int) android.view.Menu+findItem(int) com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+usePalette() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+usePalette() android.view.Menu+findItem(int) android.view.Menu+findItem(int) com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+canUsePalette() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+canUsePalette() android.view.Menu+removeItem(int) android.view.Menu+removeItem(int) android.view.Menu+removeItem(int) android.view.Menu+removeItem(int)",,1393,24,1,,"@Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (isPlaylistPage()) {
+            menu.add(0, R.id.action_new_playlist, 0, R.string.new_playlist_title);
+        }
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment instanceof AbsMainActivityRecyclerViewCustomGridSizeFragment && currentFragment.isAdded()) {
+            AbsMainActivityRecyclerViewCustomGridSizeFragment absMainActivityRecyclerViewCustomGridSizeFragment = (AbsMainActivityRecyclerViewCustomGridSizeFragment) currentFragment;
+
+            MenuItem gridSizeItem = menu.findItem(R.id.action_grid_size);
+            if (Util.isLandscape(getResources())) {
+                gridSizeItem.setTitle(R.string.action_grid_size_land);
+            }
+            setUpGridSizeMenu(absMainActivityRecyclerViewCustomGridSizeFragment, gridSizeItem.getSubMenu());
+
+            menu.findItem(R.id.action_colored_footers).setChecked(absMainActivityRecyclerViewCustomGridSizeFragment.usePalette());
+            menu.findItem(R.id.action_colored_footers).setEnabled(absMainActivityRecyclerViewCustomGridSizeFragment.canUsePalette());
+        } else {
+            menu.removeItem(R.id.action_grid_size);
+            menu.removeItem(R.id.action_colored_footers);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }",True
+27,onOptionsItemSelected(MenuItem),Method,,,"android.view.MenuItem+getItemId() android.view.MenuItem+getItemId() android.support.v4.widget.DrawerLayout+isDrawerOpen(View) android.support.v4.widget.DrawerLayout+isDrawerOpen(View) android.support.v4.widget.DrawerLayout+closeDrawer(View) android.support.v4.widget.DrawerLayout+closeDrawer(View) android.support.v4.widget.DrawerLayout+openDrawer(View) android.support.v4.widget.DrawerLayout+openDrawer(View) com.kabouzeid.gramophone.ui.activities.MainActivity+getCurrentFragment() com.kabouzeid.gramophone.ui.activities.MainActivity+getCurrentFragment() android.view.MenuItem+getItemId() android.view.MenuItem+getItemId() android.view.MenuItem+setChecked(boolean) android.view.MenuItem+setChecked(boolean) android.view.MenuItem+isChecked() android.view.MenuItem+isChecked() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+setAndSaveUsePalette(boolean) com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+setAndSaveUsePalette(boolean) android.view.MenuItem+isChecked() android.view.MenuItem+isChecked() com.kabouzeid.gramophone.ui.activities.MainActivity+handleGridSizeMenuItem(AbsMainActivityRecyclerViewCustomGridSizeFragment,MenuItem) com.kabouzeid.gramophone.ui.activities.MainActivity+handleGridSizeMenuItem(AbsMainActivityRecyclerViewCustomGridSizeFragment,MenuItem) android.view.MenuItem+getItemId() android.view.MenuItem+getItemId() android.support.v4.app.DialogFragment+show(FragmentManager,String) com.kabouzeid.gramophone.dialogs.SleepTimerDialog+SleepTimerDialog() android.support.v4.app.DialogFragment+show(FragmentManager,String) com.kabouzeid.gramophone.util.NavigationUtil+openEqualizer(Activity) com.kabouzeid.gramophone.util.NavigationUtil+openEqualizer(Activity) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openAndShuffleQueue(ArrayList<Song>,boolean) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openAndShuffleQueue(ArrayList<Song>,boolean) com.kabouzeid.gramophone.loader.SongLoader+getAllSongs(Context) com.kabouzeid.gramophone.loader.SongLoader+getAllSongs(Context) android.support.v4.app.DialogFragment+show(FragmentManager,String) com.kabouzeid.gramophone.dialogs.CreatePlaylistDialog+create() com.kabouzeid.gramophone.dialogs.CreatePlaylistDialog+create() android.support.v4.app.DialogFragment+show(FragmentManager,String) android.content.Intent+Intent()",com.kabouzeid.gramophone.ui.activities.MainActivity+drawerLayout com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView com.kabouzeid.gramophone.ui.activities.MainActivity+drawerLayout com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView com.kabouzeid.gramophone.ui.activities.MainActivity+drawerLayout com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView,2021,44,1,,"@Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (drawerLayout.isDrawerOpen(navigationView)) {
+                drawerLayout.closeDrawer(navigationView);
+            } else {
+                drawerLayout.openDrawer(navigationView);
+            }
+            return true;
+        }
+
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment instanceof AbsMainActivityRecyclerViewCustomGridSizeFragment) {
+            AbsMainActivityRecyclerViewCustomGridSizeFragment absMainActivityRecyclerViewCustomGridSizeFragment = (AbsMainActivityRecyclerViewCustomGridSizeFragment) currentFragment;
+            if (item.getItemId() == R.id.action_colored_footers) {
+                item.setChecked(!item.isChecked());
+                absMainActivityRecyclerViewCustomGridSizeFragment.setAndSaveUsePalette(item.isChecked());
+                return true;
+            }
+            if (handleGridSizeMenuItem(absMainActivityRecyclerViewCustomGridSizeFragment, item)) {
+                return true;
+            }
+        }
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_sleep_timer:
+                new SleepTimerDialog().show(getSupportFragmentManager(), ""SET_SLEEP_TIMER"");
+                return true;
+            case R.id.action_equalizer:
+                NavigationUtil.openEqualizer(this);
+                return true;
+            case R.id.action_shuffle_all:
+                MusicPlayerRemote.openAndShuffleQueue(SongLoader.getAllSongs(this), true);
+                return true;
+            case R.id.action_new_playlist:
+                CreatePlaylistDialog.create().show(getSupportFragmentManager(), ""CREATE_PLAYLIST"");
+                return true;
+            case R.id.action_search:
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }",False
+28,"setUpGridSizeMenu(AbsMainActivityRecyclerViewCustomGridSizeFragment,SubMenu)",Method,onCreateOptionsMenu(Menu),,com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+getGridSize() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+getGridSize() android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+getMaxGridSize() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+getMaxGridSize() android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int) android.view.Menu+findItem(int),,1949,47,2,,"private void setUpGridSizeMenu(@NonNull AbsMainActivityRecyclerViewCustomGridSizeFragment fragment, @NonNull SubMenu gridSizeMenu) {
+        switch (fragment.getGridSize()) {
+            case 1:
+                gridSizeMenu.findItem(R.id.action_grid_size_1).setChecked(true);
+                break;
+            case 2:
+                gridSizeMenu.findItem(R.id.action_grid_size_2).setChecked(true);
+                break;
+            case 3:
+                gridSizeMenu.findItem(R.id.action_grid_size_3).setChecked(true);
+                break;
+            case 4:
+                gridSizeMenu.findItem(R.id.action_grid_size_4).setChecked(true);
+                break;
+            case 5:
+                gridSizeMenu.findItem(R.id.action_grid_size_5).setChecked(true);
+                break;
+            case 6:
+                gridSizeMenu.findItem(R.id.action_grid_size_6).setChecked(true);
+                break;
+            case 7:
+                gridSizeMenu.findItem(R.id.action_grid_size_7).setChecked(true);
+                break;
+            case 8:
+                gridSizeMenu.findItem(R.id.action_grid_size_8).setChecked(true);
+                break;
+        }
+        int maxGridSize = fragment.getMaxGridSize();
+        if (maxGridSize < 8) {
+            gridSizeMenu.findItem(R.id.action_grid_size_8).setVisible(false);
+        }
+        if (maxGridSize < 7) {
+            gridSizeMenu.findItem(R.id.action_grid_size_7).setVisible(false);
+        }
+        if (maxGridSize < 6) {
+            gridSizeMenu.findItem(R.id.action_grid_size_6).setVisible(false);
+        }
+        if (maxGridSize < 5) {
+            gridSizeMenu.findItem(R.id.action_grid_size_5).setVisible(false);
+        }
+        if (maxGridSize < 4) {
+            gridSizeMenu.findItem(R.id.action_grid_size_4).setVisible(false);
+        }
+        if (maxGridSize < 3) {
+            gridSizeMenu.findItem(R.id.action_grid_size_3).setVisible(false);
+        }
+    }",True
+29,"handleGridSizeMenuItem(AbsMainActivityRecyclerViewCustomGridSizeFragment,MenuItem)",Method,onOptionsItemSelected(MenuItem),,android.view.MenuItem+getItemId() android.view.MenuItem+getItemId() android.view.MenuItem+setChecked(boolean) android.view.MenuItem+setChecked(boolean) com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+setAndSaveGridSize(int) com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+setAndSaveGridSize(int) com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+canUsePalette() com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewCustomGridSizeFragment+canUsePalette(),com.kabouzeid.gramophone.ui.activities.MainActivity+toolbar,1248,36,2,,"private boolean handleGridSizeMenuItem(@NonNull AbsMainActivityRecyclerViewCustomGridSizeFragment fragment, @NonNull MenuItem item) {
+        int gridSize = 0;
+        switch (item.getItemId()) {
+            case R.id.action_grid_size_1:
+                gridSize = 1;
+                break;
+            case R.id.action_grid_size_2:
+                gridSize = 2;
+                break;
+            case R.id.action_grid_size_3:
+                gridSize = 3;
+                break;
+            case R.id.action_grid_size_4:
+                gridSize = 4;
+                break;
+            case R.id.action_grid_size_5:
+                gridSize = 5;
+                break;
+            case R.id.action_grid_size_6:
+                gridSize = 6;
+                break;
+            case R.id.action_grid_size_7:
+                gridSize = 7;
+                break;
+            case R.id.action_grid_size_8:
+                gridSize = 8;
+                break;
+        }
+        if (gridSize > 0) {
+            item.setChecked(true);
+            fragment.setAndSaveGridSize(gridSize);
+            toolbar.getMenu().findItem(R.id.action_colored_footers).setEnabled(fragment.canUsePalette());
+            return true;
+        }
+        return false;
+    }",True
+30,onBackPressed(),Method,,,android.support.v4.widget.DrawerLayout+isDrawerOpen(View) android.support.v4.widget.DrawerLayout+isDrawerOpen(View) android.support.v4.widget.DrawerLayout+closeDrawers() android.support.v4.widget.DrawerLayout+closeDrawers() com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onBackPressed(),com.kabouzeid.gramophone.ui.activities.MainActivity+drawerLayout com.kabouzeid.gramophone.ui.activities.MainActivity+navigationView com.kabouzeid.gramophone.ui.activities.MainActivity+drawerLayout com.kabouzeid.gramophone.ui.activities.MainActivity+cab com.kabouzeid.gramophone.ui.activities.MainActivity+cab com.kabouzeid.gramophone.ui.activities.MainActivity+cab,231,6,1,,"@Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(navigationView)) drawerLayout.closeDrawers();
+        else if (cab != null && cab.isActive()) cab.finish();
+        else super.onBackPressed();
+    }",False
+31,onPause(),Method,,,com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) android.support.v4.view.ViewPager+getCurrentItem() android.support.v4.view.ViewPager+getCurrentItem(),com.kabouzeid.gramophone.ui.activities.MainActivity+pager,167,5,4,,"@Override
+    protected void onPause() {
+        super.onPause();
+        PreferenceUtil.getInstance(MainActivity.this).setLastStartPage(pager.getCurrentItem());
+    }",False
+32,handlePlaybackIntent(Intent),Method,"onServiceConnected(ComponentName,IBinder)",,"android.content.Intent+getData() android.content.Intent+getData() android.content.Intent+getType() android.content.Intent+getType() android.content.Intent+getAction() android.content.Intent+getAction() java.lang.String+equals(Object) android.content.Intent+getAction() android.content.Intent+getAction() java.lang.String+equals(Object) com.kabouzeid.gramophone.helper.SearchQueryHelper+getSongs(Context,Bundle) com.kabouzeid.gramophone.helper.SearchQueryHelper+getSongs(Context,Bundle) android.content.Intent+getExtras() android.content.Intent+getExtras() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getShuffleMode() com.kabouzeid.gramophone.helper.MusicPlayerRemote+getShuffleMode() com.kabouzeid.gramophone.helper.MusicPlayerRemote+openAndShuffleQueue(ArrayList<Song>,boolean) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openAndShuffleQueue(ArrayList<Song>,boolean) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openQueue(ArrayList<Song>,int,boolean) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openQueue(ArrayList<Song>,int,boolean) java.lang.String+length() android.net.Uri+toString() android.net.Uri+toString() java.lang.String+length() com.kabouzeid.gramophone.helper.MusicPlayerRemote+playFile(String) com.kabouzeid.gramophone.helper.MusicPlayerRemote+playFile(String) java.io.File+getAbsolutePath() java.io.File+File(String) android.net.Uri+getPath() android.net.Uri+getPath() java.io.File+getAbsolutePath() java.lang.String+equals(Object) java.lang.String+equals(Object) com.kabouzeid.gramophone.ui.activities.MainActivity+parseIdFromIntent(Intent,String,String) com.kabouzeid.gramophone.ui.activities.MainActivity+parseIdFromIntent(Intent,String,String) android.content.Intent+getIntExtra(String,int) android.content.Intent+getIntExtra(String,int) java.util.ArrayList+addAll(Collection) java.util.ArrayList+addAll(Collection) com.kabouzeid.gramophone.loader.PlaylistSongLoader+getPlaylistSongList(Context,int) com.kabouzeid.gramophone.loader.PlaylistSongLoader+getPlaylistSongList(Context,int) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openQueue(ArrayList<Song>,int,boolean) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openQueue(ArrayList<Song>,int,boolean) java.lang.String+equals(Object) java.lang.String+equals(Object) com.kabouzeid.gramophone.ui.activities.MainActivity+parseIdFromIntent(Intent,String,String) com.kabouzeid.gramophone.ui.activities.MainActivity+parseIdFromIntent(Intent,String,String) android.content.Intent+getIntExtra(String,int) android.content.Intent+getIntExtra(String,int) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openQueue(ArrayList<Song>,int,boolean) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openQueue(ArrayList<Song>,int,boolean) com.kabouzeid.gramophone.loader.AlbumLoader+getAlbum(Context,int) com.kabouzeid.gramophone.loader.AlbumLoader+getAlbum(Context,int) java.lang.String+equals(Object) java.lang.String+equals(Object) com.kabouzeid.gramophone.ui.activities.MainActivity+parseIdFromIntent(Intent,String,String) com.kabouzeid.gramophone.ui.activities.MainActivity+parseIdFromIntent(Intent,String,String) android.content.Intent+getIntExtra(String,int) android.content.Intent+getIntExtra(String,int) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openQueue(ArrayList<Song>,int,boolean) com.kabouzeid.gramophone.helper.MusicPlayerRemote+openQueue(ArrayList<Song>,int,boolean) com.kabouzeid.gramophone.loader.ArtistSongLoader+getArtistSongList(Context,int) com.kabouzeid.gramophone.loader.ArtistSongLoader+getArtistSongList(Context,int) android.content.Intent+Intent()",com.kabouzeid.gramophone.service.MusicService+SHUFFLE_MODE_SHUFFLE android.provider.MediaStore.Audio.Playlists+CONTENT_TYPE android.provider.MediaStore.Audio.Albums+CONTENT_TYPE android.provider.MediaStore.Audio.Artists+CONTENT_TYPE,2282,49,2,,"private void handlePlaybackIntent(@Nullable Intent intent) {
+        if (intent == null) {
+            return;
+        }
+
+        Uri uri = intent.getData();
+        String mimeType = intent.getType();
+        boolean handled = false;
+
+        if (intent.getAction() != null && intent.getAction().equals(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH)) {
+            final ArrayList<Song> songs = SearchQueryHelper.getSongs(this, intent.getExtras());
+            if (MusicPlayerRemote.getShuffleMode() == MusicService.SHUFFLE_MODE_SHUFFLE) {
+                MusicPlayerRemote.openAndShuffleQueue(songs, true);
+            } else {
+                MusicPlayerRemote.openQueue(songs, 0, true);
+            }
+        }
+
+        if (uri != null && uri.toString().length() > 0) {
+            MusicPlayerRemote.playFile(new File(uri.getPath()).getAbsolutePath());
+            handled = true;
+        } else if (MediaStore.Audio.Playlists.CONTENT_TYPE.equals(mimeType)) {
+            final int id = (int) parseIdFromIntent(intent, ""playlistId"", ""playlist"");
+            if (id >= 0) {
+                int position = intent.getIntExtra(""position"", 0);
+                ArrayList<Song> songs = new ArrayList<>();
+                songs.addAll(PlaylistSongLoader.getPlaylistSongList(this, id));
+                MusicPlayerRemote.openQueue(songs, position, true);
+                handled = true;
+            }
+        } else if (MediaStore.Audio.Albums.CONTENT_TYPE.equals(mimeType)) {
+            final int id = (int) parseIdFromIntent(intent, ""albumId"", ""album"");
+            if (id >= 0) {
+                int position = intent.getIntExtra(""position"", 0);
+                MusicPlayerRemote.openQueue(AlbumLoader.getAlbum(this, id).songs, position, true);
+                handled = true;
+            }
+        } else if (MediaStore.Audio.Artists.CONTENT_TYPE.equals(mimeType)) {
+            final int id = (int) parseIdFromIntent(intent, ""artistId"", ""artist"");
+            if (id >= 0) {
+                int position = intent.getIntExtra(""position"", 0);
+                MusicPlayerRemote.openQueue(ArtistSongLoader.getArtistSongList(this, id), position, true);
+                handled = true;
+            }
+        }
+        if (handled) {
+            setIntent(new Intent());
+        }
+    }",False
+33,"parseIdFromIntent(Intent,String,String)",Method,handlePlaybackIntent(Intent) handlePlaybackIntent(Intent) handlePlaybackIntent(Intent),,"android.content.Intent+getLongExtra(String,long) android.content.Intent+getLongExtra(String,long) android.content.Intent+getStringExtra(String) android.content.Intent+getStringExtra(String) java.lang.Long+parseLong(String) java.lang.Long+parseLong(String) android.util.Log+e(String,String) android.util.Log+e(String,String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",com.kabouzeid.gramophone.ui.activities.MainActivity+TAG,539,15,2,,"private long parseIdFromIntent(@NonNull Intent intent, String longKey,
+                                   String stringKey) {
+        long id = intent.getLongExtra(longKey, -1);
+        if (id < 0) {
+            String idString = intent.getStringExtra(stringKey);
+            if (idString != null) {
+                try {
+                    id = Long.parseLong(idString);
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        }
+        return id;
+    }",False
+34,getCurrentFragment(),Method,enableViews() disableViews() onCreateOptionsMenu(Menu) onOptionsItemSelected(MenuItem),,com.kabouzeid.gramophone.adapter.MusicLibraryPagerAdapter+getFragment(int) com.kabouzeid.gramophone.adapter.MusicLibraryPagerAdapter+getFragment(int) android.support.v4.view.ViewPager+getCurrentItem() android.support.v4.view.ViewPager+getCurrentItem(),com.kabouzeid.gramophone.ui.activities.MainActivity+pagerAdapter com.kabouzeid.gramophone.ui.activities.MainActivity+pager,109,3,1,,"public Fragment getCurrentFragment() {
+        return pagerAdapter.getFragment(pager.getCurrentItem());
+    }",True
+35,isPlaylistPage(),Method,onCreateOptionsMenu(Menu),,android.support.v4.view.ViewPager+getCurrentItem() android.support.v4.view.ViewPager+getCurrentItem(),com.kabouzeid.gramophone.ui.activities.MainActivity+pager,141,3,2,,"private boolean isPlaylistPage() {
+        return pager.getCurrentItem() == MusicLibraryPagerAdapter.MusicFragments.PLAYLIST.ordinal();
+    }",True
+36,"openCab(int,MaterialCab.Callback)",Method,,,java.lang.Object+Object() com.kabouzeid.gramophone.util.PhonographColorUtil+shiftBackgroundColorForLightText(int) com.kabouzeid.gramophone.util.PhonographColorUtil+shiftBackgroundColorForLightText(int),com.kabouzeid.gramophone.ui.activities.MainActivity+cab com.kabouzeid.gramophone.ui.activities.MainActivity+cab com.kabouzeid.gramophone.ui.activities.MainActivity+cab com.kabouzeid.gramophone.ui.activities.MainActivity+cab com.kabouzeid.gramophone.ui.activities.MainActivity+cab,484,10,1,,"@Override
+    public MaterialCab openCab(final int menu, final MaterialCab.Callback callback) {
+        if (cab != null && cab.isActive()) cab.finish();
+        cab = new MaterialCab(this, R.id.cab_stub)
+                .setMenu(menu)
+                .setCloseDrawableRes(R.drawable.ic_close_white_24dp)
+                .setBackgroundColor(PhonographColorUtil.shiftBackgroundColorForLightText(ThemeStore.primaryColor(this)))
+                .start(callback);
+        return cab;
+    }",True
+37,addOnAppBarOffsetChangedListener(OnOffsetChangedListener),Method,,"com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewFragment+onViewCreated(View,Bundle)",,com.kabouzeid.gramophone.ui.activities.MainActivity+appbar,169,3,1,,"public void addOnAppBarOffsetChangedListener(OnOffsetChangedListener onOffsetChangedListener) {
+        appbar.addOnOffsetChangedListener(onOffsetChangedListener);
+    }",True
+38,removeOnAppBarOffsetChangedListener(OnOffsetChangedListener),Method,,com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewFragment+onDestroyView(),,com.kabouzeid.gramophone.ui.activities.MainActivity+appbar,175,3,1,,"public void removeOnAppBarOffsetChangedListener(OnOffsetChangedListener onOffsetChangedListener) {
+        appbar.removeOnOffsetChangedListener(onOffsetChangedListener);
+    }",True
+39,getTotalAppBarScrollingRange(),Method,,"com.kabouzeid.gramophone.ui.fragments.mainactivityfragments.AbsMainActivityRecyclerViewFragment+onOffsetChanged(AppBarLayout,int)",,com.kabouzeid.gramophone.ui.activities.MainActivity+appbar,94,3,1,,"public int getTotalAppBarScrollingRange() {
+        return appbar.getTotalScrollRange();
+    }",True
+40,onPanelExpanded(View),Method,,,com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onPanelExpanded(View) android.support.v4.widget.DrawerLayout+setDrawerLockMode(int) android.support.v4.widget.DrawerLayout+setDrawerLockMode(int),com.kabouzeid.gramophone.ui.activities.MainActivity+drawerLayout android.support.v4.widget.DrawerLayout+LOCK_MODE_LOCKED_CLOSED,175,5,1,,"@Override
+    public void onPanelExpanded(View view) {
+        super.onPanelExpanded(view);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }",False
+41,onPanelCollapsed(View),Method,,,com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+onPanelCollapsed(View) android.support.v4.widget.DrawerLayout+setDrawerLockMode(int) android.support.v4.widget.DrawerLayout+setDrawerLockMode(int),com.kabouzeid.gramophone.ui.activities.MainActivity+drawerLayout android.support.v4.widget.DrawerLayout+LOCK_MODE_UNLOCKED,172,5,1,,"@Override
+    public void onPanelCollapsed(View view) {
+        super.onPanelCollapsed(view);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }",False
+42,checkShowChangelog(),Method,,,"com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) com.kabouzeid.gramophone.util.PreferenceUtil+getInstance(Context) android.support.v4.app.DialogFragment+show(FragmentManager,String) com.kabouzeid.gramophone.dialogs.ChangelogDialog+create() com.kabouzeid.gramophone.dialogs.ChangelogDialog+create() android.support.v4.app.DialogFragment+show(FragmentManager,String) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace()",android.content.pm.PackageInfo+versionCode,505,11,2,,"private void checkShowChangelog() {
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            int currentVersion = pInfo.versionCode;
+            if (currentVersion != PreferenceUtil.getInstance(this).getLastChangelogVersion()) {
+                ChangelogDialog.create().show(getSupportFragmentManager(), ""CHANGE_LOG_DIALOG"");
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }",False
+43,"onDrawerSlide(View,float)",Method,,,,,84,4,1,,"@Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }",False
+44,onDrawerOpened(View),Method,,,com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+setLightStatusbar(boolean) com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity+setLightStatusbar(boolean),,99,4,1,,"@Override
+    public void onDrawerOpened(View drawerView) {
+        setLightStatusbar(false);
+    }",False
+45,onDrawerClosed(View),Method,,,com.kabouzeid.gramophone.ui.activities.base.AbsThemeActivity+setLightStatusbarAuto(int) com.kabouzeid.gramophone.ui.activities.base.AbsThemeActivity+setLightStatusbarAuto(int),,127,4,1,,"@Override
+    public void onDrawerClosed(View drawerView) {
+        setLightStatusbarAuto(ThemeStore.primaryColor(this));
+    }",False
+46,onDrawerStateChanged(int),Method,,,,,69,4,1,,"@Override
+    public void onDrawerStateChanged(int newState) {
+
+    }",False

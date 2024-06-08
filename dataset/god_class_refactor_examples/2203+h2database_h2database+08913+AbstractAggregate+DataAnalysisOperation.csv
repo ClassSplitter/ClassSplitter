@@ -1,0 +1,460 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,select,Field,"AbstractAggregate(Select,boolean)",,,,30,1,20,,protected final Select select;,True
+2,distinct,Field,"AbstractAggregate(Select,boolean)",,,,33,1,20,,protected final boolean distinct;,False
+3,filterCondition,Field,setFilterCondition(Expression),,,,37,1,4,,protected Expression filterCondition;,False
+4,over,Field,setOverCondition(Window),,,,22,1,4,,protected Window over;,True
+5,overOrderBySort,Field,,,,,36,1,4,,protected SortOrder overOrderBySort;,True
+6,lastGroupRowId,Field,,,,,27,1,2,,private int lastGroupRowId;,True
+7,"createOrder(Session,ArrayList<SelectOrderBy>,int)",Method,optimize(Session),org.h2.expression.aggregate.Aggregate+optimize(Session),"java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.result.SortOrder+SortOrder(Database,int[],int[],ArrayList<SelectOrderBy>) org.h2.engine.Session+getDatabase() org.h2.engine.Session+getDatabase()",org.h2.command.dml.SelectOrderBy+sortType,467,11,12,,"protected static SortOrder createOrder(Session session, ArrayList<SelectOrderBy> orderBy, int offset) {
+        int size = orderBy.size();
+        int[] index = new int[size];
+        int[] sortType = new int[size];
+        for (int i = 0; i < size; i++) {
+            SelectOrderBy o = orderBy.get(i);
+            index[i] = i + offset;
+            sortType[i] = o.sortType;
+        }
+        return new SortOrder(session.getDatabase(), index, sortType, null);
+    }",True
+8,"AbstractAggregate(Select,boolean)",Method,,,,org.h2.expression.aggregate.AbstractAggregate+select org.h2.expression.aggregate.AbstractAggregate+select org.h2.expression.aggregate.AbstractAggregate+distinct org.h2.expression.aggregate.AbstractAggregate+distinct,122,4,0,,"AbstractAggregate(Select select, boolean distinct) {
+        this.select = select;
+        this.distinct = distinct;
+    }",False
+9,setFilterCondition(Expression),Method,,org.h2.command.Parser+readFilterAndOver(AbstractAggregate),org.h2.expression.aggregate.AbstractAggregate+isAggregate() org.h2.expression.aggregate.AbstractAggregate+isAggregate() org.h2.message.DbException+getUnsupportedException(String) org.h2.message.DbException+getUnsupportedException(String),org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+filterCondition,370,13,1,"/** 
+ * Sets the FILTER condition.
+ * @param filterCondition FILTER condition
+ */
+","/**
+     * Sets the FILTER condition.
+     *
+     * @param filterCondition
+     *            FILTER condition
+     */
+    public void setFilterCondition(Expression filterCondition) {
+        if (isAggregate()) {
+            this.filterCondition = filterCondition;
+        } else {
+            throw DbException.getUnsupportedException(""Window function"");
+        }
+    }",False
+10,setOverCondition(Window),Method,,org.h2.command.Parser+readFilterAndOver(AbstractAggregate),,org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over,182,9,1,"/** 
+ * Sets the OVER condition.
+ * @param over OVER condition
+ */
+","/**
+     * Sets the OVER condition.
+     *
+     * @param over
+     *            OVER condition
+     */
+    public void setOverCondition(Window over) {
+        this.over = over;
+    }",True
+11,isAggregate(),Method,"setFilterCondition(Expression) optimize(Session) updateAggregate(Session,int) getWindowResult(Session,SelectGroups)",org.h2.command.Parser+readFilterAndOver(AbstractAggregate),,,269,7,1025,"/** 
+ * Checks whether this expression is an aggregate function.
+ * @return true if this is an aggregate function (including aggregates withOVER clause), false if this is a window function
+ */
+","/**
+     * Checks whether this expression is an aggregate function.
+     *
+     * @return true if this is an aggregate function (including aggregates with
+     *         OVER clause), false if this is a window function
+     */
+    public abstract boolean isAggregate();",True
+12,getOverOrderBySort(),Method,"getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int)","org.h2.expression.aggregate.WindowFunction+getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) org.h2.expression.aggregate.WindowFunction+getNth(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) org.h2.expression.aggregate.WindowFunction+getNth(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) org.h2.expression.aggregate.WindowFunction+getNth(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int)",,org.h2.expression.aggregate.AbstractAggregate+overOrderBySort,186,8,0,"/** 
+ * Returns the sort order for OVER clause.
+ * @return the sort order for OVER clause
+ */
+","/**
+     * Returns the sort order for OVER clause.
+     *
+     * @return the sort order for OVER clause
+     */
+    SortOrder getOverOrderBySort() {
+        return overOrderBySort;
+    }",False
+13,"mapColumns(ColumnResolver,int)",Method,,,"org.h2.expression.Expression+mapColumns(ColumnResolver,int) org.h2.expression.Expression+mapColumns(ColumnResolver,int) org.h2.expression.aggregate.Window+mapColumns(ColumnResolver,int) org.h2.expression.aggregate.Window+mapColumns(ColumnResolver,int)",org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over,270,9,1,,"@Override
+    public void mapColumns(ColumnResolver resolver, int level) {
+        if (filterCondition != null) {
+            filterCondition.mapColumns(resolver, level);
+        }
+        if (over != null) {
+            over.mapColumns(resolver, level);
+        }
+    }",False
+14,optimize(Session),Method,,,"org.h2.expression.aggregate.Window+optimize(Session) org.h2.expression.aggregate.Window+optimize(Session) org.h2.expression.aggregate.Window+getOrderBy() org.h2.expression.aggregate.Window+getOrderBy() org.h2.expression.aggregate.AbstractAggregate+createOrder(Session,ArrayList<SelectOrderBy>,int) org.h2.expression.aggregate.AbstractAggregate+createOrder(Session,ArrayList<SelectOrderBy>,int) org.h2.expression.aggregate.AbstractAggregate+getNumExpressions() org.h2.expression.aggregate.AbstractAggregate+getNumExpressions() org.h2.expression.aggregate.AbstractAggregate+isAggregate() org.h2.expression.aggregate.AbstractAggregate+isAggregate() org.h2.result.SortOrder+SortOrder(Database,int[],int[],ArrayList<SelectOrderBy>) org.h2.engine.Session+getDatabase() org.h2.engine.Session+getDatabase() org.h2.expression.aggregate.AbstractAggregate+getNumExpressions() org.h2.expression.aggregate.AbstractAggregate+getNumExpressions()",org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+overOrderBySort org.h2.expression.aggregate.AbstractAggregate+overOrderBySort,522,13,1,,"@Override
+    public Expression optimize(Session session) {
+        if (over != null) {
+            over.optimize(session);
+            ArrayList<SelectOrderBy> orderBy = over.getOrderBy();
+            if (orderBy != null) {
+                overOrderBySort = createOrder(session, orderBy, getNumExpressions());
+            } else if (!isAggregate()) {
+                overOrderBySort = new SortOrder(session.getDatabase(), new int[getNumExpressions()], new int[0], null);
+            }
+        }
+        return this;
+    }",False
+15,"setEvaluatable(TableFilter,boolean)",Method,,,"org.h2.expression.Expression+setEvaluatable(TableFilter,boolean) org.h2.expression.Expression+setEvaluatable(TableFilter,boolean) org.h2.expression.aggregate.Window+setEvaluatable(TableFilter,boolean) org.h2.expression.aggregate.Window+setEvaluatable(TableFilter,boolean)",org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over,280,9,1,,"@Override
+    public void setEvaluatable(TableFilter tableFilter, boolean b) {
+        if (filterCondition != null) {
+            filterCondition.setEvaluatable(tableFilter, b);
+        }
+        if (over != null) {
+            over.setEvaluatable(tableFilter, b);
+        }
+    }",False
+16,"updateAggregate(Session,int)",Method,,,"org.h2.expression.aggregate.AbstractAggregate+updateSubAggregates(Session,int) org.h2.expression.aggregate.AbstractAggregate+updateSubAggregates(Session,int) org.h2.command.dml.Select+isWindowQuery() org.h2.command.dml.Select+isWindowQuery() org.h2.expression.aggregate.AbstractAggregate+updateSubAggregates(Session,int) org.h2.expression.aggregate.AbstractAggregate+updateSubAggregates(Session,int) org.h2.command.dml.Select+getGroupDataIfCurrent(boolean) org.h2.command.dml.Select+getGroupDataIfCurrent(boolean) org.h2.command.dml.SelectGroups+getCurrentGroupRowId() org.h2.command.dml.SelectGroups+getCurrentGroupRowId() org.h2.command.dml.Select+isGroupQuery() org.h2.command.dml.Select+isGroupQuery() org.h2.expression.aggregate.Window+updateAggregate(Session,int) org.h2.expression.aggregate.Window+updateAggregate(Session,int) org.h2.expression.Expression+getBooleanValue(Session) org.h2.expression.Expression+getBooleanValue(Session) org.h2.expression.aggregate.Window+getOrderBy() org.h2.expression.aggregate.Window+getOrderBy() org.h2.expression.aggregate.AbstractAggregate+isAggregate() org.h2.expression.aggregate.AbstractAggregate+isAggregate() org.h2.expression.aggregate.AbstractAggregate+updateOrderedAggregate(Session,SelectGroups,int,ArrayList<SelectOrderBy>) org.h2.expression.aggregate.AbstractAggregate+updateOrderedAggregate(Session,SelectGroups,int,ArrayList<SelectOrderBy>) org.h2.expression.aggregate.AbstractAggregate+updateAggregate(Session,Object) org.h2.expression.aggregate.AbstractAggregate+updateAggregate(Session,Object) org.h2.expression.aggregate.AbstractAggregate+getData(Session,SelectGroups,boolean,boolean) org.h2.expression.aggregate.AbstractAggregate+getData(Session,SelectGroups,boolean,boolean)",org.h2.expression.aggregate.Aggregate+STAGE_RESET org.h2.expression.aggregate.Aggregate+STAGE_RESET org.h2.expression.aggregate.AbstractAggregate+lastGroupRowId org.h2.expression.aggregate.Aggregate+STAGE_WINDOW org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+select org.h2.expression.aggregate.AbstractAggregate+select org.h2.expression.aggregate.AbstractAggregate+lastGroupRowId org.h2.expression.aggregate.AbstractAggregate+lastGroupRowId org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+select org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over,1686,50,1,,"@Override
+    public void updateAggregate(Session session, int stage) {
+        if (stage == Aggregate.STAGE_RESET) {
+            updateSubAggregates(session, Aggregate.STAGE_RESET);
+            lastGroupRowId = 0;
+            return;
+        }
+        boolean window = stage == Aggregate.STAGE_WINDOW;
+        if (window != (over != null)) {
+            if (!window && select.isWindowQuery()) {
+                updateSubAggregates(session, stage);
+            }
+            return;
+        }
+        // TODO aggregates: check nested MIN(MAX(ID)) and so on
+        // if (on != null) {
+        // on.updateAggregate();
+        // }
+        SelectGroups groupData = select.getGroupDataIfCurrent(window);
+        if (groupData == null) {
+            // this is a different level (the enclosing query)
+            return;
+        }
+
+        int groupRowId = groupData.getCurrentGroupRowId();
+        if (lastGroupRowId == groupRowId) {
+            // already visited
+            return;
+        }
+        lastGroupRowId = groupRowId;
+
+        if (over != null) {
+            if (!select.isGroupQuery()) {
+                over.updateAggregate(session, stage);
+            }
+        }
+        if (filterCondition != null) {
+            if (!filterCondition.getBooleanValue(session)) {
+                return;
+            }
+        }
+        if (over != null) {
+            ArrayList<SelectOrderBy> orderBy = over.getOrderBy();
+            if (orderBy != null || !isAggregate()) {
+                updateOrderedAggregate(session, groupData, groupRowId, orderBy);
+                return;
+            }
+        }
+        updateAggregate(session, getData(session, groupData, false, false));
+    }",True
+17,"updateSubAggregates(Session,int)",Method,"updateAggregate(Session,int) updateAggregate(Session,int)",,"org.h2.expression.aggregate.AbstractAggregate+updateGroupAggregates(Session,int) org.h2.expression.aggregate.AbstractAggregate+updateGroupAggregates(Session,int) org.h2.expression.Expression+updateAggregate(Session,int) org.h2.expression.Expression+updateAggregate(Session,int) org.h2.expression.aggregate.Window+updateAggregate(Session,int) org.h2.expression.aggregate.Window+updateAggregate(Session,int)",org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over,313,9,2,,"private void updateSubAggregates(Session session, int stage) {
+        updateGroupAggregates(session, stage);
+        if (filterCondition != null) {
+            filterCondition.updateAggregate(session, stage);
+        }
+        if (over != null) {
+            over.updateAggregate(session, stage);
+        }
+    }",False
+18,"updateAggregate(Session,Object)",Method,"updateAggregate(Session,int)",,,,250,9,1028,"/** 
+ * Updates an aggregate value.
+ * @param session the session
+ * @param aggregateData aggregate data
+ */
+","/**
+     * Updates an aggregate value.
+     *
+     * @param session
+     *            the session
+     * @param aggregateData
+     *            aggregate data
+     */
+    protected abstract void updateAggregate(Session session, Object aggregateData);",False
+19,"updateGroupAggregates(Session,int)",Method,"updateSubAggregates(Session,int)",,,,315,10,1028,"/** 
+ * Invoked when processing group stage of grouped window queries to update arguments of this aggregate.
+ * @param session the session
+ * @param stage select stage
+ */
+","/**
+     * Invoked when processing group stage of grouped window queries to update
+     * arguments of this aggregate.
+     *
+     * @param session
+     *            the session
+     * @param stage
+     *            select stage
+     */
+    protected abstract void updateGroupAggregates(Session session, int stage);",True
+20,getNumExpressions(),Method,"optimize(Session) updateOrderedAggregate(Session,SelectGroups,int,ArrayList<SelectOrderBy>) getOrderedResult(Session,SelectGroups,PartitionData,Object)",,,,184,6,1028,"/** 
+ * Returns the number of expressions, excluding FILTER and OVER clauses.
+ * @return the number of expressions
+ */
+","/**
+     * Returns the number of expressions, excluding FILTER and OVER clauses.
+     *
+     * @return the number of expressions
+     */
+    protected abstract int getNumExpressions();",True
+21,"rememberExpressions(Session,Value[])",Method,"updateOrderedAggregate(Session,SelectGroups,int,ArrayList<SelectOrderBy>)",,,,296,9,1028,"/** 
+ * Stores current values of expressions into the specified array.
+ * @param session the session
+ * @param array array to store values of expressions
+ */
+","/**
+     * Stores current values of expressions into the specified array.
+     *
+     * @param session
+     *            the session
+     * @param array
+     *            array to store values of expressions
+     */
+    protected abstract void rememberExpressions(Session session, Value[] array);",True
+22,"updateFromExpressions(Session,Object,Value[])",Method,"getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int)",,,,372,11,1028,"/** 
+ * Updates the provided aggregate data from the remembered expressions.
+ * @param session the session
+ * @param aggregateData aggregate data
+ * @param array values of expressions
+ */
+","/**
+     * Updates the provided aggregate data from the remembered expressions.
+     *
+     * @param session
+     *            the session
+     * @param aggregateData
+     *            aggregate data
+     * @param array
+     *            values of expressions
+     */
+    protected abstract void updateFromExpressions(Session session, Object aggregateData, Value[] array);",True
+23,"getData(Session,SelectGroups,boolean,boolean)",Method,"updateAggregate(Session,int) getValue(Session) updateOrderedAggregate(Session,SelectGroups,int,ArrayList<SelectOrderBy>)",,"org.h2.expression.aggregate.Window+getCurrentKey(Session) org.h2.expression.aggregate.Window+getCurrentKey(Session) org.h2.command.dml.SelectGroups+getWindowExprData(Expression) org.h2.command.dml.SelectGroups+getWindowExprData(Expression) org.h2.command.dml.SelectGroups+setWindowExprData(Expression,Object) org.h2.command.dml.SelectGroups+setWindowExprData(Expression,Object) org.h2.util.ValueHashMap+get(Value) org.h2.util.ValueHashMap+get(Value) org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.util.ValueHashMap+put(Value,V) org.h2.util.ValueHashMap+put(Value,V) org.h2.expression.aggregate.PartitionData+PartitionData(Object) org.h2.expression.aggregate.PartitionData+getData() org.h2.expression.aggregate.PartitionData+getData() org.h2.command.dml.SelectGroups+getWindowExprData(Expression) org.h2.command.dml.SelectGroups+getWindowExprData(Expression) org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.command.dml.SelectGroups+setWindowExprData(Expression,Object) org.h2.command.dml.SelectGroups+setWindowExprData(Expression,Object) org.h2.expression.aggregate.PartitionData+PartitionData(Object) org.h2.expression.aggregate.PartitionData+getData() org.h2.expression.aggregate.PartitionData+getData() org.h2.command.dml.SelectGroups+getCurrentGroupExprData(Expression) org.h2.command.dml.SelectGroups+getCurrentGroupExprData(Expression) org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.command.dml.SelectGroups+setCurrentGroupExprData(Expression,Object) org.h2.command.dml.SelectGroups+setCurrentGroupExprData(Expression,Object)",org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over,1991,48,4,,"protected Object getData(Session session, SelectGroups groupData, boolean ifExists, boolean forOrderBy) {
+        Object data;
+        if (over != null) {
+            ValueArray key = over.getCurrentKey(session);
+            if (key != null) {
+                @SuppressWarnings(""unchecked"")
+                ValueHashMap<Object> map = (ValueHashMap<Object>) groupData.getWindowExprData(this);
+                if (map == null) {
+                    if (ifExists) {
+                        return null;
+                    }
+                    map = new ValueHashMap<>();
+                    groupData.setWindowExprData(this, map);
+                }
+                PartitionData partition = (PartitionData) map.get(key);
+                if (partition == null) {
+                    if (ifExists) {
+                        return null;
+                    }
+                    data = forOrderBy ? new ArrayList<>() : createAggregateData();
+                    map.put(key, new PartitionData(data));
+                } else {
+                    data = partition.getData();
+                }
+            } else {
+                PartitionData partition = (PartitionData) groupData.getWindowExprData(this);
+                if (partition == null) {
+                    if (ifExists) {
+                        return null;
+                    }
+                    data = forOrderBy ? new ArrayList<>() : createAggregateData();
+                    groupData.setWindowExprData(this, new PartitionData(data));
+                } else {
+                    data = partition.getData();
+                }
+            }
+        } else {
+            data = groupData.getCurrentGroupExprData(this);
+            if (data == null) {
+                if (ifExists) {
+                    return null;
+                }
+                data = forOrderBy ? new ArrayList<>() : createAggregateData();
+                groupData.setCurrentGroupExprData(this, data);
+            }
+        }
+        return data;
+    }",True
+24,createAggregateData(),Method,"getData(Session,SelectGroups,boolean,boolean) getData(Session,SelectGroups,boolean,boolean) getData(Session,SelectGroups,boolean,boolean) getWindowResult(Session,SelectGroups) getWindowResult(Session,SelectGroups) getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int)",,,,48,1,1028,,protected abstract Object createAggregateData();,True
+25,isEverything(ExpressionVisitor),Method,,,org.h2.expression.ExpressionVisitor+getType() org.h2.expression.ExpressionVisitor+getType() org.h2.message.DbException+throwInternalError(String) org.h2.message.DbException+throwInternalError(String) org.h2.expression.ExpressionVisitor+getType() org.h2.expression.ExpressionVisitor+getType(),org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.ExpressionVisitor+QUERY_COMPARABLE org.h2.expression.ExpressionVisitor+OPTIMIZABLE_MIN_MAX_COUNT_ALL org.h2.expression.ExpressionVisitor+DETERMINISTIC org.h2.expression.ExpressionVisitor+INDEPENDENT org.h2.expression.ExpressionVisitor+EVALUATABLE org.h2.expression.ExpressionVisitor+READONLY org.h2.expression.ExpressionVisitor+NOT_FROM_RESOLVER org.h2.expression.ExpressionVisitor+GET_DEPENDENCIES org.h2.expression.ExpressionVisitor+SET_MAX_DATA_MODIFICATION_ID org.h2.expression.ExpressionVisitor+GET_COLUMNS1 org.h2.expression.ExpressionVisitor+GET_COLUMNS2,869,23,1,,"@Override
+    public boolean isEverything(ExpressionVisitor visitor) {
+        if (over == null) {
+            return true;
+        }
+        switch (visitor.getType()) {
+        case ExpressionVisitor.QUERY_COMPARABLE:
+        case ExpressionVisitor.OPTIMIZABLE_MIN_MAX_COUNT_ALL:
+        case ExpressionVisitor.DETERMINISTIC:
+        case ExpressionVisitor.INDEPENDENT:
+            return false;
+        case ExpressionVisitor.EVALUATABLE:
+        case ExpressionVisitor.READONLY:
+        case ExpressionVisitor.NOT_FROM_RESOLVER:
+        case ExpressionVisitor.GET_DEPENDENCIES:
+        case ExpressionVisitor.SET_MAX_DATA_MODIFICATION_ID:
+        case ExpressionVisitor.GET_COLUMNS1:
+        case ExpressionVisitor.GET_COLUMNS2:
+            return true;
+        default:
+            throw DbException.throwInternalError(""type="" + visitor.getType());
+        }
+    }",True
+26,getValue(Session),Method,,,"org.h2.command.dml.Select+getGroupDataIfCurrent(boolean) org.h2.command.dml.Select+getGroupDataIfCurrent(boolean) org.h2.message.DbException+get(int,String) org.h2.message.DbException+get(int,String) org.h2.expression.Expression+getSQL() org.h2.expression.Expression+getSQL() org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object) org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object) org.h2.expression.aggregate.AbstractAggregate+getData(Session,SelectGroups,boolean,boolean) org.h2.expression.aggregate.AbstractAggregate+getData(Session,SelectGroups,boolean,boolean) org.h2.expression.aggregate.AbstractAggregate+getWindowResult(Session,SelectGroups) org.h2.expression.aggregate.AbstractAggregate+getWindowResult(Session,SelectGroups)",org.h2.expression.aggregate.AbstractAggregate+select org.h2.expression.aggregate.AbstractAggregate+over org.h2.api.ErrorCode+INVALID_USE_OF_AGGREGATE_FUNCTION_1 org.h2.expression.aggregate.AbstractAggregate+over,427,9,1,,"@Override
+    public Value getValue(Session session) {
+        SelectGroups groupData = select.getGroupDataIfCurrent(over != null);
+        if (groupData == null) {
+            throw DbException.get(ErrorCode.INVALID_USE_OF_AGGREGATE_FUNCTION_1, getSQL());
+        }
+        return over == null ? getAggregatedValue(session, getData(session, groupData, true, false))
+                : getWindowResult(session, groupData);
+    }",True
+27,"getWindowResult(Session,SelectGroups)",Method,getValue(Session),,"org.h2.expression.aggregate.Window+getOrderBy() org.h2.expression.aggregate.Window+getOrderBy() org.h2.expression.aggregate.Window+getCurrentKey(Session) org.h2.expression.aggregate.Window+getCurrentKey(Session) org.h2.command.dml.SelectGroups+getWindowExprData(Expression) org.h2.command.dml.SelectGroups+getWindowExprData(Expression) org.h2.command.dml.SelectGroups+setWindowExprData(Expression,Object) org.h2.command.dml.SelectGroups+setWindowExprData(Expression,Object) org.h2.util.ValueHashMap+get(Value) org.h2.util.ValueHashMap+get(Value) org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.PartitionData+PartitionData(Object) org.h2.util.ValueHashMap+put(Value,V) org.h2.util.ValueHashMap+put(Value,V) org.h2.expression.aggregate.PartitionData+getData() org.h2.expression.aggregate.PartitionData+getData() org.h2.command.dml.SelectGroups+getWindowExprData(Expression) org.h2.command.dml.SelectGroups+getWindowExprData(Expression) org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.PartitionData+PartitionData(Object) org.h2.command.dml.SelectGroups+setWindowExprData(Expression,Object) org.h2.command.dml.SelectGroups+setWindowExprData(Expression,Object) org.h2.expression.aggregate.PartitionData+getData() org.h2.expression.aggregate.PartitionData+getData() org.h2.expression.aggregate.Window+getOrderBy() org.h2.expression.aggregate.Window+getOrderBy() org.h2.expression.aggregate.AbstractAggregate+isAggregate() org.h2.expression.aggregate.AbstractAggregate+isAggregate() org.h2.expression.aggregate.AbstractAggregate+getOrderedResult(Session,SelectGroups,PartitionData,Object) org.h2.expression.aggregate.AbstractAggregate+getOrderedResult(Session,SelectGroups,PartitionData,Object) org.h2.expression.aggregate.PartitionData+getResult() org.h2.expression.aggregate.PartitionData+getResult() org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object) org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object) org.h2.expression.aggregate.PartitionData+setResult(Value) org.h2.expression.aggregate.PartitionData+setResult(Value)",org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over,1658,40,2,,"private Value getWindowResult(Session session, SelectGroups groupData) {
+        PartitionData partition;
+        Object data;
+        boolean forOrderBy = over.getOrderBy() != null;
+        ValueArray key = over.getCurrentKey(session);
+        if (key != null) {
+            @SuppressWarnings(""unchecked"")
+            ValueHashMap<Object> map = (ValueHashMap<Object>) groupData.getWindowExprData(this);
+            if (map == null) {
+                map = new ValueHashMap<>();
+                groupData.setWindowExprData(this, map);
+            }
+            partition = (PartitionData) map.get(key);
+            if (partition == null) {
+                data = forOrderBy ? new ArrayList<>() : createAggregateData();
+                partition = new PartitionData(data);
+                map.put(key, partition);
+            } else {
+                data = partition.getData();
+            }
+        } else {
+            partition = (PartitionData) groupData.getWindowExprData(this);
+            if (partition == null) {
+                data = forOrderBy ? new ArrayList<>() : createAggregateData();
+                partition = new PartitionData(data);
+                groupData.setWindowExprData(this, partition);
+            } else {
+                data = partition.getData();
+            }
+        }
+        if (over.getOrderBy() != null || !isAggregate()) {
+            return getOrderedResult(session, groupData, partition, data);
+        }
+        Value result = partition.getResult();
+        if (result == null) {
+            result = getAggregatedValue(session, data);
+            partition.setResult(result);
+        }
+        return result;
+    }",True
+28,"getAggregatedValue(Session,Object)",Method,"getValue(Session) getWindowResult(Session,SelectGroups) getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int)",,,,290,10,1028,"/** 
+ * Returns aggregated value.
+ * @param session the session
+ * @param aggregateData the aggregate data
+ * @return aggregated value.
+ */
+","/***
+     * Returns aggregated value.
+     *
+     * @param session
+     *            the session
+     * @param aggregateData
+     *            the aggregate data
+     * @return aggregated value.
+     */
+    protected abstract Value getAggregatedValue(Session session, Object aggregateData);",True
+29,"updateOrderedAggregate(Session,SelectGroups,int,ArrayList<SelectOrderBy>)",Method,"updateAggregate(Session,int)",,"org.h2.expression.aggregate.AbstractAggregate+getNumExpressions() org.h2.expression.aggregate.AbstractAggregate+getNumExpressions() java.util.ArrayList+size() java.util.ArrayList+size() org.h2.expression.aggregate.AbstractAggregate+rememberExpressions(Session,Value[]) org.h2.expression.aggregate.AbstractAggregate+rememberExpressions(Session,Value[]) java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.expression.Expression+getValue(Session) org.h2.expression.Expression+getValue(Session) org.h2.value.ValueInt+get(int) org.h2.value.ValueInt+get(int) org.h2.expression.aggregate.AbstractAggregate+getData(Session,SelectGroups,boolean,boolean) org.h2.expression.aggregate.AbstractAggregate+getData(Session,SelectGroups,boolean,boolean) java.util.ArrayList+add(E) java.util.ArrayList+add(E)",org.h2.command.dml.SelectOrderBy+expression,736,16,2,,"private void updateOrderedAggregate(Session session, SelectGroups groupData, int groupRowId,
+            ArrayList<SelectOrderBy> orderBy) {
+        int ne = getNumExpressions();
+        int size = orderBy != null ? orderBy.size() : 0;
+        Value[] array = new Value[ne + size + 1];
+        rememberExpressions(session, array);
+        for (int i = 0; i < size; i++) {
+            @SuppressWarnings(""null"")
+            SelectOrderBy o = orderBy.get(i);
+            array[ne++] = o.expression.getValue(session);
+        }
+        array[ne] = ValueInt.get(groupRowId);
+        @SuppressWarnings(""unchecked"")
+        ArrayList<Value[]> data = (ArrayList<Value[]>) getData(session, groupData, false, true);
+        data.add(array);
+    }",True
+30,"getOrderedResult(Session,SelectGroups,PartitionData,Object)",Method,"getWindowResult(Session,SelectGroups)",,"org.h2.expression.aggregate.PartitionData+getOrderedResult() org.h2.expression.aggregate.PartitionData+getOrderedResult() org.h2.expression.aggregate.AbstractAggregate+getNumExpressions() org.h2.expression.aggregate.AbstractAggregate+getNumExpressions() org.h2.expression.aggregate.Window+getOrderBy() org.h2.expression.aggregate.Window+getOrderBy() java.util.ArrayList+size() java.util.ArrayList+size() java.util.Collections+sort(List,Comparator) java.util.Collections+sort(List,Comparator) org.h2.expression.aggregate.AbstractAggregate+getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) org.h2.expression.aggregate.AbstractAggregate+getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int) org.h2.expression.aggregate.PartitionData+setOrderedResult(HashMap<Integer,Value>) org.h2.expression.aggregate.PartitionData+setOrderedResult(HashMap<Integer,Value>) java.util.HashMap+get(Object) java.util.HashMap+get(Object) org.h2.command.dml.SelectGroups+getCurrentGroupRowId() org.h2.command.dml.SelectGroups+getCurrentGroupRowId()",org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+overOrderBySort,844,17,2,,"private Value getOrderedResult(Session session, SelectGroups groupData, PartitionData partition, Object data) {
+        HashMap<Integer, Value> result = partition.getOrderedResult();
+        if (result == null) {
+            result = new HashMap<>();
+            @SuppressWarnings(""unchecked"")
+            ArrayList<Value[]> orderedData = (ArrayList<Value[]>) data;
+            int rowIdColumn = getNumExpressions();
+            ArrayList<SelectOrderBy> orderBy = over.getOrderBy();
+            if (orderBy != null) {
+                rowIdColumn += orderBy.size();
+                Collections.sort(orderedData, overOrderBySort);
+            }
+            getOrderedResultLoop(session, result, orderedData, rowIdColumn);
+            partition.setOrderedResult(result);
+        }
+        return result.get(groupData.getCurrentGroupRowId());
+    }",True
+31,"getOrderedResultLoop(Session,HashMap<Integer,Value>,ArrayList<Value[]>,int)",Method,"getOrderedResult(Session,SelectGroups,PartitionData,Object)",,"org.h2.expression.aggregate.Window+getWindowFrame() org.h2.expression.aggregate.Window+getWindowFrame() org.h2.expression.aggregate.WindowFrame+isDefault() org.h2.expression.aggregate.WindowFrame+isDefault() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+updateFromExpressions(Session,Object,Value[]) org.h2.expression.aggregate.AbstractAggregate+updateFromExpressions(Session,Object,Value[]) java.util.HashMap+put(K,V) java.util.HashMap+put(K,V) org.h2.value.Value+getInt() org.h2.value.Value+getInt() org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object) org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object) org.h2.expression.aggregate.WindowFrame+isFullPartition() org.h2.expression.aggregate.WindowFrame+isFullPartition() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+updateFromExpressions(Session,Object,Value[]) org.h2.expression.aggregate.AbstractAggregate+updateFromExpressions(Session,Object,Value[]) org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object) org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object) java.util.HashMap+put(K,V) java.util.HashMap+put(K,V) org.h2.value.Value+getInt() org.h2.value.Value+getInt() java.util.ArrayList+size() java.util.ArrayList+size() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.AbstractAggregate+createAggregateData() org.h2.expression.aggregate.WindowFrame+iterator(Session,ArrayList<Value[]>,SortOrder,int,boolean) org.h2.expression.aggregate.WindowFrame+iterator(Session,ArrayList<Value[]>,SortOrder,int,boolean) org.h2.expression.aggregate.AbstractAggregate+getOverOrderBySort() org.h2.expression.aggregate.AbstractAggregate+getOverOrderBySort() java.util.Iterator+hasNext() java.util.Iterator+hasNext() org.h2.expression.aggregate.AbstractAggregate+updateFromExpressions(Session,Object,Value[]) org.h2.expression.aggregate.AbstractAggregate+updateFromExpressions(Session,Object,Value[]) java.util.Iterator+next() java.util.Iterator+next() java.util.HashMap+put(K,V) java.util.HashMap+put(K,V) org.h2.value.Value+getInt() java.util.ArrayList+get(int) java.util.ArrayList+get(int) org.h2.value.Value+getInt() org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object) org.h2.expression.aggregate.AbstractAggregate+getAggregatedValue(Session,Object)",org.h2.expression.aggregate.AbstractAggregate+over,1756,40,4,"/** 
+ * @param session the session
+ * @param result the map to append result to
+ * @param ordered ordered data
+ * @param rowIdColumn the index of row id value
+ */
+","/**
+     * @param session
+     *            the session
+     * @param result
+     *            the map to append result to
+     * @param ordered
+     *            ordered data
+     * @param rowIdColumn
+     *            the index of row id value
+     */
+    protected void getOrderedResultLoop(Session session, HashMap<Integer, Value> result, ArrayList<Value[]> ordered,
+            int rowIdColumn) {
+        WindowFrame frame = over.getWindowFrame();
+        if (frame == null || frame.isDefault()) {
+            Object aggregateData = createAggregateData();
+            for (Value[] row : ordered) {
+                updateFromExpressions(session, aggregateData, row);
+                result.put(row[rowIdColumn].getInt(), getAggregatedValue(session, aggregateData));
+            }
+        } else if (frame.isFullPartition()) {
+            Object aggregateData = createAggregateData();
+            for (Value[] row : ordered) {
+                updateFromExpressions(session, aggregateData, row);
+            }
+            Value value = getAggregatedValue(session, aggregateData);
+            for (Value[] row : ordered) {
+                result.put(row[rowIdColumn].getInt(), value);
+            }
+        } else {
+            int size = ordered.size();
+            for (int i = 0; i < size; i++) {
+                Object aggregateData = createAggregateData();
+                for (Iterator<Value[]> iter = frame.iterator(session, ordered, getOverOrderBySort(), i, false); iter
+                        .hasNext();) {
+                    updateFromExpressions(session, aggregateData, iter.next());
+                }
+                result.put(ordered.get(i)[rowIdColumn].getInt(), getAggregatedValue(session, aggregateData));
+            }
+        }
+    }",True
+32,appendTailConditions(StringBuilder),Method,,org.h2.expression.aggregate.Aggregate+getSQLGroupConcat() org.h2.expression.aggregate.Aggregate+getSQLArrayAggregate() org.h2.expression.aggregate.Aggregate+getSQL() org.h2.expression.aggregate.Aggregate+getSQL() org.h2.expression.aggregate.JavaAggregate+getSQL() org.h2.expression.aggregate.WindowFunction+getSQL(),java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) org.h2.expression.Expression+getSQL() org.h2.expression.Expression+getSQL() java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(char) java.lang.StringBuilder+append(String) org.h2.expression.aggregate.Window+getSQL() org.h2.expression.aggregate.Window+getSQL(),org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+filterCondition org.h2.expression.aggregate.AbstractAggregate+over org.h2.expression.aggregate.AbstractAggregate+over,333,9,4,,"protected StringBuilder appendTailConditions(StringBuilder builder) {
+        if (filterCondition != null) {
+            builder.append("" FILTER (WHERE "").append(filterCondition.getSQL()).append(')');
+        }
+        if (over != null) {
+            builder.append(' ').append(over.getSQL());
+        }
+        return builder;
+    }",False

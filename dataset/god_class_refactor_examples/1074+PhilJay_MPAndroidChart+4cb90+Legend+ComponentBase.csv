@@ -1,0 +1,714 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,LegendPosition,Field,,,,,26,1,1,,public enum LegendPosition,False
+2,LegendForm,Field,,,,,22,1,1,,public enum LegendForm,False
+3,mEnabled,Field,,,,,96,2,2,"/** 
+ * flag indicating if the legend should be drawn or not 
+ */
+","/** flag indicating if the legend should be drawn or not */
+    private boolean mEnabled = true;",False
+4,mColors,Field,"Legend(int[],String[]) Legend(ArrayList<Integer>,ArrayList<String>)",,,,51,2,2,"/** 
+ * the legend colors 
+ */
+","/** the legend colors */
+    private int[] mColors;",False
+5,mLabels,Field,"Legend(int[],String[]) Legend(ArrayList<Integer>,ArrayList<String>) setLegendLabels(String[])",,,,54,2,2,"/** 
+ * the legend labels 
+ */
+","/** the legend labels */
+    private String[] mLabels;",False
+6,mPosition,Field,,,,,136,2,2,"/** 
+ * the position relative to the chart the legend is drawn on 
+ */
+","/** the position relative to the chart the legend is drawn on */
+    private LegendPosition mPosition = LegendPosition.BELOW_CHART_LEFT;",False
+7,mShape,Field,,,,,103,2,2,"/** 
+ * the shape/form the legend colors are drawn in 
+ */
+","/** the shape/form the legend colors are drawn in */
+    private LegendForm mShape = LegendForm.SQUARE;",False
+8,mTypeface,Field,,,,,85,2,2,"/** 
+ * the typeface used for the legend labels 
+ */
+","/** the typeface used for the legend labels */
+    private Typeface mTypeface = null;",True
+9,mTextSize,Field,,,,,76,2,2,"/** 
+ * the text size of the legend labels 
+ */
+","/** the text size of the legend labels */
+    private float mTextSize = 10f;",True
+10,mTextColor,Field,,,,,70,2,2,"/** 
+ * the text color to use 
+ */
+","/** the text color to use */
+    private int mTextColor = Color.BLACK;",True
+11,mFormSize,Field,,,,,76,2,2,"/** 
+ * the size of the legend forms/shapes 
+ */
+","/** the size of the legend forms/shapes */
+    private float mFormSize = 8f;",False
+12,mXEntrySpace,Field,,,,,125,4,2,"/** 
+ * the space between the legend entries on a horizontal axis, default 6f
+ */
+","/**
+     * the space between the legend entries on a horizontal axis, default 6f
+     */
+    private float mXEntrySpace = 6f;",False
+13,mYEntrySpace,Field,,,,,123,4,2,"/** 
+ * the space between the legend entries on a vertical axis, default 5f
+ */
+","/**
+     * the space between the legend entries on a vertical axis, default 5f
+     */
+    private float mYEntrySpace = 5f;",False
+14,mFormToTextSpace,Field,setFormToTextSpace(float),,,,231,6,2,"/** 
+ * the space between the legend entries on a vertical axis, default 2f private float mYEntrySpace = 2f; /** the space between the form and the actual label/text
+ */
+","/**
+     * the space between the legend entries on a vertical axis, default 2f
+     * private float mYEntrySpace = 2f; /** the space between the form and the
+     * actual label/text
+     */
+    private float mFormToTextSpace = 5f;",False
+15,mStackSpace,Field,,,,,94,2,2,"/** 
+ * the space that should be left between stacked forms 
+ */
+","/** the space that should be left between stacked forms */
+    private float mStackSpace = 3f;",False
+16,mXOffset,Field,Legend(),,,,98,2,4,"/** 
+ * the offset in pixels this axis labels have on the x-axis 
+ */
+","/** the offset in pixels this axis labels have on the x-axis */
+    protected float mXOffset = 5f;",True
+17,mYOffset,Field,Legend(),,,,98,2,4,"/** 
+ * the offset in pixels this axis labels have on the Y-axis 
+ */
+","/** the offset in pixels this axis labels have on the Y-axis */
+    protected float mYOffset = 6f;",True
+18,Legend(),Method,,,com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.Legend+mFormSize com.github.mikephil.charting.components.Legend+mXEntrySpace com.github.mikephil.charting.components.Legend+mYEntrySpace com.github.mikephil.charting.components.Legend+mFormToTextSpace com.github.mikephil.charting.components.Legend+mTextSize com.github.mikephil.charting.components.Legend+mStackSpace com.github.mikephil.charting.components.Legend+mXOffset com.github.mikephil.charting.components.Legend+mXOffset com.github.mikephil.charting.components.Legend+mYOffset com.github.mikephil.charting.components.Legend+mYOffset,463,12,1,"/** 
+ * default constructor 
+ */
+","/** default constructor */
+    public Legend() {
+
+        mFormSize = Utils.convertDpToPixel(8f);
+        mXEntrySpace = Utils.convertDpToPixel(6f);
+        mYEntrySpace = Utils.convertDpToPixel(5f);
+        mFormToTextSpace = Utils.convertDpToPixel(5f);
+        mTextSize = Utils.convertDpToPixel(10f);
+        mStackSpace = Utils.convertDpToPixel(3f);
+        this.mXOffset = Utils.convertDpToPixel(5f);
+        this.mYOffset = Utils.convertDpToPixel(6f);
+    }",False
+19,"Legend(int[],String[])",Method,,,java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.IllegalArgumentException+IllegalArgumentException(String),com.github.mikephil.charting.components.Legend+mColors com.github.mikephil.charting.components.Legend+mColors com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels,589,21,1,"/** 
+ * Constructor. Provide colors and labels for the legend.
+ * @param colors
+ * @param labels
+ */
+","/**
+     * Constructor. Provide colors and labels for the legend.
+     * 
+     * @param colors
+     * @param labels
+     */
+    public Legend(int[] colors, String[] labels) {
+        this();
+
+        if (colors == null || labels == null) {
+            throw new IllegalArgumentException(""colors array or labels array is NULL"");
+        }
+
+        if (colors.length != labels.length) {
+            throw new IllegalArgumentException(
+                    ""colors array and labels array need to be of same size"");
+        }
+
+        this.mColors = colors;
+        this.mLabels = labels;
+    }",False
+20,"Legend(ArrayList<Integer>,ArrayList<String>)",Method,,,java.lang.IllegalArgumentException+IllegalArgumentException(String) java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+size() java.lang.IllegalArgumentException+IllegalArgumentException(String) com.github.mikephil.charting.utils.Utils+convertIntegers(ArrayList<Integer>) com.github.mikephil.charting.utils.Utils+convertIntegers(ArrayList<Integer>) com.github.mikephil.charting.utils.Utils+convertStrings(ArrayList<String>) com.github.mikephil.charting.utils.Utils+convertStrings(ArrayList<String>),com.github.mikephil.charting.components.Legend+mColors com.github.mikephil.charting.components.Legend+mColors com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels,656,21,1,"/** 
+ * Constructor. Provide colors and labels for the legend.
+ * @param colors
+ * @param labels
+ */
+","/**
+     * Constructor. Provide colors and labels for the legend.
+     * 
+     * @param colors
+     * @param labels
+     */
+    public Legend(ArrayList<Integer> colors, ArrayList<String> labels) {
+        this();
+
+        if (colors == null || labels == null) {
+            throw new IllegalArgumentException(""colors array or labels array is NULL"");
+        }
+
+        if (colors.size() != labels.size()) {
+            throw new IllegalArgumentException(
+                    ""colors array and labels array need to be of same size"");
+        }
+
+        this.mColors = Utils.convertIntegers(colors);
+        this.mLabels = Utils.convertStrings(labels);
+    }",False
+21,getMaximumEntryWidth(Paint),Method,calculateDimensions(Paint) calculateDimensions(Paint),,"com.github.mikephil.charting.utils.Utils+calcTextWidth(Paint,String) com.github.mikephil.charting.utils.Utils+calcTextWidth(Paint,String)",com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mFormSize com.github.mikephil.charting.components.Legend+mFormToTextSpace,592,24,1,"/** 
+ * returns the maximum length in pixels across all legend labels + formsize + formtotextspace
+ * @param p the paint object used for rendering the text
+ * @return
+ */
+","/**
+     * returns the maximum length in pixels across all legend labels + formsize
+     * + formtotextspace
+     * 
+     * @param p the paint object used for rendering the text
+     * @return
+     */
+    public float getMaximumEntryWidth(Paint p) {
+
+        float max = 0f;
+
+        for (int i = 0; i < mLabels.length; i++) {
+
+            if (mLabels[i] != null) {
+
+                float length = (float) Utils.calcTextWidth(p, mLabels[i]);
+
+                if (length > max)
+                    max = length;
+            }
+        }
+
+        return max + mFormSize + mFormToTextSpace;
+    }",False
+22,getMaximumEntryHeight(Paint),Method,calculateDimensions(Paint) calculateDimensions(Paint),,"com.github.mikephil.charting.utils.Utils+calcTextHeight(Paint,String) com.github.mikephil.charting.utils.Utils+calcTextHeight(Paint,String)",com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels,527,23,1,"/** 
+ * returns the maximum height in pixels across all legend labels
+ * @param p the paint object used for rendering the text
+ * @return
+ */
+","/**
+     * returns the maximum height in pixels across all legend labels
+     * 
+     * @param p the paint object used for rendering the text
+     * @return
+     */
+    public float getMaximumEntryHeight(Paint p) {
+
+        float max = 0f;
+
+        for (int i = 0; i < mLabels.length; i++) {
+
+            if (mLabels[i] != null) {
+
+                float length = (float) Utils.calcTextHeight(p, mLabels[i]);
+
+                if (length > max)
+                    max = length;
+            }
+        }
+
+        return max;
+    }",False
+23,getColors(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+drawForm(Canvas,float,float,int,Legend) com.github.mikephil.charting.renderer.LegendRenderer+drawForm(Canvas,float,float,int,Legend)",,com.github.mikephil.charting.components.Legend+mColors,141,8,1,"/** 
+ * returns all the colors the legend uses
+ * @return
+ */
+","/**
+     * returns all the colors the legend uses
+     * 
+     * @return
+     */
+    public int[] getColors() {
+        return mColors;
+    }",False
+24,getLegendLabels(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mLabels,150,8,1,"/** 
+ * returns all the labels the legend uses
+ * @return
+ */
+","/**
+     * returns all the labels the legend uses
+     * 
+     * @return
+     */
+    public String[] getLegendLabels() {
+        return mLabels;
+    }",False
+25,setLegendLabels(String[]),Method,,,java.lang.IllegalArgumentException+IllegalArgumentException(String),com.github.mikephil.charting.components.Legend+mColors com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels,441,15,1,"/** 
+ * Sets a custom array of labels for the legend. Make sure the labels array has the same length as the colors array.
+ * @param labels
+ */
+","/**
+     * Sets a custom array of labels for the legend. Make sure the labels array
+     * has the same length as the colors array.
+     * 
+     * @param labels
+     */
+    public void setLegendLabels(String[] labels) {
+
+        if (mColors.length != labels.length) {
+            throw new IllegalArgumentException(
+                    ""colors array and labels array need to be of same size"");
+        }
+
+        this.mLabels = labels;
+    }",False
+26,getLabel(int),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mLabels,183,9,1,"/** 
+ * Returns the legend-label at the given index.
+ * @param index
+ * @return
+ */
+","/**
+     * Returns the legend-label at the given index.
+     * 
+     * @param index
+     * @return
+     */
+    public String getLabel(int index) {
+        return mLabels[index];
+    }",False
+27,getPosition(),Method,,"com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.charts.PieRadarChartBase+calculateOffsets() com.github.mikephil.charting.charts.PieRadarChartBase+calculateOffsets() com.github.mikephil.charting.charts.PieRadarChartBase+calculateOffsets() com.github.mikephil.charting.charts.PieRadarChartBase+calculateOffsets() com.github.mikephil.charting.charts.PieRadarChartBase+calculateOffsets() com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mPosition,172,8,1,"/** 
+ * returns the position of the legend relative to the chart
+ * @return
+ */
+","/**
+     * returns the position of the legend relative to the chart
+     * 
+     * @return
+     */
+    public LegendPosition getPosition() {
+        return mPosition;
+    }",False
+28,setPosition(LegendPosition),Method,,"com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.fragments.PieChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.listviewitems.PieChartItem+getView(int,View,Context) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.PieChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.ScatterChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.StackedBarActivity+onCreate(Bundle)",,com.github.mikephil.charting.components.Legend+mPosition,185,8,1,"/** 
+ * sets the position of the legend relative to the whole chart
+ * @param pos
+ */
+","/**
+     * sets the position of the legend relative to the whole chart
+     * 
+     * @param pos
+     */
+    public void setPosition(LegendPosition pos) {
+        mPosition = pos;
+    }",False
+29,getForm(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+drawForm(Canvas,float,float,int,Legend)",,com.github.mikephil.charting.components.Legend+mShape,162,8,1,"/** 
+ * returns the current form/shape that is set for the legend
+ * @return
+ */
+","/**
+     * returns the current form/shape that is set for the legend
+     * 
+     * @return
+     */
+    public LegendForm getForm() {
+        return mShape;
+    }",False
+30,setForm(LegendForm),Method,,"com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity1+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle)",,com.github.mikephil.charting.components.Legend+mShape,160,8,1,"/** 
+ * sets the form/shape of the legend forms
+ * @param shape
+ */
+","/**
+     * sets the form/shape of the legend forms
+     * 
+     * @param shape
+     */
+    public void setForm(LegendForm shape) {
+        mShape = shape;
+    }",False
+31,getTypeface(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+computeLegend(ChartData<?>,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mTypeface,193,9,1,"/** 
+ * returns the typeface used for the legend labels, returns null if none is set
+ * @return
+ */
+","/**
+     * returns the typeface used for the legend labels, returns null if none is
+     * set
+     * 
+     * @return
+     */
+    public Typeface getTypeface() {
+        return mTypeface;
+    }",True
+32,setTypeface(Typeface),Method,,"com.xxmassdeveloper.mpchartexample.BarChartActivityMultiDataset+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.fragments.BarChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.ComplexityFragment+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.ScatterChartFrag+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.fragments.SineCosineFragment+onCreateView(LayoutInflater,ViewGroup,Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.ScatterChartActivity+onCreate(Bundle)",,com.github.mikephil.charting.components.Legend+mTypeface,163,8,1,"/** 
+ * sets a specific typeface for the legend labels
+ * @param tf
+ */
+","/**
+     * sets a specific typeface for the legend labels
+     * 
+     * @param tf
+     */
+    public void setTypeface(Typeface tf) {
+        mTypeface = tf;
+    }",True
+33,setFormSize(float),Method,,"com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.StackedBarActivity+onCreate(Bundle)",com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.Legend+mFormSize,242,9,1,"/** 
+ * sets the size in pixels of the legend forms, this is internally converted in dp, default 8f
+ * @param size
+ */
+","/**
+     * sets the size in pixels of the legend forms, this is internally converted
+     * in dp, default 8f
+     * 
+     * @param size
+     */
+    public void setFormSize(float size) {
+        mFormSize = Utils.convertDpToPixel(size);
+    }",False
+34,getFormSize(),Method,,"com.github.mikephil.charting.charts.PieRadarChartBase+getFullLegendWidth() com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+drawForm(Canvas,float,float,int,Legend)",,com.github.mikephil.charting.components.Legend+mFormSize,149,8,1,"/** 
+ * returns the size in dp of the legend forms
+ * @return
+ */
+","/**
+     * returns the size in dp of the legend forms
+     * 
+     * @return
+     */
+    public float getFormSize() {
+        return mFormSize;
+    }",False
+35,getXEntrySpace(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mXEntrySpace,195,9,1,"/** 
+ * returns the space between the legend entries on a horizontal axis in pixels
+ * @return
+ */
+","/**
+     * returns the space between the legend entries on a horizontal axis in
+     * pixels
+     * 
+     * @return
+     */
+    public float getXEntrySpace() {
+        return mXEntrySpace;
+    }",False
+36,setXEntrySpace(float),Method,,com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.HorizontalBarChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.PieChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.StackedBarActivity+onCreate(Bundle),com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.Legend+mXEntrySpace,259,9,1,"/** 
+ * sets the space between the legend entries on a horizontal axis in pixels, converts to dp internally
+ * @param space
+ */
+","/**
+     * sets the space between the legend entries on a horizontal axis in pixels,
+     * converts to dp internally
+     * 
+     * @param space
+     */
+    public void setXEntrySpace(float space) {
+        mXEntrySpace = Utils.convertDpToPixel(space);
+    }",False
+37,getYEntrySpace(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mYEntrySpace,186,8,1,"/** 
+ * returns the space between the legend entries on a vertical axis in pixels
+ * @return
+ */
+","/**
+     * returns the space between the legend entries on a vertical axis in pixels
+     * 
+     * @return
+     */
+    public float getYEntrySpace() {
+        return mYEntrySpace;
+    }",False
+38,setYEntrySpace(float),Method,,com.xxmassdeveloper.mpchartexample.PieChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.RadarChartActivitry+onCreate(Bundle),com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.Legend+mYEntrySpace,257,9,1,"/** 
+ * sets the space between the legend entries on a vertical axis in pixels, converts to dp internally
+ * @param space
+ */
+","/**
+     * sets the space between the legend entries on a vertical axis in pixels,
+     * converts to dp internally
+     * 
+     * @param space
+     */
+    public void setYEntrySpace(float space) {
+        mYEntrySpace = Utils.convertDpToPixel(space);
+    }",False
+39,getFormToTextSpace(),Method,,"com.github.mikephil.charting.charts.PieRadarChartBase+getFullLegendWidth() com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mFormToTextSpace,181,8,1,"/** 
+ * returns the space between the form and the actual label/text
+ * @return
+ */
+","/**
+     * returns the space between the form and the actual label/text
+     * 
+     * @return
+     */
+    public float getFormToTextSpace() {
+        return mFormToTextSpace;
+    }",False
+40,setFormToTextSpace(float),Method,,com.xxmassdeveloper.mpchartexample.StackedBarActivity+onCreate(Bundle),com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.Legend+mFormToTextSpace com.github.mikephil.charting.components.Legend+mFormToTextSpace,268,9,1,"/** 
+ * sets the space between the form and the actual label/text, converts to dp internally
+ * @param mFormToTextSpace
+ */
+","/**
+     * sets the space between the form and the actual label/text, converts to dp
+     * internally
+     * 
+     * @param mFormToTextSpace
+     */
+    public void setFormToTextSpace(float space) {
+        this.mFormToTextSpace = Utils.convertDpToPixel(space);
+    }",False
+41,apply(Legend),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+computeLegend(ChartData<?>,Legend)",,com.github.mikephil.charting.components.Legend+mPosition com.github.mikephil.charting.components.Legend+mPosition com.github.mikephil.charting.components.Legend+mShape com.github.mikephil.charting.components.Legend+mShape com.github.mikephil.charting.components.Legend+mTypeface com.github.mikephil.charting.components.Legend+mTypeface com.github.mikephil.charting.components.Legend+mFormSize com.github.mikephil.charting.components.Legend+mFormSize com.github.mikephil.charting.components.Legend+mXEntrySpace com.github.mikephil.charting.components.Legend+mXEntrySpace com.github.mikephil.charting.components.Legend+mYEntrySpace com.github.mikephil.charting.components.Legend+mYEntrySpace com.github.mikephil.charting.components.Legend+mFormToTextSpace com.github.mikephil.charting.components.Legend+mFormToTextSpace com.github.mikephil.charting.components.Legend+mTextSize com.github.mikephil.charting.components.Legend+mTextSize com.github.mikephil.charting.components.Legend+mStackSpace com.github.mikephil.charting.components.Legend+mStackSpace com.github.mikephil.charting.components.Legend+mTextColor com.github.mikephil.charting.components.Legend+mTextColor com.github.mikephil.charting.components.Legend+mEnabled com.github.mikephil.charting.components.Legend+mEnabled com.github.mikephil.charting.components.Legend+mXOffset com.github.mikephil.charting.components.Legend+mXOffset com.github.mikephil.charting.components.Legend+mYOffset com.github.mikephil.charting.components.Legend+mYOffset,641,22,1,"/** 
+ * applies the state from the legend in the parameter to this legend (except colors, labels and offsets)
+ * @param l
+ */
+","/**
+     * applies the state from the legend in the parameter to this legend (except
+     * colors, labels and offsets)
+     * 
+     * @param l
+     */
+    public void apply(Legend l) {
+
+        mPosition = l.mPosition;
+        mShape = l.mShape;
+        mTypeface = l.mTypeface;
+        mFormSize = l.mFormSize;
+        mXEntrySpace = l.mXEntrySpace;
+        mYEntrySpace = l.mYEntrySpace;
+        mFormToTextSpace = l.mFormToTextSpace;
+        mTextSize = l.mTextSize;
+        mStackSpace = l.mStackSpace;
+        mTextColor = l.mTextColor;
+        mEnabled = l.mEnabled;
+        mXOffset = l.mXOffset;
+        mYOffset = l.mYOffset;
+    }",False
+42,setTextSize(float),Method,,com.xxmassdeveloper.mpchartexample.BarChartActivity+onCreate(Bundle),com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.Legend+mTextSize,195,8,1,"/** 
+ * sets the text size of the legend labels, default 9f
+ * @param size
+ */
+","/**
+     * sets the text size of the legend labels, default 9f
+     * 
+     * @param size
+     */
+    public void setTextSize(float size) {
+        mTextSize = Utils.convertDpToPixel(size);
+    }",True
+43,getTextSize(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+computeLegend(ChartData<?>,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mTextSize,149,8,1,"/** 
+ * returns the text size of the legend labels
+ * @return
+ */
+","/**
+     * returns the text size of the legend labels
+     * 
+     * @return
+     */
+    public float getTextSize() {
+        return mTextSize;
+    }",True
+44,getStackSpace(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mStackSpace,183,8,1,"/** 
+ * returns the space that is left out between stacked forms (with no label)
+ * @return
+ */
+","/**
+     * returns the space that is left out between stacked forms (with no label)
+     * 
+     * @return
+     */
+    public float getStackSpace() {
+        return mStackSpace;
+    }",False
+45,setStackSpace(float),Method,,,,com.github.mikephil.charting.components.Legend+mStackSpace,196,8,1,"/** 
+ * sets the space that is left out between stacked forms (with no label)
+ * @param space
+ */
+","/**
+     * sets the space that is left out between stacked forms (with no label)
+     * 
+     * @param space
+     */
+    public void setStackSpace(float space) {
+        mStackSpace = space;
+    }",False
+46,getFullWidth(Paint),Method,calculateDimensions(Paint),,"com.github.mikephil.charting.utils.Utils+calcTextWidth(Paint,String) com.github.mikephil.charting.utils.Utils+calcTextWidth(Paint,String)",com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mColors com.github.mikephil.charting.components.Legend+mFormSize com.github.mikephil.charting.components.Legend+mFormToTextSpace com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mXEntrySpace com.github.mikephil.charting.components.Legend+mFormSize com.github.mikephil.charting.components.Legend+mStackSpace,698,27,1,"/** 
+ * calculates the full width the fully drawn legend will use in pixels
+ * @return
+ */
+","/**
+     * calculates the full width the fully drawn legend will use in pixels
+     * 
+     * @return
+     */
+    public float getFullWidth(Paint labelpaint) {
+
+        float width = 0f;
+
+        for (int i = 0; i < mLabels.length; i++) {
+
+            // grouped forms have null labels
+            if (mLabels[i] != null) {
+
+                // make a step to the left
+                if (mColors[i] != -2)
+                    width += mFormSize + mFormToTextSpace;
+
+                width += Utils.calcTextWidth(labelpaint, mLabels[i])
+                        + mXEntrySpace;
+            } else {
+                width += mFormSize + mStackSpace;
+            }
+        }
+
+        return width;
+    }",False
+47,getFullHeight(Paint),Method,calculateDimensions(Paint),,"com.github.mikephil.charting.utils.Utils+calcTextHeight(Paint,String) com.github.mikephil.charting.utils.Utils+calcTextHeight(Paint,String)",com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mLabels com.github.mikephil.charting.components.Legend+mYEntrySpace,503,22,1,"/** 
+ * Calculates the full height of the drawn legend.
+ * @param mLegendLabelPaint
+ * @return
+ */
+","/**
+     * Calculates the full height of the drawn legend.
+     * 
+     * @param mLegendLabelPaint
+     * @return
+     */
+    public float getFullHeight(Paint labelpaint) {
+
+        float height = 0f;
+
+        for (int i = 0; i < mLabels.length; i++) {
+
+            // grouped forms have null labels
+            if (mLabels[i] != null) {
+
+                height += Utils.calcTextHeight(labelpaint, mLabels[i])
+                        + mYEntrySpace;
+            }
+        }
+
+        return height;
+    }",False
+48,mNeededWidth,Field,,,,,93,2,1,"/** 
+ * the total width of the legend (needed width space) 
+ */
+","/** the total width of the legend (needed width space) */
+    public float mNeededWidth = 0f;",False
+49,mNeededHeight,Field,,,,,96,2,1,"/** 
+ * the total height of the legend (needed height space) 
+ */
+","/** the total height of the legend (needed height space) */
+    public float mNeededHeight = 0f;",False
+50,mTextHeightMax,Field,,,,,33,1,1,,public float mTextHeightMax = 0f;,False
+51,mTextWidthMax,Field,,,,,32,1,1,,public float mTextWidthMax = 0f;,False
+52,calculateDimensions(Paint),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+computeLegend(ChartData<?>,Legend)",com.github.mikephil.charting.components.Legend+getMaximumEntryWidth(Paint) com.github.mikephil.charting.components.Legend+getMaximumEntryWidth(Paint) com.github.mikephil.charting.components.Legend+getFullHeight(Paint) com.github.mikephil.charting.components.Legend+getFullHeight(Paint) com.github.mikephil.charting.components.Legend+getMaximumEntryHeight(Paint) com.github.mikephil.charting.components.Legend+getMaximumEntryHeight(Paint) com.github.mikephil.charting.components.Legend+getFullWidth(Paint) com.github.mikephil.charting.components.Legend+getFullWidth(Paint) com.github.mikephil.charting.components.Legend+getMaximumEntryHeight(Paint) com.github.mikephil.charting.components.Legend+getMaximumEntryHeight(Paint) com.github.mikephil.charting.components.Legend+getMaximumEntryWidth(Paint) com.github.mikephil.charting.components.Legend+getMaximumEntryWidth(Paint),com.github.mikephil.charting.components.Legend+mPosition com.github.mikephil.charting.components.Legend+LegendPosition com.github.mikephil.charting.components.Legend+mPosition com.github.mikephil.charting.components.Legend+LegendPosition com.github.mikephil.charting.components.Legend+mPosition com.github.mikephil.charting.components.Legend+LegendPosition com.github.mikephil.charting.components.Legend+mNeededWidth com.github.mikephil.charting.components.Legend+mNeededHeight com.github.mikephil.charting.components.Legend+mTextWidthMax com.github.mikephil.charting.components.Legend+mNeededWidth com.github.mikephil.charting.components.Legend+mTextHeightMax com.github.mikephil.charting.components.Legend+mNeededWidth com.github.mikephil.charting.components.Legend+mNeededHeight com.github.mikephil.charting.components.Legend+mTextWidthMax com.github.mikephil.charting.components.Legend+mTextHeightMax com.github.mikephil.charting.components.Legend+mNeededHeight,947,25,1,"/** 
+ * Calculates the dimensions of the Legend. This includes the maximum width and height of a single entry, as well as the total width and height of the Legend.
+ * @param labelpaint
+ */
+","/**
+     * Calculates the dimensions of the Legend. This includes the maximum width
+     * and height of a single entry, as well as the total width and height of
+     * the Legend.
+     * 
+     * @param labelpaint
+     */
+    public void calculateDimensions(Paint labelpaint) {
+
+        if (mPosition == LegendPosition.RIGHT_OF_CHART
+                || mPosition == LegendPosition.RIGHT_OF_CHART_CENTER
+                || mPosition == LegendPosition.PIECHART_CENTER) {
+            mNeededWidth = getMaximumEntryWidth(labelpaint);
+            mNeededHeight = getFullHeight(labelpaint);
+            mTextWidthMax = mNeededWidth;
+            mTextHeightMax = getMaximumEntryHeight(labelpaint);
+
+        } else {
+
+            mNeededWidth = getFullWidth(labelpaint);
+            mNeededHeight = getMaximumEntryHeight(labelpaint);
+            mTextWidthMax = getMaximumEntryWidth(labelpaint);
+            mTextHeightMax = mNeededHeight;
+        }
+    }",False
+53,setTextColor(int),Method,,"com.xxmassdeveloper.mpchartexample.LineChartActivity2+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.LineChartActivityColored+setupChart(LineChart,LineData,int) com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity+onCreate(Bundle)",,com.github.mikephil.charting.components.Legend+mTextColor,264,9,1,"/** 
+ * Sets the text color to use for the legend labels. Make sure to use getResources().getColor(...) when using a color from the resources.
+ * @param color
+ */
+","/**
+     * Sets the text color to use for the legend labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     * 
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mTextColor = color;
+    }",True
+54,getTextColor(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+computeLegend(ChartData<?>,Legend) com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mTextColor,164,8,1,"/** 
+ * Returns the text color that is set for the legend labels.
+ * @return
+ */
+","/**
+     * Returns the text color that is set for the legend labels.
+     * 
+     * @return
+     */
+    public int getTextColor() {
+        return mTextColor;
+    }",True
+55,setEnabled(boolean),Method,,com.xxmassdeveloper.mpchartexample.AnotherBarActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.CandleStickChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onCreate(Bundle) com.xxmassdeveloper.mpchartexample.DrawChartActivity+onCreate(Bundle),,com.github.mikephil.charting.components.Legend+mEnabled,231,9,1,"/** 
+ * Set this to true if the legend should be enabled (should be drawn), false if not. Default: true
+ * @param enabled
+ */
+","/**
+     * Set this to true if the legend should be enabled (should be drawn), false
+     * if not. Default: true
+     * 
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }",False
+56,isEnabled(),Method,,"com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.charts.PieRadarChartBase+calculateOffsets() com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mEnabled,176,8,1,"/** 
+ * Returns true if the legend is enabled (should be drawn), false if not.
+ * @return
+ */
+","/**
+     * Returns true if the legend is enabled (should be drawn), false if not.
+     * 
+     * @return
+     */
+    public boolean isEnabled() {
+        return mEnabled;
+    }",False
+57,getXOffset(),Method,,"com.github.mikephil.charting.charts.BarLineChartBase+calculateOffsets() com.github.mikephil.charting.charts.HorizontalBarChart+calculateOffsets() com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mXOffset,229,9,1,"/** 
+ * Returns the used offset on the x-axis for drawing the axis labels. This offset is applied before and after the label.
+ * @return
+ */
+","/**
+     * Returns the used offset on the x-axis for drawing the axis labels. This
+     * offset is applied before and after the label.
+     * 
+     * @return
+     */
+    public float getXOffset() {
+        return mXOffset;
+    }",True
+58,setXOffset(float),Method,,,com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.Legend+mXOffset,207,8,1,"/** 
+ * Sets the used x-axis offset for the labels on this axis.
+ * @param xOffset
+ */
+","/**
+     * Sets the used x-axis offset for the labels on this axis.
+     * 
+     * @param xOffset
+     */
+    public void setXOffset(float xOffset) {
+        mXOffset = Utils.convertDpToPixel(xOffset);
+    }",True
+59,getYOffset(),Method,,"com.github.mikephil.charting.renderer.LegendRenderer+renderLegend(Canvas,Legend)",,com.github.mikephil.charting.components.Legend+mYOffset,229,9,1,"/** 
+ * Returns the used offset on the x-axis for drawing the axis labels. This offset is applied before and after the label.
+ * @return
+ */
+","/**
+     * Returns the used offset on the x-axis for drawing the axis labels. This
+     * offset is applied before and after the label.
+     * 
+     * @return
+     */
+    public float getYOffset() {
+        return mYOffset;
+    }",True
+60,setYOffset(float),Method,,,com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.components.Legend+mYOffset,207,8,1,"/** 
+ * Sets the used x-axis offset for the labels on this axis.
+ * @param xOffset
+ */
+","/**
+     * Sets the used x-axis offset for the labels on this axis.
+     * 
+     * @param xOffset
+     */
+    public void setYOffset(float yOffset) {
+        mYOffset = Utils.convertDpToPixel(yOffset);
+    }",True

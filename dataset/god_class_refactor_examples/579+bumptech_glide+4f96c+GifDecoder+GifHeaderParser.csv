@@ -1,0 +1,864 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,TAG,Field,,,,,67,1,26,,private static final String TAG = GifDecoder.class.getSimpleName();,False
+2,STATUS_OK,Field,,,,,90,4,25,"/** 
+ * File read status: No errors.
+ */
+","/**
+     * File read status: No errors.
+     */
+    public static final int STATUS_OK = 0;",False
+3,STATUS_FORMAT_ERROR,Field,,,,,136,4,25,"/** 
+ * File read status: Error decoding file (may be partially decoded)
+ */
+","/**
+     * File read status: Error decoding file (may be partially decoded)
+     */
+    public static final int STATUS_FORMAT_ERROR = 1;",False
+4,STATUS_OPEN_ERROR,Field,,,,,110,4,25,"/** 
+ * File read status: Unable to open source.
+ */
+","/**
+     * File read status: Unable to open source.
+     */
+    public static final int STATUS_OPEN_ERROR = 2;",False
+5,MAX_STACK_SIZE,Field,,,,,101,4,28,"/** 
+ * max decoder pixel stack size
+ */
+","/**
+     * max decoder pixel stack size
+     */
+    protected static final int MAX_STACK_SIZE = 4096;",False
+6,DISPOSAL_UNSPECIFIED,Field,,,,,116,4,26,"/** 
+ * GIF Disposal Method meaning take no action
+ */
+","/**
+     * GIF Disposal Method meaning take no action
+     */
+    private static final int DISPOSAL_UNSPECIFIED = 0;",False
+7,DISPOSAL_NONE,Field,,,,,127,4,26,"/** 
+ * GIF Disposal Method meaning leave canvas from previous frame
+ */
+","/**
+     * GIF Disposal Method meaning leave canvas from previous frame
+     */
+    private static final int DISPOSAL_NONE = 1;",False
+8,DISPOSAL_BACKGROUND,Field,,,,,133,4,26,"/** 
+ * GIF Disposal Method meaning clear canvas to background color
+ */
+","/**
+     * GIF Disposal Method meaning clear canvas to background color
+     */
+    private static final int DISPOSAL_BACKGROUND = 2;",False
+9,DISPOSAL_PREVIOUS,Field,,,,,132,4,26,"/** 
+ * GIF Disposal Method meaning clear canvas to frame before last
+ */
+","/**
+     * GIF Disposal Method meaning clear canvas to frame before last
+     */
+    private static final int DISPOSAL_PREVIOUS = 3;",False
+10,status,Field,,,,,83,4,4,"/** 
+ * Global status code of GIF data parsing
+ */
+","/**
+     * Global status code of GIF data parsing
+     */
+    protected int status;",True
+11,width,Field,,,,,20,1,4,,protected int width;,True
+12,height,Field,,,,,21,1,4,,protected int height;,True
+13,gctFlag,Field,,,,,26,1,4,,protected boolean gctFlag;,True
+14,gctSize,Field,,,,,22,1,4,,protected int gctSize;,True
+15,loopCount,Field,,,,,28,1,4,,protected int loopCount = 1;,True
+16,gct,Field,,,,,20,1,4,,protected int[] gct;,True
+17,act,Field,,,,,20,1,4,,protected int[] act;,False
+18,bgIndex,Field,,,,,22,1,4,,protected int bgIndex;,True
+19,bgColor,Field,,,,,22,1,4,,protected int bgColor;,True
+20,pixelAspect,Field,,,,,26,1,4,,protected int pixelAspect;,True
+21,lctFlag,Field,,,,,26,1,4,,protected boolean lctFlag;,True
+22,lctSize,Field,,,,,22,1,4,,protected int lctSize;,True
+23,isTransparent,Field,,,,,30,1,2,,private boolean isTransparent;,True
+24,rawData,Field,,,,,29,1,4,,protected ByteBuffer rawData;,False
+25,block,Field,,,,,39,1,4,,protected byte[] block = new byte[256];,False
+26,blockSize,Field,,,,,28,1,4,,protected int blockSize = 0;,True
+27,prefix,Field,,,,,25,1,4,,protected short[] prefix;,False
+28,suffix,Field,,,,,24,1,4,,protected byte[] suffix;,False
+29,pixelStack,Field,,,,,28,1,4,,protected byte[] pixelStack;,False
+30,mainPixels,Field,,,,,28,1,4,,protected byte[] mainPixels;,False
+31,mainScratch,Field,,,,,28,1,4,,protected int[] mainScratch;,False
+32,frames,Field,,,,,37,1,4,,protected ArrayList<GifFrame> frames;,False
+33,currentFrame,Field,,,,,32,1,4,,protected GifFrame currentFrame;,True
+34,framePointer,Field,,,,,27,1,4,,protected int framePointer;,False
+35,frameCount,Field,,,,,25,1,4,,protected int frameCount;,True
+36,bitmapPool,Field,,,,,30,1,2,,private BitmapPool bitmapPool;,False
+37,currentImage,Field,,,,,28,1,2,,private Bitmap currentImage;,False
+38,data,Field,,,,,20,1,2,,private byte[] data;,False
+39,GifFrame,MemberClass,,,,com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ix com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iy com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iw com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ih com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+interlace com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transparency com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+dispose com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transIndex com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+delay com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+bufferFrameStart com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+lct,608,19,10,"/** 
+ * Inner model class housing metadata for each frame
+ */
+","/**
+     * Inner model class housing metadata for each frame
+     */
+    private static class GifFrame {
+        public int ix, iy, iw, ih;
+        /* Control Flags */
+        public boolean interlace;
+        public boolean transparency;
+        /* Disposal Method */
+        public int dispose;
+        /* Transparency Index */
+        public int transIndex;
+        /* Delay, in ms, to next frame */
+        public int delay;
+        /* Index in the raw buffer where we need to start reading to decode */
+        public int bufferFrameStart;
+        /* Local Color Table */
+        public int[] lct;
+    }",True
+40,GifDecoder(BitmapPool),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+bitmapPool com.bumptech.glide.load.resource.gif.GifDecoder+bitmapPool,86,3,1,,"public GifDecoder(BitmapPool bitmapPool) {
+        this.bitmapPool = bitmapPool;
+    }",False
+41,getWidth(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+width,51,3,1,,"public int getWidth() {
+        return width;
+    }",False
+42,getHeight(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+height,53,3,1,,"public int getHeight() {
+        return height;
+    }",False
+43,isTransparent(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+isTransparent,68,3,1,,"public boolean isTransparent() {
+        return isTransparent;
+    }",False
+44,getGifByteSize(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+data,63,3,1,,"public int getGifByteSize() {
+        return data.length;
+    }",False
+45,getData(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+data,52,3,1,,"public byte[] getData() {
+        return data;
+    }",False
+46,getDecodedFrameByteSize(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+frameCount com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+height com.bumptech.glide.load.resource.gif.GifDecoder+isTransparent,154,4,1,,"public int getDecodedFrameByteSize() {
+        // 4 == ARGB_8888, 2 == RGB_565
+        return frameCount * width * height * (isTransparent ? 4 : 2);
+    }",False
+47,advance(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+framePointer com.bumptech.glide.load.resource.gif.GifDecoder+framePointer com.bumptech.glide.load.resource.gif.GifDecoder+frameCount,149,6,1,"/** 
+ * Move the animation frame counter forward
+ */
+","/**
+     * Move the animation frame counter forward
+     */
+    public void advance() {
+        framePointer = (framePointer + 1) % frameCount;
+    }",False
+48,getDelay(int),Method,,,java.util.ArrayList+get(int) java.util.ArrayList+get(int),com.bumptech.glide.load.resource.gif.GifDecoder+frameCount com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+delay com.bumptech.glide.load.resource.gif.GifDecoder+frames com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+delay,320,13,1,"/** 
+ * Gets display duration for specified frame.
+ * @param n int index of frame
+ * @return delay in milliseconds
+ */
+","/**
+     * Gets display duration for specified frame.
+     *
+     * @param n int index of frame
+     * @return delay in milliseconds
+     */
+    public int getDelay(int n) {
+        int delay = -1;
+        if ((n >= 0) && (n < frameCount)) {
+            delay = frames.get(n).delay;
+        }
+        return delay;
+    }",False
+49,getNextDelay(),Method,,,com.bumptech.glide.load.resource.gif.GifDecoder+getDelay(int) com.bumptech.glide.load.resource.gif.GifDecoder+getDelay(int),com.bumptech.glide.load.resource.gif.GifDecoder+frameCount com.bumptech.glide.load.resource.gif.GifDecoder+framePointer com.bumptech.glide.load.resource.gif.GifDecoder+framePointer,225,10,1,"/** 
+ * Gets display duration for the upcoming frame
+ */
+","/**
+     * Gets display duration for the upcoming frame
+     */
+    public int getNextDelay() {
+        if (frameCount <= 0 || framePointer < 0) {
+            return -1;
+        }
+
+        return getDelay(framePointer);
+    }",False
+50,getFrameCount(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+frameCount,160,8,1,"/** 
+ * Gets the number of frames read from file.
+ * @return frame count
+ */
+","/**
+     * Gets the number of frames read from file.
+     *
+     * @return frame count
+     */
+    public int getFrameCount() {
+        return frameCount;
+    }",False
+51,getCurrentFrameIndex(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+framePointer,216,8,1,"/** 
+ * Gets the current index of the animation frame, or -1 if animation hasn't not yet started
+ * @return frame index
+ */
+","/**
+     * Gets the current index of the animation frame, or -1 if animation hasn't not yet started
+     *
+     * @return frame index
+     */
+    public int getCurrentFrameIndex() {
+        return framePointer;
+    }",False
+52,getLoopCount(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+loopCount,236,8,1,"/** 
+ * Gets the ""Netscape"" iteration count, if any. A count of 0 means repeat indefinitiely.
+ * @return iteration count if one was specified, else 1.
+ */
+","/**
+     * Gets the ""Netscape"" iteration count, if any. A count of 0 means repeat indefinitiely.
+     *
+     * @return iteration count if one was specified, else 1.
+     */
+    public int getLoopCount() {
+        return loopCount;
+    }",False
+53,getNextFrame(),Method,,,"java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.bumptech.glide.load.resource.gif.GifDecoder+setPixels(int) com.bumptech.glide.load.resource.gif.GifDecoder+setPixels(int) com.bumptech.glide.load.resource.bitmap.BitmapResource+BitmapResource(Bitmap,BitmapPool)",com.bumptech.glide.load.resource.gif.GifDecoder+frameCount com.bumptech.glide.load.resource.gif.GifDecoder+framePointer com.bumptech.glide.load.resource.gif.GifDecoder+frames com.bumptech.glide.load.resource.gif.GifDecoder+framePointer com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+lct com.bumptech.glide.load.resource.gif.GifDecoder+act com.bumptech.glide.load.resource.gif.GifDecoder+gct com.bumptech.glide.load.resource.gif.GifDecoder+act com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+lct com.bumptech.glide.load.resource.gif.GifDecoder+bgIndex com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transIndex com.bumptech.glide.load.resource.gif.GifDecoder+bgColor com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transparency com.bumptech.glide.load.resource.gif.GifDecoder+act com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transIndex com.bumptech.glide.load.resource.gif.GifDecoder+act com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transIndex com.bumptech.glide.load.resource.gif.GifDecoder+act com.bumptech.glide.load.resource.gif.GifDecoder+TAG com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_FORMAT_ERROR com.bumptech.glide.load.resource.gif.GifDecoder+framePointer com.bumptech.glide.load.resource.gif.GifDecoder+currentImage com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transparency com.bumptech.glide.load.resource.gif.GifDecoder+act com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transIndex com.bumptech.glide.load.resource.gif.GifDecoder+bitmapPool,1295,45,1,"/** 
+ * Get the next frame in the animation sequence.
+ * @return Bitmap representation of frame
+ */
+","/**
+     * Get the next frame in the animation sequence.
+     *
+     * @return Bitmap representation of frame
+     */
+    public Resource<Bitmap> getNextFrame() {
+        if (frameCount <= 0 || framePointer < 0 ) {
+            return null;
+        }
+
+        long startTime = SystemClock.currentThreadTimeMillis();
+
+        GifFrame frame = frames.get(framePointer);
+
+        //Set the appropriate color table
+        if (frame.lct == null) {
+            act = gct;
+        } else {
+            act = frame.lct;
+            if (bgIndex == frame.transIndex) {
+                bgColor = 0;
+            }
+        }
+
+        int save = 0;
+        if (frame.transparency) {
+            save = act[frame.transIndex];
+            act[frame.transIndex] = 0; // set transparent color if specified
+        }
+        if (act == null) {
+            Log.w(TAG, ""No Valid Color Table"");
+            status = STATUS_FORMAT_ERROR; // no color table defined
+            return null;
+        }
+
+        Bitmap result = setPixels(framePointer); // transfer pixel data to image
+        currentImage = result;
+
+        // Reset the transparent pixel in the color table
+        if (frame.transparency) {
+            act[frame.transIndex] = save;
+        }
+
+        return new BitmapResource(result, bitmapPool);
+    }",False
+54,"read(InputStream,int)",Method,,,"java.io.ByteArrayOutputStream+ByteArrayOutputStream(int) java.io.InputStream+read(byte[],int,int) java.io.InputStream+read(byte[],int,int) java.io.ByteArrayOutputStream+write(byte[],int,int) java.io.ByteArrayOutputStream+write(byte[],int,int) java.io.OutputStream+flush() java.io.OutputStream+flush() com.bumptech.glide.load.resource.gif.GifDecoder+read(byte[]) com.bumptech.glide.load.resource.gif.GifDecoder+read(byte[]) java.io.ByteArrayOutputStream+toByteArray() java.io.ByteArrayOutputStream+toByteArray() java.io.InputStream+close() java.io.InputStream+close()",com.bumptech.glide.load.resource.gif.GifDecoder+TAG com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_OPEN_ERROR com.bumptech.glide.load.resource.gif.GifDecoder+TAG com.bumptech.glide.load.resource.gif.GifDecoder+status,1046,34,1,"/** 
+ * Reads GIF image from stream
+ * @param is containing GIF file.
+ * @return read status code (0 = no errors)
+ */
+","/**
+     * Reads GIF image from stream
+     *
+     * @param is containing GIF file.
+     * @return read status code (0 = no errors)
+     */
+    public int read(InputStream is, int contentLength) {
+        if (is != null) {
+            try {
+                int capacity = (contentLength > 0) ? (contentLength + 4096) : 16384;
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream(capacity);
+                int nRead;
+                byte[] data = new byte[16384];
+                while ((nRead = is.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+
+                read(buffer.toByteArray());
+            } catch (IOException e) {
+                Log.w(TAG, ""Error reading data from stream"", e);
+            }
+        } else {
+            status = STATUS_OPEN_ERROR;
+        }
+
+        try {
+            is.close();
+        } catch (Exception e) {
+            Log.w(TAG, ""Error closing stream"", e);
+        }
+
+        return status;
+    }",False
+55,read(byte[]),Method,,,com.bumptech.glide.load.resource.gif.GifDecoder+init() com.bumptech.glide.load.resource.gif.GifDecoder+init() java.nio.ByteBuffer+wrap(byte[]) java.nio.ByteBuffer+wrap(byte[]) java.nio.ByteBuffer+rewind() java.nio.ByteBuffer+rewind() java.nio.ByteBuffer+order(ByteOrder) java.nio.ByteBuffer+order(ByteOrder) com.bumptech.glide.load.resource.gif.GifDecoder+readHeader() com.bumptech.glide.load.resource.gif.GifDecoder+readHeader() com.bumptech.glide.load.resource.gif.GifDecoder+err() com.bumptech.glide.load.resource.gif.GifDecoder+err() com.bumptech.glide.load.resource.gif.GifDecoder+readContents() com.bumptech.glide.load.resource.gif.GifDecoder+readContents(),com.bumptech.glide.load.resource.gif.GifDecoder+data com.bumptech.glide.load.resource.gif.GifDecoder+data com.bumptech.glide.load.resource.gif.GifDecoder+rawData com.bumptech.glide.load.resource.gif.GifDecoder+rawData com.bumptech.glide.load.resource.gif.GifDecoder+rawData java.nio.ByteOrder+LITTLE_ENDIAN com.bumptech.glide.load.resource.gif.GifDecoder+frameCount com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_FORMAT_ERROR com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_OPEN_ERROR com.bumptech.glide.load.resource.gif.GifDecoder+status,724,28,1,"/** 
+ * Reads GIF image from byte array
+ * @param data containing GIF file.
+ * @return read status code (0 = no errors)
+ */
+","/**
+     * Reads GIF image from byte array
+     *
+     * @param data containing GIF file.
+     * @return read status code (0 = no errors)
+     */
+    public int read(byte[] data) {
+        this.data = data;
+        init();
+        if (data != null) {
+            //Initialize the raw data buffer
+            rawData = ByteBuffer.wrap(data);
+            rawData.rewind();
+            rawData.order(ByteOrder.LITTLE_ENDIAN);
+
+            readHeader();
+            if (!err()) {
+                readContents();
+                if (frameCount < 0) {
+                    status = STATUS_FORMAT_ERROR;
+                }
+            }
+        } else {
+            status = STATUS_OPEN_ERROR;
+        }
+
+        return status;
+    }",False
+56,setPixels(int),Method,,,"java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() com.bumptech.glide.load.resource.gif.GifDecoder+decodeBitmapData(GifFrame,byte[]) com.bumptech.glide.load.resource.gif.GifDecoder+decodeBitmapData(GifFrame,byte[]) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() com.bumptech.glide.load.resource.gif.GifDecoder+getNextBitmap() com.bumptech.glide.load.resource.gif.GifDecoder+getNextBitmap()",com.bumptech.glide.load.resource.gif.GifDecoder+frames com.bumptech.glide.load.resource.gif.GifDecoder+frames com.bumptech.glide.load.resource.gif.GifDecoder+mainScratch com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+dispose com.bumptech.glide.load.resource.gif.GifDecoder+DISPOSAL_UNSPECIFIED com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+dispose com.bumptech.glide.load.resource.gif.GifDecoder+DISPOSAL_NONE com.bumptech.glide.load.resource.gif.GifDecoder+currentImage com.bumptech.glide.load.resource.gif.GifDecoder+currentImage com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+height com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+dispose com.bumptech.glide.load.resource.gif.GifDecoder+DISPOSAL_BACKGROUND com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transparency com.bumptech.glide.load.resource.gif.GifDecoder+bgColor com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ih com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iy com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ix com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iw com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transparency com.bumptech.glide.load.resource.gif.GifDecoder+bgColor com.bumptech.glide.load.resource.gif.GifDecoder+mainPixels com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ih com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+interlace com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ih com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iy com.bumptech.glide.load.resource.gif.GifDecoder+height com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ix com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iw com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iw com.bumptech.glide.load.resource.gif.GifDecoder+mainPixels com.bumptech.glide.load.resource.gif.GifDecoder+act com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+height,4008,105,4,"/** 
+ * Creates new frame image from current data (and previous frames as specified by their disposition codes).
+ */
+","/**
+     * Creates new frame image from current data (and previous frames as specified by their disposition codes).
+     */
+    protected Bitmap setPixels(int frameIndex) {
+        GifFrame currentFrame = frames.get(frameIndex);
+        GifFrame previousFrame = null;
+        int previousIndex = frameIndex - 1;
+        if (previousIndex >= 0) {
+            previousFrame = frames.get(previousIndex);
+        }
+
+        // final location of blended pixels
+        final int[] dest = mainScratch;
+
+        // fill in starting image contents based on last image's dispose code
+        long disposeStartTime = System.currentTimeMillis();
+        if (previousFrame != null && previousFrame.dispose > DISPOSAL_UNSPECIFIED) {
+            if (previousFrame.dispose == DISPOSAL_NONE && currentImage != null) {
+                // Start with the current image
+                currentImage.getPixels(dest, 0, width, 0, 0, width, height);
+            }
+            if (previousFrame.dispose == DISPOSAL_BACKGROUND) {
+                // Start with a canvas filled with the background color
+                int c = 0;
+                if (!currentFrame.transparency) {
+                    c = bgColor;
+                }
+                for (int i = 0; i < previousFrame.ih; i++) {
+                    int n1 = (previousFrame.iy + i) * width + previousFrame.ix;
+                    int n2 = n1 + previousFrame.iw;
+                    for (int k = n1; k < n2; k++) {
+                        dest[k] = c;
+                    }
+                }
+            }
+        } else {
+            int c = 0;
+            if (!currentFrame.transparency) {
+                c = bgColor;
+            }
+            for (int i = 0; i < dest.length; i++) {
+                dest[i] = c;
+            }
+        }
+
+        //Decode pixels for this frame  into the global pixels[] scratch
+        long start = System.currentTimeMillis();
+        decodeBitmapData(currentFrame, mainPixels); // decode pixel data
+
+        // copy each source line to the appropriate place in the destination
+        long startTime = System.currentTimeMillis();
+        int pass = 1;
+        int inc = 8;
+        int iline = 0;
+        for (int i = 0; i < currentFrame.ih; i++) {
+            int line = i;
+            if (currentFrame.interlace) {
+                if (iline >= currentFrame.ih) {
+                    pass++;
+                    switch (pass) {
+                        case 2:
+                            iline = 4;
+                            break;
+                        case 3:
+                            iline = 2;
+                            inc = 4;
+                            break;
+                        case 4:
+                            iline = 1;
+                            inc = 2;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                line = iline;
+                iline += inc;
+            }
+            line += currentFrame.iy;
+            if (line < height) {
+                int k = line * width;
+                int dx = k + currentFrame.ix; // start of line in dest
+                int dlim = dx + currentFrame.iw; // end of dest line
+                if ((k + width) < dlim) {
+                    dlim = k + width; // past dest edge
+                }
+                int sx = i * currentFrame.iw; // start of line in source
+                while (dx < dlim) {
+                    // map color and insert in destination
+                    int index = ((int) mainPixels[sx++]) & 0xff;
+                    int c = act[index];
+                    if (c != 0) {
+                        dest[dx] = c;
+                    }
+                    dx++;
+                }
+            }
+        }
+
+        //Set pixels for current image
+        long startSetPixelBitmap = System.currentTimeMillis();
+        Bitmap result = getNextBitmap();
+        result.setPixels(dest, 0, width, 0, 0, width, height);
+        return result;
+    }",False
+57,"decodeBitmapData(GifFrame,byte[])",Method,,,java.nio.ByteBuffer+position(int) java.nio.ByteBuffer+position(int) com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() com.bumptech.glide.load.resource.gif.GifDecoder+readBlock() com.bumptech.glide.load.resource.gif.GifDecoder+readBlock() java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis(),com.bumptech.glide.load.resource.gif.GifDecoder+rawData com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+bufferFrameStart com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+height com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iw com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ih com.bumptech.glide.load.resource.gif.GifDecoder+prefix com.bumptech.glide.load.resource.gif.GifDecoder+prefix com.bumptech.glide.load.resource.gif.GifDecoder+MAX_STACK_SIZE com.bumptech.glide.load.resource.gif.GifDecoder+suffix com.bumptech.glide.load.resource.gif.GifDecoder+suffix com.bumptech.glide.load.resource.gif.GifDecoder+MAX_STACK_SIZE com.bumptech.glide.load.resource.gif.GifDecoder+pixelStack com.bumptech.glide.load.resource.gif.GifDecoder+pixelStack com.bumptech.glide.load.resource.gif.GifDecoder+MAX_STACK_SIZE com.bumptech.glide.load.resource.gif.GifDecoder+prefix com.bumptech.glide.load.resource.gif.GifDecoder+suffix com.bumptech.glide.load.resource.gif.GifDecoder+block com.bumptech.glide.load.resource.gif.GifDecoder+pixelStack com.bumptech.glide.load.resource.gif.GifDecoder+suffix com.bumptech.glide.load.resource.gif.GifDecoder+pixelStack com.bumptech.glide.load.resource.gif.GifDecoder+pixelStack com.bumptech.glide.load.resource.gif.GifDecoder+suffix com.bumptech.glide.load.resource.gif.GifDecoder+prefix com.bumptech.glide.load.resource.gif.GifDecoder+suffix com.bumptech.glide.load.resource.gif.GifDecoder+MAX_STACK_SIZE com.bumptech.glide.load.resource.gif.GifDecoder+pixelStack com.bumptech.glide.load.resource.gif.GifDecoder+prefix com.bumptech.glide.load.resource.gif.GifDecoder+suffix com.bumptech.glide.load.resource.gif.GifDecoder+MAX_STACK_SIZE com.bumptech.glide.load.resource.gif.GifDecoder+pixelStack,4418,120,4,"/** 
+ * Decodes LZW image data into pixel array. Adapted from John Cristy's BitmapMagick.
+ */
+","/**
+     * Decodes LZW image data into pixel array. Adapted from John Cristy's BitmapMagick.
+     */
+    protected void decodeBitmapData(GifFrame frame, byte[] dstPixels) {
+        if (frame != null) {
+            //Jump to the frame start position
+            rawData.position(frame.bufferFrameStart);
+        }
+
+        int nullCode = -1;
+        int npix = (frame == null) ? width * height : frame.iw * frame.ih;
+        int available, clear, code_mask, code_size, end_of_information, in_code, old_code, bits, code, count, i, datum, data_size, first, top, bi, pi;
+
+        if (dstPixels == null || dstPixels.length < npix) {
+            dstPixels = new byte[npix]; // allocate new pixel array
+        }
+        if (prefix == null) {
+            prefix = new short[MAX_STACK_SIZE];
+        }
+        if (suffix == null) {
+            suffix = new byte[MAX_STACK_SIZE];
+        }
+        if (pixelStack == null) {
+            pixelStack = new byte[MAX_STACK_SIZE + 1];
+        }
+
+        // Initialize GIF data stream decoder.
+        data_size = read();
+        clear = 1 << data_size;
+        end_of_information = clear + 1;
+        available = clear + 2;
+        old_code = nullCode;
+        code_size = data_size + 1;
+        code_mask = (1 << code_size) - 1;
+        long start = System.currentTimeMillis();
+        for (code = 0; code < clear; code++) {
+            prefix[code] = 0; // XXX ArrayIndexOutOfBoundsException
+            suffix[code] = (byte) code;
+        }
+
+        start = System.currentTimeMillis();
+        // Decode GIF pixel stream.
+        datum = bits = count = first = top = pi = bi = 0;
+        int iterations = 0;
+        for (i = 0; i < npix; ) {
+            iterations++;
+            if (top == 0) {
+                if (bits < code_size) {
+                    // Load bytes until there are enough bits for a code.
+                    if (count == 0) {
+                        // Read a new data block.
+                        count = readBlock();
+                        if (count <= 0) {
+                            break;
+                        }
+                        bi = 0;
+                    }
+                    datum += (((int) block[bi]) & 0xff) << bits;
+                    bits += 8;
+                    bi++;
+                    count--;
+                    continue;
+                }
+                // Get the next code.
+                code = datum & code_mask;
+                datum >>= code_size;
+                bits -= code_size;
+                // Interpret the code
+                if ((code > available) || (code == end_of_information)) {
+                    break;
+                }
+                if (code == clear) {
+                    // Reset decoder.
+                    code_size = data_size + 1;
+                    code_mask = (1 << code_size) - 1;
+                    available = clear + 2;
+                    old_code = nullCode;
+                    continue;
+                }
+                if (old_code == nullCode) {
+                    pixelStack[top++] = suffix[code];
+                    old_code = code;
+                    first = code;
+                    continue;
+                }
+                in_code = code;
+                if (code == available) {
+                    pixelStack[top++] = (byte) first;
+                    code = old_code;
+                }
+                while (code > clear) {
+                    pixelStack[top++] = suffix[code];
+                    code = prefix[code];
+                }
+                first = ((int) suffix[code]) & 0xff;
+                // Add a new string to the string table,
+                if (available >= MAX_STACK_SIZE) {
+                    break;
+                }
+                pixelStack[top++] = (byte) first;
+                prefix[available] = (short) old_code;
+                suffix[available] = (byte) first;
+                available++;
+                if (((available & code_mask) == 0) && (available < MAX_STACK_SIZE)) {
+                    code_size++;
+                    code_mask += available;
+                }
+                old_code = in_code;
+            }
+            // Pop a pixel off the pixel stack.
+            top--;
+            dstPixels[pi++] = pixelStack[top];
+            i++;
+        }
+        start = System.currentTimeMillis();
+
+        for (i = pi; i < npix; i++) {
+            dstPixels[i] = 0; // clear missing pixels
+        }
+    }",False
+58,err(),Method,,,,com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_OK,155,6,4,"/** 
+ * Returns true if an error was encountered during reading/decoding
+ */
+","/**
+     * Returns true if an error was encountered during reading/decoding
+     */
+    protected boolean err() {
+        return status != STATUS_OK;
+    }",True
+59,init(),Method,,,java.util.ArrayList+ArrayList(),com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_OK com.bumptech.glide.load.resource.gif.GifDecoder+frameCount com.bumptech.glide.load.resource.gif.GifDecoder+framePointer com.bumptech.glide.load.resource.gif.GifDecoder+frames com.bumptech.glide.load.resource.gif.GifDecoder+gct,232,10,4,"/** 
+ * Initializes or re-initializes reader
+ */
+","/**
+     * Initializes or re-initializes reader
+     */
+    protected void init() {
+        status = STATUS_OK;
+        frameCount = 0;
+        framePointer = -1;
+        frames = new ArrayList<GifFrame>();
+        gct = null;
+    }",True
+60,read(),Method,,,java.nio.ByteBuffer+get() java.nio.ByteBuffer+get(),com.bumptech.glide.load.resource.gif.GifDecoder+rawData com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_FORMAT_ERROR,287,12,4,"/** 
+ * Reads a single byte from the input stream.
+ */
+","/**
+     * Reads a single byte from the input stream.
+     */
+    protected int read() {
+        int curByte = 0;
+        try {
+            curByte = (rawData.get() & 0xFF);
+        } catch (Exception e) {
+            status = STATUS_FORMAT_ERROR;
+        }
+        return curByte;
+    }",False
+61,readBlock(),Method,,,"com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() java.nio.ByteBuffer+get(byte[],int,int) java.nio.ByteBuffer+get(byte[],int,int)",com.bumptech.glide.load.resource.gif.GifDecoder+blockSize com.bumptech.glide.load.resource.gif.GifDecoder+blockSize com.bumptech.glide.load.resource.gif.GifDecoder+blockSize com.bumptech.glide.load.resource.gif.GifDecoder+blockSize com.bumptech.glide.load.resource.gif.GifDecoder+rawData com.bumptech.glide.load.resource.gif.GifDecoder+block com.bumptech.glide.load.resource.gif.GifDecoder+TAG com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_FORMAT_ERROR,641,24,4,"/** 
+ * Reads next variable length block from input.
+ * @return number of bytes stored in ""buffer""
+ */
+","/**
+     * Reads next variable length block from input.
+     *
+     * @return number of bytes stored in ""buffer""
+     */
+    protected int readBlock() {
+        blockSize = read();
+        int n = 0;
+        if (blockSize > 0) {
+            try {
+                int count;
+                while (n < blockSize) {
+                    count = blockSize - n;
+                    rawData.get(block, n, count);
+
+                    n += count;
+                }
+            } catch (Exception e) {
+                Log.w(TAG, ""Error Reading Block"", e);
+                status = STATUS_FORMAT_ERROR;
+            }
+        }
+        return n;
+    }",False
+62,readColorTable(int),Method,,,java.nio.ByteBuffer+get(byte[]) java.nio.ByteBuffer+get(byte[]),com.bumptech.glide.load.resource.gif.GifDecoder+rawData com.bumptech.glide.load.resource.gif.GifDecoder+TAG com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_FORMAT_ERROR,945,30,4,"/** 
+ * Reads color table as 256 RGB integer values
+ * @param ncolors int number of colors to read
+ * @return int array containing 256 colors (packed ARGB with full alpha)
+ */
+","/**
+     * Reads color table as 256 RGB integer values
+     *
+     * @param ncolors int number of colors to read
+     * @return int array containing 256 colors (packed ARGB with full alpha)
+     */
+    protected int[] readColorTable(int ncolors) {
+        int nbytes = 3 * ncolors;
+        int[] tab = null;
+        byte[] c = new byte[nbytes];
+
+        try {
+            rawData.get(c);
+
+            tab = new int[256]; // max size to avoid bounds checks
+            int i = 0;
+            int j = 0;
+            while (i < ncolors) {
+                int r = ((int) c[j++]) & 0xff;
+                int g = ((int) c[j++]) & 0xff;
+                int b = ((int) c[j++]) & 0xff;
+                tab[i++] = 0xff000000 | (r << 16) | (g << 8) | b;
+            }
+        } catch (BufferUnderflowException e) {
+            Log.w(TAG, ""Format Error Reading Color Table"", e);
+            status = STATUS_FORMAT_ERROR;
+        }
+
+        return tab;
+    }",True
+63,readContents(),Method,,,com.bumptech.glide.load.resource.gif.GifDecoder+err() com.bumptech.glide.load.resource.gif.GifDecoder+err() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+readBitmap() com.bumptech.glide.load.resource.gif.GifDecoder+readBitmap() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+GifFrame() com.bumptech.glide.load.resource.gif.GifDecoder+readGraphicControlExt() com.bumptech.glide.load.resource.gif.GifDecoder+readGraphicControlExt() com.bumptech.glide.load.resource.gif.GifDecoder+readBlock() com.bumptech.glide.load.resource.gif.GifDecoder+readBlock() java.lang.String+equals(Object) java.lang.String+equals(Object) com.bumptech.glide.load.resource.gif.GifDecoder+readNetscapeExt() com.bumptech.glide.load.resource.gif.GifDecoder+readNetscapeExt() com.bumptech.glide.load.resource.gif.GifDecoder+skip() com.bumptech.glide.load.resource.gif.GifDecoder+skip() com.bumptech.glide.load.resource.gif.GifDecoder+skip() com.bumptech.glide.load.resource.gif.GifDecoder+skip() com.bumptech.glide.load.resource.gif.GifDecoder+skip() com.bumptech.glide.load.resource.gif.GifDecoder+skip() com.bumptech.glide.load.resource.gif.GifDecoder+skip() com.bumptech.glide.load.resource.gif.GifDecoder+skip(),com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder+block com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_FORMAT_ERROR,1988,51,4,"/** 
+ * Main file parser. Reads GIF content blocks.
+ */
+","/**
+     * Main file parser. Reads GIF content blocks.
+     */
+    protected void readContents() {
+        // read GIF file content blocks
+        boolean done = false;
+        while (!(done || err())) {
+            int code = read();
+            switch (code) {
+                case 0x2C: // image separator
+                    readBitmap();
+                    break;
+                case 0x21: // extension
+                    code = read();
+                    switch (code) {
+                        case 0xf9: // graphics control extension
+                            //Start a new frame
+                            currentFrame = new GifFrame();
+                            readGraphicControlExt();
+                            break;
+                        case 0xff: // application extension
+                            readBlock();
+                            String app = """";
+                            for (int i = 0; i < 11; i++) {
+                                app += (char) block[i];
+                            }
+                            if (app.equals(""NETSCAPE2.0"")) {
+                                readNetscapeExt();
+                            } else {
+                                skip(); // don't care
+                            }
+                            break;
+                        case 0xfe:// comment extension
+                            skip();
+                            break;
+                        case 0x01:// plain text extension
+                            skip();
+                            break;
+                        default: // uninteresting extension
+                            skip();
+                    }
+                    break;
+                case 0x3b: // terminator
+                    done = true;
+                    break;
+                case 0x00: // bad byte, but keep going and see what happens break;
+                default:
+                    status = STATUS_FORMAT_ERROR;
+            }
+        }
+    }",True
+64,readHeader(),Method,,,com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() java.lang.String+startsWith(String) java.lang.String+startsWith(String) com.bumptech.glide.load.resource.gif.GifDecoder+readLSD() com.bumptech.glide.load.resource.gif.GifDecoder+readLSD() com.bumptech.glide.load.resource.gif.GifDecoder+err() com.bumptech.glide.load.resource.gif.GifDecoder+err() com.bumptech.glide.load.resource.gif.GifDecoder+readColorTable(int) com.bumptech.glide.load.resource.gif.GifDecoder+readColorTable(int),com.bumptech.glide.load.resource.gif.GifDecoder+status com.bumptech.glide.load.resource.gif.GifDecoder+STATUS_FORMAT_ERROR com.bumptech.glide.load.resource.gif.GifDecoder+gctFlag com.bumptech.glide.load.resource.gif.GifDecoder+gct com.bumptech.glide.load.resource.gif.GifDecoder+gctSize com.bumptech.glide.load.resource.gif.GifDecoder+bgColor com.bumptech.glide.load.resource.gif.GifDecoder+gct com.bumptech.glide.load.resource.gif.GifDecoder+bgIndex,448,18,4,"/** 
+ * Reads GIF file header information.
+ */
+","/**
+     * Reads GIF file header information.
+     */
+    protected void readHeader() {
+        String id = """";
+        for (int i = 0; i < 6; i++) {
+            id += (char) read();
+        }
+        if (!id.startsWith(""GIF"")) {
+            status = STATUS_FORMAT_ERROR;
+            return;
+        }
+        readLSD();
+        if (gctFlag && !err()) {
+            gct = readColorTable(gctSize);
+            bgColor = gct[bgIndex];
+        }
+    }",True
+65,readGraphicControlExt(),Method,,,com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read(),com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+dispose com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+dispose com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+dispose com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transparency com.bumptech.glide.load.resource.gif.GifDecoder+isTransparent com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transparency com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+delay com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+transIndex,674,16,4,"/** 
+ * Reads Graphics Control Extension values
+ */
+","/**
+     * Reads Graphics Control Extension values
+     */
+    protected void readGraphicControlExt() {
+        read(); // block size
+        int packed = read(); // packed fields
+        currentFrame.dispose = (packed & 0x1c) >> 2; // disposal method
+        if (currentFrame.dispose == 0) {
+            currentFrame.dispose = 1; // elect to keep old image if discretionary
+        }
+        currentFrame.transparency = (packed & 1) != 0;
+        isTransparent |= currentFrame.transparency;
+        currentFrame.delay = readShort() * 10; // delay in milliseconds
+        currentFrame.transIndex = read(); // transparent color index
+        read(); // block terminator
+    }",True
+66,readBitmap(),Method,,,"com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() java.lang.Math+pow(double,double) java.lang.Math+pow(double,double) com.bumptech.glide.load.resource.gif.GifDecoder+readColorTable(int) com.bumptech.glide.load.resource.gif.GifDecoder+readColorTable(int) java.nio.Buffer+position() java.nio.Buffer+position() com.bumptech.glide.load.resource.gif.GifDecoder+decodeBitmapData(GifFrame,byte[]) com.bumptech.glide.load.resource.gif.GifDecoder+decodeBitmapData(GifFrame,byte[]) com.bumptech.glide.load.resource.gif.GifDecoder+skip() com.bumptech.glide.load.resource.gif.GifDecoder+skip() com.bumptech.glide.load.resource.gif.GifDecoder+err() com.bumptech.glide.load.resource.gif.GifDecoder+err() java.util.ArrayList+add(E) java.util.ArrayList+add(E)",com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ix com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iy com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+iw com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+ih com.bumptech.glide.load.resource.gif.GifDecoder+lctFlag com.bumptech.glide.load.resource.gif.GifDecoder+lctSize com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+interlace com.bumptech.glide.load.resource.gif.GifDecoder+lctFlag com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+lct com.bumptech.glide.load.resource.gif.GifDecoder+lctSize com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+lct com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame com.bumptech.glide.load.resource.gif.GifDecoder.GifFrame+bufferFrameStart com.bumptech.glide.load.resource.gif.GifDecoder+rawData com.bumptech.glide.load.resource.gif.GifDecoder+mainPixels com.bumptech.glide.load.resource.gif.GifDecoder+frameCount com.bumptech.glide.load.resource.gif.GifDecoder+frames com.bumptech.glide.load.resource.gif.GifDecoder+currentFrame,1135,33,4,"/** 
+ * Reads next frame image
+ */
+","/**
+     * Reads next frame image
+     */
+    protected void readBitmap() {
+        currentFrame.ix = readShort(); // (sub)image position & size
+        currentFrame.iy = readShort();
+        currentFrame.iw = readShort();
+        currentFrame.ih = readShort();
+
+        int packed = read();
+        lctFlag = (packed & 0x80) != 0; // 1 - local color table flag interlace
+        lctSize = (int) Math.pow(2, (packed & 0x07) + 1);
+        // 3 - sort flag
+        // 4-5 - reserved lctSize = 2 << (packed & 7); // 6-8 - local color
+        // table size
+        currentFrame.interlace = (packed & 0x40) != 0;
+        if (lctFlag) {
+            currentFrame.lct = readColorTable(lctSize); // read table
+        } else {
+            currentFrame.lct = null; //No local color table
+        }
+
+        currentFrame.bufferFrameStart = rawData.position(); //Save this as the decoding position pointer
+
+        decodeBitmapData(null, mainPixels); // false decode pixel data to advance buffer
+        skip();
+        if (err()) {
+            return;
+        }
+
+        frameCount++;
+        frames.add(currentFrame); // add image to frame
+    }",True
+67,readLSD(),Method,,,com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+readShort() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read() com.bumptech.glide.load.resource.gif.GifDecoder+read(),com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+height com.bumptech.glide.load.resource.gif.GifDecoder+gctFlag com.bumptech.glide.load.resource.gif.GifDecoder+gctSize com.bumptech.glide.load.resource.gif.GifDecoder+bgIndex com.bumptech.glide.load.resource.gif.GifDecoder+pixelAspect com.bumptech.glide.load.resource.gif.GifDecoder+mainPixels com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+height com.bumptech.glide.load.resource.gif.GifDecoder+mainScratch com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+height,676,20,4,"/** 
+ * Reads Logical Screen Descriptor
+ */
+","/**
+     * Reads Logical Screen Descriptor
+     */
+    protected void readLSD() {
+        // logical screen size
+        width = readShort();
+        height = readShort();
+        // packed fields
+        int packed = read();
+        gctFlag = (packed & 0x80) != 0; // 1 : global color table flag
+        // 2-4 : color resolution
+        // 5 : gct sort flag
+        gctSize = 2 << (packed & 7); // 6-8 : gct size
+        bgIndex = read(); // background color index
+        pixelAspect = read(); // pixel aspect ratio
+
+        //Now that we know the size, init scratch arrays
+        mainPixels = new byte[width * height];
+        mainScratch = new int[width * height];
+    }",True
+68,getNextBitmap(),Method,,,"com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool+get(int,int,Config) com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool+get(int,int,Config)",com.bumptech.glide.load.resource.gif.GifDecoder+isTransparent com.bumptech.glide.load.resource.gif.GifDecoder+bitmapPool com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+height com.bumptech.glide.load.resource.gif.GifDecoder+width com.bumptech.glide.load.resource.gif.GifDecoder+height,343,8,2,,"private Bitmap getNextBitmap() {
+        Bitmap.Config targetConfig = isTransparent ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
+        Bitmap result = bitmapPool.get(width, height, targetConfig);
+        if (result == null) {
+            result = Bitmap.createBitmap(width, height, targetConfig);
+        }
+        return result;
+    }",False
+69,readNetscapeExt(),Method,,,com.bumptech.glide.load.resource.gif.GifDecoder+readBlock() com.bumptech.glide.load.resource.gif.GifDecoder+readBlock() com.bumptech.glide.load.resource.gif.GifDecoder+err() com.bumptech.glide.load.resource.gif.GifDecoder+err(),com.bumptech.glide.load.resource.gif.GifDecoder+block com.bumptech.glide.load.resource.gif.GifDecoder+block com.bumptech.glide.load.resource.gif.GifDecoder+block com.bumptech.glide.load.resource.gif.GifDecoder+loopCount com.bumptech.glide.load.resource.gif.GifDecoder+blockSize,429,14,4,"/** 
+ * Reads Netscape extenstion to obtain iteration count
+ */
+","/**
+     * Reads Netscape extenstion to obtain iteration count
+     */
+    protected void readNetscapeExt() {
+        do {
+            readBlock();
+            if (block[0] == 1) {
+                // loop count sub-block
+                int b1 = ((int) block[1]) & 0xff;
+                int b2 = ((int) block[2]) & 0xff;
+                loopCount = (b2 << 8) | b1;
+            }
+        } while ((blockSize > 0) && !err());
+    }",True
+70,readShort(),Method,,,java.nio.ByteBuffer+getShort() java.nio.ByteBuffer+getShort(),com.bumptech.glide.load.resource.gif.GifDecoder+rawData,155,7,4,"/** 
+ * Reads next 16-bit value, LSB first
+ */
+","/**
+     * Reads next 16-bit value, LSB first
+     */
+    protected int readShort() {
+        // read 16-bit value
+        return rawData.getShort();
+    }",True
+71,skip(),Method,,,com.bumptech.glide.load.resource.gif.GifDecoder+readBlock() com.bumptech.glide.load.resource.gif.GifDecoder+readBlock() com.bumptech.glide.load.resource.gif.GifDecoder+err() com.bumptech.glide.load.resource.gif.GifDecoder+err(),com.bumptech.glide.load.resource.gif.GifDecoder+blockSize,208,8,4,"/** 
+ * Skips variable length blocks up to and including next zero length block.
+ */
+","/**
+     * Skips variable length blocks up to and including next zero length block.
+     */
+    protected void skip() {
+        do {
+            readBlock();
+        } while ((blockSize > 0) && !err());
+    }",True

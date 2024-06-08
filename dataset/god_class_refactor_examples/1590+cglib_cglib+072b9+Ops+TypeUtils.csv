@@ -1,0 +1,822 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,SWITCH_STYLE_TRIE,Field,,,,,46,1,25,,public static final int SWITCH_STYLE_TRIE = 0;,False
+2,SWITCH_STYLE_HASH,Field,,,,,46,1,25,,public static final int SWITCH_STYLE_HASH = 1;,False
+3,FIND_CLASS,Field,,,,,99,2,26,,"private static final Signature FIND_CLASS =
+      Signature.parse(""Class CGLIB$findClass(String)"");",False
+4,Ops(),Method,,,,,21,2,2,,"private Ops() {
+    }",False
+5,load_class_this(Emitter),Method,,"net.sf.cglib.MethodInterceptor+generateStatic(Emitter,Context)","net.sf.cglib.core.Ops+load_class_helper(Emitter,Type) net.sf.cglib.core.Ops+load_class_helper(Emitter,Type) net.sf.cglib.core.Emitter+getClassType() net.sf.cglib.core.Emitter+getClassType()",,101,3,9,,"public static void load_class_this(Emitter e) {
+        load_class_helper(e, e.getClassType());
+    }",True
+6,"load_class(Emitter,Type)",Method,"load_method(Emitter,Method) push_object(Emitter,Object)",,"net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+isPrimitive(Type) java.lang.IllegalArgumentException+IllegalArgumentException(String) net.sf.cglib.core.Emitter+getstatic(Type,String,Type) net.sf.cglib.core.Emitter+getstatic(Type,String,Type) net.sf.cglib.core.Ops+getBoxedType(Type) net.sf.cglib.core.Ops+getBoxedType(Type) net.sf.cglib.core.Ops+load_class_helper(Emitter,Type) net.sf.cglib.core.Ops+load_class_helper(Emitter,Type)",org.objectweb.asm.Type+VOID_TYPE net.sf.cglib.core.Types+CLASS,366,10,9,,"public static void load_class(Emitter e, Type type) {
+        if (Emitter.isPrimitive(type)) {
+            if (type == Type.VOID_TYPE) {
+                throw new IllegalArgumentException(""cannot load void type"");
+            }
+            e.getstatic(getBoxedType(type), ""TYPE"", Types.CLASS);
+        } else {
+            load_class_helper(e, type);
+        }
+    }",True
+7,"load_method(Emitter,Method)",Method,,"net.sf.cglib.InvocationHandler+generateStatic(Emitter,Context) net.sf.cglib.MethodInterceptor+generateStatic(Emitter,Context)","net.sf.cglib.core.Ops+load_class(Emitter,Type) net.sf.cglib.core.Ops+load_class(Emitter,Type) org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) java.lang.reflect.Method+getDeclaringClass() java.lang.reflect.Method+getDeclaringClass() net.sf.cglib.core.Emitter+push(String) net.sf.cglib.core.Emitter+push(String) java.lang.reflect.Method+getName() java.lang.reflect.Method+getName() net.sf.cglib.core.Ops+push_object(Emitter,Object) net.sf.cglib.core.Ops+push_object(Emitter,Object) java.lang.reflect.Method+getParameterTypes() java.lang.reflect.Method+getParameterTypes() net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature)",net.sf.cglib.core.Types+CLASS net.sf.cglib.core.Signatures+GET_DECLARED_METHOD,286,6,9,,"public static void load_method(Emitter e, Method method) {
+        load_class(e, Type.getType(method.getDeclaringClass()));
+        e.push(method.getName());
+        push_object(e, method.getParameterTypes());
+        e.invoke_virtual(Types.CLASS, Signatures.GET_DECLARED_METHOD);
+    }",True
+8,"load_class_helper(Emitter,Type)",Method,"load_class_this(Emitter) load_class(Emitter,Type)",,"net.sf.cglib.core.Emitter+register(Object,FinalizeCallback) net.sf.cglib.core.Emitter+register(Object,FinalizeCallback) +() +process()",net.sf.cglib.core.Ops+FIND_CLASS,322,9,10,,"private static void load_class_helper(final Emitter e, Type type) {
+        e.register(FIND_CLASS, new Emitter.FinalizeCallback() {
+            public void process() {
+                generateFindClass(e);
+            }
+        });
+        e.push(emulateClassGetName(type));
+        e.invoke_static_this(FIND_CLASS);
+    }",True
+9,emulateClassGetName(Type),Method,,,"net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+isArray(Type) net.sf.cglib.core.Emitter+isArray(Type) java.lang.String+replace(char,char) org.objectweb.asm.Type+getDescriptor() org.objectweb.asm.Type+getDescriptor() java.lang.String+replace(char,char) org.objectweb.asm.Type+getClassName() org.objectweb.asm.Type+getClassName()",,252,7,10,,"private static String emulateClassGetName(Type type) {
+        if (Emitter.isPrimitive(type) || Emitter.isArray(type)) {
+            return type.getDescriptor().replace('/', '.');
+        } else {
+            return type.getClassName();
+        }
+    }",True
+10,generateFindClass(Emitter),Method,,,"net.sf.cglib.core.Emitter+begin_method(int,Signature,Type[]) net.sf.cglib.core.Emitter+begin_method(int,Signature,Type[]) net.sf.cglib.core.Emitter+begin_block() net.sf.cglib.core.Emitter+begin_block() net.sf.cglib.core.Emitter+load_arg(int) net.sf.cglib.core.Emitter+load_arg(int) net.sf.cglib.core.Emitter+invoke_static(Type,Signature) net.sf.cglib.core.Emitter+invoke_static(Type,Signature) net.sf.cglib.core.Emitter+return_value() net.sf.cglib.core.Emitter+return_value() net.sf.cglib.core.Emitter+end_block() net.sf.cglib.core.Emitter+end_block() net.sf.cglib.core.Emitter+catch_exception(Block,Type) net.sf.cglib.core.Emitter+catch_exception(Block,Type) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+new_instance(Type) net.sf.cglib.core.Emitter+new_instance(Type) net.sf.cglib.core.Emitter+dup_x1() net.sf.cglib.core.Emitter+dup_x1() net.sf.cglib.core.Emitter+swap() net.sf.cglib.core.Emitter+swap() net.sf.cglib.core.Emitter+invoke_constructor(Type,Signature) net.sf.cglib.core.Emitter+invoke_constructor(Type,Signature) net.sf.cglib.core.Emitter+athrow() net.sf.cglib.core.Emitter+athrow()",net.sf.cglib.core.Constants+PRIVATE_FINAL_STATIC net.sf.cglib.core.Ops+FIND_CLASS net.sf.cglib.core.Types+CLASS net.sf.cglib.core.Signatures+FOR_NAME net.sf.cglib.core.Types+CLASS_NOT_FOUND_EXCEPTION net.sf.cglib.core.Types+THROWABLE net.sf.cglib.core.Signatures+GET_MESSAGE net.sf.cglib.core.Types+NO_CLASS_DEF_FOUND_ERROR net.sf.cglib.core.Types+NO_CLASS_DEF_FOUND_ERROR net.sf.cglib.core.Signatures+CSTRUCT_STRING,986,24,10,,"private static void generateFindClass(Emitter e) {
+        /* generates:
+           static private Class findClass(String name) throws Exception {
+               try {
+                   return Class.forName(name);
+               } catch (java.lang.ClassNotFoundException cne) {
+                   throw new java.lang.NoClassDefFoundError(cne.getMessage());
+               }
+           }
+         */
+        e.begin_method(Constants.PRIVATE_FINAL_STATIC, FIND_CLASS, null);
+        Block block = e.begin_block();
+        e.load_arg(0);
+        e.invoke_static(Types.CLASS, Signatures.FOR_NAME);
+        e.return_value();
+        e.end_block();
+        e.catch_exception(block, Types.CLASS_NOT_FOUND_EXCEPTION);
+        e.invoke_virtual(Types.THROWABLE, Signatures.GET_MESSAGE);
+        e.new_instance(Types.NO_CLASS_DEF_FOUND_ERROR);
+        e.dup_x1();
+        e.swap();
+        e.invoke_constructor(Types.NO_CLASS_DEF_FOUND_ERROR, Signatures.CSTRUCT_STRING);
+        e.athrow();
+    }",True
+11,create_arg_array(Emitter),Method,,"net.sf.cglib.InvocationHandler+generate(Emitter,Context) net.sf.cglib.MethodInterceptor+generateAroundMethod(Emitter,Context,Method)","net.sf.cglib.core.Emitter+getArgumentTypes() net.sf.cglib.core.Emitter+getArgumentTypes() net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+newarray() net.sf.cglib.core.Emitter+newarray() net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+load_arg(int) net.sf.cglib.core.Emitter+load_arg(int) net.sf.cglib.core.Ops+box(Emitter,Type) net.sf.cglib.core.Ops+box(Emitter,Type) net.sf.cglib.core.Emitter+aastore() net.sf.cglib.core.Emitter+aastore()",,654,20,9,"/** 
+ * Allocates and fills an Object[] array with the arguments to the current method. Primitive values are inserted as their boxed (Object) equivalents.
+ */
+","/**
+     * Allocates and fills an Object[] array with the arguments to the
+     * current method. Primitive values are inserted as their boxed
+     * (Object) equivalents.
+     */
+    public static void create_arg_array(Emitter e) {
+        /* generates:
+           Object[] args = new Object[]{ arg1, new Integer(arg2) };
+         */
+        Type[] argumentTypes = e.getArgumentTypes();
+        e.push(argumentTypes.length);
+        e.newarray();
+        for (int i = 0; i < argumentTypes.length; i++) {
+            e.dup();
+            e.push(i);
+            e.load_arg(i);
+            box(e, argumentTypes[i]);
+            e.aastore();
+        }
+    }",False
+12,"push(Emitter,Object[])",Method,"push_object(Emitter,Object)","net.sf.cglib.beans.BeanMap+generateKeySet(Map,Map)","net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+newarray(Type) net.sf.cglib.core.Emitter+newarray(Type) org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) java.lang.Class+getComponentType() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getComponentType() net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Ops+push_object(Emitter,Object) net.sf.cglib.core.Ops+push_object(Emitter,Object) net.sf.cglib.core.Emitter+aastore() net.sf.cglib.core.Emitter+aastore()",,325,10,9,,"public static void push(Emitter e, Object[] array) {
+        e.push(array.length);
+        e.newarray(Type.getType(array.getClass().getComponentType()));
+        for (int i = 0; i < array.length; i++) {
+            e.dup();
+            e.push(i);
+            push_object(e, array[i]);
+            e.aastore();
+        }
+    }",True
+13,"push_object(Emitter,Object)",Method,"load_method(Emitter,Method) push(Emitter,Object[]) push_unboxed(Emitter,Object)",,"net.sf.cglib.core.Emitter+aconst_null() net.sf.cglib.core.Emitter+aconst_null() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+isArray() java.lang.Class+isArray() net.sf.cglib.core.Ops+push(Emitter,Object[]) net.sf.cglib.core.Ops+push(Emitter,Object[]) net.sf.cglib.core.Emitter+push(String) net.sf.cglib.core.Emitter+push(String) net.sf.cglib.core.Ops+load_class(Emitter,Type) net.sf.cglib.core.Ops+load_class(Emitter,Type) org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) net.sf.cglib.core.Emitter+new_instance(Type) net.sf.cglib.core.Emitter+new_instance(Type) net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+push(String) net.sf.cglib.core.Emitter+push(String) java.lang.Object+toString() java.lang.Object+toString() net.sf.cglib.core.Emitter+invoke_constructor(Type) net.sf.cglib.core.Emitter+invoke_constructor(Type) net.sf.cglib.core.Emitter+new_instance(Type) net.sf.cglib.core.Emitter+new_instance(Type) net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+push(String) net.sf.cglib.core.Emitter+push(String) java.lang.Object+toString() java.lang.Object+toString() net.sf.cglib.core.Emitter+invoke_constructor(Type) net.sf.cglib.core.Emitter+invoke_constructor(Type) net.sf.cglib.core.Ops+push_unboxed(Emitter,Object) net.sf.cglib.core.Ops+push_unboxed(Emitter,Object) java.lang.IllegalArgumentException+IllegalArgumentException(String) java.lang.Object+getClass() java.lang.Object+getClass()",net.sf.cglib.core.Types+BIG_INTEGER net.sf.cglib.core.Types+BIG_INTEGER net.sf.cglib.core.Types+BIG_DECIMAL net.sf.cglib.core.Types+BIG_DECIMAL,1106,28,9,,"public static void push_object(Emitter e, Object obj) {
+        if (obj == null) {
+            e.aconst_null();
+        } else {
+            Class type = obj.getClass();
+            if (type.isArray()) {
+                push(e, (Object[])obj);
+            } else if (obj instanceof String) {
+                e.push((String)obj);
+            } else if (obj instanceof Class) {
+                load_class(e, Type.getType((Class)obj));
+            } else if (obj instanceof BigInteger) {
+                e.new_instance(Types.BIG_INTEGER);
+                e.dup();
+                e.push(obj.toString());
+                e.invoke_constructor(Types.BIG_INTEGER);
+            } else if (obj instanceof BigDecimal) {
+                e.new_instance(Types.BIG_DECIMAL);
+                e.dup();
+                e.push(obj.toString());
+                e.invoke_constructor(Types.BIG_DECIMAL);
+            } else if (obj instanceof Number) {
+                push_unboxed(e, obj);
+            } else {
+                throw new IllegalArgumentException(""unknown type: "" + obj.getClass());
+            }
+        }
+    }",True
+14,"push_unboxed(Emitter,Object)",Method,"push_object(Emitter,Object)",,"net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) java.lang.Boolean+booleanValue() java.lang.Boolean+booleanValue() net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) java.lang.Character+charValue() java.lang.Character+charValue() net.sf.cglib.core.Emitter+push(long) net.sf.cglib.core.Emitter+push(long) java.lang.Long+longValue() java.lang.Long+longValue() net.sf.cglib.core.Emitter+push(double) net.sf.cglib.core.Emitter+push(double) java.lang.Double+doubleValue() java.lang.Double+doubleValue() net.sf.cglib.core.Emitter+push(float) net.sf.cglib.core.Emitter+push(float) java.lang.Float+floatValue() java.lang.Float+floatValue() net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) java.lang.Number+intValue() java.lang.Number+intValue() net.sf.cglib.core.Ops+push_object(Emitter,Object) net.sf.cglib.core.Ops+push_object(Emitter,Object)",,948,24,9,"/** 
+ * If the object is a Number, Boolean, or Character, pushes the equivalent primitive value onto the stack. Otherwise, calls push_object(obj).
+ */
+","/**
+     * If the object is a Number, Boolean, or Character, pushes the equivalent primitive
+     * value onto the stack. Otherwise, calls push_object(obj).
+     */
+    public static void push_unboxed(Emitter e, Object obj)
+    {
+        if (obj instanceof Boolean) {
+            e.push(((Boolean)obj).booleanValue() ? 1 : 0);
+        } else if (obj instanceof Character) {
+            e.push((short)((Character)obj).charValue());
+        } else if (obj instanceof Long) {
+            e.push(((Long)obj).longValue());
+        } else if (obj instanceof Double) {
+            e.push(((Double)obj).doubleValue());
+        } else if (obj instanceof Float) {
+            e.push(((Float)obj).floatValue());
+        } else if ((obj instanceof Integer) ||
+                   (obj instanceof Short) ||
+                   (obj instanceof Byte)) {
+            e.push(((Number)obj).intValue());
+        } else {
+            push_object(e, obj);
+        }
+    }",True
+15,"zero_or_null(Emitter,Type)",Method,"unbox_or_zero(Emitter,Type)",net.sf.cglib.reflect.MulticastDelegate+Generator.generateClass(ClassVisitor),net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+isPrimitive(Type) org.objectweb.asm.Type+getSort() org.objectweb.asm.Type+getSort() net.sf.cglib.core.Emitter+push(double) net.sf.cglib.core.Emitter+push(double) net.sf.cglib.core.Emitter+push(long) net.sf.cglib.core.Emitter+push(long) net.sf.cglib.core.Emitter+push(float) net.sf.cglib.core.Emitter+push(float) net.sf.cglib.core.Emitter+aconst_null() net.sf.cglib.core.Emitter+aconst_null() net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+aconst_null() net.sf.cglib.core.Emitter+aconst_null(),org.objectweb.asm.Type+DOUBLE org.objectweb.asm.Type+LONG org.objectweb.asm.Type+FLOAT org.objectweb.asm.Type+VOID,670,24,9,"/** 
+ * Pushes a zero onto the stack if the argument is a primitive class, or a null otherwise.
+ */
+","/**
+     * Pushes a zero onto the stack if the argument is a primitive class, or a null otherwise.
+     */
+    public static void zero_or_null(Emitter e, Type type) {
+        if (Emitter.isPrimitive(type)) {
+            switch (type.getSort()) {
+            case Type.DOUBLE:
+                e.push(0d);
+                break;
+            case Type.LONG:
+                e.push(0L);
+                break;
+            case Type.FLOAT:
+                e.push(0f);
+                break;
+            case Type.VOID:
+                e.aconst_null();
+            default:
+                e.push(0);
+            }
+        } else {
+            e.aconst_null();
+        }
+    }",False
+16,"unbox_or_zero(Emitter,Type)",Method,,"net.sf.cglib.MethodInterceptor+generateAroundMethod(Emitter,Context,Method)","net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+ifnonnull(Label) net.sf.cglib.core.Emitter+ifnonnull(Label) net.sf.cglib.core.Emitter+pop() net.sf.cglib.core.Emitter+pop() net.sf.cglib.core.Ops+zero_or_null(Emitter,Type) net.sf.cglib.core.Ops+zero_or_null(Emitter,Type) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Ops+unbox(Emitter,Type) net.sf.cglib.core.Ops+unbox(Emitter,Type) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+checkcast(Type) net.sf.cglib.core.Emitter+checkcast(Type)",org.objectweb.asm.Type+VOID_TYPE,698,22,9,"/** 
+ * Unboxes the object on the top of the stack. If the object is null, the unboxed primitive value becomes zero.
+ */
+","/**
+     * Unboxes the object on the top of the stack. If the object is null, the
+     * unboxed primitive value becomes zero.
+     */
+    public static void unbox_or_zero(Emitter e, Type type) {
+        if (Emitter.isPrimitive(type)) {
+            if (type != Type.VOID_TYPE) {
+                Label nonNull = e.make_label();
+                Label end = e.make_label();
+                e.dup();
+                e.ifnonnull(nonNull);
+                e.pop();
+                zero_or_null(e, type);
+                e.goTo(end);
+                e.mark(nonNull);
+                unbox(e, type);
+                e.mark(end);
+            }
+        } else {
+            e.checkcast(type);
+        }
+    }",False
+17,getBoxedType(Type),Method,"load_class(Emitter,Type) box(Emitter,Type)",,org.objectweb.asm.Type+getSort() org.objectweb.asm.Type+getSort(),org.objectweb.asm.Type+CHAR net.sf.cglib.core.Types+CHARACTER org.objectweb.asm.Type+BOOLEAN net.sf.cglib.core.Types+BOOLEAN org.objectweb.asm.Type+DOUBLE net.sf.cglib.core.Types+DOUBLE org.objectweb.asm.Type+FLOAT net.sf.cglib.core.Types+FLOAT org.objectweb.asm.Type+LONG net.sf.cglib.core.Types+LONG org.objectweb.asm.Type+INT net.sf.cglib.core.Types+INTEGER org.objectweb.asm.Type+SHORT net.sf.cglib.core.Types+SHORT org.objectweb.asm.Type+BYTE net.sf.cglib.core.Types+BYTE,598,22,10,,"private static Type getBoxedType(Type type) {
+        switch (type.getSort()) {
+        case Type.CHAR:
+            return Types.CHARACTER;
+        case Type.BOOLEAN:
+            return Types.BOOLEAN;
+        case Type.DOUBLE:
+            return Types.DOUBLE;
+        case Type.FLOAT:
+            return Types.FLOAT;
+        case Type.LONG:
+            return Types.LONG;
+        case Type.INT:
+            return Types.INTEGER;
+        case Type.SHORT:
+            return Types.SHORT;
+        case Type.BYTE:
+            return Types.BYTE;
+        default:
+            return type;
+        }
+    }",True
+18,"box(Emitter,Type)",Method,create_arg_array(Emitter),"net.sf.cglib.beans.BeanMap+processCase(Object,Label) net.sf.cglib.beans.BeanMap+processCase(Object,Label) net.sf.cglib.beans.BulkBean+generateGet(Class,Method[]) net.sf.cglib.reflect.FastClass+processCase(int,Label)","net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+aconst_null() net.sf.cglib.core.Emitter+aconst_null() net.sf.cglib.core.Ops+getBoxedType(Type) net.sf.cglib.core.Ops+getBoxedType(Type) net.sf.cglib.core.Emitter+new_instance(Type) net.sf.cglib.core.Emitter+new_instance(Type) org.objectweb.asm.Type+getSize() org.objectweb.asm.Type+getSize() net.sf.cglib.core.Emitter+dup_x2() net.sf.cglib.core.Emitter+dup_x2() net.sf.cglib.core.Emitter+dup_x2() net.sf.cglib.core.Emitter+dup_x2() net.sf.cglib.core.Emitter+pop() net.sf.cglib.core.Emitter+pop() net.sf.cglib.core.Emitter+dup_x1() net.sf.cglib.core.Emitter+dup_x1() net.sf.cglib.core.Emitter+swap() net.sf.cglib.core.Emitter+swap() net.sf.cglib.core.Emitter+invoke_constructor(Type,Type[]) net.sf.cglib.core.Emitter+invoke_constructor(Type,Type[])",org.objectweb.asm.Type+VOID_TYPE,1095,28,9,"/** 
+ * If the argument is a primitive class, replaces the primitive value on the top of the stack with the wrapped (Object) equivalent. For example, char -> Character. If the class is Void, a null is pushed onto the stack instead.
+ * @param type the class indicating the current type of the top stack value
+ */
+","/**
+      * If the argument is a primitive class, replaces the primitive value
+      * on the top of the stack with the wrapped (Object) equivalent. For
+      * example, char -> Character.
+      * If the class is Void, a null is pushed onto the stack instead.
+      * @param type the class indicating the current type of the top stack value
+      */
+     public static void box(Emitter e, Type type) {
+         if (Emitter.isPrimitive(type)) {
+             if (type == Type.VOID_TYPE) {
+                 e.aconst_null();
+             } else {
+                 Type boxed = getBoxedType(type);
+                 e.new_instance(boxed);
+                 if (type.getSize() == 2) {
+                     // Pp -> Ppo -> oPpo -> ooPpo -> ooPp -> o
+                     e.dup_x2();
+                     e.dup_x2();
+                     e.pop();
+                 } else {
+                     // p -> po -> opo -> oop -> o
+                     e.dup_x1();
+                     e.swap();
+                 }
+                 e.invoke_constructor(boxed, new Type[]{ type });
+             }
+         }
+     }",False
+19,"unbox(Emitter,Type)",Method,"unbox_or_zero(Emitter,Type)","net.sf.cglib.beans.BeanMap+processCase(Object,Label) net.sf.cglib.beans.BulkBean+generateSet(Class,Method[]) net.sf.cglib.Enhancer+processCase(Object,Label) net.sf.cglib.InvocationHandler+generate(Emitter,Context) net.sf.cglib.reflect.FastClass+processCase(int,Label)","org.objectweb.asm.Type+getSort() org.objectweb.asm.Type+getSort() net.sf.cglib.core.Emitter+checkcast(Type) net.sf.cglib.core.Emitter+checkcast(Type) net.sf.cglib.core.Emitter+checkcast(Type) net.sf.cglib.core.Emitter+checkcast(Type) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature)",net.sf.cglib.core.Types+NUMBER org.objectweb.asm.Type+VOID org.objectweb.asm.Type+CHAR net.sf.cglib.core.Types+CHARACTER net.sf.cglib.core.Signatures+CHAR_VALUE org.objectweb.asm.Type+BOOLEAN net.sf.cglib.core.Types+BOOLEAN net.sf.cglib.core.Signatures+BOOLEAN_VALUE org.objectweb.asm.Type+DOUBLE net.sf.cglib.core.Signatures+DOUBLE_VALUE org.objectweb.asm.Type+FLOAT net.sf.cglib.core.Signatures+FLOAT_VALUE org.objectweb.asm.Type+LONG net.sf.cglib.core.Signatures+LONG_VALUE org.objectweb.asm.Type+INT org.objectweb.asm.Type+SHORT org.objectweb.asm.Type+BYTE net.sf.cglib.core.Signatures+INT_VALUE,1282,43,9,"/** 
+ * If the argument is a primitive class, replaces the object on the top of the stack with the unwrapped (primitive) equivalent. For example, Character -> char.
+ * @param type the class indicating the desired type of the top stack value
+ * @return true if the value was unboxed
+ */
+","/**
+     * If the argument is a primitive class, replaces the object
+     * on the top of the stack with the unwrapped (primitive)
+     * equivalent. For example, Character -> char.
+     * @param type the class indicating the desired type of the top stack value
+     * @return true if the value was unboxed
+     */
+    public static void unbox(Emitter e, Type type) {
+        Type t = Types.NUMBER;
+        Signature sig = null;
+        switch (type.getSort()) {
+        case Type.VOID:
+            return;
+        case Type.CHAR:
+            t = Types.CHARACTER;
+            sig = Signatures.CHAR_VALUE;
+            break;
+        case Type.BOOLEAN:
+            t = Types.BOOLEAN;
+            sig = Signatures.BOOLEAN_VALUE;
+            break;
+        case Type.DOUBLE:
+            sig = Signatures.DOUBLE_VALUE;
+            break;
+        case Type.FLOAT:
+            sig = Signatures.FLOAT_VALUE;
+            break;
+        case Type.LONG:
+            sig = Signatures.LONG_VALUE;
+            break;
+        case Type.INT:
+        case Type.SHORT:
+        case Type.BYTE:
+            sig = Signatures.INT_VALUE;
+        }
+
+        if (sig == null) {
+            e.checkcast(type);
+        } else {
+            e.checkcast(t);
+            e.invoke_virtual(t, sig);
+        }
+    }",False
+20,"process_array(Emitter,Type,ProcessArrayCallback)",Method,,net.sf.cglib.core.KeyFactory+hash_array(Type) net.sf.cglib.reflect.MulticastDelegate+Generator.generateClass(ClassVisitor),"net.sf.cglib.core.Emitter+getComponentType(Type) net.sf.cglib.core.Emitter+getComponentType(Type) net.sf.cglib.core.Emitter+make_local() net.sf.cglib.core.Emitter+make_local() net.sf.cglib.core.Emitter+make_local(Type) net.sf.cglib.core.Emitter+make_local(Type) net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+array_load(Type) net.sf.cglib.core.Emitter+array_load(Type) net.sf.cglib.core.ProcessArrayCallback+processElement(Type) net.sf.cglib.core.ProcessArrayCallback+processElement(Type) net.sf.cglib.core.Emitter+iinc(Local,int) net.sf.cglib.core.Emitter+iinc(Local,int) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+arraylength() net.sf.cglib.core.Emitter+arraylength() net.sf.cglib.core.Emitter+if_icmplt(Label) net.sf.cglib.core.Emitter+if_icmplt(Label)",org.objectweb.asm.Type+INT_TYPE,1155,31,9,"/** 
+ * Process an array on the stack. Assumes the top item on the stack is an array of the specified type. For each element in the array, puts the element on the stack and triggers the callback.
+ * @param type the type of the array (type.isArray() must be true)
+ * @param callback the callback triggered for each element
+ */
+","/**
+     * Process an array on the stack. Assumes the top item on the stack
+     * is an array of the specified type. For each element in the array,
+     * puts the element on the stack and triggers the callback.
+     * @param type the type of the array (type.isArray() must be true)
+     * @param callback the callback triggered for each element
+     */
+    public static void process_array(Emitter e, Type type, ProcessArrayCallback callback) {
+        Type componentType = Emitter.getComponentType(type);
+        Local array = e.make_local();
+        Local loopvar = e.make_local(Type.INT_TYPE);
+        Label loopbody = e.make_label();
+        Label checkloop = e.make_label();
+        e.store_local(array);
+        e.push(0);
+        e.store_local(loopvar);
+        e.goTo(checkloop);
+        
+        e.mark(loopbody);
+        e.load_local(array);
+        e.load_local(loopvar);
+        e.array_load(componentType);
+        callback.processElement(componentType);
+        e.iinc(loopvar, 1);
+        
+        e.mark(checkloop);
+        e.load_local(loopvar);
+        e.load_local(array);
+        e.arraylength();
+        e.if_icmplt(loopbody);
+    }",False
+21,"process_arrays(Emitter,Type,ProcessArrayCallback)",Method,"not_equals_helper(Emitter,Type,Label,ProcessArrayCallback)",,"net.sf.cglib.core.Emitter+getComponentType(Type) net.sf.cglib.core.Emitter+getComponentType(Type) net.sf.cglib.core.Emitter+make_local() net.sf.cglib.core.Emitter+make_local() net.sf.cglib.core.Emitter+make_local() net.sf.cglib.core.Emitter+make_local() net.sf.cglib.core.Emitter+make_local(Type) net.sf.cglib.core.Emitter+make_local(Type) net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+push(int) net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+store_local(Local) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+array_load(Type) net.sf.cglib.core.Emitter+array_load(Type) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+array_load(Type) net.sf.cglib.core.Emitter+array_load(Type) net.sf.cglib.core.ProcessArrayCallback+processElement(Type) net.sf.cglib.core.ProcessArrayCallback+processElement(Type) net.sf.cglib.core.Emitter+iinc(Local,int) net.sf.cglib.core.Emitter+iinc(Local,int) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+load_local(Local) net.sf.cglib.core.Emitter+arraylength() net.sf.cglib.core.Emitter+arraylength() net.sf.cglib.core.Emitter+if_icmplt(Label) net.sf.cglib.core.Emitter+if_icmplt(Label)",org.objectweb.asm.Type+INT_TYPE,1400,36,9,"/** 
+ * Process two arrays on the stack in parallel. Assumes the top two items on the stack are arrays of the specified class. The arrays must be the same length. For each pair of elements in the arrays, puts the pair on the stack and triggers the callback.
+ * @param type the type of the arrays (type.isArray() must be true)
+ * @param callback the callback triggered for each pair of elements
+ */
+","/**
+     * Process two arrays on the stack in parallel. Assumes the top two items on the stack
+     * are arrays of the specified class. The arrays must be the same length. For each pair
+     * of elements in the arrays, puts the pair on the stack and triggers the callback.
+     * @param type the type of the arrays (type.isArray() must be true)
+     * @param callback the callback triggered for each pair of elements
+     */
+    public static void process_arrays(Emitter e, Type type, ProcessArrayCallback callback) {
+        Type componentType = Emitter.getComponentType(type);
+        Local array1 = e.make_local();
+        Local array2 = e.make_local();
+        Local loopvar = e.make_local(Type.INT_TYPE);
+        Label loopbody = e.make_label();
+        Label checkloop = e.make_label();
+        e.store_local(array1);
+        e.store_local(array2);
+        e.push(0);
+        e.store_local(loopvar);
+        e.goTo(checkloop);
+        
+        e.mark(loopbody);
+        e.load_local(array1);
+        e.load_local(loopvar);
+        e.array_load(componentType);
+        e.load_local(array2);
+        e.load_local(loopvar);
+        e.array_load(componentType);
+        callback.processElement(componentType);
+        e.iinc(loopvar, 1);
+        
+        e.mark(checkloop);
+        e.load_local(loopvar);
+        e.load_local(array1);
+        e.arraylength();
+        e.if_icmplt(loopbody);
+    }",False
+22,"not_equals(Emitter,Type,Label)",Method,,net.sf.cglib.core.KeyFactory+generateEquals(Class[]),+processElement(Type) +() +processElement(Type),,640,14,9,"/** 
+ * Branches to the specified label if the top two items on the stack are not equal. The items must both be of the specified class. Equality is determined by comparing primitive values directly and by invoking the <code>equals</code> method for Objects. Arrays are recursively processed in the same manner.
+ */
+","/**
+     * Branches to the specified label if the top two items on the stack
+     * are not equal. The items must both be of the specified
+     * class. Equality is determined by comparing primitive values
+     * directly and by invoking the <code>equals</code> method for
+     * Objects. Arrays are recursively processed in the same manner.
+     */
+    public static void not_equals(final Emitter e, Type type, final Label notEquals) {
+        (new ProcessArrayCallback() {
+            public void processElement(Type type) {
+                not_equals_helper(e, type, notEquals, this);
+            }
+        }).processElement(type);
+    }",False
+23,"not_equals_helper(Emitter,Type,Label,ProcessArrayCallback)",Method,,,"net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+isPrimitive(Type) net.sf.cglib.core.Emitter+if_cmpne(Type,Label) net.sf.cglib.core.Emitter+if_cmpne(Type,Label) net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Ops+nullcmp(Emitter,Label,Label) net.sf.cglib.core.Ops+nullcmp(Emitter,Label,Label) net.sf.cglib.core.Emitter+isArray(Type) net.sf.cglib.core.Emitter+isArray(Type) net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+dup2() net.sf.cglib.core.Emitter+dup2() net.sf.cglib.core.Emitter+arraylength() net.sf.cglib.core.Emitter+arraylength() net.sf.cglib.core.Emitter+swap() net.sf.cglib.core.Emitter+swap() net.sf.cglib.core.Emitter+arraylength() net.sf.cglib.core.Emitter+arraylength() net.sf.cglib.core.Emitter+if_icmpeq(Label) net.sf.cglib.core.Emitter+if_icmpeq(Label) net.sf.cglib.core.Emitter+pop2() net.sf.cglib.core.Emitter+pop2() net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Ops+process_arrays(Emitter,Type,ProcessArrayCallback) net.sf.cglib.core.Ops+process_arrays(Emitter,Type,ProcessArrayCallback) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+ifeq(Label) net.sf.cglib.core.Emitter+ifeq(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label)",net.sf.cglib.core.Types+OBJECT net.sf.cglib.core.Signatures+EQUALS,874,24,10,,"private static void not_equals_helper(Emitter e, Type type, Label notEquals, ProcessArrayCallback callback) {
+        if (Emitter.isPrimitive(type)) {
+            e.if_cmpne(type, notEquals);
+        } else {
+            Label end = e.make_label();
+            nullcmp(e, notEquals, end);
+            if (Emitter.isArray(type)) {
+                Label checkContents = e.make_label();
+                e.dup2();
+                e.arraylength();
+                e.swap();
+                e.arraylength();
+                e.if_icmpeq(checkContents);
+                e.pop2();
+                e.goTo(notEquals);
+                e.mark(checkContents);
+                process_arrays(e, type, callback);
+            } else {
+                e.invoke_virtual(Types.OBJECT, Signatures.EQUALS);
+                e.ifeq(notEquals);
+            }
+            e.mark(end);
+        }
+    }",False
+24,"nullcmp(Emitter,Label,Label)",Method,"not_equals_helper(Emitter,Type,Label,ProcessArrayCallback)",,net.sf.cglib.core.Emitter+dup2() net.sf.cglib.core.Emitter+dup2() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+ifnonnull(Label) net.sf.cglib.core.Emitter+ifnonnull(Label) net.sf.cglib.core.Emitter+ifnonnull(Label) net.sf.cglib.core.Emitter+ifnonnull(Label) net.sf.cglib.core.Emitter+pop2() net.sf.cglib.core.Emitter+pop2() net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+ifnull(Label) net.sf.cglib.core.Emitter+ifnull(Label) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+pop2() net.sf.cglib.core.Emitter+pop2() net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+goTo(Label) net.sf.cglib.core.Emitter+mark(Label) net.sf.cglib.core.Emitter+mark(Label),,885,27,10,"/** 
+ * If both objects on the top of the stack are non-null, does nothing. If one is null, or both are null, both are popped off and execution branches to the respective label.
+ * @param oneNull label to branch to if only one of the objects is null
+ * @param bothNull label to branch to if both of the objects are null
+ */
+","/**
+     * If both objects on the top of the stack are non-null, does nothing.
+     * If one is null, or both are null, both are popped off and execution
+     * branches to the respective label.
+     * @param oneNull label to branch to if only one of the objects is null
+     * @param bothNull label to branch to if both of the objects are null
+     */
+    private static void nullcmp(Emitter e, Label oneNull, Label bothNull) {
+        e.dup2();
+        Label nonNull = e.make_label();
+        Label oneNullHelper = e.make_label();
+        Label end = e.make_label();
+        e.ifnonnull(nonNull);
+        e.ifnonnull(oneNullHelper);
+        e.pop2();
+        e.goTo(bothNull);
+        
+        e.mark(nonNull);
+        e.ifnull(oneNullHelper);
+        e.goTo(end);
+        
+        e.mark(oneNullHelper);
+        e.pop2();
+        e.goTo(oneNull);
+        
+        e.mark(end);
+    }",False
+25,"string_switch(Emitter,String[],int,ObjectSwitchCallback)",Method,,"net.sf.cglib.beans.BeanMap+generateGet(Class,int,Map) net.sf.cglib.beans.BeanMap+generatePut(Class,int,Map) net.sf.cglib.core.TestStringSwitch+Generator.generateClass(ClassVisitor)","net.sf.cglib.core.Ops+string_switch_trie(Emitter,String[],ObjectSwitchCallback) net.sf.cglib.core.Ops+string_switch_trie(Emitter,String[],ObjectSwitchCallback) net.sf.cglib.core.Ops+string_switch_hash(Emitter,String[],ObjectSwitchCallback) net.sf.cglib.core.Ops+string_switch_hash(Emitter,String[],ObjectSwitchCallback) java.lang.IllegalArgumentException+IllegalArgumentException(String)",net.sf.cglib.core.Ops+SWITCH_STYLE_TRIE net.sf.cglib.core.Ops+SWITCH_STYLE_HASH,493,13,9,,"public static void string_switch(Emitter e, String[] strings, int switchStyle, ObjectSwitchCallback callback)
+    throws Exception {
+        switch (switchStyle) {
+        case SWITCH_STYLE_TRIE:
+            string_switch_trie(e, strings, callback);
+            break;
+        case SWITCH_STYLE_HASH:
+            string_switch_hash(e, strings, callback);
+            break;
+        default:
+            throw new IllegalArgumentException(""unknown switch style "" + switchStyle);
+        }
+    }",False
+26,"string_switch_trie(Emitter,String[],ObjectSwitchCallback)",Method,"string_switch(Emitter,String[],int,ObjectSwitchCallback)",,"net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.Emitter+make_label() net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) +() +transform(Object)",,1159,26,10,,"private static void string_switch_trie(final Emitter e,
+                                           String[] strings,
+                                           final ObjectSwitchCallback callback) throws Exception {
+        final Label def = e.make_label();
+        final Label end = e.make_label();
+        final Map buckets = CollectionUtils.bucket(Arrays.asList(strings), new Transformer() {
+            public Object transform(Object value) {
+                return new Integer(((String)value).length());
+            }
+        });
+        e.dup();
+        e.invoke_virtual(Types.STRING, Signatures.STRING_LENGTH);
+        e.process_switch(getSwitchKeys(buckets), new ProcessSwitchCallback() {
+                public void processCase(int key, Label ignore_end) throws Exception {
+                    List bucket = (List)buckets.get(new Integer(key));
+                    stringSwitchHelper(e, bucket, callback, def, end, 0);
+                }
+                public void processDefault() {
+                    e.goTo(def);
+                }
+            });
+        e.mark(def);
+        e.pop();
+        callback.processDefault();
+        e.mark(end);
+    }",False
+27,"stringSwitchHelper(Emitter,List,ObjectSwitchCallback,Label,Label,int)",Method,,,"java.lang.String+length() java.util.List+get(int) java.util.List+get(int) java.lang.String+length() net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) +() +transform(Object)",,1436,30,10,,"private static void stringSwitchHelper(final Emitter e,
+                                           List strings,
+                                           final ObjectSwitchCallback callback,
+                                           final Label def,
+                                           final Label end,
+                                           final int index) throws Exception {
+        final int len = ((String)strings.get(0)).length();
+        final Map buckets = CollectionUtils.bucket(strings, new Transformer() {
+            public Object transform(Object value) {
+                return new Integer(((String)value).charAt(index));
+            }
+        });
+        e.dup();
+        e.push(index);
+        e.invoke_virtual(Types.STRING, Signatures.STRING_CHAR_AT);
+        e.process_switch(getSwitchKeys(buckets), new ProcessSwitchCallback() {
+                public void processCase(int key, Label ignore_end) throws Exception {
+                    List bucket = (List)buckets.get(new Integer(key));
+                    if (index + 1 == len) {
+                        e.pop();
+                        callback.processCase(bucket.get(0), end);
+                    } else {
+                        stringSwitchHelper(e, bucket, callback, def, end, index + 1);
+                    }
+                }
+                public void processDefault() {
+                    e.goTo(def);
+                }
+            });
+    }",False
+28,getSwitchKeys(Map),Method,,,java.util.Map+size() java.util.Map+size() java.util.Set+iterator() java.util.Map+keySet() java.util.Map+keySet() java.util.Set+iterator() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.lang.Integer+intValue() java.util.Iterator+next() java.util.Iterator+next() java.lang.Integer+intValue() java.util.Arrays+sort(int[]) java.util.Arrays+sort(int[]),,316,9,10,,"private static int[] getSwitchKeys(Map buckets) {
+        int[] keys = new int[buckets.size()];
+        int index = 0;
+        for (Iterator it = buckets.keySet().iterator(); it.hasNext();) {
+            keys[index++] = ((Integer)it.next()).intValue();
+        }
+        Arrays.sort(keys);
+        return keys;
+    }",False
+29,"string_switch_hash(Emitter,String[],ObjectSwitchCallback)",Method,"string_switch(Emitter,String[],int,ObjectSwitchCallback)",,"net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) +() +transform(Object)",,1782,43,10,,"private static void string_switch_hash(final Emitter e,
+                                           final String[] strings,
+                                           final ObjectSwitchCallback callback) throws Exception {
+        final Map buckets = CollectionUtils.bucket(Arrays.asList(strings), new Transformer() {
+            public Object transform(Object value) {
+                return new Integer(value.hashCode());
+            }
+        });
+        final Label def = e.make_label();
+        final Label end = e.make_label();
+        e.dup();
+        e.invoke_virtual(Types.OBJECT, Signatures.HASH_CODE);
+        e.process_switch(getSwitchKeys(buckets), new ProcessSwitchCallback() {
+            public void processCase(int key, Label ignore_end) throws Exception {
+                List bucket = (List)buckets.get(new Integer(key));
+                Label next = null;
+                for (Iterator it = bucket.iterator(); it.hasNext();) {
+                    String string = (String)it.next();
+                    if (next != null) {
+                        e.mark(next);
+                    }
+                    if (it.hasNext()) {
+                        e.dup();
+                    }
+                    e.push(string);
+                    e.invoke_virtual(Types.OBJECT, Signatures.EQUALS);
+                    if (it.hasNext()) {
+                        e.ifeq(next = e.make_label());
+                        e.pop();
+                    } else {
+                        e.ifeq(def);
+                    }
+                    callback.processCase(string, end);
+                }
+            }
+            public void processDefault() {
+                e.pop();
+            }
+        });
+        e.mark(def);
+        callback.processDefault();
+        e.mark(end);
+    }",False
+30,ParameterTyper,MemberClass,,,net.sf.cglib.core.Ops.ParameterTyper+getParameterTypes(Object),,90,3,2,,"private interface ParameterTyper {
+        Class[] getParameterTypes(Object member);
+    }",True
+31,"method_switch(Emitter,Method[],ObjectSwitchCallback)",Method,,,"net.sf.cglib.core.Ops+member_switch_helper(Emitter,List,ObjectSwitchCallback,boolean,ParameterTyper) net.sf.cglib.core.Ops+member_switch_helper(Emitter,List,ObjectSwitchCallback,boolean,ParameterTyper) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) +() +getParameterTypes(Object)",,435,9,9,,"public static void method_switch(Emitter e,
+                                     Method[] methods,
+                                     ObjectSwitchCallback callback) throws Exception {
+        member_switch_helper(e, Arrays.asList(methods), callback, true, new ParameterTyper() {
+            public Class[] getParameterTypes(Object member) {
+                return ((Method)member).getParameterTypes();
+            }
+        });
+    }",True
+32,"constructor_switch(Emitter,Constructor[],ObjectSwitchCallback)",Method,,net.sf.cglib.reflect.TestMemberSwitch+Generator.generateClass(ClassVisitor),"net.sf.cglib.core.Ops+member_switch_helper(Emitter,List,ObjectSwitchCallback,boolean,ParameterTyper) net.sf.cglib.core.Ops+member_switch_helper(Emitter,List,ObjectSwitchCallback,boolean,ParameterTyper) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) +() +getParameterTypes(Object)",,463,9,9,,"public static void constructor_switch(Emitter e,
+                                          Constructor[] cstructs,
+                                          ObjectSwitchCallback callback) throws Exception {
+        member_switch_helper(e, Arrays.asList(cstructs), callback, false, new ParameterTyper() {
+            public Class[] getParameterTypes(Object member) {
+                return ((Constructor)member).getParameterTypes();
+            }
+        });
+    }",True
+33,"member_switch_helper(Emitter,List,ObjectSwitchCallback,boolean,ParameterTyper)",Method,"method_switch(Emitter,Method[],ObjectSwitchCallback) constructor_switch(Emitter,Constructor[],ObjectSwitchCallback)",,java.util.HashMap+HashMap() +() +getParameterTypes(Object),,1818,41,10,,"private static void member_switch_helper(final Emitter e,
+                                             List members,
+                                             final ObjectSwitchCallback callback,
+                                             boolean useName,
+                                             final ParameterTyper typer) throws Exception {
+        final Map cache = new HashMap();
+        final ParameterTyper cached = new ParameterTyper() {
+            public Class[] getParameterTypes(Object member) {
+                Class[] types = (Class[])cache.get(member);
+                if (types == null) {
+                    cache.put(member, types = typer.getParameterTypes(member));
+                }
+                return types;
+            }
+        };
+        final Label def = e.make_label();
+        final Label end = e.make_label();
+        if (useName) {
+            e.swap();
+            final Map buckets = CollectionUtils.bucket(members, new Transformer() {
+                public Object transform(Object value) {
+                    return ((Member)value).getName();
+                }
+            });
+            String[] names = (String[])buckets.keySet().toArray(new String[buckets.size()]);
+            string_switch_hash(e, names, new ObjectSwitchCallback() {
+                public void processCase(Object key, Label dontUseEnd) throws Exception {
+                    member_helper_size(e, (List)buckets.get(key), callback, cached, def, end);
+                }
+                public void processDefault() throws Exception {
+                    e.goTo(def);
+                }
+            });
+        } else {
+            member_helper_size(e, members, callback, cached, def, end);
+        }
+        e.mark(def);
+        e.pop();
+        callback.processDefault();
+        e.mark(end);
+    }",True
+34,"member_helper_size(Emitter,List,ObjectSwitchCallback,ParameterTyper,Label,Label)",Method,,,"net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) +() +transform(Object)",,1212,24,10,,"private static void member_helper_size(final Emitter e,
+                                           List members,
+                                           final ObjectSwitchCallback callback,
+                                           final ParameterTyper typer,
+                                           final Label def,
+                                           final Label end) throws Exception {
+        final Map buckets = CollectionUtils.bucket(members, new Transformer() {
+            public Object transform(Object value) {
+                return new Integer(typer.getParameterTypes(value).length);
+            }
+        });
+        e.dup();
+        e.arraylength();
+        e.process_switch(getSwitchKeys(buckets), new ProcessSwitchCallback() {
+            public void processCase(int key, Label dontUseEnd) throws Exception {
+                List bucket = (List)buckets.get(new Integer(key));
+                Class[] types = typer.getParameterTypes(bucket.get(0));
+                member_helper_type(e, bucket, callback, typer, def, end, new BitSet(types.length));
+            }
+            public void processDefault() throws Exception {
+                e.goTo(def);
+            }
+        });
+    }",True
+35,"member_helper_type(Emitter,List,ObjectSwitchCallback,ParameterTyper,Label,Label,BitSet)",Method,,,"java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) net.sf.cglib.core.Ops.ParameterTyper+getParameterTypes(Object) net.sf.cglib.core.Ops.ParameterTyper+getParameterTypes(Object) java.util.BitSet+get(int) java.util.BitSet+get(int) net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+dup() net.sf.cglib.core.Emitter+aaload(int) net.sf.cglib.core.Emitter+aaload(int) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+push(String) net.sf.cglib.core.Emitter+push(String) java.lang.Class+getName() java.lang.Class+getName() net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+invoke_virtual(Type,Signature) net.sf.cglib.core.Emitter+ifeq(Label) net.sf.cglib.core.Emitter+ifeq(Label) net.sf.cglib.core.Emitter+pop() net.sf.cglib.core.Emitter+pop() net.sf.cglib.core.ObjectSwitchCallback+processCase(Object,Label) net.sf.cglib.core.ObjectSwitchCallback+processCase(Object,Label) net.sf.cglib.core.Ops.ParameterTyper+getParameterTypes(Object) net.sf.cglib.core.Ops.ParameterTyper+getParameterTypes(Object) java.util.List+get(int) java.util.List+get(int) net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) net.sf.cglib.core.CollectionUtils+bucket(Collection,Transformer) +() +transform(Object)",net.sf.cglib.core.Types+CLASS net.sf.cglib.core.Signatures+GET_NAME net.sf.cglib.core.Types+OBJECT net.sf.cglib.core.Signatures+EQUALS,2951,64,10,,"private static void member_helper_type(final Emitter e,
+                                           List members,
+                                           final ObjectSwitchCallback callback,
+                                           final ParameterTyper typer,
+                                           final Label def,
+                                           final Label end,
+                                           final BitSet checked) throws Exception {
+        if (members.size() == 1) {
+            // need to check classes that have not already been checked via switches
+            Member member = (Member)members.get(0);
+            Class[] types = typer.getParameterTypes(member);
+            for (int i = 0; i < types.length; i++) {
+                if (checked == null || !checked.get(i)) {
+                    e.dup();
+                    e.aaload(i);
+                    e.invoke_virtual(Types.CLASS, Signatures.GET_NAME);
+                    e.push(types[i].getName());
+                    e.invoke_virtual(Types.OBJECT, Signatures.EQUALS);
+                    e.ifeq(def);
+                }
+            }
+            e.pop();
+            callback.processCase(member, end);
+        } else {
+            // choose the index that has the best chance of uniquely identifying member
+            Class[] example = typer.getParameterTypes(members.get(0));
+            Map buckets = null;
+            int index = -1;
+            for (int i = 0; i < example.length; i++) {
+                final int j = i;
+                Map test = CollectionUtils.bucket(members, new Transformer() {
+                    public Object transform(Object value) {
+                        return typer.getParameterTypes(value)[j].getName();
+                    }
+                });
+                if (buckets == null || test.size() > buckets.size()) {
+                    buckets = test;
+                    index = i;
+                }
+            }
+            if (buckets == null) {
+                // TODO: switch by returnType
+                // must have two methods with same name, types, and different return types
+                e.goTo(def);
+            } else {
+                checked.set(index);
+
+                e.dup();
+                e.aaload(index);
+                e.invoke_virtual(Types.CLASS, Signatures.GET_NAME);
+
+                final Map fbuckets = buckets;
+                String[] names = (String[])buckets.keySet().toArray(new String[buckets.size()]);
+                string_switch_hash(e, names, new ObjectSwitchCallback() {
+                    public void processCase(Object key, Label dontUseEnd) throws Exception {
+                        member_helper_type(e, (List)fbuckets.get(key), callback, typer, def, end, checked);
+                    }
+                    public void processDefault() throws Exception {
+                        e.goTo(def);
+                    }
+                });
+            }
+        }
+    }",True
+36,"begin_class(Emitter,int,String,Class,Class[],String)",Method,,"net.sf.cglib.beans.BeanMap+BeanMapEmitter(ClassVisitor,String,Class,int) net.sf.cglib.beans.BulkBean+BulkBeanEmitter(ClassVisitor,String,Class,String[],String[],Class[]) net.sf.cglib.core.KeyFactory+KeyFactoryEmitter(ClassVisitor,String,Class) net.sf.cglib.Enhancer+EnhancerEmitter(ClassVisitor,String,Class,Class[],CallbackFilter) net.sf.cglib.Mixin+MixinEmitter(ClassVisitor,String,Class[],int[]) net.sf.cglib.reflect.ConstructorDelegate+Generator.generateClass(ClassVisitor) net.sf.cglib.reflect.FastClass+FastClassEmitter(ClassVisitor,String,Class) net.sf.cglib.reflect.MethodDelegate+Generator.generateClass(ClassVisitor) net.sf.cglib.reflect.MulticastDelegate+Generator.generateClass(ClassVisitor) net.sf.cglib.util.ParallelSorter+ParallelSorterEmitter(ClassVisitor,String,Object[]) net.sf.cglib.core.TestStringSwitch+Generator.generateClass(ClassVisitor) net.sf.cglib.core.TestSwitch+Generator.generateClass(ClassVisitor) net.sf.cglib.reflect.TestMemberSwitch+Generator.generateClass(ClassVisitor)","net.sf.cglib.core.Emitter+begin_class(int,Type,Type,Type[],String) net.sf.cglib.core.Emitter+begin_class(int,Type,Type,Type[],String) net.sf.cglib.core.Ops+getType(String) net.sf.cglib.core.Ops+getType(String) org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[])",,550,12,9,,"public static void begin_class(Emitter e,
+                                   int access,
+                                   String className,
+                                   Class superclass,
+                                   Class[] interfaces,
+                                   String sourceFile) {
+        e.begin_class(access,
+                      getType(className),
+                      (superclass != null) ? Type.getType(superclass) : null,
+                      Signature.getTypes(interfaces),
+                      sourceFile);
+    }",True
+37,"begin_constructor(Emitter,Constructor)",Method,,net.sf.cglib.Enhancer+generateConstructors(List),"net.sf.cglib.core.Emitter+begin_constructor(int,Type[],Type[]) net.sf.cglib.core.Emitter+begin_constructor(int,Type[],Type[]) net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[]) java.lang.reflect.Constructor+getParameterTypes() java.lang.reflect.Constructor+getParameterTypes() net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[]) java.lang.reflect.Constructor+getExceptionTypes() java.lang.reflect.Constructor+getExceptionTypes()",org.objectweb.asm.Constants+ACC_PUBLIC,324,5,9,,"public static void begin_constructor(Emitter e, Constructor constructor) {
+        e.begin_constructor(Constants.ACC_PUBLIC, // constructor.getModifiers(),
+                            Signature.getTypes(constructor.getParameterTypes()),
+                            Signature.getTypes(constructor.getExceptionTypes()));
+    }",True
+38,"begin_method(Emitter,int,String,Class,Class[],Class[])",Method,,"net.sf.cglib.MethodInterceptor+generateAccessMethod(Emitter,Context,Method)","net.sf.cglib.core.Emitter+begin_method(int,String,Type,Type[],Type[]) net.sf.cglib.core.Emitter+begin_method(int,String,Type,Type[],Type[]) org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[])",,549,12,9,,"public static void begin_method(Emitter e,
+                                    int access,
+                                    String name,
+                                    Class returnType,
+                                    Class[] parameterTypes,
+                                    Class[] exceptionTypes) {
+        e.begin_method(access,
+                       name,
+                       Type.getType(returnType),
+                       Signature.getTypes(parameterTypes),
+                       Signature.getTypes(exceptionTypes));
+    }",True
+39,"begin_method(Emitter,Method)",Method,,"net.sf.cglib.Enhancer+generateFactory(List) net.sf.cglib.Mixin+MixinEmitter(ClassVisitor,String,Class[],int[]) net.sf.cglib.reflect.ConstructorDelegate+Generator.generateClass(ClassVisitor) net.sf.cglib.reflect.MethodDelegate+Generator.generateClass(ClassVisitor) net.sf.cglib.reflect.MulticastDelegate+Generator.generateClass(ClassVisitor) net.sf.cglib.core.TestStringSwitch+Generator.generateClass(ClassVisitor) net.sf.cglib.core.TestSwitch+Generator.generateClass(ClassVisitor) net.sf.cglib.reflect.TestMemberSwitch+Generator.generateClass(ClassVisitor)","net.sf.cglib.core.Ops+begin_method(Emitter,Method,int) net.sf.cglib.core.Ops+begin_method(Emitter,Method,int) net.sf.cglib.core.Ops+getDefaultModifiers(int) net.sf.cglib.core.Ops+getDefaultModifiers(int) java.lang.reflect.Method+getModifiers() java.lang.reflect.Method+getModifiers()",,142,3,9,,"public static void begin_method(Emitter e, Method method) {
+        begin_method(e, method, getDefaultModifiers(method.getModifiers()));
+    }",True
+40,"begin_method(Emitter,Method,int)",Method,"begin_method(Emitter,Method)","net.sf.cglib.Dispatcher+generate(Emitter,Context) net.sf.cglib.InvocationHandler+generate(Emitter,Context) net.sf.cglib.LazyLoader+generate(Emitter,Context) net.sf.cglib.MethodInterceptor+generateAroundMethod(Emitter,Context,Method)","net.sf.cglib.core.Emitter+begin_method(int,Signature,Type[]) net.sf.cglib.core.Emitter+begin_method(int,Signature,Type[]) net.sf.cglib.core.Signature+Signature(Method) net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[]) java.lang.reflect.Method+getExceptionTypes() java.lang.reflect.Method+getExceptionTypes()",,232,5,9,,"public static void begin_method(Emitter e, Method method, int modifiers) {
+        e.begin_method(modifiers,
+                       new Signature(method),
+                       Signature.getTypes(method.getExceptionTypes()));
+    }",True
+41,"getfield(Emitter,Field)",Method,,,"java.lang.reflect.Modifier+isStatic(int) java.lang.reflect.Modifier+isStatic(int) java.lang.reflect.Field+getModifiers() java.lang.reflect.Field+getModifiers() net.sf.cglib.core.Ops+fieldHelper(Emitter,int,Field) net.sf.cglib.core.Ops+fieldHelper(Emitter,int,Field)",org.objectweb.asm.Constants+GETSTATIC org.objectweb.asm.Constants+GETFIELD,202,4,9,,"public static void getfield(Emitter e,Field field) {
+        int opcode = Modifier.isStatic(field.getModifiers()) ? Constants.GETSTATIC : Constants.GETFIELD;
+        fieldHelper(e, opcode, field);
+    }",True
+42,"putfield(Emitter,Field)",Method,,,"java.lang.reflect.Modifier+isStatic(int) java.lang.reflect.Modifier+isStatic(int) java.lang.reflect.Field+getModifiers() java.lang.reflect.Field+getModifiers() net.sf.cglib.core.Ops+fieldHelper(Emitter,int,Field) net.sf.cglib.core.Ops+fieldHelper(Emitter,int,Field)",org.objectweb.asm.Constants+PUTSTATIC org.objectweb.asm.Constants+PUTFIELD,203,4,9,,"public static void putfield(Emitter e, Field field) {
+        int opcode = Modifier.isStatic(field.getModifiers()) ? Constants.PUTSTATIC : Constants.PUTFIELD;
+        fieldHelper(e, opcode, field);
+    }",True
+43,"fieldHelper(Emitter,int,Field)",Method,"getfield(Emitter,Field) putfield(Emitter,Field)",,"net.sf.cglib.core.Emitter+emit_field(int,Type,String,Type) net.sf.cglib.core.Emitter+emit_field(int,Type,String,Type) org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) java.lang.reflect.Field+getDeclaringClass() java.lang.reflect.Field+getDeclaringClass() java.lang.reflect.Field+getName() java.lang.reflect.Field+getName() org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) java.lang.reflect.Field+getType() java.lang.reflect.Field+getType()",,319,7,10,,"private static void fieldHelper(Emitter e, int opcode, Field field) {
+        // TODO: remove need for direct access to emit_field?
+        e.emit_field(opcode,
+                     Type.getType(field.getDeclaringClass()),
+                     field.getName(),
+                     Type.getType(field.getType()));
+    }",True
+44,"invoke(Emitter,Method)",Method,,"net.sf.cglib.beans.BeanMap+processCase(Object,Label) net.sf.cglib.beans.BeanMap+processCase(Object,Label) net.sf.cglib.beans.BeanMap+processCase(Object,Label) net.sf.cglib.beans.BulkBean+generateGet(Class,Method[]) net.sf.cglib.beans.BulkBean+generateSet(Class,Method[]) net.sf.cglib.Dispatcher+generate(Emitter,Context) net.sf.cglib.Enhancer+generateSetCallbacks() net.sf.cglib.Enhancer+generateSetThreadCallbacks() net.sf.cglib.Enhancer+generateSetThreadCallbacks() net.sf.cglib.Enhancer+generateCurrentCallback(int) net.sf.cglib.LazyLoader+generate(Emitter,Context) net.sf.cglib.MethodInterceptor+generateAroundMethod(Emitter,Context,Method) net.sf.cglib.MethodInterceptor+generateStatic(Emitter,Context) net.sf.cglib.MethodInterceptor+generateStatic(Emitter,Context) net.sf.cglib.Mixin+MixinEmitter(ClassVisitor,String,Class[],int[]) net.sf.cglib.reflect.FastClass+processCase(int,Label) net.sf.cglib.reflect.MethodDelegate+Generator.generateClass(ClassVisitor) net.sf.cglib.reflect.MulticastDelegate+Generator.processElement(Type)","java.lang.Class+isInterface() java.lang.reflect.Method+getDeclaringClass() java.lang.reflect.Method+getDeclaringClass() java.lang.Class+isInterface() java.lang.reflect.Modifier+isStatic(int) java.lang.reflect.Modifier+isStatic(int) java.lang.reflect.Method+getModifiers() java.lang.reflect.Method+getModifiers() net.sf.cglib.core.Emitter+emit_invoke(int,Type,String,Type,Type[]) net.sf.cglib.core.Emitter+emit_invoke(int,Type,String,Type,Type[]) org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) java.lang.reflect.Method+getDeclaringClass() java.lang.reflect.Method+getDeclaringClass() java.lang.reflect.Method+getName() java.lang.reflect.Method+getName() org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) java.lang.reflect.Method+getReturnType() java.lang.reflect.Method+getReturnType() net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[]) java.lang.reflect.Method+getParameterTypes() java.lang.reflect.Method+getParameterTypes()",org.objectweb.asm.Constants+INVOKEINTERFACE org.objectweb.asm.Constants+INVOKESTATIC org.objectweb.asm.Constants+INVOKEVIRTUAL,692,16,9,,"public static void invoke(Emitter e, Method method) {
+        int opcode;
+        if (method.getDeclaringClass().isInterface()) {
+            opcode = Constants.INVOKEINTERFACE;
+        } else if (Modifier.isStatic(method.getModifiers())) {
+            opcode = Constants.INVOKESTATIC;
+        } else {
+            opcode = Constants.INVOKEVIRTUAL;
+        }
+        // TODO: remove need for direct access to emit_invoke?
+        e.emit_invoke(opcode,
+                      Type.getType(method.getDeclaringClass()),
+                      method.getName(),
+                      Type.getType(method.getReturnType()),
+                      Signature.getTypes(method.getParameterTypes()));
+    }",True
+45,"invoke(Emitter,Constructor)",Method,,"net.sf.cglib.reflect.ConstructorDelegate+Generator.generateClass(ClassVisitor) net.sf.cglib.reflect.FastClass+processCase(int,Label)","net.sf.cglib.core.Emitter+invoke_constructor(Type,Type[]) net.sf.cglib.core.Emitter+invoke_constructor(Type,Type[]) org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) java.lang.reflect.Constructor+getDeclaringClass() java.lang.reflect.Constructor+getDeclaringClass() net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[]) java.lang.reflect.Constructor+getParameterTypes() java.lang.reflect.Constructor+getParameterTypes()",,228,4,9,,"public static void invoke(Emitter e, Constructor constructor) {
+        e.invoke_constructor(Type.getType(constructor.getDeclaringClass()),
+                             Signature.getTypes(constructor.getParameterTypes()));
+    }",True
+46,"super_invoke(Emitter,Method)",Method,,"net.sf.cglib.MethodInterceptor+generateAccessMethod(Emitter,Context,Method) net.sf.cglib.MethodInterceptor+generateAroundMethod(Emitter,Context,Method)","net.sf.cglib.core.Emitter+emit_invoke(int,Type,String,Type,Type[]) net.sf.cglib.core.Emitter+emit_invoke(int,Type,String,Type,Type[]) net.sf.cglib.core.Emitter+getSuperType() net.sf.cglib.core.Emitter+getSuperType() java.lang.reflect.Method+getName() java.lang.reflect.Method+getName() org.objectweb.asm.Type+getType(Class) org.objectweb.asm.Type+getType(Class) java.lang.reflect.Method+getReturnType() java.lang.reflect.Method+getReturnType() net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[]) java.lang.reflect.Method+getParameterTypes() java.lang.reflect.Method+getParameterTypes()",org.objectweb.asm.Constants+INVOKESPECIAL,386,8,9,,"public static void super_invoke(Emitter e, Method method) {
+        // TODO: remove need for direct access to emit_invoke?
+        e.emit_invoke(Constants.INVOKESPECIAL,
+                      e.getSuperType(),
+                      method.getName(),
+                      Type.getType(method.getReturnType()),
+                      Signature.getTypes(method.getParameterTypes()));
+    }",True
+47,"super_invoke(Emitter,Constructor)",Method,,net.sf.cglib.Enhancer+generateConstructors(List),net.sf.cglib.core.Emitter+super_invoke_constructor(Type[]) net.sf.cglib.core.Emitter+super_invoke_constructor(Type[]) net.sf.cglib.core.Signature+getTypes(Class[]) net.sf.cglib.core.Signature+getTypes(Class[]) java.lang.reflect.Constructor+getParameterTypes() java.lang.reflect.Constructor+getParameterTypes(),,164,3,9,,"public static void super_invoke(Emitter e, Constructor constructor) {
+        e.super_invoke_constructor(Signature.getTypes(constructor.getParameterTypes()));
+    }",True
+48,getDefaultModifiers(int),Method,"begin_method(Emitter,Method)",,,org.objectweb.asm.Constants+ACC_FINAL org.objectweb.asm.Constants+ACC_ABSTRACT org.objectweb.asm.Constants+ACC_NATIVE org.objectweb.asm.Constants+ACC_SYNCHRONIZED,247,7,9,,"public static int getDefaultModifiers(int modifiers) {
+        return Constants.ACC_FINAL
+            | (modifiers
+               & ~Constants.ACC_ABSTRACT
+               & ~Constants.ACC_NATIVE
+               & ~Constants.ACC_SYNCHRONIZED);
+    }",True
+49,getType(String),Method,"begin_class(Emitter,int,String,Class,Class[],String)",,"org.objectweb.asm.Type+getType(String) org.objectweb.asm.Type+getType(String) java.lang.String+replace(char,char) java.lang.String+replace(char,char)",,113,3,10,,"private static Type getType(String fqcn) {
+        return Type.getType(""L"" + fqcn.replace('.', '/') + "";"");
+    }",True

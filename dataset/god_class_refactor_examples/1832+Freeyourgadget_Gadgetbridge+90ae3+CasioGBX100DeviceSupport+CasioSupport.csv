@@ -1,0 +1,638 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,LOG,Field,,,,,90,1,26,,private static final Logger LOG = LoggerFactory.getLogger(CasioGBX100DeviceSupport.class);,False
+2,mFirstConnect,Field,,,,,38,1,2,,private boolean mFirstConnect = false;,True
+3,mGetConfigurationPending,Field,,,,,49,1,2,,private boolean mGetConfigurationPending = false;,False
+4,mRingNotificationPending,Field,,,,,49,1,2,,private boolean mRingNotificationPending = false;,False
+5,mSyncedNotificationIDs,Field,,,,,76,1,18,,private final ArrayList<Integer> mSyncedNotificationIDs = new ArrayList<>();,False
+6,mLastCallId,Field,,,,,103,1,2,,private int mLastCallId = new AtomicInteger((int) (System.currentTimeMillis()/1000)).incrementAndGet();,False
+7,mFakeRingDurationCounter,Field,,,,,41,1,2,,private int mFakeRingDurationCounter = 0;,False
+8,mFindPhoneHandler,Field,onReverseFindDevice(boolean),,,,56,1,18,,private final Handler mFindPhoneHandler = new Handler();,False
+9,mFakeRingDurationHandler,Field,,,,,63,1,18,,private final Handler mFakeRingDurationHandler = new Handler();,False
+10,mAutoRemoveMessageHandler,Field,,,,,64,1,18,,private final Handler mAutoRemoveMessageHandler = new Handler();,False
+11,CasioGBX100DeviceSupport(),Method,,,nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+addSupportedService(UUID),nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+WATCH_FEATURES_SERVICE_UUID,135,5,1,,"public CasioGBX100DeviceSupport() {
+        super(LOG);
+
+        addSupportedService(CasioConstants.WATCH_FEATURES_SERVICE_UUID);
+    }",False
+12,connectFirstTime(),Method,,,nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+connect() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+connect(),nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mFirstConnect,111,5,1,,"@Override
+    public boolean connectFirstTime() {
+        mFirstConnect = true;
+        return connect();
+    }",True
+13,setInitialized(),Method,,"nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setState(State) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setState(State) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+sendDeviceUpdateIntent(Context) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+sendDeviceUpdateIntent(Context) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext(),nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mFirstConnect nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+gbDevice,177,5,1,,"public void setInitialized() {
+        mFirstConnect = false;
+        gbDevice.setState(GBDevice.State.INITIALIZED);
+        gbDevice.sendDeviceUpdateIntent(getContext());
+    }",True
+14,initializeDevice(TransactionBuilder),Method,,,"nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+InitOperationGBX100(CasioGBX100DeviceSupport,TransactionBuilder,boolean) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.util.GB+toast(Context,String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(Context,String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setFirmwareVersion(String) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setFirmwareVersion(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setFirmwareVersion2(String) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+setFirmwareVersion2(String) nodomain.freeyourgadget.gadgetbridge.util.Prefs+getPreferences() nodomain.freeyourgadget.gadgetbridge.GBApplication+getPrefs() nodomain.freeyourgadget.gadgetbridge.GBApplication+getPrefs() nodomain.freeyourgadget.gadgetbridge.util.Prefs+getPreferences() nodomain.freeyourgadget.gadgetbridge.GBApplication+getDeviceSpecificSharedPrefs(String) nodomain.freeyourgadget.gadgetbridge.GBApplication+getDeviceSpecificSharedPrefs(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getAddress() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getAddress()",nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mFirstConnect nodomain.freeyourgadget.gadgetbridge.util.GB+ERROR nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mFirstConnect,1001,28,4,,"@Override
+    protected TransactionBuilder initializeDevice(TransactionBuilder builder) {
+
+        try {
+            new InitOperationGBX100(this, builder, mFirstConnect).perform();
+        } catch (IOException e) {
+            GB.toast(getContext(), ""Initializing Casio watch failed"", Toast.LENGTH_SHORT, GB.ERROR, e);
+        }
+
+        getDevice().setFirmwareVersion(""N/A"");
+        getDevice().setFirmwareVersion2(""N/A"");
+
+
+        //preferences.registerOnSharedPreferenceChangeListener(this);
+
+        SharedPreferences prefs = GBApplication.getPrefs().getPreferences();
+        prefs.registerOnSharedPreferenceChangeListener(this);
+
+        if(mFirstConnect) {
+            SharedPreferences preferences = GBApplication.getDeviceSpecificSharedPrefs(this.getDevice().getAddress());
+            SharedPreferences.Editor editor = preferences.edit();
+
+            editor.putString(""charts_tabs"", ""activity,activitylist,stepsweek"");
+            editor.apply();
+        }
+
+        return builder;
+    }",False
+15,"onCharacteristicRead(BluetoothGatt,BluetoothGattCharacteristic,int)",Method,,,"nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+onCharacteristicRead(BluetoothGatt,BluetoothGattCharacteristic,int)",,412,12,1,,"@Override
+    public boolean onCharacteristicRead(BluetoothGatt gatt,
+                                        BluetoothGattCharacteristic characteristic, int status) {
+
+        UUID characteristicUUID = characteristic.getUuid();
+        byte[] data = characteristic.getValue();
+
+        if(data.length == 0)
+            return true;
+
+        return super.onCharacteristicRead(gatt, characteristic, status);
+    }",False
+16,"getSumWithinRange(int,int)",Method,,"nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.FetchStepCountDataOperation+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)","nodomain.freeyourgadget.gadgetbridge.GBApplication+acquireDB() nodomain.freeyourgadget.gadgetbridge.GBApplication+acquireDB() nodomain.freeyourgadget.gadgetbridge.database.DBHelper+getUser(DaoSession) nodomain.freeyourgadget.gadgetbridge.database.DBHelper+getUser(DaoSession) nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.database.DBHelper+getDevice(GBDevice,DaoSession) nodomain.freeyourgadget.gadgetbridge.database.DBHelper+getDevice(GBDevice,DaoSession) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioGBX100SampleProvider+CasioGBX100SampleProvider(GBDevice,DaoSession) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioGBX100SampleProvider+getActivitySamples(int,int) nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioGBX100SampleProvider+getActivitySamples(int,int) org.slf4j.Logger+error(String) org.slf4j.Logger+error(String) org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String)",nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,1264,27,1,,"public CasioGBX100ActivitySample getSumWithinRange(int timestamp_from, int timestamp_to) {
+        int steps = 0;
+        int calories = 0;
+        try (DBHandler dbHandler = GBApplication.acquireDB()) {
+
+            User user = DBHelper.getUser(dbHandler.getDaoSession());
+            Device device = DBHelper.getDevice(this.getDevice(), dbHandler.getDaoSession());
+
+            CasioGBX100SampleProvider provider = new CasioGBX100SampleProvider(this.getDevice(), dbHandler.getDaoSession());
+            List<CasioGBX100ActivitySample> samples = provider.getActivitySamples(timestamp_from, timestamp_to);
+            for(CasioGBX100ActivitySample sample : samples) {
+                if(sample.getDevice().equals(device) &&
+                        sample.getUser().equals(user)) {
+                    steps += sample.getSteps();
+                    calories += sample.getCalories();
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(""Error fetching activity data."");
+        }
+
+        CasioGBX100ActivitySample ret = new CasioGBX100ActivitySample();
+        ret.setCalories(calories);
+        ret.setSteps(steps);
+        LOG.debug(""Fetched for today: "" + calories + "" cals and "" + steps + "" steps."");
+        return ret;
+    }",False
+17,addGBActivitySamples(ArrayList<CasioGBX100ActivitySample>),Method,"stepCountDataFetched(int,int,ArrayList<CasioGBX100ActivitySample>)",,"nodomain.freeyourgadget.gadgetbridge.GBApplication+acquireDB() nodomain.freeyourgadget.gadgetbridge.GBApplication+acquireDB() nodomain.freeyourgadget.gadgetbridge.database.DBHelper+getUser(DaoSession) nodomain.freeyourgadget.gadgetbridge.database.DBHelper+getUser(DaoSession) nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.database.DBHelper+getDevice(GBDevice,DaoSession) nodomain.freeyourgadget.gadgetbridge.database.DBHelper+getDevice(GBDevice,DaoSession) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioGBX100SampleProvider+CasioGBX100SampleProvider(GBDevice,DaoSession) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.database.DBHandler+getDaoSession() nodomain.freeyourgadget.gadgetbridge.devices.AbstractSampleProvider+addGBActivitySample(T) nodomain.freeyourgadget.gadgetbridge.devices.AbstractSampleProvider+addGBActivitySample(T) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() java.lang.Throwable+getLocalizedMessage() java.lang.Throwable+getLocalizedMessage() nodomain.freeyourgadget.gadgetbridge.util.GB+updateTransferNotification(String,String,boolean,int,Context) nodomain.freeyourgadget.gadgetbridge.util.GB+updateTransferNotification(String,String,boolean,int,Context) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() org.slf4j.Logger+error(String) org.slf4j.Logger+error(String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",nodomain.freeyourgadget.gadgetbridge.util.GB+ERROR nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,1074,24,2,,"private void addGBActivitySamples(ArrayList<CasioGBX100ActivitySample> samples) {
+        try (DBHandler dbHandler = GBApplication.acquireDB()) {
+
+            User user = DBHelper.getUser(dbHandler.getDaoSession());
+            Device device = DBHelper.getDevice(this.getDevice(), dbHandler.getDaoSession());
+
+            CasioGBX100SampleProvider provider = new CasioGBX100SampleProvider(this.getDevice(), dbHandler.getDaoSession());
+
+            for (CasioGBX100ActivitySample sample : samples) {
+                sample.setDevice(device);
+                sample.setUser(user);
+                sample.setProvider(provider);
+
+                provider.addGBActivitySample(sample);
+            }
+
+        } catch (Exception ex) {
+            // Why is this a toast? The user doesn't care about the error.
+            GB.toast(getContext(), ""Error saving samples: "" + ex.getLocalizedMessage(), Toast.LENGTH_LONG, GB.ERROR);
+            GB.updateTransferNotification(null, ""Data transfer failed"", false, 0, getContext());
+
+            LOG.error(ex.getMessage());
+        }
+    }",False
+18,"stepCountDataFetched(int,int,ArrayList<CasioGBX100ActivitySample>)",Method,,"nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.FetchStepCountDataOperation+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+addGBActivitySamples(ArrayList<CasioGBX100ActivitySample>) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+addGBActivitySamples(ArrayList<CasioGBX100ActivitySample>),nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,314,7,1,,"public void stepCountDataFetched(int totalCount, int totalCalories, ArrayList<CasioGBX100ActivitySample> data) {
+        LOG.info(""Got the following step count data: "");
+        LOG.info(""Total Count: "" + totalCount);
+        LOG.info(""Total Calories: "" + totalCalories);
+
+        addGBActivitySamples(data);
+    }",False
+19,"onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",Method,,,"java.util.UUID+equals(Object) java.util.UUID+equals(Object) java.util.Map+get(Object) java.util.Map+get(Object) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+onReverseFindDevice(boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+onReverseFindDevice(boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+onReverseFindDevice(boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+onReverseFindDevice(boolean) java.util.Map+get(Object) java.util.Map+get(Object) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeCurrentTime(TransactionBuilder) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeCurrentTime(TransactionBuilder) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() org.slf4j.Logger+warn(String) org.slf4j.Logger+warn(String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CASIO_ALL_FEATURES_CHARACTERISTIC_UUID nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+characteristicToByte nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+characteristicToByte nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,1472,33,1,,"@Override
+    public boolean onCharacteristicChanged(BluetoothGatt gatt,
+                                           BluetoothGattCharacteristic characteristic) {
+        UUID characteristicUUID = characteristic.getUuid();
+        byte[] data = characteristic.getValue();
+        if (data.length == 0)
+            return true;
+
+        if (characteristicUUID.equals(CasioConstants.CASIO_ALL_FEATURES_CHARACTERISTIC_UUID)) {
+            if(data[0] == CasioConstants.characteristicToByte.get(""ALERT_LEVEL"")) {
+                if(data[1] == 0x02) {
+                    onReverseFindDevice(true);
+                } else {
+                    onReverseFindDevice(false);
+                }
+                return true;
+            } else if(data[0] == CasioConstants.characteristicToByte.get(""CASIO_CURRENT_TIME_MANAGER"")) {
+                if(data[1] == 0x00) {
+                    try {
+                        TransactionBuilder builder = performInitialized(""writeCurrentTime"");
+                        writeCurrentTime(builder);
+                        builder.queue(getQueue());
+                    } catch (IOException e) {
+                        LOG.warn(""writing current time failed: "" + e.getMessage());
+                    }
+                }
+            }
+
+        }
+
+        LOG.info(""Unhandled characteristic change: "" + characteristicUUID + "" code: "" + String.format(""0x%1x ..."", data[0]));
+        return super.onCharacteristicChanged(gatt, characteristic);
+    }",False
+20,useAutoConnect(),Method,,,,,74,4,1,,"@Override
+    public boolean useAutoConnect() {
+        return true;
+    }",True
+21,syncProfile(),Method,,"nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.GetConfigurationOperation+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)","nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.util.GB+toast(Context,String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(Context,String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext()",nodomain.freeyourgadget.gadgetbridge.util.GB+ERROR,304,7,1,,"public void syncProfile() {
+        try {
+            new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_ALL).perform();
+        } catch (IOException e) {
+            GB.toast(getContext(), ""Sending Casio configuration failed"", Toast.LENGTH_SHORT, GB.ERROR, e);
+        }
+    }",False
+22,"showNotification(byte,String,String,String,int,boolean)",Method,onNotification(NotificationSpec) onDeleteNotification(int) onSetCallState(CallSpec),,"java.lang.String+getBytes(Charset) java.lang.String+getBytes(Charset) java.lang.String+getBytes(Charset) java.lang.String+getBytes(Charset) java.lang.String+getBytes(Charset) java.lang.String+getBytes(Charset) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.lang.System+arraycopy(Object,int,Object,int,int) java.lang.System+arraycopy(Object,int,Object,int,int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.lang.System+arraycopy(Object,int,Object,int,int) java.lang.System+arraycopy(Object,int,Object,int,int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.util.Arrays+copyOf(byte[],int) java.lang.System+arraycopy(Object,int,Object,int,int) java.lang.System+arraycopy(Object,int,Object,int,int) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() org.slf4j.Logger+warn(String) org.slf4j.Logger+warn(String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",java.nio.charset.StandardCharsets+UTF_8 java.nio.charset.StandardCharsets+UTF_8 java.nio.charset.StandardCharsets+UTF_8 nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CASIO_NOTIFICATION_CHARACTERISTIC_UUID nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,3852,82,2,,"private void showNotification(byte icon, String sender, String title, String message, int id, boolean delete) {
+        byte[] titleBytes = new byte[0];
+        if(title != null)
+            titleBytes = title.getBytes(StandardCharsets.UTF_8);
+
+        byte[] messageBytes = new byte[0];
+        if(message != null)
+            messageBytes = message.getBytes(StandardCharsets.UTF_8);
+
+        byte[] senderBytes = new byte[0];
+        if(sender != null)
+            senderBytes = sender.getBytes(StandardCharsets.UTF_8);
+
+        byte[] arr = new byte[22];
+        arr[0] = (byte)(id & 0xff);
+        arr[1] = (byte) ((id >> 8) & 0xff);
+        arr[2] = (byte) ((id >> 16) & 0xff);
+        arr[3] = (byte) ((id >> 24) & 0xff);
+        arr[4] = delete ? (byte) 0x02 : (byte) 0x00;
+        arr[5] = (byte) 0x01; // Set to 0x00 to not vibrate/ring for this notification
+        arr[6] = icon;
+        // These bytes contain a timestamp, not yet decoded / implemented
+        // ASCII Codes:
+        /*arr[7] = (byte) 0x32; // 2
+        arr[8] = (byte) 0x30;   // 0
+        arr[9] = (byte) 0x32;   // 2
+        arr[10] = (byte) 0x30;  // 0
+        arr[11] = (byte) 0x31;  // 1
+        arr[12] = (byte) 0x31;  // 1
+        arr[13] = (byte) 0x31;  // 1
+        arr[14] = (byte) 0x33;  // 3
+        arr[15] = (byte) 0x54;  // T
+        arr[16] = (byte) 0x30;  // 0
+        arr[17] = (byte) 0x39;  // 9
+        arr[18] = (byte) 0x33;  // 3
+        arr[19] = (byte) 0x31;  // 1
+        arr[20] = (byte) 0x35;  // 5
+        arr[21] = (byte) 0x33;*/// 3
+        byte[] copy = Arrays.copyOf(arr, arr.length + 2);
+        copy[copy.length-2] = 0;
+        copy[copy.length-1] = 0;
+        if(senderBytes.length > 0) {
+            copy = Arrays.copyOf(copy, copy.length + senderBytes.length);
+            copy[copy.length-2-senderBytes.length] = (byte)(senderBytes.length & 0xff);
+            copy[copy.length-1-senderBytes.length] = (byte)((senderBytes.length >> 8) & 0xff);
+            System.arraycopy(senderBytes, 0, copy, copy.length - senderBytes.length, senderBytes.length);
+        }
+        copy = Arrays.copyOf(copy, copy.length + 2);
+        copy[copy.length-2] = 0;
+        copy[copy.length-1] = 0;
+        if(titleBytes.length > 0) {
+            copy = Arrays.copyOf(copy, copy.length + titleBytes.length);
+            copy[copy.length-2-titleBytes.length] = (byte)(titleBytes.length & 0xff);
+            copy[copy.length-1-titleBytes.length] = (byte)((titleBytes.length >> 8) & 0xff);
+            System.arraycopy(titleBytes, 0, copy, copy.length - titleBytes.length, titleBytes.length);
+        }
+        copy = Arrays.copyOf(copy, copy.length + 2);
+        copy[copy.length-2] = 0;
+        copy[copy.length-1] = 0;
+        //subtitle is currently not supported
+        copy = Arrays.copyOf(copy, copy.length + 2);
+        copy[copy.length-2] = 0;
+        copy[copy.length-1] = 0;
+        if(messageBytes.length > 0) {
+            copy = Arrays.copyOf(copy, copy.length + messageBytes.length);
+            copy[copy.length-2-messageBytes.length] = (byte)(messageBytes.length & 0xff);
+            copy[copy.length-1-messageBytes.length] = (byte)((messageBytes.length >> 8) & 0xff);
+            System.arraycopy(messageBytes, 0, copy, copy.length - messageBytes.length, messageBytes.length);
+        }
+        for(int i=0; i<copy.length; i++) {
+            copy[i] = (byte)(~copy[i]);
+        }
+
+        try {
+            TransactionBuilder builder = performInitialized(""showNotification"");
+            builder.write(getCharacteristic(CasioConstants.CASIO_NOTIFICATION_CHARACTERISTIC_UUID), copy);
+            LOG.info(""Showing notification, title: "" + title + "" message (not sent): "" + message);
+            builder.queue(getQueue());
+        } catch (IOException e) {
+            LOG.warn(""showNotification failed: "" + e.getMessage());
+        }
+    }",False
+23,onNotification(NotificationSpec),Method,,,"nodomain.freeyourgadget.gadgetbridge.GBApplication+getDeviceSpecificSharedPrefs(String) nodomain.freeyourgadget.gadgetbridge.GBApplication+getDeviceSpecificSharedPrefs(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getAddress() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getAddress() org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+getId() nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+getId() nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+showNotification(byte,String,String,String,int,boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+showNotification(byte,String,String,String,int,boolean) nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+getId() nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+getId() java.util.ArrayList+add(int,E) java.util.ArrayList+add(int,E) nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+getId() nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+getId() +() +run()",nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+type nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CATEGORY_SCHEDULE_AND_ALARM nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CATEGORY_EMAIL nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CATEGORY_SNS nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CATEGORY_SNS nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+sender nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+title nodomain.freeyourgadget.gadgetbridge.model.NotificationSpec+body nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mSyncedNotificationIDs nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mAutoRemoveMessageHandler,1734,37,1,,"@Override
+    public void onNotification(final NotificationSpec notificationSpec) {
+        byte icon;
+        boolean autoremove = false;
+        switch (notificationSpec.type.getGenericType()) {
+            case ""generic_calendar"":
+                icon = CasioConstants.CATEGORY_SCHEDULE_AND_ALARM;
+                break;
+            case ""generic_email"":
+                icon = CasioConstants.CATEGORY_EMAIL;
+                break;
+            case ""generic_sms"":
+                icon = CasioConstants.CATEGORY_SNS;
+                SharedPreferences sharedPreferences = GBApplication.getDeviceSpecificSharedPrefs(getDevice().getAddress());
+                autoremove = sharedPreferences.getBoolean(PREF_AUTOREMOVE_MESSAGE, false);
+                break;
+            default:
+                icon = CasioConstants.CATEGORY_SNS;
+                break;
+        }
+        LOG.info(""onNotification id="" + notificationSpec.getId());
+        showNotification(icon, notificationSpec.sender, notificationSpec.title, notificationSpec.body, notificationSpec.getId(), false);
+        mSyncedNotificationIDs.add(notificationSpec.getId());
+        if(autoremove) {
+            mAutoRemoveMessageHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onDeleteNotification(notificationSpec.getId());
+                }
+            }, CasioConstants.CASIO_AUTOREMOVE_MESSAGE_DELAY);
+        }
+        // The watch only holds up to 10 notifications. However, the user might have deleted
+        // some notifications in the meantime, so to be sure, we keep the last 100 IDs.
+        if(mSyncedNotificationIDs.size() > 100) {
+            mSyncedNotificationIDs.remove(0);
+        }
+    }",False
+24,onDeleteNotification(int),Method,,,"org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) java.util.ArrayList+contains(Object) java.util.ArrayList+contains(Object) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+showNotification(byte,String,String,String,int,boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+showNotification(byte,String,String,String,int,boolean) java.util.ArrayList+remove(Object) java.util.ArrayList+remove(Object)",nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mSyncedNotificationIDs nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CATEGORY_OTHER nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mSyncedNotificationIDs,341,9,1,,"@Override
+    public void onDeleteNotification(int id) {
+        LOG.info(""onDeleteNofication id="" + id);
+        Integer idInt = id;
+        if(mSyncedNotificationIDs.contains(idInt)) {
+            showNotification(CasioConstants.CATEGORY_OTHER, null, null, null, id, true);
+            mSyncedNotificationIDs.remove(idInt);
+        }
+    }",False
+25,onReverseFindDevice(boolean),Method,"onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic) onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)",,nodomain.freeyourgadget.gadgetbridge.GBApplication+getDeviceSpecificSharedPrefs(String) nodomain.freeyourgadget.gadgetbridge.GBApplication+getDeviceSpecificSharedPrefs(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getAddress() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getAddress() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() java.lang.String+equals(Object) java.lang.String+equals(Object) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventFindPhone+GBDeviceEventFindPhone() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+evaluateGBDeviceEvent(GBDeviceEvent) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+evaluateGBDeviceEvent(GBDeviceEvent) java.lang.String+equals(Object) java.lang.String+equals(Object) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) org.slf4j.Logger+warn(String) org.slf4j.Logger+warn(String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() +() +run(),nodomain.freeyourgadget.gadgetbridge.deviceevents.GBDeviceEventFindPhone+event nodomain.freeyourgadget.gadgetbridge.devices.makibeshr3.MakibesHR3Constants+PREF_FIND_PHONE_DURATION nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mFindPhoneHandler nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mFindPhoneHandler,1941,44,2,,"private void onReverseFindDevice(boolean start) {
+        if (start) {
+            SharedPreferences sharedPreferences = GBApplication.getDeviceSpecificSharedPrefs(getDevice().getAddress());
+
+            String findPhone = sharedPreferences.getString(PREF_FIND_PHONE_ENABLED, getContext().getString(R.string.p_off));
+
+            if(findPhone.equals(getContext().getString(R.string.p_off)))
+                return;
+
+            GBDeviceEventFindPhone findPhoneEvent = new GBDeviceEventFindPhone();
+            findPhoneEvent.event = GBDeviceEventFindPhone.Event.START;
+            evaluateGBDeviceEvent(findPhoneEvent);
+
+            if(!findPhone.equals(getContext().getString(R.string.p_on))) {
+                String duration = sharedPreferences.getString(MakibesHR3Constants.PREF_FIND_PHONE_DURATION, ""0"");
+
+                try {
+                    int iDuration;
+
+                    try {
+                        iDuration = Integer.parseInt(duration);
+                    } catch (Exception ex) {
+                        LOG.warn(ex.getMessage());
+                        iDuration = 60;
+                    }
+                    if(iDuration > 0) {
+                        this.mFindPhoneHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                onReverseFindDevice(false);
+                            }
+                        }, iDuration * 1000);
+                    }
+                } catch (Exception e) {
+                    LOG.error(""Unexpected exception in MiBand2Coordinator.getTime: "" + e.getMessage());
+                }
+            }
+        } else {
+            // Always send stop, ignore preferences.
+            GBDeviceEventFindPhone findPhoneEvent = new GBDeviceEventFindPhone();
+            findPhoneEvent.event = GBDeviceEventFindPhone.Event.STOP;
+            evaluateGBDeviceEvent(findPhoneEvent);
+        }
+    }",False
+26,writeCurrentTime(TransactionBuilder),Method,"onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic) onSetTime()","nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)","java.util.Calendar+getInstance() java.util.Calendar+getInstance() java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.Calendar+get(int) java.util.concurrent.TimeUnit+toSeconds(long) java.util.concurrent.TimeUnit+toSeconds(long) java.util.Calendar+get(int) java.util.Calendar+get(int) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeAllFeatures(TransactionBuilder,byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeAllFeatures(TransactionBuilder,byte[])",java.util.Calendar+YEAR nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+characteristicToByte java.util.Calendar+MONTH java.util.Calendar+DAY_OF_MONTH java.util.Calendar+HOUR_OF_DAY java.util.Calendar+MINUTE java.util.Calendar+SECOND java.util.Calendar+DAY_OF_WEEK java.util.concurrent.TimeUnit+MILLISECONDS java.util.Calendar+MILLISECOND,933,22,1,,"public void writeCurrentTime(TransactionBuilder builder) {
+        byte[] arr = new byte[11];
+        Calendar cal = Calendar.getInstance();
+
+        int year = cal.get(Calendar.YEAR);
+        arr[0] = CasioConstants.characteristicToByte.get(""CASIO_CURRENT_TIME"");
+        arr[1] = (byte)(year & 0xff);
+        arr[2] = (byte)((year >>> 8) & 0xff);
+        arr[3] = (byte)(1 + cal.get(Calendar.MONTH));
+        arr[4] = (byte)cal.get(Calendar.DAY_OF_MONTH);
+        arr[5] = (byte)cal.get(Calendar.HOUR_OF_DAY);
+        arr[6] = (byte)cal.get(Calendar.MINUTE);
+        arr[7] = (byte)(1 + cal.get(Calendar.SECOND));
+        byte dayOfWk = (byte)(cal.get(Calendar.DAY_OF_WEEK) - 1);
+        if(dayOfWk == 0)
+            dayOfWk = 7;
+        arr[8] = dayOfWk;
+        arr[9] = (byte)(int) TimeUnit.MILLISECONDS.toSeconds(256 * cal.get(Calendar.MILLISECOND));
+        arr[10] = 1; // or 0?
+
+        writeAllFeatures(builder, arr);
+    }",False
+27,"writeAllFeatures(TransactionBuilder,byte[])",Method,writeCurrentTime(TransactionBuilder) onSetAlarms(ArrayList<? extends Alarm>) onSetAlarms(ArrayList<? extends Alarm>),"nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+writeAllFeatures(byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+writeAllFeaturesInit(TransactionBuilder) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.SetConfigurationOperation+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.SetConfigurationOperation+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.SetConfigurationOperation+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)","nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID)",nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CASIO_ALL_FEATURES_CHARACTERISTIC_UUID,178,3,1,,"public void writeAllFeatures(TransactionBuilder builder, byte[] arr) {
+        builder.write(getCharacteristic(CasioConstants.CASIO_ALL_FEATURES_CHARACTERISTIC_UUID), arr);
+    }",False
+28,"writeAllFeaturesRequest(TransactionBuilder,byte[])",Method,onTestNewFunction(),nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.GetConfigurationOperation+doPerform() nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.GetConfigurationOperation+requestBasicSettings() nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+writeAllFeaturesRequest(byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+requestWatchName(TransactionBuilder) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.SetConfigurationOperation+doPerform() nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.SetConfigurationOperation+requestBasicSettings() nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.SetConfigurationOperation+requestTargetSettings(),"nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+write(BluetoothGattCharacteristic,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getCharacteristic(UUID)",nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CASIO_READ_REQUEST_FOR_ALL_FEATURES_CHARACTERISTIC_UUID,202,3,1,,"public void writeAllFeaturesRequest(TransactionBuilder builder, byte[] arr) {
+        builder.write(getCharacteristic(CasioConstants.CASIO_READ_REQUEST_FOR_ALL_FEATURES_CHARACTERISTIC_UUID), arr);
+    }",False
+29,onSetAlarms(ArrayList<? extends Alarm>),Method,,,"nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+isConnected() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+isConnected() java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.Map+get(Object) java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+get(int) java.util.ArrayList+get(int) nodomain.freeyourgadget.gadgetbridge.model.Alarm+getEnabled() nodomain.freeyourgadget.gadgetbridge.model.Alarm+getEnabled() nodomain.freeyourgadget.gadgetbridge.model.Alarm+getRepetition(int) nodomain.freeyourgadget.gadgetbridge.model.Alarm+getRepetition(int) nodomain.freeyourgadget.gadgetbridge.model.Alarm+getHour() nodomain.freeyourgadget.gadgetbridge.model.Alarm+getHour() nodomain.freeyourgadget.gadgetbridge.model.Alarm+getMinute() nodomain.freeyourgadget.gadgetbridge.model.Alarm+getMinute() java.lang.System+arraycopy(Object,int,Object,int,int) java.lang.System+arraycopy(Object,int,Object,int,int) java.lang.System+arraycopy(Object,int,Object,int,int) java.lang.System+arraycopy(Object,int,Object,int,int) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeAllFeatures(TransactionBuilder,byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeAllFeatures(TransactionBuilder,byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeAllFeatures(TransactionBuilder,byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeAllFeatures(TransactionBuilder,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() org.slf4j.Logger+error(String) org.slf4j.Logger+error(String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+characteristicToByte nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+characteristicToByte nodomain.freeyourgadget.gadgetbridge.model.Alarm+ALARM_ONCE nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,1478,42,1,,"@Override
+    public void onSetAlarms(ArrayList<? extends Alarm> alarms) {
+        int alarmOffset = 4;
+        byte[] data1 = new byte[5];
+        byte[] data2 = new byte[17];
+
+        if(!isConnected())
+            return;
+
+        data1[0] = CasioConstants.characteristicToByte.get(""CASIO_SETTING_FOR_ALM"");
+        data2[0] = CasioConstants.characteristicToByte.get(""CASIO_SETTING_FOR_ALM2"");
+
+        for(int i=0; i<alarms.size(); i++)
+        {
+            byte[] settings = new byte[4];
+            Alarm alm = alarms.get(i);
+            if(alm.getEnabled()) {
+                settings[0] = 0x40;
+            } else {
+                settings[0] = 0;
+            }
+            if(alm.getRepetition(Alarm.ALARM_ONCE)) {
+                settings[i * alarmOffset] |= 0x20;
+            }
+            settings[1] = 0x40;
+            settings[2] = (byte)alm.getHour();
+            settings[3] = (byte)alm.getMinute();
+            if(i == 0) {
+                System.arraycopy(settings, 0, data1, 1, settings.length);
+            } else {
+                System.arraycopy(settings, 0, data2, 1 + (i-1)*4, settings.length);
+            }
+        }
+        try {
+            TransactionBuilder builder = performInitialized(""setAlarm"");
+            writeAllFeatures(builder, data1);
+            writeAllFeatures(builder, data2);
+            builder.queue(getQueue());
+        } catch(IOException e) {
+            LOG.error(""Error setting alarm: "" + e.getMessage());
+        }
+    }",False
+30,onSetTime(),Method,,,org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeCurrentTime(TransactionBuilder) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeCurrentTime(TransactionBuilder) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() org.slf4j.Logger+warn(String) org.slf4j.Logger+warn(String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage(),nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,355,11,1,,"@Override
+    public void onSetTime() {
+        LOG.debug(""onSetTime called"");
+        try {
+            TransactionBuilder builder = performInitialized(""onSetTime"");
+            writeCurrentTime(builder);
+            builder.queue(getQueue());
+        } catch (IOException e) {
+            LOG.warn(""onSetTime failed: "" + e.getMessage());
+        }
+    }",False
+31,onSetCallState(CallSpec),Method,,,"nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+showNotification(byte,String,String,String,int,boolean) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+showNotification(byte,String,String,String,int,boolean) nodomain.freeyourgadget.gadgetbridge.GBApplication+getDeviceSpecificSharedPrefs(String) nodomain.freeyourgadget.gadgetbridge.GBApplication+getDeviceSpecificSharedPrefs(String) nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getAddress() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getDevice() nodomain.freeyourgadget.gadgetbridge.impl.GBDevice+getAddress() +() +run()",nodomain.freeyourgadget.gadgetbridge.model.CallSpec+command nodomain.freeyourgadget.gadgetbridge.model.CallSpec+CALL_INCOMING nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CATEGORY_INCOMING_CALL nodomain.freeyourgadget.gadgetbridge.model.CallSpec+name nodomain.freeyourgadget.gadgetbridge.model.CallSpec+number nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mLastCallId nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mFakeRingDurationCounter nodomain.freeyourgadget.gadgetbridge.devices.casio.CasioConstants+CASIO_FAKE_RING_RETRIES nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mFakeRingDurationCounter nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mFakeRingDurationHandler,1712,30,1,,"@Override
+    public void onSetCallState(final CallSpec callSpec) {
+        switch (callSpec.command) {
+            case CallSpec.CALL_INCOMING:
+                showNotification(CasioConstants.CATEGORY_INCOMING_CALL, ""Phone"", callSpec.name, callSpec.number, mLastCallId, false);
+                SharedPreferences sharedPreferences = GBApplication.getDeviceSpecificSharedPrefs(getDevice().getAddress());
+                boolean fakeRingDuration = sharedPreferences.getBoolean(PREF_FAKE_RING_DURATION, false);
+                if(fakeRingDuration && mFakeRingDurationCounter < CasioConstants.CASIO_FAKE_RING_RETRIES) {
+                    mFakeRingDurationCounter++;
+                    mFakeRingDurationHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showNotification(CasioConstants.CATEGORY_INCOMING_CALL, null, null, null, mLastCallId, true);
+                            onSetCallState(callSpec);
+                        }
+                    }, CasioConstants.CASIO_FAKE_RING_SLEEP_DURATION);
+                } else {
+                    mFakeRingDurationCounter = 0;
+                }
+                mRingNotificationPending = true;
+                break;
+            default:
+                if(mRingNotificationPending) {
+                    mFakeRingDurationHandler.removeCallbacksAndMessages(null);
+                    mFakeRingDurationCounter = 0;
+                    showNotification(CasioConstants.CATEGORY_INCOMING_CALL, null, null, null, mLastCallId, true);
+                    mLastCallId = new AtomicInteger((int) (System.currentTimeMillis() / 1000)).incrementAndGet();
+                }
+        }
+    }",False
+32,onSetCannedMessages(CannedMessagesSpec),Method,,,,,93,4,1,,"@Override
+    public void onSetCannedMessages(CannedMessagesSpec cannedMessagesSpec) {
+
+    }",True
+33,onSetMusicState(MusicStateSpec),Method,,,,,76,4,1,,"@Override
+    public void onSetMusicState(MusicStateSpec stateSpec) {
+
+    }",True
+34,onSetMusicInfo(MusicSpec),Method,,,,,70,4,1,,"@Override
+    public void onSetMusicInfo(MusicSpec musicSpec) {
+
+    }",True
+35,onEnableRealtimeSteps(boolean),Method,,,,,71,3,1,,"@Override
+    public void onEnableRealtimeSteps(boolean enable) {
+    }",True
+36,onInstallApp(Uri),Method,,,,,56,4,1,,"@Override
+    public void onInstallApp(Uri uri) {
+
+    }",True
+37,onAppInfoReq(),Method,,,,,49,4,1,,"@Override
+    public void onAppInfoReq() {
+
+    }",True
+38,"onAppStart(UUID,boolean)",Method,,,,,71,4,1,,"@Override
+    public void onAppStart(UUID uuid, boolean start) {
+
+    }",True
+39,onAppDelete(UUID),Method,,,,,57,4,1,,"@Override
+    public void onAppDelete(UUID uuid) {
+
+    }",True
+40,"onAppConfiguration(UUID,String,Integer)",Method,,,,,94,4,1,,"@Override
+    public void onAppConfiguration(UUID appUuid, String config, Integer id) {
+
+    }",True
+41,onAppReorder(UUID[]),Method,,,,,61,4,1,,"@Override
+    public void onAppReorder(UUID[] uuids) {
+
+    }",True
+42,onFetchRecordedData(int),Method,,,"nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.FetchStepCountDataOperation+FetchStepCountDataOperation(CasioGBX100DeviceSupport) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.util.GB+toast(Context,String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(Context,String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext()",nodomain.freeyourgadget.gadgetbridge.util.GB+ERROR,278,8,1,,"@Override
+    public void onFetchRecordedData(int dataTypes) {
+        try {
+            new FetchStepCountDataOperation(this).perform();
+        } catch(IOException e) {
+            GB.toast(getContext(), ""Error fetching data"", Toast.LENGTH_SHORT, GB.ERROR, e);
+        }
+    }",False
+43,onReset(int),Method,,,,,53,4,1,,"@Override
+    public void onReset(int flags) {
+
+    }",True
+44,onHeartRateTest(),Method,,,,,52,4,1,,"@Override
+    public void onHeartRateTest() {
+
+    }",True
+45,onEnableRealtimeHeartRateMeasurement(boolean),Method,,,,,87,4,1,,"@Override
+    public void onEnableRealtimeHeartRateMeasurement(boolean enable) {
+
+    }",True
+46,onFindDevice(boolean),Method,,,,,62,4,1,,"@Override
+    public void onFindDevice(boolean start) {
+
+    }",True
+47,onSetConstantVibration(int),Method,,,,,70,4,1,,"@Override
+    public void onSetConstantVibration(int integer) {
+
+    }",True
+48,onScreenshotReq(),Method,,,,,52,4,1,,"@Override
+    public void onScreenshotReq() {
+
+    }",True
+49,onEnableHeartRateSleepSupport(boolean),Method,,,,,80,4,1,,"@Override
+    public void onEnableHeartRateSleepSupport(boolean enable) {
+
+    }",True
+50,onSetHeartRateMeasurementInterval(int),Method,,,,,81,4,1,,"@Override
+    public void onSetHeartRateMeasurementInterval(int seconds) {
+
+    }",True
+51,onAddCalendarEvent(CalendarEventSpec),Method,,,,,90,4,1,,"@Override
+    public void onAddCalendarEvent(CalendarEventSpec calendarEventSpec) {
+
+    }",True
+52,"onDeleteCalendarEvent(byte,long)",Method,,,,,76,4,1,,"@Override
+    public void onDeleteCalendarEvent(byte type, long id) {
+
+    }",True
+53,onSendConfiguration(String),Method,,,"org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+onSharedPreferenceChanged(SharedPreferences,String) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+onSharedPreferenceChanged(SharedPreferences,String)",nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,167,5,1,,"@Override
+    public void onSendConfiguration(String config) {
+        LOG.info(""onSendConfiguration"" + config);
+        onSharedPreferenceChanged(null, config);
+    }",False
+54,onGetConfigurationFinished(),Method,,nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.GetConfigurationOperation+operationFinished(),,nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mGetConfigurationPending,90,3,1,,"public void onGetConfigurationFinished() {
+        mGetConfigurationPending = false;
+    }",False
+55,onReadConfiguration(String),Method,,"nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.InitOperationGBX100+onCharacteristicChanged(BluetoothGatt,BluetoothGattCharacteristic)","org.slf4j.Logger+info(String) org.slf4j.Logger+info(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.devices.casio.operations.GetConfigurationOperation+GetConfigurationOperation(CasioGBX100DeviceSupport,boolean) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.util.GB+toast(Context,String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.util.GB+toast(Context,String,int,int,Throwable) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+getContext()",nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mGetConfigurationPending nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mGetConfigurationPending nodomain.freeyourgadget.gadgetbridge.util.GB+ERROR,592,14,1,,"@Override
+    public void onReadConfiguration(String config) {
+        LOG.info(""onReadConfiguration"" + config);
+        // This is called upon pairing to retrieve the current watch settings, if any
+        if(config == null) {
+            try {
+                mGetConfigurationPending = true;
+                new GetConfigurationOperation(this, true).perform();
+            } catch (IOException e) {
+                mGetConfigurationPending = false;
+                GB.toast(getContext(), ""Reading Casio configuration failed"", Toast.LENGTH_SHORT, GB.ERROR, e);
+            }
+        }
+    }",False
+56,onTestNewFunction(),Method,,,"nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+performInitialized(String) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeAllFeaturesRequest(TransactionBuilder,byte[]) nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+writeAllFeaturesRequest(TransactionBuilder,byte[]) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.TransactionBuilder+queue(BtLEQueue) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEDeviceSupport+getQueue() org.slf4j.Logger+error(String) org.slf4j.Logger+error(String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,443,13,1,,"@Override
+    public void onTestNewFunction() {
+        byte[] data = new byte[2];
+        data[0] = (byte)0x2e;
+        data[1] = (byte)0x03;
+        try {
+            TransactionBuilder builder = performInitialized(""onTestNewFunction"");
+            writeAllFeaturesRequest(builder, data);
+            builder.queue(getQueue());
+        } catch(IOException e) {
+            LOG.error(""Error setting alarm: "" + e.getMessage());
+        }
+    }",False
+57,onSendWeather(WeatherSpec),Method,,,,,73,4,1,,"@Override
+    public void onSendWeather(WeatherSpec weatherSpec) {
+
+    }",True
+58,"onSharedPreferenceChanged(SharedPreferences,String)",Method,onSendConfiguration(String),,org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+isConnected() nodomain.freeyourgadget.gadgetbridge.service.AbstractDeviceSupport+isConnected() org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) org.slf4j.Logger+debug(String) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+AbstractBTLEOperation(T) nodomain.freeyourgadget.gadgetbridge.service.btle.AbstractBTLEOperation+perform() org.slf4j.Logger+info(String) org.slf4j.Logger+info(String),nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+mGetConfigurationPending nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG nodomain.freeyourgadget.gadgetbridge.activities.devicesettings.DeviceSettingsPreferenceConst+PREF_WEARLOCATION nodomain.freeyourgadget.gadgetbridge.devices.makibeshr3.MakibesHR3Constants+PREF_FIND_PHONE_DURATION nodomain.freeyourgadget.gadgetbridge.service.devices.casio.CasioGBX100DeviceSupport+LOG,3192,61,1,,"public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        LOG.debug(key + "" changed"");
+
+        if (!this.isConnected()) {
+            LOG.debug(""ignoring change, we're disconnected"");
+            return;
+        }
+
+        if(mGetConfigurationPending) {
+            LOG.debug(""Preferences are being fetched right now"");
+            return;
+        }
+        try {
+            switch (key) {
+                case DeviceSettingsPreferenceConst.PREF_WEARLOCATION:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_WRIST).perform();
+                    break;
+                case PREF_USER_STEPS_GOAL:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_STEP_GOAL).perform();
+                    break;
+                case PREF_USER_ACTIVETIME_MINUTES:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_ACTIVITY_GOAL).perform();
+                    break;
+                case PREF_USER_DISTANCE_METERS:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_DISTANCE_GOAL).perform();
+                    break;
+                case PREF_USER_GENDER:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_GENDER).perform();
+                    break;
+                case PREF_USER_HEIGHT_CM:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_HEIGHT).perform();
+                    break;
+                case PREF_USER_WEIGHT_KG:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_WEIGHT).perform();
+                    break;
+                case PREF_USER_YEAR_OF_BIRTH:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_BIRTHDAY).perform();
+                    break;
+                case PREF_TIMEFORMAT:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_TIMEFORMAT).perform();
+                    break;
+                case PREF_KEY_VIBRATION:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_KEY_VIBRATION).perform();
+                    break;
+                case PREF_AUTOLIGHT:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_AUTOLIGHT).perform();
+                    break;
+                case PREF_OPERATING_SOUNDS:
+                    new SetConfigurationOperation(this, CasioConstants.ConfigurationOption.OPTION_OPERATING_SOUNDS).perform();
+                    break;
+                case PREF_FAKE_RING_DURATION:
+                case PREF_FIND_PHONE_ENABLED:
+                case MakibesHR3Constants.PREF_FIND_PHONE_DURATION:
+                    // No action, we check the shared preferences when the device tries to ring the phone.
+                    break;
+                default:
+            }
+        } catch (IOException e) {
+            LOG.info(""Error sending configuration change to watch"");
+        }
+    }",False

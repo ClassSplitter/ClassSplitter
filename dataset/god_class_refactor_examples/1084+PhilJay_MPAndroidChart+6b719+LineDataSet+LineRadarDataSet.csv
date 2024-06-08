@@ -1,0 +1,452 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,mCircleColors,Field,setCircleColors(int[]),,,,123,2,2,"/** 
+ * arraylist representing all colors that are used for the circles 
+ */
+","/** arraylist representing all colors that are used for the circles */
+    private ArrayList<Integer> mCircleColors = null;",False
+2,mFillColor,Field,,,,,113,2,2,"/** 
+ * the color that is used for filling the line surface 
+ */
+","/** the color that is used for filling the line surface */
+    private int mFillColor = Color.rgb(140, 234, 255);",True
+3,mFillAlpha,Field,,,,,82,2,2,"/** 
+ * transparency used for filling line surface 
+ */
+","/** transparency used for filling line surface */
+    private int mFillAlpha = 85;",True
+4,mCircleSize,Field,,,,,91,2,2,"/** 
+ * the radius of the circle-shaped value indicators 
+ */
+","/** the radius of the circle-shaped value indicators */
+    private float mCircleSize = 4f;",False
+5,mLineWidth,Field,,,,,75,2,2,"/** 
+ * the width of the drawn data lines 
+ */
+","/** the width of the drawn data lines */
+    private float mLineWidth = 1f;",True
+6,mCubicIntensity,Field,,,,,86,2,2,"/** 
+ * sets the intensity of the cubic lines 
+ */
+","/** sets the intensity of the cubic lines */
+    private float mCubicIntensity = 0.2f;",False
+7,mDashPathEffect,Field,,,,,122,2,2,"/** 
+ * the path effect of this DataSet that makes dashed lines possible 
+ */
+","/** the path effect of this DataSet that makes dashed lines possible */
+    private DashPathEffect mDashPathEffect = null;",False
+8,mDrawCircles,Field,setDrawCircles(boolean),,,,83,2,2,"/** 
+ * if true, drawing circles is enabled 
+ */
+","/** if true, drawing circles is enabled */
+    private boolean mDrawCircles = true;",False
+9,mDrawFilled,Field,,,,,91,2,2,"/** 
+ * if true, the data will also be drawn filled 
+ */
+","/** if true, the data will also be drawn filled */
+    private boolean mDrawFilled = false;",True
+10,mDrawCubic,Field,,,,,95,2,2,"/** 
+ * if true, cubic lines are drawn instead of linear 
+ */
+","/** if true, cubic lines are drawn instead of linear */
+    private boolean mDrawCubic = false;",False
+11,"LineDataSet(ArrayList<Entry>,String)",Method,,,"java.util.ArrayList+ArrayList() java.util.ArrayList+add(int,E) java.util.ArrayList+add(int,E) android.graphics.Color+rgb(int,int,int) android.graphics.Color+rgb(int,int,int)",com.github.mikephil.charting.data.LineDataSet+mCircleColors com.github.mikephil.charting.data.LineDataSet+mCircleColors,430,13,1,,"public LineDataSet(ArrayList<Entry> yVals, String label) {
+        super(yVals, label);
+
+        // mCircleSize = Utils.convertDpToPixel(4f);
+        // mLineWidth = Utils.convertDpToPixel(1f);
+
+        mCircleColors = new ArrayList<Integer>();
+
+        // default colors
+        // mColors.add(Color.rgb(192, 255, 140));
+        // mColors.add(Color.rgb(255, 247, 140));
+        mCircleColors.add(Color.rgb(140, 234, 255));
+    }",False
+12,copy(),Method,,,"java.util.ArrayList+ArrayList() java.util.ArrayList+size() java.util.ArrayList+size() java.util.ArrayList+add(E) java.util.ArrayList+add(E) com.github.mikephil.charting.data.Entry+copy() java.util.ArrayList+get(int) java.util.ArrayList+get(int) com.github.mikephil.charting.data.Entry+copy() com.github.mikephil.charting.data.LineDataSet+LineDataSet(ArrayList<Entry>,String) com.github.mikephil.charting.data.DataSet+getLabel() com.github.mikephil.charting.data.DataSet+getLabel()",com.github.mikephil.charting.data.DataSet+mYVals com.github.mikephil.charting.data.DataSet+mYVals com.github.mikephil.charting.data.DataSet+mColors com.github.mikephil.charting.data.DataSet+mColors com.github.mikephil.charting.data.LineDataSet+mLineWidth com.github.mikephil.charting.data.LineDataSet+mLineWidth com.github.mikephil.charting.data.LineDataSet+mCircleSize com.github.mikephil.charting.data.LineDataSet+mCircleSize com.github.mikephil.charting.data.LineDataSet+mCircleColors com.github.mikephil.charting.data.LineDataSet+mCircleColors com.github.mikephil.charting.data.LineDataSet+mDashPathEffect com.github.mikephil.charting.data.LineDataSet+mDashPathEffect com.github.mikephil.charting.data.LineDataSet+mDrawCircles com.github.mikephil.charting.data.LineDataSet+mDrawCircles com.github.mikephil.charting.data.LineDataSet+mDrawFilled com.github.mikephil.charting.data.LineDataSet+mDrawFilled com.github.mikephil.charting.data.LineDataSet+mDrawCubic com.github.mikephil.charting.data.LineDataSet+mDrawCubic com.github.mikephil.charting.data.BarLineScatterCandleDataSet+mHighLightColor com.github.mikephil.charting.data.BarLineScatterCandleDataSet+mHighLightColor,685,22,1,,"@Override
+    public DataSet copy() {
+
+        ArrayList<Entry> yVals = new ArrayList<Entry>();
+
+        for (int i = 0; i < mYVals.size(); i++) {
+            yVals.add(mYVals.get(i).copy());
+        }
+
+        LineDataSet copied = new LineDataSet(yVals, getLabel());
+        copied.mColors = mColors;
+        copied.mLineWidth = mLineWidth;
+        copied.mCircleSize = mCircleSize;
+        copied.mCircleColors = mCircleColors;
+        copied.mDashPathEffect = mDashPathEffect;
+        copied.mDrawCircles = mDrawCircles;
+        copied.mDrawFilled = mDrawFilled;
+        copied.mDrawCubic = mDrawCubic;
+        copied.mHighLightColor = mHighLightColor;
+
+        return copied;
+    }",False
+13,getFillColor(),Method,,com.github.mikephil.charting.charts.LineChart+drawData(),,com.github.mikephil.charting.data.LineDataSet+mFillColor,166,8,1,"/** 
+ * returns the color that is used for filling the line surface
+ * @return
+ */
+","/**
+     * returns the color that is used for filling the line surface
+     * 
+     * @return
+     */
+    public int getFillColor() {
+        return mFillColor;
+    }",True
+14,setFillColor(int),Method,,,,com.github.mikephil.charting.data.LineDataSet+mFillColor,179,8,1,"/** 
+ * sets the color that is used for filling the line surface
+ * @param color
+ */
+","/**
+     * sets the color that is used for filling the line surface
+     * 
+     * @param color
+     */
+    public void setFillColor(int color) {
+        mFillColor = color;
+    }",True
+15,getFillAlpha(),Method,,com.github.mikephil.charting.charts.LineChart+drawData(),,com.github.mikephil.charting.data.LineDataSet+mFillAlpha,192,9,1,"/** 
+ * returns the alpha value that is used for filling the line surface, default: 85
+ * @return
+ */
+","/**
+     * returns the alpha value that is used for filling the line surface,
+     * default: 85
+     * 
+     * @return
+     */
+    public int getFillAlpha() {
+        return mFillAlpha;
+    }",True
+16,setFillAlpha(int),Method,,,,com.github.mikephil.charting.data.LineDataSet+mFillAlpha,228,9,1,"/** 
+ * sets the alpha value (transparency) that is used for filling the line surface (0-255), default: 85
+ * @param color
+ */
+","/**
+     * sets the alpha value (transparency) that is used for filling the line
+     * surface (0-255), default: 85
+     * 
+     * @param color
+     */
+    public void setFillAlpha(int alpha) {
+        mFillAlpha = alpha;
+    }",True
+17,setLineWidth(float),Method,,"com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+generateLineData() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+generateLineData() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.LineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity+generateDataLine(int) com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity+generateDataLine(int) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onProgressChanged(SeekBar,int,boolean)",com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.data.LineDataSet+mLineWidth,406,14,1,"/** 
+ * set the line width of the chart (min = 0.2f, max = 10f); default 1f NOTE: thinner line == better performance, thicker line == worse performance
+ * @param width
+ */
+","/**
+     * set the line width of the chart (min = 0.2f, max = 10f); default 1f NOTE:
+     * thinner line == better performance, thicker line == worse performance
+     * 
+     * @param width
+     */
+    public void setLineWidth(float width) {
+
+        if (width < 0.2f)
+            width = 0.5f;
+        if (width > 10.0f)
+            width = 10.0f;
+        mLineWidth = Utils.convertDpToPixel(width);
+    }",True
+18,getLineWidth(),Method,,com.github.mikephil.charting.charts.LineChart+drawData(),,com.github.mikephil.charting.data.LineDataSet+mLineWidth,150,8,1,"/** 
+ * returns the width of the drawn chart line
+ * @return
+ */
+","/**
+     * returns the width of the drawn chart line
+     * 
+     * @return
+     */
+    public float getLineWidth() {
+        return mLineWidth;
+    }",True
+19,setCubicIntensity(float),Method,,"com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+setData(int,float)",,com.github.mikephil.charting.data.LineDataSet+mCubicIntensity,391,15,1,"/** 
+ * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic, Min = 0.05f = low cubic effect, Default: 0.2f
+ * @param intensity
+ */
+","/**
+     * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
+     * Min = 0.05f = low cubic effect, Default: 0.2f
+     * 
+     * @param intensity
+     */
+    public void setCubicIntensity(float intensity) {
+
+        if (intensity > 1f)
+            intensity = 1f;
+        if (intensity < 0.05f)
+            intensity = 0.05f;
+
+        mCubicIntensity = intensity;
+    }",False
+20,getCubicIntensity(),Method,,com.github.mikephil.charting.charts.LineChart+drawData(),,com.github.mikephil.charting.data.LineDataSet+mCubicIntensity,183,8,1,"/** 
+ * Returns the intensity of the cubic lines (the effect intensity).
+ * @return
+ */
+","/**
+     * Returns the intensity of the cubic lines (the effect intensity).
+     * 
+     * @return
+     */
+    public float getCubicIntensity() {
+        return mCubicIntensity;
+    }",False
+21,setCircleSize(float),Method,,"com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.LineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity+generateDataLine(int) com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity+generateDataLine(int) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onProgressChanged(SeekBar,int,boolean)",com.github.mikephil.charting.utils.Utils+convertDpToPixel(float) com.github.mikephil.charting.utils.Utils+convertDpToPixel(float),com.github.mikephil.charting.data.LineDataSet+mCircleSize,234,9,1,"/** 
+ * sets the size (radius) of the circle shpaed value indicators, default size = 4f
+ * @param size
+ */
+","/**
+     * sets the size (radius) of the circle shpaed value indicators, default
+     * size = 4f
+     * 
+     * @param size
+     */
+    public void setCircleSize(float size) {
+        mCircleSize = Utils.convertDpToPixel(size);
+    }",False
+22,getCircleSize(),Method,,com.github.mikephil.charting.charts.LineChart+drawValues() com.github.mikephil.charting.charts.LineChart+drawAdditional() com.github.mikephil.charting.charts.LineChart+drawAdditional(),,com.github.mikephil.charting.data.LineDataSet+mCircleSize,110,6,1,"/** 
+ * returns the circlesize
+ */
+","/**
+     * returns the circlesize
+     */
+    public float getCircleSize() {
+        return mCircleSize;
+    }",False
+23,"enableDashedLine(float,float,float)",Method,,"com.xxmassdeveloper.mpchartexample.LineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onProgressChanged(SeekBar,int,boolean)","android.graphics.DashPathEffect+DashPathEffect(float[],float)",com.github.mikephil.charting.data.LineDataSet+mDashPathEffect,488,12,1,"/** 
+ * Enables the line to be drawn in dashed mode, e.g. like this ""- - - - - -""
+ * @param lineLength the length of the line pieces
+ * @param spaceLength the length of space inbetween the pieces
+ * @param phase offset, in degrees (normally, use 0)
+ */
+","/**
+     * Enables the line to be drawn in dashed mode, e.g. like this ""- - - - - -""
+     * 
+     * @param lineLength the length of the line pieces
+     * @param spaceLength the length of space inbetween the pieces
+     * @param phase offset, in degrees (normally, use 0)
+     */
+    public void enableDashedLine(float lineLength, float spaceLength, float phase) {
+        mDashPathEffect = new DashPathEffect(new float[] {
+                lineLength, spaceLength
+        }, phase);
+    }",False
+24,disableDashedLine(),Method,,,,com.github.mikephil.charting.data.LineDataSet+mDashPathEffect,140,6,1,"/** 
+ * Disables the line to be drawn in dashed mode.
+ */
+","/**
+     * Disables the line to be drawn in dashed mode.
+     */
+    public void disableDashedLine() {
+        mDashPathEffect = null;
+    }",False
+25,isDashedLineEnabled(),Method,,,,com.github.mikephil.charting.data.LineDataSet+mDashPathEffect,210,8,1,"/** 
+ * Returns true if the dashed-line effect is enabled, false if not.
+ * @return
+ */
+","/**
+     * Returns true if the dashed-line effect is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isDashedLineEnabled() {
+        return mDashPathEffect == null ? false : true;
+    }",False
+26,getDashPathEffect(),Method,,com.github.mikephil.charting.charts.LineChart+drawData(),,com.github.mikephil.charting.data.LineDataSet+mDashPathEffect,183,8,1,"/** 
+ * returns the DashPathEffect that is set for this DataSet
+ * @return
+ */
+","/**
+     * returns the DashPathEffect that is set for this DataSet
+     * 
+     * @return
+     */
+    public DashPathEffect getDashPathEffect() {
+        return mDashPathEffect;
+    }",False
+27,setDrawCircles(boolean),Method,,"com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+generateLineData() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+generateLineData() com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.LineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.LineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onOptionsItemSelected(MenuItem)",,com.github.mikephil.charting.data.LineDataSet+mDrawCircles com.github.mikephil.charting.data.LineDataSet+mDrawCircles,239,9,1,"/** 
+ * set this to true to enable the drawing of circle indicators for this DataSet, default true
+ * @param enabled
+ */
+","/**
+     * set this to true to enable the drawing of circle indicators for this
+     * DataSet, default true
+     * 
+     * @param enabled
+     */
+    public void setDrawCircles(boolean enabled) {
+        this.mDrawCircles = enabled;
+    }",False
+28,isDrawCirclesEnabled(),Method,,com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.LineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onOptionsItemSelected(MenuItem) com.github.mikephil.charting.charts.LineChart+drawValues() com.github.mikephil.charting.charts.LineChart+drawAdditional(),,com.github.mikephil.charting.data.LineDataSet+mDrawCircles,194,8,1,"/** 
+ * returns true if drawing circles for this DataSet is enabled, false if not
+ * @return
+ */
+","/**
+     * returns true if drawing circles for this DataSet is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawCirclesEnabled() {
+        return mDrawCircles;
+    }",False
+29,setDrawFilled(boolean),Method,,"com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.LineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.LineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onOptionsItemSelected(MenuItem)",,com.github.mikephil.charting.data.LineDataSet+mDrawFilled,317,10,1,"/** 
+ * Set to true if the DataSet should be drawn filled (surface), and not just as a line, disabling this will give up to 20% performance boost on large datasets, default: false
+ * @param filled
+ */
+","/**
+     * Set to true if the DataSet should be drawn filled (surface), and not just
+     * as a line, disabling this will give up to 20% performance boost on large
+     * datasets, default: false
+     * 
+     * @param filled
+     */
+    public void setDrawFilled(boolean filled) {
+        mDrawFilled = filled;
+    }",True
+30,isDrawFilledEnabled(),Method,,com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.InvertedLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.LineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onOptionsItemSelected(MenuItem) com.github.mikephil.charting.charts.LineChart+drawData() com.github.mikephil.charting.charts.LineChart+drawData(),,com.github.mikephil.charting.data.LineDataSet+mDrawFilled,174,8,1,"/** 
+ * returns true if filled drawing is enabled, false if not
+ * @return
+ */
+","/**
+     * returns true if filled drawing is enabled, false if not
+     * 
+     * @return
+     */
+    public boolean isDrawFilledEnabled() {
+        return mDrawFilled;
+    }",True
+31,setDrawCubic(boolean),Method,,"com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+setData(int,float) com.xxmassdeveloper.mpchartexample.LineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.LineChartActivity+onOptionsItemSelected(MenuItem)",,com.github.mikephil.charting.data.LineDataSet+mDrawCubic,234,9,1,"/** 
+ * If set to true, the linechart lines are drawn in cubic-style instead of linear. Default: false
+ * @param enabled
+ */
+","/**
+     * If set to true, the linechart lines are drawn in cubic-style instead of
+     * linear. Default: false
+     * 
+     * @param enabled
+     */
+    public void setDrawCubic(boolean enabled) {
+        mDrawCubic = enabled;
+    }",False
+32,isDrawCubicEnabled(),Method,,com.xxmassdeveloper.mpchartexample.CubicLineChartActivity+onOptionsItemSelected(MenuItem) com.xxmassdeveloper.mpchartexample.LineChartActivity+onOptionsItemSelected(MenuItem) com.github.mikephil.charting.charts.LineChart+drawData(),,com.github.mikephil.charting.data.LineDataSet+mDrawCubic,178,8,1,"/** 
+ * returns true if drawing cubic lines is enabled, false if not.
+ * @return
+ */
+","/**
+     * returns true if drawing cubic lines is enabled, false if not.
+     * 
+     * @return
+     */
+    public boolean isDrawCubicEnabled() {
+        return mDrawCubic;
+    }",False
+33,getCircleColors(),Method,,,,com.github.mikephil.charting.data.LineDataSet+mCircleColors,172,8,1,"/** 
+ * returns all colors specified for the circles
+ * @return
+ */
+","/**
+     * returns all colors specified for the circles
+     * 
+     * @return
+     */
+    public ArrayList<Integer> getCircleColors() {
+        return mCircleColors;
+    }",False
+34,getCircleColor(int),Method,,com.github.mikephil.charting.charts.LineChart+drawAdditional(),java.util.ArrayList+get(int) java.util.ArrayList+get(int) java.util.ArrayList+size() java.util.ArrayList+size(),com.github.mikephil.charting.data.LineDataSet+mCircleColors com.github.mikephil.charting.data.LineDataSet+mCircleColors,301,10,1,"/** 
+ * Returns the color at the given index of the DataSet's circle-color array. Performs a IndexOutOfBounds check by modulus.
+ * @param index
+ * @return
+ */
+","/**
+     * Returns the color at the given index of the DataSet's circle-color array.
+     * Performs a IndexOutOfBounds check by modulus.
+     * 
+     * @param index
+     * @return
+     */
+    public int getCircleColor(int index) {
+        return mCircleColors.get(index % mCircleColors.size());
+    }",False
+35,setCircleColors(ArrayList<Integer>),Method,,,,com.github.mikephil.charting.data.LineDataSet+mCircleColors,486,12,1,"/** 
+ * Sets the colors that should be used for the circles of this DataSet. Colors are reused as soon as the number of Entries the DataSet represents is higher than the size of the colors array. Make sure that the colors are already prepared (by calling getResources().getColor(...)) before adding them to the DataSet.
+ * @param colors
+ */
+","/**
+     * Sets the colors that should be used for the circles of this DataSet.
+     * Colors are reused as soon as the number of Entries the DataSet represents
+     * is higher than the size of the colors array. Make sure that the colors
+     * are already prepared (by calling getResources().getColor(...)) before
+     * adding them to the DataSet.
+     * 
+     * @param colors
+     */
+    public void setCircleColors(ArrayList<Integer> colors) {
+        mCircleColors = colors;
+    }",False
+36,setCircleColors(int[]),Method,,,com.github.mikephil.charting.utils.ColorTemplate+createColors(int[]) com.github.mikephil.charting.utils.ColorTemplate+createColors(int[]),com.github.mikephil.charting.data.LineDataSet+mCircleColors com.github.mikephil.charting.data.LineDataSet+mCircleColors,506,12,1,"/** 
+ * Sets the colors that should be used for the circles of this DataSet. Colors are reused as soon as the number of Entries the DataSet represents is higher than the size of the colors array. Make sure that the colors are already prepared (by calling getResources().getColor(...)) before adding them to the DataSet.
+ * @param colors
+ */
+","/**
+     * Sets the colors that should be used for the circles of this DataSet.
+     * Colors are reused as soon as the number of Entries the DataSet represents
+     * is higher than the size of the colors array. Make sure that the colors
+     * are already prepared (by calling getResources().getColor(...)) before
+     * adding them to the DataSet.
+     * 
+     * @param colors
+     */
+    public void setCircleColors(int[] colors) {
+        this.mCircleColors = ColorTemplate.createColors(colors);
+    }",False
+37,"setCircleColors(int[],Context)",Method,,,"java.util.ArrayList+ArrayList() java.util.ArrayList+add(int,E) java.util.ArrayList+add(int,E) android.content.res.Resources+getColor(int) android.content.Context+getResources() android.content.Context+getResources() android.content.res.Resources+getColor(int)",com.github.mikephil.charting.data.LineDataSet+mCircleColors,697,20,1,"/** 
+ * ets the colors that should be used for the circles of this DataSet. Colors are reused as soon as the number of Entries the DataSet represents is higher than the size of the colors array. You can use ""new String[] { R.color.red, R.color.green, ... }"" to provide colors for this method. Internally, the colors are resolved using getResources().getColor(...)
+ * @param colors
+ */
+","/**
+     * ets the colors that should be used for the circles of this DataSet.
+     * Colors are reused as soon as the number of Entries the DataSet represents
+     * is higher than the size of the colors array. You can use
+     * ""new String[] { R.color.red, R.color.green, ... }"" to provide colors for
+     * this method. Internally, the colors are resolved using
+     * getResources().getColor(...)
+     * 
+     * @param colors
+     */
+    public void setCircleColors(int[] colors, Context c) {
+
+        ArrayList<Integer> clrs = new ArrayList<Integer>();
+
+        for (int color : colors) {
+            clrs.add(c.getResources().getColor(color));
+        }
+
+        mCircleColors = clrs;
+    }",False
+38,setCircleColor(int),Method,,"com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.fragments.SimpleFragment+getComplexity() com.xxmassdeveloper.mpchartexample.ListViewMultiChartActivity+generateDataLine(int) com.xxmassdeveloper.mpchartexample.MultiLineChartActivity+onProgressChanged(SeekBar,int,boolean)","com.github.mikephil.charting.data.LineDataSet+resetCircleColors() com.github.mikephil.charting.data.LineDataSet+resetCircleColors() java.util.ArrayList+add(int,E) java.util.ArrayList+add(int,E)",com.github.mikephil.charting.data.LineDataSet+mCircleColors,306,10,1,"/** 
+ * Sets the one and ONLY color that should be used for this DataSet. Internally, this recreates the colors array and adds the specified color.
+ * @param color
+ */
+","/**
+     * Sets the one and ONLY color that should be used for this DataSet.
+     * Internally, this recreates the colors array and adds the specified color.
+     * 
+     * @param color
+     */
+    public void setCircleColor(int color) {
+        resetCircleColors();
+        mCircleColors.add(color);
+    }",False
+39,resetCircleColors(),Method,setCircleColor(int),,java.util.ArrayList+ArrayList(),com.github.mikephil.charting.data.LineDataSet+mCircleColors,165,6,1,"/** 
+ * resets the circle-colors array and creates a new one
+ */
+","/**
+     * resets the circle-colors array and creates a new one
+     */
+    public void resetCircleColors() {
+        mCircleColors = new ArrayList<Integer>();
+    }",False

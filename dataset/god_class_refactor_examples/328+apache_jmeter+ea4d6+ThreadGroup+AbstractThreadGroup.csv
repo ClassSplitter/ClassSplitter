@@ -1,0 +1,382 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,serialVersionUID,Field,,,,,50,1,26,,private static final long serialVersionUID = 233L;,False
+2,NUM_THREADS,Field,,,,,116,2,25,"/** 
+ * Number of threads in the thread group 
+ */
+","/** Number of threads in the thread group */
+    public final static String NUM_THREADS = ""ThreadGroup.num_threads"";",True
+3,RAMP_TIME,Field,,,,,87,2,25,"/** 
+ * Ramp-up time 
+ */
+","/** Ramp-up time */
+    public final static String RAMP_TIME = ""ThreadGroup.ramp_time"";",False
+4,MAIN_CONTROLLER,Field,,,,,75,1,25,,"public final static String MAIN_CONTROLLER = ""ThreadGroup.main_controller"";",True
+5,SCHEDULER,Field,,,,,106,2,25,"/** 
+ * Whether scheduler is being used 
+ */
+","/** Whether scheduler is being used */
+    public final static String SCHEDULER = ""ThreadGroup.scheduler"";",False
+6,START_TIME,Field,,,,,106,2,25,"/** 
+ * Scheduler absolute start time 
+ */
+","/** Scheduler absolute start time */
+    public final static String START_TIME = ""ThreadGroup.start_time"";",False
+7,END_TIME,Field,,,,,100,2,25,"/** 
+ * Scheduler absolute end time 
+ */
+","/** Scheduler absolute end time */
+    public final static String END_TIME = ""ThreadGroup.end_time"";",False
+8,DURATION,Field,,,,,111,2,25,"/** 
+ * Scheduler duration, overrides end time 
+ */
+","/** Scheduler duration, overrides end time */
+    public final static String DURATION = ""ThreadGroup.duration"";",False
+9,DELAY,Field,,,,,110,2,25,"/** 
+ * Scheduler start delay, overrides start time 
+ */
+","/** Scheduler start delay, overrides start time */
+    public final static String DELAY = ""ThreadGroup.delay"";",False
+10,ON_SAMPLE_ERROR,Field,,,,,133,2,25,"/** 
+ * Action to be taken when a Sampler error occurs 
+ */
+","/** Action to be taken when a Sampler error occurs */
+    public final static String ON_SAMPLE_ERROR = ""ThreadGroup.on_sample_error"";",True
+11,ON_SAMPLE_ERROR_CONTINUE,Field,,,,,113,2,25,"/** 
+ * Continue, i.e. ignore sampler errors 
+ */
+","/** Continue, i.e. ignore sampler errors */
+    public final static String ON_SAMPLE_ERROR_CONTINUE = ""continue"";",True
+12,ON_SAMPLE_ERROR_STOPTHREAD,Field,,,,,124,2,25,"/** 
+ * Stop current thread if sampler error occurs 
+ */
+","/** Stop current thread if sampler error occurs */
+    public final static String ON_SAMPLE_ERROR_STOPTHREAD = ""stopthread"";",True
+13,ON_SAMPLE_ERROR_STOPTEST,Field,,,,,124,2,25,"/** 
+ * Stop test (all threads) if sampler error occurs 
+ */
+","/** Stop test (all threads) if sampler error occurs */
+    public final static String ON_SAMPLE_ERROR_STOPTEST = ""stoptest"";",True
+14,ON_SAMPLE_ERROR_STOPTEST_NOW,Field,,,,,135,2,25,"/** 
+ * Stop test NOW (all threads) if sampler error occurs 
+ */
+","/** Stop test NOW (all threads) if sampler error occurs */
+    public final static String ON_SAMPLE_ERROR_STOPTEST_NOW = ""stoptestnow"";",True
+15,numberOfThreads,Field,,,,,32,1,2,,private int numberOfThreads = 0;,True
+16,ThreadGroup(),Method,,,,,71,5,1,"/** 
+ * No-arg constructor.
+ */
+","/**
+     * No-arg constructor.
+     */
+    public ThreadGroup() {
+    }",False
+17,setNumThreads(int),Method,,,"org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.IntegerProperty+IntegerProperty(String,int)",org.apache.jmeter.threads.ThreadGroup+NUM_THREADS,253,9,1,"/** 
+ * Set the total number of threads to start
+ * @param numThreads the number of threads.
+ */
+","/**
+     * Set the total number of threads to start
+     *
+     * @param numThreads
+     *            the number of threads.
+     */
+    public void setNumThreads(int numThreads) {
+        setProperty(new IntegerProperty(NUM_THREADS, numThreads));
+    }",True
+18,incrNumberOfThreads(),Method,,org.apache.jmeter.threads.JMeterThread+threadStarted(),,org.apache.jmeter.threads.ThreadGroup+numberOfThreads,136,6,32,"/** 
+ * Increment the number of active threads
+ */
+","/**
+     * Increment the number of active threads
+     */
+    synchronized void incrNumberOfThreads() {
+        numberOfThreads++;
+    }",True
+19,decrNumberOfThreads(),Method,,org.apache.jmeter.threads.JMeterThread+threadFinished(),,org.apache.jmeter.threads.ThreadGroup+numberOfThreads,136,6,32,"/** 
+ * Decrement the number of active threads
+ */
+","/**
+     * Decrement the number of active threads
+     */
+    synchronized void decrNumberOfThreads() {
+        numberOfThreads--;
+    }",True
+20,getNumberOfThreads(),Method,,"org.apache.jmeter.timers.ConstantThroughputTimer+calculateDelay() org.apache.jmeter.threads.JMeterThread+process_sampler(Sampler,Sampler,JMeterContext) org.apache.jmeter.threads.JMeterThread+process_sampler(Sampler,Sampler,JMeterContext)",,org.apache.jmeter.threads.ThreadGroup+numberOfThreads,140,6,33,"/** 
+ * Get the number of active threads
+ */
+","/**
+     * Get the number of active threads
+     */
+    public synchronized int getNumberOfThreads() {
+        return numberOfThreads;
+    }",True
+21,isDone(),Method,,,org.apache.jmeter.control.Controller+isDone() org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.control.Controller+isDone(),,104,4,1,"/** 
+ * {@inheritDoc} 
+ */
+","/** {@inheritDoc} */
+    public boolean isDone() {
+        return getSamplerController().isDone();
+    }",True
+22,next(),Method,,,org.apache.jmeter.control.Controller+next() org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.control.Controller+next(),,100,4,1,"/** 
+ * {@inheritDoc} 
+ */
+","/** {@inheritDoc} */
+    public Sampler next() {
+        return getSamplerController().next();
+    }",True
+23,setScheduler(boolean),Method,,,"org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.BooleanProperty+BooleanProperty(String,boolean)",org.apache.jmeter.threads.ThreadGroup+SCHEDULER,237,8,1,"/** 
+ * Set whether scheduler is being used
+ * @param Scheduler true is scheduler is to be used
+ */
+","/**
+     * Set whether scheduler is being used
+     *
+     * @param Scheduler true is scheduler is to be used
+     */
+    public void setScheduler(boolean Scheduler) {
+        setProperty(new BooleanProperty(SCHEDULER, Scheduler));
+    }",False
+24,getScheduler(),Method,,"org.apache.jmeter.engine.StandardJMeterEngine+scheduleThread(JMeterThread,ThreadGroup)",org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsBoolean(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsBoolean(String),org.apache.jmeter.threads.ThreadGroup+SCHEDULER,198,8,1,"/** 
+ * Get whether scheduler is being used
+ * @return true if scheduler is being used
+ */
+","/**
+     * Get whether scheduler is being used
+     *
+     * @return true if scheduler is being used
+     */
+    public boolean getScheduler() {
+        return getPropertyAsBoolean(SCHEDULER);
+    }",False
+25,setStartTime(long),Method,,,"org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.LongProperty+LongProperty(String,long)",org.apache.jmeter.threads.ThreadGroup+START_TIME,227,9,1,"/** 
+ * Set the absolute StartTime value.
+ * @param stime -the StartTime value.
+ */
+","/**
+     * Set the absolute StartTime value.
+     *
+     * @param stime -
+     *            the StartTime value.
+     */
+    public void setStartTime(long stime) {
+        setProperty(new LongProperty(START_TIME, stime));
+    }",False
+26,getStartTime(),Method,,"org.apache.jmeter.engine.StandardJMeterEngine+scheduleThread(JMeterThread,ThreadGroup)",org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsLong(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsLong(String),org.apache.jmeter.threads.ThreadGroup+START_TIME,182,8,1,"/** 
+ * Get the absolute start time value.
+ * @return the start time value.
+ */
+","/**
+     * Get the absolute start time value.
+     *
+     * @return the start time value.
+     */
+    public long getStartTime() {
+        return getPropertyAsLong(START_TIME);
+    }",False
+27,getDuration(),Method,,"org.apache.jmeter.engine.StandardJMeterEngine+scheduleThread(JMeterThread,ThreadGroup) org.apache.jmeter.engine.StandardJMeterEngine+scheduleThread(JMeterThread,ThreadGroup)",org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsLong(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsLong(String),org.apache.jmeter.threads.ThreadGroup+DURATION,199,8,1,"/** 
+ * Get the desired duration of the thread group test run
+ * @return the duration (in secs)
+ */
+","/**
+     * Get the desired duration of the thread group test run
+     *
+     * @return the duration (in secs)
+     */
+    public long getDuration() {
+        return getPropertyAsLong(DURATION);
+    }",False
+28,setDuration(long),Method,,,"org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.LongProperty+LongProperty(String,long)",org.apache.jmeter.threads.ThreadGroup+DURATION,241,9,1,"/** 
+ * Set the desired duration of the thread group test run
+ * @param duration in seconds
+ */
+","/**
+     * Set the desired duration of the thread group test run
+     *
+     * @param duration
+     *            in seconds
+     */
+    public void setDuration(long duration) {
+        setProperty(new LongProperty(DURATION, duration));
+    }",False
+29,getDelay(),Method,,"org.apache.jmeter.engine.StandardJMeterEngine+scheduleThread(JMeterThread,ThreadGroup) org.apache.jmeter.engine.StandardJMeterEngine+scheduleThread(JMeterThread,ThreadGroup)",org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsLong(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsLong(String),org.apache.jmeter.threads.ThreadGroup+DELAY,158,8,1,"/** 
+ * Get the startup delay
+ * @return the delay (in secs)
+ */
+","/**
+     * Get the startup delay
+     *
+     * @return the delay (in secs)
+     */
+    public long getDelay() {
+        return getPropertyAsLong(DELAY);
+    }",False
+30,setDelay(long),Method,,,"org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.LongProperty+LongProperty(String,long)",org.apache.jmeter.threads.ThreadGroup+DELAY,194,9,1,"/** 
+ * Set the startup delay
+ * @param delay in seconds
+ */
+","/**
+     * Set the startup delay
+     *
+     * @param delay
+     *            in seconds
+     */
+    public void setDelay(long delay) {
+        setProperty(new LongProperty(DELAY, delay));
+    }",False
+31,setEndTime(long),Method,,,"org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.LongProperty+LongProperty(String,long)",org.apache.jmeter.threads.ThreadGroup+END_TIME,210,9,1,"/** 
+ * Set the EndTime value.
+ * @param etime -the EndTime value.
+ */
+","/**
+     * Set the EndTime value.
+     *
+     * @param etime -
+     *            the EndTime value.
+     */
+    public void setEndTime(long etime) {
+        setProperty(new LongProperty(END_TIME, etime));
+    }",False
+32,getEndTime(),Method,,"org.apache.jmeter.engine.StandardJMeterEngine+scheduleThread(JMeterThread,ThreadGroup)",org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsLong(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsLong(String),org.apache.jmeter.threads.ThreadGroup+END_TIME,165,8,1,"/** 
+ * Get the end time value.
+ * @return the end time value.
+ */
+","/**
+     * Get the end time value.
+     *
+     * @return the end time value.
+     */
+    public long getEndTime() {
+        return getPropertyAsLong(END_TIME);
+    }",False
+33,setRampUp(int),Method,,,"org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.IntegerProperty+IntegerProperty(String,int)",org.apache.jmeter.threads.ThreadGroup+RAMP_TIME,213,9,1,"/** 
+ * Set the ramp-up value.
+ * @param rampUp the ramp-up value.
+ */
+","/**
+     * Set the ramp-up value.
+     *
+     * @param rampUp
+     *            the ramp-up value.
+     */
+    public void setRampUp(int rampUp) {
+        setProperty(new IntegerProperty(RAMP_TIME, rampUp));
+    }",False
+34,getRampUp(),Method,,org.apache.jmeter.engine.StandardJMeterEngine+run(),org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsInt(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsInt(String),org.apache.jmeter.threads.ThreadGroup+RAMP_TIME,173,8,1,"/** 
+ * Get the ramp-up value.
+ * @return the ramp-up value.
+ */
+","/**
+     * Get the ramp-up value.
+     *
+     * @return the ramp-up value.
+     */
+    public int getRampUp() {
+        return getPropertyAsInt(ThreadGroup.RAMP_TIME);
+    }",False
+35,getSamplerController(),Method,isDone() next() addTestElement(TestElement) addIterationListener(LoopIterationListener) initialize(),,org.apache.jmeter.testelement.property.JMeterProperty+getObjectValue() org.apache.jmeter.testelement.AbstractTestElement+getProperty(String) org.apache.jmeter.testelement.AbstractTestElement+getProperty(String) org.apache.jmeter.testelement.property.JMeterProperty+getObjectValue(),org.apache.jmeter.threads.ThreadGroup+MAIN_CONTROLLER,246,9,1,"/** 
+ * Get the sampler controller.
+ * @return the sampler controller.
+ */
+","/**
+     * Get the sampler controller.
+     *
+     * @return the sampler controller.
+     */
+    public Controller getSamplerController() {
+        Controller c = (Controller) getProperty(MAIN_CONTROLLER).getObjectValue();
+        return c;
+    }",True
+36,setSamplerController(LoopController),Method,,org.apache.jmeter.threads.gui.ThreadGroupGui+modifyTestElement(TestElement),"org.apache.jmeter.control.LoopController+setContinueForever(boolean) org.apache.jmeter.control.LoopController+setContinueForever(boolean) org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.AbstractTestElement+setProperty(JMeterProperty) org.apache.jmeter.testelement.property.TestElementProperty+TestElementProperty(String,TestElement)",org.apache.jmeter.threads.ThreadGroup+MAIN_CONTROLLER,277,10,1,"/** 
+ * Set the sampler controller.
+ * @param c the sampler controller.
+ */
+","/**
+     * Set the sampler controller.
+     *
+     * @param c
+     *            the sampler controller.
+     */
+    public void setSamplerController(LoopController c) {
+        c.setContinueForever(false);
+        setProperty(new TestElementProperty(MAIN_CONTROLLER, c));
+    }",True
+37,getNumThreads(),Method,,"org.apache.jmeter.engine.ConvertListeners+addNode(Object,HashTree) org.apache.jmeter.engine.StandardJMeterEngine+run()",org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsInt(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsInt(String),org.apache.jmeter.threads.ThreadGroup+NUM_THREADS,192,8,1,"/** 
+ * Get the number of threads.
+ * @return the number of threads.
+ */
+","/**
+     * Get the number of threads.
+     *
+     * @return the number of threads.
+     */
+    public int getNumThreads() {
+        return this.getPropertyAsInt(ThreadGroup.NUM_THREADS);
+    }",True
+38,addTestElement(TestElement),Method,,,org.apache.jmeter.testelement.TestElement+addTestElement(TestElement) org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.testelement.TestElement+addTestElement(TestElement),,234,10,1,"/** 
+ * Add a test element.
+ * @param child the test element to add.
+ */
+","/**
+     * Add a test element.
+     *
+     * @param child
+     *            the test element to add.
+     */
+    @Override
+    public void addTestElement(TestElement child) {
+        getSamplerController().addTestElement(child);
+    }",True
+39,addIterationListener(LoopIterationListener),Method,,,org.apache.jmeter.control.Controller+addIterationListener(LoopIterationListener) org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.control.Controller+addIterationListener(LoopIterationListener),,150,4,1,"/** 
+ * {@inheritDoc} 
+ */
+","/** {@inheritDoc} */
+    public void addIterationListener(LoopIterationListener lis) {
+        getSamplerController().addIterationListener(lis);
+    }",True
+40,initialize(),Method,,,org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.threads.ThreadGroup+getSamplerController() org.apache.jmeter.testelement.TestElement+getProperty(String) org.apache.jmeter.testelement.TestElement+getProperty(String) org.apache.jmeter.testelement.property.JMeterProperty+setObjectValue(Object) org.apache.jmeter.testelement.property.JMeterProperty+setObjectValue(Object) org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.testelement.AbstractTestElement+getName() org.apache.jmeter.testelement.property.JMeterProperty+setRunningVersion(boolean) org.apache.jmeter.testelement.property.JMeterProperty+setRunningVersion(boolean) org.apache.jmeter.testelement.property.JMeterProperty+isRunningVersion() org.apache.jmeter.testelement.property.JMeterProperty+isRunningVersion() org.apache.jmeter.control.Controller+initialize() org.apache.jmeter.control.Controller+initialize(),org.apache.jmeter.testelement.TestElement+NAME,374,8,1,"/** 
+ * {@inheritDoc} 
+ */
+","/** {@inheritDoc} */
+    public void initialize() {
+        Controller c = getSamplerController();
+        JMeterProperty property = c.getProperty(TestElement.NAME);
+        property.setObjectValue(getName()); // Copy our name into that of the controller
+        property.setRunningVersion(property.isRunningVersion());// otherwise name reverts
+        c.initialize();
+    }",True
+41,getOnErrorStopThread(),Method,,org.apache.jmeter.engine.StandardJMeterEngine+run() org.apache.jmeter.threads.gui.ThreadGroupGui+setSampleErrorBoxes(ThreadGroup),java.lang.String+equalsIgnoreCase(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsString(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsString(String) java.lang.String+equalsIgnoreCase(String),org.apache.jmeter.threads.ThreadGroup+ON_SAMPLE_ERROR org.apache.jmeter.threads.ThreadGroup+ON_SAMPLE_ERROR_STOPTHREAD,281,8,1,"/** 
+ * Check if a sampler error should cause thread to stop.
+ * @return true if thread should stop
+ */
+","/**
+     * Check if a sampler error should cause thread to stop.
+     *
+     * @return true if thread should stop
+     */
+    public boolean getOnErrorStopThread() {
+        return getPropertyAsString(ThreadGroup.ON_SAMPLE_ERROR).equalsIgnoreCase(ON_SAMPLE_ERROR_STOPTHREAD);
+    }",True
+42,getOnErrorStopTest(),Method,,org.apache.jmeter.engine.StandardJMeterEngine+run() org.apache.jmeter.threads.gui.ThreadGroupGui+setSampleErrorBoxes(ThreadGroup),java.lang.String+equalsIgnoreCase(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsString(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsString(String) java.lang.String+equalsIgnoreCase(String),org.apache.jmeter.threads.ThreadGroup+ON_SAMPLE_ERROR org.apache.jmeter.threads.ThreadGroup+ON_SAMPLE_ERROR_STOPTEST,287,8,1,"/** 
+ * Check if a sampler error should cause test to stop.
+ * @return true if test (all threads) should stop
+ */
+","/**
+     * Check if a sampler error should cause test to stop.
+     *
+     * @return true if test (all threads) should stop
+     */
+    public boolean getOnErrorStopTest() {
+        return getPropertyAsString(ThreadGroup.ON_SAMPLE_ERROR).equalsIgnoreCase(ON_SAMPLE_ERROR_STOPTEST);
+    }",True
+43,getOnErrorStopTestNow(),Method,,org.apache.jmeter.engine.StandardJMeterEngine+run() org.apache.jmeter.threads.gui.ThreadGroupGui+setSampleErrorBoxes(ThreadGroup),java.lang.String+equalsIgnoreCase(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsString(String) org.apache.jmeter.testelement.AbstractTestElement+getPropertyAsString(String) java.lang.String+equalsIgnoreCase(String),org.apache.jmeter.threads.ThreadGroup+ON_SAMPLE_ERROR org.apache.jmeter.threads.ThreadGroup+ON_SAMPLE_ERROR_STOPTEST_NOW,310,8,1,"/** 
+ * Check if a sampler error should cause test to stop now.
+ * @return true if test (all threads) should stop immediately
+ */
+","/**
+     * Check if a sampler error should cause test to stop now.
+     *
+     * @return true if test (all threads) should stop immediately
+     */
+    public boolean getOnErrorStopTestNow() {
+        return getPropertyAsString(ThreadGroup.ON_SAMPLE_ERROR).equalsIgnoreCase(ON_SAMPLE_ERROR_STOPTEST_NOW);
+    }",True

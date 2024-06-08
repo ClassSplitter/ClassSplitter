@@ -1,0 +1,266 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,modifier,annotation,full text,removed
+1,getStatusBarHeight(),Method,,,,,259,5,9,,"public static int getStatusBarHeight() {
+    Resources resources = UETool.getApplication().getResources();
+    int resId = resources.getIdentifier(""status_bar_height"", ""dimen"", ""android"");
+    return resId > 0 ? resources.getDimensionPixelSize(resId) : 0;
+  }",False
+2,enableFullscreen(Window),Method,,me.ele.uetool.TransparentActivity+onCreate(Bundle),"me.ele.uetool.Util+addSystemUiFlag(Window,int) me.ele.uetool.Util+addSystemUiFlag(Window,int)",,147,5,9,,"public static void enableFullscreen(@NonNull Window window) {
+    if (Build.VERSION.SDK_INT >= 21) {
+      addSystemUiFlag(window, 1280);
+    }
+  }",False
+3,"addSystemUiFlag(Window,int)",Method,enableFullscreen(Window),,,,206,6,10,,"private static void addSystemUiFlag(Window window, int flag) {
+    View view = window.getDecorView();
+    if (view != null) {
+      view.setSystemUiVisibility(view.getSystemUiVisibility() | flag);
+    }
+  }",False
+4,"setStatusBarColor(Window,int)",Method,,me.ele.uetool.TransparentActivity+onCreate(Bundle),,,161,5,9,,"public static void setStatusBarColor(@NonNull Window window, int color) {
+    if (Build.VERSION.SDK_INT >= 21) {
+      window.setStatusBarColor(color);
+    }
+  }",False
+5,px2dip(float),Method,getDraweeViewCornerRadius(DraweeView),"me.ele.uetool.Element+getAttrs() me.ele.uetool.Element+getAttrs() me.ele.uetool.Element+getAttrs() me.ele.uetool.Element+getAttrs() me.ele.uetool.Element+getAttrs() me.ele.uetool.Element+getAttrs() me.ele.uetool.function.CollectViewsLayout+drawLineWithText(Canvas,int,int,int,int) me.ele.uetool.function.CollectViewsLayout+drawLineWithText(Canvas,int,int,int,int)",,,174,4,9,,"public static int px2dip(float pxValue) {
+    float scale = UETool.getApplication().getResources().getDisplayMetrics().density;
+    return (int) (pxValue / scale + 0.5F);
+  }",False
+6,dip2px(float),Method,,"me.ele.uetool.function.RelativePositionLayout+getLineEndPointSpace() me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.function.ViewAttrDialog+EditTextViewHolder.onTextChanged(CharSequence,int,int,int) me.ele.uetool.suspend.UETSubMenu+UETSubMenu(Context,AttributeSet,int) me.ele.uetool.suspend.UETSubMenu+UETSubMenu(Context,AttributeSet,int)",,,174,4,9,,"public static int dip2px(float dpValue) {
+    float scale = UETool.getApplication().getResources().getDisplayMetrics().density;
+    return (int) (dpValue * scale + 0.5F);
+  }",False
+7,sp2px(float),Method,,,,,158,4,9,,"public static int sp2px(float sp) {
+    return (int) TypedValue.applyDimension(2, sp,
+        UETool.getApplication().getResources().getDisplayMetrics());
+  }",False
+8,px2sp(float),Method,,me.ele.uetool.Element+getAttrs(),,,201,5,9,,"public static int px2sp(float pxValue) {
+    final float fontScale =
+        UETool.getApplication().getResources().getDisplayMetrics().scaledDensity;
+    return (int) (pxValue / fontScale + 0.5f);
+  }",False
+9,getScreenWidth(),Method,,,,,123,3,9,,"public static int getScreenWidth() {
+    return UETool.getApplication().getResources().getDisplayMetrics().widthPixels;
+  }",False
+10,getScreenHeight(),Method,,me.ele.uetool.function.ViewAttrDialog+show(Element),,,125,3,9,,"public static int getScreenHeight() {
+    return UETool.getApplication().getResources().getDisplayMetrics().heightPixels;
+  }",False
+11,"getResourceName(Resources,int)",Method,,me.ele.uetool.Element+getAttrs(),java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),,286,12,9,,"public static String getResourceName(Resources resources, int id) {
+    try {
+      if (id == NO_ID || id == 0) {
+        return """";
+      } else {
+        return resources.getResourceEntryName(id);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return """";
+  }",False
+12,getResId(View),Method,,me.ele.uetool.Element+getAttrs(),java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),,254,13,9,,"public static String getResId(View view) {
+    try {
+      int id = view.getId();
+      if (id == NO_ID) {
+        return """";
+      } else {
+        return ""0x"" + id;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return """";
+  }",False
+13,intToHexColor(int),Method,getBackground(View) getBackground(View),me.ele.uetool.Element+getAttrs(),java.lang.String+toUpperCase() java.lang.Integer+toHexString(int) java.lang.Integer+toHexString(int) java.lang.String+toUpperCase(),,110,3,9,,"public static String intToHexColor(int color) {
+    return ""#"" + Integer.toHexString(color).toUpperCase();
+  }",False
+14,getBackground(View),Method,,me.ele.uetool.Element+getAttrs(),me.ele.uetool.Util+intToHexColor(int) me.ele.uetool.Util+intToHexColor(int) java.lang.Class+getDeclaredField(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.Class+getDeclaredField(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.StringBuilder+StringBuilder() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) me.ele.uetool.Util+intToHexColor(int) me.ele.uetool.Util+intToHexColor(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() me.ele.uetool.Util+getDrawableBitmap(Drawable) me.ele.uetool.Util+getDrawableBitmap(Drawable),,1273,33,9,,"public static Object getBackground(View view) {
+    Drawable drawable = view.getBackground();
+    if (drawable instanceof ColorDrawable) {
+      return intToHexColor(((ColorDrawable) drawable).getColor());
+    } else if (drawable instanceof GradientDrawable) {
+      try {
+        Field mFillPaintField = GradientDrawable.class.getDeclaredField(""mFillPaint"");
+        mFillPaintField.setAccessible(true);
+        Paint mFillPaint = (Paint) mFillPaintField.get(drawable);
+        Shader shader = mFillPaint.getShader();
+        if (shader instanceof LinearGradient) {
+          Field mColorsField = LinearGradient.class.getDeclaredField(""mColors"");
+          mColorsField.setAccessible(true);
+          int[] mColors = (int[]) mColorsField.get(shader);
+          StringBuilder sb = new StringBuilder();
+          for (int i = 0, N = mColors.length; i < N; i++) {
+            sb.append(intToHexColor(mColors[i]));
+            if (i < N - 1) {
+              sb.append("" -> "");
+            }
+          }
+          return sb.toString();
+        }
+      } catch (NoSuchFieldException e) {
+        e.printStackTrace();
+      } catch (IllegalAccessException e) {
+        e.printStackTrace();
+      }
+    } else {
+      return getDrawableBitmap(drawable);
+    }
+    return null;
+  }",False
+15,getImageURI(DraweeView),Method,,me.ele.uetool.Element+getAttrs(),me.ele.uetool.Util+getFrescoControllerBuilder(DraweeView) me.ele.uetool.Util+getFrescoControllerBuilder(DraweeView),,261,7,9,,"public static String getImageURI(DraweeView draweeView) {
+    PipelineDraweeControllerBuilder builder = getFrescoControllerBuilder(draweeView);
+    if (builder != null) {
+      return builder.getImageRequest().getSourceUri().toString();
+    }
+    return """";
+  }",True
+16,isSupportAnimation(DraweeView),Method,,me.ele.uetool.Element+getAttrs(),me.ele.uetool.Util+getFrescoControllerBuilder(DraweeView) me.ele.uetool.Util+getFrescoControllerBuilder(DraweeView) java.lang.String+valueOf(char[]) java.lang.String+valueOf(char[]),,278,7,9,,"public static String isSupportAnimation(DraweeView draweeView) {
+    PipelineDraweeControllerBuilder builder = getFrescoControllerBuilder(draweeView);
+    if (builder != null) {
+      return String.valueOf(builder.getAutoPlayAnimations()).toUpperCase();
+    }
+    return """";
+  }",True
+17,getPlaceHolderBitmap(DraweeView),Method,,me.ele.uetool.Element+getAttrs(),java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) me.ele.uetool.Util+getDrawableBitmap(Drawable) me.ele.uetool.Util+getDrawableBitmap(Drawable) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),,851,19,9,,"public static Bitmap getPlaceHolderBitmap(DraweeView draweeView) {
+    GenericDraweeHierarchy hierarchy = (GenericDraweeHierarchy) draweeView.getHierarchy();
+    if (hierarchy.hasPlaceholderImage()) {
+      try {
+        Field mFadeDrawableField = hierarchy.getClass().getDeclaredField(""mFadeDrawable"");
+        mFadeDrawableField.setAccessible(true);
+        FadeDrawable fadeDrawable = (FadeDrawable) mFadeDrawableField.get(hierarchy);
+        Field mLayersField = fadeDrawable.getClass().getDeclaredField(""mLayers"");
+        mLayersField.setAccessible(true);
+        Drawable[] layers = (Drawable[]) mLayersField.get(fadeDrawable);
+        // PLACEHOLDER_IMAGE_INDEX == 1
+        Drawable drawable = layers[1];
+        return getDrawableBitmap(drawable);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    return null;
+  }",True
+18,getDraweeViewCornerRadius(DraweeView),Method,,me.ele.uetool.Element+getAttrs(),me.ele.uetool.Util+px2dip(float) me.ele.uetool.Util+px2dip(float),,557,16,9,,"public static String getDraweeViewCornerRadius(DraweeView draweeView) {
+    if (draweeView instanceof SimpleDraweeView) {
+      RoundingParams params = ((SimpleDraweeView) draweeView).getHierarchy().getRoundingParams();
+      if (params != null) {
+        float[] cornersRadii = params.getCornersRadii();
+        float firstRadii = cornersRadii[0];
+        for (int i = 1; i < 8; i++) {
+          if (firstRadii != cornersRadii[i]) {
+            return null;
+          }
+        }
+        return px2dip(firstRadii) + ""dp"";
+      }
+    }
+    return null;
+  }",True
+19,getFrescoControllerBuilder(DraweeView),Method,getImageURI(DraweeView) isSupportAnimation(DraweeView),,java.lang.Class+getDeclaredField(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.Class+getDeclaredField(String) java.lang.Class+forName(String) java.lang.Class+forName(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),,879,19,10,,"private static PipelineDraweeControllerBuilder getFrescoControllerBuilder(DraweeView draweeView) {
+    try {
+      PipelineDraweeController controller = (PipelineDraweeController) draweeView.getController();
+      Field mDataSourceSupplierFiled =
+          PipelineDraweeController.class.getDeclaredField(""mDataSourceSupplier"");
+      mDataSourceSupplierFiled.setAccessible(true);
+      Supplier supplier = (Supplier) mDataSourceSupplierFiled.get(controller);
+      Field mAutoField =
+          Class.forName(""com.facebook.drawee.controller.AbstractDraweeControllerBuilder$2"")
+              .getDeclaredField(""this$0"");
+      mAutoField.setAccessible(true);
+      PipelineDraweeControllerBuilder builder =
+          (PipelineDraweeControllerBuilder) mAutoField.get(supplier);
+      return builder;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }",True
+20,getTextViewBitmap(TextView),Method,,me.ele.uetool.Element+getAttrs(),me.ele.uetool.Util+getTextViewDrawableBitmap(TextView) me.ele.uetool.Util+getTextViewDrawableBitmap(TextView) me.ele.uetool.Util+getTextViewImageSpanBitmap(TextView) me.ele.uetool.Util+getTextViewImageSpanBitmap(TextView),,278,6,9,,"public static List<Pair<String, Bitmap>> getTextViewBitmap(TextView textView) {
+    List<Pair<String, Bitmap>> bitmaps = new ArrayList<>();
+    bitmaps.addAll(getTextViewDrawableBitmap(textView));
+    bitmaps.addAll(getTextViewImageSpanBitmap(textView));
+    return bitmaps;
+  }",False
+21,getTextViewDrawableBitmap(TextView),Method,getTextViewBitmap(TextView),,java.lang.Class+getDeclaredField(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.Class+getDeclaredField(String) java.lang.Class+forName(String) java.lang.Class+forName(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.Object+Object() me.ele.uetool.Util+getDrawableBitmap(Drawable) me.ele.uetool.Util+getDrawableBitmap(Drawable) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.Class+getDeclaredField(String) java.lang.Class+forName(String) java.lang.Class+forName(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.Object+Object() me.ele.uetool.Util+getDrawableBitmap(Drawable) me.ele.uetool.Util+getDrawableBitmap(Drawable) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),,1092,22,10,,"private static List<Pair<String, Bitmap>> getTextViewDrawableBitmap(TextView textView) {
+    List<Pair<String, Bitmap>> bitmaps = new ArrayList<>();
+    try {
+      Field mDrawablesField = TextView.class.getDeclaredField(""mDrawables"");
+      mDrawablesField.setAccessible(true);
+      Field mDrawableLeftInitialFiled = Class.forName(""android.widget.TextView$Drawables"")
+          .getDeclaredField(""mDrawableLeftInitial"");
+      mDrawableLeftInitialFiled.setAccessible(true);
+      bitmaps.add(
+          new Pair<>(""DrawableLeft"", getDrawableBitmap((Drawable) mDrawableLeftInitialFiled.get(
+              mDrawablesField.get(textView)))));
+      Field mDrawableRightInitialFiled = Class.forName(""android.widget.TextView$Drawables"")
+          .getDeclaredField(""mDrawableRightInitial"");
+      mDrawableRightInitialFiled.setAccessible(true);
+      bitmaps.add(
+          new Pair<>(""DrawableRight"", getDrawableBitmap((Drawable) mDrawableRightInitialFiled.get(
+              mDrawablesField.get(textView)))));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return bitmaps;
+  }",False
+22,getTextViewImageSpanBitmap(TextView),Method,getTextViewBitmap(TextView),,java.lang.Class+getDeclaredField(String) java.lang.Class+forName(String) java.lang.Class+forName(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.Object+Object() me.ele.uetool.Util+getDrawableBitmap(Drawable) me.ele.uetool.Util+getDrawableBitmap(Drawable) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),,785,21,10,,"private static List<Pair<String, Bitmap>> getTextViewImageSpanBitmap(TextView textView) {
+    List<Pair<String, Bitmap>> bitmaps = new ArrayList<>();
+    try {
+      CharSequence text = textView.getText();
+      if (text instanceof SpannedString) {
+        Field mSpansField =
+            Class.forName(""android.text.SpannableStringInternal"").getDeclaredField(""mSpans"");
+        mSpansField.setAccessible(true);
+        Object[] spans = (Object[]) mSpansField.get(text);
+        for (Object span : spans) {
+          if (span instanceof ImageSpan) {
+            bitmaps.add(
+                new Pair<>(""SpanBitmap"", getDrawableBitmap(((ImageSpan) span).getDrawable())));
+          }
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return bitmaps;
+  }",False
+23,getImageViewBitmap(ImageView),Method,,me.ele.uetool.Element+getAttrs(),me.ele.uetool.Util+getDrawableBitmap(Drawable) me.ele.uetool.Util+getDrawableBitmap(Drawable),,121,3,9,,"public static Bitmap getImageViewBitmap(ImageView imageView) {
+    return getDrawableBitmap(imageView.getDrawable());
+  }",False
+24,getDrawableBitmap(Drawable),Method,getBackground(View) getPlaceHolderBitmap(DraweeView) getImageViewBitmap(ImageView),,java.lang.Class+getDeclaredField(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.Class+getDeclaredField(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.Class+getDeclaredField(String) java.lang.Class+forName(String) java.lang.Class+forName(String) java.lang.Class+getDeclaredField(String) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+setAccessible(boolean) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.reflect.Field+get(Object) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace(),,1645,33,10,,"private static Bitmap getDrawableBitmap(Drawable drawable) {
+    try {
+      if (drawable instanceof BitmapDrawable) {
+        return ((BitmapDrawable) drawable).getBitmap();
+      } else if (drawable instanceof NinePatchDrawable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+          Field mNinePatchFiled = NinePatchDrawable.class.getDeclaredField(""mNinePatch"");
+          mNinePatchFiled.setAccessible(true);
+          NinePatch ninePatch = (NinePatch) mNinePatchFiled.get(drawable);
+          return ninePatch.getBitmap();
+        }
+      } else if (drawable instanceof ClipDrawable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+          return ((BitmapDrawable) ((ClipDrawable) drawable).getDrawable()).getBitmap();
+        }
+      } else if (drawable instanceof StateListDrawable) {
+        return ((BitmapDrawable) drawable.getCurrent()).getBitmap();
+      } else if (drawable instanceof ScaleTypeDrawable) {
+        return ((BitmapDrawable) drawable.getCurrent()).getBitmap();
+      } else if (drawable instanceof VectorDrawableCompat) {
+        Field mVectorStateField = VectorDrawableCompat.class.getDeclaredField(""mVectorState"");
+        mVectorStateField.setAccessible(true);
+        Field mCachedBitmapField = Class.forName(
+            ""android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableCompatState"")
+            .getDeclaredField(""mCachedBitmap"");
+        mCachedBitmapField.setAccessible(true);
+        return (Bitmap) mCachedBitmapField.get(mVectorStateField.get(drawable));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }",False
+25,clipText(String),Method,,me.ele.uetool.function.ViewAttrDialog+TextViewHolder.onClick(View),,,339,7,9,,"public static void clipText(String clipText) {
+    Context context = UETool.getApplication();
+    ClipData clipData = ClipData.newPlainText("""", clipText);
+    ((ClipboardManager) (context.getSystemService(Context.CLIPBOARD_SERVICE))).setPrimaryClip(
+        clipData);
+    Toast.makeText(context, ""‚Äö√†√∂‚àö√°‚Äö√Ñ√∂‚àö‚Ä†‚àö¬¥‚Äö√Ñ√∂‚àö¬¢¬¨√ü‚Äö√†√∂‚àö√°¬¨¬®‚àö√º‚Äö√†√∂‚àö√º‚Äö√†√∂‚àö√°‚Äö√†√∂‚Äö√Ñ‚Ä†‚Äö√Ñ√∂‚àö‚Ä†‚àö√°‚Äö√†√∂‚àö√°‚Äö√†√∂‚Äö√Ñ‚Ä†‚Äö√Ñ√∂‚àö‚Ä†‚àö¬™‚Äö√†√∂‚àö√°‚Äö√†√∂¬¨¬¢‚Äö√Ñ√∂‚àö√´¬¨¬¢‚Äö√†√∂‚àö√°‚Äö√†√∂‚Äö√Ñ‚Ä†‚Äö√†√∂¬¨‚àû‚Äö√†√∂‚àö¬ß‚Äö√†√∂≈ì√Ñ‚Äö√†√∂‚Äö√†√®"", Toast.LENGTH_SHORT).show();
+  }",False
