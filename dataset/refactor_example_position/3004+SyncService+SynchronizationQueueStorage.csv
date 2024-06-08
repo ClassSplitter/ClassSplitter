@@ -1,0 +1,416 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,PREF_NAME,Field,,,,,54,1,2475,62,26,,"private static final String PREF_NAME = ""SyncService"";",False
+2,PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP,Field,,,,,90,1,2534,63,26,,"private static final String PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP = ""last_sync_timestamp"";",False
+3,PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP,Field,,,,,109,1,2629,64,26,,"private static final String PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP = ""last_episode_actions_sync_timestamp"";",False
+4,PREF_QUEUED_FEEDS_ADDED,Field,,,,,67,1,2743,65,26,,"private static final String PREF_QUEUED_FEEDS_ADDED = ""sync_added"";",False
+5,PREF_QUEUED_FEEDS_REMOVED,Field,,,,,71,1,2815,66,26,,"private static final String PREF_QUEUED_FEEDS_REMOVED = ""sync_removed"";",False
+6,PREF_QUEUED_EPISODE_ACTIONS,Field,,,,,88,1,2891,67,26,,"private static final String PREF_QUEUED_EPISODE_ACTIONS = ""sync_queued_episode_actions"";",False
+7,PREF_LAST_SYNC_ATTEMPT_TIMESTAMP,Field,,,,,93,1,2984,68,26,,"private static final String PREF_LAST_SYNC_ATTEMPT_TIMESTAMP = ""last_sync_attempt_timestamp"";",False
+8,PREF_LAST_SYNC_ATTEMPT_SUCCESS,Field,,,,,89,1,3082,69,26,,"private static final String PREF_LAST_SYNC_ATTEMPT_SUCCESS = ""last_sync_attempt_success"";",False
+9,TAG,Field,,,,,48,1,3176,70,26,,"private static final String TAG = ""SyncService"";",False
+10,WORK_ID_SYNC,Field,,,,,63,1,3229,71,26,,"private static final String WORK_ID_SYNC = ""SyncServiceWorkId"";",False
+11,lock,Field,,,,,62,1,3297,72,26,,private static final ReentrantLock lock = new ReentrantLock();,True
+12,syncServiceImpl,Field,,,,,37,1,3365,74,2,,private ISyncService syncServiceImpl;,False
+13,"SyncService(Context,WorkerParameters)",Method,,,,,118,3,3408,76,1,,"public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
+        super(context, params);
+    }",False
+14,doWork(),Method,,,"de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService+GpodnetService(OkHttpClient,String,String,String,String) de.danoeh.antennapod.core.service.download.AntennapodHttpClient+getHttpClient() de.danoeh.antennapod.core.service.download.AntennapodHttpClient+getHttpClient() de.danoeh.antennapod.core.preferences.GpodnetPreferences+getHosturl() de.danoeh.antennapod.core.preferences.GpodnetPreferences+getHosturl() de.danoeh.antennapod.core.preferences.GpodnetPreferences+getDeviceID() de.danoeh.antennapod.core.preferences.GpodnetPreferences+getDeviceID() de.danoeh.antennapod.core.preferences.GpodnetPreferences+getUsername() de.danoeh.antennapod.core.preferences.GpodnetPreferences+getUsername() de.danoeh.antennapod.core.preferences.GpodnetPreferences+getPassword() de.danoeh.antennapod.core.preferences.GpodnetPreferences+getPassword() android.content.SharedPreferences.Editor+apply() android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putLong(String,long) java.lang.System+currentTimeMillis() java.lang.System+currentTimeMillis() android.content.SharedPreferences.Editor+apply() de.danoeh.antennapod.net.sync.model.ISyncService+login() de.danoeh.antennapod.net.sync.model.ISyncService+login() de.danoeh.antennapod.core.event.SyncServiceEvent+SyncServiceEvent(int) de.danoeh.antennapod.core.sync.SyncService+syncSubscriptions() de.danoeh.antennapod.core.sync.SyncService+syncSubscriptions() de.danoeh.antennapod.core.sync.SyncService+syncEpisodeActions() de.danoeh.antennapod.core.sync.SyncService+syncEpisodeActions() de.danoeh.antennapod.net.sync.model.ISyncService+logout() de.danoeh.antennapod.net.sync.model.ISyncService+logout() de.danoeh.antennapod.core.sync.SyncService+clearErrorNotifications() de.danoeh.antennapod.core.sync.SyncService+clearErrorNotifications() de.danoeh.antennapod.core.event.SyncServiceEvent+SyncServiceEvent(int) android.content.SharedPreferences.Editor+apply() android.content.SharedPreferences.Editor+putBoolean(String,boolean) android.content.SharedPreferences.Editor+putBoolean(String,boolean) android.content.SharedPreferences.Editor+apply() de.danoeh.antennapod.core.event.SyncServiceEvent+SyncServiceEvent(int) android.content.SharedPreferences.Editor+apply() android.content.SharedPreferences.Editor+putBoolean(String,boolean) android.content.SharedPreferences.Editor+putBoolean(String,boolean) android.content.SharedPreferences.Editor+apply() android.util.Log+e(String,String) android.util.Log+e(String,String) de.danoeh.antennapod.core.sync.SyncService+updateErrorNotification(SyncServiceException) de.danoeh.antennapod.core.sync.SyncService+updateErrorNotification(SyncServiceException)",de.danoeh.antennapod.core.sync.SyncService+syncServiceImpl de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SYNC_ATTEMPT_TIMESTAMP de.danoeh.antennapod.core.sync.SyncService+syncServiceImpl de.danoeh.antennapod.core.sync.SyncService+syncServiceImpl de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SYNC_ATTEMPT_SUCCESS de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SYNC_ATTEMPT_SUCCESS de.danoeh.antennapod.core.sync.SyncService+TAG,1650,33,3532,82,1,,"@Override
+    @NonNull
+    public Result doWork() {
+        if (!GpodnetPreferences.loggedIn()) {
+            return Result.success();
+        }
+        syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(),
+                GpodnetPreferences.getHosturl(), GpodnetPreferences.getDeviceID(),
+                GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
+        SharedPreferences.Editor prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .edit();
+        prefs.putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
+        try {
+            syncServiceImpl.login();
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
+            syncSubscriptions();
+            syncEpisodeActions();
+            syncServiceImpl.logout();
+            clearErrorNotifications();
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_success));
+            prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, true).apply();
+            return Result.success();
+        } catch (SyncServiceException e) {
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_error));
+            prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, false).apply();
+            Log.e(TAG, Log.getStackTraceString(e));
+            if (getRunAttemptCount() % 3 == 2) {
+                // Do not spam users with notification and retry before notifying
+                updateErrorNotification(e);
+            }
+            return Result.retry();
+        }
+    }",False
+15,clearQueue(Context),Method,,de.danoeh.antennapod.core.preferences.GpodnetPreferences+logout(),"de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) android.content.SharedPreferences.Editor+apply() android.content.SharedPreferences.Editor+putString(String,String) android.content.SharedPreferences.Editor+putString(String,String) android.content.SharedPreferences.Editor+putString(String,String) android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences+edit() android.content.Context+getSharedPreferences(String,int) android.content.Context+getSharedPreferences(String,int) android.content.SharedPreferences+edit() android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putString(String,String) android.content.SharedPreferences.Editor+putString(String,String) android.content.SharedPreferences.Editor+putString(String,String) android.content.SharedPreferences.Editor+apply()",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SYNC_ATTEMPT_TIMESTAMP de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_EPISODE_ACTIONS de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_ADDED de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_REMOVED,634,11,5188,114,9,,"public static void clearQueue(Context context) {
+        executeLockedAsync(() ->
+                context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                        .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
+                        .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
+                        .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
+                        .putString(PREF_QUEUED_EPISODE_ACTIONS, ""[]"")
+                        .putString(PREF_QUEUED_FEEDS_ADDED, ""[]"")
+                        .putString(PREF_QUEUED_FEEDS_REMOVED, ""[]"")
+                        .apply());
+    }",True
+16,"enqueueFeedAdded(Context,String)",Method,,"de.danoeh.antennapod.core.storage.DBWriter+addNewFeed(Context,Feed)","de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) android.content.Context+getSharedPreferences(String,int) android.content.Context+getSharedPreferences(String,int) android.content.SharedPreferences+getString(String,String) android.content.SharedPreferences+getString(String,String) org.json.JSONArray+JSONArray(String) org.json.JSONArray+put(Object) org.json.JSONArray+put(Object) android.content.SharedPreferences.Editor+apply() android.content.SharedPreferences.Editor+putString(String,String) android.content.SharedPreferences+edit() android.content.SharedPreferences+edit() android.content.SharedPreferences.Editor+putString(String,String) org.json.JSONArray+toString() org.json.JSONArray+toString() android.content.SharedPreferences.Editor+apply() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() de.danoeh.antennapod.core.sync.SyncService+sync(Context) de.danoeh.antennapod.core.sync.SyncService+sync(Context)",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_ADDED de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_ADDED,708,17,5828,126,9,,"public static void enqueueFeedAdded(Context context, String downloadUrl) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
+        executeLockedAsync(() -> {
+            try {
+                SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                String json = prefs.getString(PREF_QUEUED_FEEDS_ADDED, ""[]"");
+                JSONArray queue = new JSONArray(json);
+                queue.put(downloadUrl);
+                prefs.edit().putString(PREF_QUEUED_FEEDS_ADDED, queue.toString()).apply();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            sync(context);
+        });
+    }",True
+17,"enqueueFeedRemoved(Context,String)",Method,,"de.danoeh.antennapod.core.storage.DBWriter+deleteFeed(Context,long)","de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) android.content.Context+getSharedPreferences(String,int) android.content.Context+getSharedPreferences(String,int) android.content.SharedPreferences+getString(String,String) android.content.SharedPreferences+getString(String,String) org.json.JSONArray+JSONArray(String) org.json.JSONArray+put(Object) org.json.JSONArray+put(Object) android.content.SharedPreferences.Editor+apply() android.content.SharedPreferences.Editor+putString(String,String) android.content.SharedPreferences+edit() android.content.SharedPreferences+edit() android.content.SharedPreferences.Editor+putString(String,String) org.json.JSONArray+toString() org.json.JSONArray+toString() android.content.SharedPreferences.Editor+apply() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() de.danoeh.antennapod.core.sync.SyncService+sync(Context) de.danoeh.antennapod.core.sync.SyncService+sync(Context)",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_REMOVED de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_REMOVED,714,17,6542,144,9,,"public static void enqueueFeedRemoved(Context context, String downloadUrl) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
+        executeLockedAsync(() -> {
+            try {
+                SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                String json = prefs.getString(PREF_QUEUED_FEEDS_REMOVED, ""[]"");
+                JSONArray queue = new JSONArray(json);
+                queue.put(downloadUrl);
+                prefs.edit().putString(PREF_QUEUED_FEEDS_REMOVED, queue.toString()).apply();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            sync(context);
+        });
+    }",True
+18,"enqueueEpisodeAction(Context,EpisodeAction)",Method,"enqueueEpisodePlayed(Context,FeedMedia,boolean)","de.danoeh.antennapod.menuhandler.FeedItemMenuHandler+onMenuItemClicked(Fragment,int,FeedItem) de.danoeh.antennapod.menuhandler.FeedItemMenuHandler+onMenuItemClicked(Fragment,int,FeedItem) de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler+run() de.danoeh.antennapod.core.storage.DBTasks+updateFeed(Context,Feed,boolean) de.danoeh.antennapod.core.storage.DBWriter+deleteFeedMediaSynchronous(Context,FeedMedia)","de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) android.content.Context+getSharedPreferences(String,int) android.content.Context+getSharedPreferences(String,int) android.content.SharedPreferences+getString(String,String) android.content.SharedPreferences+getString(String,String) org.json.JSONArray+JSONArray(String) org.json.JSONArray+put(Object) org.json.JSONArray+put(Object) de.danoeh.antennapod.net.sync.model.EpisodeAction+writeToJsonObject() de.danoeh.antennapod.net.sync.model.EpisodeAction+writeToJsonObject() android.content.SharedPreferences.Editor+apply() android.content.SharedPreferences.Editor+putString(String,String) android.content.SharedPreferences+edit() android.content.SharedPreferences+edit() android.content.SharedPreferences.Editor+putString(String,String) org.json.JSONArray+toString() org.json.JSONArray+toString() android.content.SharedPreferences.Editor+apply() java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() de.danoeh.antennapod.core.sync.SyncService+sync(Context) de.danoeh.antennapod.core.sync.SyncService+sync(Context)",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_EPISODE_ACTIONS de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_EPISODE_ACTIONS,737,17,7262,162,9,,"public static void enqueueEpisodeAction(Context context, EpisodeAction action) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
+        executeLockedAsync(() -> {
+            try {
+                SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                String json = prefs.getString(PREF_QUEUED_EPISODE_ACTIONS, ""[]"");
+                JSONArray queue = new JSONArray(json);
+                queue.put(action.writeToJsonObject());
+                prefs.edit().putString(PREF_QUEUED_EPISODE_ACTIONS, queue.toString()).apply();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            sync(context);
+        });
+    }",False
+19,"enqueueEpisodePlayed(Context,FeedMedia,boolean)",Method,,"de.danoeh.antennapod.core.service.playback.PlaybackService+onPlaybackPause(Playable,int) de.danoeh.antennapod.core.service.playback.PlaybackService+onPostPlayback(Playable,boolean,boolean,boolean) de.danoeh.antennapod.core.service.playback.PlaybackService+onPostPlayback(Playable,boolean,boolean,boolean)","de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.core.preferences.GpodnetPreferences+loggedIn() de.danoeh.antennapod.model.feed.FeedMedia+getItem() de.danoeh.antennapod.model.feed.FeedMedia+getItem() de.danoeh.antennapod.model.feed.FeedMedia+getStartPosition() de.danoeh.antennapod.model.feed.FeedMedia+getStartPosition() de.danoeh.antennapod.model.feed.FeedMedia+getStartPosition() de.danoeh.antennapod.model.feed.FeedMedia+getStartPosition() de.danoeh.antennapod.model.feed.FeedMedia+getPosition() de.danoeh.antennapod.model.feed.FeedMedia+getPosition() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+build() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+total(int) de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+position(int) de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+started(int) de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+currentTimestamp() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+Builder(FeedItem,Action) de.danoeh.antennapod.model.feed.FeedMedia+getItem() de.danoeh.antennapod.model.feed.FeedMedia+getItem() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+currentTimestamp() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+started(int) de.danoeh.antennapod.model.feed.FeedMedia+getStartPosition() de.danoeh.antennapod.model.feed.FeedMedia+getStartPosition() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+position(int) de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.model.feed.FeedMedia+getPosition() de.danoeh.antennapod.model.feed.FeedMedia+getPosition() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+total(int) de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+build() de.danoeh.antennapod.core.sync.SyncService+enqueueEpisodeAction(Context,EpisodeAction) de.danoeh.antennapod.core.sync.SyncService+enqueueEpisodeAction(Context,EpisodeAction)",de.danoeh.antennapod.net.sync.model.EpisodeAction+PLAY,800,18,8005,180,9,,"public static void enqueueEpisodePlayed(Context context, FeedMedia media, boolean completed) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
+        if (media.getItem() == null) {
+            return;
+        }
+        if (media.getStartPosition() < 0 || (!completed && media.getStartPosition() >= media.getPosition())) {
+            return;
+        }
+        EpisodeAction action = new EpisodeAction.Builder(media.getItem(), EpisodeAction.PLAY)
+                .currentTimestamp()
+                .started(media.getStartPosition() / 1000)
+                .position((completed ? media.getDuration() : media.getPosition()) / 1000)
+                .total(media.getDuration() / 1000)
+                .build();
+        SyncService.enqueueEpisodeAction(context, action);
+    }",False
+20,sync(Context),Method,"enqueueFeedAdded(Context,String) enqueueFeedRemoved(Context,String) enqueueEpisodeAction(Context,EpisodeAction)","de.danoeh.antennapod.fragment.preferences.GpodderAuthenticationFragment+setupFinishView(View) de.danoeh.antennapod.core.service.download.DownloadService+onDestroy() de.danoeh.antennapod.core.storage.DBTasks+refreshAllFeeds(Context,boolean)",de.danoeh.antennapod.core.sync.SyncService+getWorkRequest() de.danoeh.antennapod.core.sync.SyncService+getWorkRequest() de.danoeh.antennapod.core.event.SyncServiceEvent+SyncServiceEvent(int),de.danoeh.antennapod.core.sync.SyncService+WORK_ID_SYNC,324,5,8811,199,9,,"public static void sync(Context context) {
+        OneTimeWorkRequest workRequest = getWorkRequest().build();
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+    }",False
+21,syncImmediately(Context),Method,,,de.danoeh.antennapod.core.sync.SyncService+getWorkRequest() de.danoeh.antennapod.core.sync.SyncService+getWorkRequest() de.danoeh.antennapod.core.event.SyncServiceEvent+SyncServiceEvent(int),java.util.concurrent.TimeUnit+SECONDS de.danoeh.antennapod.core.sync.SyncService+WORK_ID_SYNC,407,7,9141,205,9,,"public static void syncImmediately(Context context) {
+        OneTimeWorkRequest workRequest = getWorkRequest()
+                .setInitialDelay(0L, TimeUnit.SECONDS)
+                .build();
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+    }",False
+22,fullSync(Context),Method,,,"de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) de.danoeh.antennapod.core.sync.SyncService+executeLockedAsync(Runnable) android.content.SharedPreferences.Editor+apply() android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences+edit() android.content.Context+getSharedPreferences(String,int) android.content.Context+getSharedPreferences(String,int) android.content.SharedPreferences+edit() android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+putLong(String,long) android.content.SharedPreferences.Editor+apply() de.danoeh.antennapod.core.sync.SyncService+getWorkRequest() de.danoeh.antennapod.core.sync.SyncService+getWorkRequest() de.danoeh.antennapod.core.event.SyncServiceEvent+SyncServiceEvent(int)",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SYNC_ATTEMPT_TIMESTAMP java.util.concurrent.TimeUnit+SECONDS de.danoeh.antennapod.core.sync.SyncService+WORK_ID_SYNC,790,15,9554,213,9,,"public static void fullSync(Context context) {
+        executeLockedAsync(() -> {
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                    .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
+                    .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
+                    .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
+                    .apply();
+
+            OneTimeWorkRequest workRequest = getWorkRequest()
+                    .setInitialDelay(0L, TimeUnit.SECONDS)
+                    .build();
+            WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+        });
+    }",False
+23,getWorkRequest(),Method,sync(Context) syncImmediately(Context) fullSync(Context),,de.danoeh.antennapod.core.preferences.UserPreferences+isAllowMobileFeedRefresh() de.danoeh.antennapod.core.preferences.UserPreferences+isAllowMobileFeedRefresh(),java.util.concurrent.TimeUnit+MINUTES java.util.concurrent.TimeUnit+SECONDS,675,13,10350,229,10,,"private static OneTimeWorkRequest.Builder getWorkRequest() {
+        Constraints.Builder constraints = new Constraints.Builder();
+        if (UserPreferences.isAllowMobileFeedRefresh()) {
+            constraints.setRequiredNetworkType(NetworkType.CONNECTED);
+        } else {
+            constraints.setRequiredNetworkType(NetworkType.UNMETERED);
+        }
+
+        return new OneTimeWorkRequest.Builder(SyncService.class)
+                .setConstraints(constraints.build())
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES)
+                .setInitialDelay(5L, TimeUnit.SECONDS); // Give it some time, so other actions can be queued
+    }",True
+24,executeLockedAsync(Runnable),Method,"clearQueue(Context) enqueueFeedAdded(Context,String) enqueueFeedRemoved(Context,String) enqueueEpisodeAction(Context,EpisodeAction) fullSync(Context)",,java.util.concurrent.locks.ReentrantLock+tryLock() java.util.concurrent.locks.ReentrantLock+tryLock() java.lang.Runnable+run() java.lang.Runnable+run() java.util.concurrent.locks.ReentrantLock+unlock() java.util.concurrent.locks.ReentrantLock+unlock(),de.danoeh.antennapod.core.sync.SyncService+lock de.danoeh.antennapod.core.sync.SyncService+lock,785,23,11031,247,10,"/** 
+ * Take the lock and execute runnable (to prevent changes to preferences being lost when enqueueing while sync is in progress). If the lock is free, the runnable is directly executed in the calling thread to prevent overhead.
+ */
+","/**
+     * Take the lock and execute runnable (to prevent changes to preferences being lost when enqueueing while sync is
+     * in progress). If the lock is free, the runnable is directly executed in the calling thread to prevent overhead.
+     */
+    private static void executeLockedAsync(Runnable runnable) {
+        if (lock.tryLock()) {
+            try {
+                runnable.run();
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            Completable.fromRunnable(() -> {
+                lock.lock();
+                try {
+                    runnable.run();
+                } finally {
+                    lock.unlock();
+                }
+            }).subscribeOn(Schedulers.io())
+                    .subscribe();
+        }
+    }",True
+25,isLastSyncSuccessful(Context),Method,,de.danoeh.antennapod.fragment.preferences.GpodderPreferencesFragment+syncStatusChanged(SyncServiceEvent) de.danoeh.antennapod.fragment.preferences.GpodderPreferencesFragment+updateGpodnetPreferenceScreen(),"android.content.SharedPreferences+getBoolean(String,boolean) android.content.Context+getSharedPreferences(String,int) android.content.Context+getSharedPreferences(String,int) android.content.SharedPreferences+getBoolean(String,boolean)",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SYNC_ATTEMPT_SUCCESS,212,4,11822,267,9,,"public static boolean isLastSyncSuccessful(Context context) {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, false);
+    }",True
+26,getLastSyncAttempt(Context),Method,,de.danoeh.antennapod.fragment.preferences.GpodderPreferencesFragment+syncStatusChanged(SyncServiceEvent) de.danoeh.antennapod.fragment.preferences.GpodderPreferencesFragment+updateGpodnetPreferenceScreen(),"android.content.SharedPreferences+getLong(String,long) android.content.Context+getSharedPreferences(String,int) android.content.Context+getSharedPreferences(String,int) android.content.SharedPreferences+getLong(String,long)",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SYNC_ATTEMPT_TIMESTAMP,202,4,12040,272,9,,"public static long getLastSyncAttempt(Context context) {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0);
+    }",True
+27,getQueuedEpisodeActions(),Method,syncEpisodeActions() processEpisodeActions(List<EpisodeAction>),,"android.content.SharedPreferences+getString(String,String) android.content.SharedPreferences+getString(String,String) org.json.JSONArray+JSONArray(String) org.json.JSONArray+length() org.json.JSONArray+length() java.util.ArrayList+add(E) java.util.ArrayList+add(E) de.danoeh.antennapod.net.sync.model.EpisodeAction+readFromJsonObject(JSONObject) de.danoeh.antennapod.net.sync.model.EpisodeAction+readFromJsonObject(JSONObject) org.json.JSONArray+getJSONObject(int) org.json.JSONArray+getJSONObject(int) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace()",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_EPISODE_ACTIONS,642,14,12248,277,2,,"private List<EpisodeAction> getQueuedEpisodeActions() {
+        ArrayList<EpisodeAction> actions = new ArrayList<>();
+        try {
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            String json = prefs.getString(PREF_QUEUED_EPISODE_ACTIONS, ""[]"");
+            JSONArray queue = new JSONArray(json);
+            for (int i = 0; i < queue.length(); i++) {
+                actions.add(EpisodeAction.readFromJsonObject(queue.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return actions;
+    }",True
+28,getQueuedRemovedFeeds(),Method,syncSubscriptions(),,"android.content.SharedPreferences+getString(String,String) android.content.SharedPreferences+getString(String,String) org.json.JSONArray+JSONArray(String) org.json.JSONArray+length() org.json.JSONArray+length() java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.json.JSONArray+getString(int) org.json.JSONArray+getString(int) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace()",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_REMOVED,586,14,12896,292,2,,"private List<String> getQueuedRemovedFeeds() {
+        ArrayList<String> actions = new ArrayList<>();
+        try {
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            String json = prefs.getString(PREF_QUEUED_FEEDS_REMOVED, ""[]"");
+            JSONArray queue = new JSONArray(json);
+            for (int i = 0; i < queue.length(); i++) {
+                actions.add(queue.getString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return actions;
+    }",True
+29,getQueuedAddedFeeds(),Method,syncSubscriptions(),,"android.content.SharedPreferences+getString(String,String) android.content.SharedPreferences+getString(String,String) org.json.JSONArray+JSONArray(String) org.json.JSONArray+length() org.json.JSONArray+length() java.util.ArrayList+add(E) java.util.ArrayList+add(E) org.json.JSONArray+getString(int) org.json.JSONArray+getString(int) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace()",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_ADDED,582,14,13488,307,2,,"private List<String> getQueuedAddedFeeds() {
+        ArrayList<String> actions = new ArrayList<>();
+        try {
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            String json = prefs.getString(PREF_QUEUED_FEEDS_ADDED, ""[]"");
+            JSONArray queue = new JSONArray(json);
+            for (int i = 0; i < queue.length(); i++) {
+                actions.add(queue.getString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return actions;
+    }",True
+30,syncSubscriptions(),Method,doWork(),,"de.danoeh.antennapod.core.storage.DBReader+getFeedListDownloadUrls() de.danoeh.antennapod.core.storage.DBReader+getFeedListDownloadUrls() de.danoeh.antennapod.net.sync.model.ISyncService+getSubscriptionChanges(long) de.danoeh.antennapod.net.sync.model.ISyncService+getSubscriptionChanges(long) de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getTimestamp() de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getTimestamp() de.danoeh.antennapod.core.sync.SyncService+getQueuedRemovedFeeds() de.danoeh.antennapod.core.sync.SyncService+getQueuedRemovedFeeds() de.danoeh.antennapod.core.sync.SyncService+getQueuedAddedFeeds() de.danoeh.antennapod.core.sync.SyncService+getQueuedAddedFeeds() android.util.Log+d(String,String) android.util.Log+d(String,String) de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getAdded() de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getAdded() de.danoeh.antennapod.core.util.URLChecker+containsUrl(List<String>,String) de.danoeh.antennapod.core.util.URLChecker+containsUrl(List<String>,String) java.util.List+contains(Object) java.util.List+contains(Object) de.danoeh.antennapod.model.feed.Feed+Feed(String,String) de.danoeh.antennapod.core.storage.DownloadRequester+downloadFeed(Context,Feed) de.danoeh.antennapod.core.storage.DownloadRequester+getInstance() de.danoeh.antennapod.core.storage.DownloadRequester+getInstance() de.danoeh.antennapod.core.storage.DownloadRequester+downloadFeed(Context,Feed) java.lang.Throwable+printStackTrace() java.lang.Throwable+printStackTrace() de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getRemoved() de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getRemoved() java.util.List+contains(Object) java.util.List+contains(Object) de.danoeh.antennapod.core.storage.DBTasks+removeFeedWithDownloadUrl(Context,String) de.danoeh.antennapod.core.storage.DBTasks+removeFeedWithDownloadUrl(Context,String) android.util.Log+d(String,String) android.util.Log+d(String,String) java.util.List+removeAll(Collection) java.util.List+removeAll(Collection) de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getAdded() de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getAdded() java.util.List+removeAll(Collection) java.util.List+removeAll(Collection) de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getRemoved() de.danoeh.antennapod.net.sync.model.SubscriptionChanges+getRemoved() java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() android.util.Log+d(String,String) android.util.Log+d(String,String) android.util.Log+d(String,String) android.util.Log+d(String,String) java.util.concurrent.locks.ReentrantLock+lock() java.util.concurrent.locks.ReentrantLock+lock() de.danoeh.antennapod.net.sync.model.ISyncService+uploadSubscriptionChanges(List<String>,List<String>) de.danoeh.antennapod.net.sync.model.ISyncService+uploadSubscriptionChanges(List<String>,List<String>) java.util.concurrent.locks.ReentrantLock+unlock() java.util.concurrent.locks.ReentrantLock+unlock()",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP de.danoeh.antennapod.core.sync.SyncService+syncServiceImpl de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.core.sync.SyncService+lock de.danoeh.antennapod.core.sync.SyncService+syncServiceImpl de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_ADDED de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_FEEDS_REMOVED de.danoeh.antennapod.net.sync.model.UploadChangesResponse+timestamp de.danoeh.antennapod.core.sync.SyncService+lock de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP,2933,56,14076,322,2,,"private void syncSubscriptions() throws SyncServiceException {
+        final long lastSync = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0);
+        final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls();
+        SubscriptionChanges subscriptionChanges = syncServiceImpl.getSubscriptionChanges(lastSync);
+        long newTimeStamp = subscriptionChanges.getTimestamp();
+
+        List<String> queuedRemovedFeeds = getQueuedRemovedFeeds();
+        List<String> queuedAddedFeeds = getQueuedAddedFeeds();
+
+        Log.d(TAG, ""Downloaded subscription changes: "" + subscriptionChanges);
+        for (String downloadUrl : subscriptionChanges.getAdded()) {
+            if (!URLChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
+                Feed feed = new Feed(downloadUrl, null);
+                try {
+                    DownloadRequester.getInstance().downloadFeed(getApplicationContext(), feed);
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // remove subscription if not just subscribed (again)
+        for (String downloadUrl : subscriptionChanges.getRemoved()) {
+            if (!queuedAddedFeeds.contains(downloadUrl)) {
+                DBTasks.removeFeedWithDownloadUrl(getApplicationContext(), downloadUrl);
+            }
+        }
+
+        if (lastSync == 0) {
+            Log.d(TAG, ""First sync. Adding all local subscriptions."");
+            queuedAddedFeeds = localSubscriptions;
+            queuedAddedFeeds.removeAll(subscriptionChanges.getAdded());
+            queuedRemovedFeeds.removeAll(subscriptionChanges.getRemoved());
+        }
+
+        if (queuedAddedFeeds.size() > 0 || queuedRemovedFeeds.size() > 0) {
+            Log.d(TAG, ""Added: "" + StringUtils.join(queuedAddedFeeds, "", ""));
+            Log.d(TAG, ""Removed: "" + StringUtils.join(queuedRemovedFeeds, "", ""));
+
+            lock.lock();
+            try {
+                UploadChangesResponse uploadResponse = syncServiceImpl
+                        .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
+                getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                        .putString(PREF_QUEUED_FEEDS_ADDED, ""[]"").apply();
+                getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                        .putString(PREF_QUEUED_FEEDS_REMOVED, ""[]"").apply();
+                newTimeStamp = uploadResponse.timestamp;
+            } finally {
+                lock.unlock();
+            }
+        }
+        getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, newTimeStamp).apply();
+    }",False
+31,syncEpisodeActions(),Method,doWork(),,"de.danoeh.antennapod.core.event.SyncServiceEvent+SyncServiceEvent(int) de.danoeh.antennapod.net.sync.model.ISyncService+getEpisodeActionChanges(long) de.danoeh.antennapod.net.sync.model.ISyncService+getEpisodeActionChanges(long) de.danoeh.antennapod.net.sync.model.EpisodeActionChanges+getTimestamp() de.danoeh.antennapod.net.sync.model.EpisodeActionChanges+getTimestamp() de.danoeh.antennapod.net.sync.model.EpisodeActionChanges+getEpisodeActions() de.danoeh.antennapod.net.sync.model.EpisodeActionChanges+getEpisodeActions() de.danoeh.antennapod.core.sync.SyncService+processEpisodeActions(List<EpisodeAction>) de.danoeh.antennapod.core.sync.SyncService+processEpisodeActions(List<EpisodeAction>) de.danoeh.antennapod.core.event.SyncServiceEvent+SyncServiceEvent(int) de.danoeh.antennapod.core.sync.SyncService+getQueuedEpisodeActions() de.danoeh.antennapod.core.sync.SyncService+getQueuedEpisodeActions() de.danoeh.antennapod.core.event.SyncServiceEvent+SyncServiceEvent(int) de.danoeh.antennapod.core.storage.DBReader+getPlayedItems() de.danoeh.antennapod.core.storage.DBReader+getPlayedItems() android.util.Log+d(String,String) android.util.Log+d(String,String) java.util.List+size() java.util.List+size() de.danoeh.antennapod.model.feed.FeedItem+getMedia() de.danoeh.antennapod.model.feed.FeedItem+getMedia() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+build() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+total(int) de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+position(int) de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+started(int) de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+currentTimestamp() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+Builder(FeedItem,Action) de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+currentTimestamp() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+started(int) de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+position(int) de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+total(int) de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.model.feed.FeedMedia+getDuration() de.danoeh.antennapod.net.sync.model.EpisodeAction.Builder+build() java.util.List+add(E) java.util.List+add(E) java.util.List+size() java.util.List+size() java.util.concurrent.locks.ReentrantLock+lock() java.util.concurrent.locks.ReentrantLock+lock() android.util.Log+d(String,String) android.util.Log+d(String,String) java.util.List+size() java.util.List+size() de.danoeh.antennapod.net.sync.model.ISyncService+uploadEpisodeActions(List<EpisodeAction>) de.danoeh.antennapod.net.sync.model.ISyncService+uploadEpisodeActions(List<EpisodeAction>) android.util.Log+d(String,String) android.util.Log+d(String,String) java.util.concurrent.locks.ReentrantLock+unlock() java.util.concurrent.locks.ReentrantLock+unlock()",de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP de.danoeh.antennapod.core.sync.SyncService+syncServiceImpl de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.net.sync.model.EpisodeAction+PLAY de.danoeh.antennapod.core.sync.SyncService+lock de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.core.sync.SyncService+syncServiceImpl de.danoeh.antennapod.net.sync.model.UploadChangesResponse+timestamp de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_QUEUED_EPISODE_ACTIONS de.danoeh.antennapod.core.sync.SyncService+lock de.danoeh.antennapod.core.sync.SyncService+PREF_NAME android.content.Context+MODE_PRIVATE de.danoeh.antennapod.core.sync.SyncService+PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP,2675,47,17015,379,2,,"private void syncEpisodeActions() throws SyncServiceException {
+        final long lastSync = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0);
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes_download));
+        EpisodeActionChanges getResponse = syncServiceImpl.getEpisodeActionChanges(lastSync);
+        long newTimeStamp = getResponse.getTimestamp();
+        List<EpisodeAction> remoteActions = getResponse.getEpisodeActions();
+        processEpisodeActions(remoteActions);
+
+        // upload local actions
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes_upload));
+        List<EpisodeAction> queuedEpisodeActions = getQueuedEpisodeActions();
+        if (lastSync == 0) {
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_upload_played));
+            List<FeedItem> readItems = DBReader.getPlayedItems();
+            Log.d(TAG, ""First sync. Upload state for all "" + readItems.size() + "" played episodes"");
+            for (FeedItem item : readItems) {
+                FeedMedia media = item.getMedia();
+                if (media == null) {
+                    continue;
+                }
+                EpisodeAction played = new EpisodeAction.Builder(item, EpisodeAction.PLAY)
+                        .currentTimestamp()
+                        .started(media.getDuration() / 1000)
+                        .position(media.getDuration() / 1000)
+                        .total(media.getDuration() / 1000)
+                        .build();
+                queuedEpisodeActions.add(played);
+            }
+        }
+        if (queuedEpisodeActions.size() > 0) {
+            lock.lock();
+            try {
+                Log.d(TAG, ""Uploading "" + queuedEpisodeActions.size() + "" actions: ""
+                        + StringUtils.join(queuedEpisodeActions, "", ""));
+                UploadChangesResponse postResponse = syncServiceImpl.uploadEpisodeActions(queuedEpisodeActions);
+                newTimeStamp = postResponse.timestamp;
+                Log.d(TAG, ""Upload episode response: "" + postResponse);
+                getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                        .putString(PREF_QUEUED_EPISODE_ACTIONS, ""[]"").apply();
+            } finally {
+                lock.unlock();
+            }
+        }
+        getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, newTimeStamp).apply();
+    }",False
+32,processEpisodeActions(List<EpisodeAction>),Method,syncEpisodeActions(),,"android.util.Log+d(String,String) android.util.Log+d(String,String) java.util.List+size() java.util.List+size() java.util.List+size() java.util.List+size() de.danoeh.antennapod.core.sync.EpisodeActionFilter+getRemoteActionsOverridingLocalActions(List<EpisodeAction>,List<EpisodeAction>) de.danoeh.antennapod.core.sync.EpisodeActionFilter+getRemoteActionsOverridingLocalActions(List<EpisodeAction>,List<EpisodeAction>) de.danoeh.antennapod.core.sync.SyncService+getQueuedEpisodeActions() de.danoeh.antennapod.core.sync.SyncService+getQueuedEpisodeActions() de.danoeh.antennapod.core.util.LongList+LongList() de.danoeh.antennapod.core.sync.GuidValidator+isValidGuid(String) de.danoeh.antennapod.core.sync.GuidValidator+isValidGuid(String) de.danoeh.antennapod.net.sync.model.EpisodeAction+getGuid() de.danoeh.antennapod.net.sync.model.EpisodeAction+getGuid() de.danoeh.antennapod.net.sync.model.EpisodeAction+getGuid() de.danoeh.antennapod.net.sync.model.EpisodeAction+getGuid() de.danoeh.antennapod.core.storage.DBReader+getFeedItemByGuidOrEpisodeUrl(String,String) de.danoeh.antennapod.core.storage.DBReader+getFeedItemByGuidOrEpisodeUrl(String,String) de.danoeh.antennapod.net.sync.model.EpisodeAction+getEpisode() de.danoeh.antennapod.net.sync.model.EpisodeAction+getEpisode() android.util.Log+i(String,String) android.util.Log+i(String,String) de.danoeh.antennapod.net.sync.model.EpisodeAction+getAction() de.danoeh.antennapod.net.sync.model.EpisodeAction+getAction() de.danoeh.antennapod.core.storage.DBWriter+markItemPlayed(FeedItem,int,boolean) de.danoeh.antennapod.core.storage.DBWriter+markItemPlayed(FeedItem,int,boolean) android.util.Log+d(String,String) android.util.Log+d(String,String) de.danoeh.antennapod.net.sync.model.EpisodeAction+toString() de.danoeh.antennapod.net.sync.model.EpisodeAction+toString() de.danoeh.antennapod.model.feed.FeedItem+getMedia() de.danoeh.antennapod.model.feed.FeedItem+getMedia() de.danoeh.antennapod.model.feed.FeedMedia+setPosition(int) de.danoeh.antennapod.model.feed.FeedMedia+setPosition(int) de.danoeh.antennapod.net.sync.model.EpisodeAction+getPosition() de.danoeh.antennapod.net.sync.model.EpisodeAction+getPosition() de.danoeh.antennapod.core.util.FeedItemUtil+hasAlmostEnded(FeedMedia) de.danoeh.antennapod.core.util.FeedItemUtil+hasAlmostEnded(FeedMedia) de.danoeh.antennapod.model.feed.FeedItem+getMedia() de.danoeh.antennapod.model.feed.FeedItem+getMedia() android.util.Log+d(String,String) android.util.Log+d(String,String) de.danoeh.antennapod.model.feed.FeedItem+setPlayed(boolean) de.danoeh.antennapod.model.feed.FeedItem+setPlayed(boolean) de.danoeh.antennapod.core.util.LongList+add(long) de.danoeh.antennapod.core.util.LongList+add(long) de.danoeh.antennapod.model.feed.FeedComponent+getId() de.danoeh.antennapod.model.feed.FeedComponent+getId() java.util.List+add(E) java.util.List+add(E) de.danoeh.antennapod.core.storage.DBWriter+removeQueueItem(Context,boolean,long[]) de.danoeh.antennapod.core.storage.DBWriter+removeQueueItem(Context,boolean,long[]) de.danoeh.antennapod.core.util.LongList+toArray() de.danoeh.antennapod.core.util.LongList+toArray() de.danoeh.antennapod.core.storage.DBReader+loadAdditionalFeedItemListData(List<FeedItem>) de.danoeh.antennapod.core.storage.DBReader+loadAdditionalFeedItemListData(List<FeedItem>) de.danoeh.antennapod.core.storage.DBWriter+setItemList(List<FeedItem>) de.danoeh.antennapod.core.storage.DBWriter+setItemList(List<FeedItem>)",de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.net.sync.model.EpisodeAction+NEW de.danoeh.antennapod.model.feed.FeedItem+UNPLAYED de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.core.sync.SyncService+TAG,1772,36,19697,428,34,,"private synchronized void processEpisodeActions(List<EpisodeAction> remoteActions) {
+        Log.d(TAG, ""Processing "" + remoteActions.size() + "" actions"");
+        if (remoteActions.size() == 0) {
+            return;
+        }
+
+        Map<Pair<String, String>, EpisodeAction> playActionsToUpdate = EpisodeActionFilter
+                .getRemoteActionsOverridingLocalActions(remoteActions, getQueuedEpisodeActions());
+        LongList queueToBeRemoved = new LongList();
+        List<FeedItem> updatedItems = new ArrayList<>();
+        for (EpisodeAction action : playActionsToUpdate.values()) {
+            String guid = GuidValidator.isValidGuid(action.getGuid()) ? action.getGuid() : null;
+            FeedItem feedItem = DBReader.getFeedItemByGuidOrEpisodeUrl(guid, action.getEpisode());
+            if (feedItem == null) {
+                Log.i(TAG, ""Unknown feed item: "" + action);
+                continue;
+            }
+            if (action.getAction() == EpisodeAction.NEW) {
+                DBWriter.markItemPlayed(feedItem, FeedItem.UNPLAYED, true);
+                continue;
+            }
+            Log.d(TAG, ""Most recent play action: "" + action.toString());
+            FeedMedia media = feedItem.getMedia();
+            media.setPosition(action.getPosition() * 1000);
+            if (FeedItemUtil.hasAlmostEnded(feedItem.getMedia())) {
+                Log.d(TAG, ""Marking as played"");
+                feedItem.setPlayed(true);
+                queueToBeRemoved.add(feedItem.getId());
+            }
+            updatedItems.add(feedItem);
+
+        }
+        DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
+        DBReader.loadAdditionalFeedItemListData(updatedItems);
+        DBWriter.setItemList(updatedItems);
+    }",False
+33,clearErrorNotifications(),Method,doWork(),,android.app.NotificationManager+cancel(int) android.app.NotificationManager+cancel(int) android.app.NotificationManager+cancel(int) android.app.NotificationManager+cancel(int),android.content.Context+NOTIFICATION_SERVICE,308,6,21475,465,2,,"private void clearErrorNotifications() {
+        NotificationManager nm = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(R.id.notification_gpodnet_sync_error);
+        nm.cancel(R.id.notification_gpodnet_sync_autherror);
+    }",False
+34,updateErrorNotification(SyncServiceException),Method,doWork(),,"de.danoeh.antennapod.core.preferences.UserPreferences+gpodnetNotificationsEnabled() de.danoeh.antennapod.core.preferences.UserPreferences+gpodnetNotificationsEnabled() android.util.Log+d(String,String) android.util.Log+d(String,String) android.util.Log+d(String,String) android.util.Log+d(String,String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() android.app.PendingIntent+getActivity(Context,int,Intent,int) android.app.PendingIntent+getActivity(Context,int,Intent,int) java.lang.Object+Object() android.app.NotificationManager+notify(int,Notification) android.app.NotificationManager+notify(int,Notification)",de.danoeh.antennapod.core.sync.SyncService+TAG de.danoeh.antennapod.core.sync.SyncService+TAG android.app.PendingIntent+FLAG_UPDATE_CURRENT de.danoeh.antennapod.core.util.gui.NotificationUtils+CHANNEL_ID_SYNC_ERROR android.content.Context+NOTIFICATION_SERVICE,1549,26,21789,472,2,,"private void updateErrorNotification(SyncServiceException exception) {
+        if (!UserPreferences.gpodnetNotificationsEnabled()) {
+            Log.d(TAG, ""Skipping sync error notification because of user setting"");
+            return;
+        }
+        Log.d(TAG, ""Posting sync error notification"");
+        final String description = getApplicationContext().getString(R.string.gpodnetsync_error_descr)
+                + exception.getMessage();
+
+        Intent intent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(
+                getApplicationContext().getPackageName());
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                R.id.pending_intent_sync_error, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(),
+                NotificationUtils.CHANNEL_ID_SYNC_ERROR)
+                .setContentTitle(getApplicationContext().getString(R.string.gpodnetsync_error_title))
+                .setContentText(description)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.ic_notification_sync_error)
+                .setAutoCancel(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .build();
+        NotificationManager nm = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(R.id.notification_gpodnet_sync_error, notification);
+    }",False

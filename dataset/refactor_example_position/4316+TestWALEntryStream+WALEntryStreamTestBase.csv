@@ -1,0 +1,798 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,CLASS_RULE,Field,,,,,125,3,3947,95,25,,"@ClassRule
+  public static final HBaseClassTestRule CLASS_RULE =
+      HBaseClassTestRule.forClass(TestWALEntryStream.class);",False
+2,TEST_TIMEOUT_MS,Field,,,,,49,1,4076,98,26,,private static final long TEST_TIMEOUT_MS = 5000;,True
+3,TEST_UTIL,Field,,,,,47,1,4128,99,12,,protected static HBaseTestingUtility TEST_UTIL;,True
+4,CONF,Field,,,,,36,1,4178,100,12,,protected static Configuration CONF;,True
+5,fs,Field,,,,,31,1,4217,101,12,,protected static FileSystem fs;,True
+6,cluster,Field,,,,,40,1,4251,102,12,,protected static MiniDFSCluster cluster;,True
+7,tableName,Field,,,,,74,1,4294,103,26,,"private static final TableName tableName = TableName.valueOf(""tablename"");",True
+8,family,Field,,,,,61,1,4371,104,26,,"private static final byte[] family = Bytes.toBytes(""column"");",True
+9,qualifier,Field,,,,,67,1,4435,105,26,,"private static final byte[] qualifier = Bytes.toBytes(""qualifier"");",True
+10,info,Field,,,,,165,2,4505,106,26,,"private static final RegionInfo info = RegionInfoBuilder.newBuilder(tableName)
+      .setStartKey(HConstants.EMPTY_START_ROW).setEndKey(HConstants.LAST_ROW).build();",True
+11,scopes,Field,,,,,72,1,4673,108,26,,"private static final NavigableMap<byte[], Integer> scopes = getScopes();",True
+12,fakeWalGroupId,Field,,,,,58,1,4748,109,18,,"private final String fakeWalGroupId = ""fake-wal-group-id"";",True
+13,WALEntryStreamWithRetries,MemberClass,,,"org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.WALEntryStreamWithRetries+WALEntryStreamWithRetries(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.WALEntryStreamWithRetries+next() org.apache.hadoop.hbase.Waiter+waitFor(Configuration,long,Predicate<E>) org.apache.hadoop.hbase.Waiter+waitFor(Configuration,long,Predicate<E>)",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.WALEntryStreamWithRetries+result org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_TIMEOUT_MS org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.WALEntryStreamWithRetries+result,1465,27,-1,-1,10,"/** 
+ * Test helper that waits until a non-null entry is available in the stream next or times out. A  {@link WALEntryStream} provides a streaming access to a queue of log files. Since the streamcan be consumed as the file is being written, callers relying on  {@link WALEntryStream#next()}may need to retry multiple times before an entry appended to the WAL is visible to the stream consumers. One such cause of delay is the close() of writer writing these log files. While the closure is in progress, the stream does not switch to the next log in the queue and next() may return null entries. This utility wraps these retries into a single next call and that makes the test code simpler.
+ */
+","/**
+   * Test helper that waits until a non-null entry is available in the stream next or times out.
+   * A {@link WALEntryStream} provides a streaming access to a queue of log files. Since the stream
+   * can be consumed as the file is being written, callers relying on {@link WALEntryStream#next()}
+   * may need to retry multiple times before an entry appended to the WAL is visible to the stream
+   * consumers. One such cause of delay is the close() of writer writing these log files. While the
+   * closure is in progress, the stream does not switch to the next log in the queue and next() may
+   * return null entries. This utility wraps these retries into a single next call and that makes
+   * the test code simpler.
+   */
+  private static class WALEntryStreamWithRetries extends WALEntryStream {
+    // Class member to be able to set a non-final from within a lambda.
+    private Entry result;
+
+    public WALEntryStreamWithRetries(ReplicationSourceLogQueue logQueue, Configuration conf,
+         long startPosition, WALFileLengthProvider walFileLengthProvider, ServerName serverName,
+         MetricsSource metrics, String walGroupId) throws IOException {
+      super(logQueue, conf, startPosition, walFileLengthProvider, serverName, metrics, walGroupId);
+    }
+
+    @Override
+    public Entry next() {
+      Waiter.waitFor(CONF, TEST_TIMEOUT_MS, () -> (
+          result = WALEntryStreamWithRetries.super.next()) != null);
+      return result;
+    }
+  }",False
+14,getScopes(),Method,,,"java.util.Map+put(K,V) java.util.Map+put(K,V)",org.apache.hadoop.hbase.util.Bytes+BYTES_COMPARATOR org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+family,190,5,6279,139,10,,"private static NavigableMap<byte[], Integer> getScopes() {
+    NavigableMap<byte[], Integer> scopes = new TreeMap<>(Bytes.BYTES_COMPARATOR);
+    scopes.put(family, 1);
+    return scopes;
+  }",True
+15,log,Field,,,,,16,1,6473,145,2,,private WAL log;,True
+16,logQueue,Field,,,,,35,1,6492,146,0,,ReplicationSourceLogQueue logQueue;,True
+17,pathWatcher,Field,,,,,32,1,6530,147,2,,private PathWatcher pathWatcher;,True
+18,tn,Field,,,,,44,2,6566,150,1,,"@Rule
+  public TestName tn = new TestName();",True
+19,mvcc,Field,,,,,89,1,6613,151,18,,private final MultiVersionConcurrencyControl mvcc = new MultiVersionConcurrencyControl();,True
+20,setUpBeforeClass(),Method,,,org.apache.hadoop.hbase.HBaseTestingUtility+HBaseTestingUtility() org.apache.hadoop.hbase.HBaseTestingUtility+getConfiguration() org.apache.hadoop.hbase.HBaseTestingUtility+getConfiguration() org.apache.hadoop.hbase.HBaseTestingUtility+startMiniDFSCluster(int) org.apache.hadoop.hbase.HBaseTestingUtility+startMiniDFSCluster(int) org.apache.hadoop.hbase.HBaseTestingUtility+getDFSCluster() org.apache.hadoop.hbase.HBaseTestingUtility+getDFSCluster(),org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_UTIL org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_UTIL org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_UTIL org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+cluster org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_UTIL org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+cluster,333,10,6706,154,9,,"@BeforeClass
+  public static void setUpBeforeClass() throws Exception {
+    TEST_UTIL = new HBaseTestingUtility();
+    CONF = TEST_UTIL.getConfiguration();
+    CONF.setLong(""replication.source.sleepforretries"", 10);
+    TEST_UTIL.startMiniDFSCluster(3);
+
+    cluster = TEST_UTIL.getDFSCluster();
+    fs = cluster.getFileSystem();
+  }",True
+21,tearDownAfterClass(),Method,,,org.apache.hadoop.hbase.HBaseTestingUtility+shutdownMiniCluster() org.apache.hadoop.hbase.HBaseTestingUtility+shutdownMiniCluster(),org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_UTIL,113,4,7043,165,9,,"@AfterClass
+  public static void tearDownAfterClass() throws Exception {
+    TEST_UTIL.shutdownMiniCluster();
+  }",True
+22,setUp(),Method,testDifferentCounts(),,"org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+clear() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+clear() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+ReplicationSourceLogQueue(Configuration,MetricsSource,ReplicationSource) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.PathWatcher+PathWatcher() org.apache.hadoop.hbase.wal.WALFactory+WALFactory(Configuration,String) org.apache.hadoop.hbase.wal.WALProvider+addWALActionsListener(WALActionsListener) org.apache.hadoop.hbase.wal.WALFactory+getWALProvider() org.apache.hadoop.hbase.wal.WALFactory+getWALProvider() org.apache.hadoop.hbase.wal.WALProvider+addWALActionsListener(WALActionsListener) org.apache.hadoop.hbase.wal.WALFactory+getWAL(RegionInfo) org.apache.hadoop.hbase.wal.WALFactory+getWAL(RegionInfo)",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+pathWatcher org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+tn org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+pathWatcher org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+info,550,12,7160,170,1,,"@Before
+  public void setUp() throws Exception {
+    ReplicationSource source = mock(ReplicationSource.class);
+    MetricsSource metricsSource = new MetricsSource(""2"");
+    // Source with the same id is shared and carries values from the last run
+    metricsSource.clear();
+    logQueue = new ReplicationSourceLogQueue(CONF, metricsSource, source);
+    pathWatcher = new PathWatcher();
+    final WALFactory wals = new WALFactory(CONF, tn.getMethodName());
+    wals.getWALProvider().addWALActionsListener(pathWatcher);
+    log = wals.getWAL(info);
+  }",False
+23,tearDown(),Method,,,org.apache.hadoop.hbase.wal.WAL+close() org.apache.hadoop.hbase.wal.WAL+close(),org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log,102,6,7714,183,1,,"@After
+  public void tearDown() throws Exception {
+    if (log != null) {
+      log.close();
+    }
+  }",True
+24,testDifferentCounts(),Method,,,"org.apache.hadoop.hbase.HBaseTestingUtility+getConfiguration() org.apache.hadoop.hbase.HBaseTestingUtility+getConfiguration() org.apache.hadoop.hbase.regionserver.MultiVersionConcurrencyControl+advanceTo(long) org.apache.hadoop.hbase.regionserver.MultiVersionConcurrencyControl+advanceTo(long) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync(int) org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.wal.WAL+close() org.apache.hadoop.hbase.wal.WAL+close() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+setUp() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+setUp()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_UTIL org.apache.hadoop.hbase.HConstants+ENABLE_WAL_COMPRESSION org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mvcc org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log,1214,40,7888,191,1,,"@Test
+  public void testDifferentCounts() throws Exception {
+    int[] NB_ROWS = { 1500, 60000 };
+    int[] NB_KVS = { 1, 100 };
+    // whether compression is used
+    Boolean[] BOOL_VALS = { false, true };
+    // long lastPosition = 0;
+    for (int nbRows : NB_ROWS) {
+      for (int walEditKVs : NB_KVS) {
+        for (boolean isCompressionEnabled : BOOL_VALS) {
+          TEST_UTIL.getConfiguration().setBoolean(HConstants.ENABLE_WAL_COMPRESSION,
+            isCompressionEnabled);
+          mvcc.advanceTo(1);
+
+          for (int i = 0; i < nbRows; i++) {
+            appendToLogAndSync(walEditKVs);
+          }
+
+          log.rollWriter();
+
+          try (WALEntryStream entryStream =
+              new WALEntryStream(logQueue, CONF, 0, log, null,
+                new MetricsSource(""1""), fakeWalGroupId)) {
+            int i = 0;
+            while (entryStream.hasNext()) {
+              assertNotNull(entryStream.next());
+              i++;
+            }
+            assertEquals(nbRows, i);
+
+            // should've read all entries
+            assertFalse(entryStream.hasNext());
+          }
+          // reset everything for next loop
+          log.close();
+          setUp();
+        }
+      }
+    }
+  }",True
+25,testAppendsWithRolls(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+peek() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+peek() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+peek() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+peek() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.WALEntryStreamWithRetries+WALEntryStreamWithRetries(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.WALEntryStreamWithRetries+WALEntryStreamWithRetries(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,1871,52,9106,235,1,"/** 
+ * Tests basic reading of log appends
+ */
+","/**
+   * Tests basic reading of log appends
+   */
+  @Test
+  public void testAppendsWithRolls() throws Exception {
+    appendToLogAndSync();
+    long oldPos;
+    try (WALEntryStream entryStream =
+        new WALEntryStream(logQueue, CONF, 0, log, null, new MetricsSource(""1""), fakeWalGroupId)) {
+      // There's one edit in the log, read it. Reading past it needs to throw exception
+      assertTrue(entryStream.hasNext());
+      WAL.Entry entry = entryStream.peek();
+      assertSame(entry, entryStream.next());
+      assertNotNull(entry);
+      assertFalse(entryStream.hasNext());
+      assertNull(entryStream.peek());
+      assertNull(entryStream.next());
+      oldPos = entryStream.getPosition();
+    }
+
+    appendToLogAndSync();
+
+    try (WALEntryStream entryStream = new WALEntryStreamWithRetries(logQueue, CONF, oldPos,
+        log, null, new MetricsSource(""1""), fakeWalGroupId)) {
+      // Read the newly added entry, make sure we made progress
+      WAL.Entry entry = entryStream.next();
+      assertNotEquals(oldPos, entryStream.getPosition());
+      assertNotNull(entry);
+      oldPos = entryStream.getPosition();
+    }
+
+    // We rolled but we still should see the end of the first log and get that item
+    appendToLogAndSync();
+    log.rollWriter();
+    appendToLogAndSync();
+
+    try (WALEntryStream entryStream = new WALEntryStreamWithRetries(logQueue, CONF, oldPos,
+        log, null, new MetricsSource(""1""), fakeWalGroupId)) {
+      WAL.Entry entry = entryStream.next();
+      assertNotEquals(oldPos, entryStream.getPosition());
+      assertNotNull(entry);
+
+      // next item should come from the new log
+      entry = entryStream.next();
+      assertNotEquals(oldPos, entryStream.getPosition());
+      assertNotNull(entry);
+
+      // no more entries to read
+      assertFalse(entryStream.hasNext());
+      oldPos = entryStream.getPosition();
+    }
+  }",False
+26,testLogrollWhileStreaming(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.WALEntryStreamWithRetries+WALEntryStreamWithRetries(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log,1302,27,10981,289,1,"/** 
+ * Tests that if after a stream is opened, more entries come in and then the log is rolled, we don't mistakenly dequeue the current log thinking we're done with it
+ */
+","/**
+   * Tests that if after a stream is opened, more entries come in and then the log is rolled, we
+   * don't mistakenly dequeue the current log thinking we're done with it
+   */
+  @Test
+  public void testLogrollWhileStreaming() throws Exception {
+    appendToLog(""1"");
+    appendToLog(""2"");// 2
+    try (WALEntryStream entryStream =
+        new WALEntryStreamWithRetries(logQueue, CONF, 0, log, null,
+          new MetricsSource(""1""), fakeWalGroupId)) {
+      assertEquals(""1"", getRow(entryStream.next()));
+
+      appendToLog(""3""); // 3 - comes in after reader opened
+      log.rollWriter(); // log roll happening while we're reading
+      appendToLog(""4""); // 4 - this append is in the rolled log
+
+      assertEquals(""2"", getRow(entryStream.next()));
+      assertEquals(2, getQueue().size()); // we should not have dequeued yet since there's still an
+                                        // entry in first log
+      assertEquals(""3"", getRow(entryStream.next())); // if implemented improperly, this would be 4
+                                                     // and 3 would be skipped
+      assertEquals(""4"", getRow(entryStream.next())); // 4
+      assertEquals(1, getQueue().size()); // now we've dequeued and moved on to next log properly
+      assertFalse(entryStream.hasNext());
+    }
+  }",False
+27,testNewEntriesWhileStreaming(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+reset() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+reset() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,802,26,12287,317,1,"/** 
+ * Tests that if writes come in while we have a stream open, we shouldn't miss them
+ */
+","/**
+   * Tests that if writes come in while we have a stream open, we shouldn't miss them
+   */
+
+  @Test
+  public void testNewEntriesWhileStreaming() throws Exception {
+    appendToLog(""1"");
+    try (WALEntryStream entryStream =
+        new WALEntryStream(logQueue, CONF, 0, log, null,
+          new MetricsSource(""1""), fakeWalGroupId)) {
+      entryStream.next(); // we've hit the end of the stream at this point
+
+      // some new entries come in while we're streaming
+      appendToLog(""2"");
+      appendToLog(""3"");
+
+      // don't see them
+      assertFalse(entryStream.hasNext());
+
+      // But we do if we reset
+      entryStream.reset();
+      assertEquals(""2"", getRow(entryStream.next()));
+      assertEquals(""3"", getRow(entryStream.next()));
+      assertFalse(entryStream.hasNext());
+    }
+  }",False
+28,testResumeStreamingFromPosition(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,866,22,13093,340,1,,"@Test
+  public void testResumeStreamingFromPosition() throws Exception {
+    long lastPosition = 0;
+    appendToLog(""1"");
+    try (WALEntryStream entryStream =
+        new WALEntryStream(logQueue, CONF, 0, log, null,
+          new MetricsSource(""1""), fakeWalGroupId)) {
+      entryStream.next(); // we've hit the end of the stream at this point
+      appendToLog(""2"");
+      appendToLog(""3"");
+      lastPosition = entryStream.getPosition();
+    }
+    // next stream should picks up where we left off
+    try (WALEntryStream entryStream =
+        new WALEntryStream(logQueue, CONF, lastPosition, log, null,
+          new MetricsSource(""1""), fakeWalGroupId)) {
+      assertEquals(""2"", getRow(entryStream.next()));
+      assertEquals(""3"", getRow(entryStream.next()));
+      assertFalse(entryStream.hasNext()); // done
+      assertEquals(1, getQueue().size());
+    }
+  }",False
+29,testPosition(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,873,24,13963,368,1,"/** 
+ * Tests that if we stop before hitting the end of a stream, we can continue where we left off using the last position
+ */
+","/**
+   * Tests that if we stop before hitting the end of a stream, we can continue where we left off
+   * using the last position
+   */
+
+  @Test
+  public void testPosition() throws Exception {
+    long lastPosition = 0;
+    appendEntriesToLogAndSync(3);
+    // read only one element
+    try (WALEntryStream entryStream = new WALEntryStream(logQueue, CONF, lastPosition,
+        log, null, new MetricsSource(""1""), fakeWalGroupId)) {
+      entryStream.next();
+      lastPosition = entryStream.getPosition();
+    }
+    // there should still be two more entries from where we left off
+    try (WALEntryStream entryStream =
+        new WALEntryStream(logQueue, CONF, lastPosition, log, null,
+          new MetricsSource(""1""), fakeWalGroupId)) {
+      assertNotNull(entryStream.next());
+      assertNotNull(entryStream.next());
+      assertFalse(entryStream.hasNext());
+    }
+  }",False
+30,testEmptyStream(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,256,8,14841,389,1,,"@Test
+  public void testEmptyStream() throws Exception {
+    try (WALEntryStream entryStream =
+        new WALEntryStream(logQueue, CONF, 0, log, null,
+          new MetricsSource(""1""), fakeWalGroupId)) {
+      assertFalse(entryStream.hasNext());
+    }
+  }",False
+31,testWALKeySerialization(),Method,,,"java.util.HashMap+HashMap() java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.Bytes+toBytes(String) java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.wal.WALKeyImpl+WALKeyImpl(byte[],TableName,long,List<UUID>,long,long,MultiVersionConcurrencyControl,NavigableMap<byte[],Integer>,Map<String,byte[]>) org.apache.hadoop.hbase.client.RegionInfo+getEncodedNameAsBytes() org.apache.hadoop.hbase.client.RegionInfo+getEncodedNameAsBytes() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() java.util.ArrayList+ArrayList() org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttributes() org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttributes() org.apache.hadoop.hbase.wal.WALKeyImpl+getBuilder(ByteStringCompressor) org.apache.hadoop.hbase.wal.WALKeyImpl+getBuilder(ByteStringCompressor) org.apache.hadoop.hbase.regionserver.wal.WALCellCodec+getNoneCompressor() org.apache.hadoop.hbase.regionserver.wal.WALCellCodec+getNoneCompressor() org.apache.hadoop.hbase.wal.WALKeyImpl+WALKeyImpl() org.apache.hadoop.hbase.wal.WALKeyImpl+readFieldsFromPb(WALKey,ByteStringUncompressor) org.apache.hadoop.hbase.wal.WALKeyImpl+readFieldsFromPb(WALKey,ByteStringUncompressor) org.apache.hadoop.hbase.regionserver.wal.WALCellCodec+getNoneUncompressor() org.apache.hadoop.hbase.regionserver.wal.WALCellCodec+getNoneUncompressor() java.util.Map+keySet() org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttributes() org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttributes() java.util.Map+keySet() java.util.Map+keySet() org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttributes() org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttributes() java.util.Map+keySet() java.util.Map+entrySet() org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttributes() org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttributes() java.util.Map+entrySet() org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttribute(String) org.apache.hadoop.hbase.wal.WALKeyImpl+getExtendedAttribute(String) java.util.Map.Entry+getKey() java.util.Map.Entry+getKey() java.util.Map.Entry+getValue() java.util.Map.Entry+getValue() org.apache.hadoop.hbase.wal.WALKeyImpl+getReplicationScopes() org.apache.hadoop.hbase.wal.WALKeyImpl+getReplicationScopes() org.apache.hadoop.hbase.wal.WALKeyImpl+getReplicationScopes() org.apache.hadoop.hbase.wal.WALKeyImpl+getReplicationScopes()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+info org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+tableName org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mvcc org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+scopes,1377,26,15101,398,1,,"@Test
+  public void testWALKeySerialization() throws Exception {
+    Map<String, byte[]> attributes = new HashMap<String, byte[]>();
+    attributes.put(""foo"", Bytes.toBytes(""foo-value""));
+    attributes.put(""bar"", Bytes.toBytes(""bar-value""));
+    WALKeyImpl key = new WALKeyImpl(info.getEncodedNameAsBytes(), tableName,
+      EnvironmentEdgeManager.currentTime(), new ArrayList<UUID>(), 0L, 0L,
+      mvcc, scopes, attributes);
+    Assert.assertEquals(attributes, key.getExtendedAttributes());
+
+    WALProtos.WALKey.Builder builder = key.getBuilder(WALCellCodec.getNoneCompressor());
+    WALProtos.WALKey serializedKey = builder.build();
+
+    WALKeyImpl deserializedKey = new WALKeyImpl();
+    deserializedKey.readFieldsFromPb(serializedKey, WALCellCodec.getNoneUncompressor());
+
+    //equals() only checks region name, sequence id and write time
+    Assert.assertEquals(key, deserializedKey);
+    //can't use Map.equals() because byte arrays use reference equality
+    Assert.assertEquals(key.getExtendedAttributes().keySet(),
+        deserializedKey.getExtendedAttributes().keySet());
+    for (Map.Entry<String, byte[]> entry : deserializedKey.getExtendedAttributes().entrySet()){
+      Assert.assertArrayEquals(key.getExtendedAttribute(entry.getKey()), entry.getValue());
+    }
+    Assert.assertEquals(key.getReplicationScopes(), deserializedKey.getReplicationScopes());
+  }",False
+32,"mockReplicationSource(boolean,Configuration)",Method,"createReader(boolean,Configuration) createReaderWithBadReplicationFilter(int,Configuration) testReplicationSourceWALReaderDisabled() testEOFExceptionForRecoveredQueue() testEOFExceptionForRecoveredQueueWithMultipleLogs()",,org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getTotalBufferUsed() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getTotalBufferUsed() java.util.concurrent.atomic.AtomicLong+AtomicLong(long) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getTotalBufferLimit() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getTotalBufferLimit() org.apache.hadoop.hbase.replication.regionserver.ReplicationSource+getSourceManager() org.apache.hadoop.hbase.replication.regionserver.ReplicationSource+getSourceManager() org.apache.hadoop.hbase.replication.regionserver.ReplicationSource+getSourceMetrics() org.apache.hadoop.hbase.replication.regionserver.ReplicationSource+getSourceMetrics() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSource+getWALFileLengthProvider() org.apache.hadoop.hbase.replication.regionserver.ReplicationSource+getWALFileLengthProvider() org.apache.hadoop.hbase.replication.regionserver.ReplicationSource+getServer() org.apache.hadoop.hbase.replication.regionserver.ReplicationSource+getServer() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isRecovered() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isRecovered() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getGlobalMetrics() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getGlobalMetrics(),org.apache.hadoop.hbase.HConstants+REPLICATION_SOURCE_TOTAL_BUFFER_DFAULT org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log,1042,17,16482,424,2,,"private ReplicationSource mockReplicationSource(boolean recovered, Configuration conf) {
+    ReplicationSourceManager mockSourceManager = Mockito.mock(ReplicationSourceManager.class);
+    when(mockSourceManager.getTotalBufferUsed()).thenReturn(new AtomicLong(0));
+    when(mockSourceManager.getTotalBufferLimit()).thenReturn(
+        (long) HConstants.REPLICATION_SOURCE_TOTAL_BUFFER_DFAULT);
+    Server mockServer = Mockito.mock(Server.class);
+    ReplicationSource source = Mockito.mock(ReplicationSource.class);
+    when(source.getSourceManager()).thenReturn(mockSourceManager);
+    when(source.getSourceMetrics()).thenReturn(new MetricsSource(""1""));
+    when(source.getWALFileLengthProvider()).thenReturn(log);
+    when(source.getServer()).thenReturn(mockServer);
+    when(source.isRecovered()).thenReturn(recovered);
+    MetricsReplicationGlobalSourceSource globalMetrics = Mockito.mock(
+        MetricsReplicationGlobalSourceSource.class);
+    when(mockSourceManager.getGlobalMetrics()).thenReturn(globalMetrics);
+    return source;
+  }",False
+33,"createReader(boolean,Configuration)",Method,testReplicationSourceWALReader() testReplicationSourceWALReaderRecovered(),,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+ReplicationSourceWALReader(FileSystem,Configuration,ReplicationSourceLogQueue,long,WALEntryFilter,ReplicationSource,String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getDummyFilter() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getDummyFilter() java.lang.Thread+start() java.lang.Thread+start()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,404,9,17528,442,2,,"private ReplicationSourceWALReader createReader(boolean recovered, Configuration conf) {
+    ReplicationSource source = mockReplicationSource(recovered, conf);
+    when(source.isPeerEnabled()).thenReturn(true);
+    ReplicationSourceWALReader reader =
+      new ReplicationSourceWALReader(fs, conf, logQueue, 0, getDummyFilter(), source,
+        fakeWalGroupId);
+    reader.start();
+    return reader;
+  }",False
+34,"createReaderWithBadReplicationFilter(int,Configuration)",Method,testReplicationSourceWALReaderWithFailingFilter(),,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+ReplicationSourceWALReader(FileSystem,Configuration,ReplicationSourceLogQueue,long,WALEntryFilter,ReplicationSource,String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getIntermittentFailingFilter(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getIntermittentFailingFilter(int) java.lang.Thread+start() java.lang.Thread+start()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,453,10,17936,452,2,,"private ReplicationSourceWALReader createReaderWithBadReplicationFilter(int numFailures,
+      Configuration conf) {
+    ReplicationSource source = mockReplicationSource(false, conf);
+    when(source.isPeerEnabled()).thenReturn(true);
+    ReplicationSourceWALReader reader =
+      new ReplicationSourceWALReader(fs, conf, logQueue, 0,
+        getIntermittentFailingFilter(numFailures), source, fakeWalGroupId);
+    reader.start();
+    return reader;
+  }",False
+35,testReplicationSourceWALReader(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+createReader(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+createReader(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() java.util.List+size() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getWalEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getWalEntries() java.util.List+size() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbRowKeys() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbRowKeys() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbEntries() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getRow(Entry) java.util.List+get(int) org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getWalEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getWalEntries() java.util.List+get(int)",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF,1074,31,18393,464,1,,"@Test
+  public void testReplicationSourceWALReader() throws Exception {
+    appendEntriesToLogAndSync(3);
+    // get ending position
+    long position;
+    try (WALEntryStream entryStream =
+        new WALEntryStream(logQueue, CONF, 0, log, null,
+          new MetricsSource(""1""), fakeWalGroupId)) {
+      entryStream.next();
+      entryStream.next();
+      entryStream.next();
+      position = entryStream.getPosition();
+    }
+
+    // start up a reader
+    Path walPath = getQueue().peek();
+    ReplicationSourceWALReader reader = createReader(false, CONF);
+    WALEntryBatch entryBatch = reader.take();
+
+    // should've batched up our entries
+    assertNotNull(entryBatch);
+    assertEquals(3, entryBatch.getWalEntries().size());
+    assertEquals(position, entryBatch.getLastWalPosition());
+    assertEquals(walPath, entryBatch.getLastWalPath());
+    assertEquals(3, entryBatch.getNbRowKeys());
+
+    appendToLog(""foo"");
+    entryBatch = reader.take();
+    assertEquals(1, entryBatch.getNbEntries());
+    assertEquals(""foo"", getRow(entryBatch.getWalEntries().get(0)));
+  }",False
+36,testReplicationSourceWALReaderWithFailingFilter(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+createReaderWithBadReplicationFilter(int,Configuration) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+createReaderWithBadReplicationFilter(int,Configuration) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+numFailures() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+numFailures() java.util.List+size() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getWalEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getWalEntries() java.util.List+size() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbRowKeys() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbRowKeys()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF,1068,29,19471,496,1,,"@Test
+  public void testReplicationSourceWALReaderWithFailingFilter() throws Exception {
+    appendEntriesToLogAndSync(3);
+    // get ending position
+    long position;
+    try (WALEntryStream entryStream =
+      new WALEntryStream(logQueue, CONF, 0, log, null,
+        new MetricsSource(""1""), fakeWalGroupId)) {
+      entryStream.next();
+      entryStream.next();
+      entryStream.next();
+      position = entryStream.getPosition();
+    }
+
+    // start up a reader
+    Path walPath = getQueue().peek();
+    int numFailuresInFilter = 5;
+    ReplicationSourceWALReader reader = createReaderWithBadReplicationFilter(
+      numFailuresInFilter, CONF);
+    WALEntryBatch entryBatch = reader.take();
+    assertEquals(numFailuresInFilter, FailingWALEntryFilter.numFailures());
+
+    // should've batched up our entries
+    assertNotNull(entryBatch);
+    assertEquals(3, entryBatch.getWalEntries().size());
+    assertEquals(position, entryBatch.getLastWalPosition());
+    assertEquals(walPath, entryBatch.getLastWalPath());
+    assertEquals(3, entryBatch.getNbRowKeys());
+  }",False
+37,testReplicationSourceWALReaderRecovered(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.wal.WAL+shutdown() org.apache.hadoop.hbase.wal.WAL+shutdown() java.lang.Object+Object() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+createReader(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+createReader(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+isEndOfFile() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+isEndOfFile() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+isEndOfFile() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+isEndOfFile() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+isEndOfFile() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+isEndOfFile() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+take()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+NO_MORE_DATA,992,31,20543,526,1,,"@Test
+  public void testReplicationSourceWALReaderRecovered() throws Exception {
+    appendEntriesToLogAndSync(10);
+    Path walPath = getQueue().peek();
+    log.rollWriter();
+    appendEntriesToLogAndSync(5);
+    log.shutdown();
+
+    Configuration conf = new Configuration(CONF);
+    conf.setInt(""replication.source.nb.capacity"", 10);
+
+    ReplicationSourceWALReader reader = createReader(true, conf);
+
+    WALEntryBatch batch = reader.take();
+    assertEquals(walPath, batch.getLastWalPath());
+    assertEquals(10, batch.getNbEntries());
+    assertFalse(batch.isEndOfFile());
+
+    batch = reader.take();
+    assertEquals(walPath, batch.getLastWalPath());
+    assertEquals(0, batch.getNbEntries());
+    assertTrue(batch.isEndOfFile());
+
+    walPath = getQueue().peek();
+    batch = reader.take();
+    assertEquals(walPath, batch.getLastWalPath());
+    assertEquals(5, batch.getNbEntries());
+    assertTrue(batch.isEndOfFile());
+
+    assertSame(WALEntryBatch.NO_MORE_DATA, reader.take());
+  }",False
+38,testReplicationSourceWALReaderWrongPosition(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.HBaseCommonTestingUtility+waitFor(long,Predicate<E>) org.apache.hadoop.hbase.HBaseCommonTestingUtility+waitFor(long,Predicate<E>) +() +evaluate()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_UTIL,1790,51,21569,559,1,,"@Test
+  public void testReplicationSourceWALReaderWrongPosition() throws Exception {
+    appendEntriesToLogAndSync(1);
+    Path walPath = getQueue().peek();
+    log.rollWriter();
+    appendEntriesToLogAndSync(20);
+    TEST_UTIL.waitFor(5000, new ExplainingPredicate<Exception>() {
+
+      @Override
+      public boolean evaluate() throws Exception {
+        return fs.getFileStatus(walPath).getLen() > 0 &&
+            ((AbstractFSWAL) log).getInflightWALCloseCount() == 0;
+      }
+
+      @Override
+      public String explainFailure() throws Exception {
+        return walPath + "" has not been closed yet"";
+      }
+
+    });
+
+    ReplicationSourceWALReader reader = createReader(false, CONF);
+
+    WALEntryBatch entryBatch = reader.take();
+    assertEquals(walPath, entryBatch.getLastWalPath());
+
+    long walLength = fs.getFileStatus(walPath).getLen();
+    assertTrue(""Position "" + entryBatch.getLastWalPosition() + "" is out of range, file length is "" +
+      walLength, entryBatch.getLastWalPosition() <= walLength);
+    assertEquals(1, entryBatch.getNbEntries());
+    assertTrue(entryBatch.isEndOfFile());
+
+    Path walPath2 = getQueue().peek();
+    entryBatch = reader.take();
+    assertEquals(walPath2, entryBatch.getLastWalPath());
+    assertEquals(20, entryBatch.getNbEntries());
+    assertFalse(entryBatch.isEndOfFile());
+
+    log.rollWriter();
+    appendEntriesToLogAndSync(10);
+    entryBatch = reader.take();
+    assertEquals(walPath2, entryBatch.getLastWalPath());
+    assertEquals(0, entryBatch.getNbEntries());
+    assertTrue(entryBatch.isEndOfFile());
+
+    Path walPath3 = getQueue().peek();
+    entryBatch = reader.take();
+    assertEquals(walPath3, entryBatch.getLastWalPath());
+    assertEquals(10, entryBatch.getNbEntries());
+    assertFalse(entryBatch.isEndOfFile());
+  }",False
+39,testReplicationSourceWALReaderDisabled(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntriesToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+getPosition() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) java.util.concurrent.atomic.AtomicInteger+AtomicInteger(int) java.util.concurrent.atomic.AtomicBoolean+AtomicBoolean(boolean) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+ReplicationSourceWALReader(FileSystem,Configuration,ReplicationSourceLogQueue,long,WALEntryFilter,ReplicationSource,String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getDummyFilter() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getDummyFilter() java.lang.Thread+start() java.lang.Thread+start() java.util.concurrent.ForkJoinPool+submit(ForkJoinTask) java.util.concurrent.ForkJoinPool+commonPool() java.util.concurrent.ForkJoinPool+commonPool() java.util.concurrent.ForkJoinPool+submit(ForkJoinTask) org.apache.hadoop.hbase.HBaseCommonTestingUtility+waitFor(long,Predicate<E>) org.apache.hadoop.hbase.HBaseCommonTestingUtility+waitFor(long,Predicate<E>) java.util.concurrent.atomic.AtomicInteger+get() java.util.concurrent.atomic.AtomicInteger+get() java.util.concurrent.Future+isDone() java.util.concurrent.Future+isDone() java.util.concurrent.atomic.AtomicBoolean+set(boolean) java.util.concurrent.atomic.AtomicBoolean+set(boolean) java.util.concurrent.Future+get() java.util.concurrent.Future+get() java.util.List+size() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getWalEntries() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getWalEntries() java.util.List+size() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPosition() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getLastWalPath() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbRowKeys() org.apache.hadoop.hbase.replication.regionserver.WALEntryBatch+getNbRowKeys()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_UTIL,1768,47,23363,611,1,,"@Test
+  public void testReplicationSourceWALReaderDisabled()
+      throws IOException, InterruptedException, ExecutionException {
+    appendEntriesToLogAndSync(3);
+    // get ending position
+    long position;
+    try (WALEntryStream entryStream =
+      new WALEntryStream(logQueue, CONF, 0, log, null,
+        new MetricsSource(""1""), fakeWalGroupId)) {
+      entryStream.next();
+      entryStream.next();
+      entryStream.next();
+      position = entryStream.getPosition();
+    }
+
+    // start up a reader
+    Path walPath = getQueue().peek();
+    ReplicationSource source = mockReplicationSource(false, CONF);
+    AtomicInteger invokeCount = new AtomicInteger(0);
+    AtomicBoolean enabled = new AtomicBoolean(false);
+    when(source.isPeerEnabled()).then(i -> {
+      invokeCount.incrementAndGet();
+      return enabled.get();
+    });
+
+    ReplicationSourceWALReader reader =
+      new ReplicationSourceWALReader(fs, CONF, logQueue, 0, getDummyFilter(),
+        source, fakeWalGroupId);
+    reader.start();
+    Future<WALEntryBatch> future = ForkJoinPool.commonPool().submit(() -> {
+      return reader.take();
+    });
+    // make sure that the isPeerEnabled has been called several times
+    TEST_UTIL.waitFor(30000, () -> invokeCount.get() >= 5);
+    // confirm that we can read nothing if the peer is disabled
+    assertFalse(future.isDone());
+    // then enable the peer, we should get the batch
+    enabled.set(true);
+    WALEntryBatch entryBatch = future.get();
+
+    // should've batched up our entries
+    assertNotNull(entryBatch);
+    assertEquals(3, entryBatch.getWalEntries().size());
+    assertEquals(position, entryBatch.getLastWalPosition());
+    assertEquals(walPath, entryBatch.getLastWalPath());
+    assertEquals(3, entryBatch.getNbRowKeys());
+  }",False
+40,getRow(WAL.Entry),Method,,,"java.util.ArrayList+get(int) org.apache.hadoop.hbase.wal.WALEdit+getCells() org.apache.hadoop.hbase.wal.WAL.Entry+getEdit() org.apache.hadoop.hbase.wal.WAL.Entry+getEdit() org.apache.hadoop.hbase.wal.WALEdit+getCells() java.util.ArrayList+get(int) org.apache.hadoop.hbase.util.Bytes+toString(byte[],int,int) org.apache.hadoop.hbase.util.Bytes+toString(byte[],int,int) org.apache.hadoop.hbase.Cell+getRowArray() org.apache.hadoop.hbase.Cell+getRowArray() org.apache.hadoop.hbase.Cell+getRowOffset() org.apache.hadoop.hbase.Cell+getRowOffset() org.apache.hadoop.hbase.Cell+getRowLength() org.apache.hadoop.hbase.Cell+getRowLength()",,184,4,25135,658,2,,"private String getRow(WAL.Entry entry) {
+    Cell cell = entry.getEdit().getCells().get(0);
+    return Bytes.toString(cell.getRowArray(), cell.getRowOffset(), cell.getRowLength());
+  }",False
+41,appendToLog(String),Method,testLogrollWhileStreaming() testLogrollWhileStreaming() testLogrollWhileStreaming() testLogrollWhileStreaming() testNewEntriesWhileStreaming() testNewEntriesWhileStreaming() testNewEntriesWhileStreaming() testResumeStreamingFromPosition() testResumeStreamingFromPosition() testResumeStreamingFromPosition() testReplicationSourceWALReader() testReadBeyondCommittedLength() testReadBeyondCommittedLength(),,"org.apache.hadoop.hbase.wal.WAL+appendData(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendData(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WALKeyImpl+WALKeyImpl(byte[],TableName,long,MultiVersionConcurrencyControl,NavigableMap<byte[],Integer>) org.apache.hadoop.hbase.client.RegionInfo+getEncodedNameAsBytes() org.apache.hadoop.hbase.client.RegionInfo+getEncodedNameAsBytes() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getWALEdit(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getWALEdit(String) org.apache.hadoop.hbase.wal.WAL+sync(long) org.apache.hadoop.hbase.wal.WAL+sync(long)",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+info org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+info org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+tableName org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mvcc org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+scopes org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log,265,6,25323,663,2,,"private void appendToLog(String key) throws IOException {
+    final long txid = log.appendData(info,
+      new WALKeyImpl(info.getEncodedNameAsBytes(), tableName,
+        EnvironmentEdgeManager.currentTime(), mvcc, scopes), getWALEdit(key));
+    log.sync(txid);
+  }",False
+42,appendEntriesToLogAndSync(int),Method,testPosition() testReplicationSourceWALReader() testReplicationSourceWALReaderWithFailingFilter() testReplicationSourceWALReaderRecovered() testReplicationSourceWALReaderRecovered() testReplicationSourceWALReaderWrongPosition() testReplicationSourceWALReaderWrongPosition() testReplicationSourceWALReaderDisabled(),,org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(int) org.apache.hadoop.hbase.wal.WAL+sync(long) org.apache.hadoop.hbase.wal.WAL+sync(long),org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log,188,7,25592,670,2,,"private void appendEntriesToLogAndSync(int count) throws IOException {
+    long txid = -1L;
+    for (int i = 0; i < count; i++) {
+      txid = appendToLog(1);
+    }
+    log.sync(txid);
+  }",False
+43,appendToLogAndSync(),Method,testAppendsWithRolls() testAppendsWithRolls() testAppendsWithRolls() testAppendsWithRolls() testSizeOfLogQueue() testCleanClosedWALs() testCleanClosedWALs(),,org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync(int),,85,3,25784,678,2,,"private void appendToLogAndSync() throws IOException {
+    appendToLogAndSync(1);
+  }",True
+44,appendToLogAndSync(int),Method,testDifferentCounts() appendToLogAndSync(),,org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(int) org.apache.hadoop.hbase.wal.WAL+sync(long) org.apache.hadoop.hbase.wal.WAL+sync(long),org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log,123,4,25873,682,2,,"private void appendToLogAndSync(int count) throws IOException {
+    long txid = appendToLog(count);
+    log.sync(txid);
+  }",True
+45,appendToLog(int),Method,appendEntriesToLogAndSync(int) appendToLogAndSync(int),,"org.apache.hadoop.hbase.wal.WAL+appendData(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WAL+appendData(RegionInfo,WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WALKeyImpl+WALKeyImpl(byte[],TableName,long,MultiVersionConcurrencyControl,NavigableMap<byte[],Integer>) org.apache.hadoop.hbase.client.RegionInfo+getEncodedNameAsBytes() org.apache.hadoop.hbase.client.RegionInfo+getEncodedNameAsBytes() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getWALEdits(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getWALEdits(int)",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+info org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+info org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+tableName org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mvcc org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+scopes,228,4,26000,687,2,,"private long appendToLog(int count) throws IOException {
+    return log.appendData(info, new WALKeyImpl(info.getEncodedNameAsBytes(), tableName,
+      EnvironmentEdgeManager.currentTime(), mvcc, scopes), getWALEdits(count));
+  }",True
+46,getWALEdits(int),Method,appendToLog(int),,"org.apache.hadoop.hbase.wal.WALEdit+WALEdit() org.apache.hadoop.hbase.wal.WALEdit+add(Cell) org.apache.hadoop.hbase.wal.WALEdit+add(Cell) org.apache.hadoop.hbase.KeyValue+KeyValue(byte[],byte[],byte[],long,byte[]) org.apache.hadoop.hbase.util.Bytes+toBytes(long) org.apache.hadoop.hbase.util.Bytes+toBytes(long) org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+family org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+qualifier org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+qualifier,298,8,26232,692,2,,"private WALEdit getWALEdits(int count) {
+    WALEdit edit = new WALEdit();
+    for (int i = 0; i < count; i++) {
+      edit.add(new KeyValue(Bytes.toBytes(EnvironmentEdgeManager.currentTime()), family,
+        qualifier, EnvironmentEdgeManager.currentTime(), qualifier));
+    }
+    return edit;
+  }",True
+47,getWALEdit(String),Method,appendToLog(String),,"org.apache.hadoop.hbase.wal.WALEdit+WALEdit() org.apache.hadoop.hbase.wal.WALEdit+add(Cell) org.apache.hadoop.hbase.wal.WALEdit+add(Cell) org.apache.hadoop.hbase.KeyValue+KeyValue(byte[],byte[],byte[],long,byte[]) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+family org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+qualifier org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+qualifier,226,7,26534,701,2,,"private WALEdit getWALEdit(String row) {
+    WALEdit edit = new WALEdit();
+    edit.add(
+      new KeyValue(Bytes.toBytes(row), family, qualifier, EnvironmentEdgeManager.currentTime(),
+        qualifier));
+    return edit;
+  }",False
+48,getDummyFilter(),Method,,,+() +filter(Entry),,174,9,26764,709,2,,"private WALEntryFilter getDummyFilter() {
+    return new WALEntryFilter() {
+
+      @Override
+      public Entry filter(Entry entry) {
+        return entry;
+      }
+    };
+  }",False
+49,getIntermittentFailingFilter(int),Method,,,org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+FailingWALEntryFilter(int),,141,3,26942,719,2,,"private WALEntryFilter getIntermittentFailingFilter(int numFailuresInFilter) {
+    return new FailingWALEntryFilter(numFailuresInFilter);
+  }",False
+50,FailingWALEntryFilter,MemberClass,,,org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+FailingWALEntryFilter(int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+filter(Entry) org.apache.hadoop.hbase.replication.regionserver.WALEntryFilterRetryableException+WALEntryFilterRetryableException(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+numFailures(),org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+numFailures org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+countFailures org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+numFailures org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+countFailures org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+numFailures org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+countFailures org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+countFailures org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.FailingWALEntryFilter+countFailures,569,21,-1,-1,9,,"public static class FailingWALEntryFilter implements WALEntryFilter {
+    private int numFailures = 0;
+    private static int countFailures = 0;
+
+    public FailingWALEntryFilter(int numFailuresInFilter) {
+      numFailures = numFailuresInFilter;
+    }
+
+    @Override
+    public Entry filter(Entry entry) {
+      if (countFailures == numFailures) {
+        return entry;
+      }
+      countFailures = countFailures + 1;
+      throw new WALEntryFilterRetryableException(""failing filter"");
+    }
+
+    public static int numFailures(){
+      return countFailures;
+    }
+  }",False
+51,PathWatcher,MemberClass,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.PathWatcher+preLogRoll(Path,Path) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+enqueueLog(Path,String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+enqueueLog(Path,String)",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.PathWatcher+currentPath org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.PathWatcher+currentPath,235,10,-1,-1,0,,"class PathWatcher implements WALActionsListener {
+
+    Path currentPath;
+
+    @Override
+    public void preLogRoll(Path oldPath, Path newPath) {
+      logQueue.enqueueLog(newPath, fakeWalGroupId);
+      currentPath = newPath;
+    }
+  }",False
+52,testReadBeyondCommittedLength(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLog(String) org.apache.hadoop.hbase.replication.regionserver.WALFileLengthProvider+getLogFileSizeIfBeingWritten(Path) org.apache.hadoop.hbase.replication.regionserver.WALFileLengthProvider+getLogFileSizeIfBeingWritten(Path) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getQueue() java.util.concurrent.atomic.AtomicLong+AtomicLong(long) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.MetricsSource+MetricsSource(String) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() java.lang.Thread+sleep(long) java.lang.Thread+sleep(long) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+reset() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+reset() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() java.util.concurrent.atomic.AtomicLong+set(long) java.util.concurrent.atomic.AtomicLong+set(long) org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+reset() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+reset() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,942,26,27899,757,1,,"@Test
+  public void testReadBeyondCommittedLength() throws IOException, InterruptedException {
+    appendToLog(""1"");
+    appendToLog(""2"");
+    long size = log.getLogFileSizeIfBeingWritten(getQueue().peek()).getAsLong();
+    AtomicLong fileLength = new AtomicLong(size - 1);
+    try (WALEntryStream entryStream = new WALEntryStream(logQueue,  CONF, 0,
+      p -> OptionalLong.of(fileLength.get()), null, new MetricsSource(""1""), fakeWalGroupId)) {
+      assertTrue(entryStream.hasNext());
+      assertNotNull(entryStream.next());
+      // can not get log 2
+      assertFalse(entryStream.hasNext());
+      Thread.sleep(1000);
+      entryStream.reset();
+      // still can not get log 2
+      assertFalse(entryStream.hasNext());
+
+      // can get log 2 now
+      fileLength.set(size);
+      entryStream.reset();
+      assertTrue(entryStream.hasNext());
+      assertNotNull(entryStream.next());
+
+      assertFalse(entryStream.hasNext());
+    }
+  }",False
+53,testEOFExceptionForRecoveredQueue(),Method,,,"java.lang.Object+Object() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+ReplicationSourceLogQueue(Configuration,MetricsSource,ReplicationSource) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+enqueueLog(Path,String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+enqueueLog(Path,String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+ReplicationSourceWALReader(FileSystem,Configuration,ReplicationSourceLogQueue,long,WALEntryFilter,ReplicationSource,String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getDummyFilter() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getDummyFilter() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+run() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+run() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueueSize(String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueueSize(String)",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,1415,30,28975,788,1,,"@Test
+  public void testEOFExceptionForRecoveredQueue() throws Exception {
+    // Create a 0 length log.
+    Path emptyLog = new Path(""emptyLog"");
+    FSDataOutputStream fsdos = fs.create(emptyLog);
+    fsdos.close();
+    assertEquals(0, fs.getFileStatus(emptyLog).getLen());
+
+    Configuration conf = new Configuration(CONF);
+    // Override the max retries multiplier to fail fast.
+    conf.setInt(""replication.source.maxretriesmultiplier"", 1);
+    conf.setBoolean(""replication.source.eof.autorecovery"", true);
+    conf.setInt(""replication.source.nb.batches"", 10);
+    // Create a reader thread with source as recovered source.
+    ReplicationSource source = mockReplicationSource(true, conf);
+    when(source.isPeerEnabled()).thenReturn(true);
+
+    MetricsSource metrics = mock(MetricsSource.class);
+    doNothing().when(metrics).incrSizeOfLogQueue();
+    doNothing().when(metrics).decrSizeOfLogQueue();
+    ReplicationSourceLogQueue localLogQueue = new ReplicationSourceLogQueue(conf, metrics, source);
+    localLogQueue.enqueueLog(emptyLog, fakeWalGroupId);
+    ReplicationSourceWALReader reader =
+      new ReplicationSourceWALReader(fs, conf, localLogQueue, 0,
+        getDummyFilter(), source, fakeWalGroupId);
+    reader.run();
+    // ReplicationSourceWALReaderThread#handleEofException method will
+    // remove empty log from logQueue.
+    assertEquals(0, localLogQueue.getQueueSize(fakeWalGroupId));
+  }",False
+54,testEOFExceptionForRecoveredQueueWithMultipleLogs(),Method,,,"java.lang.Object+Object() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+mockReplicationSource(boolean,Configuration) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+ReplicationSourceLogQueue(Configuration,MetricsSource,ReplicationSource) java.lang.Object+Object() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+enqueueLog(Path,String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+enqueueLog(Path,String) java.lang.Object+Object() org.apache.hadoop.hbase.wal.WALFactory+createWALWriter(FileSystem,Path,Configuration) org.apache.hadoop.hbase.wal.WALFactory+createWALWriter(FileSystem,Path,Configuration) org.apache.hadoop.hbase.HBaseTestingUtility+getConfiguration() org.apache.hadoop.hbase.HBaseTestingUtility+getConfiguration() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntries(Writer,int) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendEntries(Writer,int) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+enqueueLog(Path,String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+enqueueLog(Path,String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getOldSources() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getOldSources() java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceInterface+isPeerEnabled() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getTotalBufferUsed() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager+getTotalBufferUsed() java.util.concurrent.atomic.AtomicLong+AtomicLong(long) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+ReplicationSourceWALReader(FileSystem,Configuration,ReplicationSourceLogQueue,long,WALEntryFilter,ReplicationSource,String) org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getDummyFilter() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+getDummyFilter() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueueSize(String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueueSize(String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+run() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader+run() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueueSize(String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueueSize(String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueueSize(String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueueSize(String)",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+TEST_UTIL org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fs org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,2058,40,30394,819,1,,"@Test
+  public void testEOFExceptionForRecoveredQueueWithMultipleLogs() throws Exception {
+    Configuration conf = new Configuration(CONF);
+    MetricsSource metrics = mock(MetricsSource.class);
+    ReplicationSource source = mockReplicationSource(true, conf);
+    ReplicationSourceLogQueue localLogQueue = new ReplicationSourceLogQueue(conf, metrics, source);
+    // Create a 0 length log.
+    Path emptyLog = new Path(fs.getHomeDirectory(),""log.2"");
+    FSDataOutputStream fsdos = fs.create(emptyLog);
+    fsdos.close();
+    assertEquals(0, fs.getFileStatus(emptyLog).getLen());
+    localLogQueue.enqueueLog(emptyLog, fakeWalGroupId);
+
+    final Path log1 = new Path(fs.getHomeDirectory(), ""log.1"");
+    WALProvider.Writer writer1 = WALFactory.createWALWriter(fs, log1, TEST_UTIL.getConfiguration());
+    appendEntries(writer1, 3);
+    localLogQueue.enqueueLog(log1, fakeWalGroupId);
+
+    ReplicationSourceManager mockSourceManager = mock(ReplicationSourceManager.class);
+    // Make it look like the source is from recovered source.
+    when(mockSourceManager.getOldSources())
+      .thenReturn(new ArrayList<>(Arrays.asList((ReplicationSourceInterface)source)));
+    when(source.isPeerEnabled()).thenReturn(true);
+    when(mockSourceManager.getTotalBufferUsed()).thenReturn(new AtomicLong(0));
+    // Override the max retries multiplier to fail fast.
+    conf.setInt(""replication.source.maxretriesmultiplier"", 1);
+    conf.setBoolean(""replication.source.eof.autorecovery"", true);
+    conf.setInt(""replication.source.nb.batches"", 10);
+    // Create a reader thread.
+    ReplicationSourceWALReader reader =
+      new ReplicationSourceWALReader(fs, conf, localLogQueue, 0,
+        getDummyFilter(), source, fakeWalGroupId);
+    assertEquals(""Initial log queue size is not correct"",
+      2, localLogQueue.getQueueSize(fakeWalGroupId));
+    reader.run();
+
+    // remove empty log from logQueue.
+    assertEquals(0, localLogQueue.getQueueSize(fakeWalGroupId));
+    assertEquals(""Log queue should be empty"", 0, localLogQueue.getQueueSize(fakeWalGroupId));
+  }",False
+55,getQueue(),Method,testLogrollWhileStreaming() testLogrollWhileStreaming() testResumeStreamingFromPosition() testReplicationSourceWALReader() testReplicationSourceWALReaderWithFailingFilter() testReplicationSourceWALReaderRecovered() testReplicationSourceWALReaderRecovered() testReplicationSourceWALReaderWrongPosition() testReplicationSourceWALReaderDisabled() testReadBeyondCommittedLength(),,org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueue(String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getQueue(String),org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId,98,3,32456,859,2,,"private PriorityBlockingQueue<Path> getQueue() {
+    return logQueue.getQueue(fakeWalGroupId);
+  }",False
+56,"appendEntries(WALProvider.Writer,int)",Method,,,"org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.Bytes+toBytes(String) java.lang.Integer+toString(int) java.lang.Integer+toString(int) org.apache.hadoop.hbase.KeyValue+KeyValue(byte[],byte[],byte[]) org.apache.hadoop.hbase.wal.WALEdit+WALEdit() org.apache.hadoop.hbase.wal.WALEdit+add(Cell) org.apache.hadoop.hbase.wal.WALEdit+add(Cell) org.apache.hadoop.hbase.wal.WALKeyImpl+WALKeyImpl(byte[],TableName,long,long,UUID) org.apache.hadoop.hbase.TableName+valueOf(byte[]) org.apache.hadoop.hbase.TableName+valueOf(byte[]) java.util.TreeMap+TreeMap(Comparator) java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.hadoop.hbase.wal.WALProvider.Writer+append(Entry) org.apache.hadoop.hbase.wal.WALProvider.Writer+append(Entry) org.apache.hadoop.hbase.wal.WAL.Entry+Entry(WALKeyImpl,WALEdit) org.apache.hadoop.hbase.wal.WALProvider.Writer+sync(boolean) org.apache.hadoop.hbase.wal.WALProvider.Writer+sync(boolean) java.io.Closeable+close() java.io.Closeable+close()",org.apache.hadoop.hbase.HConstants+DEFAULT_CLUSTER_ID org.apache.hadoop.hbase.util.Bytes+BYTES_COMPARATOR org.apache.hadoop.hbase.HConstants+REPLICATION_SCOPE_GLOBAL,652,15,32558,863,2,,"private void appendEntries(WALProvider.Writer writer, int numEntries) throws IOException {
+    for (int i = 0; i < numEntries; i++) {
+      byte[] b = Bytes.toBytes(Integer.toString(i));
+      KeyValue kv = new KeyValue(b,b,b);
+      WALEdit edit = new WALEdit();
+      edit.add(kv);
+      WALKeyImpl key = new WALKeyImpl(b, TableName.valueOf(b), 0, 0,
+        HConstants.DEFAULT_CLUSTER_ID);
+      NavigableMap<byte[], Integer> scopes = new TreeMap<byte[], Integer>(Bytes.BYTES_COMPARATOR);
+      scopes.put(b, HConstants.REPLICATION_SCOPE_GLOBAL);
+      writer.append(new WAL.Entry(key, edit));
+      writer.sync(false);
+    }
+    writer.close();
+  }",False
+57,testSizeOfLogQueue(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getSizeOfLogQueue() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getSizeOfLogQueue() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getSizeOfLogQueue() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getSizeOfLogQueue() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+WALEntryStream(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+hasNext() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getSizeOfLogQueue() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getSizeOfLogQueue()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue,910,24,33214,883,1,"/** 
+ * Tests size of log queue is incremented and decremented properly.
+ */
+","/**
+   * Tests size of log queue is incremented and decremented properly.
+   */
+  @Test
+  public void testSizeOfLogQueue() throws Exception {
+    // There should be always 1 log which is current wal.
+    assertEquals(1, logQueue.getMetrics().getSizeOfLogQueue());
+    appendToLogAndSync();
+
+    log.rollWriter();
+    // After rolling there will be 2 wals in the queue
+    assertEquals(2, logQueue.getMetrics().getSizeOfLogQueue());
+
+    try (WALEntryStream entryStream = new WALEntryStream(
+      logQueue, CONF, 0, log, null, logQueue.getMetrics(), fakeWalGroupId)) {
+      // There's one edit in the log, read it.
+      assertTrue(entryStream.hasNext());
+      WAL.Entry entry = entryStream.next();
+      assertNotNull(entry);
+      assertFalse(entryStream.hasNext());
+    }
+    // After removing one wal, size of log queue will be 1 again.
+    assertEquals(1, logQueue.getMetrics().getSizeOfLogQueue());
+  }",False
+58,testCleanClosedWALs(),Method,,,"org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream.WALEntryStreamWithRetries+WALEntryStreamWithRetries(ReplicationSourceLogQueue,Configuration,long,WALFileLengthProvider,ServerName,MetricsSource,String) org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getUncleanlyClosedWALs() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getUncleanlyClosedWALs() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.wal.WAL+rollWriter() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+appendToLogAndSync() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.WALEntryStream+next() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getUncleanlyClosedWALs() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceLogQueue+getMetrics() org.apache.hadoop.hbase.replication.regionserver.MetricsSource+getUncleanlyClosedWALs()",org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+CONF org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+fakeWalGroupId org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+log org.apache.hadoop.hbase.replication.regionserver.TestWALEntryStream+logQueue,642,17,34128,909,1,"/** 
+ * Tests that wals are closed cleanly and we read the trailer when we remove wal from WALEntryStream.
+ */
+","/**
+   * Tests that wals are closed cleanly and we read the trailer when we remove wal
+   * from WALEntryStream.
+   */
+  @Test
+  public void testCleanClosedWALs() throws Exception {
+    try (WALEntryStream entryStream = new WALEntryStreamWithRetries(
+      logQueue, CONF, 0, log, null, logQueue.getMetrics(), fakeWalGroupId)) {
+      assertEquals(0, logQueue.getMetrics().getUncleanlyClosedWALs());
+      appendToLogAndSync();
+      assertNotNull(entryStream.next());
+      log.rollWriter();
+      appendToLogAndSync();
+      assertNotNull(entryStream.next());
+      assertEquals(0, logQueue.getMetrics().getUncleanlyClosedWALs());
+    }
+  }",False

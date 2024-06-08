@@ -1,0 +1,470 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,WORKER_CAPACITY_BYTES,Field,,,,,55,1,1467,43,26,,private static final int WORKER_CAPACITY_BYTES = 20000;,False
+2,USER_QUOTA_UNIT_BYTES,Field,,,,,54,1,1525,44,26,,private static final int USER_QUOTA_UNIT_BYTES = 1000;,False
+3,SLEEP_MS,Field,,,,,94,1,1582,45,26,,private static final int SLEEP_MS = WorkerConf.get().TO_MASTER_HEARTBEAT_INTERVAL_MS * 2 + 10;,False
+4,mLocalTachyonCluster,Field,,,,,56,1,1679,46,2,,private LocalTachyonCluster mLocalTachyonCluster = null;,True
+5,mTfs,Field,,,,,30,1,1738,47,2,,private TachyonFS mTfs = null;,True
+6,after(),Method,,,tachyon.master.LocalTachyonCluster+stop() tachyon.master.LocalTachyonCluster+stop() java.lang.System+clearProperty(String) java.lang.System+clearProperty(String) java.lang.System+clearProperty(String) java.lang.System+clearProperty(String),tachyon.client.TachyonFSTest+mLocalTachyonCluster,198,6,1772,50,17,,"@After
+  public final void after() throws Exception {
+    mLocalTachyonCluster.stop();
+    System.clearProperty(""tachyon.user.quota.unit.bytes"");
+    System.clearProperty(""tachyon.max.columns"");
+  }",False
+7,before(),Method,,,"java.lang.System+setProperty(String,String) java.lang.System+setProperty(String,String) java.lang.System+setProperty(String,String) java.lang.System+setProperty(String,String) tachyon.master.LocalTachyonCluster+LocalTachyonCluster(long) tachyon.master.LocalTachyonCluster+start() tachyon.master.LocalTachyonCluster+start() tachyon.master.LocalTachyonCluster+getClient() tachyon.master.LocalTachyonCluster+getClient()",tachyon.client.TachyonFSTest+USER_QUOTA_UNIT_BYTES tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mLocalTachyonCluster,354,8,1974,57,17,,"@Before
+  public final void before() throws IOException {
+    System.setProperty(""tachyon.user.quota.unit.bytes"", USER_QUOTA_UNIT_BYTES + """");
+    System.setProperty(""tachyon.max.columns"", ""257"");
+    mLocalTachyonCluster = new LocalTachyonCluster(WORKER_CAPACITY_BYTES);
+    mLocalTachyonCluster.start();
+    mTfs = mLocalTachyonCluster.getClient();
+  }",False
+8,getRootTest(),Method,,,tachyon.client.TachyonFS+getFileId(TachyonURI) tachyon.client.TachyonFS+getFileId(TachyonURI) tachyon.TachyonURI+TachyonURI(String),tachyon.client.TachyonFSTest+mTfs tachyon.TachyonURI+SEPARATOR,140,4,2332,66,1,,"@Test
+  public void getRootTest() throws IOException {
+    Assert.assertEquals(1, mTfs.getFileId(new TachyonURI(TachyonURI.SEPARATOR)));
+  }",False
+9,createFileTest(),Method,,,tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String),tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,368,9,2476,71,1,,"@Test
+  public void createFileTest() throws IOException {
+    int fileId = mTfs.createFile(new TachyonURI(""/root/testFile1""));
+    Assert.assertEquals(3, fileId);
+    fileId = mTfs.createFile(new TachyonURI(""/root/testFile2""));
+    Assert.assertEquals(4, fileId);
+    fileId = mTfs.createFile(new TachyonURI(""/root/testFile3""));
+    Assert.assertEquals(5, fileId);
+  }",False
+10,createFileTest2(),Method,,,tachyon.TachyonURI+TachyonURI(String) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI),tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,262,8,2848,81,1,,"@Test
+  public void createFileTest2() throws IOException {
+    for (int k = 1; k < 4; k ++) {
+      TachyonURI uri = new TachyonURI(""/root/testFile"" + k);
+      Assert.assertEquals(k + 2, mTfs.createFile(uri));
+      Assert.assertTrue(mTfs.exist(uri));
+    }
+  }",False
+11,createFileWithUfsFileTest(),Method,,,"tachyon.master.LocalTachyonCluster+getTempFolderInUnderFs() tachyon.master.LocalTachyonCluster+getTempFolderInUnderFs() tachyon.UnderFileSystem+get(String) tachyon.UnderFileSystem+get(String) tachyon.UnderFileSystem+create(String,int) tachyon.UnderFileSystem+create(String,int) java.io.OutputStream+close() java.io.OutputStream+close() tachyon.TachyonURI+TachyonURI(String) tachyon.client.AbstractTachyonFS+createFile(TachyonURI,TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI,TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFile+getUfsPath() tachyon.client.TachyonFS+getFile(TachyonURI) tachyon.client.TachyonFS+getFile(TachyonURI) tachyon.client.TachyonFile+getUfsPath()",tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,515,11,3114,90,1,,"@Test
+  public void createFileWithUfsFileTest() throws IOException {
+    String tempFolder = mLocalTachyonCluster.getTempFolderInUnderFs();
+    UnderFileSystem underFs = UnderFileSystem.get(tempFolder);
+    OutputStream os = underFs.create(tempFolder + ""/temp"", 100);
+    os.close();
+    TachyonURI uri = new TachyonURI(""/abc"");
+    mTfs.createFile(uri, new TachyonURI(tempFolder + ""/temp""));
+    Assert.assertTrue(mTfs.exist(uri));
+    Assert.assertEquals(tempFolder + ""/temp"", mTfs.getFile(uri).getUfsPath());
+  }",True
+12,createFileWithFileAlreadyExistExceptionTest(),Method,,,tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String),tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,290,6,3633,102,1,,"@Test(expected = IOException.class)
+  public void createFileWithFileAlreadyExistExceptionTest() throws IOException {
+    int fileId = mTfs.createFile(new TachyonURI(""/root/testFile1""));
+    Assert.assertEquals(3, fileId);
+    fileId = mTfs.createFile(new TachyonURI(""/root/testFile1""));
+  }",False
+13,createFileWithInvalidPathExceptionTest(),Method,,,tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String),tachyon.client.TachyonFSTest+mTfs,170,4,3927,109,1,,"@Test(expected = IOException.class)
+  public void createFileWithInvalidPathExceptionTest() throws IOException {
+    mTfs.createFile(new TachyonURI(""root/testFile1""));
+  }",False
+14,createRawTableTestEmptyMetadata(),Method,,,"tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFS+getRawTable(int) tachyon.client.TachyonFS+getRawTable(int) tachyon.client.table.RawTable+getId() tachyon.client.table.RawTable+getId() tachyon.client.table.RawTable+getPath() tachyon.client.table.RawTable+getPath() tachyon.client.table.RawTable+getColumns() tachyon.client.table.RawTable+getColumns() java.nio.ByteBuffer+allocate(int) java.nio.ByteBuffer+allocate(int) tachyon.client.table.RawTable+getMetadata() tachyon.client.table.RawTable+getMetadata() tachyon.client.TachyonFS+getRawTable(TachyonURI) tachyon.client.TachyonFS+getRawTable(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.table.RawTable+getId() tachyon.client.table.RawTable+getId() tachyon.client.table.RawTable+getPath() tachyon.client.table.RawTable+getPath() tachyon.client.table.RawTable+getColumns() tachyon.client.table.RawTable+getColumns() java.nio.ByteBuffer+allocate(int) java.nio.ByteBuffer+allocate(int) tachyon.client.table.RawTable+getMetadata() tachyon.client.table.RawTable+getMetadata()",tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,720,15,4101,114,1,,"@Test
+  public void createRawTableTestEmptyMetadata() throws IOException {
+    int fileId = mTfs.createRawTable(new TachyonURI(""/tables/table1""), 20);
+    RawTable table = mTfs.getRawTable(fileId);
+    Assert.assertEquals(fileId, table.getId());
+    Assert.assertEquals(""/tables/table1"", table.getPath());
+    Assert.assertEquals(20, table.getColumns());
+    Assert.assertEquals(ByteBuffer.allocate(0), table.getMetadata());
+
+    table = mTfs.getRawTable(new TachyonURI(""/tables/table1""));
+    Assert.assertEquals(fileId, table.getId());
+    Assert.assertEquals(""/tables/table1"", table.getPath());
+    Assert.assertEquals(20, table.getColumns());
+    Assert.assertEquals(ByteBuffer.allocate(0), table.getMetadata());
+  }",False
+15,createRawTableTestWithMetadata(),Method,,,"tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFS+createRawTable(TachyonURI,int,ByteBuffer) tachyon.client.TachyonFS+createRawTable(TachyonURI,int,ByteBuffer) tachyon.TestUtils+getIncreasingByteBuffer(int) tachyon.TestUtils+getIncreasingByteBuffer(int) tachyon.client.TachyonFS+getRawTable(int) tachyon.client.TachyonFS+getRawTable(int) tachyon.client.table.RawTable+getId() tachyon.client.table.RawTable+getId() tachyon.client.table.RawTable+getPath() tachyon.client.table.RawTable+getPath() tachyon.client.table.RawTable+getColumns() tachyon.client.table.RawTable+getColumns() tachyon.TestUtils+getIncreasingByteBuffer(int) tachyon.TestUtils+getIncreasingByteBuffer(int) tachyon.client.table.RawTable+getMetadata() tachyon.client.table.RawTable+getMetadata() tachyon.client.TachyonFS+getRawTable(TachyonURI) tachyon.client.TachyonFS+getRawTable(TachyonURI) tachyon.client.table.RawTable+getId() tachyon.client.table.RawTable+getId() tachyon.client.table.RawTable+getPath() tachyon.client.table.RawTable+getPath() tachyon.client.table.RawTable+getColumns() tachyon.client.table.RawTable+getColumns() tachyon.TestUtils+getIncreasingByteBuffer(int) tachyon.TestUtils+getIncreasingByteBuffer(int) tachyon.client.table.RawTable+getMetadata() tachyon.client.table.RawTable+getMetadata()",tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,782,16,4825,130,1,,"@Test
+  public void createRawTableTestWithMetadata() throws IOException {
+    TachyonURI uri = new TachyonURI(""/tables/table1"");
+    int fileId = mTfs.createRawTable(uri, 20, TestUtils.getIncreasingByteBuffer(9));
+    RawTable table = mTfs.getRawTable(fileId);
+    Assert.assertEquals(fileId, table.getId());
+    Assert.assertEquals(""/tables/table1"", table.getPath());
+    Assert.assertEquals(20, table.getColumns());
+    Assert.assertEquals(TestUtils.getIncreasingByteBuffer(9), table.getMetadata());
+
+    table = mTfs.getRawTable(uri);
+    Assert.assertEquals(fileId, table.getId());
+    Assert.assertEquals(""/tables/table1"", table.getPath());
+    Assert.assertEquals(20, table.getColumns());
+    Assert.assertEquals(TestUtils.getIncreasingByteBuffer(9), table.getMetadata());
+  }",False
+16,createRawTableWithFileAlreadyExistExceptionTest(),Method,,,"tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.client.TachyonFS+createRawTable(TachyonURI,int)",tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,239,6,5611,147,1,,"@Test(expected = IOException.class)
+  public void createRawTableWithFileAlreadyExistExceptionTest() throws IOException {
+    TachyonURI uri = new TachyonURI(""/table"");
+    mTfs.createRawTable(uri, 20);
+    mTfs.createRawTable(uri, 20);
+  }",False
+17,createRawTableWithInvalidPathExceptionTest1(),Method,,,"tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.TachyonURI+TachyonURI(String)",tachyon.client.TachyonFSTest+mTfs,182,4,5854,154,1,,"@Test(expected = IOException.class)
+  public void createRawTableWithInvalidPathExceptionTest1() throws IOException {
+    mTfs.createRawTable(new TachyonURI(""tables/table1""), 20);
+  }",False
+18,createRawTableWithInvalidPathExceptionTest2(),Method,,,"tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.TachyonURI+TachyonURI(String)",tachyon.client.TachyonFSTest+mTfs,184,4,6040,159,1,,"@Test(expected = IOException.class)
+  public void createRawTableWithInvalidPathExceptionTest2() throws IOException {
+    mTfs.createRawTable(new TachyonURI(""/tab les/table1""), 20);
+  }",False
+19,createRawTableWithTableColumnExceptionTest1(),Method,,,"java.lang.System+getProperty(String) java.lang.System+getProperty(String) java.lang.Integer+parseInt(String) java.lang.Integer+parseInt(String) tachyon.conf.CommonConf+get() tachyon.conf.CommonConf+get() tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.TachyonURI+TachyonURI(String) tachyon.conf.CommonConf+get() tachyon.conf.CommonConf+get()",tachyon.conf.CommonConf+MAX_COLUMNS tachyon.conf.CommonConf+MAX_COLUMNS tachyon.client.TachyonFSTest+mTfs tachyon.conf.CommonConf+MAX_COLUMNS tachyon.conf.CommonConf+MAX_COLUMNS,362,7,6228,164,1,,"@Test(expected = IOException.class)
+  public void createRawTableWithTableColumnExceptionTest1() throws IOException {
+    String maxColumnsProp = System.getProperty(""tachyon.max.columns"");
+
+    Assert.assertEquals(Integer.parseInt(maxColumnsProp), CommonConf.get().MAX_COLUMNS);
+    mTfs.createRawTable(new TachyonURI(""/table""), CommonConf.get().MAX_COLUMNS);
+  }",False
+20,createRawTableWithTableColumnExceptionTest2(),Method,,,"tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.TachyonURI+TachyonURI(String)",tachyon.client.TachyonFSTest+mTfs,174,4,6594,172,1,,"@Test(expected = IOException.class)
+  public void createRawTableWithTableColumnExceptionTest2() throws IOException {
+    mTfs.createRawTable(new TachyonURI(""/table""), 0);
+  }",False
+21,createRawTableWithTableColumnExceptionTest3(),Method,,,"tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.client.TachyonFS+createRawTable(TachyonURI,int) tachyon.TachyonURI+TachyonURI(String)",tachyon.client.TachyonFSTest+mTfs,175,4,6772,177,1,,"@Test(expected = IOException.class)
+  public void createRawTableWithTableColumnExceptionTest3() throws IOException {
+    mTfs.createRawTable(new TachyonURI(""/table""), -1);
+  }",False
+22,deleteFileTest(),Method,,,"tachyon.client.TachyonFS+getWorkersInfo() tachyon.client.TachyonFS+getWorkersInfo() java.util.List+size() java.util.List+size() tachyon.thrift.ClientWorkerInfo+getCapacityBytes() java.util.List+get(int) java.util.List+get(int) tachyon.thrift.ClientWorkerInfo+getCapacityBytes() tachyon.thrift.ClientWorkerInfo+getUsedBytes() java.util.List+get(int) java.util.List+get(int) tachyon.thrift.ClientWorkerInfo+getUsedBytes() tachyon.client.AbstractTachyonFS+delete(int,boolean) tachyon.client.AbstractTachyonFS+delete(int,boolean) tachyon.client.AbstractTachyonFS+delete(int,boolean) tachyon.client.AbstractTachyonFS+delete(int,boolean) tachyon.client.AbstractTachyonFS+delete(TachyonURI,boolean) tachyon.client.AbstractTachyonFS+delete(TachyonURI,boolean) tachyon.TachyonURI+TachyonURI(String) tachyon.client.AbstractTachyonFS+delete(TachyonURI,boolean) tachyon.client.AbstractTachyonFS+delete(TachyonURI,boolean) tachyon.TachyonURI+TachyonURI(String) tachyon.TachyonURI+TachyonURI(String) tachyon.TestUtils+createByteFile(TachyonFS,TachyonURI,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,TachyonURI,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+getWorkersInfo() tachyon.client.TachyonFS+getWorkersInfo() java.util.List+size() java.util.List+size() tachyon.thrift.ClientWorkerInfo+getCapacityBytes() java.util.List+get(int) java.util.List+get(int) tachyon.thrift.ClientWorkerInfo+getCapacityBytes() tachyon.thrift.ClientWorkerInfo+getUsedBytes() java.util.List+get(int) java.util.List+get(int) tachyon.thrift.ClientWorkerInfo+getUsedBytes() tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFS+getFileId(TachyonURI) tachyon.client.TachyonFS+getFileId(TachyonURI) tachyon.client.AbstractTachyonFS+delete(int,boolean) tachyon.client.AbstractTachyonFS+delete(int,boolean) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.client.TachyonFS+getWorkersInfo() tachyon.client.TachyonFS+getWorkersInfo() java.util.List+size() java.util.List+size() tachyon.thrift.ClientWorkerInfo+getCapacityBytes() java.util.List+get(int) java.util.List+get(int) tachyon.thrift.ClientWorkerInfo+getCapacityBytes() tachyon.thrift.ClientWorkerInfo+getUsedBytes() java.util.List+get(int) java.util.List+get(int) tachyon.thrift.ClientWorkerInfo+getUsedBytes()",tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+USER_QUOTA_UNIT_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+SLEEP_MS tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES,1710,40,6951,182,1,,"@Test
+  public void deleteFileTest() throws IOException {
+    List<ClientWorkerInfo> workers = mTfs.getWorkersInfo();
+    Assert.assertEquals(1, workers.size());
+    Assert.assertEquals(WORKER_CAPACITY_BYTES, workers.get(0).getCapacityBytes());
+    Assert.assertEquals(0, workers.get(0).getUsedBytes());
+    int writeBytes = USER_QUOTA_UNIT_BYTES * 2;
+
+    // Delete non-existing files.
+    Assert.assertTrue(mTfs.delete(2, false));
+    Assert.assertTrue(mTfs.delete(2, true));
+    Assert.assertTrue(mTfs.delete(new TachyonURI(""/abc""), false));
+    Assert.assertTrue(mTfs.delete(new TachyonURI(""/abc""), true));
+
+    for (int k = 0; k < 5; k ++) {
+      TachyonURI fileURI = new TachyonURI(""/file"" + k);
+      int fileId = TestUtils.createByteFile(mTfs, fileURI, WriteType.MUST_CACHE, writeBytes);
+      TachyonFile file = mTfs.getFile(fileId);
+      Assert.assertTrue(file.isInMemory());
+      Assert.assertTrue(mTfs.exist(fileURI));
+
+      workers = mTfs.getWorkersInfo();
+      Assert.assertEquals(1, workers.size());
+      Assert.assertEquals(WORKER_CAPACITY_BYTES, workers.get(0).getCapacityBytes());
+      Assert.assertEquals(writeBytes * (k + 1), workers.get(0).getUsedBytes());
+    }
+
+    for (int k = 0; k < 5; k ++) {
+      TachyonURI fileURI = new TachyonURI(""/file"" + k);
+      int fileId = mTfs.getFileId(fileURI);
+      mTfs.delete(fileId, true);
+      Assert.assertFalse(mTfs.exist(fileURI));
+
+      CommonUtils.sleepMs(null, SLEEP_MS);
+      workers = mTfs.getWorkersInfo();
+      Assert.assertEquals(1, workers.size());
+      Assert.assertEquals(WORKER_CAPACITY_BYTES, workers.get(0).getCapacityBytes());
+      Assert.assertEquals(writeBytes * (4 - k), workers.get(0).getUsedBytes());
+    }
+  }",False
+23,getFileStatusTest(),Method,,,"tachyon.TachyonURI+TachyonURI(String) tachyon.TestUtils+createByteFile(TachyonFS,TachyonURI,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,TachyonURI,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+getFileStatus(int,boolean) tachyon.client.TachyonFS+getFileStatus(int,boolean) java.lang.String+equals(Object) tachyon.thrift.ClientFileInfo+getPath() tachyon.thrift.ClientFileInfo+getPath() java.lang.String+equals(Object)",tachyon.client.TachyonFSTest+USER_QUOTA_UNIT_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,497,11,8665,223,1,,"@Test
+  public void getFileStatusTest() throws IOException {
+    int writeBytes = USER_QUOTA_UNIT_BYTES * 2;
+    TachyonURI uri = new TachyonURI(""/file"");
+    int fileId = TestUtils.createByteFile(mTfs, uri, WriteType.MUST_CACHE, writeBytes);
+    TachyonFile file = mTfs.getFile(fileId);
+    Assert.assertTrue(file.isInMemory());
+    Assert.assertTrue(mTfs.exist(uri));
+    ClientFileInfo fileInfo = mTfs.getFileStatus(fileId, false);
+    Assert.assertTrue(fileInfo.getPath().equals(""/file""));
+  }",False
+24,getFileStatusCacheTest(),Method,,,"tachyon.TachyonURI+TachyonURI(String) tachyon.TestUtils+createByteFile(TachyonFS,TachyonURI,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,TachyonURI,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+getFileStatus(int,boolean) tachyon.client.TachyonFS+getFileStatus(int,boolean) java.lang.String+equals(Object) tachyon.thrift.ClientFileInfo+getPath() tachyon.thrift.ClientFileInfo+getPath() java.lang.String+equals(Object) tachyon.client.TachyonFS+getFileStatus(int,boolean) tachyon.client.TachyonFS+getFileStatus(int,boolean) tachyon.client.TachyonFS+getFileStatus(int,boolean) tachyon.client.TachyonFS+getFileStatus(int,boolean)",tachyon.client.TachyonFSTest+USER_QUOTA_UNIT_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,752,15,9166,235,1,,"@Test
+  public void getFileStatusCacheTest() throws IOException {
+    int writeBytes = USER_QUOTA_UNIT_BYTES * 2;
+    TachyonURI uri = new TachyonURI(""/file"");
+    int fileId = TestUtils.createByteFile(mTfs, uri, WriteType.MUST_CACHE, writeBytes);
+    TachyonFile file = mTfs.getFile(fileId);
+    Assert.assertTrue(file.isInMemory());
+    Assert.assertTrue(mTfs.exist(uri));
+    ClientFileInfo fileInfo = mTfs.getFileStatus(fileId, false);
+    Assert.assertTrue(fileInfo.getPath().equals(""/file""));
+    ClientFileInfo fileInfoCached = mTfs.getFileStatus(fileId, true);
+    ClientFileInfo fileInfoNotCached = mTfs.getFileStatus(fileId, false);
+    Assert.assertTrue(fileInfo == fileInfoCached);
+    Assert.assertFalse(fileInfo == fileInfoNotCached);
+  }",False
+25,getTestAbnormal1(),Method,,,tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.client.TachyonFS+get(TachyonURI) tachyon.client.TachyonFS+get(TachyonURI) tachyon.TachyonURI+TachyonURI(String),tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+mLocalTachyonCluster,266,6,9922,251,1,,"@Test(expected = IOException.class)
+  public void getTestAbnormal1() throws IOException {
+    String host = mLocalTachyonCluster.getMasterHostname();
+    int port = mLocalTachyonCluster.getMasterPort();
+    TachyonFS.get(new TachyonURI(""/"" + host + "":"" + port));
+  }",False
+26,getTestAbnormal2(),Method,,,tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.client.TachyonFS+get(TachyonURI) tachyon.client.TachyonFS+get(TachyonURI) tachyon.TachyonURI+TachyonURI(String),tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+mLocalTachyonCluster,260,6,10192,258,1,,"@Test(expected = IOException.class)
+  public void getTestAbnormal2() throws IOException {
+    String host = mLocalTachyonCluster.getMasterHostname();
+    int port = mLocalTachyonCluster.getMasterPort();
+    TachyonFS.get(new TachyonURI(""/"" + host + port));
+  }",False
+27,getTestAbnormal3(),Method,,,tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.client.TachyonFS+get(TachyonURI) tachyon.client.TachyonFS+get(TachyonURI) tachyon.TachyonURI+TachyonURI(String),tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+mLocalTachyonCluster,272,6,10456,265,1,,"@Test(expected = IOException.class)
+  public void getTestAbnormal3() throws IOException {
+    String host = mLocalTachyonCluster.getMasterHostname();
+    int port = mLocalTachyonCluster.getMasterPort();
+    TachyonFS.get(new TachyonURI(""/"" + host + "":"" + (port - 1)));
+  }",False
+28,getTestAbnormal4(),Method,,,tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.client.TachyonFS+get(TachyonURI) tachyon.client.TachyonFS+get(TachyonURI) tachyon.TachyonURI+TachyonURI(String),tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+mLocalTachyonCluster,280,6,10732,272,1,,"@Test(expected = IOException.class)
+  public void getTestAbnormal4() throws IOException {
+    String host = mLocalTachyonCluster.getMasterHostname();
+    int port = mLocalTachyonCluster.getMasterPort();
+    TachyonFS.get(new TachyonURI(""/"" + host + "":"" + port + ""/ab/c.txt""));
+  }",False
+29,getTestHelper(TachyonFS),Method,getTestNormal1() getTestNormal2() getTestNormal3(),,tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int),,217,5,11016,278,2,,"private void getTestHelper(TachyonFS tfs) throws IOException {
+    int fileId = tfs.createFile(new TachyonURI(""/root/testFile1""));
+    Assert.assertEquals(3, fileId);
+    Assert.assertNotNull(tfs.getFile(fileId));
+  }",False
+30,getTestNormal1(),Method,,,tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.client.TachyonFS+get(TachyonURI) tachyon.client.TachyonFS+get(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFSTest+getTestHelper(TachyonFS) tachyon.client.TachyonFSTest+getTestHelper(TachyonFS),tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+mLocalTachyonCluster,283,7,11237,285,1,,"@Test
+  public void getTestNormal1() throws IOException {
+    String host = mLocalTachyonCluster.getMasterHostname();
+    int port = mLocalTachyonCluster.getMasterPort();
+    TachyonFS tfs = TachyonFS.get(new TachyonURI(""tachyon://"" + host + "":"" + port));
+    getTestHelper(tfs);
+  }",False
+31,getTestNormal2(),Method,,,tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.client.TachyonFS+get(TachyonURI) tachyon.client.TachyonFS+get(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFSTest+getTestHelper(TachyonFS) tachyon.client.TachyonFSTest+getTestHelper(TachyonFS),tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+mLocalTachyonCluster,289,7,11524,293,1,,"@Test
+  public void getTestNormal2() throws IOException {
+    String host = mLocalTachyonCluster.getMasterHostname();
+    int port = mLocalTachyonCluster.getMasterPort();
+    TachyonFS tfs = TachyonFS.get(new TachyonURI(""tachyon://"" + host + "":"" + port + ""/""));
+    getTestHelper(tfs);
+  }",False
+32,getTestNormal3(),Method,,,tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterHostname() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.master.LocalTachyonCluster+getMasterPort() tachyon.client.TachyonFS+get(TachyonURI) tachyon.client.TachyonFS+get(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFSTest+getTestHelper(TachyonFS) tachyon.client.TachyonFSTest+getTestHelper(TachyonFS),tachyon.client.TachyonFSTest+mLocalTachyonCluster tachyon.client.TachyonFSTest+mLocalTachyonCluster,297,7,11817,301,1,,"@Test
+  public void getTestNormal3() throws IOException {
+    String host = mLocalTachyonCluster.getMasterHostname();
+    int port = mLocalTachyonCluster.getMasterPort();
+    TachyonFS tfs = TachyonFS.get(new TachyonURI(""tachyon://"" + host + "":"" + port + ""/ab/c.txt""));
+    getTestHelper(tfs);
+  }",False
+33,lockBlockTest1(),Method,,,"java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory()",tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+SLEEP_MS tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,896,24,12118,309,1,,"@Test
+  public void lockBlockTest1() throws IOException {
+    TachyonFile tFile = null;
+    int numOfFiles = 5;
+    int fileSize = WORKER_CAPACITY_BYTES / numOfFiles;
+    List<Integer> fileIds = new ArrayList<Integer>();
+    for (int k = 0; k < numOfFiles; k ++) {
+      fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + k, WriteType.CACHE_THROUGH, fileSize));
+    }
+    for (int k = 0; k < numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+    }
+    fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + numOfFiles, WriteType.CACHE_THROUGH,
+        fileSize));
+
+    CommonUtils.sleepMs(null, SLEEP_MS);
+    tFile = mTfs.getFile(fileIds.get(0));
+    Assert.assertFalse(tFile.isInMemory());
+    for (int k = 1; k <= numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+    }
+  }",True
+34,lockBlockTest2(),Method,,,"java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory()",tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+SLEEP_MS tachyon.client.TachyonFSTest+mTfs,957,25,13018,334,1,,"@Test
+  public void lockBlockTest2() throws IOException {
+    TachyonFile tFile = null;
+    int numOfFiles = 5;
+    int fileSize = WORKER_CAPACITY_BYTES / numOfFiles;
+    List<Integer> fileIds = new ArrayList<Integer>();
+    for (int k = 0; k < numOfFiles; k ++) {
+      fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + k, WriteType.CACHE_THROUGH, fileSize));
+    }
+    for (int k = 0; k < numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+      Assert.assertNotNull(tFile.readByteBuffer(0));
+    }
+    fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + numOfFiles, WriteType.CACHE_THROUGH,
+        fileSize));
+
+    for (int k = 0; k < numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+    }
+    CommonUtils.sleepMs(null, SLEEP_MS);
+    tFile = mTfs.getFile(fileIds.get(numOfFiles));
+    Assert.assertFalse(tFile.isInMemory());
+  }",True
+35,lockBlockTest3(),Method,,,"java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory()",tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+SLEEP_MS,1015,29,13979,360,1,,"@Test
+  public void lockBlockTest3() throws IOException {
+    TachyonFile tFile = null;
+    int numOfFiles = 5;
+    int fileSize = WORKER_CAPACITY_BYTES / numOfFiles;
+    List<Integer> fileIds = new ArrayList<Integer>();
+    for (int k = 0; k < numOfFiles; k ++) {
+      fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + k, WriteType.CACHE_THROUGH, fileSize));
+    }
+    for (int k = 0; k < numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+      if (k < numOfFiles - 1) {
+        Assert.assertNotNull(tFile.readByteBuffer(0));
+      }
+    }
+    fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + numOfFiles, WriteType.CACHE_THROUGH,
+        fileSize));
+
+    for (int k = 0; k <= numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      if (k != numOfFiles - 1) {
+        Assert.assertTrue(tFile.isInMemory());
+      } else {
+        CommonUtils.sleepMs(null, SLEEP_MS);
+        Assert.assertFalse(tFile.isInMemory());
+      }
+    }
+  }",True
+36,lockBlockTest4(),Method,,,"java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+recache() tachyon.client.TachyonFile+recache() tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+recache() tachyon.client.TachyonFile+recache() tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int)",tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+SLEEP_MS,910,24,14998,390,1,,"@Test
+  public void lockBlockTest4() throws IOException {
+    TachyonFile tFile = null;
+    int numOfFiles = 5;
+    int fileSize = WORKER_CAPACITY_BYTES / numOfFiles;
+    List<Integer> fileIds = new ArrayList<Integer>();
+    for (int k = 0; k <= numOfFiles; k ++) {
+      fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + k, WriteType.CACHE_THROUGH, fileSize));
+    }
+    for (int k = 0; k <= numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      CommonUtils.sleepMs(null, SLEEP_MS);
+      Assert.assertFalse(tFile.isInMemory());
+      if (k < numOfFiles) {
+        Assert.assertNull(tFile.readByteBuffer(0));
+        Assert.assertTrue(tFile.recache());
+        Assert.assertNotNull(tFile.readByteBuffer(0));
+      } else {
+        Assert.assertNull(tFile.readByteBuffer(0));
+        Assert.assertFalse(tFile.recache());
+        Assert.assertNull(tFile.readByteBuffer(0));
+      }
+    }
+  }",True
+37,mkdirTest(),Method,,,tachyon.client.AbstractTachyonFS+mkdir(TachyonURI) tachyon.client.AbstractTachyonFS+mkdir(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.AbstractTachyonFS+mkdir(TachyonURI) tachyon.client.AbstractTachyonFS+mkdir(TachyonURI) tachyon.TachyonURI+TachyonURI(String),tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,260,7,15912,415,1,,"@Test
+  public void mkdirTest() throws IOException {
+    for (int k = 0; k < 10; k ++) {
+      Assert.assertEquals(true, mTfs.mkdir(new TachyonURI(""/root/folder"" + k)));
+      Assert.assertEquals(true, mTfs.mkdir(new TachyonURI(""/root/folder"" + k)));
+    }
+  }",False
+38,renameFileTest1(),Method,,,"tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.TachyonURI+TachyonURI(String) tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.AbstractTachyonFS+rename(TachyonURI,TachyonURI) tachyon.client.AbstractTachyonFS+rename(TachyonURI,TachyonURI) tachyon.client.TachyonFS+getFileId(TachyonURI) tachyon.client.TachyonFS+getFileId(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI)",tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,504,12,16176,423,1,,"@Test
+  public void renameFileTest1() throws IOException {
+    int fileId = mTfs.createFile(new TachyonURI(""/root/testFile1""));
+    for (int k = 1; k < 10; k ++) {
+      TachyonURI fileA = new TachyonURI(""/root/testFile"" + k);
+      TachyonURI fileB = new TachyonURI(""/root/testFile"" + (k + 1));
+      Assert.assertTrue(mTfs.exist(fileA));
+      Assert.assertTrue(mTfs.rename(fileA, fileB));
+      Assert.assertEquals(fileId, mTfs.getFileId(fileB));
+      Assert.assertFalse(mTfs.exist(fileA));
+    }
+  }",False
+39,renameFileTest2(),Method,,,"tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.AbstractTachyonFS+rename(TachyonURI,TachyonURI) tachyon.client.AbstractTachyonFS+rename(TachyonURI,TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.TachyonURI+TachyonURI(String)",tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,233,6,16684,436,1,,"@Test
+  public void renameFileTest2() throws IOException {
+    mTfs.createFile(new TachyonURI(""/root/testFile1""));
+    Assert.assertTrue(mTfs.rename(new TachyonURI(""/root/testFile1""), new TachyonURI(
+        ""/root/testFile1"")));
+  }",False
+40,renameFileTest3(),Method,,,tachyon.TachyonURI+TachyonURI(String) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.AbstractTachyonFS+createFile(TachyonURI) tachyon.client.TachyonFS+getFile(TachyonURI) tachyon.client.TachyonFS+getFile(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFile+rename(TachyonURI) tachyon.client.TachyonFile+rename(TachyonURI) tachyon.client.TachyonFS+getFileId(TachyonURI) tachyon.client.TachyonFS+getFileId(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI) tachyon.client.TachyonFS+exist(TachyonURI),tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,571,14,16921,443,1,,"@Test
+  public void renameFileTest3() throws IOException {
+    TachyonURI file0 = new TachyonURI(""/root/testFile0"");
+    int fileId = mTfs.createFile(file0);
+    TachyonFile file = mTfs.getFile(file0);
+    for (int k = 1; k < 10; k ++) {
+      TachyonURI fileA = new TachyonURI(""/root/testFile"" + (k - 1));
+      TachyonURI fileB = new TachyonURI(""/root/testFile"" + k);
+      Assert.assertTrue(mTfs.exist(fileA));
+      Assert.assertTrue(file.rename(fileB));
+      Assert.assertEquals(fileId, mTfs.getFileId(fileB));
+      Assert.assertFalse(mTfs.exist(fileA));
+    }
+  }",False
+41,toStringTest(),Method,,,tachyon.client.TachyonFS+get(TachyonURI) tachyon.client.TachyonFS+get(TachyonURI) tachyon.TachyonURI+TachyonURI(String) tachyon.client.TachyonFS+toString() tachyon.client.TachyonFS+toString(),,210,5,17496,458,1,,"@Test
+  public void toStringTest() throws IOException {
+    TachyonFS tfs = TachyonFS.get(new TachyonURI(""tachyon://127.0.0.1:19998""));
+    Assert.assertEquals(tfs.toString(), ""tachyon:///127.0.0.1:19998"");
+  }",False
+42,unlockBlockTest1(),Method,,,"java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonByteBuffer+close() tachyon.client.TachyonByteBuffer+close() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory()",tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+SLEEP_MS tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,1008,27,17710,464,1,,"@Test
+  public void unlockBlockTest1() throws IOException {
+    TachyonFile tFile = null;
+    int numOfFiles = 5;
+    int fileSize = WORKER_CAPACITY_BYTES / numOfFiles;
+    List<Integer> fileIds = new ArrayList<Integer>();
+    for (int k = 0; k < numOfFiles; k ++) {
+      fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + k, WriteType.CACHE_THROUGH, fileSize));
+    }
+    for (int k = 0; k < numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+      TachyonByteBuffer tBuf = tFile.readByteBuffer(0);
+      Assert.assertNotNull(tBuf);
+      tBuf.close();
+    }
+    fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + numOfFiles, WriteType.CACHE_THROUGH,
+        fileSize));
+
+    CommonUtils.sleepMs(null, SLEEP_MS);
+    tFile = mTfs.getFile(fileIds.get(0));
+    Assert.assertFalse(tFile.isInMemory());
+    for (int k = 1; k <= numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+    }
+  }",True
+43,unlockBlockTest2(),Method,,,"java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonByteBuffer+close() tachyon.client.TachyonByteBuffer+close() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory()",tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+SLEEP_MS tachyon.client.TachyonFSTest+mTfs,1088,29,18722,492,1,,"@Test
+  public void unlockBlockTest2() throws IOException {
+    TachyonFile tFile = null;
+    int numOfFiles = 5;
+    int fileSize = WORKER_CAPACITY_BYTES / numOfFiles;
+    List<Integer> fileIds = new ArrayList<Integer>();
+    for (int k = 0; k < numOfFiles; k ++) {
+      fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + k, WriteType.CACHE_THROUGH, fileSize));
+    }
+    for (int k = 0; k < numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+      TachyonByteBuffer tBuf = tFile.readByteBuffer(0);
+      Assert.assertNotNull(tBuf);
+      tBuf = tFile.readByteBuffer(0);
+      Assert.assertNotNull(tBuf);
+      tBuf.close();
+    }
+    fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + numOfFiles, WriteType.CACHE_THROUGH,
+        fileSize));
+
+    for (int k = 0; k < numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+    }
+    CommonUtils.sleepMs(null, SLEEP_MS);
+    tFile = mTfs.getFile(fileIds.get(numOfFiles));
+    Assert.assertFalse(tFile.isInMemory());
+  }",True
+44,unlockBlockTest3(),Method,,,"java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonFile+readByteBuffer(int) tachyon.client.TachyonByteBuffer+close() tachyon.client.TachyonByteBuffer+close() tachyon.client.TachyonByteBuffer+close() tachyon.client.TachyonByteBuffer+close() java.util.List+add(E) java.util.List+add(E) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.TestUtils+createByteFile(TachyonFS,String,WriteType,int) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.util.CommonUtils+sleepMs(Logger,long) tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFS+getFile(int) tachyon.client.TachyonFS+getFile(int) java.util.List+get(int) java.util.List+get(int) tachyon.client.TachyonFile+isInMemory() tachyon.client.TachyonFile+isInMemory()",tachyon.client.TachyonFSTest+WORKER_CAPACITY_BYTES tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+SLEEP_MS tachyon.client.TachyonFSTest+mTfs tachyon.client.TachyonFSTest+mTfs,1124,30,19814,522,1,,"@Test
+  public void unlockBlockTest3() throws IOException {
+    TachyonFile tFile = null;
+    int numOfFiles = 5;
+    int fileSize = WORKER_CAPACITY_BYTES / numOfFiles;
+    List<Integer> fileIds = new ArrayList<Integer>();
+    for (int k = 0; k < numOfFiles; k ++) {
+      fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + k, WriteType.CACHE_THROUGH, fileSize));
+    }
+    for (int k = 0; k < numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+      TachyonByteBuffer tBuf1 = tFile.readByteBuffer(0);
+      Assert.assertNotNull(tBuf1);
+      TachyonByteBuffer tBuf2 = tFile.readByteBuffer(0);
+      Assert.assertNotNull(tBuf2);
+      tBuf1.close();
+      tBuf2.close();
+    }
+    fileIds.add(TestUtils.createByteFile(mTfs, ""/file_"" + numOfFiles, WriteType.CACHE_THROUGH,
+        fileSize));
+
+    CommonUtils.sleepMs(null, SLEEP_MS);
+    tFile = mTfs.getFile(fileIds.get(0));
+    Assert.assertFalse(tFile.isInMemory());
+    for (int k = 1; k <= numOfFiles; k ++) {
+      tFile = mTfs.getFile(fileIds.get(k));
+      Assert.assertTrue(tFile.isInMemory());
+    }
+  }",True

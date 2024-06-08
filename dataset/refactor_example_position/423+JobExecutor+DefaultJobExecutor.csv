@@ -1,0 +1,162 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,log,Field,,,,,74,1,1337,37,10,,private static Logger log = Logger.getLogger(JobExecutor.class.getName());,False
+2,commandExecutor,Field,setCommandExecutor(CommandExecutor),,,,42,1,1415,39,4,,protected CommandExecutor commandExecutor;,False
+3,isAutoActivate,Field,setAutoActivate(boolean),,,,41,1,1460,40,4,,protected boolean isAutoActivate = false;,False
+4,maxJobsPerAcquisition,Field,setMaxJobsPerAcquisition(int),,,,40,1,1505,42,4,,protected int maxJobsPerAcquisition = 3;,False
+5,waitTimeInMillis,Field,setWaitTimeInMillis(int),,,,42,1,1548,43,4,,protected int waitTimeInMillis = 5 * 1000;,False
+6,lockOwner,Field,setLockOwner(String),,,,58,1,1593,44,4,,protected String lockOwner = UUID.randomUUID().toString();,False
+7,lockTimeInMillis,Field,setLockTimeInMillis(int),,,,47,1,1654,45,4,,protected int lockTimeInMillis = 5 * 60 * 1000;,False
+8,queueSize,Field,setQueueSize(int),,,,28,1,1704,46,4,,protected int queueSize = 5;,True
+9,corePoolSize,Field,setCorePoolSize(int),,,,31,1,1735,47,4,,protected int corePoolSize = 3;,True
+10,maxPoolSize,Field,setMaxPoolSize(int),,,,29,1,1769,48,2,,private int maxPoolSize = 10;,True
+11,jobAcquisitionThread,Field,setJobAcquisitionThread(JobAcquisitionThread),,,,52,1,1802,50,4,,protected JobAcquisitionThread jobAcquisitionThread;,True
+12,threadPoolQueue,Field,setThreadPoolQueue(BlockingQueue<Runnable>),,,,50,1,1857,51,4,,protected BlockingQueue<Runnable> threadPoolQueue;,True
+13,threadPoolExecutor,Field,setThreadPoolExecutor(ThreadPoolExecutor),,,,48,1,1910,52,4,,protected ThreadPoolExecutor threadPoolExecutor;,True
+14,isActive,Field,,,,,35,1,1961,53,4,,protected boolean isActive = false;,False
+15,start(),Method,,"org.activiti.engine.impl.ProcessEngineImpl+ProcessEngineImpl(ProcessEngineConfigurationImpl) org.activiti.engine.impl.test.AbstractActivitiTestCase+waitForJobExecutorToProcessAllJobs(long,long) org.activiti.engine.impl.test.AbstractActivitiTestCase+waitForJobExecutorOnCondition(long,long,Callable<Boolean>) org.activiti.engine.impl.test.TestHelper+waitForJobExecutorToProcessAllJobs(ProcessEngineConfigurationImpl,long,long) org.activiti.engine.test.bpmn.event.timer.BoundaryTimerNonInterruptingEventTest+moveByHours(int)","java.util.logging.Logger+info(String) java.util.logging.Logger+info(String) org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+JobAcquisitionThread(JobExecutor) java.util.concurrent.ArrayBlockingQueue+ArrayBlockingQueue(int) java.util.concurrent.ThreadPoolExecutor+ThreadPoolExecutor(int,int,long,TimeUnit,BlockingQueue) java.util.concurrent.ThreadPoolExecutor+setRejectedExecutionHandler(RejectedExecutionHandler) java.util.concurrent.ThreadPoolExecutor+setRejectedExecutionHandler(RejectedExecutionHandler) java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy+CallerRunsPolicy() java.util.logging.Logger+fine(String) java.util.logging.Logger+fine(String) java.lang.Thread+start() java.lang.Thread+start()",org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+log org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue org.activiti.engine.impl.jobexecutor.JobExecutor+queueSize org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+corePoolSize org.activiti.engine.impl.jobexecutor.JobExecutor+maxPoolSize java.util.concurrent.TimeUnit+MILLISECONDS org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+log org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,873,24,2000,55,33,,"public synchronized void start() {
+    if(isActive) {
+      // Already started, nothing to do
+      log.info(""Ignoring duplicate JobExecutor start invocation"");
+      return;
+    } else {
+      isActive = true;
+      
+      if (jobAcquisitionThread==null) {
+        jobAcquisitionThread = new JobAcquisitionThread(this);
+      }
+      if (threadPoolQueue==null) {
+        threadPoolQueue = new ArrayBlockingQueue<Runnable>(queueSize);
+      }
+      if (threadPoolExecutor==null) {
+        threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, 0L, TimeUnit.MILLISECONDS, threadPoolQueue);
+        threadPoolExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+      }
+      
+      // Create our pending jobs fetcher
+      log.fine(""JobExecutor is starting the JobAcquisitionThread"");
+      jobAcquisitionThread.start();
+    }
+  }",False
+16,shutdown(),Method,,"org.activiti.engine.impl.ProcessEngineImpl+close() org.activiti.engine.impl.test.AbstractActivitiTestCase+waitForJobExecutorToProcessAllJobs(long,long) org.activiti.engine.impl.test.AbstractActivitiTestCase+waitForJobExecutorOnCondition(long,long,Callable<Boolean>) org.activiti.engine.impl.test.TestHelper+waitForJobExecutorToProcessAllJobs(ProcessEngineConfigurationImpl,long,long) org.activiti.engine.test.bpmn.event.timer.BoundaryTimerNonInterruptingEventTest+moveByHours(int)","java.util.logging.Logger+info(String) java.util.logging.Logger+info(String) java.util.logging.Logger+info(String) java.util.logging.Logger+info(String) java.util.concurrent.ThreadPoolExecutor+shutdown() java.util.concurrent.ThreadPoolExecutor+shutdown() java.util.concurrent.ThreadPoolExecutor+awaitTermination(long,TimeUnit) java.util.concurrent.ThreadPoolExecutor+awaitTermination(long,TimeUnit) org.activiti.engine.ActivitiException+ActivitiException(String,Throwable) org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+shutdown() org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+shutdown()",org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+log org.activiti.engine.impl.jobexecutor.JobExecutor+log org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor java.util.concurrent.TimeUnit+SECONDS org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,829,28,2879,80,1,,"public void shutdown() {
+    if(!isActive) {
+      log.info(""Ignoring request to shut down non-active JobExecutor"");
+      return;
+    }
+    
+    log.info(""Shutting down the JobExecutor"");
+    
+    // Ask the thread pool to finish and exit
+    threadPoolExecutor.shutdown();
+    
+    // Waits for 1 minute to finish all currently executing jobs
+    try {
+	  threadPoolExecutor.awaitTermination(60L, TimeUnit.SECONDS);
+	} catch (InterruptedException e) {
+      throw new ActivitiException(""Timeout during shutdown of job executor. "" +
+	    ""The current running jobs could not end withing 60 seconds after shutdown operation."", e);
+	}
+    
+    // Close the pending jobs task
+    jobAcquisitionThread.shutdown();
+    
+    isActive = false;
+
+    // Clear references
+    threadPoolExecutor = null;
+    jobAcquisitionThread = null;
+  }",False
+17,jobWasAdded(),Method,,org.activiti.engine.impl.jobexecutor.MessageAddedNotification+execute(CommandContext),org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+isActive() org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+isActive() org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+jobWasAdded() org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+jobWasAdded(),org.activiti.engine.impl.jobexecutor.JobExecutor+isActive org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,349,13,3717,115,1,"/** 
+ * Used to hint that new work exists on the queue, and that the  {@link JobAcquisitionThread}should probably re-check for jobs.
+ */
+","/**
+   * Used to hint that new work exists on the
+   *  queue, and that the {@link JobAcquisitionThread}
+   *  should probably re-check for jobs.
+   */
+  public void jobWasAdded() {
+    if ( isActive 
+         && jobAcquisitionThread != null 
+         && jobAcquisitionThread.isActive()
+       ) {
+      jobAcquisitionThread.jobWasAdded();
+    }
+  }",False
+18,executeJobs(List<String>),Method,,org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+run(),"java.util.concurrent.ThreadPoolExecutor+execute(Runnable) java.util.concurrent.ThreadPoolExecutor+execute(Runnable) org.activiti.engine.impl.jobexecutor.ExecuteJobsRunnable+ExecuteJobsRunnable(CommandExecutor,List<String>)",org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+commandExecutor,182,4,4072,124,1,,"public void executeJobs(List<String> jobIds) {
+    // TODO: RejectedExecutionException handling!
+    threadPoolExecutor.execute(new ExecuteJobsRunnable(commandExecutor, jobIds));
+  }",True
+19,getCommandExecutor(),Method,,org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+run(),,org.activiti.engine.impl.jobexecutor.JobExecutor+commandExecutor,77,3,4340,131,1,,"public CommandExecutor getCommandExecutor() {
+    return commandExecutor;
+  }",False
+20,getWaitTimeInMillis(),Method,,org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+run() org.activiti.engine.impl.persistence.entity.JobManager+schedule(TimerEntity),,org.activiti.engine.impl.jobexecutor.JobExecutor+waitTimeInMillis,67,3,4423,135,1,,"public int getWaitTimeInMillis() {
+    return waitTimeInMillis;
+  }",False
+21,setWaitTimeInMillis(int),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+waitTimeInMillis org.activiti.engine.impl.jobexecutor.JobExecutor+waitTimeInMillis,105,3,4496,139,1,,"public void setWaitTimeInMillis(int waitTimeInMillis) {
+    this.waitTimeInMillis = waitTimeInMillis;
+  }",False
+22,getLockTimeInMillis(),Method,,org.activiti.engine.impl.cmd.AcquireJobsCmd+execute(CommandContext),,org.activiti.engine.impl.jobexecutor.JobExecutor+lockTimeInMillis,67,3,4607,143,1,,"public int getLockTimeInMillis() {
+    return lockTimeInMillis;
+  }",False
+23,setLockTimeInMillis(int),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+lockTimeInMillis org.activiti.engine.impl.jobexecutor.JobExecutor+lockTimeInMillis,105,3,4680,147,1,,"public void setLockTimeInMillis(int lockTimeInMillis) {
+    this.lockTimeInMillis = lockTimeInMillis;
+  }",False
+24,getQueueSize(),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+queueSize,53,3,4791,151,1,,"public int getQueueSize() {
+    return queueSize;
+  }",True
+25,setQueueSize(int),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+queueSize org.activiti.engine.impl.jobexecutor.JobExecutor+queueSize,77,3,4850,155,1,,"public void setQueueSize(int queueSize) {
+    this.queueSize = queueSize;
+  }",True
+26,getCorePoolSize(),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+corePoolSize,59,3,4933,159,1,,"public int getCorePoolSize() {
+    return corePoolSize;
+  }",True
+27,setCorePoolSize(int),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+corePoolSize org.activiti.engine.impl.jobexecutor.JobExecutor+corePoolSize,89,3,4998,163,1,,"public void setCorePoolSize(int corePoolSize) {
+    this.corePoolSize = corePoolSize;
+  }",True
+28,getMaxPoolSize(),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+maxPoolSize,57,3,5091,167,1,,"public int getMaxPoolSize() {
+    return maxPoolSize;
+  }",True
+29,setMaxPoolSize(int),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+maxPoolSize org.activiti.engine.impl.jobexecutor.JobExecutor+maxPoolSize,85,3,5152,171,1,,"public void setMaxPoolSize(int maxPoolSize) {
+    this.maxPoolSize = maxPoolSize;
+  }",True
+30,getJobAcquisitionThread(),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,92,3,5243,175,1,,"public JobAcquisitionThread getJobAcquisitionThread() {
+    return jobAcquisitionThread;
+  }",False
+31,setJobAcquisitionThread(JobAcquisitionThread),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread org.activiti.engine.impl.jobexecutor.JobExecutor+jobAcquisitionThread,138,3,5341,179,1,,"public void setJobAcquisitionThread(JobAcquisitionThread jobAcquisitionThread) {
+    this.jobAcquisitionThread = jobAcquisitionThread;
+  }",False
+32,getThreadPoolQueue(),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue,85,3,5485,183,1,,"public BlockingQueue<Runnable> getThreadPoolQueue() {
+    return threadPoolQueue;
+  }",True
+33,setThreadPoolQueue(BlockingQueue<Runnable>),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolQueue,121,3,5574,187,1,,"public void setThreadPoolQueue(BlockingQueue<Runnable> threadPoolQueue) {
+    this.threadPoolQueue = threadPoolQueue;
+  }",True
+34,getThreadPoolExecutor(),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor,86,3,5699,191,1,,"public ThreadPoolExecutor getThreadPoolExecutor() {
+    return threadPoolExecutor;
+  }",True
+35,setThreadPoolExecutor(ThreadPoolExecutor),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+threadPoolExecutor,128,3,5791,195,1,,"public void setThreadPoolExecutor(ThreadPoolExecutor threadPoolExecutor) {
+    this.threadPoolExecutor = threadPoolExecutor;
+  }",True
+36,isActive(),Method,,org.activiti.engine.impl.ProcessEngineImpl+close(),,org.activiti.engine.impl.jobexecutor.JobExecutor+isActive,52,3,5925,199,1,,"public boolean isActive() {
+    return isActive;
+  }",False
+37,getMaxJobsPerAcquisition(),Method,,org.activiti.engine.impl.cmd.AcquireJobsCmd+execute(CommandContext) org.activiti.engine.impl.jobexecutor.JobAcquisitionThread+run(),,org.activiti.engine.impl.jobexecutor.JobExecutor+maxJobsPerAcquisition,77,3,5983,203,1,,"public int getMaxJobsPerAcquisition() {
+    return maxJobsPerAcquisition;
+  }",False
+38,setMaxJobsPerAcquisition(int),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+maxJobsPerAcquisition org.activiti.engine.impl.jobexecutor.JobExecutor+maxJobsPerAcquisition,125,3,6066,207,1,,"public void setMaxJobsPerAcquisition(int maxJobsPerAcquisition) {
+    this.maxJobsPerAcquisition = maxJobsPerAcquisition;
+  }",False
+39,getLockOwner(),Method,,org.activiti.engine.impl.cmd.AcquireJobsCmd+execute(CommandContext),,org.activiti.engine.impl.jobexecutor.JobExecutor+lockOwner,56,3,6197,211,1,,"public String getLockOwner() {
+    return lockOwner;
+  }",False
+40,setLockOwner(String),Method,,,,org.activiti.engine.impl.jobexecutor.JobExecutor+lockOwner org.activiti.engine.impl.jobexecutor.JobExecutor+lockOwner,80,3,6257,215,1,,"public void setLockOwner(String lockOwner) {
+    this.lockOwner = lockOwner;
+  }",False
+41,isAutoActivate(),Method,,org.activiti.engine.impl.ProcessEngineImpl+ProcessEngineImpl(ProcessEngineConfigurationImpl),,org.activiti.engine.impl.jobexecutor.JobExecutor+isAutoActivate,64,3,6341,219,1,,"public boolean isAutoActivate() {
+    return isAutoActivate;
+  }",False
+42,setCommandExecutor(CommandExecutor),Method,,org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl+initJobExecutor(),,org.activiti.engine.impl.jobexecutor.JobExecutor+commandExecutor org.activiti.engine.impl.jobexecutor.JobExecutor+commandExecutor,113,3,6411,223,1,,"public void setCommandExecutor(CommandExecutor commandExecutor) {
+    this.commandExecutor = commandExecutor;
+  }",False
+43,setAutoActivate(boolean),Method,,org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl+initJobExecutor(),,org.activiti.engine.impl.jobexecutor.JobExecutor+isAutoActivate org.activiti.engine.impl.jobexecutor.JobExecutor+isAutoActivate,99,3,6530,227,1,,"public void setAutoActivate(boolean isAutoActivate) {
+    this.isAutoActivate = isAutoActivate;
+  }",False

@@ -1,0 +1,655 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,LOGGER,Field,,,,,87,1,3863,86,26,,private static final Logger LOGGER = LoggerFactory.getLogger(CdcMySqlSourceTest.class);,True
+2,MODELS_SCHEMA,Field,,,,,60,1,3954,88,26,,"private static final String MODELS_SCHEMA = ""models_schema"";",True
+3,MODELS_STREAM_NAME,Field,,,,,58,1,4017,89,26,,"private static final String MODELS_STREAM_NAME = ""models"";",True
+4,STREAM_NAMES,Field,,,,,91,2,4078,90,26,,"private static final Set<String> STREAM_NAMES = Sets
+      .newHashSet(MODELS_STREAM_NAME);",True
+5,COL_ID,Field,,,,,42,1,4172,92,26,,"private static final String COL_ID = ""id"";",True
+6,COL_MAKE_ID,Field,,,,,52,1,4217,93,26,,"private static final String COL_MAKE_ID = ""make_id"";",True
+7,COL_MODEL,Field,,,,,48,1,4272,94,26,,"private static final String COL_MODEL = ""model"";",True
+8,DB_NAME,Field,,,,,52,1,4323,95,26,,private static final String DB_NAME = MODELS_SCHEMA;,True
+9,CATALOG,Field,,,,,527,9,4379,97,26,,"private static final AirbyteCatalog CATALOG = new AirbyteCatalog().withStreams(List.of(
+      CatalogHelpers.createAirbyteStream(
+          MODELS_STREAM_NAME,
+          MODELS_SCHEMA,
+          Field.of(COL_ID, JsonSchemaPrimitive.NUMBER),
+          Field.of(COL_MAKE_ID, JsonSchemaPrimitive.NUMBER),
+          Field.of(COL_MODEL, JsonSchemaPrimitive.STRING))
+          .withSupportedSyncModes(Lists.newArrayList(SyncMode.FULL_REFRESH, SyncMode.INCREMENTAL))
+          .withSourceDefinedPrimaryKey(List.of(List.of(COL_ID)))));",True
+10,CONFIGURED_CATALOG,Field,,,,,125,2,4909,106,26,,"private static final ConfiguredAirbyteCatalog CONFIGURED_CATALOG = CatalogHelpers
+      .toDefaultConfiguredCatalog(CATALOG);",True
+11,MODEL_RECORDS,Field,,,,,592,7,5178,114,26,,"private static final List<JsonNode> MODEL_RECORDS = ImmutableList.of(
+      Jsons.jsonNode(ImmutableMap.of(COL_ID, 11, COL_MAKE_ID, 1, COL_MODEL, ""Fiesta"")),
+      Jsons.jsonNode(ImmutableMap.of(COL_ID, 12, COL_MAKE_ID, 1, COL_MODEL, ""Focus"")),
+      Jsons.jsonNode(ImmutableMap.of(COL_ID, 13, COL_MAKE_ID, 1, COL_MODEL, ""Ranger"")),
+      Jsons.jsonNode(ImmutableMap.of(COL_ID, 14, COL_MAKE_ID, 2, COL_MODEL, ""GLA"")),
+      Jsons.jsonNode(ImmutableMap.of(COL_ID, 15, COL_MAKE_ID, 2, COL_MODEL, ""A 220"")),
+      Jsons.jsonNode(ImmutableMap.of(COL_ID, 16, COL_MAKE_ID, 2, COL_MODEL, ""E 350"")));",True
+12,container,Field,,,,,36,1,5774,122,2,,private MySQLContainer<?> container;,False
+13,database,Field,,,,,26,1,5813,123,2,,private Database database;,False
+14,source,Field,,,,,27,1,5842,124,2,,private MySqlSource source;,False
+15,config,Field,,,,,24,1,5872,125,2,,private JsonNode config;,False
+16,setup(),Method,,,io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+init() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+init() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+revokeAllPermissions() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+revokeAllPermissions() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+grantCorrectPermissions() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+grantCorrectPermissions() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+createAndPopulateTables() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+createAndPopulateTables(),,141,7,5900,128,1,,"@BeforeEach
+  public void setup() {
+    init();
+    revokeAllPermissions();
+    grantCorrectPermissions();
+    createAndPopulateTables();
+  }",False
+17,init(),Method,setup(),,"io.airbyte.integrations.source.mysql.MySqlSource+MySqlSource() io.airbyte.db.Databases+createDatabase(String,String,String,String,SQLDialect) io.airbyte.db.Databases+createDatabase(String,String,String,String,SQLDialect) java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+database io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+DB_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container,736,22,6045,135,2,,"private void init() {
+    container = new MySQLContainer<>(""mysql:8.0"");
+    container.start();
+    source = new MySqlSource();
+    database = Databases.createDatabase(
+        ""root"",
+        ""test"",
+        String.format(""jdbc:mysql://%s:%s"",
+            container.getHost(),
+            container.getFirstMappedPort()),
+        DRIVER_CLASS,
+        SQLDialect.MYSQL);
+
+    config = Jsons.jsonNode(ImmutableMap.builder()
+        .put(""host"", container.getHost())
+        .put(""port"", container.getFirstMappedPort())
+        .put(""database"", CdcMySqlSourceTest.DB_NAME)
+        .put(""username"", container.getUsername())
+        .put(""password"", container.getPassword())
+        .put(""replication_method"", ""CDC"")
+        .build());
+  }",False
+18,revokeAllPermissions(),Method,setup(),,io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String),io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container,140,3,6785,158,2,,"private void revokeAllPermissions() {
+    executeQuery(""REVOKE ALL PRIVILEGES, GRANT OPTION FROM "" + container.getUsername() + ""@'%';"");
+  }",False
+19,grantCorrectPermissions(),Method,setup(),,io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String),io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container,209,5,6929,162,2,,"private void grantCorrectPermissions() {
+    executeQuery(
+        ""GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO ""
+            + container.getUsername() + ""@'%';"");
+  }",False
+20,executeQuery(String),Method,"revokeAllPermissions() grantCorrectPermissions() createAndPopulateActualTable() createAndPopulateActualTable() createAndPopulateRandomTable() createAndPopulateRandomTable() writeRecords(JsonNode,String,String,String,String,String) setupForComparisonBetweenFullRefreshAndCDCSnapshot(ImmutableList<JsonNode>) setupForComparisonBetweenFullRefreshAndCDCSnapshot(ImmutableList<JsonNode>) setupForComparisonBetweenFullRefreshAndCDCSnapshot(ImmutableList<JsonNode>) setupForComparisonBetweenFullRefreshAndCDCSnapshot(ImmutableList<JsonNode>) testDelete() testUpdate() testCdcAndFullRefreshInSameSync() testNoData() testDiscover()",,io.airbyte.db.Database+query(ContextQueryFunction<T>) io.airbyte.db.Database+query(ContextQueryFunction<T>) java.lang.RuntimeException+RuntimeException(Throwable),io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+database,204,9,7142,168,2,,"private void executeQuery(String query) {
+    try {
+      database.query(
+          ctx -> ctx
+              .execute(query));
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }",True
+21,createAndPopulateTables(),Method,setup(),,io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+createAndPopulateActualTable() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+createAndPopulateActualTable() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+createAndPopulateRandomTable() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+createAndPopulateRandomTable(),,116,4,7350,178,2,,"private void createAndPopulateTables() {
+    createAndPopulateActualTable();
+    createAndPopulateRandomTable();
+  }",True
+22,createAndPopulateActualTable(),Method,createAndPopulateTables(),,"io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[]) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeModelRecord(JsonNode) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeModelRecord(JsonNode)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODEL_RECORDS,410,9,7470,183,2,,"private void createAndPopulateActualTable() {
+    executeQuery(""CREATE DATABASE "" + MODELS_SCHEMA + "";"");
+    executeQuery(String
+        .format(""CREATE TABLE %s.%s(%s INTEGER, %s INTEGER, %s VARCHAR(200), PRIMARY KEY (%s));"",
+            MODELS_SCHEMA, MODELS_STREAM_NAME, COL_ID, COL_MAKE_ID, COL_MODEL, COL_ID));
+    for (JsonNode recordJson : MODEL_RECORDS) {
+      writeModelRecord(recordJson);
+    }
+  }",True
+23,createAndPopulateRandomTable(),Method,createAndPopulateTables(),,"io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[]) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeRecords(JsonNode,String,String,String,String,String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeRecords(JsonNode,String,String,String,String,String)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL,1974,38,7884,197,2,"/** 
+ * This database and table is not part of Airbyte sync. It is being created just to make sure the databases not being synced by Airbyte are not causing issues with our debezium logic
+ */
+","/**
+   * This database and table is not part of Airbyte sync. It is being created just to make sure the
+   * databases not being synced by Airbyte are not causing issues with our debezium logic
+   */
+  private void createAndPopulateRandomTable() {
+    executeQuery(""CREATE DATABASE "" + MODELS_SCHEMA + ""_random"" + "";"");
+    executeQuery(String
+        .format(""CREATE TABLE %s.%s(%s INTEGER, %s INTEGER, %s VARCHAR(200), PRIMARY KEY (%s));"",
+            MODELS_SCHEMA + ""_random"", MODELS_STREAM_NAME + ""_random"", COL_ID + ""_random"",
+            COL_MAKE_ID + ""_random"",
+            COL_MODEL + ""_random"", COL_ID + ""_random""));
+    final List<JsonNode> MODEL_RECORDS_RANDOM = ImmutableList.of(
+        Jsons
+            .jsonNode(ImmutableMap
+                .of(COL_ID + ""_random"", 11000, COL_MAKE_ID + ""_random"", 1, COL_MODEL + ""_random"",
+                    ""Fiesta-random"")),
+        Jsons.jsonNode(ImmutableMap
+            .of(COL_ID + ""_random"", 12000, COL_MAKE_ID + ""_random"", 1, COL_MODEL + ""_random"",
+                ""Focus-random"")),
+        Jsons
+            .jsonNode(ImmutableMap
+                .of(COL_ID + ""_random"", 13000, COL_MAKE_ID + ""_random"", 1, COL_MODEL + ""_random"",
+                    ""Ranger-random"")),
+        Jsons.jsonNode(ImmutableMap
+            .of(COL_ID + ""_random"", 14000, COL_MAKE_ID + ""_random"", 2, COL_MODEL + ""_random"",
+                ""GLA-random"")),
+        Jsons.jsonNode(ImmutableMap
+            .of(COL_ID + ""_random"", 15000, COL_MAKE_ID + ""_random"", 2, COL_MODEL + ""_random"",
+                ""A 220-random"")),
+        Jsons
+            .jsonNode(ImmutableMap
+                .of(COL_ID + ""_random"", 16000, COL_MAKE_ID + ""_random"", 2, COL_MODEL + ""_random"",
+                    ""E 350-random"")));
+    for (JsonNode recordJson : MODEL_RECORDS_RANDOM) {
+      writeRecords(recordJson, MODELS_SCHEMA + ""_random"", MODELS_STREAM_NAME + ""_random"",
+          COL_ID + ""_random"", COL_MAKE_ID + ""_random"", COL_MODEL + ""_random"");
+    }
+  }",True
+24,writeModelRecord(JsonNode),Method,createAndPopulateActualTable() testRecordsProducedDuringAndAfterSync() testRecordsProducedDuringAndAfterSync() testCdcAndFullRefreshInSameSync(),,"io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeRecords(JsonNode,String,String,String,String,String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeRecords(JsonNode,String,String,String,String,String)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL,188,5,9862,232,2,,"private void writeModelRecord(JsonNode recordJson) {
+    writeRecords(recordJson, CdcMySqlSourceTest.MODELS_SCHEMA, MODELS_STREAM_NAME, COL_ID,
+        COL_MAKE_ID,
+        COL_MODEL);
+  }",True
+25,"writeRecords(JsonNode,String,String,String,String,String)",Method,createAndPopulateRandomTable() writeModelRecord(JsonNode) testCdcAndFullRefreshInSameSync(),,"io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[])",,588,13,10054,238,2,,"private void writeRecords(
+                            JsonNode recordJson,
+                            String dbName,
+                            String streamName,
+                            String idCol,
+                            String makeIdCol,
+                            String modelCol) {
+    executeQuery(
+        String.format(""INSERT INTO %s.%s (%s, %s, %s) VALUES (%s, %s, '%s');"", dbName, streamName,
+            idCol, makeIdCol, modelCol,
+            recordJson.get(idCol).asInt(), recordJson.get(makeIdCol).asInt(),
+            recordJson.get(modelCol).asText()));
+  }",True
+26,tearDown(),Method,,,io.airbyte.db.Database+close() io.airbyte.db.Database+close() java.lang.RuntimeException+RuntimeException(Throwable),io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+database io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+container,171,9,10646,253,1,,"@AfterEach
+  public void tearDown() {
+    try {
+      database.close();
+      container.close();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }",False
+27,fullRefreshAndCDCShouldReturnSameRecords(),Method,,,"io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+setupForComparisonBetweenFullRefreshAndCDCSnapshot(ImmutableList) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+setupForComparisonBetweenFullRefreshAndCDCSnapshot(ImmutableList) io.airbyte.integrations.source.mysql.MySqlSource+discover(JsonNode) io.airbyte.integrations.source.mysql.MySqlSource+discover(JsonNode) io.airbyte.protocol.models.CatalogHelpers+toDefaultConfiguredCatalog(AirbyteCatalog) io.airbyte.protocol.models.CatalogHelpers+toDefaultConfiguredCatalog(AirbyteCatalog) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) java.util.stream.Collectors+toSet() java.util.stream.Collectors+toSet() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) java.util.stream.Collectors+toSet() java.util.stream.Collectors+toSet()",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config,2909,58,10821,263,1,,"@Test
+  public void fullRefreshAndCDCShouldReturnSameRecords() throws Exception {
+    JsonNode record1 = Jsons.jsonNode(ImmutableMap.of(
+        ""id"", 1,
+        ""bool_col"", true,
+        ""tiny_int_one_col"", true));
+    ((ObjectNode) record1).put(""tiny_int_two_col"", (short) 80);
+    JsonNode record2 = Jsons.jsonNode(ImmutableMap.of(
+        ""id"", 2,
+        ""bool_col"", false,
+        ""tiny_int_one_col"", false));
+    ((ObjectNode) record2).put(""tiny_int_two_col"", (short) 90);
+    ImmutableList<JsonNode> records = ImmutableList.of(record1, record2);
+    Set<JsonNode> originalData = new HashSet<>(records);
+    setupForComparisonBetweenFullRefreshAndCDCSnapshot(records);
+
+    AirbyteCatalog discover = source.discover(config);
+    List<AirbyteStream> streams = discover.getStreams();
+
+    assertEquals(streams.size(), 1);
+    JsonNode jsonSchema = streams.get(0).getJsonSchema().get(""properties"");
+    assertEquals(jsonSchema.get(""id"").get(""type"").asText(), ""number"");
+    assertEquals(jsonSchema.get(""bool_col"").get(""type"").asText(), ""boolean"");
+    assertEquals(jsonSchema.get(""tiny_int_one_col"").get(""type"").asText(), ""boolean"");
+    assertEquals(jsonSchema.get(""tiny_int_two_col"").get(""type"").asText(), ""number"");
+
+    AirbyteCatalog catalog = new AirbyteCatalog().withStreams(streams);
+    final ConfiguredAirbyteCatalog configuredCatalog = CatalogHelpers
+        .toDefaultConfiguredCatalog(catalog);
+    configuredCatalog.getStreams().forEach(c -> c.setSyncMode(SyncMode.FULL_REFRESH));
+
+    Set<JsonNode> dataFromFullRefresh = extractRecordMessages(
+        AutoCloseableIterators.toListAndClose(source.read(config, configuredCatalog, null)))
+            .stream()
+            .map(AirbyteRecordMessage::getData).collect(Collectors.toSet());
+
+    configuredCatalog.getStreams().forEach(c -> c.setSyncMode(SyncMode.INCREMENTAL));
+    Set<JsonNode> dataFromDebeziumSnapshot = extractRecordMessages(
+        AutoCloseableIterators.toListAndClose(source.read(config, configuredCatalog, null)))
+            .stream()
+            .map(
+                airbyteRecordMessage -> {
+                  JsonNode data = airbyteRecordMessage.getData();
+                  removeCDCColumns((ObjectNode) data);
+                  /**
+                   * Debezium reads TINYINT (expect for TINYINT(1)) as IntNode while FullRefresh reads it as Short Ref
+                   * : {@link io.airbyte.db.jdbc.JdbcUtils#setJsonField(java.sql.ResultSet, int, ObjectNode)} -> case
+                   * TINYINT, SMALLINT -> o.put(columnName, r.getShort(i));
+                   */
+                  ((ObjectNode) data)
+                      .put(""tiny_int_two_col"", (short) data.get(""tiny_int_two_col"").asInt());
+                  return data;
+                })
+            .collect(Collectors.toSet());
+
+    assertEquals(dataFromFullRefresh, originalData);
+    assertEquals(dataFromFullRefresh, dataFromDebeziumSnapshot);
+  }",False
+28,setupForComparisonBetweenFullRefreshAndCDCSnapshot(ImmutableList<JsonNode>),Method,,,"io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[]) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[]) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[])",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config,1393,23,13734,321,2,,"private void setupForComparisonBetweenFullRefreshAndCDCSnapshot(
+                                                                  ImmutableList<JsonNode> data) {
+    executeQuery(""CREATE DATABASE "" + ""test_schema"" + "";"");
+    executeQuery(String.format(
+        ""CREATE TABLE %s.%s(%s INTEGER, %s Boolean, %s TINYINT(1), %s TINYINT(2), PRIMARY KEY (%s));"",
+        ""test_schema"", ""table_with_tiny_int"", ""id"", ""bool_col"", ""tiny_int_one_col"",
+        ""tiny_int_two_col"", ""id""));
+
+    executeQuery(String
+        .format(""INSERT INTO %s.%s (%s, %s, %s, %s) VALUES (%s, %s, %s, %s);"", ""test_schema"",
+            ""table_with_tiny_int"",
+            ""id"", ""bool_col"", ""tiny_int_one_col"", ""tiny_int_two_col"",
+            data.get(0).get(""id"").asInt(), data.get(0).get(""bool_col"").asBoolean(),
+            data.get(0).get(""tiny_int_one_col"").asBoolean() ? 99 : -99, data.get(0).get(""tiny_int_two_col"").asInt()));
+
+    executeQuery(String
+        .format(""INSERT INTO %s.%s (%s, %s, %s, %s) VALUES (%s, %s, %s, %s);"", ""test_schema"",
+            ""table_with_tiny_int"",
+            ""id"", ""bool_col"", ""tiny_int_one_col"", ""tiny_int_two_col"",
+            data.get(1).get(""id"").asInt(), data.get(1).get(""bool_col"").asBoolean(),
+            data.get(1).get(""tiny_int_one_col"").asBoolean() ? 99 : -99, data.get(1).get(""tiny_int_two_col"").asInt()));
+    ((ObjectNode) config).put(""database"", ""test_schema"");
+  }",False
+29,testExistingData(),Method,,,"io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.db.Databases+createJdbcDatabase(String,String,String,String) io.airbyte.db.Databases+createJdbcDatabase(String,String,String,String) java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) io.airbyte.integrations.source.mysql.TargetFilePosition+targetFilePosition(JdbcDatabase) io.airbyte.integrations.source.mysql.TargetFilePosition+targetFilePosition(JdbcDatabase) java.util.Optional+isPresent() java.util.Optional+isPresent() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODEL_RECORDS,1767,35,15131,347,0,,"@Test
+  @DisplayName(""On the first sync, produce returns records that exist in the database."")
+  void testExistingData() throws Exception {
+    final AutoCloseableIterator<AirbyteMessage> read = source
+        .read(config, CONFIGURED_CATALOG, null);
+    final List<AirbyteMessage> actualRecords = AutoCloseableIterators.toListAndClose(read);
+
+    final Set<AirbyteRecordMessage> recordMessages = extractRecordMessages(actualRecords);
+    final List<AirbyteStateMessage> stateMessages = extractStateMessages(actualRecords);
+
+    JdbcDatabase jdbcDatabase = Databases.createJdbcDatabase(
+        config.get(""username"").asText(),
+        config.get(""password"").asText(),
+        String.format(""jdbc:mysql://%s:%s"",
+            config.get(""host"").asText(),
+            config.get(""port"").asInt()),
+        DRIVER_CLASS);
+
+    Optional<TargetFilePosition> targetFilePosition = TargetFilePosition.targetFilePosition(jdbcDatabase);
+    assertTrue(targetFilePosition.isPresent());
+    /**
+     * Debezium sets the binlog file name and position values for all the records fetched during
+     * snapshot to the latest log position fetched via query SHOW MASTER STATUS Ref :
+     * {@linkplain io.debezium.connector.mysql.SnapshotReader#readBinlogPosition(int, io.debezium.connector.mysql.SourceInfo, io.debezium.jdbc.JdbcConnection, java.util.concurrent.atomic.AtomicReference)}
+     */
+    recordMessages.forEach(record -> {
+      assertEquals(record.getData().get(CDC_LOG_FILE).asText(),
+          targetFilePosition.get().fileName);
+      assertEquals(record.getData().get(CDC_LOG_POS).asInt(), targetFilePosition.get().position);
+    });
+
+    assertExpectedRecords(
+        new HashSet<>(MODEL_RECORDS), recordMessages);
+    assertExpectedStateMessages(stateMessages);
+  }",True
+30,testDelete(),Method,,,"io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[]) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID,1471,29,16902,383,0,,"@Test
+  @DisplayName(""When a record is deleted, produces a deletion record."")
+  void testDelete() throws Exception {
+    final AutoCloseableIterator<AirbyteMessage> read1 = source
+        .read(config, CONFIGURED_CATALOG, null);
+    final List<AirbyteMessage> actualRecords1 = AutoCloseableIterators.toListAndClose(read1);
+    final List<AirbyteStateMessage> stateMessages1 = extractStateMessages(actualRecords1);
+
+    assertExpectedStateMessages(stateMessages1);
+
+    executeQuery(String
+        .format(""DELETE FROM %s.%s WHERE %s = %s"", MODELS_SCHEMA, MODELS_STREAM_NAME, COL_ID,
+            11));
+
+    final JsonNode state = stateMessages1.get(0).getData();
+    final AutoCloseableIterator<AirbyteMessage> read2 = source
+        .read(config, CONFIGURED_CATALOG, state);
+    final List<AirbyteMessage> actualRecords2 = AutoCloseableIterators.toListAndClose(read2);
+    final List<AirbyteRecordMessage> recordMessages2 = new ArrayList<>(
+        extractRecordMessages(actualRecords2));
+    final List<AirbyteStateMessage> stateMessages2 = extractStateMessages(actualRecords2);
+
+    assertExpectedStateMessages(stateMessages2);
+    assertEquals(1, recordMessages2.size());
+    assertEquals(11, recordMessages2.get(0).getData().get(COL_ID).asInt());
+    assertNotNull(recordMessages2.get(0).getData().get(CDC_LOG_FILE));
+    assertNotNull(recordMessages2.get(0).getData().get(CDC_UPDATED_AT));
+    assertNotNull(recordMessages2.get(0).getData().get(CDC_DELETED_AT));
+  }",True
+31,testUpdate(),Method,,,"io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[]) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL,1644,31,18377,413,0,,"@Test
+  @DisplayName(""When a record is updated, produces an update record."")
+  void testUpdate() throws Exception {
+    final String updatedModel = ""Explorer"";
+    final AutoCloseableIterator<AirbyteMessage> read1 = source
+        .read(config, CONFIGURED_CATALOG, null);
+    final List<AirbyteMessage> actualRecords1 = AutoCloseableIterators.toListAndClose(read1);
+    final List<AirbyteStateMessage> stateMessages1 = extractStateMessages(actualRecords1);
+
+    assertExpectedStateMessages(stateMessages1);
+
+    executeQuery(String
+        .format(""UPDATE %s.%s SET %s = '%s' WHERE %s = %s"", MODELS_SCHEMA, MODELS_STREAM_NAME,
+            COL_MODEL, updatedModel, COL_ID, 11));
+
+    final JsonNode state = stateMessages1.get(0).getData();
+    final AutoCloseableIterator<AirbyteMessage> read2 = source
+        .read(config, CONFIGURED_CATALOG, state);
+    final List<AirbyteMessage> actualRecords2 = AutoCloseableIterators.toListAndClose(read2);
+    final List<AirbyteRecordMessage> recordMessages2 = new ArrayList<>(
+        extractRecordMessages(actualRecords2));
+    final List<AirbyteStateMessage> stateMessages2 = extractStateMessages(actualRecords2);
+
+    assertExpectedStateMessages(stateMessages2);
+    assertEquals(1, recordMessages2.size());
+    assertEquals(11, recordMessages2.get(0).getData().get(COL_ID).asInt());
+    assertEquals(updatedModel, recordMessages2.get(0).getData().get(COL_MODEL).asText());
+    assertNotNull(recordMessages2.get(0).getData().get(CDC_LOG_FILE));
+    assertNotNull(recordMessages2.get(0).getData().get(CDC_UPDATED_AT));
+    assertTrue(recordMessages2.get(0).getData().get(CDC_DELETED_AT).isNull());
+  }",True
+32,testRecordsProducedDuringAndAfterSync(),Method,,,"io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeModelRecord(JsonNode) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeModelRecord(JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeModelRecord(JsonNode) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeModelRecord(JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+removeDuplicates(Set<AirbyteRecordMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+removeDuplicates(Set<AirbyteRecordMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+removeDuplicates(Set<AirbyteRecordMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+removeDuplicates(Set<AirbyteRecordMessage>)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODEL_RECORDS io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODEL_RECORDS,3205,66,20025,446,0,,"@SuppressWarnings({""BusyWait"", ""CodeBlock2Expr""})
+  @Test
+  @DisplayName(""Verify that when data is inserted into the database while a sync is happening and after the first sync, it all gets replicated."")
+  void testRecordsProducedDuringAndAfterSync() throws Exception {
+
+    final int recordsToCreate = 20;
+    final int[] recordsCreated = {0};
+    // first batch of records. 20 created here and 6 created in setup method.
+    while (recordsCreated[0] < recordsToCreate) {
+      final JsonNode record =
+          Jsons.jsonNode(ImmutableMap
+              .of(COL_ID, 100 + recordsCreated[0], COL_MAKE_ID, 1, COL_MODEL,
+                  ""F-"" + recordsCreated[0]));
+      writeModelRecord(record);
+      recordsCreated[0]++;
+    }
+
+    final AutoCloseableIterator<AirbyteMessage> firstBatchIterator = source
+        .read(config, CONFIGURED_CATALOG, null);
+    final List<AirbyteMessage> dataFromFirstBatch = AutoCloseableIterators
+        .toListAndClose(firstBatchIterator);
+    List<AirbyteStateMessage> stateAfterFirstBatch = extractStateMessages(dataFromFirstBatch);
+    assertExpectedStateMessages(stateAfterFirstBatch);
+    Set<AirbyteRecordMessage> recordsFromFirstBatch = extractRecordMessages(
+        dataFromFirstBatch);
+    assertEquals((MODEL_RECORDS.size() + 20), recordsFromFirstBatch.size());
+
+    // second batch of records again 20 being created
+    recordsCreated[0] = 0;
+    while (recordsCreated[0] < recordsToCreate) {
+      final JsonNode record =
+          Jsons.jsonNode(ImmutableMap
+              .of(COL_ID, 200 + recordsCreated[0], COL_MAKE_ID, 1, COL_MODEL,
+                  ""F-"" + recordsCreated[0]));
+      writeModelRecord(record);
+      recordsCreated[0]++;
+    }
+
+    final JsonNode state = stateAfterFirstBatch.get(0).getData();
+    final AutoCloseableIterator<AirbyteMessage> secondBatchIterator = source
+        .read(config, CONFIGURED_CATALOG, state);
+    final List<AirbyteMessage> dataFromSecondBatch = AutoCloseableIterators
+        .toListAndClose(secondBatchIterator);
+
+    List<AirbyteStateMessage> stateAfterSecondBatch = extractStateMessages(dataFromSecondBatch);
+    assertExpectedStateMessages(stateAfterSecondBatch);
+
+    Set<AirbyteRecordMessage> recordsFromSecondBatch = extractRecordMessages(
+        dataFromSecondBatch);
+    assertEquals(20, recordsFromSecondBatch.size(),
+        ""Expected 20 records to be replicated in the second sync."");
+
+    // sometimes there can be more than one of these at the end of the snapshot and just before the
+    // first incremental.
+    final Set<AirbyteRecordMessage> recordsFromFirstBatchWithoutDuplicates = removeDuplicates(
+        recordsFromFirstBatch);
+    final Set<AirbyteRecordMessage> recordsFromSecondBatchWithoutDuplicates = removeDuplicates(
+        recordsFromSecondBatch);
+
+    final int recordsCreatedBeforeTestCount = MODEL_RECORDS.size();
+    assertTrue(recordsCreatedBeforeTestCount < recordsFromFirstBatchWithoutDuplicates.size(),
+        ""Expected first sync to include records created while the test was running."");
+    assertEquals(40 + recordsCreatedBeforeTestCount,
+        recordsFromFirstBatchWithoutDuplicates.size() + recordsFromSecondBatchWithoutDuplicates
+            .size());
+  }",True
+33,removeDuplicates(Set<AirbyteRecordMessage>),Method,testRecordsProducedDuringAndAfterSync() testRecordsProducedDuringAndAfterSync(),,,io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+LOGGER,637,18,23234,510,10,,"private static Set<AirbyteRecordMessage> removeDuplicates(Set<AirbyteRecordMessage> messages) {
+    final Set<JsonNode> existingDataRecordsWithoutUpdated = new HashSet<>();
+    final Set<AirbyteRecordMessage> output = new HashSet<>();
+
+    for (AirbyteRecordMessage message : messages) {
+      ObjectNode node = message.getData().deepCopy();
+      node.remove(""_ab_cdc_updated_at"");
+
+      if (existingDataRecordsWithoutUpdated.contains(node)) {
+        LOGGER.info(""Removing duplicate node: "" + node);
+      } else {
+        output.add(message);
+        existingDataRecordsWithoutUpdated.add(node);
+      }
+    }
+
+    return output;
+  }",True
+34,testCdcAndFullRefreshInSameSync(),Method,,,"io.airbyte.commons.json.Jsons+clone(T) io.airbyte.commons.json.Jsons+clone(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[]) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeRecords(JsonNode,String,String,String,String,String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeRecords(JsonNode,String,String,String,String,String) io.airbyte.protocol.models.CatalogHelpers+createAirbyteStream(String,String,Field[]) io.airbyte.protocol.models.CatalogHelpers+createAirbyteStream(String,String,Field[]) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) java.util.List+of(E) java.util.List+of(E) java.util.List+of(E) java.util.List+of(E) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) java.util.HashSet+add(E) java.util.HashSet+add(E) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>,Set<String>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>,Set<String>) java.util.stream.Collectors+toSet() java.util.stream.Collectors+toSet() java.util.Collections+singleton(T) java.util.Collections+singleton(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeModelRecord(JsonNode) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+writeModelRecord(JsonNode) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>,Set<String>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>,Set<String>) java.util.stream.Stream+of(T) java.util.stream.Stream+of(T) java.util.stream.Collectors+toSet() java.util.stream.Collectors+toSet() java.util.Collections+singleton(T) java.util.Collections+singleton(T)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+STREAM_NAMES io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODEL_RECORDS io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME,3779,73,23875,531,0,,"@Test
+  @DisplayName(""When both incremental CDC and full refresh are configured for different streams in a sync, the data is replicated as expected."")
+  void testCdcAndFullRefreshInSameSync() throws Exception {
+    final ConfiguredAirbyteCatalog configuredCatalog = Jsons.clone(CONFIGURED_CATALOG);
+
+    final List<JsonNode> MODEL_RECORDS_2 = ImmutableList.of(
+        Jsons.jsonNode(ImmutableMap.of(COL_ID, 110, COL_MAKE_ID, 1, COL_MODEL, ""Fiesta-2"")),
+        Jsons.jsonNode(ImmutableMap.of(COL_ID, 120, COL_MAKE_ID, 1, COL_MODEL, ""Focus-2"")),
+        Jsons.jsonNode(ImmutableMap.of(COL_ID, 130, COL_MAKE_ID, 1, COL_MODEL, ""Ranger-2"")),
+        Jsons.jsonNode(ImmutableMap.of(COL_ID, 140, COL_MAKE_ID, 2, COL_MODEL, ""GLA-2"")),
+        Jsons.jsonNode(ImmutableMap.of(COL_ID, 150, COL_MAKE_ID, 2, COL_MODEL, ""A 220-2"")),
+        Jsons.jsonNode(ImmutableMap.of(COL_ID, 160, COL_MAKE_ID, 2, COL_MODEL, ""E 350-2"")));
+
+    executeQuery(String
+        .format(""CREATE TABLE %s.%s(%s INTEGER, %s INTEGER, %s VARCHAR(200), PRIMARY KEY (%s));"",
+            MODELS_SCHEMA, MODELS_STREAM_NAME + ""_2"", COL_ID, COL_MAKE_ID, COL_MODEL, COL_ID));
+
+    for (JsonNode recordJson : MODEL_RECORDS_2) {
+      writeRecords(recordJson, CdcMySqlSourceTest.MODELS_SCHEMA, MODELS_STREAM_NAME + ""_2"", COL_ID,
+          COL_MAKE_ID, COL_MODEL);
+    }
+
+    ConfiguredAirbyteStream airbyteStream = new ConfiguredAirbyteStream()
+        .withStream(CatalogHelpers.createAirbyteStream(
+            MODELS_STREAM_NAME + ""_2"",
+            MODELS_SCHEMA,
+            Field.of(COL_ID, JsonSchemaPrimitive.NUMBER),
+            Field.of(COL_MAKE_ID, JsonSchemaPrimitive.NUMBER),
+            Field.of(COL_MODEL, JsonSchemaPrimitive.STRING))
+            .withSupportedSyncModes(
+                Lists.newArrayList(SyncMode.FULL_REFRESH, SyncMode.INCREMENTAL))
+            .withSourceDefinedPrimaryKey(List.of(List.of(COL_ID))));
+    airbyteStream.setSyncMode(SyncMode.FULL_REFRESH);
+
+    List<ConfiguredAirbyteStream> streams = configuredCatalog.getStreams();
+    streams.add(airbyteStream);
+    configuredCatalog.withStreams(streams);
+
+    final AutoCloseableIterator<AirbyteMessage> read1 = source
+        .read(config, configuredCatalog, null);
+    final List<AirbyteMessage> actualRecords1 = AutoCloseableIterators.toListAndClose(read1);
+
+    final Set<AirbyteRecordMessage> recordMessages1 = extractRecordMessages(actualRecords1);
+    final List<AirbyteStateMessage> stateMessages1 = extractStateMessages(actualRecords1);
+    HashSet<String> names = new HashSet<>(STREAM_NAMES);
+    names.add(MODELS_STREAM_NAME + ""_2"");
+    assertExpectedStateMessages(stateMessages1);
+    assertExpectedRecords(Streams.concat(MODEL_RECORDS_2.stream(), MODEL_RECORDS.stream())
+        .collect(Collectors.toSet()),
+        recordMessages1,
+        Collections.singleton(MODELS_STREAM_NAME),
+        names);
+
+    final JsonNode puntoRecord = Jsons
+        .jsonNode(ImmutableMap.of(COL_ID, 100, COL_MAKE_ID, 3, COL_MODEL, ""Punto""));
+    writeModelRecord(puntoRecord);
+
+    final JsonNode state = extractStateMessages(actualRecords1).get(0).getData();
+    final AutoCloseableIterator<AirbyteMessage> read2 = source
+        .read(config, configuredCatalog, state);
+    final List<AirbyteMessage> actualRecords2 = AutoCloseableIterators.toListAndClose(read2);
+
+    final Set<AirbyteRecordMessage> recordMessages2 = extractRecordMessages(actualRecords2);
+    final List<AirbyteStateMessage> stateMessages2 = extractStateMessages(actualRecords2);
+
+    assertExpectedStateMessages(stateMessages2);
+    assertExpectedRecords(
+        Streams.concat(MODEL_RECORDS_2.stream(), Stream.of(puntoRecord))
+            .collect(Collectors.toSet()),
+        recordMessages2,
+        Collections.singleton(MODELS_STREAM_NAME),
+        names);
+  }",True
+35,testNoData(),Method,,,"io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[]) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>) java.util.Collections+emptySet() java.util.Collections+emptySet() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG,705,16,27658,605,0,,"@Test
+  @DisplayName(""When no records exist, no records are returned."")
+  void testNoData() throws Exception {
+
+    executeQuery(String.format(""DELETE FROM %s.%s"", MODELS_SCHEMA, MODELS_STREAM_NAME));
+
+    final AutoCloseableIterator<AirbyteMessage> read = source
+        .read(config, CONFIGURED_CATALOG, null);
+    final List<AirbyteMessage> actualRecords = AutoCloseableIterators.toListAndClose(read);
+
+    final Set<AirbyteRecordMessage> recordMessages = extractRecordMessages(actualRecords);
+    final List<AirbyteStateMessage> stateMessages = extractStateMessages(actualRecords);
+
+    assertExpectedRecords(Collections.emptySet(), recordMessages);
+    assertExpectedStateMessages(stateMessages);
+  }",True
+36,testNoDataOnSecondSync(),Method,,,"io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+read(JsonNode,ConfiguredAirbyteCatalog,JsonNode) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.commons.util.AutoCloseableIterators+toListAndClose(AutoCloseableIterator<T>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractRecordMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+extractStateMessages(List<AirbyteMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>) java.util.Collections+emptySet() java.util.Collections+emptySet() io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedStateMessages(List<AirbyteStateMessage>)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CONFIGURED_CATALOG,974,18,28367,622,0,,"@Test
+  @DisplayName(""When no changes have been made to the database since the previous sync, no records are returned."")
+  void testNoDataOnSecondSync() throws Exception {
+    final AutoCloseableIterator<AirbyteMessage> read1 = source
+        .read(config, CONFIGURED_CATALOG, null);
+    final List<AirbyteMessage> actualRecords1 = AutoCloseableIterators.toListAndClose(read1);
+    final JsonNode state = extractStateMessages(actualRecords1).get(0).getData();
+
+    final AutoCloseableIterator<AirbyteMessage> read2 = source
+        .read(config, CONFIGURED_CATALOG, state);
+    final List<AirbyteMessage> actualRecords2 = AutoCloseableIterators.toListAndClose(read2);
+
+    final Set<AirbyteRecordMessage> recordMessages2 = extractRecordMessages(actualRecords2);
+    final List<AirbyteStateMessage> stateMessages2 = extractStateMessages(actualRecords2);
+
+    assertExpectedRecords(Collections.emptySet(), recordMessages2);
+    assertExpectedStateMessages(stateMessages2);
+  }",True
+37,testCheck(),Method,,,io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+check(JsonNode) io.airbyte.integrations.source.relationaldb.AbstractRelationalDbSource+check(JsonNode),io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config,175,5,29345,640,0,,"@Test
+  void testCheck() {
+    final AirbyteConnectionStatus status = source.check(config);
+    assertEquals(status.getStatus(), AirbyteConnectionStatus.Status.SUCCEEDED);
+  }",True
+38,testDiscover(),Method,,,"io.airbyte.commons.json.Jsons+clone(T) io.airbyte.commons.json.Jsons+clone(T) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+executeQuery(String) java.lang.String+format(Locale,String,Object[]) java.lang.String+format(Locale,String,Object[]) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+addCdcMetadataColumns(AirbyteStream) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+addCdcMetadataColumns(AirbyteStream) io.airbyte.protocol.models.CatalogHelpers+createAirbyteStream(String,String,Field[]) io.airbyte.protocol.models.CatalogHelpers+createAirbyteStream(String,String,Field[]) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) io.airbyte.protocol.models.Field+of(String,JsonSchemaPrimitive) java.util.Collections+emptyList() java.util.Collections+emptyList() java.util.List+of(E) java.util.List+of(E) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+addCdcMetadataColumns(AirbyteStream) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+addCdcMetadataColumns(AirbyteStream) io.airbyte.integrations.source.mysql.MySqlSource+discover(JsonNode) io.airbyte.integrations.source.mysql.MySqlSource+discover(JsonNode) java.util.Comparator+comparing(Function) java.util.Comparator+comparing(Function) java.util.stream.Collectors+toList() java.util.stream.Collectors+toList() java.util.Comparator+comparing(Function) java.util.Comparator+comparing(Function) java.util.stream.Collectors+toList() java.util.stream.Collectors+toList()",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+CATALOG io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_STREAM_NAME io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+MODELS_SCHEMA io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MAKE_ID io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+COL_MODEL io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+source io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+config,1427,34,29524,646,0,,"@Test
+  void testDiscover() throws Exception {
+    final AirbyteCatalog expectedCatalog = Jsons.clone(CATALOG);
+
+    executeQuery(String
+        .format(""CREATE TABLE %s.%s(%s INTEGER, %s INTEGER, %s VARCHAR(200));"",
+            MODELS_SCHEMA, MODELS_STREAM_NAME + ""_2"", COL_ID, COL_MAKE_ID, COL_MODEL));
+
+    List<AirbyteStream> streams = expectedCatalog.getStreams();
+    // stream with PK
+    streams.get(0).setSourceDefinedCursor(true);
+    addCdcMetadataColumns(streams.get(0));
+
+    AirbyteStream streamWithoutPK = CatalogHelpers.createAirbyteStream(
+        MODELS_STREAM_NAME + ""_2"",
+        MODELS_SCHEMA,
+        Field.of(COL_ID, JsonSchemaPrimitive.NUMBER),
+        Field.of(COL_MAKE_ID, JsonSchemaPrimitive.NUMBER),
+        Field.of(COL_MODEL, JsonSchemaPrimitive.STRING));
+    streamWithoutPK.setSourceDefinedPrimaryKey(Collections.emptyList());
+    streamWithoutPK.setSupportedSyncModes(List.of(SyncMode.FULL_REFRESH));
+    addCdcMetadataColumns(streamWithoutPK);
+
+    streams.add(streamWithoutPK);
+    expectedCatalog.withStreams(streams);
+
+    final AirbyteCatalog actualCatalog = source.discover(config);
+
+    assertEquals(
+        expectedCatalog.getStreams().stream().sorted(Comparator.comparing(AirbyteStream::getName))
+            .collect(Collectors.toList()),
+        actualCatalog.getStreams().stream().sorted(Comparator.comparing(AirbyteStream::getName))
+            .collect(Collectors.toList()));
+  }",True
+39,addCdcMetadataColumns(AirbyteStream),Method,testDiscover() testDiscover(),,io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T) io.airbyte.commons.json.Jsons+jsonNode(T),,588,13,30955,680,10,,"private static AirbyteStream addCdcMetadataColumns(AirbyteStream stream) {
+    ObjectNode jsonSchema = (ObjectNode) stream.getJsonSchema();
+    ObjectNode properties = (ObjectNode) jsonSchema.get(""properties"");
+
+    final JsonNode numberType = Jsons.jsonNode(ImmutableMap.of(""type"", ""number""));
+    final JsonNode stringType = Jsons.jsonNode(ImmutableMap.of(""type"", ""string""));
+    properties.set(CDC_LOG_FILE, stringType);
+    properties.set(CDC_LOG_POS, numberType);
+    properties.set(CDC_UPDATED_AT, numberType);
+    properties.set(CDC_DELETED_AT, numberType);
+
+    return stream;
+  }",False
+40,extractRecordMessages(List<AirbyteMessage>),Method,fullRefreshAndCDCShouldReturnSameRecords() fullRefreshAndCDCShouldReturnSameRecords() testExistingData() testRecordsProducedDuringAndAfterSync() testRecordsProducedDuringAndAfterSync() testCdcAndFullRefreshInSameSync() testCdcAndFullRefreshInSameSync() testNoData() testNoDataOnSecondSync(),,java.util.stream.Collectors+toList() java.util.stream.Collectors+toList(),,570,12,31547,694,2,,"private Set<AirbyteRecordMessage> extractRecordMessages(List<AirbyteMessage> messages) {
+    final List<AirbyteRecordMessage> recordMessageList = messages
+        .stream()
+        .filter(r -> r.getType() == Type.RECORD).map(AirbyteMessage::getRecord)
+        .collect(Collectors.toList());
+    final Set<AirbyteRecordMessage> recordMessageSet = new HashSet<>(recordMessageList);
+
+    assertEquals(recordMessageList.size(), recordMessageSet.size(),
+        ""Expected no duplicates in airbyte record message output for a single sync."");
+
+    return recordMessageSet;
+  }",True
+41,extractStateMessages(List<AirbyteMessage>),Method,testExistingData() testDelete() testDelete() testUpdate() testUpdate() testRecordsProducedDuringAndAfterSync() testRecordsProducedDuringAndAfterSync() testCdcAndFullRefreshInSameSync() testCdcAndFullRefreshInSameSync() testCdcAndFullRefreshInSameSync() testNoData() testNoDataOnSecondSync() testNoDataOnSecondSync(),,java.util.stream.Collectors+toList() java.util.stream.Collectors+toList(),,228,4,32121,707,2,,"private List<AirbyteStateMessage> extractStateMessages(List<AirbyteMessage> messages) {
+    return messages.stream().filter(r -> r.getType() == Type.STATE).map(AirbyteMessage::getState)
+        .collect(Collectors.toList());
+  }",True
+42,assertExpectedStateMessages(List<AirbyteStateMessage>),Method,testExistingData() testDelete() testDelete() testUpdate() testUpdate() testRecordsProducedDuringAndAfterSync() testRecordsProducedDuringAndAfterSync() testCdcAndFullRefreshInSameSync() testCdcAndFullRefreshInSameSync() testNoData() testNoDataOnSecondSync(),,,,463,9,32353,712,10,,"private static void assertExpectedStateMessages(List<AirbyteStateMessage> stateMessages) {
+    // TODO: add assertion for boolean cdc is true
+    assertEquals(1, stateMessages.size());
+    assertNotNull(stateMessages.get(0).getData());
+    assertNotNull(
+        stateMessages.get(0).getData().get(""cdc_state"").get(""state"").get(MYSQL_CDC_OFFSET));
+    assertNotNull(
+        stateMessages.get(0).getData().get(""cdc_state"").get(""state"").get(MYSQL_DB_HISTORY));
+  }",True
+43,"assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>)",Method,testExistingData() testNoData() testNoDataOnSecondSync(),,"io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>) java.util.stream.Collectors+toSet() java.util.stream.Collectors+toSet()",,371,8,32820,722,10,,"private static void assertExpectedRecords(Set<JsonNode> expectedRecords,
+                                            Set<AirbyteRecordMessage> actualRecords) {
+    // assume all streams are cdc.
+    assertExpectedRecords(
+        expectedRecords,
+        actualRecords,
+        actualRecords.stream().map(AirbyteRecordMessage::getStream).collect(Collectors.toSet()));
+  }",True
+44,"assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>)",Method,"assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>)",,"io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>,Set<String>) io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>,Set<String>)",io.airbyte.integrations.source.mysql.CdcMySqlSourceTest+STREAM_NAMES,316,5,33195,731,10,,"private static void assertExpectedRecords(Set<JsonNode> expectedRecords,
+                                            Set<AirbyteRecordMessage> actualRecords,
+                                            Set<String> cdcStreams) {
+    assertExpectedRecords(expectedRecords, actualRecords, cdcStreams, STREAM_NAMES);
+  }",True
+45,"assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>,Set<String>)",Method,"testCdcAndFullRefreshInSameSync() testCdcAndFullRefreshInSameSync() assertExpectedRecords(Set<JsonNode>,Set<AirbyteRecordMessage>,Set<String>)",,java.util.stream.Collectors+toSet() java.util.stream.Collectors+toSet(),,1269,33,33515,737,10,,"private static void assertExpectedRecords(Set<JsonNode> expectedRecords,
+                                            Set<AirbyteRecordMessage> actualRecords,
+                                            Set<String> cdcStreams,
+                                            Set<String> streamNames) {
+    final Set<JsonNode> actualData = actualRecords
+        .stream()
+        .map(recordMessage -> {
+          assertTrue(streamNames.contains(recordMessage.getStream()));
+          assertNotNull(recordMessage.getEmittedAt());
+
+          assertEquals(MODELS_SCHEMA, recordMessage.getNamespace());
+
+          final JsonNode data = recordMessage.getData();
+
+          if (cdcStreams.contains(recordMessage.getStream())) {
+            assertNotNull(data.get(CDC_LOG_FILE));
+            assertNotNull(data.get(CDC_LOG_POS));
+            assertNotNull(data.get(CDC_UPDATED_AT));
+          } else {
+            assertNull(data.get(CDC_LOG_FILE));
+            assertNull(data.get(CDC_LOG_POS));
+            assertNull(data.get(CDC_UPDATED_AT));
+            assertNull(data.get(CDC_DELETED_AT));
+          }
+
+          removeCDCColumns((ObjectNode) data);
+
+          return data;
+        })
+        .collect(Collectors.toSet());
+
+    assertEquals(expectedRecords, actualData);
+  }",True
+46,removeCDCColumns(ObjectNode),Method,,,,,186,6,34788,771,10,,"private static void removeCDCColumns(ObjectNode data) {
+    data.remove(CDC_LOG_FILE);
+    data.remove(CDC_LOG_POS);
+    data.remove(CDC_UPDATED_AT);
+    data.remove(CDC_DELETED_AT);
+  }",True

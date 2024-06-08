@@ -1,0 +1,420 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,timing,Field,,,,,43,1,1791,45,18,,private final Timing timing = new Timing();,True
+2,client,Field,,,,,32,1,1839,46,2,,private CuratorFramework client;,True
+3,cache,Field,,,,,24,1,1876,47,2,,private TreeCache cache;,True
+4,exceptions,Field,,,,,35,1,1905,48,2,,private List<Throwable> exceptions;,True
+5,events,Field,,,,,45,1,1945,49,2,,private BlockingQueue<TreeCacheEvent> events;,True
+6,eventListener,Field,,,,,40,1,1995,50,2,,private TreeCacheListener eventListener;,True
+7,TreeCache,MemberClass,,,"org.apache.curator.framework.recipes.cache.TestTreeCache.TreeCache+TreeCache(CuratorFramework,String,boolean) org.apache.curator.framework.recipes.cache.TestTreeCache.TreeCache+handleException(Throwable) java.util.List+add(E) java.util.List+add(E)",org.apache.curator.framework.recipes.cache.TestTreeCache+exceptions,406,16,-1,-1,0,"/** 
+ * A TreeCache that records exceptions.
+ */
+","/**
+     * A TreeCache that records exceptions.
+     */
+    class TreeCache extends org.apache.curator.framework.recipes.cache.TreeCache {
+
+        TreeCache(CuratorFramework client, String path, boolean cacheData)
+        {
+            super(client, path, cacheData);
+        }
+
+        @Override
+        protected void handleException(Throwable e)
+        {
+            exceptions.add(e);
+        }
+    }",False
+8,setup(),Method,,,"org.apache.curator.test.BaseClassForTests+setup() java.util.ArrayList+ArrayList() java.util.concurrent.LinkedBlockingQueue+LinkedBlockingQueue() +() +childEvent(CuratorFramework,TreeCacheEvent)",org.apache.curator.framework.recipes.cache.TestTreeCache+exceptions org.apache.curator.framework.recipes.cache.TestTreeCache+events org.apache.curator.framework.recipes.cache.TestTreeCache+eventListener,1237,35,2453,71,1,,"@Override
+    @BeforeMethod
+    public void setup() throws Exception
+    {
+        super.setup();
+
+        exceptions = new ArrayList<Throwable>();
+        events = new LinkedBlockingQueue<TreeCacheEvent>();
+        eventListener = new TreeCacheListener()
+        {
+            @Override
+            public void childEvent(CuratorFramework client, TreeCacheEvent event) throws Exception
+            {
+                if (event.getData() != null && event.getData().getPath().startsWith(""/zookeeper""))
+                {
+                    // Suppress any events related to /zookeeper paths
+                    return;
+                }
+                events.add(event);
+            }
+        };
+
+        client = CuratorFrameworkFactory.newClient(server.getConnectString(), timing.session(), timing.connection(), new RetryOneTime(1));
+        client.start();
+        client.getUnhandledErrorListenable().addListener(new UnhandledErrorListener()
+        {
+            @Override
+            public void unhandledError(String message, Throwable e)
+            {
+                exceptions.add(e);
+            }
+        });
+        cache = new TreeCache(client, ""/test"", true);
+        cache.getListenable().addListener(eventListener);
+    }",True
+9,teardown(),Method,,,java.util.List+size() java.util.List+size() java.util.List+get(int) java.util.List+get(int) java.util.List+size() java.util.List+size() java.lang.AssertionError+AssertionError(Object) java.lang.Throwable+addSuppressed(Throwable) java.lang.Throwable+addSuppressed(Throwable) org.apache.curator.utils.CloseableUtils+closeQuietly(Closeable) org.apache.curator.utils.CloseableUtils+closeQuietly(Closeable) org.apache.curator.utils.CloseableUtils+closeQuietly(Closeable) org.apache.curator.utils.CloseableUtils+closeQuietly(Closeable) org.apache.curator.test.BaseClassForTests+teardown(),org.apache.curator.framework.recipes.cache.TestTreeCache+exceptions org.apache.curator.framework.recipes.cache.TestTreeCache+exceptions org.apache.curator.framework.recipes.cache.TestTreeCache+exceptions org.apache.curator.framework.recipes.cache.TestTreeCache+exceptions org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client,913,33,3696,107,1,,"@Override
+    @AfterMethod
+    public void teardown() throws Exception
+    {
+        try
+        {
+            try
+            {
+                if ( exceptions.size() == 1 )
+                {
+                    Assert.fail(""Exception was thrown"", exceptions.get(0));
+                }
+                else if ( exceptions.size() > 1 )
+                {
+                    AssertionError error = new AssertionError(""Multiple exceptions were thrown"");
+                    for ( Throwable exception : exceptions )
+                    {
+                        error.addSuppressed(exception);
+                    }
+                    throw error;
+                }
+            }
+            finally
+            {
+                CloseableUtils.closeQuietly(cache);
+                CloseableUtils.closeQuietly(client);
+            }
+        }
+        finally
+        {
+            super.teardown();
+        }
+    }",True
+10,testStartup(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() java.lang.String+getBytes() java.lang.String+getBytes() java.lang.String+getBytes() java.lang.String+getBytes() java.lang.String+getBytes() java.lang.String+getBytes() java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String)",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+cache,1234,23,4615,140,1,,"@Test
+    public void testStartup() throws Exception
+    {
+        client.create().forPath(""/test"");
+        client.create().forPath(""/test/1"", ""one"".getBytes());
+        client.create().forPath(""/test/2"", ""two"".getBytes());
+        client.create().forPath(""/test/3"", ""three"".getBytes());
+        client.create().forPath(""/test/2/sub"", ""two-sub"".getBytes());
+
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/1"", ""one"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/2"", ""two"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/3"", ""three"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/2/sub"", ""two-sub"".getBytes());
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+        assertNoMoreEvents();
+
+        Assert.assertEquals(cache.getCurrentChildren(""/test""), ImmutableSortedSet.of(""1"", ""2"", ""3""));
+        Assert.assertEquals(cache.getCurrentChildren(""/test/1""), ImmutableSortedSet.of());
+        Assert.assertEquals(cache.getCurrentChildren(""/test/2""), ImmutableSortedSet.of(""sub""));
+        Assert.assertNull(cache.getCurrentChildren(""/test/non_exist""));
+    }",False
+11,testStartEmpty(),Method,,,org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents(),org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client,279,10,5855,164,1,,"@Test
+    public void testStartEmpty() throws Exception
+    {
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+
+        client.create().forPath(""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertNoMoreEvents();
+    }",False
+12,testAsyncInitialPopulation(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache,426,11,6140,175,1,,"@Test
+    public void testAsyncInitialPopulation() throws Exception
+    {
+        client.create().forPath(""/test"");
+        client.create().forPath(""/test/one"", ""hey there"".getBytes());
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/one"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+        assertNoMoreEvents();
+    }",False
+13,testFromRoot(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TestTreeCache.TreeCache+TreeCache(CuratorFramework,String,boolean) org.apache.curator.framework.listen.ListenerContainer+addListener(T) org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.listen.ListenerContainer+addListener(T) org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+eventListener org.apache.curator.framework.recipes.cache.TestTreeCache+cache,578,14,6572,187,1,,"@Test
+    public void testFromRoot() throws Exception
+    {
+        client.create().forPath(""/test"");
+        client.create().forPath(""/test/one"", ""hey there"".getBytes());
+        cache = new TreeCache(client, ""/"", true);
+        cache.getListenable().addListener(eventListener);
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/one"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+        assertNoMoreEvents();
+    }",False
+14,testWithNamespace(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TestTreeCache.TreeCache+TreeCache(CuratorFramework,String,boolean) org.apache.curator.framework.CuratorFramework+usingNamespace(String) org.apache.curator.framework.CuratorFramework+usingNamespace(String) org.apache.curator.framework.listen.ListenerContainer+addListener(T) org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.listen.ListenerContainer+addListener(T) org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+eventListener org.apache.curator.framework.recipes.cache.TestTreeCache+cache,655,15,7156,202,1,,"@Test
+    public void testWithNamespace() throws Exception
+    {
+        client.create().forPath(""/outer"");
+        client.create().forPath(""/outer/foo"");
+        client.create().forPath(""/outer/test"");
+        client.create().forPath(""/outer/test/one"", ""hey there"".getBytes());
+        cache = new TreeCache(client.usingNamespace(""outer""), ""/test"", true);
+        cache.getListenable().addListener(eventListener);
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/one"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+        assertNoMoreEvents();
+    }",False
+15,testWithNamespaceAtRoot(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TestTreeCache.TreeCache+TreeCache(CuratorFramework,String,boolean) org.apache.curator.framework.CuratorFramework+usingNamespace(String) org.apache.curator.framework.CuratorFramework+usingNamespace(String) org.apache.curator.framework.listen.ListenerContainer+addListener(T) org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.listen.ListenerContainer+addListener(T) org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+eventListener org.apache.curator.framework.recipes.cache.TestTreeCache+cache,776,17,7817,218,1,,"@Test
+    public void testWithNamespaceAtRoot() throws Exception
+    {
+        client.create().forPath(""/outer"");
+        client.create().forPath(""/outer/foo"");
+        client.create().forPath(""/outer/test"");
+        client.create().forPath(""/outer/test/one"", ""hey there"".getBytes());
+        cache = new TreeCache(client.usingNamespace(""outer""), ""/"", true);
+        cache.getListenable().addListener(eventListener);
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/foo"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/one"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+        assertNoMoreEvents();
+    }",False
+16,testSyncInitialPopulation(),Method,,,"org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client,425,11,8599,236,1,,"@Test
+    public void testSyncInitialPopulation() throws Exception
+    {
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+        client.create().forPath(""/test"");
+        client.create().forPath(""/test/one"", ""hey there"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/one"");
+        assertNoMoreEvents();
+    }",False
+17,testChildrenInitialized(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache,675,16,9030,248,1,,"@Test
+    public void testChildrenInitialized() throws Exception
+    {
+        client.create().forPath(""/test"", """".getBytes());
+        client.create().forPath(""/test/1"", ""1"".getBytes());
+        client.create().forPath(""/test/2"", ""2"".getBytes());
+        client.create().forPath(""/test/3"", ""3"".getBytes());
+
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/1"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/2"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/3"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+        assertNoMoreEvents();
+    }",False
+18,testUpdateWhenNotCachingData(),Method,,,"org.apache.curator.framework.recipes.cache.TestTreeCache.TreeCache+TreeCache(CuratorFramework,String,boolean) org.apache.curator.framework.listen.ListenerContainer+addListener(T) org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.listen.ListenerContainer+addListener(T) org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+setData() org.apache.curator.framework.CuratorFramework+setData() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+eventListener org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client,683,18,9711,265,1,,"@Test
+    public void testUpdateWhenNotCachingData() throws Exception
+    {
+        cache = new TreeCache(client, ""/test"", false);
+        cache.getListenable().addListener(eventListener);
+
+        client.create().forPath(""/test"");
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+
+        client.create().forPath(""/test/foo"", ""first"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/foo"");
+
+        client.setData().forPath(""/test/foo"", ""something new"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_UPDATED, ""/test/foo"");
+        assertNoMoreEvents();
+    }",False
+19,testDeleteThenCreate(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client,661,18,10400,284,1,,"@Test
+    public void testDeleteThenCreate() throws Exception
+    {
+        client.create().forPath(""/test"");
+        client.create().forPath(""/test/foo"", ""one"".getBytes());
+        cache.start();
+
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/foo"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+
+        client.delete().forPath(""/test/foo"");
+        assertEvent(TreeCacheEvent.Type.NODE_REMOVED, ""/test/foo"");
+        client.create().forPath(""/test/foo"", ""two"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/foo"");
+
+        assertNoMoreEvents();
+    }",False
+20,testIssue27(),Method,,,org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.CuratorFramework+getChildren() org.apache.curator.framework.CuratorFramework+getChildren() org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents(),org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client,868,24,11167,304,1,,"@Test
+    public void testIssue27() throws Exception
+    {
+        client.create().forPath(""/test"");
+        client.create().forPath(""/test/a"");
+        client.create().forPath(""/test/b"");
+        client.create().forPath(""/test/c"");
+
+        client.getChildren().forPath(""/test"");
+
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/a"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/b"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/c"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+
+        client.delete().forPath(""/test/a"");
+        client.create().forPath(""/test/a"");
+        assertEvent(TreeCacheEvent.Type.NODE_REMOVED, ""/test/a"");
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/a"");
+
+        assertNoMoreEvents();
+    }",False
+21,testKilledSession(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.api.CreateModable+withMode(CreateMode) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.CreateModable+withMode(CreateMode) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.test.KillSession+kill(ZooKeeper,String) org.apache.curator.test.KillSession+kill(ZooKeeper,String) org.apache.curator.CuratorZookeeperClient+getZooKeeper() org.apache.curator.framework.CuratorFramework+getZookeeperClient() org.apache.curator.framework.CuratorFramework+getZookeeperClient() org.apache.curator.CuratorZookeeperClient+getZooKeeper() org.apache.curator.test.TestingServer+getConnectString() org.apache.curator.test.TestingServer+getConnectString() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.test.BaseClassForTests+server,925,22,12041,329,1,,"@Test
+    public void testKilledSession() throws Exception
+    {
+        client.create().forPath(""/test"");
+        cache.start();
+
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+
+        client.create().forPath(""/test/foo"", ""foo"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/foo"");
+        client.create().withMode(CreateMode.EPHEMERAL).forPath(""/test/me"", ""data"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/me"");
+
+        KillSession.kill(client.getZookeeperClient().getZooKeeper(), server.getConnectString());
+        assertEvent(TreeCacheEvent.Type.CONNECTION_SUSPENDED);
+        assertEvent(TreeCacheEvent.Type.CONNECTION_LOST);
+        assertEvent(TreeCacheEvent.Type.CONNECTION_RECONNECTED);
+        assertEvent(TreeCacheEvent.Type.NODE_REMOVED, ""/test/me"");
+
+        assertNoMoreEvents();
+    }",False
+22,testBasics(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) java.lang.String+String(byte[]) org.apache.curator.framework.recipes.cache.ChildData+getData() org.apache.curator.framework.recipes.cache.TreeCache+getCurrentData(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentData(String) org.apache.curator.framework.recipes.cache.ChildData+getData() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+setData() org.apache.curator.framework.CuratorFramework+setData() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) java.lang.String+String(byte[]) org.apache.curator.framework.recipes.cache.ChildData+getData() org.apache.curator.framework.recipes.cache.TreeCache+getCurrentData(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentData(String) org.apache.curator.framework.recipes.cache.ChildData+getData() org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentChildren(String) org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache,1221,25,12972,352,1,,"@Test
+    public void testBasics() throws Exception
+    {
+        client.create().forPath(""/test"");
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+        Assert.assertEquals(cache.getCurrentChildren(""/test""), ImmutableSortedSet.of());
+
+        client.create().forPath(""/test/one"", ""hey there"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/one"");
+        Assert.assertEquals(cache.getCurrentChildren(""/test""), ImmutableSortedSet.of(""one""));
+        Assert.assertEquals(new String(cache.getCurrentData(""/test/one"").getData()), ""hey there"");
+
+        client.setData().forPath(""/test/one"", ""sup!"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_UPDATED, ""/test/one"");
+        Assert.assertEquals(cache.getCurrentChildren(""/test""), ImmutableSortedSet.of(""one""));
+        Assert.assertEquals(new String(cache.getCurrentData(""/test/one"").getData()), ""sup!"");
+
+        client.delete().forPath(""/test/one"");
+        assertEvent(TreeCacheEvent.Type.NODE_REMOVED, ""/test/one"");
+        Assert.assertEquals(cache.getCurrentChildren(""/test""), ImmutableSortedSet.of());
+
+        assertNoMoreEvents();
+    }",False
+23,testBasicsOnTwoCaches(),Method,,,"org.apache.curator.framework.recipes.cache.TestTreeCache.TreeCache+TreeCache(CuratorFramework,String,boolean) java.util.concurrent.Semaphore+Semaphore(int) org.apache.curator.framework.listen.ListenerContainer+addListener(T) org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.recipes.cache.TreeCache+getListenable() org.apache.curator.framework.listen.ListenerContainer+addListener(T) +() +childEvent(CuratorFramework,TreeCacheEvent)",org.apache.curator.framework.recipes.cache.TestTreeCache+client,2078,52,14199,378,1,,"@Test
+    public void testBasicsOnTwoCaches() throws Exception
+    {
+        TreeCache cache2 = new TreeCache(client, ""/test"", true);
+
+        // Just ensures the same event count; enables test flow control on cache2.
+        final Semaphore semaphore = new Semaphore(0);
+        cache2.getListenable().addListener(new TreeCacheListener()
+        {
+            @Override
+            public void childEvent(CuratorFramework client, TreeCacheEvent event) throws Exception
+            {
+                semaphore.release();
+            }
+        });
+
+        try
+        {
+            client.create().forPath(""/test"");
+            cache.start();
+            cache2.start();
+
+            assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+            assertEvent(TreeCacheEvent.Type.INITIALIZED);
+            semaphore.acquire(2);
+
+            client.create().forPath(""/test/one"", ""hey there"".getBytes());
+            assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/one"");
+            Assert.assertEquals(new String(cache.getCurrentData(""/test/one"").getData()), ""hey there"");
+            semaphore.acquire();
+            Assert.assertEquals(new String(cache2.getCurrentData(""/test/one"").getData()), ""hey there"");
+
+            client.setData().forPath(""/test/one"", ""sup!"".getBytes());
+            assertEvent(TreeCacheEvent.Type.NODE_UPDATED, ""/test/one"");
+            Assert.assertEquals(new String(cache.getCurrentData(""/test/one"").getData()), ""sup!"");
+            semaphore.acquire();
+            Assert.assertEquals(new String(cache2.getCurrentData(""/test/one"").getData()), ""sup!"");
+
+            client.delete().forPath(""/test/one"");
+            assertEvent(TreeCacheEvent.Type.NODE_REMOVED, ""/test/one"");
+            Assert.assertNull(cache.getCurrentData(""/test/one""));
+            semaphore.acquire();
+            Assert.assertNull(cache2.getCurrentData(""/test/one""));
+
+            assertNoMoreEvents();
+            Assert.assertEquals(semaphore.availablePermits(), 0);
+        }
+        finally
+        {
+            CloseableUtils.closeQuietly(cache2);
+        }
+    }",False
+24,testDeleteNodeAfterCloseDoesntCallExecutor(),Method,,,"org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String) org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.recipes.cache.TreeCache+start() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.CuratorFramework+create() org.apache.curator.framework.api.PathAndBytesable+forPath(String,byte[]) java.lang.String+getBytes() java.lang.String+getBytes() java.lang.String+String(byte[]) org.apache.curator.framework.recipes.cache.ChildData+getData() org.apache.curator.framework.recipes.cache.TreeCache+getCurrentData(String) org.apache.curator.framework.recipes.cache.TreeCache+getCurrentData(String) org.apache.curator.framework.recipes.cache.ChildData+getData() org.apache.curator.framework.recipes.cache.TreeCache+close() org.apache.curator.framework.recipes.cache.TreeCache+close() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.CuratorFramework+delete() org.apache.curator.framework.api.Pathable+forPath(String) org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents() org.apache.curator.framework.recipes.cache.TestTreeCache+assertNoMoreEvents()",org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+cache org.apache.curator.framework.recipes.cache.TestTreeCache+client,644,19,16283,431,1,,"@Test
+    public void testDeleteNodeAfterCloseDoesntCallExecutor() throws Exception
+    {
+        client.create().forPath(""/test"");
+
+        cache.start();
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test"");
+        assertEvent(TreeCacheEvent.Type.INITIALIZED);
+
+        client.create().forPath(""/test/one"", ""hey there"".getBytes());
+        assertEvent(TreeCacheEvent.Type.NODE_ADDED, ""/test/one"");
+        Assert.assertEquals(new String(cache.getCurrentData(""/test/one"").getData()), ""hey there"");
+
+        cache.close();
+        assertNoMoreEvents();
+
+        client.delete().forPath(""/test/one"");
+        assertNoMoreEvents();
+    }",False
+25,assertNoMoreEvents(),Method,testStartup() testStartEmpty() testAsyncInitialPopulation() testFromRoot() testWithNamespace() testWithNamespaceAtRoot() testSyncInitialPopulation() testChildrenInitialized() testUpdateWhenNotCachingData() testDeleteThenCreate() testIssue27() testKilledSession() testBasics() testDeleteNodeAfterCloseDoesntCallExecutor() testDeleteNodeAfterCloseDoesntCallExecutor(),,org.apache.curator.test.Timing+sleepABit() org.apache.curator.test.Timing+sleepABit() java.util.Collection+isEmpty() java.util.Collection+isEmpty(),org.apache.curator.framework.recipes.cache.TestTreeCache+timing org.apache.curator.framework.recipes.cache.TestTreeCache+events,146,5,16933,450,2,,"private void assertNoMoreEvents() throws InterruptedException
+    {
+        timing.sleepABit();
+        Assert.assertTrue(events.isEmpty());
+    }",True
+26,assertEvent(TreeCacheEvent.Type),Method,,,,,156,4,17085,456,2,,"private TreeCacheEvent assertEvent(TreeCacheEvent.Type expectedType) throws InterruptedException
+    {
+        return assertEvent(expectedType, null);
+    }",True
+27,"assertEvent(TreeCacheEvent.Type,String)",Method,,,,,191,4,17247,461,2,,"private TreeCacheEvent assertEvent(TreeCacheEvent.Type expectedType, String expectedPath) throws InterruptedException
+    {
+        return assertEvent(expectedType, expectedPath, null);
+    }",True
+28,"assertEvent(TreeCacheEvent.Type,String,byte[])",Method,,,"java.util.concurrent.BlockingQueue+poll(long,TimeUnit) java.util.concurrent.BlockingQueue+poll(long,TimeUnit) org.apache.curator.test.Timing+seconds() org.apache.curator.test.Timing+forWaiting() org.apache.curator.test.Timing+forWaiting() org.apache.curator.test.Timing+seconds() org.apache.curator.framework.recipes.cache.TreeCacheEvent+getType() org.apache.curator.framework.recipes.cache.TreeCacheEvent+getType() org.apache.curator.framework.recipes.cache.TreeCacheEvent+toString() org.apache.curator.framework.recipes.cache.TreeCacheEvent+toString() org.apache.curator.framework.recipes.cache.TreeCacheEvent+getData() org.apache.curator.framework.recipes.cache.TreeCacheEvent+getData() org.apache.curator.framework.recipes.cache.TreeCacheEvent+toString() org.apache.curator.framework.recipes.cache.TreeCacheEvent+toString() org.apache.curator.framework.recipes.cache.ChildData+getPath() org.apache.curator.framework.recipes.cache.TreeCacheEvent+getData() org.apache.curator.framework.recipes.cache.TreeCacheEvent+getData() org.apache.curator.framework.recipes.cache.ChildData+getPath() org.apache.curator.framework.recipes.cache.TreeCacheEvent+toString() org.apache.curator.framework.recipes.cache.TreeCacheEvent+toString() org.apache.curator.framework.recipes.cache.ChildData+getData() org.apache.curator.framework.recipes.cache.TreeCacheEvent+getData() org.apache.curator.framework.recipes.cache.TreeCacheEvent+getData() org.apache.curator.framework.recipes.cache.ChildData+getData() org.apache.curator.framework.recipes.cache.TreeCacheEvent+toString() org.apache.curator.framework.recipes.cache.TreeCacheEvent+toString()",org.apache.curator.framework.recipes.cache.TestTreeCache+events org.apache.curator.framework.recipes.cache.TestTreeCache+timing java.util.concurrent.TimeUnit+SECONDS,738,18,17444,466,2,,"private TreeCacheEvent assertEvent(TreeCacheEvent.Type expectedType, String expectedPath, byte[] expectedData) throws InterruptedException
+    {
+        TreeCacheEvent event = events.poll(timing.forWaiting().seconds(), TimeUnit.SECONDS);
+        Assert.assertEquals(event.getType(), expectedType, event.toString());
+        if ( expectedPath == null )
+        {
+            Assert.assertNull(event.getData(), event.toString());
+        }
+        else
+        {
+            Assert.assertEquals(event.getData().getPath(), expectedPath, event.toString());
+        }
+        if ( expectedData != null )
+        {
+            Assert.assertEquals(event.getData().getData(), expectedData, event.toString());
+        }
+        return event;
+    }",True

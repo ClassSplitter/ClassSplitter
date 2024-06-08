@@ -1,0 +1,474 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,HTTP,Field,,,,,45,1,1752,54,26,,"private static final String HTTP = ""http://"";",False
+2,servletContext,Field,,,,,48,2,1799,56,2,,"@Context
+	private ServletContext servletContext;",True
+3,dataStoreFactory,Field,setDataStoreFactory(DataStoreFactory),,,,42,1,1849,57,2,,private DataStoreFactory dataStoreFactory;,True
+4,dbStore,Field,setDataStore(IDataStore) setCameraStore(MapDBStore),,,,27,1,1893,58,2,,private IDataStore dbStore;,True
+5,appCtx,Field,,,,,34,1,1922,59,2,,private ApplicationContext appCtx;,True
+6,scope,Field,setScope(IScope),,,,21,1,1958,60,2,,private IScope scope;,True
+7,appInstance,Field,,,,,47,1,1981,61,2,,private AntMediaApplicationAdapter appInstance;,True
+8,logger,Field,,,,,89,1,2031,63,12,,protected static Logger logger = LoggerFactory.getLogger(StreamsSourceRestService.class);,False
+9,"addStreamSource(Broadcast,String)",Method,,io.antmedia.test.rest.StreamSourceRestServiceUnitTest+testAddIPCamera() io.antmedia.test.rest.StreamSourceRestServiceUnitTest+testAddStreamSource(),"io.antmedia.rest.model.Result+Result(boolean) io.antmedia.rest.StreamsSourceRestService+addIPCamera(Broadcast) io.antmedia.rest.StreamsSourceRestService+addIPCamera(Broadcast) io.antmedia.rest.StreamsSourceRestService+addSource(Broadcast,String) io.antmedia.rest.StreamsSourceRestService+addSource(Broadcast,String) io.antmedia.rest.model.Result+setMessage(String) io.antmedia.rest.model.Result+setMessage(String)",io.antmedia.rest.StreamsSourceRestService+logger io.antmedia.AntMediaApplicationAdapter+IP_CAMERA io.antmedia.AntMediaApplicationAdapter+STREAM_SOURCE,839,23,2123,71,1,,"@ApiOperation(value = """", notes = ""Notes here"", response = Result.class)
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path(""/addStreamSource"")
+	@Produces(MediaType.APPLICATION_JSON)
+
+	public Result addStreamSource(@ApiParam(value = ""stream"", required = true) Broadcast stream, @QueryParam(""socialNetworks"") String socialEndpointIds) {
+		Result result=new Result(false);
+
+		logger.info(""username {}, ipAddr {}, streamURL {}, name: {}"", stream.getUsername(),  stream.getIpAddr(), stream.getStreamUrl(), stream.getName());
+
+		if (stream.getType().equals(AntMediaApplicationAdapter.IP_CAMERA)) {
+			result = addIPCamera(stream);
+		}
+		else if (stream.getType().equals(AntMediaApplicationAdapter.STREAM_SOURCE) ) {
+			result = addSource(stream, socialEndpointIds);
+
+		}else {
+
+			result.setMessage(""No stream added"");
+		}
+		return result;
+	}",False
+10,getRTSPSteramURI(Broadcast),Method,"addIPCamera(Broadcast) updateCamInfo(Broadcast,String)",,"io.antmedia.ipcamera.OnvifCamera+OnvifCamera() io.antmedia.ipcamera.OnvifCamera+connect(String,String,String) io.antmedia.ipcamera.OnvifCamera+connect(String,String,String) io.antmedia.ipcamera.OnvifCamera+getRTSPStreamURI() io.antmedia.ipcamera.OnvifCamera+getRTSPStreamURI()",,247,10,2967,91,1,,"public String getRTSPSteramURI(Broadcast stream) {
+		String uri = null;
+
+		OnvifCamera onvif = new OnvifCamera();
+		onvif.connect(stream.getIpAddr(), stream.getUsername(), stream.getPassword());
+		uri = onvif.getRTSPStreamURI();
+
+		return uri;
+
+	}",False
+11,addIPCamera(Broadcast),Method,"addStreamSource(Broadcast,String)",,io.antmedia.rest.model.Result+Result(boolean) io.antmedia.rest.StreamsSourceRestService+checkIPCamAddr(String) io.antmedia.rest.StreamsSourceRestService+checkIPCamAddr(String) io.antmedia.rest.StreamsSourceRestService+getRTSPSteramURI(Broadcast) io.antmedia.rest.StreamsSourceRestService+getRTSPSteramURI(Broadcast) java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+length() java.lang.String+length() java.util.Date+Date() java.util.Date+getTime() java.util.Date+getTime() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore() java.lang.String+length() java.lang.String+length() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.AntMediaApplicationAdapter+startStreaming(Broadcast) io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+startStreaming(Broadcast) io.antmedia.rest.model.Result+setSuccess(boolean) io.antmedia.rest.model.Result+setSuccess(boolean) io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore(),io.antmedia.rest.StreamsSourceRestService+logger io.antmedia.rest.StreamsSourceRestService+logger io.antmedia.AntMediaApplicationAdapter+BROADCAST_STATUS_CREATED,1084,40,3217,102,1,,"public Result addIPCamera(Broadcast stream) {
+		Result result=new Result(false);
+
+		if(checkIPCamAddr(stream.getIpAddr())) {
+			logger.info(""type {}"", stream.getType());
+
+			String rtspURL = getRTSPSteramURI(stream);
+
+			if (rtspURL != null) {
+
+				String authparam = stream.getUsername() + "":"" + stream.getPassword() + ""@"";
+				String rtspURLWithAuth = ""rtsp://"" + authparam + rtspURL.substring(""rtsp://"".length());
+				logger.info(""rtsp url with auth: {}"", rtspURLWithAuth);
+				stream.setStreamUrl(rtspURLWithAuth);
+				Date currentDate = new Date();
+				long unixTime = currentDate.getTime();
+
+				stream.setDate(unixTime);
+				stream.setStatus(AntMediaApplicationAdapter.BROADCAST_STATUS_CREATED);
+
+				String id = getStore().save(stream);
+
+
+				if (id.length() > 0) {
+					Broadcast newCam = getStore().get(stream.getStreamId());
+					StreamFetcher streamFetcher = getInstance().startStreaming(newCam);
+					if (streamFetcher != null) {
+						result.setSuccess(true);
+					}
+					else {
+						getStore().delete(stream.getStreamId());
+					}
+				}
+
+			}
+
+		}
+
+		return result;
+	}",False
+12,"addSource(Broadcast,String)",Method,"addStreamSource(Broadcast,String)",,"io.antmedia.rest.model.Result+Result(boolean) io.antmedia.rest.StreamsSourceRestService+checkStreamUrl(String) io.antmedia.rest.StreamsSourceRestService+checkStreamUrl(String) java.util.Date+Date() java.util.Date+getTime() java.util.Date+getTime() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore() java.lang.String+length() java.lang.String+length() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore() java.lang.String+length() java.lang.String+length() io.antmedia.rest.StreamsSourceRestService+addSocialEndpoints(Broadcast,String) io.antmedia.rest.StreamsSourceRestService+addSocialEndpoints(Broadcast,String) io.antmedia.AntMediaApplicationAdapter+startStreaming(Broadcast) io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+startStreaming(Broadcast) io.antmedia.rest.model.Result+setSuccess(boolean) io.antmedia.rest.model.Result+setSuccess(boolean) io.antmedia.rest.model.Result+setMessage(String) io.antmedia.rest.model.Result+setMessage(String)",io.antmedia.rest.StreamsSourceRestService+logger io.antmedia.AntMediaApplicationAdapter+BROADCAST_STATUS_CREATED,770,29,4305,144,1,,"public Result addSource(Broadcast stream, String socialEndpointIds) {
+		Result result=new Result(false);
+
+		if(checkStreamUrl(stream.getStreamUrl())) {
+
+			logger.info(""type {}"", stream.getType());
+			Date currentDate = new Date();
+			long unixTime = currentDate.getTime();
+
+			stream.setDate(unixTime);
+			stream.setStatus(AntMediaApplicationAdapter.BROADCAST_STATUS_CREATED);
+
+			String id = getStore().save(stream);
+
+			if (id.length() > 0) {
+				Broadcast newSource = getStore().get(stream.getStreamId());
+
+				if (socialEndpointIds != null && socialEndpointIds.length()>0) {
+					addSocialEndpoints(newSource, socialEndpointIds);
+				}
+
+				getInstance().startStreaming(newSource);
+			}
+
+			result.setSuccess(true);
+			result.setMessage(id);
+		}
+		return result;
+	}",False
+13,"addSocialEndpoints(Broadcast,String)",Method,"addSource(Broadcast,String) updateCamInfo(Broadcast,String)",,"io.antmedia.AntMediaApplicationAdapter+getVideoServiceEndpoints() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+getVideoServiceEndpoints() java.lang.String+split(String) java.lang.String+split(String) java.util.Map+get(Object) java.util.Map+get(Object) io.antmedia.social.endpoint.VideoServiceEndpoint+createBroadcast(String,String,String,boolean,boolean,int,boolean) io.antmedia.social.endpoint.VideoServiceEndpoint+createBroadcast(String,String,String,boolean,boolean,int,boolean) io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore()",io.antmedia.rest.StreamsSourceRestService+logger,877,22,5078,174,2,,"private void addSocialEndpoints(Broadcast streamSource, String socialEndpointIds) {
+		Map<String, VideoServiceEndpoint> endPointServiceList = getInstance().getVideoServiceEndpoints();
+
+		String[] endpointIds = socialEndpointIds.split("","");
+
+		if (endPointServiceList != null) {
+			for (String endpointId : endpointIds) {
+				VideoServiceEndpoint videoServiceEndpoint = endPointServiceList.get(endpointId);
+				if (videoServiceEndpoint != null) {
+					Endpoint endpoint;
+					try {
+						endpoint = videoServiceEndpoint.createBroadcast(streamSource.getName(),
+								streamSource.getDescription(), streamSource.getStreamId(), streamSource.isIs360(), streamSource.isPublicStream(),
+								720, true);
+						getStore().addEndpoint(streamSource.getStreamId(), endpoint);
+					} catch (IOException e) {
+						logger.error(ExceptionUtils.getStackTrace(e));
+					}
+				}
+			}
+		}
+	}",True
+14,getCameraError(String),Method,,,io.antmedia.rest.model.Result+Result(boolean) io.antmedia.streamsource.StreamFetcherManager+getStreamFetcherList() io.antmedia.AntMediaApplicationAdapter+getStreamFetcherManager() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+getStreamFetcherManager() io.antmedia.streamsource.StreamFetcherManager+getStreamFetcherList() io.antmedia.streamsource.StreamFetcher+getStream() io.antmedia.streamsource.StreamFetcher+getStream() io.antmedia.streamsource.StreamFetcher+getCameraError() io.antmedia.streamsource.StreamFetcher+getCameraError(),,555,16,5959,202,1,,"@ApiOperation(value = """", notes = ""Notes here"", response = Result.class)
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path(""/getCameraError"")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Result getCameraError(@ApiParam(value = ""id"", required = true) @QueryParam(""id"") String id) {
+		Result result = new Result(true);
+
+		for (StreamFetcher camScheduler : getInstance().getStreamFetcherManager().getStreamFetcherList()) {
+			if (camScheduler.getStream().getIpAddr().equals(id)) {
+				result = camScheduler.getCameraError();
+			}
+		}
+
+		return result;
+	}",False
+15,synchUserVodList(),Method,,io.antmedia.test.rest.StreamSourceRestServiceUnitTest+synchUserVodList(),"io.antmedia.AntMediaApplicationAdapter+getAppSettings() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+getAppSettings() java.lang.String+length() java.lang.String+length() io.antmedia.AntMediaApplicationAdapter+synchUserVoDFolder(String,String) io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+synchUserVoDFolder(String,String) io.antmedia.rest.model.Result+Result(boolean,String,int)",io.antmedia.rest.StreamsSourceRestService+logger,628,24,6517,218,1,,"@ApiOperation(value = """", notes = ""Notes here"", response = Result.class)
+	@GET
+	@Path(""/synchUserVoDList"")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Result synchUserVodList() {
+		boolean result = false;
+		int errorId = -1;
+		String message = """";
+
+		String vodFolder = getInstance().getAppSettings().getVodFolder();
+
+		logger.info(""synch user vod list vod folder is {}"", vodFolder);
+
+		if (vodFolder != null && vodFolder.length() > 0) {
+
+			result = getInstance().synchUserVoDFolder(null, vodFolder);
+		}
+		else {
+			errorId = 404;
+			message = ""no vod folder defined"";
+		}
+
+		return new Result(result, message, errorId);
+	}",False
+16,"updateCamInfo(Broadcast,String)",Method,,io.antmedia.test.rest.StreamSourceRestServiceUnitTest+testUpdateCamInfo(),"io.antmedia.rest.StreamsSourceRestService+checkStreamUrl(String) io.antmedia.rest.StreamsSourceRestService+checkStreamUrl(String) io.antmedia.AntMediaApplicationAdapter+stopStreaming(Broadcast) io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+stopStreaming(Broadcast) java.lang.Thread+sleep(long) java.lang.Thread+sleep(long) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() java.lang.Thread+interrupt() java.lang.Thread+currentThread() java.lang.Thread+currentThread() java.lang.Thread+interrupt() io.antmedia.rest.StreamsSourceRestService+getRTSPSteramURI(Broadcast) io.antmedia.rest.StreamsSourceRestService+getRTSPSteramURI(Broadcast) java.lang.String+substring(int) java.lang.String+substring(int) java.lang.String+length() java.lang.String+length() java.lang.Thread+sleep(long) java.lang.Thread+sleep(long) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage() java.lang.Thread+interrupt() java.lang.Thread+currentThread() java.lang.Thread+currentThread() java.lang.Thread+interrupt() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore() io.antmedia.rest.StreamsSourceRestService+getStore() java.lang.String+length() java.lang.String+length() io.antmedia.rest.StreamsSourceRestService+addSocialEndpoints(Broadcast,String) io.antmedia.rest.StreamsSourceRestService+addSocialEndpoints(Broadcast,String) io.antmedia.AntMediaApplicationAdapter+startStreaming(Broadcast) io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+startStreaming(Broadcast) io.antmedia.rest.model.Result+Result(boolean)",io.antmedia.rest.StreamsSourceRestService+logger io.antmedia.rest.StreamsSourceRestService+logger io.antmedia.AntMediaApplicationAdapter+IP_CAMERA io.antmedia.rest.StreamsSourceRestService+logger io.antmedia.rest.StreamsSourceRestService+logger,1759,50,7150,246,1,,"@ApiOperation(value = """", notes = ""Notes here"", response = Result.class)
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path(""/updateCamInfo"")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Result updateCamInfo(@ApiParam(value = ""broadcast"", required = true) Broadcast broadcast, @QueryParam(""socialNetworks"") String socialNetworksToPublish) {
+		boolean result = false;
+		logger.debug(""update cam info for stream {}"", broadcast.getStreamId());
+
+		if( checkStreamUrl(broadcast.getStreamUrl()) && broadcast.getStatus()!=null){
+			getInstance().stopStreaming(broadcast);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				logger.error(e.getMessage());
+				Thread.currentThread().interrupt();
+			}
+			if(broadcast.getType().equals(AntMediaApplicationAdapter.IP_CAMERA)) {
+				String rtspURL = getRTSPSteramURI(broadcast);
+
+				if (rtspURL != null) {
+
+					String authparam = broadcast.getUsername() + "":"" + broadcast.getPassword() + ""@"";
+					String rtspURLWithAuth = ""rtsp://"" + authparam + rtspURL.substring(""rtsp://"".length());
+					logger.info(""new RTSP URL: {}"" , rtspURLWithAuth);
+					broadcast.setStreamUrl(rtspURLWithAuth);
+				}
+			}
+	
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				logger.error(e.getMessage());
+				Thread.currentThread().interrupt();
+			}
+
+			result = getStore().editStreamSourceInfo(broadcast);
+			
+			Broadcast fetchedBroadcast = getStore().get(broadcast.getStreamId());
+			getStore().removeAllEndpoints(fetchedBroadcast.getStreamId());
+
+			if (socialNetworksToPublish != null && socialNetworksToPublish.length() > 0) {
+				addSocialEndpoints(fetchedBroadcast, socialNetworksToPublish);
+			}
+			
+			
+			getInstance().startStreaming(broadcast);
+		}
+		return new Result(result);
+	}",False
+17,searchOnvifDevices(),Method,,,"java.net.NetworkInterface+getNetworkInterfaces() java.net.NetworkInterface+getNetworkInterfaces() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() java.net.NetworkInterface+getInetAddresses() java.net.NetworkInterface+getInetAddresses() java.util.Enumeration+hasMoreElements() java.util.Enumeration+hasMoreElements() java.lang.String+isEmpty() java.lang.String+isEmpty() java.util.Enumeration+nextElement() java.util.Enumeration+nextElement() java.net.InetAddress+isLoopbackAddress() java.net.InetAddress+isLoopbackAddress() java.net.InetAddress+isSiteLocalAddress() java.net.InetAddress+isSiteLocalAddress() java.net.InetAddress+getHostAddress() java.net.InetAddress+getHostAddress() java.lang.String+split(String) java.lang.String+split(String) java.util.ArrayList+add(E) java.util.ArrayList+add(E) io.antmedia.ipcamera.onvifdiscovery.OnvifDiscovery+discoverOnvifDevices(boolean,ArrayList<String>) io.antmedia.ipcamera.onvifdiscovery.OnvifDiscovery+discoverOnvifDevices(boolean,ArrayList<String>) java.util.List+size() java.util.List+size() java.util.List+isEmpty() java.util.List+isEmpty() java.util.List+size() java.util.List+size() java.net.URL+toString() java.util.List+get(int) java.util.List+get(int) java.net.URL+toString()",io.antmedia.rest.StreamsSourceRestService+logger io.antmedia.rest.StreamsSourceRestService+logger io.antmedia.rest.StreamsSourceRestService+HTTP,1603,60,8912,296,1,,"@ApiOperation(value = """", notes = ""Notes here"", response = Result.class)
+	@GET
+	@Path(""/searchOnvifDevices"")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String[] searchOnvifDevices() {
+
+		String localIP = null;
+		String[] list = null;
+		Enumeration<NetworkInterface> interfaces = null;
+		try {
+			interfaces = NetworkInterface.getNetworkInterfaces();
+		} catch (SocketException e) {
+			// handle error
+		}
+
+		if (interfaces != null) {
+			while (interfaces.hasMoreElements()) {
+				NetworkInterface i = interfaces.nextElement();
+				Enumeration<InetAddress> addresses = i.getInetAddresses();
+				while (addresses.hasMoreElements() && (localIP == null || localIP.isEmpty())) {
+					InetAddress address = addresses.nextElement();
+					if (!address.isLoopbackAddress() && address.isSiteLocalAddress()) {
+						localIP = address.getHostAddress();
+					}
+				}
+			}
+			logger.warn(""IP Address: {} "" , localIP);
+		}
+
+		if (localIP != null) {
+
+			String[] ipAddrParts = localIP.split(""\\."");
+
+			String ipAd = ipAddrParts[0] + ""."" + ipAddrParts[1] + ""."" + ipAddrParts[2] + ""."";
+
+			logger.warn(""inside of auto discovery ip Addr {}"", ipAd);
+
+			ArrayList<String> addressList = new ArrayList<>();
+
+			for (int i = 2; i < 255; i++) {
+				addressList.add(ipAd + i);
+
+			}
+
+			List<URL> onvifDevices = OnvifDiscovery.discoverOnvifDevices(true, addressList);
+
+			list = new String[onvifDevices.size()];
+
+			if (!onvifDevices.isEmpty()) {
+
+				for (int i = 0; i < onvifDevices.size(); i++) {
+
+					list[i] = StringUtils.substringBetween(onvifDevices.get(i).toString(), HTTP, ""/"");
+				}
+			}
+
+		}
+
+		return list;
+	}",False
+18,moveUp(String),Method,,,io.antmedia.AntMediaApplicationAdapter+getOnvifCamera(String) io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+getOnvifCamera(String) io.antmedia.ipcamera.OnvifCamera+MoveUp() io.antmedia.ipcamera.OnvifCamera+MoveUp() io.antmedia.rest.model.Result+Result(boolean),,410,13,10518,357,1,,"@ApiOperation(value = """", notes = ""Notes here"", response = Result.class)
+	@GET
+	@Path(""/moveUp"")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Result moveUp(@ApiParam(value = ""id"", required = true) @QueryParam(""id"") String id) {
+		boolean result = false;
+		OnvifCamera camera = getInstance().getOnvifCamera(id);
+		if (camera != null) {
+			camera.MoveUp();
+			result = true;
+		}
+		return new Result(result);
+	}",False
+19,moveDown(String),Method,,,io.antmedia.AntMediaApplicationAdapter+getOnvifCamera(String) io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+getOnvifCamera(String) io.antmedia.ipcamera.OnvifCamera+MoveDown() io.antmedia.ipcamera.OnvifCamera+MoveDown() io.antmedia.rest.model.Result+Result(boolean),,416,13,10931,371,1,,"@ApiOperation(value = """", notes = ""Notes here"", response = Result.class)
+	@GET
+	@Path(""/moveDown"")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Result moveDown(@ApiParam(value = ""id"", required = true) @QueryParam(""id"") String id) {
+		boolean result = false;
+		OnvifCamera camera = getInstance().getOnvifCamera(id);
+		if (camera != null) {
+			camera.MoveDown();
+			result = true;
+		}
+		return new Result(result);
+	}",False
+20,moveLeft(String),Method,,,io.antmedia.AntMediaApplicationAdapter+getOnvifCamera(String) io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+getOnvifCamera(String) io.antmedia.ipcamera.OnvifCamera+MoveLeft() io.antmedia.ipcamera.OnvifCamera+MoveLeft() io.antmedia.rest.model.Result+Result(boolean),,416,13,11350,385,1,,"@ApiOperation(value = """", notes = ""Notes here"", response = Result.class)
+	@GET
+	@Path(""/moveLeft"")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Result moveLeft(@ApiParam(value = ""id"", required = true) @QueryParam(""id"") String id) {
+		boolean result = false;
+		OnvifCamera camera = getInstance().getOnvifCamera(id);
+		if (camera != null) {
+			camera.MoveLeft();
+			result = true;
+		}
+		return new Result(result);
+	}",False
+21,moveRight(String),Method,,,io.antmedia.AntMediaApplicationAdapter+getOnvifCamera(String) io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.AntMediaApplicationAdapter+getOnvifCamera(String) io.antmedia.ipcamera.OnvifCamera+MoveRight() io.antmedia.ipcamera.OnvifCamera+MoveRight() io.antmedia.rest.model.Result+Result(boolean),,419,13,11769,399,1,,"@ApiOperation(value = """", notes = ""Notes here"", response = Result.class)
+	@GET
+	@Path(""/moveRight"")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Result moveRight(@ApiParam(value = ""id"", required = true) @QueryParam(""id"") String id) {
+		boolean result = false;
+		OnvifCamera camera = getInstance().getOnvifCamera(id);
+		if (camera != null) {
+			camera.MoveRight();
+			result = true;
+		}
+		return new Result(result);
+	}",False
+22,getAppContext(),Method,getInstance(),,,io.antmedia.rest.StreamsSourceRestService+servletContext io.antmedia.rest.StreamsSourceRestService+appCtx io.antmedia.rest.StreamsSourceRestService+servletContext io.antmedia.rest.StreamsSourceRestService+appCtx,241,8,12191,410,2,,"@Nullable
+	private ApplicationContext getAppContext() {
+		if (servletContext != null) {
+			appCtx = (ApplicationContext) servletContext
+					.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+		}
+		return appCtx;
+	}",True
+23,getInstance(),Method,"addIPCamera(Broadcast) addSource(Broadcast,String) addSocialEndpoints(Broadcast,String) getCameraError(String) synchUserVodList() synchUserVodList() updateCamInfo(Broadcast,String) updateCamInfo(Broadcast,String) moveUp(String) moveDown(String) moveLeft(String) moveRight(String) getScope()",,io.antmedia.rest.StreamsSourceRestService+getAppContext() io.antmedia.rest.StreamsSourceRestService+getAppContext(),io.antmedia.rest.StreamsSourceRestService+appInstance io.antmedia.rest.StreamsSourceRestService+appInstance io.antmedia.rest.StreamsSourceRestService+appInstance,193,6,12435,418,1,,"public AntMediaApplicationAdapter getInstance() {
+		if (appInstance == null) {
+			appInstance = (AntMediaApplicationAdapter) getAppContext().getBean(""web.handler"");
+		}
+		return appInstance;
+	}",True
+24,getScope(),Method,,,io.antmedia.rest.StreamsSourceRestService+getInstance() io.antmedia.rest.StreamsSourceRestService+getInstance(),io.antmedia.rest.StreamsSourceRestService+scope io.antmedia.rest.StreamsSourceRestService+scope io.antmedia.rest.StreamsSourceRestService+scope,109,6,12631,425,1,,"public IScope getScope() {
+		if (scope == null) {
+			scope = getInstance().getScope();
+		}
+		return scope;
+	}",True
+25,setScope(IScope),Method,,,,io.antmedia.rest.StreamsSourceRestService+scope io.antmedia.rest.StreamsSourceRestService+scope,61,3,12744,432,1,,"public void setScope(IScope scope) {
+		this.scope = scope;
+	}",True
+26,getStore(),Method,"addIPCamera(Broadcast) addIPCamera(Broadcast) addIPCamera(Broadcast) addSource(Broadcast,String) addSource(Broadcast,String) addSocialEndpoints(Broadcast,String) updateCamInfo(Broadcast,String) updateCamInfo(Broadcast,String) updateCamInfo(Broadcast,String)",io.antmedia.test.db.DataStoreFactoryUnitTest+testForUsedClases(),io.antmedia.datastore.db.DataStoreFactory+getDataStore() io.antmedia.rest.StreamsSourceRestService+getDataStoreFactory() io.antmedia.rest.StreamsSourceRestService+getDataStoreFactory() io.antmedia.datastore.db.DataStoreFactory+getDataStore(),io.antmedia.rest.StreamsSourceRestService+dbStore io.antmedia.rest.StreamsSourceRestService+dbStore io.antmedia.rest.StreamsSourceRestService+dbStore,131,6,12808,436,1,,"public IDataStore getStore() {
+		if (dbStore == null) {
+			dbStore = getDataStoreFactory().getDataStore();
+		}
+		return dbStore;
+	}",True
+27,setDataStore(IDataStore),Method,,,,io.antmedia.rest.StreamsSourceRestService+dbStore io.antmedia.rest.StreamsSourceRestService+dbStore,79,3,12943,443,1,,"public void setDataStore(IDataStore dataStore) {
+		this.dbStore = dataStore;
+	}",True
+28,setCameraStore(MapDBStore),Method,,,,io.antmedia.rest.StreamsSourceRestService+dbStore io.antmedia.rest.StreamsSourceRestService+dbStore,85,3,13025,447,1,,"public void setCameraStore(MapDBStore cameraStore) {
+		this.dbStore = cameraStore;
+	}",True
+29,validateIPaddress(String),Method,checkStreamUrl(String) checkIPCamAddr(String),,java.util.regex.Pattern+compile(String) java.util.regex.Pattern+compile(String) java.util.regex.Pattern+compile(String) java.util.regex.Pattern+compile(String) java.util.regex.Matcher+matches() java.util.regex.Pattern+matcher(CharSequence) java.util.regex.Pattern+matcher(CharSequence) java.util.regex.Matcher+matches() java.util.regex.Matcher+matches() java.util.regex.Pattern+matcher(CharSequence) java.util.regex.Pattern+matcher(CharSequence) java.util.regex.Matcher+matches(),io.antmedia.rest.StreamsSourceRestService+logger,565,12,13112,450,1,,"public boolean validateIPaddress(String ipaddress)  {
+		logger.info(""inside check validateIPaddress{}"", ipaddress);
+
+		final String IPV4_REGEX = ""(([0-1]?[0-9]{1,2}\\.)|(2[0-4][0-9]\\.)|(25[0-5]\\.)){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))"";
+		final String loopback_REGEX = ""^localhost$|^127(?:\\.[0-9]+){0,2}\\.[0-9]+$|^(?:0*\\:)*?:?0*1$"";
+
+		Pattern patternIP4 = Pattern.compile(IPV4_REGEX);
+		Pattern patternLoopBack = Pattern.compile(loopback_REGEX);
+
+		return patternIP4.matcher(ipaddress).matches() || patternLoopBack.matcher(ipaddress).matches() ;
+
+	}",False
+30,checkStreamUrl(String),Method,"addSource(Broadcast,String) updateCamInfo(Broadcast,String)",,java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+split(String) io.antmedia.rest.StreamsSourceRestService+validateIPaddress(String) io.antmedia.rest.StreamsSourceRestService+validateIPaddress(String),io.antmedia.rest.StreamsSourceRestService+HTTP,854,39,13680,463,1,,"public boolean checkStreamUrl (String url) {
+
+		boolean streamUrlControl = false;
+		String[] ipAddrParts = null;
+		String ipAddr = null;
+
+		if(url != null && (url.startsWith(HTTP) ||
+				url.startsWith(""https://"") ||
+				url.startsWith(""rtmp://"") ||
+				url.startsWith(""rtmps://"") ||
+				url.startsWith(""rtsp://""))) {
+			streamUrlControl=true;
+			ipAddrParts = url.split(""//"");
+			ipAddr = ipAddrParts[1];
+
+			if (ipAddr.contains(""@"")){
+
+				ipAddrParts = ipAddr.split(""@"");
+				ipAddr = ipAddrParts[1];
+
+			}
+			if (ipAddr.contains("":"")){
+
+				ipAddrParts = ipAddr.split("":"");
+				ipAddr = ipAddrParts[0];
+
+			}
+			if (ipAddr.contains(""/"")){
+
+				ipAddrParts = ipAddr.split(""/"");
+				ipAddr = ipAddrParts[0];
+
+			}
+			if(ipAddr.split(""\\."").length == 4 && !validateIPaddress(ipAddr)){
+				streamUrlControl = false;
+			}
+		}
+		return streamUrlControl;
+	}",False
+31,checkIPCamAddr(String),Method,addIPCamera(Broadcast),,java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+startsWith(String) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+contains(CharSequence) java.lang.String+contains(CharSequence) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+split(String) java.lang.String+split(String) io.antmedia.rest.StreamsSourceRestService+validateIPaddress(String) io.antmedia.rest.StreamsSourceRestService+validateIPaddress(String),io.antmedia.rest.StreamsSourceRestService+HTTP io.antmedia.rest.StreamsSourceRestService+logger,901,42,14537,503,1,,"public boolean checkIPCamAddr (String url) {
+
+		boolean ipAddrControl = false;
+		String[] ipAddrParts = null;
+		String ipAddr = url;
+
+		if(url != null && (url.startsWith(HTTP) ||
+				url.startsWith(""https://"") ||
+				url.startsWith(""rtmp://"") ||
+				url.startsWith(""rtmps://"") ||
+				url.startsWith(""rtsp://""))) {
+
+			ipAddrParts = url.split(""//"");
+			ipAddr = ipAddrParts[1];
+			ipAddrControl=true;
+
+		}
+		if (ipAddr != null) {
+			if (ipAddr.contains(""@"")){
+
+				ipAddrParts = ipAddr.split(""@"");
+				ipAddr = ipAddrParts[1];
+
+			}
+			if (ipAddr.contains("":"")){
+
+				ipAddrParts = ipAddr.split("":"");
+				ipAddr = ipAddrParts[0];
+
+			}
+			if (ipAddr.contains(""/"")){
+				ipAddrParts = ipAddr.split(""/"");
+				ipAddr = ipAddrParts[0];
+			}
+			logger.info(""IP: {}"", ipAddr);
+
+			if(ipAddr.split(""\\."").length == 4 && validateIPaddress(ipAddr)){
+				ipAddrControl = true;
+			}
+		}
+		return ipAddrControl;
+	}",False
+32,getDataStoreFactory(),Method,getStore(),,,io.antmedia.rest.StreamsSourceRestService+dataStoreFactory io.antmedia.rest.StreamsSourceRestService+servletContext io.antmedia.rest.StreamsSourceRestService+dataStoreFactory io.antmedia.rest.StreamsSourceRestService+dataStoreFactory,291,7,15443,547,1,,"public DataStoreFactory getDataStoreFactory() {
+		if(dataStoreFactory == null) {
+			WebApplicationContext ctxt = WebApplicationContextUtils.getWebApplicationContext(servletContext); 
+			dataStoreFactory = (DataStoreFactory) ctxt.getBean(""dataStoreFactory"");
+		}
+		return dataStoreFactory;
+	}",True
+33,setDataStoreFactory(DataStoreFactory),Method,,io.antmedia.test.db.DataStoreFactoryUnitTest+testForUsedClases(),,io.antmedia.rest.StreamsSourceRestService+dataStoreFactory io.antmedia.rest.StreamsSourceRestService+dataStoreFactory,115,3,15738,556,1,,"public void setDataStoreFactory(DataStoreFactory dataStoreFactory) {
+		this.dataStoreFactory = dataStoreFactory;
+	}",True

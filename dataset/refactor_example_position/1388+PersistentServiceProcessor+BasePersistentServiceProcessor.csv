@@ -1,0 +1,262 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,Op,Field,,,,,7,1,3187,73,0,,enum Op,False
+2,desc,Field,Op(String),,,,26,1,3442,89,18,,private final String desc;,False
+3,Op(String),Method,,,,com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+desc com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+desc,57,3,3486,91,0,,"Op(String desc) {
+            this.desc = desc;
+        }",False
+4,protocol,Field,"PersistentServiceProcessor(ProtocolManager,ClusterVersionJudgement) init() init()",,,,34,1,3559,96,18,,private final CPProtocol protocol;,False
+5,kvStorage,Field,"PersistentServiceProcessor(ProtocolManager,ClusterVersionJudgement) loadSnapshotOperate()",,,,34,1,3603,98,18,,private final KvStorage kvStorage;,True
+6,versionJudgement,Field,"PersistentServiceProcessor(ProtocolManager,ClusterVersionJudgement) init()",,,,55,1,3647,100,18,,private final ClusterVersionJudgement versionJudgement;,True
+7,serializer,Field,"PersistentServiceProcessor(ProtocolManager,ClusterVersionJudgement)",,,,36,1,3712,102,18,,private final Serializer serializer;,True
+8,lock,Field,,,,,177,4,3758,107,18,"/** 
+ * During snapshot processing, the processing of other requests needs to be paused.
+ */
+","/**
+     * During snapshot processing, the processing of other requests needs to be paused.
+     */
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();",True
+9,readLock,Field,,,,,73,1,3945,109,18,,private final ReentrantReadWriteLock.ReadLock readLock = lock.readLock();,True
+10,notifier,Field,"PersistentServiceProcessor(ProtocolManager,ClusterVersionJudgement)",,,,42,1,4028,111,18,,private final PersistentNotifier notifier;,True
+11,hasLeader,Field,,,,,100,4,4080,116,66,"/** 
+ * Is there a leader node currently.
+ */
+","/**
+     * Is there a leader node currently.
+     */
+    private volatile boolean hasLeader = false;",False
+12,hasError,Field,,,,,106,4,4190,121,66,"/** 
+ * Whether an unrecoverable error occurred.
+ */
+","/**
+     * Whether an unrecoverable error occurred.
+     */
+    private volatile boolean hasError = false;",True
+13,startNotify,Field,,,,,135,4,4306,126,66,"/** 
+ * If use old raft, should not notify listener even new listener add.
+ */
+","/**
+     * If use old raft, should not notify listener even new listener add.
+     */
+    private volatile boolean startNotify = false;",True
+14,"PersistentServiceProcessor(ProtocolManager,ClusterVersionJudgement)",Method,,,"com.alibaba.nacos.core.distributed.ProtocolManager+getCpProtocol() com.alibaba.nacos.core.distributed.ProtocolManager+getCpProtocol() com.alibaba.nacos.naming.consistency.persistent.impl.NamingKvStorage+NamingKvStorage(String) java.nio.file.Paths+get(String,String[]) java.nio.file.Paths+get(String,String[]) com.alibaba.nacos.consistency.SerializeFactory+getSerializer(String) com.alibaba.nacos.consistency.SerializeFactory+getSerializer(String) com.alibaba.nacos.naming.consistency.persistent.PersistentNotifier+PersistentNotifier(Function<String,Record>) com.alibaba.nacos.core.storage.kv.KvStorage+get(byte[]) com.alibaba.nacos.core.storage.kv.KvStorage+get(byte[]) com.alibaba.nacos.common.utils.ByteUtils+toBytes(String) com.alibaba.nacos.common.utils.ByteUtils+toBytes(String) com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Type) com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Type) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+getDatumTypeFromKey(String) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+getDatumTypeFromKey(String) com.alibaba.nacos.api.exception.runtime.NacosRuntimeException+NacosRuntimeException(int,String) com.alibaba.nacos.core.exception.KvStorageException+getErrCode() com.alibaba.nacos.core.exception.KvStorageException+getErrCode() com.alibaba.nacos.core.exception.KvStorageException+getErrMsg() com.alibaba.nacos.core.exception.KvStorageException+getErrMsg() com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+init() com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+init()",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+protocol com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+protocol com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+versionJudgement com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+versionJudgement com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+kvStorage com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+kvStorage com.alibaba.nacos.naming.misc.UtilsAndCommons+DATA_BASE_DIR com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifier com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifier com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+kvStorage com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.consistency.Datum+value,895,17,4451,128,1,,"public PersistentServiceProcessor(final ProtocolManager protocolManager,
+            final ClusterVersionJudgement versionJudgement) throws Exception {
+        this.protocol = protocolManager.getCpProtocol();
+        this.versionJudgement = versionJudgement;
+        this.kvStorage = new NamingKvStorage(Paths.get(UtilsAndCommons.DATA_BASE_DIR, ""data"").toString());
+        this.serializer = SerializeFactory.getSerializer(""JSON"");
+        this.notifier = new PersistentNotifier(key -> {
+            try {
+                byte[] data = kvStorage.get(ByteUtils.toBytes(key));
+                Datum datum = serializer.deserialize(data, getDatumTypeFromKey(key));
+                return null != datum ? datum.value : null;
+            } catch (KvStorageException ex) {
+                throw new NacosRuntimeException(ex.getErrCode(), ex.getErrMsg());
+            }
+        });
+        init();
+    }",False
+15,init(),Method,"PersistentServiceProcessor(ProtocolManager,ClusterVersionJudgement)",,"com.alibaba.nacos.common.notify.NotifyCenter+registerToPublisher(Class<? extends Event>,int) com.alibaba.nacos.common.notify.NotifyCenter+registerToPublisher(Class<? extends Event>,int) com.alibaba.nacos.consistency.ConsistencyProtocol+addLogProcessors(Collection<P>) com.alibaba.nacos.consistency.ConsistencyProtocol+addLogProcessors(Collection<P>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) com.alibaba.nacos.consistency.ProtocolMetaData+subscribe(String,String,Observer) com.alibaba.nacos.consistency.ConsistencyProtocol+protocolMetaData() com.alibaba.nacos.consistency.ConsistencyProtocol+protocolMetaData() com.alibaba.nacos.consistency.ProtocolMetaData+subscribe(String,String,Observer) com.alibaba.nacos.common.utils.StringUtils+isNotBlank(String) com.alibaba.nacos.common.utils.StringUtils+isNotBlank(String) java.lang.String+valueOf(Object) java.lang.String+valueOf(Object) com.alibaba.nacos.sys.env.EnvUtil+getProperty(String,Class<T>,T) com.alibaba.nacos.sys.env.EnvUtil+getProperty(String,Class<T>,T) com.alibaba.nacos.common.notify.NotifyCenter+registerSubscriber(Subscriber) com.alibaba.nacos.common.notify.NotifyCenter+registerSubscriber(Subscriber) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+waitLeader() com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+waitLeader() com.alibaba.nacos.naming.consistency.persistent.ClusterVersionJudgement+registerObserver(Consumer<Boolean>,int) com.alibaba.nacos.naming.consistency.persistent.ClusterVersionJudgement+registerObserver(Consumer<Boolean>,int) com.alibaba.nacos.common.notify.NotifyCenter+registerSubscriber(Subscriber) com.alibaba.nacos.common.notify.NotifyCenter+registerSubscriber(Subscriber)",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+protocol com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+protocol com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+protocol com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+protocol com.alibaba.nacos.naming.utils.Constants+NAMING_PERSISTENT_SERVICE_GROUP com.alibaba.nacos.consistency.cp.MetadataKey+LEADER_META_DATA com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+hasLeader com.alibaba.nacos.naming.utils.Constants+NACOS_NAMING_USE_NEW_RAFT_FIRST com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifier com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+startNotify com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+versionJudgement com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+versionJudgement com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifier com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+startNotify,1039,21,5356,147,2,,"@SuppressWarnings(""unchecked"")
+    private void init() {
+        NotifyCenter.registerToPublisher(ValueChangeEvent.class, 16384);
+        this.protocol.addLogProcessors(Collections.singletonList(this));
+        this.protocol.protocolMetaData()
+                .subscribe(Constants.NAMING_PERSISTENT_SERVICE_GROUP, MetadataKey.LEADER_META_DATA,
+                        (o, arg) -> hasLeader = StringUtils.isNotBlank(String.valueOf(arg)));
+        // If you choose to use the new RAFT protocol directly, there will be no compatible logical execution
+        if (EnvUtil.getProperty(Constants.NACOS_NAMING_USE_NEW_RAFT_FIRST, Boolean.class, false)) {
+            NotifyCenter.registerSubscriber(notifier);
+            waitLeader();
+            startNotify = true;
+        } else {
+            this.versionJudgement.registerObserver(isNewVersion -> {
+                if (isNewVersion) {
+                    NotifyCenter.registerSubscriber(notifier);
+                    startNotify = true;
+                }
+            }, 10);
+        }
+    }",False
+16,waitLeader(),Method,init(),,java.util.concurrent.TimeUnit+sleep(long) java.util.concurrent.TimeUnit+sleep(long),com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+hasLeader com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+hasError com.alibaba.nacos.naming.misc.Loggers+RAFT java.util.concurrent.TimeUnit+MILLISECONDS,284,9,6405,168,2,,"private void waitLeader() {
+        while (!hasLeader && !hasError) {
+            Loggers.RAFT.info(""Waiting Jraft leader vote ..."");
+            try {
+                TimeUnit.MILLISECONDS.sleep(500);
+            } catch (InterruptedException ignored) {
+            }
+        }
+    }",False
+17,onRequest(ReadRequest),Method,,,"com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Class<T>) com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Class<T>) java.util.concurrent.locks.Lock+lock() java.util.concurrent.locks.Lock+lock() com.alibaba.nacos.core.storage.kv.KvStorage+batchGet(List<byte[]>) com.alibaba.nacos.core.storage.kv.KvStorage+batchGet(List<byte[]>) com.alibaba.nacos.naming.consistency.persistent.impl.BatchReadResponse+BatchReadResponse() java.util.Map+forEach(BiConsumer) java.util.Map+forEach(BiConsumer) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.core.exception.KvStorageException+getErrMsg() com.alibaba.nacos.core.exception.KvStorageException+getErrMsg() java.util.concurrent.locks.Lock+unlock() java.util.concurrent.locks.Lock+unlock()",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+readLock com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+kvStorage com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer,828,18,6699,179,1,,"@Override
+    public Response onRequest(ReadRequest request) {
+        final List<byte[]> keys = serializer
+                .deserialize(request.getData().toByteArray(), TypeUtils.parameterize(List.class, byte[].class));
+        final Lock lock = readLock;
+        lock.lock();
+        try {
+            final Map<byte[], byte[]> result = kvStorage.batchGet(keys);
+            final BatchReadResponse response = new BatchReadResponse();
+            result.forEach(response::append);
+            return Response.newBuilder().setSuccess(true).setData(ByteString.copyFrom(serializer.serialize(response)))
+                    .build();
+        } catch (KvStorageException e) {
+            return Response.newBuilder().setSuccess(false).setErrMsg(e.getErrMsg()).build();
+        } finally {
+            lock.unlock();
+        }
+    }",True
+18,onApply(WriteRequest),Method,,,"com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Class<T>) com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Class<T>) java.util.concurrent.locks.Lock+lock() java.util.concurrent.locks.Lock+lock() com.alibaba.nacos.core.storage.kv.KvStorage+batchPut(List<byte[]>,List<byte[]>) com.alibaba.nacos.core.storage.kv.KvStorage+batchPut(List<byte[]>,List<byte[]>) com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getKeys() com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getKeys() com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getValues() com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getValues() com.alibaba.nacos.core.storage.kv.KvStorage+batchDelete(List<byte[]>) com.alibaba.nacos.core.storage.kv.KvStorage+batchDelete(List<byte[]>) com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getKeys() com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getKeys() com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+publishValueChangeEvent(Op,BatchWriteRequest) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+publishValueChangeEvent(Op,BatchWriteRequest) com.alibaba.nacos.core.exception.KvStorageException+getErrMsg() com.alibaba.nacos.core.exception.KvStorageException+getErrMsg() java.util.concurrent.locks.Lock+unlock() java.util.concurrent.locks.Lock+unlock()",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+Op com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+readLock com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+kvStorage com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+kvStorage,1107,26,7537,198,1,,"@Override
+    public Response onApply(WriteRequest request) {
+        final byte[] data = request.getData().toByteArray();
+        final BatchWriteRequest bwRequest = serializer.deserialize(data, BatchWriteRequest.class);
+        final Op op = Op.valueOf(request.getOperation());
+        final Lock lock = readLock;
+        lock.lock();
+        try {
+            switch (op) {
+                case Write:
+                    kvStorage.batchPut(bwRequest.getKeys(), bwRequest.getValues());
+                    break;
+                case Delete:
+                    kvStorage.batchDelete(bwRequest.getKeys());
+                    break;
+                default:
+                    return Response.newBuilder().setSuccess(false).setErrMsg(""unsupport operation : "" + op).build();
+            }
+            publishValueChangeEvent(op, bwRequest);
+            return Response.newBuilder().setSuccess(true).build();
+        } catch (KvStorageException e) {
+            return Response.newBuilder().setSuccess(false).setErrMsg(e.getErrMsg()).build();
+        } finally {
+            lock.unlock();
+        }
+    }",True
+19,"publishValueChangeEvent(Op,BatchWriteRequest)",Method,onApply(WriteRequest),,"com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getKeys() com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getKeys() com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getValues() com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+getValues() java.util.List+size() java.util.List+size() java.lang.String+String(byte[]) java.util.List+get(int) java.util.List+get(int) com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Type) com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Type) java.util.List+get(int) java.util.List+get(int) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+getDatumTypeFromKey(String) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+getDatumTypeFromKey(String) com.alibaba.nacos.naming.consistency.ValueChangeEvent.ValueChangeEventBuilder+action(DataOperation) com.alibaba.nacos.naming.consistency.ValueChangeEvent.ValueChangeEventBuilder+value(Record) com.alibaba.nacos.naming.consistency.ValueChangeEvent.ValueChangeEventBuilder+key(String) com.alibaba.nacos.naming.consistency.ValueChangeEvent+builder() com.alibaba.nacos.naming.consistency.ValueChangeEvent+builder() com.alibaba.nacos.naming.consistency.ValueChangeEvent.ValueChangeEventBuilder+key(String) com.alibaba.nacos.naming.consistency.ValueChangeEvent.ValueChangeEventBuilder+value(Record) com.alibaba.nacos.naming.consistency.ValueChangeEvent.ValueChangeEventBuilder+action(DataOperation) com.alibaba.nacos.common.notify.NotifyCenter+publishEvent(Event) com.alibaba.nacos.common.notify.NotifyCenter+publishEvent(Event)",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.consistency.Datum+value com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+Op,723,12,8654,224,2,,"private void publishValueChangeEvent(final Op op, final BatchWriteRequest request) {
+        final List<byte[]> keys = request.getKeys();
+        final List<byte[]> values = request.getValues();
+        for (int i = 0; i < keys.size(); i++) {
+            final String key = new String(keys.get(i));
+            final Datum datum = serializer.deserialize(values.get(i), getDatumTypeFromKey(key));
+            final Record value = null != datum ? datum.value : null;
+            final ValueChangeEvent event = ValueChangeEvent.builder().key(key).value(value)
+                    .action(Op.Delete.equals(op) ? DataOperation.DELETE : DataOperation.CHANGE).build();
+            NotifyCenter.publishEvent(event);
+        }
+    }",True
+20,group(),Method,,,,com.alibaba.nacos.naming.utils.Constants+NAMING_PERSISTENT_SERVICE_GROUP,101,4,9387,238,1,,"@Override
+    public String group() {
+        return Constants.NAMING_PERSISTENT_SERVICE_GROUP;
+    }",True
+21,loadSnapshotOperate(),Method,,,"java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) com.alibaba.nacos.naming.consistency.persistent.impl.NamingSnapshotOperation+NamingSnapshotOperation(KvStorage,ReentrantReadWriteLock)",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+kvStorage com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+kvStorage com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+lock,167,4,9498,243,1,,"@Override
+    public List<SnapshotOperation> loadSnapshotOperate() {
+        return Collections.singletonList(new NamingSnapshotOperation(this.kvStorage, lock));
+    }",True
+22,"put(String,Record)",Method,,,"com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+BatchWriteRequest() com.alibaba.nacos.naming.consistency.Datum+createDatum(String,T) com.alibaba.nacos.naming.consistency.Datum+createDatum(String,T) com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+append(byte[],byte[]) com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+append(byte[],byte[]) com.alibaba.nacos.common.utils.ByteUtils+toBytes(String) com.alibaba.nacos.common.utils.ByteUtils+toBytes(String) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.consistency.ConsistencyProtocol+submit(WriteRequest) com.alibaba.nacos.consistency.ConsistencyProtocol+submit(WriteRequest) com.alibaba.nacos.api.exception.NacosException+NacosException(int,String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.utils.Constants+NAMING_PERSISTENT_SERVICE_GROUP com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+Op com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+protocol,685,13,9675,248,1,,"@Override
+    public void put(String key, Record value) throws NacosException {
+        final BatchWriteRequest req = new BatchWriteRequest();
+        Datum datum = Datum.createDatum(key, value);
+        req.append(ByteUtils.toBytes(key), serializer.serialize(datum));
+        final WriteRequest request = WriteRequest.newBuilder().setData(ByteString.copyFrom(serializer.serialize(req)))
+                .setGroup(Constants.NAMING_PERSISTENT_SERVICE_GROUP).setOperation(Op.Write.desc).build();
+        try {
+            protocol.submit(request);
+        } catch (Exception e) {
+            throw new NacosException(ErrorCode.ProtoSubmitError.getCode(), e.getMessage());
+        }
+    }",False
+23,remove(String),Method,,,"com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+BatchWriteRequest() com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+append(byte[],byte[]) com.alibaba.nacos.naming.consistency.persistent.impl.BatchWriteRequest+append(byte[],byte[]) com.alibaba.nacos.common.utils.ByteUtils+toBytes(String) com.alibaba.nacos.common.utils.ByteUtils+toBytes(String) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.consistency.ConsistencyProtocol+submit(WriteRequest) com.alibaba.nacos.consistency.ConsistencyProtocol+submit(WriteRequest) com.alibaba.nacos.api.exception.NacosException+NacosException(int,String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",com.alibaba.nacos.common.utils.ByteUtils+EMPTY com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.utils.Constants+NAMING_PERSISTENT_SERVICE_GROUP com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+Op com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+protocol,610,12,10370,262,1,,"@Override
+    public void remove(String key) throws NacosException {
+        final BatchWriteRequest req = new BatchWriteRequest();
+        req.append(ByteUtils.toBytes(key), ByteUtils.EMPTY);
+        final WriteRequest request = WriteRequest.newBuilder().setData(ByteString.copyFrom(serializer.serialize(req)))
+                .setGroup(Constants.NAMING_PERSISTENT_SERVICE_GROUP).setOperation(Op.Delete.desc).build();
+        try {
+            protocol.submit(request);
+        } catch (Exception e) {
+            throw new NacosException(ErrorCode.ProtoSubmitError.getCode(), e.getMessage());
+        }
+    }",False
+24,get(String),Method,"notifierDatumIfAbsent(String,RecordListener) notifierAllServiceMeta(RecordListener)",,"java.util.List+add(E) java.util.List+add(E) com.alibaba.nacos.common.utils.ByteUtils+toBytes(String) com.alibaba.nacos.common.utils.ByteUtils+toBytes(String) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.consistency.Serializer+serialize(T) com.alibaba.nacos.consistency.ConsistencyProtocol+getData(ReadRequest) com.alibaba.nacos.consistency.ConsistencyProtocol+getData(ReadRequest) com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Class<T>) com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Class<T>) com.alibaba.nacos.naming.consistency.persistent.impl.BatchReadResponse+getValues() com.alibaba.nacos.naming.consistency.persistent.impl.BatchReadResponse+getValues() java.util.List+isEmpty() java.util.List+isEmpty() com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Type) com.alibaba.nacos.consistency.Serializer+deserialize(byte[],Type) java.util.List+get(int) java.util.List+get(int) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+getDatumTypeFromKey(String) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+getDatumTypeFromKey(String) java.lang.Exception+Exception(String,Throwable) com.alibaba.nacos.api.exception.NacosException+NacosException(int,String) java.lang.Throwable+getMessage() java.lang.Throwable+getMessage()",com.alibaba.nacos.naming.utils.Constants+NAMING_PERSISTENT_SERVICE_GROUP com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+protocol com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+serializer,1032,19,10990,275,1,,"@Override
+    public Datum get(String key) throws NacosException {
+        final List<byte[]> keys = new ArrayList<>(1);
+        keys.add(ByteUtils.toBytes(key));
+        final ReadRequest req = ReadRequest.newBuilder().setGroup(Constants.NAMING_PERSISTENT_SERVICE_GROUP)
+                .setData(ByteString.copyFrom(serializer.serialize(keys))).build();
+        try {
+            Response resp = protocol.getData(req);
+            if (resp.getSuccess()) {
+                BatchReadResponse response = serializer
+                        .deserialize(resp.getData().toByteArray(), BatchReadResponse.class);
+                final List<byte[]> rValues = response.getValues();
+                return rValues.isEmpty() ? null : serializer.deserialize(rValues.get(0), getDatumTypeFromKey(key));
+            }
+            throw new NacosException(ErrorCode.ProtoReadError.getCode(), resp.getErrMsg());
+        } catch (Throwable e) {
+            throw new NacosException(ErrorCode.ProtoReadError.getCode(), e.getMessage());
+        }
+    }",False
+25,"listen(String,RecordListener)",Method,,"com.alibaba.nacos.naming.consistency.persistent.PersistentConsistencyServiceDelegateImpl+listen(String,RecordListener)","com.alibaba.nacos.naming.consistency.persistent.PersistentNotifier+registerListener(String,RecordListener) com.alibaba.nacos.naming.consistency.persistent.PersistentNotifier+registerListener(String,RecordListener) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifierDatumIfAbsent(String,RecordListener) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifierDatumIfAbsent(String,RecordListener)",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifier com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+startNotify,236,7,12032,295,1,,"@Override
+    public void listen(String key, RecordListener listener) throws NacosException {
+        notifier.registerListener(key, listener);
+        if (startNotify) {
+            notifierDatumIfAbsent(key, listener);
+        }
+    }",False
+26,"unListen(String,RecordListener)",Method,,"com.alibaba.nacos.naming.consistency.persistent.PersistentConsistencyServiceDelegateImpl+unListen(String,RecordListener)","com.alibaba.nacos.naming.consistency.persistent.PersistentNotifier+deregisterListener(String,RecordListener) com.alibaba.nacos.naming.consistency.persistent.PersistentNotifier+deregisterListener(String,RecordListener)",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifier,153,4,12278,303,1,,"@Override
+    public void unListen(String key, RecordListener listener) throws NacosException {
+        notifier.deregisterListener(key, listener);
+    }",False
+27,onError(Throwable),Method,,,com.alibaba.nacos.consistency.RequestProcessor+onError(Throwable),com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+hasError,113,5,12441,308,1,,"@Override
+    public void onError(Throwable error) {
+        super.onError(error);
+        hasError = true;
+    }",True
+28,isAvailable(),Method,,,,com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+hasLeader com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+hasError,89,4,12564,314,1,,"@Override
+    public boolean isAvailable() {
+        return hasLeader && !hasError;
+    }",False
+29,getDatumTypeFromKey(String),Method,"publishValueChangeEvent(Op,BatchWriteRequest) get(String)",,com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+getClassOfRecordFromKey(String) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+getClassOfRecordFromKey(String),,134,3,12663,318,2,,"private Type getDatumTypeFromKey(String key) {
+        return TypeUtils.parameterize(Datum.class, getClassOfRecordFromKey(key));
+    }",True
+30,getClassOfRecordFromKey(String),Method,getDatumTypeFromKey(String),,com.alibaba.nacos.naming.consistency.KeyBuilder+matchSwitchKey(String) com.alibaba.nacos.naming.consistency.KeyBuilder+matchSwitchKey(String) com.alibaba.nacos.naming.consistency.KeyBuilder+matchServiceMetaKey(String) com.alibaba.nacos.naming.consistency.KeyBuilder+matchServiceMetaKey(String) com.alibaba.nacos.naming.consistency.KeyBuilder+matchInstanceListKey(String) com.alibaba.nacos.naming.consistency.KeyBuilder+matchInstanceListKey(String),,476,10,12807,322,2,,"private Class<? extends Record> getClassOfRecordFromKey(String key) {
+        if (KeyBuilder.matchSwitchKey(key)) {
+            return com.alibaba.nacos.naming.misc.SwitchDomain.class;
+        } else if (KeyBuilder.matchServiceMetaKey(key)) {
+            return com.alibaba.nacos.naming.core.Service.class;
+        } else if (KeyBuilder.matchInstanceListKey(key)) {
+            return com.alibaba.nacos.naming.core.Instances.class;
+        }
+        return Record.class;
+    }",True
+31,"notifierDatumIfAbsent(String,RecordListener)",Method,"listen(String,RecordListener)",,"java.lang.String+equals(Object) java.lang.String+equals(Object) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifierAllServiceMeta(RecordListener) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifierAllServiceMeta(RecordListener) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+get(String) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+get(String) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifierDatum(String,Datum,RecordListener) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifierDatum(String,Datum,RecordListener)",com.alibaba.nacos.naming.consistency.KeyBuilder+SERVICE_META_KEY_PREFIX,372,10,13293,333,2,,"private void notifierDatumIfAbsent(String key, RecordListener listener) throws NacosException {
+        if (KeyBuilder.SERVICE_META_KEY_PREFIX.equals(key)) {
+            notifierAllServiceMeta(listener);
+        } else {
+            Datum datum = get(key);
+            if (null != datum) {
+                notifierDatum(key, datum, listener);
+            }
+        }
+    }",True
+32,notifierAllServiceMeta(RecordListener),Method,"notifierDatumIfAbsent(String,RecordListener)",,"com.alibaba.nacos.core.storage.kv.KvStorage+allKeys() com.alibaba.nacos.core.storage.kv.KvStorage+allKeys() java.lang.String+String(byte[]) com.alibaba.nacos.naming.consistency.RecordListener+interests(String) com.alibaba.nacos.naming.consistency.RecordListener+interests(String) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+get(String) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+get(String) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifierDatum(String,Datum,RecordListener) com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+notifierDatum(String,Datum,RecordListener)",com.alibaba.nacos.naming.consistency.persistent.impl.PersistentServiceProcessor+kvStorage,541,14,13675,347,2,"/** 
+ * This notify should only notify once during startup. See  {@link com.alibaba.nacos.naming.core.ServiceManager#init()}
+ */
+","/**
+     * This notify should only notify once during startup. See {@link com.alibaba.nacos.naming.core.ServiceManager#init()}
+     */
+    private void notifierAllServiceMeta(RecordListener listener) throws NacosException {
+        for (byte[] each : kvStorage.allKeys()) {
+            String key = new String(each);
+            if (listener.interests(key)) {
+                Datum datum = get(key);
+                if (null != datum) {
+                    notifierDatum(key, datum, listener);
+                }
+            }
+        }
+    }",True
+33,"notifierDatum(String,Datum,RecordListener)",Method,"notifierDatumIfAbsent(String,RecordListener) notifierAllServiceMeta(RecordListener)",,"com.alibaba.nacos.naming.consistency.RecordListener+onChange(String,T) com.alibaba.nacos.naming.consistency.RecordListener+onChange(String,T)",com.alibaba.nacos.naming.consistency.Datum+value com.alibaba.nacos.naming.misc.Loggers+RAFT,264,7,14226,359,2,,"private void notifierDatum(String key, Datum datum, RecordListener listener) {
+        try {
+            listener.onChange(key, datum.value);
+        } catch (Exception e) {
+            Loggers.RAFT.error(""NACOS-RAFT failed to notify listener"", e);
+        }
+    }",True

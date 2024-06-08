@@ -1,0 +1,167 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,processEngineConfiguration,Field,,,,,99,1,2286,56,4,,protected ProcessEngineConfiguration processEngineConfiguration = new ProcessEngineConfiguration();,False
+2,transactionManager,Field,setTransactionManager(PlatformTransactionManager),,,,56,1,2388,57,4,,protected PlatformTransactionManager transactionManager;,True
+3,applicationContext,Field,setApplicationContext(ApplicationContext),,,,48,1,2447,58,4,,protected ApplicationContext applicationContext;,False
+4,deploymentName,Field,setDeploymentName(String),,,,57,1,2498,59,4,,"protected String deploymentName = ""SpringAutoDeployment"";",True
+5,deploymentResources,Field,setDeploymentResources(Resource[]),,,,59,1,2558,60,4,,protected Resource[] deploymentResources = new Resource[0];,True
+6,processEngine,Field,,,,,42,1,2620,61,4,,protected ProcessEngineImpl processEngine;,False
+7,jpaEntityManagerFactory,Field,setJpaEntityManagerFactory(Object),,,,41,1,2668,63,4,,protected Object jpaEntityManagerFactory;,True
+8,jpaHandleTransaction,Field,setJpaHandleTransaction(boolean),,,,46,1,2712,64,4,,protected boolean jpaHandleTransaction = true;,True
+9,jpaCloseEntityManager,Field,setJpaCloseEntityManager(boolean),,,,47,1,2761,65,4,,protected boolean jpaCloseEntityManager = true;,True
+10,destroy(),Method,,,org.activiti.engine.impl.ProcessEngineImpl+close() org.activiti.engine.impl.ProcessEngineImpl+close(),org.activiti.spring.ProcessEngineFactoryBean+processEngine org.activiti.spring.ProcessEngineFactoryBean+processEngine,112,5,2815,68,1,,"public void destroy() throws Exception {
+    if (processEngine != null) {
+      processEngine.close();
+    }
+  }",False
+11,setApplicationContext(ApplicationContext),Method,,,,org.activiti.spring.ProcessEngineFactoryBean+applicationContext org.activiti.spring.ProcessEngineFactoryBean+applicationContext,150,3,2931,74,1,,"public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.applicationContext = applicationContext;
+  }",False
+12,getObject(),Method,,,org.activiti.spring.ProcessEngineFactoryBean+initializeSpringTransactionInterceptor() org.activiti.spring.ProcessEngineFactoryBean+initializeSpringTransactionInterceptor() org.activiti.spring.ProcessEngineFactoryBean+initializeExpressionManager() org.activiti.spring.ProcessEngineFactoryBean+initializeExpressionManager() org.activiti.spring.ProcessEngineFactoryBean+initializeJPA() org.activiti.spring.ProcessEngineFactoryBean+initializeJPA() org.activiti.engine.impl.cfg.ProcessEngineConfiguration+buildProcessEngine() org.activiti.engine.impl.cfg.ProcessEngineConfiguration+buildProcessEngine() org.activiti.spring.ProcessEngineFactoryBean+autoDeployResources() org.activiti.spring.ProcessEngineFactoryBean+autoDeployResources() org.activiti.engine.ProcessEngines+registerProcessEngine(ProcessEngine) org.activiti.engine.ProcessEngines+registerProcessEngine(ProcessEngine),org.activiti.spring.ProcessEngineFactoryBean+processEngine org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration org.activiti.spring.ProcessEngineFactoryBean+deploymentResources org.activiti.spring.ProcessEngineFactoryBean+processEngine org.activiti.spring.ProcessEngineFactoryBean+processEngine,414,15,3085,78,1,,"public ProcessEngine getObject() throws Exception {
+    initializeSpringTransactionInterceptor();
+    initializeExpressionManager();
+    initializeJPA();
+
+    processEngine = (ProcessEngineImpl) processEngineConfiguration.buildProcessEngine();
+
+    if (deploymentResources.length > 0) {
+      autoDeployResources();
+    }
+
+    ProcessEngines.registerProcessEngine(processEngine);
+    
+    return processEngine;
+  }",False
+13,initializeSpringTransactionInterceptor(),Method,getObject(),,"org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setTransactionsExternallyManaged(boolean) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setTransactionsExternallyManaged(boolean) java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) org.activiti.engine.impl.interceptor.LogInterceptor+LogInterceptor() java.util.List+add(E) java.util.List+add(E) org.activiti.spring.SpringTransactionInterceptor+SpringTransactionInterceptor(PlatformTransactionManager,int) java.util.List+add(E) java.util.List+add(E) org.activiti.engine.impl.interceptor.CommandContextInterceptor+CommandContextInterceptor() java.util.List+add(E) java.util.List+add(E) org.activiti.engine.impl.interceptor.CommandExecutorImpl+CommandExecutorImpl() org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setCommandInterceptorsTxRequired(List<CommandInterceptor>) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setCommandInterceptorsTxRequired(List<CommandInterceptor>) java.util.ArrayList+ArrayList() java.util.List+add(E) java.util.List+add(E) org.activiti.engine.impl.interceptor.LogInterceptor+LogInterceptor() java.util.List+add(E) java.util.List+add(E) org.activiti.spring.SpringTransactionInterceptor+SpringTransactionInterceptor(PlatformTransactionManager,int) java.util.List+add(E) java.util.List+add(E) org.activiti.engine.impl.interceptor.CommandContextInterceptor+CommandContextInterceptor() java.util.List+add(E) java.util.List+add(E) org.activiti.engine.impl.interceptor.CommandExecutorImpl+CommandExecutorImpl() org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setCommandInterceptorsTxRequiresNew(List<CommandInterceptor>) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setCommandInterceptorsTxRequiresNew(List<CommandInterceptor>)",org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration org.activiti.spring.ProcessEngineFactoryBean+transactionManager org.activiti.spring.ProcessEngineFactoryBean+transactionManager org.activiti.spring.ProcessEngineFactoryBean+transactionManager org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration org.activiti.spring.ProcessEngineFactoryBean+transactionManager org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,1309,19,3503,94,2,,"private void initializeSpringTransactionInterceptor() {
+    processEngineConfiguration.setTransactionsExternallyManaged(transactionManager != null);
+
+    if (transactionManager != null) {
+      List<CommandInterceptor> commandInterceptorsTxRequired = new ArrayList<CommandInterceptor>();
+      commandInterceptorsTxRequired.add(new LogInterceptor());
+      commandInterceptorsTxRequired.add(new SpringTransactionInterceptor(transactionManager, TransactionTemplate.PROPAGATION_REQUIRED));
+      commandInterceptorsTxRequired.add(new CommandContextInterceptor());
+      commandInterceptorsTxRequired.add(new CommandExecutorImpl());
+      processEngineConfiguration.setCommandInterceptorsTxRequired(commandInterceptorsTxRequired);
+      
+      List<CommandInterceptor> commandInterceptorsTxRequiresNew = new ArrayList<CommandInterceptor>();
+      commandInterceptorsTxRequiresNew.add(new LogInterceptor());
+      commandInterceptorsTxRequiresNew.add(new SpringTransactionInterceptor(transactionManager, TransactionTemplate.PROPAGATION_REQUIRES_NEW));
+      commandInterceptorsTxRequiresNew.add(new CommandContextInterceptor());
+      commandInterceptorsTxRequiresNew.add(new CommandExecutorImpl());
+      processEngineConfiguration.setCommandInterceptorsTxRequiresNew(commandInterceptorsTxRequiresNew);
+    }
+  }",True
+14,initializeExpressionManager(),Method,getObject(),,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setExpressionManager(ExpressionManager) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setExpressionManager(ExpressionManager) org.activiti.spring.SpringExpressionManager+SpringExpressionManager(ApplicationContext),org.activiti.spring.ProcessEngineFactoryBean+applicationContext org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration org.activiti.spring.ProcessEngineFactoryBean+applicationContext,198,5,4816,114,4,,"protected void initializeExpressionManager() {
+    if (applicationContext != null) {
+      processEngineConfiguration.setExpressionManager(new SpringExpressionManager(applicationContext));
+    }
+  }",False
+15,initializeJPA(),Method,getObject(),,"org.activiti.engine.impl.cfg.ProcessEngineConfiguration+enableJPA(Object,boolean,boolean) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+enableJPA(Object,boolean,boolean)",org.activiti.spring.ProcessEngineFactoryBean+jpaEntityManagerFactory org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration org.activiti.spring.ProcessEngineFactoryBean+jpaEntityManagerFactory org.activiti.spring.ProcessEngineFactoryBean+jpaHandleTransaction org.activiti.spring.ProcessEngineFactoryBean+jpaCloseEntityManager,196,5,5020,120,2,,"private void initializeJPA() {
+    if(jpaEntityManagerFactory != null) {
+      processEngineConfiguration.enableJPA(jpaEntityManagerFactory, jpaHandleTransaction, jpaCloseEntityManager);
+    }
+  }",True
+16,getObjectType(),Method,,,,,71,3,5222,126,1,,"public Class< ? > getObjectType() {
+    return ProcessEngine.class;
+  }",False
+17,isSingleton(),Method,,,,,51,3,5297,130,1,,"public boolean isSingleton() {
+    return true;
+  }",False
+18,autoDeployResources(),Method,getObject(),,"org.activiti.engine.impl.ProcessEngineImpl+getRepositoryService() org.activiti.engine.impl.ProcessEngineImpl+getRepositoryService() org.activiti.engine.repository.DeploymentBuilder+name(String) org.activiti.engine.repository.DeploymentBuilder+enableDuplicateFiltering() org.activiti.engine.RepositoryService+createDeployment() org.activiti.engine.RepositoryService+createDeployment() org.activiti.engine.repository.DeploymentBuilder+enableDuplicateFiltering() org.activiti.engine.repository.DeploymentBuilder+name(String) java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.lang.String+endsWith(String) java.lang.String+endsWith(String) org.activiti.engine.repository.DeploymentBuilder+addZipInputStream(ZipInputStream) org.activiti.engine.repository.DeploymentBuilder+addZipInputStream(ZipInputStream) java.util.zip.ZipInputStream+ZipInputStream(InputStream) org.activiti.engine.repository.DeploymentBuilder+addInputStream(String,InputStream) org.activiti.engine.repository.DeploymentBuilder+addInputStream(String,InputStream) org.activiti.engine.repository.DeploymentBuilder+deploy() org.activiti.engine.repository.DeploymentBuilder+deploy()",org.activiti.spring.ProcessEngineFactoryBean+processEngine org.activiti.spring.ProcessEngineFactoryBean+deploymentName org.activiti.spring.ProcessEngineFactoryBean+deploymentResources,1218,36,5352,134,4,,"protected void autoDeployResources() throws IOException {
+    RepositoryService repositoryService = processEngine.getRepositoryService();
+    
+    DeploymentBuilder deploymentBuilder = repositoryService
+      .createDeployment()
+      .enableDuplicateFiltering()
+      .name(deploymentName);
+    
+    for (Resource resource : deploymentResources) {
+      String resourceName = null;
+      
+      if (resource instanceof ContextResource) {
+        resourceName = ((ContextResource) resource).getPathWithinContext();
+        
+      } else if (resource instanceof ByteArrayResource) {
+        resourceName = resource.getDescription();
+        
+      } else {
+        try {
+          resourceName = resource.getFile().getAbsolutePath();
+        } catch (IOException e) {
+          resourceName = resource.getFilename();
+        }
+      }
+      
+      if ( resourceName.endsWith("".bar"")
+           || resourceName.endsWith("".zip"")
+           || resourceName.endsWith("".jar"") ) {
+        deploymentBuilder.addZipInputStream(new ZipInputStream(resource.getInputStream()));
+      } else {
+        deploymentBuilder.addInputStream(resourceName, resource.getInputStream());
+      }
+    }
+    
+    deploymentBuilder.deploy();
+  }",True
+19,setTransactionManager(PlatformTransactionManager),Method,,,,org.activiti.spring.ProcessEngineFactoryBean+transactionManager org.activiti.spring.ProcessEngineFactoryBean+transactionManager,136,3,6657,173,1,,"public void setTransactionManager(PlatformTransactionManager transactionManager) {
+    this.transactionManager = transactionManager;
+  }",True
+20,setDeploymentName(String),Method,,,,org.activiti.spring.ProcessEngineFactoryBean+deploymentName org.activiti.spring.ProcessEngineFactoryBean+deploymentName,100,3,6799,177,1,,"public void setDeploymentName(String deploymentName) {
+    this.deploymentName = deploymentName;
+  }",True
+21,setDeploymentResources(Resource[]),Method,,,,org.activiti.spring.ProcessEngineFactoryBean+deploymentResources org.activiti.spring.ProcessEngineFactoryBean+deploymentResources,124,3,6903,181,1,,"public void setDeploymentResources(Resource[] deploymentResources) {
+    this.deploymentResources = deploymentResources;
+  }",True
+22,setDatabaseType(String),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setDatabaseType(String) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setDatabaseType(String),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,116,3,7031,185,1,,"public void setDatabaseType(String databaseType) {
+    processEngineConfiguration.setDatabaseType(databaseType);
+  }",False
+23,setDataSource(DataSource),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setDataSource(DataSource) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setDataSource(DataSource),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,112,3,7151,189,1,,"public void setDataSource(DataSource dataSource) {
+    processEngineConfiguration.setDataSource(dataSource);
+  }",False
+24,setDbSchemaStrategy(String),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setDbSchemaStrategy(String) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setDbSchemaStrategy(String),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,132,3,7267,193,1,,"public void setDbSchemaStrategy(String dbSchemaStrategy) {
+    processEngineConfiguration.setDbSchemaStrategy(dbSchemaStrategy);
+  }",False
+25,setHistoryService(HistoryService),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setHistoryService(HistoryService) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setHistoryService(HistoryService),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,134,3,7403,197,1,,"public void setHistoryService(HistoryService historiyService) {
+    processEngineConfiguration.setHistoryService(historiyService);
+  }",False
+26,setIdentityService(IdentityService),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setIdentityService(IdentityService) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setIdentityService(IdentityService),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,137,3,7541,201,1,,"public void setIdentityService(IdentityService identityService) {
+    processEngineConfiguration.setIdentityService(identityService);
+  }",False
+27,setIdGenerator(IdGenerator),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setIdGenerator(IdGenerator) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setIdGenerator(IdGenerator),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,117,3,7682,205,1,,"public void setIdGenerator(IdGenerator idGenerator) {
+    processEngineConfiguration.setIdGenerator(idGenerator);
+  }",False
+28,setJobExecutor(JobExecutor),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setJobExecutor(JobExecutor) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setJobExecutor(JobExecutor),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,117,3,7803,209,1,,"public void setJobExecutor(JobExecutor jobExecutor) {
+    processEngineConfiguration.setJobExecutor(jobExecutor);
+  }",False
+29,setJobExecutorActivate(boolean),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setJobExecutorActivate(boolean) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setJobExecutorActivate(boolean),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,153,3,7924,213,1,,"public void setJobExecutorActivate(boolean jobExecutorAutoActivate) {
+    processEngineConfiguration.setJobExecutorActivate(jobExecutorAutoActivate);
+  }",False
+30,setProcessEngineName(String),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setProcessEngineName(String) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setProcessEngineName(String),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,136,3,8081,217,1,,"public void setProcessEngineName(String processEngineName) {
+    processEngineConfiguration.setProcessEngineName(processEngineName);
+  }",False
+31,setMailServerHost(String),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerHost(String) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerHost(String),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,124,3,8221,221,1,,"public void setMailServerHost(String mailServerHost) {
+    processEngineConfiguration.setMailServerHost(mailServerHost);
+  }",False
+32,setMailServerPort(int),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerPort(int) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerPort(int),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,121,3,8351,225,1,,"public void setMailServerPort(int mailServerPort) {
+    processEngineConfiguration.setMailServerPort(mailServerPort);
+  }",False
+33,setMailServerUsername(String),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerUsername(String) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerUsername(String),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,120,3,8478,229,1,,"public void setMailServerUsername(String username) {
+    processEngineConfiguration.setMailServerUsername(username);
+  }",False
+34,setMailServerPassword(String),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerPassword(String) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerPassword(String),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,120,3,8604,233,1,,"public void setMailServerPassword(String password) {
+    processEngineConfiguration.setMailServerPassword(password);
+  }",False
+35,setMailServerDefaultFromAddress(String),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerDefaultFrom(String) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setMailServerDefaultFrom(String),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,153,3,8730,237,1,,"public void setMailServerDefaultFromAddress(String defaultFromAddress) {
+    processEngineConfiguration.setMailServerDefaultFrom(defaultFromAddress);
+  }",False
+36,setHistoryLevel(String),Method,,,org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setHistoryLevel(int) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+setHistoryLevel(int) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+parseHistoryLevel(String) org.activiti.engine.impl.cfg.ProcessEngineConfiguration+parseHistoryLevel(String),org.activiti.spring.ProcessEngineFactoryBean+processEngineConfiguration,174,3,8887,241,1,,"public void setHistoryLevel(String historyLevelString) {
+    processEngineConfiguration.setHistoryLevel(ProcessEngineConfiguration.parseHistoryLevel(historyLevelString));
+  }",False
+37,setJpaEntityManagerFactory(Object),Method,,,,org.activiti.spring.ProcessEngineFactoryBean+jpaEntityManagerFactory org.activiti.spring.ProcessEngineFactoryBean+jpaEntityManagerFactory,136,3,9065,245,1,,"public void setJpaEntityManagerFactory(Object jpaEntityManagerFactory) {
+    this.jpaEntityManagerFactory = jpaEntityManagerFactory;
+  }",True
+38,setJpaHandleTransaction(boolean),Method,,,,org.activiti.spring.ProcessEngineFactoryBean+jpaHandleTransaction org.activiti.spring.ProcessEngineFactoryBean+jpaHandleTransaction,125,3,9205,249,1,,"public void setJpaHandleTransaction(boolean jpaHandleTransaction) {
+    this.jpaHandleTransaction = jpaHandleTransaction;
+  }",True
+39,setJpaCloseEntityManager(boolean),Method,,,,org.activiti.spring.ProcessEngineFactoryBean+jpaCloseEntityManager org.activiti.spring.ProcessEngineFactoryBean+jpaCloseEntityManager,129,3,9336,253,1,,"public void setJpaCloseEntityManager(boolean jpaCloseEntityManager) {
+    this.jpaCloseEntityManager = jpaCloseEntityManager;
+  }",True

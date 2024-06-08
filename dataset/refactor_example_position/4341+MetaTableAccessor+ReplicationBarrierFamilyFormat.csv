@@ -1,0 +1,1655 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,LOG,Field,,,,,83,1,4924,110,26,,private static final Logger LOG = LoggerFactory.getLogger(MetaTableAccessor.class);,False
+2,METALOG,Field,,,,,94,1,5010,111,26,,"private static final Logger METALOG = LoggerFactory.getLogger(""org.apache.hadoop.hbase.META"");",False
+3,MetaTableAccessor(),Method,,,,,33,2,5108,113,2,,"private MetaTableAccessor() {
+  }",False
+4,REPLICATION_PARENT_QUALIFIER,Field,,,,,103,2,5145,117,25,,"@VisibleForTesting
+  public static final byte[] REPLICATION_PARENT_QUALIFIER = Bytes.toBytes(""parent"");",True
+5,ESCAPE_BYTE,Field,,,,,52,1,5252,119,26,,private static final byte ESCAPE_BYTE = (byte) 0xFF;,True
+6,SEPARATED_BYTE,Field,,,,,48,1,5308,121,26,,private static final byte SEPARATED_BYTE = 0x00;,True
+7,"fullScanRegions(Connection,ClientMetaTableAccessor.Visitor)",Method,,,"org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor)",,394,9,5442,132,9,"/** 
+ * Performs a full scan of <code>hbase:meta</code> for regions.
+ * @param connection connection we're using
+ * @param visitor Visitor invoked against each row in regions family.
+ */
+","/**
+   * Performs a full scan of <code>hbase:meta</code> for regions.
+   * @param connection connection we're using
+   * @param visitor Visitor invoked against each row in regions family.
+   */
+  public static void fullScanRegions(Connection connection,
+    final ClientMetaTableAccessor.Visitor visitor) throws IOException {
+    scanMeta(connection, null, null, QueryType.REGION, visitor);
+  }",False
+8,fullScanRegions(Connection),Method,,org.apache.hadoop.hbase.master.TestMasterOperationsForRegionReplicas+testCreateTableWithMultipleReplicas() org.apache.hadoop.hbase.util.hbck.OfflineMetaRebuildTestCore+scanMeta(),"org.apache.hadoop.hbase.MetaTableAccessor+fullScan(Connection,QueryType) org.apache.hadoop.hbase.MetaTableAccessor+fullScan(Connection,QueryType)",,265,7,5840,141,9,"/** 
+ * Performs a full scan of <code>hbase:meta</code> for regions.
+ * @param connection connection we're using
+ */
+","/**
+   * Performs a full scan of <code>hbase:meta</code> for regions.
+   * @param connection connection we're using
+   */
+  public static List<Result> fullScanRegions(Connection connection) throws IOException {
+    return fullScan(connection, QueryType.REGION);
+  }",False
+9,"fullScanTables(Connection,ClientMetaTableAccessor.Visitor)",Method,,,"org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor)",,390,9,6109,150,9,"/** 
+ * Performs a full scan of <code>hbase:meta</code> for tables.
+ * @param connection connection we're using
+ * @param visitor Visitor invoked against each row in tables family.
+ */
+","/**
+   * Performs a full scan of <code>hbase:meta</code> for tables.
+   * @param connection connection we're using
+   * @param visitor Visitor invoked against each row in tables family.
+   */
+  public static void fullScanTables(Connection connection,
+    final ClientMetaTableAccessor.Visitor visitor) throws IOException {
+    scanMeta(connection, null, null, QueryType.TABLE, visitor);
+  }",False
+10,"fullScan(Connection,QueryType)",Method,fullScanRegions(Connection),,"org.apache.hadoop.hbase.ClientMetaTableAccessor.CollectAllVisitor+CollectAllVisitor() org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor) org.apache.hadoop.hbase.ClientMetaTableAccessor.CollectingVisitor+getResults() org.apache.hadoop.hbase.ClientMetaTableAccessor.CollectingVisitor+getResults()",,459,11,6503,161,10,"/** 
+ * Performs a full scan of <code>hbase:meta</code>.
+ * @param connection connection we're using
+ * @param type scanned part of meta
+ * @return List of {@link Result}
+ */
+","/**
+   * Performs a full scan of <code>hbase:meta</code>.
+   * @param connection connection we're using
+   * @param type scanned part of meta
+   * @return List of {@link Result}
+   */
+  private static List<Result> fullScan(Connection connection, QueryType type) throws IOException {
+    ClientMetaTableAccessor.CollectAllVisitor v = new ClientMetaTableAccessor.CollectAllVisitor();
+    scanMeta(connection, null, null, type, v);
+    return v.getResults();
+  }",False
+11,getMetaHTable(Connection),Method,"getRegionLocation(Connection,byte[]) getCatalogFamilyRow(Connection,RegionInfo) getRegionResult(Connection,byte[]) scanByRegionEncodedName(Connection,String) scanMeta(Connection,byte[],byte[],QueryType,Filter,int,ClientMetaTableAccessor.Visitor) getClosestRegionInfo(Connection,TableName,byte[]) getTableState(Connection,TableName) putToMetaTable(Connection,Put) putsToMetaTable(Connection,List<Put>) deleteFromMetaTable(Connection,List<Delete>) addSplitsToParent(Connection,RegionInfo,RegionInfo,RegionInfo) getReplicationBarrierResult(Connection,TableName,byte[],byte[]) getReplicationBarrier(Connection,byte[])",org.apache.hadoop.hbase.master.TestMetaFixer+testMergeWithMergedChildRegion() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationsForRegionReplicas() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsRemovedAtTableDeletion() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsAddedAtTableCreation() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsAddedAtRegionSplit() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsAddedAtRegionMerge() org.apache.hadoop.hbase.TestMetaTableAccessor+testMastersSystemTimeIsUsedInUpdateLocations() org.apache.hadoop.hbase.TestMetaTableAccessor+testMastersSystemTimeIsUsedInMergeRegions() org.apache.hadoop.hbase.TestMetaTableAccessor+testEmptyMetaDaughterLocationDuringSplit() org.apache.hadoop.hbase.util.TestHBaseFsckCleanReplicationBarriers+testCleanReplicationBarrierWithDeletedTable(),"java.util.Objects+requireNonNull(T,String) java.util.Objects+requireNonNull(T,String) org.apache.hadoop.hbase.client.Connection+isClosed() org.apache.hadoop.hbase.client.Connection+isClosed() java.io.IOException+IOException(String) org.apache.hadoop.hbase.client.Connection+getTable(TableName) org.apache.hadoop.hbase.client.Connection+getTable(TableName)",org.apache.hadoop.hbase.TableName+META_TABLE_NAME,665,14,6966,173,9,"/** 
+ * Callers should call close on the returned  {@link Table} instance.
+ * @param connection connection we're using to access Meta
+ * @return An {@link Table} for <code>hbase:meta</code>
+ * @throws NullPointerException if {@code connection} is {@code null}
+ */
+","/**
+   * Callers should call close on the returned {@link Table} instance.
+   * @param connection connection we're using to access Meta
+   * @return An {@link Table} for <code>hbase:meta</code>
+   * @throws NullPointerException if {@code connection} is {@code null}
+   */
+  public static Table getMetaHTable(final Connection connection) throws IOException {
+    // We used to pass whole CatalogTracker in here, now we just pass in Connection
+    Objects.requireNonNull(connection, ""Connection cannot be null"");
+    if (connection.isClosed()) {
+      throw new IOException(""connection is closed"");
+    }
+    return connection.getTable(TableName.META_TABLE_NAME);
+  }",False
+12,"getRegion(Connection,byte[])",Method,,"org.apache.hadoop.hbase.master.MasterRpcServices+unassignRegion(RpcController,UnassignRegionRequest) org.apache.hadoop.hbase.master.TestMaster+testMasterOpsWhileSplitting() org.apache.hadoop.hbase.TestMetaTableAccessor+testGetRegion() org.apache.hadoop.hbase.TestMetaTableAccessor+testGettingTableRegions(Connection,TableName,int) org.apache.hadoop.hbase.TestMetaTableAccessor+testGetRegion(Connection,RegionInfo)","org.apache.hadoop.hbase.MetaTableAccessor+getRegionLocation(Connection,byte[]) org.apache.hadoop.hbase.MetaTableAccessor+getRegionLocation(Connection,byte[]) org.apache.hadoop.hbase.HRegionLocation+getRegion() org.apache.hadoop.hbase.HRegionLocation+getRegion() org.apache.hadoop.hbase.HRegionLocation+getServerName() org.apache.hadoop.hbase.HRegionLocation+getServerName()",,615,13,7635,190,9,"/** 
+ * Gets the region info and assignment for the specified region.
+ * @param connection connection we're using
+ * @param regionName Region to lookup.
+ * @return Location and RegionInfo for <code>regionName</code>
+ * @deprecated use {@link #getRegionLocation(Connection,byte[])} instead
+ */
+","/**
+   * Gets the region info and assignment for the specified region.
+   * @param connection connection we're using
+   * @param regionName Region to lookup.
+   * @return Location and RegionInfo for <code>regionName</code>
+   * @deprecated use {@link #getRegionLocation(Connection, byte[])} instead
+   */
+  @Deprecated
+  public static Pair<RegionInfo, ServerName> getRegion(Connection connection, byte[] regionName)
+    throws IOException {
+    HRegionLocation location = getRegionLocation(connection, regionName);
+    return location == null ? null : new Pair<>(location.getRegion(), location.getServerName());
+  }",False
+13,"getRegionLocation(Connection,byte[])",Method,"getRegion(Connection,byte[])",org.apache.hadoop.hbase.regionserver.TestEndToEndSplitTransaction+evaluate(),org.apache.hadoop.hbase.CatalogFamilyFormat+parseRegionInfoFromRegionName(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+parseRegionInfoFromRegionName(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getMetaKeyForRegion(RegionInfo) org.apache.hadoop.hbase.CatalogFamilyFormat+getMetaKeyForRegion(RegionInfo) org.apache.hadoop.hbase.client.Get+Get(byte[]) org.apache.hadoop.hbase.client.Get+addFamily(byte[]) org.apache.hadoop.hbase.client.Get+addFamily(byte[]) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.client.Table+get(Get) org.apache.hadoop.hbase.client.Table+get(Get) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionLocations(Result) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionLocations(Result) org.apache.hadoop.hbase.RegionLocations+getRegionLocation(int) org.apache.hadoop.hbase.RegionLocations+getRegionLocation(int) org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.client.RegionInfo+getReplicaId(),org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY,1029,26,8254,202,9,"/** 
+ * Returns the HRegionLocation from meta for the given region
+ * @param connection connection we're using
+ * @param regionName region we're looking for
+ * @return HRegionLocation for the given region
+ */
+","/**
+   * Returns the HRegionLocation from meta for the given region
+   * @param connection connection we're using
+   * @param regionName region we're looking for
+   * @return HRegionLocation for the given region
+   */
+  public static HRegionLocation getRegionLocation(Connection connection, byte[] regionName)
+    throws IOException {
+    byte[] row = regionName;
+    RegionInfo parsedInfo = null;
+    try {
+      parsedInfo = CatalogFamilyFormat.parseRegionInfoFromRegionName(regionName);
+      row = CatalogFamilyFormat.getMetaKeyForRegion(parsedInfo);
+    } catch (Exception parseEx) {
+      // Ignore. This is used with tableName passed as regionName.
+    }
+    Get get = new Get(row);
+    get.addFamily(HConstants.CATALOG_FAMILY);
+    Result r;
+    try (Table t = getMetaHTable(connection)) {
+      r = t.get(get);
+    }
+    RegionLocations locations = CatalogFamilyFormat.getRegionLocations(r);
+    return locations == null ? null :
+      locations.getRegionLocation(parsedInfo == null ? 0 : parsedInfo.getReplicaId());
+  }",False
+14,"getRegionLocation(Connection,RegionInfo)",Method,,"org.apache.hadoop.hbase.client.TestMetaWithReplicasShutdownHandling+shutdownMetaAndDoValidations(HBaseTestingUtility) org.apache.hadoop.hbase.client.TestMetaWithReplicasShutdownHandling+shutdownMetaAndDoValidations(HBaseTestingUtility) org.apache.hadoop.hbase.regionserver.TestEndToEndSplitTransaction+blockUntilRegionIsInMeta(Connection,long,RegionInfo)","org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionLocation(Result,RegionInfo,int) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionLocation(Result,RegionInfo,int) org.apache.hadoop.hbase.MetaTableAccessor+getCatalogFamilyRow(Connection,RegionInfo) org.apache.hadoop.hbase.MetaTableAccessor+getCatalogFamilyRow(Connection,RegionInfo) org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.client.RegionInfo+getReplicaId()",,476,11,9287,229,9,"/** 
+ * Returns the HRegionLocation from meta for the given region
+ * @param connection connection we're using
+ * @param regionInfo region information
+ * @return HRegionLocation for the given region
+ */
+","/**
+   * Returns the HRegionLocation from meta for the given region
+   * @param connection connection we're using
+   * @param regionInfo region information
+   * @return HRegionLocation for the given region
+   */
+  public static HRegionLocation getRegionLocation(Connection connection, RegionInfo regionInfo)
+    throws IOException {
+    return CatalogFamilyFormat.getRegionLocation(getCatalogFamilyRow(connection, regionInfo),
+      regionInfo, regionInfo.getReplicaId());
+  }",False
+15,"getCatalogFamilyRow(Connection,RegionInfo)",Method,"getRegionLocation(Connection,RegionInfo)","org.apache.hadoop.hbase.master.procedure.EnableTableProcedure+getReplicaCountInMeta(Connection,int,List<RegionInfo>)",org.apache.hadoop.hbase.client.Get+Get(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getMetaKeyForRegion(RegionInfo) org.apache.hadoop.hbase.CatalogFamilyFormat+getMetaKeyForRegion(RegionInfo) org.apache.hadoop.hbase.client.Get+addFamily(byte[]) org.apache.hadoop.hbase.client.Get+addFamily(byte[]) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.client.Table+get(Get) org.apache.hadoop.hbase.client.Table+get(Get),org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY,391,11,9767,238,9,"/** 
+ * @return Return the {@link HConstants#CATALOG_FAMILY} row from hbase:meta.
+ */
+","/**
+   * @return Return the {@link HConstants#CATALOG_FAMILY} row from hbase:meta.
+   */
+  public static Result getCatalogFamilyRow(Connection connection, RegionInfo ri)
+    throws IOException {
+    Get get = new Get(CatalogFamilyFormat.getMetaKeyForRegion(ri));
+    get.addFamily(HConstants.CATALOG_FAMILY);
+    try (Table t = getMetaHTable(connection)) {
+      return t.get(get);
+    }
+  }",False
+16,"getRegionResult(Connection,byte[])",Method,"getMergeRegions(Connection,byte[]) hasMergeRegions(Connection,byte[]) deleteMergeQualifiers(Connection,RegionInfo)",org.apache.hadoop.hbase.master.procedure.TestHBCKSCP+test() org.apache.hadoop.hbase.master.procedure.TestHBCKSCP+test() org.apache.hadoop.hbase.master.procedure.TestHBCKSCP+test() org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+testCleanMergeReference() org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+testCleanMergeReference(),org.apache.hadoop.hbase.client.Get+Get(byte[]) org.apache.hadoop.hbase.client.Get+addFamily(byte[]) org.apache.hadoop.hbase.client.Get+addFamily(byte[]) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.client.Table+get(Get) org.apache.hadoop.hbase.client.Table+get(Get),org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY,478,14,10162,253,9,"/** 
+ * Gets the result in hbase:meta for the specified region.
+ * @param connection connection we're using
+ * @param regionName region we're looking for
+ * @return result of the specified region
+ */
+","/**
+   * Gets the result in hbase:meta for the specified region.
+   * @param connection connection we're using
+   * @param regionName region we're looking for
+   * @return result of the specified region
+   */
+  public static Result getRegionResult(Connection connection, byte[] regionName)
+    throws IOException {
+    Get get = new Get(regionName);
+    get.addFamily(HConstants.CATALOG_FAMILY);
+    try (Table t = getMetaHTable(connection)) {
+      return t.get(get);
+    }
+  }",False
+17,"scanByRegionEncodedName(Connection,String)",Method,,"org.apache.hadoop.hbase.master.assignment.RegionStateStore+visitMetaForRegion(String,RegionStateVisitor) org.apache.hadoop.hbase.TestMetaTableAccessor+testScanByRegionEncodedNameExistingRegion() org.apache.hadoop.hbase.TestMetaTableAccessor+testScanByRegionEncodedNameNonExistingRegion()","org.apache.hadoop.hbase.filter.RowFilter+RowFilter(CompareOperator,ByteArrayComparable) org.apache.hadoop.hbase.filter.SubstringComparator+SubstringComparator(String) org.apache.hadoop.hbase.MetaTableAccessor+getMetaScan(Connection,int) org.apache.hadoop.hbase.MetaTableAccessor+getMetaScan(Connection,int) org.apache.hadoop.hbase.client.Scan+setFilter(Filter) org.apache.hadoop.hbase.client.Scan+setFilter(Filter) org.apache.hadoop.hbase.client.Table+getScanner(Scan) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.client.Table+getScanner(Scan) org.apache.hadoop.hbase.client.ResultScanner+next() org.apache.hadoop.hbase.client.ResultScanner+next()",,916,17,10644,270,9,"/** 
+ * Scans META table for a row whose key contains the specified <B>regionEncodedName</B>, returning a single related <code>Result</code> instance if any row is found, null otherwise.
+ * @param connection the connection to query META table.
+ * @param regionEncodedName the region encoded name to look for at META.
+ * @return <code>Result</code> instance with the row related info in META, null otherwise.
+ * @throws IOException if any errors occur while querying META.
+ */
+","/**
+   * Scans META table for a row whose key contains the specified <B>regionEncodedName</B>, returning
+   * a single related <code>Result</code> instance if any row is found, null otherwise.
+   * @param connection the connection to query META table.
+   * @param regionEncodedName the region encoded name to look for at META.
+   * @return <code>Result</code> instance with the row related info in META, null otherwise.
+   * @throws IOException if any errors occur while querying META.
+   */
+  public static Result scanByRegionEncodedName(Connection connection, String regionEncodedName)
+    throws IOException {
+    RowFilter rowFilter =
+      new RowFilter(CompareOperator.EQUAL, new SubstringComparator(regionEncodedName));
+    Scan scan = getMetaScan(connection, 1);
+    scan.setFilter(rowFilter);
+    ResultScanner resultScanner = getMetaHTable(connection).getScanner(scan);
+    return resultScanner.next();
+  }",False
+18,"getMergeRegions(Connection,byte[])",Method,,"org.apache.hadoop.hbase.master.assignment.GCMultipleMergedRegionsProcedure+executeFromState(MasterProcedureEnv,GCMergedRegionsState) org.apache.hadoop.hbase.master.assignment.TestMergeTableRegionsProcedure+testMerge(TableName,int) org.apache.hadoop.hbase.master.TestMetaFixer+testOverlapWithSmallMergeCount() org.apache.hadoop.hbase.master.TestMetaFixer+testOverlapWithSmallMergeCount() org.apache.hadoop.hbase.TestMetaTableAccessor+testGetMergeRegions() org.apache.hadoop.hbase.TestMetaTableAccessor+testGetMergeRegions() org.apache.hadoop.hbase.TestMetaTableAccessor+testGetMergeRegions() org.apache.hadoop.hbase.TestMetaTableAccessor+testGetMergeRegions() org.apache.hadoop.hbase.TestSplitMerge+testMergeRegionOrder()","org.apache.hadoop.hbase.MetaTableAccessor+getMergeRegions(Cell[]) org.apache.hadoop.hbase.MetaTableAccessor+getMergeRegions(Cell[]) org.apache.hadoop.hbase.client.Result+rawCells() org.apache.hadoop.hbase.MetaTableAccessor+getRegionResult(Connection,byte[]) org.apache.hadoop.hbase.MetaTableAccessor+getRegionResult(Connection,byte[]) org.apache.hadoop.hbase.client.Result+rawCells()",,342,9,11564,285,9,"/** 
+ * @return Return all regioninfos listed in the 'info:merge*' columns of the<code>regionName</code> row.
+ */
+","/**
+   * @return Return all regioninfos listed in the 'info:merge*' columns of the
+   *         <code>regionName</code> row.
+   */
+  @Nullable
+  public static List<RegionInfo> getMergeRegions(Connection connection, byte[] regionName)
+    throws IOException {
+    return getMergeRegions(getRegionResult(connection, regionName).rawCells());
+  }",True
+19,"hasMergeRegions(Connection,byte[])",Method,,org.apache.hadoop.hbase.master.assignment.MergeTableRegionsProcedure+prepareMergeRegion(MasterProcedureEnv),"org.apache.hadoop.hbase.MetaTableAccessor+hasMergeRegions(Cell[]) org.apache.hadoop.hbase.MetaTableAccessor+hasMergeRegions(Cell[]) org.apache.hadoop.hbase.client.Result+rawCells() org.apache.hadoop.hbase.MetaTableAccessor+getRegionResult(Connection,byte[]) org.apache.hadoop.hbase.MetaTableAccessor+getRegionResult(Connection,byte[]) org.apache.hadoop.hbase.client.Result+rawCells()",,263,6,11910,293,9,"/** 
+ * Check whether the given  {@code regionName} has any 'info:merge*' columns.
+ */
+","/**
+   * Check whether the given {@code regionName} has any 'info:merge*' columns.
+   */
+  public static boolean hasMergeRegions(Connection conn, byte[] regionName) throws IOException {
+    return hasMergeRegions(getRegionResult(conn, regionName).rawCells());
+  }",True
+20,getMergeRegionsWithName(Cell[]),Method,getMergeRegions(Cell[]),"org.apache.hadoop.hbase.master.webapp.RegionReplicaInfo+RegionReplicaInfo(Result,HRegionLocation)","org.apache.hadoop.hbase.MetaTableAccessor+isMergeQualifierPrefix(Cell) org.apache.hadoop.hbase.MetaTableAccessor+isMergeQualifierPrefix(Cell) org.apache.hadoop.hbase.client.RegionInfo+parseFromOrNull(byte[],int,int) org.apache.hadoop.hbase.client.RegionInfo+parseFromOrNull(byte[],int,int) org.apache.hadoop.hbase.Cell+getValueArray() org.apache.hadoop.hbase.Cell+getValueArray() org.apache.hadoop.hbase.Cell+getValueOffset() org.apache.hadoop.hbase.Cell+getValueOffset() org.apache.hadoop.hbase.Cell+getValueLength() org.apache.hadoop.hbase.Cell+getValueLength() java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.hadoop.hbase.util.Bytes+toString(byte[]) org.apache.hadoop.hbase.util.Bytes+toString(byte[]) org.apache.hadoop.hbase.CellUtil+cloneQualifier(Cell) org.apache.hadoop.hbase.CellUtil+cloneQualifier(Cell)",,906,26,12177,302,9,"/** 
+ * @return Deserialized values of &lt;qualifier,regioninfo&gt; pairs taken from column values thatmatch the regex 'info:merge.*' in array of <code>cells</code>.
+ */
+","/**
+   * @return Deserialized values of &lt;qualifier,regioninfo&gt; pairs taken from column values that
+   *         match the regex 'info:merge.*' in array of <code>cells</code>.
+   */
+  @Nullable
+  public static Map<String, RegionInfo> getMergeRegionsWithName(Cell[] cells) {
+    if (cells == null) {
+      return null;
+    }
+    Map<String, RegionInfo> regionsToMerge = null;
+    for (Cell cell : cells) {
+      if (!isMergeQualifierPrefix(cell)) {
+        continue;
+      }
+      // Ok. This cell is that of a info:merge* column.
+      RegionInfo ri = RegionInfo.parseFromOrNull(cell.getValueArray(), cell.getValueOffset(),
+        cell.getValueLength());
+      if (ri != null) {
+        if (regionsToMerge == null) {
+          regionsToMerge = new LinkedHashMap<>();
+        }
+        regionsToMerge.put(Bytes.toString(CellUtil.cloneQualifier(cell)), ri);
+      }
+    }
+    return regionsToMerge;
+  }",True
+21,getMergeRegions(Cell[]),Method,"getMergeRegions(Connection,byte[])",org.apache.hadoop.hbase.master.CatalogJanitor+scan() org.apache.hadoop.hbase.master.HbckChore+scanForMergedParentRegions() org.apache.hadoop.hbase.util.HBaseFsck+visit(Result) org.apache.hadoop.hbase.master.TestMetaFixer+testOverlap() org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+testCleanMergeReference(),org.apache.hadoop.hbase.MetaTableAccessor+getMergeRegionsWithName(Cell[]) org.apache.hadoop.hbase.MetaTableAccessor+getMergeRegionsWithName(Cell[]) java.util.Map+values() java.util.Map+values(),,422,9,13087,329,9,"/** 
+ * @return Deserialized regioninfo values taken from column values that match the regex'info:merge.*' in array of <code>cells</code>.
+ */
+","/**
+   * @return Deserialized regioninfo values taken from column values that match the regex
+   *         'info:merge.*' in array of <code>cells</code>.
+   */
+  @Nullable
+  public static List<RegionInfo> getMergeRegions(Cell[] cells) {
+    Map<String, RegionInfo> mergeRegionsWithName = getMergeRegionsWithName(cells);
+    return (mergeRegionsWithName == null) ? null : new ArrayList<>(mergeRegionsWithName.values());
+  }",True
+22,hasMergeRegions(Cell[]),Method,"hasMergeRegions(Connection,byte[])","org.apache.hadoop.hbase.master.CatalogJanitor+cleanParent(RegionInfo,Result) org.apache.hadoop.hbase.master.CatalogJanitor+ReportMakingVisitor.visit(Result) org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+testCleanMergeReference() org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+testCleanMergeReference() org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+testCleanMergeReference()",org.apache.hadoop.hbase.MetaTableAccessor+isMergeQualifierPrefix(Cell) org.apache.hadoop.hbase.MetaTableAccessor+isMergeQualifierPrefix(Cell),,365,13,13513,338,9,"/** 
+ * @return True if any merge regions present in <code>cells</code>; i.e. the column in<code>cell</code> matches the regex 'info:merge.*'.
+ */
+","/**
+   * @return True if any merge regions present in <code>cells</code>; i.e. the column in
+   *         <code>cell</code> matches the regex 'info:merge.*'.
+   */
+  public static boolean hasMergeRegions(Cell[] cells) {
+    for (Cell cell : cells) {
+      if (!isMergeQualifierPrefix(cell)) {
+        continue;
+      }
+      return true;
+    }
+    return false;
+  }",True
+23,isMergeQualifierPrefix(Cell),Method,"getMergeRegionsWithName(Cell[]) hasMergeRegions(Cell[]) deleteMergeQualifiers(Connection,RegionInfo)",,"org.apache.hadoop.hbase.CellUtil+matchingFamily(Cell,byte[]) org.apache.hadoop.hbase.CellUtil+matchingFamily(Cell,byte[]) org.apache.hadoop.hbase.PrivateCellUtil+qualifierStartsWith(Cell,byte[]) org.apache.hadoop.hbase.PrivateCellUtil+qualifierStartsWith(Cell,byte[])",org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+MERGE_QUALIFIER_PREFIX,409,8,13882,351,10,"/** 
+ * @return True if the column in <code>cell</code> matches the regex 'info:merge.*'.
+ */
+","/**
+   * @return True if the column in <code>cell</code> matches the regex 'info:merge.*'.
+   */
+  private static boolean isMergeQualifierPrefix(Cell cell) {
+    // Check to see if has family and that qualifier starts with the merge qualifier 'merge'
+    return CellUtil.matchingFamily(cell, HConstants.CATALOG_FAMILY) &&
+      PrivateCellUtil.qualifierStartsWith(cell, HConstants.MERGE_QUALIFIER_PREFIX);
+  }",True
+24,"getAllRegions(Connection,boolean)",Method,,org.apache.hadoop.hbase.util.HBaseFsck+checkRegionBoundaries() org.apache.hadoop.hbase.master.TestClusterRestart+test() org.apache.hadoop.hbase.master.TestClusterRestart+test() org.apache.hadoop.hbase.regionserver.TestEndToEndSplitTransaction+RegionChecker.verifyRegionsUsingMetaTableAccessor(),"org.apache.hadoop.hbase.MetaTableAccessor+getTableRegionsAndLocations(Connection,TableName,boolean) org.apache.hadoop.hbase.MetaTableAccessor+getTableRegionsAndLocations(Connection,TableName,boolean) org.apache.hadoop.hbase.MetaTableAccessor+getListOfRegionInfos(List<Pair<RegionInfo,ServerName>>) org.apache.hadoop.hbase.MetaTableAccessor+getListOfRegionInfos(List<Pair<RegionInfo,ServerName>>)",,652,17,14295,365,9,"/** 
+ * Lists all of the regions currently in META.
+ * @param connection to connect with
+ * @param excludeOfflinedSplitParents False if we are to include offlined/splitparents regions,true and we'll leave out offlined regions from returned list
+ * @return List of all user-space regions.
+ */
+","/**
+   * Lists all of the regions currently in META.
+   * @param connection to connect with
+   * @param excludeOfflinedSplitParents False if we are to include offlined/splitparents regions,
+   *          true and we'll leave out offlined regions from returned list
+   * @return List of all user-space regions.
+   */
+  @VisibleForTesting
+  public static List<RegionInfo> getAllRegions(Connection connection,
+    boolean excludeOfflinedSplitParents) throws IOException {
+    List<Pair<RegionInfo, ServerName>> result;
+
+    result = getTableRegionsAndLocations(connection, null, excludeOfflinedSplitParents);
+
+    return getListOfRegionInfos(result);
+
+  }",False
+25,"getTableRegions(Connection,TableName)",Method,,"org.apache.hadoop.hbase.backup.util.BackupUtils+copyTableRegionInfo(Connection,BackupInfo,Configuration) org.apache.hadoop.hbase.master.procedure.ModifyTableProcedure+updateReplicaColumnsIfNeeded(MasterProcedureEnv,TableDescriptor,TableDescriptor) org.apache.hadoop.hbase.master.snapshot.MasterSnapshotVerifier+verifyRegions(SnapshotManifest) org.apache.hadoop.hbase.client.TestMetaWithReplicasShutdownHandling+shutdownMetaAndDoValidations(HBaseTestingUtility) org.apache.hadoop.hbase.master.assignment.TestMergeTableRegionsProcedure+testMerge(TableName,int) org.apache.hadoop.hbase.master.assignment.TestMergeTableRegionsProcedure+testMerge(TableName,int) org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestMasterOperationsForRegionReplicas+testCreateTableWithSingleReplica() org.apache.hadoop.hbase.master.TestMasterOperationsForRegionReplicas+testCreateTableWithMultipleReplicas() org.apache.hadoop.hbase.master.TestMasterOperationsForRegionReplicas+testCreateTableWithMultipleReplicas() org.apache.hadoop.hbase.master.TestMasterOperationsForRegionReplicas+testIncompleteMetaTableReplicaInformation() org.apache.hadoop.hbase.master.TestMetaFixer+testPlugsHolesWithReadReplicaInternal(TableName,int) org.apache.hadoop.hbase.master.TestMetaFixer+testPlugsHolesWithReadReplicaInternal(TableName,int) org.apache.hadoop.hbase.master.TestMetaFixer+testOneRegionTable() org.apache.hadoop.hbase.master.TestMetaFixer+testOneRegionTable() org.apache.hadoop.hbase.master.TestMetaFixer+testOneRegionTable() org.apache.hadoop.hbase.master.TestMetaFixer+testOverlapCommon(TableName) org.apache.hadoop.hbase.master.TestMetaFixer+testMergeWithMergedChildRegion() org.apache.hadoop.hbase.master.TestMetaFixer+testOverlapWithMergeOfNonContiguous() org.apache.hadoop.hbase.quotas.TestSpaceQuotaBasicFunctioning+evaluate() org.apache.hadoop.hbase.quotas.TestSpaceQuotaDropTable+evaluate() org.apache.hadoop.hbase.TestMetaTableAccessor+testScanMetaForTable() org.apache.hadoop.hbase.TestMetaTableAccessor+testScanMetaForTable() org.apache.hadoop.hbase.TestMetaTableAccessor+testGettingTableRegions(Connection,TableName,int) org.apache.hadoop.hbase.TestSplitMerge+testMergeRegionOrder()","org.apache.hadoop.hbase.MetaTableAccessor+getTableRegions(Connection,TableName,boolean) org.apache.hadoop.hbase.MetaTableAccessor+getTableRegions(Connection,TableName,boolean)",,479,11,14951,382,9,"/** 
+ * Gets all of the regions of the specified table. Do not use this method to get meta table regions, use methods in MetaTableLocator instead.
+ * @param connection connection we're using
+ * @param tableName table we're looking for
+ * @return Ordered list of {@link RegionInfo}.
+ */
+","/**
+   * Gets all of the regions of the specified table. Do not use this method to get meta table
+   * regions, use methods in MetaTableLocator instead.
+   * @param connection connection we're using
+   * @param tableName table we're looking for
+   * @return Ordered list of {@link RegionInfo}.
+   */
+  public static List<RegionInfo> getTableRegions(Connection connection, TableName tableName)
+    throws IOException {
+    return getTableRegions(connection, tableName, false);
+  }",False
+26,"getTableRegions(Connection,TableName,boolean)",Method,"getTableRegions(Connection,TableName)",org.apache.hadoop.hbase.namespace.NamespaceAuditor+initialize() org.apache.hadoop.hbase.quotas.QuotaCache+QuotaRefresherChore.updateQuotaFactors() org.apache.hadoop.hbase.client.TestAdmin1+testSplitShouldNotHappenIfSplitIsDisabledForTable() org.apache.hadoop.hbase.regionserver.TestEndToEndSplitTransaction+RegionSplitter.run() org.apache.hadoop.hbase.regionserver.TestEndToEndSplitTransaction+RegionChecker.verifyRegionsUsingMetaTableAccessor(),"org.apache.hadoop.hbase.MetaTableAccessor+getTableRegionsAndLocations(Connection,TableName,boolean) org.apache.hadoop.hbase.MetaTableAccessor+getTableRegionsAndLocations(Connection,TableName,boolean) org.apache.hadoop.hbase.MetaTableAccessor+getListOfRegionInfos(List<Pair<RegionInfo,ServerName>>) org.apache.hadoop.hbase.MetaTableAccessor+getListOfRegionInfos(List<Pair<RegionInfo,ServerName>>)",,756,15,15434,396,9,"/** 
+ * Gets all of the regions of the specified table. Do not use this method to get meta table regions, use methods in MetaTableLocator instead.
+ * @param connection connection we're using
+ * @param tableName table we're looking for
+ * @param excludeOfflinedSplitParents If true, do not include offlined split parents in thereturn.
+ * @return Ordered list of {@link RegionInfo}.
+ */
+","/**
+   * Gets all of the regions of the specified table. Do not use this method to get meta table
+   * regions, use methods in MetaTableLocator instead.
+   * @param connection connection we're using
+   * @param tableName table we're looking for
+   * @param excludeOfflinedSplitParents If true, do not include offlined split parents in the
+   *          return.
+   * @return Ordered list of {@link RegionInfo}.
+   */
+  public static List<RegionInfo> getTableRegions(Connection connection, TableName tableName,
+    final boolean excludeOfflinedSplitParents) throws IOException {
+    List<Pair<RegionInfo, ServerName>> result =
+      getTableRegionsAndLocations(connection, tableName, excludeOfflinedSplitParents);
+    return getListOfRegionInfos(result);
+  }",False
+27,"getListOfRegionInfos(List<Pair<RegionInfo,ServerName>>)",Method,"getAllRegions(Connection,boolean) getTableRegions(Connection,TableName,boolean)",,java.util.List+isEmpty() java.util.List+isEmpty() java.util.Collections+emptyList() java.util.Collections+emptyList() java.util.List+size() java.util.List+size() java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.util.Pair+getFirst() org.apache.hadoop.hbase.util.Pair+getFirst(),,373,11,16194,403,10,,"private static List<RegionInfo>
+    getListOfRegionInfos(final List<Pair<RegionInfo, ServerName>> pairs) {
+    if (pairs == null || pairs.isEmpty()) {
+      return Collections.emptyList();
+    }
+    List<RegionInfo> result = new ArrayList<>(pairs.size());
+    for (Pair<RegionInfo, ServerName> pair : pairs) {
+      result.add(pair.getFirst());
+    }
+    return result;
+  }",False
+28,"getScanForTableName(Connection,TableName)",Method,,"org.apache.hadoop.hbase.master.procedure.DeleteTableProcedure+cleanRegionsInMeta(MasterProcedureEnv,TableName) org.apache.hadoop.hbase.master.procedure.ModifyTableProcedure+updateReplicaColumnsIfNeeded(MasterProcedureEnv,TableDescriptor,TableDescriptor) org.apache.hadoop.hbase.client.TestEnableTable+testDeleteForSureClearsAllTableRowsFromMeta() org.apache.hadoop.hbase.client.TestEnableTable+testDeleteForSureClearsAllTableRowsFromMeta()","org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.MetaTableAccessor+getMetaScan(Connection,int) org.apache.hadoop.hbase.MetaTableAccessor+getMetaScan(Connection,int) org.apache.hadoop.hbase.client.Scan+withStartRow(byte[]) org.apache.hadoop.hbase.client.Scan+withStartRow(byte[]) org.apache.hadoop.hbase.client.Scan+withStopRow(byte[]) org.apache.hadoop.hbase.client.Scan+withStopRow(byte[])",,1019,20,16571,424,9,"/** 
+ * This method creates a Scan object that will only scan catalog rows that belong to the specified table. It doesn't specify any columns. This is a better alternative to just using a start row and scan until it hits a new table since that requires parsing the HRI to get the table name.
+ * @param tableName bytes of table's name
+ * @return configured Scan object
+ * @deprecated This is internal so please remove it when we get a chance.
+ */
+","/**
+   * This method creates a Scan object that will only scan catalog rows that belong to the specified
+   * table. It doesn't specify any columns. This is a better alternative to just using a start row
+   * and scan until it hits a new table since that requires parsing the HRI to get the table name.
+   * @param tableName bytes of table's name
+   * @return configured Scan object
+   * @deprecated This is internal so please remove it when we get a chance.
+   */
+  @Deprecated
+  public static Scan getScanForTableName(Connection connection, TableName tableName) {
+    // Start key is just the table name with delimiters
+    byte[] startKey = ClientMetaTableAccessor.getTableStartRowForMeta(tableName, QueryType.REGION);
+    // Stop key appends the smallest possible char to the table name
+    byte[] stopKey = ClientMetaTableAccessor.getTableStopRowForMeta(tableName, QueryType.REGION);
+
+    Scan scan = getMetaScan(connection, -1);
+    scan.withStartRow(startKey);
+    scan.withStopRow(stopKey);
+    return scan;
+  }",False
+29,"getMetaScan(Connection,int)",Method,"scanByRegionEncodedName(Connection,String) getScanForTableName(Connection,TableName) scanMeta(Connection,byte[],byte[],QueryType,Filter,int,ClientMetaTableAccessor.Visitor) getClosestRegionInfo(Connection,TableName,byte[])",,org.apache.hadoop.hbase.client.Scan+Scan() org.apache.hadoop.hbase.client.Connection+getConfiguration() org.apache.hadoop.hbase.client.Connection+getConfiguration() org.apache.hadoop.hbase.client.Connection+getConfiguration() org.apache.hadoop.hbase.client.Connection+getConfiguration() org.apache.hadoop.hbase.client.Scan+setConsistency(Consistency) org.apache.hadoop.hbase.client.Scan+setConsistency(Consistency) org.apache.hadoop.hbase.client.Scan+setLimit(int) org.apache.hadoop.hbase.client.Scan+setLimit(int) org.apache.hadoop.hbase.client.Scan+setReadType(ReadType) org.apache.hadoop.hbase.client.Scan+setReadType(ReadType) org.apache.hadoop.hbase.client.Scan+setCaching(int) org.apache.hadoop.hbase.client.Scan+setCaching(int),org.apache.hadoop.hbase.HConstants+HBASE_META_SCANNER_CACHING org.apache.hadoop.hbase.HConstants+DEFAULT_HBASE_META_SCANNER_CACHING org.apache.hadoop.hbase.HConstants+USE_META_REPLICAS org.apache.hadoop.hbase.HConstants+DEFAULT_USE_META_REPLICAS,613,15,17594,436,10,,"private static Scan getMetaScan(Connection connection, int rowUpperLimit) {
+    Scan scan = new Scan();
+    int scannerCaching = connection.getConfiguration().getInt(HConstants.HBASE_META_SCANNER_CACHING,
+      HConstants.DEFAULT_HBASE_META_SCANNER_CACHING);
+    if (connection.getConfiguration().getBoolean(HConstants.USE_META_REPLICAS,
+      HConstants.DEFAULT_USE_META_REPLICAS)) {
+      scan.setConsistency(Consistency.TIMELINE);
+    }
+    if (rowUpperLimit > 0) {
+      scan.setLimit(rowUpperLimit);
+      scan.setReadType(Scan.ReadType.PREAD);
+    }
+    scan.setCaching(scannerCaching);
+    return scan;
+  }",False
+30,"getTableRegionsAndLocations(Connection,TableName)",Method,,"org.apache.hadoop.hbase.tool.CanaryTool+RegionMonitor.checkWriteTableDistribution() org.apache.hadoop.hbase.client.TestAdmin1+testSplitAndMergeWithReplicaTable() org.apache.hadoop.hbase.HBaseTestingUtility+explainTableAvailability(TableName) org.apache.hadoop.hbase.master.procedure.TestHBCKSCP+searchMeta(HMaster,ServerName) org.apache.hadoop.hbase.master.TestMaster+testMasterOpsWhileSplitting() org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+testCleanMergeReference() org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+testMergeWithReplicas() org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+testMergeWithReplicas() org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+requestMergeRegion(HMaster,TableName,int,int) org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+waitAndVerifyRegionNum(HMaster,TableName,int) org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+waitAndVerifyRegionNum(HMaster,TableName,int) org.apache.hadoop.hbase.regionserver.TestRegionMergeTransactionOnCluster+createTableAndLoadData(HMaster,TableName,int,int) org.apache.hadoop.hbase.TestPartialResultsFromClientSide+moveRegion(Table,int)","org.apache.hadoop.hbase.MetaTableAccessor+getTableRegionsAndLocations(Connection,TableName,boolean) org.apache.hadoop.hbase.MetaTableAccessor+getTableRegionsAndLocations(Connection,TableName,boolean)",,470,10,18211,458,9,"/** 
+ * Do not use this method to get meta table regions, use methods in MetaTableLocator instead.
+ * @param connection connection we're using
+ * @param tableName table we're looking for
+ * @return Return list of regioninfos and server.
+ */
+","/**
+   * Do not use this method to get meta table regions, use methods in MetaTableLocator instead.
+   * @param connection connection we're using
+   * @param tableName table we're looking for
+   * @return Return list of regioninfos and server.
+   */
+  public static List<Pair<RegionInfo, ServerName>>
+    getTableRegionsAndLocations(Connection connection, TableName tableName) throws IOException {
+    return getTableRegionsAndLocations(connection, tableName, true);
+  }",False
+31,"getTableRegionsAndLocations(Connection,TableName,boolean)",Method,"getAllRegions(Connection,boolean) getTableRegions(Connection,TableName,boolean) getTableRegionsAndLocations(Connection,TableName)",org.apache.hadoop.hbase.master.snapshot.TakeSnapshotHandler+process() org.apache.hadoop.hbase.procedure.flush.MasterFlushTableProcedureManager+execProcedure(ProcedureDescription) org.apache.hadoop.hbase.master.TestMaster+testMasterOpsWhileSplitting(),"org.apache.hadoop.hbase.TableName+equals(Object) org.apache.hadoop.hbase.TableName+equals(Object) java.io.IOException+IOException(String) org.apache.hadoop.hbase.ClientMetaTableAccessor.CollectRegionLocationsVisitor+CollectRegionLocationsVisitor(boolean) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor.CollectingVisitor+getResults() org.apache.hadoop.hbase.ClientMetaTableAccessor.CollectingVisitor+getResults()",org.apache.hadoop.hbase.TableName+META_TABLE_NAME,1360,24,18685,471,9,"/** 
+ * Do not use this method to get meta table regions, use methods in MetaTableLocator instead.
+ * @param connection connection we're using
+ * @param tableName table to work with, can be null for getting all regions
+ * @param excludeOfflinedSplitParents don't return split parents
+ * @return Return list of regioninfos and server addresses.
+ */
+","/**
+   * Do not use this method to get meta table regions, use methods in MetaTableLocator instead.
+   * @param connection connection we're using
+   * @param tableName table to work with, can be null for getting all regions
+   * @param excludeOfflinedSplitParents don't return split parents
+   * @return Return list of regioninfos and server addresses.
+   */
+  // What happens here when 1M regions in hbase:meta? This won't scale?
+  public static List<Pair<RegionInfo, ServerName>> getTableRegionsAndLocations(
+    Connection connection, @Nullable final TableName tableName,
+    final boolean excludeOfflinedSplitParents) throws IOException {
+    if (tableName != null && tableName.equals(TableName.META_TABLE_NAME)) {
+      throw new IOException(
+        ""This method can't be used to locate meta regions;"" + "" use MetaTableLocator instead"");
+    }
+    // Make a version of CollectingVisitor that collects RegionInfo and ServerAddress
+    ClientMetaTableAccessor.CollectRegionLocationsVisitor visitor =
+      new ClientMetaTableAccessor.CollectRegionLocationsVisitor(excludeOfflinedSplitParents);
+    scanMeta(connection,
+      ClientMetaTableAccessor.getTableStartRowForMeta(tableName, QueryType.REGION),
+      ClientMetaTableAccessor.getTableStopRowForMeta(tableName, QueryType.REGION), QueryType.REGION,
+      visitor);
+    return visitor.getResults();
+  }",False
+32,fullScanMetaAndPrint(Connection),Method,,"org.apache.hadoop.hbase.client.TestAdmin3+testGetTableDescriptor() org.apache.hadoop.hbase.client.TestScannerTimeout+test3686a() org.apache.hadoop.hbase.master.assignment.TestMergeTableRegionsProcedure+testMerge(TableName,int) org.apache.hadoop.hbase.TestRegionRebalancing+testRebalanceOnRegionServerNumberChange() org.apache.hadoop.hbase.util.hbck.OfflineMetaRebuildTestCore+scanMeta()","org.apache.hadoop.hbase.client.Result+isEmpty() org.apache.hadoop.hbase.client.Result+isEmpty() org.apache.hadoop.hbase.CatalogFamilyFormat+getTableState(Result) org.apache.hadoop.hbase.CatalogFamilyFormat+getTableState(Result) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionLocations(Result) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionLocations(Result) org.apache.hadoop.hbase.RegionLocations+getRegionLocations() org.apache.hadoop.hbase.RegionLocations+getRegionLocations() org.apache.hadoop.hbase.HRegionLocation+getRegion() org.apache.hadoop.hbase.HRegionLocation+getRegion() org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor)",org.apache.hadoop.hbase.MetaTableAccessor+LOG org.apache.hadoop.hbase.MetaTableAccessor+LOG org.apache.hadoop.hbase.MetaTableAccessor+LOG,865,24,20049,488,9,,"public static void fullScanMetaAndPrint(Connection connection) throws IOException {
+    ClientMetaTableAccessor.Visitor v = r -> {
+      if (r == null || r.isEmpty()) {
+        return true;
+      }
+      LOG.info(""fullScanMetaAndPrint.Current Meta Row: "" + r);
+      TableState state = CatalogFamilyFormat.getTableState(r);
+      if (state != null) {
+        LOG.info(""fullScanMetaAndPrint.Table State={}"" + state);
+      } else {
+        RegionLocations locations = CatalogFamilyFormat.getRegionLocations(r);
+        if (locations == null) {
+          return true;
+        }
+        for (HRegionLocation loc : locations.getRegionLocations()) {
+          if (loc != null) {
+            LOG.info(""fullScanMetaAndPrint.HRI Print={}"", loc.getRegion());
+          }
+        }
+      }
+      return true;
+    };
+    scanMeta(connection, null, null, QueryType.ALL, v);
+  }",False
+33,"scanMetaForTableRegions(Connection,ClientMetaTableAccessor.Visitor,TableName)",Method,,,"org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,TableName,QueryType,int,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,TableName,QueryType,int,Visitor)",java.lang.Integer+MAX_VALUE,239,4,20918,513,9,,"public static void scanMetaForTableRegions(Connection connection,
+    ClientMetaTableAccessor.Visitor visitor, TableName tableName) throws IOException {
+    scanMeta(connection, tableName, QueryType.REGION, Integer.MAX_VALUE, visitor);
+  }",False
+34,"scanMeta(Connection,TableName,QueryType,int,ClientMetaTableAccessor.Visitor)",Method,,,"org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,int,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,int,Visitor) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType)",,352,5,21161,518,10,,"private static void scanMeta(Connection connection, TableName table, QueryType type, int maxRows,
+    final ClientMetaTableAccessor.Visitor visitor) throws IOException {
+    scanMeta(connection, ClientMetaTableAccessor.getTableStartRowForMeta(table, type),
+      ClientMetaTableAccessor.getTableStopRowForMeta(table, type), type, maxRows, visitor);
+  }",False
+35,"scanMeta(Connection,byte[],byte[],QueryType,ClientMetaTableAccessor.Visitor)",Method,,,"org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,int,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,int,Visitor)",java.lang.Integer+MAX_VALUE,291,5,21517,524,10,,"private static void scanMeta(Connection connection, @Nullable final byte[] startRow,
+    @Nullable final byte[] stopRow, QueryType type, final ClientMetaTableAccessor.Visitor visitor)
+    throws IOException {
+    scanMeta(connection, startRow, stopRow, type, Integer.MAX_VALUE, visitor);
+  }",False
+36,"scanMeta(Connection,ClientMetaTableAccessor.Visitor,TableName,byte[],int)",Method,,,"org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.MetaTableAccessor+getClosestRegionInfo(Connection,TableName,byte[]) org.apache.hadoop.hbase.MetaTableAccessor+getClosestRegionInfo(Connection,TableName,byte[]) org.apache.hadoop.hbase.client.RegionInfo+createRegionName(TableName,byte[],String,boolean) org.apache.hadoop.hbase.client.RegionInfo+createRegionName(TableName,byte[],String,boolean) org.apache.hadoop.hbase.client.RegionInfo+getStartKey() org.apache.hadoop.hbase.client.RegionInfo+getStartKey() org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,int,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,int,Visitor)",org.apache.hadoop.hbase.HConstants+ZEROES,1090,23,21812,538,9,"/** 
+ * Performs a scan of META table for given table starting from given row.
+ * @param connection connection we're using
+ * @param visitor visitor to call
+ * @param tableName table withing we scan
+ * @param row start scan from this row
+ * @param rowLimit max number of rows to return
+ */
+","/**
+   * Performs a scan of META table for given table starting from given row.
+   * @param connection connection we're using
+   * @param visitor visitor to call
+   * @param tableName table withing we scan
+   * @param row start scan from this row
+   * @param rowLimit max number of rows to return
+   */
+  public static void scanMeta(Connection connection, final ClientMetaTableAccessor.Visitor visitor,
+    final TableName tableName, final byte[] row, final int rowLimit) throws IOException {
+    byte[] startRow = null;
+    byte[] stopRow = null;
+    if (tableName != null) {
+      startRow = ClientMetaTableAccessor.getTableStartRowForMeta(tableName, QueryType.REGION);
+      if (row != null) {
+        RegionInfo closestRi = getClosestRegionInfo(connection, tableName, row);
+        startRow =
+          RegionInfo.createRegionName(tableName, closestRi.getStartKey(), HConstants.ZEROES, false);
+      }
+      stopRow = ClientMetaTableAccessor.getTableStopRowForMeta(tableName, QueryType.REGION);
+    }
+    scanMeta(connection, startRow, stopRow, QueryType.REGION, rowLimit, visitor);
+  }",False
+37,"scanMeta(Connection,byte[],byte[],QueryType,int,ClientMetaTableAccessor.Visitor)",Method,,,"org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Filter,int,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Filter,int,Visitor)",,711,14,22906,563,8,"/** 
+ * Performs a scan of META table.
+ * @param connection connection we're using
+ * @param startRow Where to start the scan. Pass null if want to begin scan at first row.
+ * @param stopRow Where to stop the scan. Pass null if want to scan all rows from the start one
+ * @param type scanned part of meta
+ * @param maxRows maximum rows to return
+ * @param visitor Visitor invoked against each row.
+ */
+","/**
+   * Performs a scan of META table.
+   * @param connection connection we're using
+   * @param startRow Where to start the scan. Pass null if want to begin scan at first row.
+   * @param stopRow Where to stop the scan. Pass null if want to scan all rows from the start one
+   * @param type scanned part of meta
+   * @param maxRows maximum rows to return
+   * @param visitor Visitor invoked against each row.
+   */
+  static void scanMeta(Connection connection, @Nullable final byte[] startRow,
+    @Nullable final byte[] stopRow, QueryType type, int maxRows,
+    final ClientMetaTableAccessor.Visitor visitor) throws IOException {
+    scanMeta(connection, startRow, stopRow, type, null, maxRows, visitor);
+  }",False
+38,"scanMeta(Connection,byte[],byte[],QueryType,Filter,int,ClientMetaTableAccessor.Visitor)",Method,,,"org.apache.hadoop.hbase.MetaTableAccessor+getMetaScan(Connection,int) org.apache.hadoop.hbase.MetaTableAccessor+getMetaScan(Connection,int) org.apache.hadoop.hbase.client.Scan+addFamily(byte[]) org.apache.hadoop.hbase.client.Scan+addFamily(byte[]) org.apache.hadoop.hbase.client.Scan+withStartRow(byte[]) org.apache.hadoop.hbase.client.Scan+withStartRow(byte[]) org.apache.hadoop.hbase.client.Scan+withStopRow(byte[]) org.apache.hadoop.hbase.client.Scan+withStopRow(byte[]) org.apache.hadoop.hbase.client.Scan+setFilter(Filter) org.apache.hadoop.hbase.client.Scan+setFilter(Filter) org.apache.hadoop.hbase.util.Bytes+toStringBinary(byte[]) org.apache.hadoop.hbase.util.Bytes+toStringBinary(byte[]) org.apache.hadoop.hbase.util.Bytes+toStringBinary(byte[]) org.apache.hadoop.hbase.util.Bytes+toStringBinary(byte[]) org.apache.hadoop.hbase.client.Scan+getCaching() org.apache.hadoop.hbase.client.Scan+getCaching() org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.client.Table+getScanner(Scan) org.apache.hadoop.hbase.client.Table+getScanner(Scan) org.apache.hadoop.hbase.client.ResultScanner+next() org.apache.hadoop.hbase.client.ResultScanner+next() org.apache.hadoop.hbase.client.Result+isEmpty() org.apache.hadoop.hbase.client.Result+isEmpty() org.apache.hadoop.hbase.ClientMetaTableAccessor.Visitor+visit(Result) org.apache.hadoop.hbase.ClientMetaTableAccessor.Visitor+visit(Result) java.io.Closeable+close() java.io.Closeable+close() org.apache.hadoop.hbase.util.ExceptionUtil+rethrowIfInterrupt(Throwable) org.apache.hadoop.hbase.util.ExceptionUtil+rethrowIfInterrupt(Throwable)",java.lang.Integer+MAX_VALUE org.apache.hadoop.hbase.MetaTableAccessor+LOG org.apache.hadoop.hbase.MetaTableAccessor+LOG org.apache.hadoop.hbase.MetaTableAccessor+LOG,1673,52,23621,569,10,,"private static void scanMeta(Connection connection, @Nullable final byte[] startRow,
+    @Nullable final byte[] stopRow, QueryType type, @Nullable Filter filter, int maxRows,
+    final ClientMetaTableAccessor.Visitor visitor) throws IOException {
+    int rowUpperLimit = maxRows > 0 ? maxRows : Integer.MAX_VALUE;
+    Scan scan = getMetaScan(connection, rowUpperLimit);
+
+    for (byte[] family : type.getFamilies()) {
+      scan.addFamily(family);
+    }
+    if (startRow != null) {
+      scan.withStartRow(startRow);
+    }
+    if (stopRow != null) {
+      scan.withStopRow(stopRow);
+    }
+    if (filter != null) {
+      scan.setFilter(filter);
+    }
+
+    if (LOG.isTraceEnabled()) {
+      LOG.trace(""Scanning META"" + "" starting at row="" + Bytes.toStringBinary(startRow) +
+        "" stopping at row="" + Bytes.toStringBinary(stopRow) + "" for max="" + rowUpperLimit +
+        "" with caching="" + scan.getCaching());
+    }
+
+    int currentRow = 0;
+    try (Table metaTable = getMetaHTable(connection)) {
+      try (ResultScanner scanner = metaTable.getScanner(scan)) {
+        Result data;
+        while ((data = scanner.next()) != null) {
+          if (data.isEmpty()) {
+            continue;
+          }
+          // Break if visit returns false.
+          if (!visitor.visit(data)) {
+            break;
+          }
+          if (++currentRow >= rowUpperLimit) {
+            break;
+          }
+        }
+      }
+    }
+    if (visitor instanceof Closeable) {
+      try {
+        ((Closeable) visitor).close();
+      } catch (Throwable t) {
+        ExceptionUtil.rethrowIfInterrupt(t);
+        LOG.debug(""Got exception in closing the meta scanner visitor"", t);
+      }
+    }
+  }",False
+39,"getClosestRegionInfo(Connection,TableName,byte[])",Method,"scanMeta(Connection,ClientMetaTableAccessor.Visitor,TableName,byte[],int)",,"org.apache.hadoop.hbase.client.RegionInfo+createRegionName(TableName,byte[],String,boolean) org.apache.hadoop.hbase.client.RegionInfo+createRegionName(TableName,byte[],String,boolean) org.apache.hadoop.hbase.MetaTableAccessor+getMetaScan(Connection,int) org.apache.hadoop.hbase.MetaTableAccessor+getMetaScan(Connection,int) org.apache.hadoop.hbase.client.Scan+setReversed(boolean) org.apache.hadoop.hbase.client.Scan+setReversed(boolean) org.apache.hadoop.hbase.client.Scan+withStartRow(byte[]) org.apache.hadoop.hbase.client.Scan+withStartRow(byte[]) org.apache.hadoop.hbase.client.Table+getScanner(Scan) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.client.Table+getScanner(Scan) org.apache.hadoop.hbase.client.ResultScanner+next() org.apache.hadoop.hbase.client.ResultScanner+next() org.apache.hadoop.hbase.TableNotFoundException+TableNotFoundException(String) org.apache.hadoop.hbase.util.Bytes+toStringBinary(byte[]) org.apache.hadoop.hbase.util.Bytes+toStringBinary(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionInfo(Result) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionInfo(Result) java.io.IOException+IOException(String) org.apache.hadoop.hbase.util.Bytes+toStringBinary(byte[]) org.apache.hadoop.hbase.util.Bytes+toStringBinary(byte[])",org.apache.hadoop.hbase.HConstants+NINES,1050,24,25298,626,10,"/** 
+ * @return Get closest metatable region row to passed <code>row</code>
+ */
+","/**
+   * @return Get closest metatable region row to passed <code>row</code>
+   */
+  @NonNull
+  private static RegionInfo getClosestRegionInfo(Connection connection,
+    @NonNull final TableName tableName, @NonNull final byte[] row) throws IOException {
+    byte[] searchRow = RegionInfo.createRegionName(tableName, row, HConstants.NINES, false);
+    Scan scan = getMetaScan(connection, 1);
+    scan.setReversed(true);
+    scan.withStartRow(searchRow);
+    try (ResultScanner resultScanner = getMetaHTable(connection).getScanner(scan)) {
+      Result result = resultScanner.next();
+      if (result == null) {
+        throw new TableNotFoundException(""Cannot find row in META "" + "" for table: "" + tableName +
+          "", row="" + Bytes.toStringBinary(row));
+      }
+      RegionInfo regionInfo = CatalogFamilyFormat.getRegionInfo(result);
+      if (regionInfo == null) {
+        throw new IOException(""RegionInfo was null or empty in Meta for "" + tableName + "", row="" +
+          Bytes.toStringBinary(row));
+      }
+      return regionInfo;
+    }
+  }",False
+40,"getTargetServerName(Result,int)",Method,,"org.apache.hadoop.hbase.master.assignment.RegionStateStore+visitMetaEntry(RegionStateVisitor,Result) org.apache.hadoop.hbase.master.webapp.RegionReplicaInfo+RegionReplicaInfo(Result,HRegionLocation)","org.apache.hadoop.hbase.client.Result+getColumnLatestCell(byte[],byte[]) org.apache.hadoop.hbase.client.Result+getColumnLatestCell(byte[],byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerNameColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerNameColumn(int) org.apache.hadoop.hbase.Cell+getValueLength() org.apache.hadoop.hbase.Cell+getValueLength() org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionLocations(Result) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionLocations(Result) org.apache.hadoop.hbase.RegionLocations+getRegionLocation(int) org.apache.hadoop.hbase.RegionLocations+getRegionLocation(int) org.apache.hadoop.hbase.HRegionLocation+getServerName() org.apache.hadoop.hbase.HRegionLocation+getServerName() org.apache.hadoop.hbase.ServerName+parseServerName(String) org.apache.hadoop.hbase.ServerName+parseServerName(String) org.apache.hadoop.hbase.util.Bytes+toString(byte[],int,int) org.apache.hadoop.hbase.util.Bytes+toString(byte[],int,int) org.apache.hadoop.hbase.Cell+getValueArray() org.apache.hadoop.hbase.Cell+getValueArray() org.apache.hadoop.hbase.Cell+getValueOffset() org.apache.hadoop.hbase.Cell+getValueOffset() org.apache.hadoop.hbase.Cell+getValueLength() org.apache.hadoop.hbase.Cell+getValueLength()",org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY,1164,25,26352,656,9,"/** 
+ * Returns the  {@link ServerName} from catalog table {@link Result} where the region istransitioning on. It should be the same as {@link CatalogFamilyFormat#getServerName(Result,int)} if the server is at OPEN state.
+ * @param r Result to pull the transitioning server name from
+ * @return A ServerName instance or {@link CatalogFamilyFormat#getServerName(Result,int)} ifnecessary fields not found or empty.
+ */
+","/**
+   * Returns the {@link ServerName} from catalog table {@link Result} where the region is
+   * transitioning on. It should be the same as
+   * {@link CatalogFamilyFormat#getServerName(Result,int)} if the server is at OPEN state.
+   * @param r Result to pull the transitioning server name from
+   * @return A ServerName instance or {@link CatalogFamilyFormat#getServerName(Result,int)} if
+   *         necessary fields not found or empty.
+   */
+  @Nullable
+  public static ServerName getTargetServerName(final Result r, final int replicaId) {
+    final Cell cell = r.getColumnLatestCell(HConstants.CATALOG_FAMILY,
+      CatalogFamilyFormat.getServerNameColumn(replicaId));
+    if (cell == null || cell.getValueLength() == 0) {
+      RegionLocations locations = CatalogFamilyFormat.getRegionLocations(r);
+      if (locations != null) {
+        HRegionLocation location = locations.getRegionLocation(replicaId);
+        if (location != null) {
+          return location.getServerName();
+        }
+      }
+      return null;
+    }
+    return ServerName.parseServerName(
+      Bytes.toString(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength()));
+  }",False
+41,getDaughterRegions(Result),Method,,"org.apache.hadoop.hbase.master.CatalogJanitor+scan() org.apache.hadoop.hbase.master.CatalogJanitor+cleanParent(RegionInfo,Result) org.apache.hadoop.hbase.master.webapp.RegionReplicaInfo+RegionReplicaInfo(Result,HRegionLocation) org.apache.hadoop.hbase.util.HBaseFsck+visit(Result) org.apache.hadoop.hbase.master.TestCatalogJanitorInMemoryStates+waitOnDaughters(RegionInfo) org.apache.hadoop.hbase.regionserver.TestEndToEndSplitTransaction+blockUntilRegionSplit(Configuration,long,byte[],boolean)","org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionInfo(Result,byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionInfo(Result,byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionInfo(Result,byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionInfo(Result,byte[])",org.apache.hadoop.hbase.HConstants+SPLITA_QUALIFIER org.apache.hadoop.hbase.HConstants+SPLITB_QUALIFIER,582,10,27520,678,9,"/** 
+ * Returns the daughter regions by reading the corresponding columns of the catalog table Result.
+ * @param data a Result object from the catalog table scan
+ * @return pair of RegionInfo or PairOfSameType(null, null) if region is not a split parent
+ */
+","/**
+   * Returns the daughter regions by reading the corresponding columns of the catalog table Result.
+   * @param data a Result object from the catalog table scan
+   * @return pair of RegionInfo or PairOfSameType(null, null) if region is not a split parent
+   */
+  public static PairOfSameType<RegionInfo> getDaughterRegions(Result data) {
+    RegionInfo splitA = CatalogFamilyFormat.getRegionInfo(data, HConstants.SPLITA_QUALIFIER);
+    RegionInfo splitB = CatalogFamilyFormat.getRegionInfo(data, HConstants.SPLITB_QUALIFIER);
+    return new PairOfSameType<>(splitA, splitB);
+  }",False
+42,"getTableState(Connection,TableName)",Method,,"org.apache.hadoop.hbase.master.HMaster+waitForNamespaceOnline() org.apache.hadoop.hbase.master.TableNamespaceManager+start() org.apache.hadoop.hbase.master.TableStateManager+readMetaState(TableName) org.apache.hadoop.hbase.util.HBaseFsck+checkAndFixTableStates() org.apache.hadoop.hbase.util.HBaseFsck+checkAndFixTableStates() org.apache.hadoop.hbase.client.TestAdminBase+getStateFromMeta(TableName) org.apache.hadoop.hbase.HBaseTestingUtility+explainTableState(TableName,TableState.State) org.apache.hadoop.hbase.master.TestTableStateManager+testMigration() org.apache.hadoop.hbase.master.TestTableStateManager+testMigration() org.apache.hadoop.hbase.master.TestTableStateManager+testMigration()","org.apache.hadoop.hbase.TableName+equals(Object) org.apache.hadoop.hbase.TableName+equals(Object) org.apache.hadoop.hbase.client.TableState+TableState(TableName,State) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.client.Get+addColumn(byte[],byte[]) org.apache.hadoop.hbase.client.Get+Get(byte[]) org.apache.hadoop.hbase.TableName+getName() org.apache.hadoop.hbase.TableName+getName() org.apache.hadoop.hbase.client.Get+addColumn(byte[],byte[]) org.apache.hadoop.hbase.client.Table+get(Get) org.apache.hadoop.hbase.client.Table+get(Get) org.apache.hadoop.hbase.CatalogFamilyFormat+getTableState(Result) org.apache.hadoop.hbase.CatalogFamilyFormat+getTableState(Result)",org.apache.hadoop.hbase.TableName+META_TABLE_NAME org.apache.hadoop.hbase.client.TableState+State org.apache.hadoop.hbase.HConstants+TABLE_FAMILY org.apache.hadoop.hbase.HConstants+TABLE_STATE_QUALIFIER,647,16,28106,690,9,"/** 
+ * Fetch table state for given table from META table
+ * @param conn connection to use
+ * @param tableName table to fetch state for
+ */
+","/**
+   * Fetch table state for given table from META table
+   * @param conn connection to use
+   * @param tableName table to fetch state for
+   */
+  @Nullable
+  public static TableState getTableState(Connection conn, TableName tableName) throws IOException {
+    if (tableName.equals(TableName.META_TABLE_NAME)) {
+      return new TableState(tableName, TableState.State.ENABLED);
+    }
+    Table metaHTable = getMetaHTable(conn);
+    Get get = new Get(tableName.getName()).addColumn(HConstants.TABLE_FAMILY,
+      HConstants.TABLE_STATE_QUALIFIER);
+    Result result = metaHTable.get(get);
+    return CatalogFamilyFormat.getTableState(result);
+  }",False
+43,getTableStates(Connection),Method,,org.apache.hadoop.hbase.util.HBaseFsck+loadTableStates(),"org.apache.hadoop.hbase.CatalogFamilyFormat+getTableState(Result) org.apache.hadoop.hbase.CatalogFamilyFormat+getTableState(Result) java.util.Map+put(K,V) java.util.Map+put(K,V) org.apache.hadoop.hbase.client.TableState+getTableName() org.apache.hadoop.hbase.client.TableState+getTableName() org.apache.hadoop.hbase.MetaTableAccessor+fullScanTables(Connection,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+fullScanTables(Connection,Visitor)",,578,17,28757,706,9,"/** 
+ * Fetch table states from META table
+ * @param conn connection to use
+ * @return map {tableName -&gt; state}
+ */
+","/**
+   * Fetch table states from META table
+   * @param conn connection to use
+   * @return map {tableName -&gt; state}
+   */
+  public static Map<TableName, TableState> getTableStates(Connection conn) throws IOException {
+    final Map<TableName, TableState> states = new LinkedHashMap<>();
+    ClientMetaTableAccessor.Visitor collector = r -> {
+      TableState state = CatalogFamilyFormat.getTableState(r);
+      if (state != null) {
+        states.put(state.getTableName(), state);
+      }
+      return true;
+    };
+    fullScanTables(conn, collector);
+    return states;
+  }",False
+44,"updateTableState(Connection,TableName,TableState.State)",Method,,,"org.apache.hadoop.hbase.MetaTableAccessor+updateTableState(Connection,TableState) org.apache.hadoop.hbase.MetaTableAccessor+updateTableState(Connection,TableState) org.apache.hadoop.hbase.client.TableState+TableState(TableName,State)",,339,9,29339,724,9,"/** 
+ * Updates state in META Do not use. For internal use only.
+ * @param conn connection to use
+ * @param tableName table to look for
+ */
+","/**
+   * Updates state in META Do not use. For internal use only.
+   * @param conn connection to use
+   * @param tableName table to look for
+   */
+  public static void updateTableState(Connection conn, TableName tableName, TableState.State actual)
+    throws IOException {
+    updateTableState(conn, new TableState(tableName, actual));
+  }",False
+45,"makePutFromRegionInfo(RegionInfo,long)",Method,"addSplitsToParent(Connection,RegionInfo,RegionInfo,RegionInfo) addRegionsToMeta(Connection,List<RegionInfo>,int,long) mergeRegions(Connection,RegionInfo,Map<RegionInfo,Long>,ServerName,int) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int)","org.apache.hadoop.hbase.favored.FavoredNodeAssignmentHelper+makePutFromRegionInfo(RegionInfo,List<ServerName>) org.apache.hadoop.hbase.util.HBaseFsck+resetSplitParent(HbckRegionInfo) org.apache.hadoop.hbase.util.HBaseFsckRepair+fixMetaHoleOnlineAndAddReplicas(Configuration,RegionInfo,Collection<ServerName>,int) org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestMetaFixer+makeOverlap(MasterServices,RegionInfo,RegionInfo) org.apache.hadoop.hbase.master.TestMetaFixer+testMergeWithMergedChildRegion() org.apache.hadoop.hbase.regionserver.TestGetClosestAtOrBefore+testUsingMetaAndBinary()","org.apache.hadoop.hbase.MetaTableAccessor+addRegionInfo(Put,RegionInfo) org.apache.hadoop.hbase.MetaTableAccessor+addRegionInfo(Put,RegionInfo) org.apache.hadoop.hbase.client.Put+Put(byte[],long) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.RegionInfo+getRegionName()",,269,6,29763,735,9,"/** 
+ * Generates and returns a Put containing the region into for the catalog table
+ */
+","/**
+   * Generates and returns a Put containing the region into for the catalog table
+   */
+  public static Put makePutFromRegionInfo(RegionInfo regionInfo, long ts) throws IOException {
+    return addRegionInfo(new Put(regionInfo.getRegionName(), ts), regionInfo);
+  }",False
+46,"makeDeleteFromRegionInfo(RegionInfo,long)",Method,"mergeRegions(Connection,RegionInfo,Map<RegionInfo,Long>,ServerName,int)",,"java.lang.IllegalArgumentException+IllegalArgumentException(String) org.apache.hadoop.hbase.client.Delete+Delete(byte[]) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.Delete+addFamily(byte[],long) org.apache.hadoop.hbase.client.Delete+addFamily(byte[],long)",org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY,430,11,30036,742,10,"/** 
+ * Generates and returns a Delete containing the region info for the catalog table
+ */
+","/**
+   * Generates and returns a Delete containing the region info for the catalog table
+   */
+  private static Delete makeDeleteFromRegionInfo(RegionInfo regionInfo, long ts) {
+    if (regionInfo == null) {
+      throw new IllegalArgumentException(""Can't make a delete for null region"");
+    }
+    Delete delete = new Delete(regionInfo.getRegionName());
+    delete.addFamily(HConstants.CATALOG_FAMILY, ts);
+    return delete;
+  }",False
+47,"addDaughtersToPut(Put,RegionInfo,RegionInfo)",Method,"addSplitsToParent(Connection,RegionInfo,RegionInfo,RegionInfo) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int)",,org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.RegionInfo+toByteArray(RegionInfo) org.apache.hadoop.hbase.client.RegionInfo+toByteArray(RegionInfo) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.RegionInfo+toByteArray(RegionInfo) org.apache.hadoop.hbase.client.RegionInfo+toByteArray(RegionInfo),org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+SPLITA_QUALIFIER org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+SPLITB_QUALIFIER,839,19,30470,754,10,"/** 
+ * Adds split daughters to the Put
+ */
+","/**
+   * Adds split daughters to the Put
+   */
+  private static Put addDaughtersToPut(Put put, RegionInfo splitA, RegionInfo splitB)
+    throws IOException {
+    if (splitA != null) {
+      put.add(CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY).setRow(put.getRow())
+        .setFamily(HConstants.CATALOG_FAMILY).setQualifier(HConstants.SPLITA_QUALIFIER)
+        .setTimestamp(put.getTimestamp()).setType(Type.Put).setValue(RegionInfo.toByteArray(splitA))
+        .build());
+    }
+    if (splitB != null) {
+      put.add(CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY).setRow(put.getRow())
+        .setFamily(HConstants.CATALOG_FAMILY).setQualifier(HConstants.SPLITB_QUALIFIER)
+        .setTimestamp(put.getTimestamp()).setType(Type.Put).setValue(RegionInfo.toByteArray(splitB))
+        .build());
+    }
+    return put;
+  }",False
+48,"putToMetaTable(Connection,Put)",Method,"updateTableState(Connection,TableState) updateLocation(Connection,RegionInfo,ServerName,long,long)",,"org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+put(Table,Put) org.apache.hadoop.hbase.MetaTableAccessor+put(Table,Put)",,338,10,31313,776,10,"/** 
+ * Put the passed <code>p</code> to the <code>hbase:meta</code> table.
+ * @param connection connection we're using
+ * @param p Put to add to hbase:meta
+ */
+","/**
+   * Put the passed <code>p</code> to the <code>hbase:meta</code> table.
+   * @param connection connection we're using
+   * @param p Put to add to hbase:meta
+   */
+  private static void putToMetaTable(Connection connection, Put p) throws IOException {
+    try (Table table = getMetaHTable(connection)) {
+      put(table, p);
+    }
+  }",False
+49,"put(Table,Put)",Method,"putToMetaTable(Connection,Put)",,org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutation(Mutation) org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutation(Mutation) org.apache.hadoop.hbase.client.Table+put(Put) org.apache.hadoop.hbase.client.Table+put(Put),,168,8,31655,786,10,"/** 
+ * @param t Table to use
+ * @param p put to make
+ */
+","/**
+   * @param t Table to use
+   * @param p put to make
+   */
+  private static void put(Table t, Put p) throws IOException {
+    debugLogMutation(p);
+    t.put(p);
+  }",False
+50,"putsToMetaTable(Connection,List<Put>)",Method,"updateRegionState(Connection,RegionInfo,RegionState.State) addRegionsToMeta(Connection,List<RegionInfo>,int,long)","org.apache.hadoop.hbase.favored.FavoredNodeAssignmentHelper+updateMetaWithFavoredNodesInfo(Map<RegionInfo,List<ServerName>>,Connection) org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestMetaFixer+makeOverlap(MasterServices,RegionInfo,RegionInfo)",java.util.List+isEmpty() java.util.List+isEmpty() org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutations(List<? extends Mutation>) org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutations(List<? extends Mutation>) java.util.List+size() java.util.List+size() org.apache.hadoop.hbase.client.Table+put(Put) org.apache.hadoop.hbase.client.Table+put(Put) java.util.List+get(int) java.util.List+get(int) org.apache.hadoop.hbase.client.Table+put(List<Put>) org.apache.hadoop.hbase.client.Table+put(List<Put>),,605,20,31827,796,9,"/** 
+ * Put the passed <code>ps</code> to the <code>hbase:meta</code> table.
+ * @param connection connection we're using
+ * @param ps Put to add to hbase:meta
+ */
+","/**
+   * Put the passed <code>ps</code> to the <code>hbase:meta</code> table.
+   * @param connection connection we're using
+   * @param ps Put to add to hbase:meta
+   */
+  public static void putsToMetaTable(final Connection connection, final List<Put> ps)
+    throws IOException {
+    if (ps.isEmpty()) {
+      return;
+    }
+    try (Table t = getMetaHTable(connection)) {
+      debugLogMutations(ps);
+      // the implementation for putting a single Put is much simpler so here we do a check first.
+      if (ps.size() == 1) {
+        t.put(ps.get(0));
+      } else {
+        t.put(ps);
+      }
+    }
+  }",False
+51,"deleteFromMetaTable(Connection,Delete)",Method,"removeRegionReplicasFromMeta(Set<byte[]>,int,int,Connection) deleteTableState(Connection,TableName) deleteRegionInfo(Connection,RegionInfo) deleteMergeQualifiers(Connection,RegionInfo)",,"java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,List<Delete>) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,List<Delete>)",,395,11,32436,817,10,"/** 
+ * Delete the passed <code>d</code> from the <code>hbase:meta</code> table.
+ * @param connection connection we're using
+ * @param d Delete to add to hbase:meta
+ */
+","/**
+   * Delete the passed <code>d</code> from the <code>hbase:meta</code> table.
+   * @param connection connection we're using
+   * @param d Delete to add to hbase:meta
+   */
+  private static void deleteFromMetaTable(final Connection connection, final Delete d)
+    throws IOException {
+    List<Delete> dels = new ArrayList<>(1);
+    dels.add(d);
+    deleteFromMetaTable(connection, dels);
+  }",False
+52,"deleteFromMetaTable(Connection,List<Delete>)",Method,"deleteFromMetaTable(Connection,Delete) deleteRegionInfos(Connection,List<RegionInfo>,long)",,org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutations(List<? extends Mutation>) org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutations(List<? extends Mutation>) org.apache.hadoop.hbase.client.Table+delete(List<Delete>) org.apache.hadoop.hbase.client.Table+delete(List<Delete>),,463,12,32835,829,10,"/** 
+ * Delete the passed <code>deletes</code> from the <code>hbase:meta</code> table.
+ * @param connection connection we're using
+ * @param deletes Deletes to add to hbase:meta This list should support #remove.
+ */
+","/**
+   * Delete the passed <code>deletes</code> from the <code>hbase:meta</code> table.
+   * @param connection connection we're using
+   * @param deletes Deletes to add to hbase:meta This list should support #remove.
+   */
+  private static void deleteFromMetaTable(final Connection connection, final List<Delete> deletes)
+    throws IOException {
+    try (Table t = getMetaHTable(connection)) {
+      debugLogMutations(deletes);
+      t.delete(deletes);
+    }
+  }",False
+53,"removeRegionReplicasFromMeta(Set<byte[]>,int,int,Connection)",Method,,"org.apache.hadoop.hbase.master.procedure.ModifyTableProcedure+updateReplicaColumnsIfNeeded(MasterProcedureEnv,TableDescriptor,TableDescriptor) org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsRemovedAtTableDeletion()","org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.client.Delete+Delete(byte[]) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerColumn(int) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.CatalogFamilyFormat+getSeqNumColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getSeqNumColumn(int) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.CatalogFamilyFormat+getStartCodeColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getStartCodeColumn(int) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerNameColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerNameColumn(int) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionStateColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getRegionStateColumn(int) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,Delete) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,Delete)",org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY,1522,30,33302,844,9,"/** 
+ * Deletes some replica columns corresponding to replicas for the passed rows
+ * @param metaRows rows in hbase:meta
+ * @param replicaIndexToDeleteFrom the replica ID we would start deleting from
+ * @param numReplicasToRemove how many replicas to remove
+ * @param connection connection we're using to access meta table
+ */
+","/**
+   * Deletes some replica columns corresponding to replicas for the passed rows
+   * @param metaRows rows in hbase:meta
+   * @param replicaIndexToDeleteFrom the replica ID we would start deleting from
+   * @param numReplicasToRemove how many replicas to remove
+   * @param connection connection we're using to access meta table
+   */
+  public static void removeRegionReplicasFromMeta(Set<byte[]> metaRows,
+    int replicaIndexToDeleteFrom, int numReplicasToRemove, Connection connection)
+    throws IOException {
+    int absoluteIndex = replicaIndexToDeleteFrom + numReplicasToRemove;
+    for (byte[] row : metaRows) {
+      long now = EnvironmentEdgeManager.currentTime();
+      Delete deleteReplicaLocations = new Delete(row);
+      for (int i = replicaIndexToDeleteFrom; i < absoluteIndex; i++) {
+        deleteReplicaLocations.addColumns(HConstants.CATALOG_FAMILY,
+          CatalogFamilyFormat.getServerColumn(i), now);
+        deleteReplicaLocations.addColumns(HConstants.CATALOG_FAMILY,
+          CatalogFamilyFormat.getSeqNumColumn(i), now);
+        deleteReplicaLocations.addColumns(HConstants.CATALOG_FAMILY,
+          CatalogFamilyFormat.getStartCodeColumn(i), now);
+        deleteReplicaLocations.addColumns(HConstants.CATALOG_FAMILY,
+          CatalogFamilyFormat.getServerNameColumn(i), now);
+        deleteReplicaLocations.addColumns(HConstants.CATALOG_FAMILY,
+          CatalogFamilyFormat.getRegionStateColumn(i), now);
+      }
+
+      deleteFromMetaTable(connection, deleteReplicaLocations);
+    }
+  }",False
+54,"addRegionStateToPut(Put,RegionState.State)",Method,,,org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.util.Bytes+toBytes(ByteBuffer) org.apache.hadoop.hbase.util.Bytes+toBytes(ByteBuffer),org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+STATE_QUALIFIER org.apache.hadoop.hbase.Cell+Type,405,7,34828,868,10,,"private static Put addRegionStateToPut(Put put, RegionState.State state) throws IOException {
+    put.add(CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY).setRow(put.getRow())
+      .setFamily(HConstants.CATALOG_FAMILY).setQualifier(HConstants.STATE_QUALIFIER)
+      .setTimestamp(put.getTimestamp()).setType(Cell.Type.Put).setValue(Bytes.toBytes(state.name()))
+      .build());
+    return put;
+  }",False
+55,"updateRegionState(Connection,RegionInfo,RegionState.State)",Method,,,"org.apache.hadoop.hbase.client.Put+Put(byte[]) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.RegionReplicaUtil+getRegionInfoForDefaultReplica(RegionInfo) org.apache.hadoop.hbase.client.RegionReplicaUtil+getRegionInfoForDefaultReplica(RegionInfo) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.MetaTableAccessor+putsToMetaTable(Connection,List<Put>) org.apache.hadoop.hbase.MetaTableAccessor+putsToMetaTable(Connection,List<Put>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T)",,366,8,35237,879,9,"/** 
+ * Update state column in hbase:meta.
+ */
+","/**
+   * Update state column in hbase:meta.
+   */
+  public static void updateRegionState(Connection connection, RegionInfo ri,
+    RegionState.State state) throws IOException {
+    Put put = new Put(RegionReplicaUtil.getRegionInfoForDefaultReplica(ri).getRegionName());
+    putsToMetaTable(connection, Collections.singletonList(addRegionStateToPut(put, state)));
+  }",False
+56,"addSplitsToParent(Connection,RegionInfo,RegionInfo,RegionInfo)",Method,,"org.apache.hadoop.hbase.snapshot.RestoreSnapshotHelper+RestoreMetaChanges.updateMetaParentRegions(Connection,List<RegionInfo>)","org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.MetaTableAccessor+addDaughtersToPut(Put,RegionInfo,RegionInfo) org.apache.hadoop.hbase.MetaTableAccessor+addDaughtersToPut(Put,RegionInfo,RegionInfo) org.apache.hadoop.hbase.client.Table+put(Put) org.apache.hadoop.hbase.client.Table+put(Put) org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutation(Mutation) org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutation(Mutation) org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString()",org.apache.hadoop.hbase.MetaTableAccessor+LOG,1117,22,35607,897,9,"/** 
+ * Adds daughter region infos to hbase:meta row for the specified region. Note that this does not add its daughter's as different rows, but adds information about the daughters in the same row as the parent. Use {@link #splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int)} ifyou want to do that.
+ * @param connection connection we're using
+ * @param regionInfo RegionInfo of parent region
+ * @param splitA first split daughter of the parent regionInfo
+ * @param splitB second split daughter of the parent regionInfo
+ * @throws IOException if problem connecting or updating meta
+ */
+","/**
+   * Adds daughter region infos to hbase:meta row for the specified region. Note that this does not
+   * add its daughter's as different rows, but adds information about the daughters in the same row
+   * as the parent. Use
+   * {@link #splitRegion(Connection, RegionInfo, long, RegionInfo, RegionInfo, ServerName, int)} if
+   * you want to do that.
+   * @param connection connection we're using
+   * @param regionInfo RegionInfo of parent region
+   * @param splitA first split daughter of the parent regionInfo
+   * @param splitB second split daughter of the parent regionInfo
+   * @throws IOException if problem connecting or updating meta
+   */
+  public static void addSplitsToParent(Connection connection, RegionInfo regionInfo,
+    RegionInfo splitA, RegionInfo splitB) throws IOException {
+    try (Table meta = getMetaHTable(connection)) {
+      Put put = makePutFromRegionInfo(regionInfo, EnvironmentEdgeManager.currentTime());
+      addDaughtersToPut(put, splitA, splitB);
+      meta.put(put);
+      debugLogMutation(put);
+      LOG.debug(""Added region {}"", regionInfo.getRegionNameAsString());
+    }
+  }",False
+57,"addRegionToMeta(Connection,RegionInfo)",Method,,"org.apache.hadoop.hbase.HBaseTestingUtility+createMultiRegionsInMeta(Configuration,TableDescriptor,byte[][]) org.apache.hadoop.hbase.master.assignment.TestAssignmentManager+testLoadRegionFromMetaAfterRegionManuallyAdded() org.apache.hadoop.hbase.TestMetaTableAccessor+metaTask() org.apache.hadoop.hbase.util.hbck.OfflineMetaRebuildTestCore+createRegion(Configuration,Table,byte[],byte[])","org.apache.hadoop.hbase.MetaTableAccessor+addRegionsToMeta(Connection,List<RegionInfo>,int) org.apache.hadoop.hbase.MetaTableAccessor+addRegionsToMeta(Connection,List<RegionInfo>,int) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T)",,728,15,36728,919,9,"/** 
+ * Adds a (single) hbase:meta row for the specified new region and its daughters. Note that this does not add its daughter's as different rows, but adds information about the daughters in the same row as the parent. Use {@link #splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int)} ifyou want to do that.
+ * @param connection connection we're using
+ * @param regionInfo region information
+ * @throws IOException if problem connecting or updating meta
+ */
+","/**
+   * Adds a (single) hbase:meta row for the specified new region and its daughters. Note that this
+   * does not add its daughter's as different rows, but adds information about the daughters in the
+   * same row as the parent. Use
+   * {@link #splitRegion(Connection, RegionInfo, long, RegionInfo, RegionInfo, ServerName, int)} if
+   * you want to do that.
+   * @param connection connection we're using
+   * @param regionInfo region information
+   * @throws IOException if problem connecting or updating meta
+   */
+  @VisibleForTesting
+  public static void addRegionToMeta(Connection connection, RegionInfo regionInfo)
+    throws IOException {
+    addRegionsToMeta(connection, Collections.singletonList(regionInfo), 1);
+  }",False
+58,"addRegionsToMeta(Connection,List<RegionInfo>,int)",Method,"addRegionToMeta(Connection,RegionInfo)","org.apache.hadoop.hbase.master.MasterWalManager+createMetaEntries(MasterServices,List<RegionInfo>) org.apache.hadoop.hbase.master.procedure.CreateTableProcedure+addRegionsToMeta(MasterProcedureEnv,TableDescriptor,List<RegionInfo>) org.apache.hadoop.hbase.master.procedure.ModifyTableProcedure+addRegionsToMeta(MasterProcedureEnv,TableDescriptor,List<RegionInfo>) org.apache.hadoop.hbase.master.procedure.RestoreSnapshotProcedure+updateMETA(MasterProcedureEnv) org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsRemovedAtTableDeletion() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsAddedAtTableCreation() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsAddedAtRegionSplit() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsAddedAtRegionMerge() org.apache.hadoop.hbase.TestMetaTableAccessor+testMastersSystemTimeIsUsedInUpdateLocations() org.apache.hadoop.hbase.TestMetaTableAccessor+testMastersSystemTimeIsUsedInMergeRegions() org.apache.hadoop.hbase.TestMetaTableAccessor+testEmptyMetaDaughterLocationDuringSplit()","org.apache.hadoop.hbase.MetaTableAccessor+addRegionsToMeta(Connection,List<RegionInfo>,int,long) org.apache.hadoop.hbase.MetaTableAccessor+addRegionsToMeta(Connection,List<RegionInfo>,int,long) org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime()",,532,12,37460,931,9,"/** 
+ * Adds a hbase:meta row for each of the specified new regions. Initial state for new regions is CLOSED.
+ * @param connection connection we're using
+ * @param regionInfos region information list
+ * @throws IOException if problem connecting or updating meta
+ */
+","/**
+   * Adds a hbase:meta row for each of the specified new regions. Initial state for new regions is
+   * CLOSED.
+   * @param connection connection we're using
+   * @param regionInfos region information list
+   * @throws IOException if problem connecting or updating meta
+   */
+  public static void addRegionsToMeta(Connection connection, List<RegionInfo> regionInfos,
+    int regionReplication) throws IOException {
+    addRegionsToMeta(connection, regionInfos, regionReplication,
+      EnvironmentEdgeManager.currentTime());
+  }",False
+59,"addRegionsToMeta(Connection,List<RegionInfo>,int,long)",Method,"addRegionsToMeta(Connection,List<RegionInfo>,int) overwriteRegions(Connection,List<RegionInfo>,int)",,"org.apache.hadoop.hbase.client.RegionReplicaUtil+isDefaultReplica(RegionInfo) org.apache.hadoop.hbase.client.RegionReplicaUtil+isDefaultReplica(RegionInfo) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+addEmptyLocation(Put,int) org.apache.hadoop.hbase.MetaTableAccessor+addEmptyLocation(Put,int) java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.MetaTableAccessor+putsToMetaTable(Connection,List<Put>) org.apache.hadoop.hbase.MetaTableAccessor+putsToMetaTable(Connection,List<Put>) java.util.List+size() java.util.List+size()",org.apache.hadoop.hbase.MetaTableAccessor+LOG,1179,27,37996,945,10,"/** 
+ * Adds a hbase:meta row for each of the specified new regions. Initial state for new regions is CLOSED.
+ * @param connection connection we're using
+ * @param regionInfos region information list
+ * @param ts desired timestamp
+ * @throws IOException if problem connecting or updating meta
+ */
+","/**
+   * Adds a hbase:meta row for each of the specified new regions. Initial state for new regions is
+   * CLOSED.
+   * @param connection connection we're using
+   * @param regionInfos region information list
+   * @param ts desired timestamp
+   * @throws IOException if problem connecting or updating meta
+   */
+  private static void addRegionsToMeta(Connection connection, List<RegionInfo> regionInfos,
+    int regionReplication, long ts) throws IOException {
+    List<Put> puts = new ArrayList<>();
+    for (RegionInfo regionInfo : regionInfos) {
+      if (RegionReplicaUtil.isDefaultReplica(regionInfo)) {
+        Put put = makePutFromRegionInfo(regionInfo, ts);
+        // New regions are added with initial state of CLOSED.
+        addRegionStateToPut(put, RegionState.State.CLOSED);
+        // Add empty locations for region replicas so that number of replicas can be cached
+        // whenever the primary region is looked up from meta
+        for (int i = 1; i < regionReplication; i++) {
+          addEmptyLocation(put, i);
+        }
+        puts.add(put);
+      }
+    }
+    putsToMetaTable(connection, puts);
+    LOG.info(""Added {} regions to meta."", puts.size());
+  }",False
+60,"addMergeRegions(Put,Collection<RegionInfo>)",Method,"mergeRegions(Connection,RegionInfo,Map<RegionInfo,Long>,ServerName,int)",org.apache.hadoop.hbase.TestMetaTableAccessor+testAddMergeRegions(),"java.util.Collection+size() java.util.Collection+size() java.lang.RuntimeException+RuntimeException(String) java.lang.String+format(String,Object[]) java.lang.String+format(String,Object[]) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.RegionInfo+toByteArray(RegionInfo) org.apache.hadoop.hbase.client.RegionInfo+toByteArray(RegionInfo)",org.apache.hadoop.hbase.HConstants+MERGE_QUALIFIER_PREFIX_STR org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY,923,19,39179,966,8,,"@VisibleForTesting
+  static Put addMergeRegions(Put put, Collection<RegionInfo> mergeRegions) throws IOException {
+    int limit = 10000; // Arbitrary limit. No room in our formatted 'task0000' below for more.
+    int max = mergeRegions.size();
+    if (max > limit) {
+      // Should never happen!!!!! But just in case.
+      throw new RuntimeException(
+        ""Can't merge "" + max + "" regions in one go; "" + limit + "" is upper-limit."");
+    }
+    int counter = 0;
+    for (RegionInfo ri : mergeRegions) {
+      String qualifier = String.format(HConstants.MERGE_QUALIFIER_PREFIX_STR + ""%04d"", counter++);
+      put.add(CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY).setRow(put.getRow())
+        .setFamily(HConstants.CATALOG_FAMILY).setQualifier(Bytes.toBytes(qualifier))
+        .setTimestamp(put.getTimestamp()).setType(Type.Put).setValue(RegionInfo.toByteArray(ri))
+        .build());
+    }
+    return put;
+  }",True
+61,"mergeRegions(Connection,RegionInfo,Map<RegionInfo,Long>,ServerName,int)",Method,,"org.apache.hadoop.hbase.master.assignment.RegionStateStore+mergeRegions(RegionInfo,RegionInfo[],ServerName) org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsAddedAtRegionMerge() org.apache.hadoop.hbase.TestMetaTableAccessor+testMastersSystemTimeIsUsedInMergeRegions()","java.util.Map+entrySet() java.util.Map+entrySet() java.util.Map.Entry+getKey() java.util.Map.Entry+getKey() java.util.Map.Entry+getValue() java.util.Map.Entry+getValue() java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.MetaTableAccessor+makeDeleteFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+makeDeleteFromRegionInfo(RegionInfo,long) java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.MetaTableAccessor+makePutForReplicationBarrier(RegionInfo,long,long) org.apache.hadoop.hbase.MetaTableAccessor+makePutForReplicationBarrier(RegionInfo,long,long) java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+addMergeRegions(Put,Collection<RegionInfo>) org.apache.hadoop.hbase.MetaTableAccessor+addMergeRegions(Put,Collection<RegionInfo>) java.util.Map+keySet() java.util.Map+keySet() java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.MetaTableAccessor+addLocation(Put,ServerName,long,int) org.apache.hadoop.hbase.MetaTableAccessor+addLocation(Put,ServerName,long,int) org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.MetaTableAccessor+addEmptyLocation(Put,int) org.apache.hadoop.hbase.MetaTableAccessor+addEmptyLocation(Put,int) java.util.List+isEmpty() java.util.List+isEmpty() org.apache.hadoop.hbase.MetaTableAccessor+addReplicationParent(Put,List<RegionInfo>) org.apache.hadoop.hbase.MetaTableAccessor+addReplicationParent(Put,List<RegionInfo>) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.MetaTableAccessor+multiMutate(Connection,byte[],List<Mutation>) org.apache.hadoop.hbase.MetaTableAccessor+multiMutate(Connection,byte[],List<Mutation>)",org.apache.hadoop.hbase.HConstants+LATEST_TIMESTAMP org.apache.hadoop.hbase.HConstants+DELIMITER,2732,54,40106,994,9,"/** 
+ * Merge regions into one in an atomic operation. Deletes the merging regions in hbase:meta and adds the merged region.
+ * @param connection connection we're using
+ * @param mergedRegion the merged region
+ * @param parentSeqNum Parent regions to merge and their next open sequence id used by serialreplication. Set to -1 if not needed by this table.
+ * @param sn the location of the region
+ */
+","/**
+   * Merge regions into one in an atomic operation. Deletes the merging regions in hbase:meta and
+   * adds the merged region.
+   * @param connection connection we're using
+   * @param mergedRegion the merged region
+   * @param parentSeqNum Parent regions to merge and their next open sequence id used by serial
+   *          replication. Set to -1 if not needed by this table.
+   * @param sn the location of the region
+   */
+  public static void mergeRegions(Connection connection, RegionInfo mergedRegion,
+    Map<RegionInfo, Long> parentSeqNum, ServerName sn, int regionReplication) throws IOException {
+    long time = HConstants.LATEST_TIMESTAMP;
+    List<Mutation> mutations = new ArrayList<>();
+    List<RegionInfo> replicationParents = new ArrayList<>();
+    for (Map.Entry<RegionInfo, Long> e : parentSeqNum.entrySet()) {
+      RegionInfo ri = e.getKey();
+      long seqNum = e.getValue();
+      // Deletes for merging regions
+      mutations.add(makeDeleteFromRegionInfo(ri, time));
+      if (seqNum > 0) {
+        mutations.add(makePutForReplicationBarrier(ri, seqNum, time));
+        replicationParents.add(ri);
+      }
+    }
+    // Put for parent
+    Put putOfMerged = makePutFromRegionInfo(mergedRegion, time);
+    putOfMerged = addMergeRegions(putOfMerged, parentSeqNum.keySet());
+    // Set initial state to CLOSED.
+    // NOTE: If initial state is not set to CLOSED then merged region gets added with the
+    // default OFFLINE state. If Master gets restarted after this step, start up sequence of
+    // master tries to assign this offline region. This is followed by re-assignments of the
+    // merged region from resumed {@link MergeTableRegionsProcedure}
+    addRegionStateToPut(putOfMerged, RegionState.State.CLOSED);
+    mutations.add(putOfMerged);
+    // The merged is a new region, openSeqNum = 1 is fine. ServerName may be null
+    // if crash after merge happened but before we got to here.. means in-memory
+    // locations of offlined merged, now-closed, regions is lost. Should be ok. We
+    // assign the merged region later.
+    if (sn != null) {
+      addLocation(putOfMerged, sn, 1, mergedRegion.getReplicaId());
+    }
+
+    // Add empty locations for region replicas of the merged region so that number of replicas
+    // can be cached whenever the primary region is looked up from meta
+    for (int i = 1; i < regionReplication; i++) {
+      addEmptyLocation(putOfMerged, i);
+    }
+    // add parent reference for serial replication
+    if (!replicationParents.isEmpty()) {
+      addReplicationParent(putOfMerged, replicationParents);
+    }
+    byte[] tableRow = Bytes.toBytes(mergedRegion.getRegionNameAsString() + HConstants.DELIMITER);
+    multiMutate(connection, tableRow, mutations);
+  }",True
+62,"splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int)",Method,,"org.apache.hadoop.hbase.master.assignment.RegionStateStore+splitRegion(RegionInfo,RegionInfo,RegionInfo,ServerName) org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationForRegionReplicasIsAddedAtRegionSplit() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaUpdatesGoToPriorityQueue() org.apache.hadoop.hbase.TestMetaTableAccessor+testEmptyMetaDaughterLocationDuringSplit()","org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.client.RegionInfoBuilder+build() org.apache.hadoop.hbase.client.RegionInfoBuilder+setSplit(boolean) org.apache.hadoop.hbase.client.RegionInfoBuilder+setOffline(boolean) org.apache.hadoop.hbase.client.RegionInfoBuilder+newBuilder(RegionInfo) org.apache.hadoop.hbase.client.RegionInfoBuilder+newBuilder(RegionInfo) org.apache.hadoop.hbase.client.RegionInfoBuilder+setOffline(boolean) org.apache.hadoop.hbase.client.RegionInfoBuilder+setSplit(boolean) org.apache.hadoop.hbase.client.RegionInfoBuilder+build() org.apache.hadoop.hbase.MetaTableAccessor+addDaughtersToPut(Put,RegionInfo,RegionInfo) org.apache.hadoop.hbase.MetaTableAccessor+addDaughtersToPut(Put,RegionInfo,RegionInfo) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromRegionInfo(RegionInfo,long) org.apache.hadoop.hbase.MetaTableAccessor+addReplicationBarrier(Put,long) org.apache.hadoop.hbase.MetaTableAccessor+addReplicationBarrier(Put,long) org.apache.hadoop.hbase.MetaTableAccessor+addReplicationParent(Put,List<RegionInfo>) org.apache.hadoop.hbase.MetaTableAccessor+addReplicationParent(Put,List<RegionInfo>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) org.apache.hadoop.hbase.MetaTableAccessor+addReplicationParent(Put,List<RegionInfo>) org.apache.hadoop.hbase.MetaTableAccessor+addReplicationParent(Put,List<RegionInfo>) java.util.Collections+singletonList(T) java.util.Collections+singletonList(T) org.apache.hadoop.hbase.MetaTableAccessor+addSequenceNum(Put,long,int) org.apache.hadoop.hbase.MetaTableAccessor+addSequenceNum(Put,long,int) org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.MetaTableAccessor+addSequenceNum(Put,long,int) org.apache.hadoop.hbase.MetaTableAccessor+addSequenceNum(Put,long,int) org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.MetaTableAccessor+addEmptyLocation(Put,int) org.apache.hadoop.hbase.MetaTableAccessor+addEmptyLocation(Put,int) org.apache.hadoop.hbase.MetaTableAccessor+addEmptyLocation(Put,int) org.apache.hadoop.hbase.MetaTableAccessor+addEmptyLocation(Put,int) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.MetaTableAccessor+multiMutate(Connection,byte[],List<Mutation>) org.apache.hadoop.hbase.MetaTableAccessor+multiMutate(Connection,byte[],List<Mutation>) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[])",org.apache.hadoop.hbase.HConstants+DELIMITER,2565,49,42842,1052,9,"/** 
+ * Splits the region into two in an atomic operation. Offlines the parent region with the information that it is split into two, and also adds the daughter regions. Does not add the location information to the daughter regions since they are not open yet.
+ * @param connection connection we're using
+ * @param parent the parent region which is split
+ * @param parentOpenSeqNum the next open sequence id for parent region, used by serialreplication. -1 if not necessary.
+ * @param splitA Split daughter region A
+ * @param splitB Split daughter region B
+ * @param sn the location of the region
+ */
+","/**
+   * Splits the region into two in an atomic operation. Offlines the parent region with the
+   * information that it is split into two, and also adds the daughter regions. Does not add the
+   * location information to the daughter regions since they are not open yet.
+   * @param connection connection we're using
+   * @param parent the parent region which is split
+   * @param parentOpenSeqNum the next open sequence id for parent region, used by serial
+   *          replication. -1 if not necessary.
+   * @param splitA Split daughter region A
+   * @param splitB Split daughter region B
+   * @param sn the location of the region
+   */
+  public static void splitRegion(Connection connection, RegionInfo parent, long parentOpenSeqNum,
+    RegionInfo splitA, RegionInfo splitB, ServerName sn, int regionReplication) throws IOException {
+    long time = EnvironmentEdgeManager.currentTime();
+    // Put for parent
+    Put putParent = makePutFromRegionInfo(
+      RegionInfoBuilder.newBuilder(parent).setOffline(true).setSplit(true).build(), time);
+    addDaughtersToPut(putParent, splitA, splitB);
+
+    // Puts for daughters
+    Put putA = makePutFromRegionInfo(splitA, time);
+    Put putB = makePutFromRegionInfo(splitB, time);
+    if (parentOpenSeqNum > 0) {
+      addReplicationBarrier(putParent, parentOpenSeqNum);
+      addReplicationParent(putA, Collections.singletonList(parent));
+      addReplicationParent(putB, Collections.singletonList(parent));
+    }
+    // Set initial state to CLOSED
+    // NOTE: If initial state is not set to CLOSED then daughter regions get added with the
+    // default OFFLINE state. If Master gets restarted after this step, start up sequence of
+    // master tries to assign these offline regions. This is followed by re-assignments of the
+    // daughter regions from resumed {@link SplitTableRegionProcedure}
+    addRegionStateToPut(putA, RegionState.State.CLOSED);
+    addRegionStateToPut(putB, RegionState.State.CLOSED);
+
+    addSequenceNum(putA, 1, splitA.getReplicaId()); // new regions, openSeqNum = 1 is fine.
+    addSequenceNum(putB, 1, splitB.getReplicaId());
+
+    // Add empty locations for region replicas of daughters so that number of replicas can be
+    // cached whenever the primary region is looked up from meta
+    for (int i = 1; i < regionReplication; i++) {
+      addEmptyLocation(putA, i);
+      addEmptyLocation(putB, i);
+    }
+
+    byte[] tableRow = Bytes.toBytes(parent.getRegionNameAsString() + HConstants.DELIMITER);
+    multiMutate(connection, tableRow, Arrays.asList(putParent, putA, putB));
+  }",True
+63,"updateTableState(Connection,TableState)",Method,"updateTableState(Connection,TableName,TableState.State)","org.apache.hadoop.hbase.master.TableStateManager+updateMetaState(TableName,TableState.State) org.apache.hadoop.hbase.util.HBaseFsck+checkAndFixTableStates() org.apache.hadoop.hbase.HBaseTestingUtility+createMultiRegionsInMeta(Configuration,TableDescriptor,byte[][])","org.apache.hadoop.hbase.MetaTableAccessor+makePutFromTableState(TableState,long) org.apache.hadoop.hbase.MetaTableAccessor+makePutFromTableState(TableState,long) org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.MetaTableAccessor+putToMetaTable(Connection,Put) org.apache.hadoop.hbase.MetaTableAccessor+putToMetaTable(Connection,Put)",org.apache.hadoop.hbase.MetaTableAccessor+LOG,396,10,45411,1095,10,"/** 
+ * Update state of the table in meta.
+ * @param connection what we use for update
+ * @param state new state
+ */
+","/**
+   * Update state of the table in meta.
+   * @param connection what we use for update
+   * @param state new state
+   */
+  private static void updateTableState(Connection connection, TableState state) throws IOException {
+    Put put = makePutFromTableState(state, EnvironmentEdgeManager.currentTime());
+    putToMetaTable(connection, put);
+    LOG.info(""Updated {} in hbase:meta"", state);
+  }",False
+64,"makePutFromTableState(TableState,long)",Method,"updateTableState(Connection,TableState)",,"org.apache.hadoop.hbase.client.Put+Put(byte[],long) org.apache.hadoop.hbase.TableName+getName() org.apache.hadoop.hbase.client.TableState+getTableName() org.apache.hadoop.hbase.client.TableState+getTableName() org.apache.hadoop.hbase.TableName+getName() org.apache.hadoop.hbase.client.Put+addColumn(byte[],byte[],byte[]) org.apache.hadoop.hbase.client.Put+addColumn(byte[],byte[],byte[]) org.apache.hadoop.hbase.client.TableState+convert() org.apache.hadoop.hbase.client.TableState+convert()",org.apache.hadoop.hbase.HConstants+TABLE_FAMILY org.apache.hadoop.hbase.HConstants+TABLE_STATE_QUALIFIER,337,10,45811,1105,9,"/** 
+ * Construct PUT for given state
+ * @param state new state
+ */
+","/**
+   * Construct PUT for given state
+   * @param state new state
+   */
+  public static Put makePutFromTableState(TableState state, long ts) {
+    Put put = new Put(state.getTableName().getName(), ts);
+    put.addColumn(HConstants.TABLE_FAMILY, HConstants.TABLE_STATE_QUALIFIER,
+      state.convert().toByteArray());
+    return put;
+  }",False
+65,"deleteTableState(Connection,TableName)",Method,,org.apache.hadoop.hbase.master.TableStateManager+setDeletedTable(TableName) org.apache.hadoop.hbase.util.HBaseFsck+checkAndFixTableStates() org.apache.hadoop.hbase.master.TestTableStateManager+testMigration(),"org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.client.Delete+Delete(byte[]) org.apache.hadoop.hbase.TableName+getName() org.apache.hadoop.hbase.TableName+getName() org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,Delete) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,Delete)",org.apache.hadoop.hbase.HConstants+TABLE_FAMILY org.apache.hadoop.hbase.HConstants+TABLE_STATE_QUALIFIER org.apache.hadoop.hbase.MetaTableAccessor+LOG,528,12,46152,1117,9,"/** 
+ * Remove state for table from meta
+ * @param connection to use for deletion
+ * @param table to delete state for
+ */
+","/**
+   * Remove state for table from meta
+   * @param connection to use for deletion
+   * @param table to delete state for
+   */
+  public static void deleteTableState(Connection connection, TableName table) throws IOException {
+    long time = EnvironmentEdgeManager.currentTime();
+    Delete delete = new Delete(table.getName());
+    delete.addColumns(HConstants.TABLE_FAMILY, HConstants.TABLE_STATE_QUALIFIER, time);
+    deleteFromMetaTable(connection, delete);
+    LOG.info(""Deleted table "" + table + "" state from META"");
+  }",False
+66,"multiMutate(Connection,byte[],List<Mutation>)",Method,"mergeRegions(Connection,RegionInfo,Map<RegionInfo,Long>,ServerName,int) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int)",,"org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutations(List<? extends Mutation>) org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutations(List<? extends Mutation>) org.apache.hadoop.hbase.shaded.protobuf.ProtobufUtil+toMutation(MutationType,Mutation) org.apache.hadoop.hbase.shaded.protobuf.ProtobufUtil+toMutation(MutationType,Mutation) org.apache.hadoop.hbase.shaded.protobuf.ProtobufUtil+toMutation(MutationType,Mutation) org.apache.hadoop.hbase.shaded.protobuf.ProtobufUtil+toMutation(MutationType,Mutation) org.apache.hadoop.hbase.DoNotRetryIOException+DoNotRetryIOException(String) java.lang.Class+getName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getName() org.apache.hadoop.hbase.client.AsyncConnection+getTable(TableName) org.apache.hadoop.hbase.client.Connection+toAsyncConnection() org.apache.hadoop.hbase.client.Connection+toAsyncConnection() org.apache.hadoop.hbase.client.AsyncConnection+getTable(TableName) org.apache.hadoop.hbase.util.FutureUtils+get(Future<T>) org.apache.hadoop.hbase.util.FutureUtils+get(Future<T>)",org.apache.hadoop.hbase.TableName+META_TABLE_NAME,1464,29,46683,1129,10,"/** 
+ * Performs an atomic multi-mutate operation against the given table. Used by the likes of merge and split as these want to make atomic mutations across multiple rows.
+ * @throws IOException even if we encounter a RuntimeException, we'll still wrap it in an IOE.
+ */
+","/**
+   * Performs an atomic multi-mutate operation against the given table. Used by the likes of merge
+   * and split as these want to make atomic mutations across multiple rows.
+   * @throws IOException even if we encounter a RuntimeException, we'll still wrap it in an IOE.
+   */
+  private static void multiMutate(Connection conn, byte[] row, List<Mutation> mutations)
+    throws IOException {
+    debugLogMutations(mutations);
+    MutateRowsRequest.Builder builder = MutateRowsRequest.newBuilder();
+    for (Mutation mutation : mutations) {
+      if (mutation instanceof Put) {
+        builder.addMutationRequest(
+          ProtobufUtil.toMutation(ClientProtos.MutationProto.MutationType.PUT, mutation));
+      } else if (mutation instanceof Delete) {
+        builder.addMutationRequest(
+          ProtobufUtil.toMutation(ClientProtos.MutationProto.MutationType.DELETE, mutation));
+      } else {
+        throw new DoNotRetryIOException(
+          ""multi in MetaEditor doesn't support "" + mutation.getClass().getName());
+      }
+    }
+    MutateRowsRequest request = builder.build();
+    AsyncTable<?> table = conn.toAsyncConnection().getTable(TableName.META_TABLE_NAME);
+    CompletableFuture<MutateRowsResponse> future =
+      table.<MultiRowMutationService, MutateRowsResponse> coprocessorService(
+        MultiRowMutationService::newStub,
+        (stub, controller, done) -> stub.mutateRows(controller, request, done), row);
+    FutureUtils.get(future);
+  }",True
+67,"updateRegionLocation(Connection,RegionInfo,ServerName,long,long)",Method,,org.apache.hadoop.hbase.regionserver.HRegionServer+skipReportingTransition(RegionStateTransitionContext) org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationsForRegionReplicas() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationsForRegionReplicas() org.apache.hadoop.hbase.TestMetaTableAccessor+testMetaLocationsForRegionReplicas() org.apache.hadoop.hbase.TestMetaTableAccessor+testMastersSystemTimeIsUsedInUpdateLocations() org.apache.hadoop.hbase.TestMetaTableAccessor+testMastersSystemTimeIsUsedInMergeRegions(),"org.apache.hadoop.hbase.MetaTableAccessor+updateLocation(Connection,RegionInfo,ServerName,long,long) org.apache.hadoop.hbase.MetaTableAccessor+updateLocation(Connection,RegionInfo,ServerName,long,long)",,831,17,48151,1167,9,"/** 
+ * Updates the location of the specified region in hbase:meta to be the specified server hostname and startcode. <p> Uses passed catalog tracker to get a connection to the server hosting hbase:meta and makes edits to that region.
+ * @param connection connection we're using
+ * @param regionInfo region to update location of
+ * @param openSeqNum the latest sequence number obtained when the region was open
+ * @param sn Server name
+ * @param masterSystemTime wall clock time from master if passed in the open region RPC
+ */
+","/**
+   * Updates the location of the specified region in hbase:meta to be the specified server hostname
+   * and startcode.
+   * <p>
+   * Uses passed catalog tracker to get a connection to the server hosting hbase:meta and makes
+   * edits to that region.
+   * @param connection connection we're using
+   * @param regionInfo region to update location of
+   * @param openSeqNum the latest sequence number obtained when the region was open
+   * @param sn Server name
+   * @param masterSystemTime wall clock time from master if passed in the open region RPC
+   */
+  @VisibleForTesting
+  public static void updateRegionLocation(Connection connection, RegionInfo regionInfo,
+    ServerName sn, long openSeqNum, long masterSystemTime) throws IOException {
+    updateLocation(connection, regionInfo, sn, openSeqNum, masterSystemTime);
+  }",False
+68,"updateLocation(Connection,RegionInfo,ServerName,long,long)",Method,"updateRegionLocation(Connection,RegionInfo,ServerName,long,long)",,"org.apache.hadoop.hbase.client.Put+Put(byte[],long) org.apache.hadoop.hbase.CatalogFamilyFormat+getMetaKeyForRegion(RegionInfo) org.apache.hadoop.hbase.CatalogFamilyFormat+getMetaKeyForRegion(RegionInfo) org.apache.hadoop.hbase.MetaTableAccessor+addRegionInfo(Put,RegionInfo) org.apache.hadoop.hbase.MetaTableAccessor+addRegionInfo(Put,RegionInfo) org.apache.hadoop.hbase.MetaTableAccessor+addLocation(Put,ServerName,long,int) org.apache.hadoop.hbase.MetaTableAccessor+addLocation(Put,ServerName,long,int) org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.client.RegionInfo+getReplicaId() org.apache.hadoop.hbase.MetaTableAccessor+putToMetaTable(Connection,Put) org.apache.hadoop.hbase.MetaTableAccessor+putToMetaTable(Connection,Put) org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString()",org.apache.hadoop.hbase.MetaTableAccessor+LOG,1197,22,48986,1185,10,"/** 
+ * Updates the location of the specified region to be the specified server. <p> Connects to the specified server which should be hosting the specified catalog region name to perform the edit.
+ * @param connection connection we're using
+ * @param regionInfo region to update location of
+ * @param sn Server name
+ * @param openSeqNum the latest sequence number obtained when the region was open
+ * @param masterSystemTime wall clock time from master if passed in the open region RPC
+ * @throws IOException In particular could throw {@link java.net.ConnectException} if the serveris down on other end.
+ */
+","/**
+   * Updates the location of the specified region to be the specified server.
+   * <p>
+   * Connects to the specified server which should be hosting the specified catalog region name to
+   * perform the edit.
+   * @param connection connection we're using
+   * @param regionInfo region to update location of
+   * @param sn Server name
+   * @param openSeqNum the latest sequence number obtained when the region was open
+   * @param masterSystemTime wall clock time from master if passed in the open region RPC
+   * @throws IOException In particular could throw {@link java.net.ConnectException} if the server
+   *           is down on other end.
+   */
+  private static void updateLocation(Connection connection, RegionInfo regionInfo, ServerName sn,
+    long openSeqNum, long masterSystemTime) throws IOException {
+    // region replicas are kept in the primary region's row
+    Put put = new Put(CatalogFamilyFormat.getMetaKeyForRegion(regionInfo), masterSystemTime);
+    addRegionInfo(put, regionInfo);
+    addLocation(put, sn, openSeqNum, regionInfo.getReplicaId());
+    putToMetaTable(connection, put);
+    LOG.info(""Updated row {} with server="", regionInfo.getRegionNameAsString(), sn);
+  }",False
+69,"deleteRegionInfo(Connection,RegionInfo)",Method,,"org.apache.hadoop.hbase.master.assignment.GCRegionProcedure+executeFromState(MasterProcedureEnv,GCRegionState) org.apache.hadoop.hbase.util.HBaseFsckRepair+removeParentInMeta(Configuration,RegionInfo) org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+testConsistency() org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+verifyMiddleHole(CatalogJanitor) org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+verifyCornerHoles(CatalogJanitor,TableName) org.apache.hadoop.hbase.master.TestCatalogJanitorCluster+verifyCornerHoles(CatalogJanitor,TableName) org.apache.hadoop.hbase.master.TestMetaFixer+deleteRegion(MasterServices,RegionInfo)","org.apache.hadoop.hbase.client.Delete+Delete(byte[]) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.Delete+addFamily(byte[],long) org.apache.hadoop.hbase.client.Delete+addFamily(byte[],long) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,Delete) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,Delete) org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString()",org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+LATEST_TIMESTAMP org.apache.hadoop.hbase.MetaTableAccessor+LOG,513,12,50187,1200,9,"/** 
+ * Deletes the specified region from META.
+ * @param connection connection we're using
+ * @param regionInfo region to be deleted from META
+ */
+","/**
+   * Deletes the specified region from META.
+   * @param connection connection we're using
+   * @param regionInfo region to be deleted from META
+   */
+  public static void deleteRegionInfo(Connection connection, RegionInfo regionInfo)
+    throws IOException {
+    Delete delete = new Delete(regionInfo.getRegionName());
+    delete.addFamily(HConstants.CATALOG_FAMILY, HConstants.LATEST_TIMESTAMP);
+    deleteFromMetaTable(connection, delete);
+    LOG.info(""Deleted "" + regionInfo.getRegionNameAsString());
+  }",False
+70,"deleteRegionInfos(Connection,List<RegionInfo>)",Method,,org.apache.hadoop.hbase.master.assignment.RegionStateStore+deleteRegions(List<RegionInfo>) org.apache.hadoop.hbase.master.procedure.RestoreSnapshotProcedure+updateMETA(MasterProcedureEnv),"org.apache.hadoop.hbase.MetaTableAccessor+deleteRegionInfos(Connection,List<RegionInfo>,long) org.apache.hadoop.hbase.MetaTableAccessor+deleteRegionInfos(Connection,List<RegionInfo>,long) org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime()",,372,9,50704,1213,9,"/** 
+ * Deletes the specified regions from META.
+ * @param connection connection we're using
+ * @param regionsInfo list of regions to be deleted from META
+ */
+","/**
+   * Deletes the specified regions from META.
+   * @param connection connection we're using
+   * @param regionsInfo list of regions to be deleted from META
+   */
+  public static void deleteRegionInfos(Connection connection, List<RegionInfo> regionsInfo)
+    throws IOException {
+    deleteRegionInfos(connection, regionsInfo, EnvironmentEdgeManager.currentTime());
+  }",False
+71,"deleteRegionInfos(Connection,List<RegionInfo>,long)",Method,"deleteRegionInfos(Connection,List<RegionInfo>) overwriteRegions(Connection,List<RegionInfo>,int)",,"java.util.List+size() java.util.List+size() org.apache.hadoop.hbase.client.Delete+Delete(byte[]) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.Delete+addFamily(byte[],long) org.apache.hadoop.hbase.client.Delete+addFamily(byte[],long) java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,List<Delete>) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,List<Delete>) java.util.List+size() java.util.List+size()",org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.MetaTableAccessor+LOG org.apache.hadoop.hbase.MetaTableAccessor+LOG,692,17,51080,1223,10,"/** 
+ * Deletes the specified regions from META.
+ * @param connection connection we're using
+ * @param regionsInfo list of regions to be deleted from META
+ */
+","/**
+   * Deletes the specified regions from META.
+   * @param connection connection we're using
+   * @param regionsInfo list of regions to be deleted from META
+   */
+  private static void deleteRegionInfos(Connection connection, List<RegionInfo> regionsInfo,
+    long ts) throws IOException {
+    List<Delete> deletes = new ArrayList<>(regionsInfo.size());
+    for (RegionInfo hri : regionsInfo) {
+      Delete e = new Delete(hri.getRegionName());
+      e.addFamily(HConstants.CATALOG_FAMILY, ts);
+      deletes.add(e);
+    }
+    deleteFromMetaTable(connection, deletes);
+    LOG.info(""Deleted {} regions from META"", regionsInfo.size());
+    LOG.debug(""Deleted regions: {}"", regionsInfo);
+  }",False
+72,"overwriteRegions(Connection,List<RegionInfo>,int)",Method,,org.apache.hadoop.hbase.master.procedure.RestoreSnapshotProcedure+updateMETA(MasterProcedureEnv),"org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.util.EnvironmentEdgeManager+currentTime() org.apache.hadoop.hbase.MetaTableAccessor+deleteRegionInfos(Connection,List<RegionInfo>,long) org.apache.hadoop.hbase.MetaTableAccessor+deleteRegionInfos(Connection,List<RegionInfo>,long) org.apache.hadoop.hbase.MetaTableAccessor+addRegionsToMeta(Connection,List<RegionInfo>,int,long) org.apache.hadoop.hbase.MetaTableAccessor+addRegionsToMeta(Connection,List<RegionInfo>,int,long) java.util.List+size() java.util.List+size()",org.apache.hadoop.hbase.MetaTableAccessor+LOG org.apache.hadoop.hbase.MetaTableAccessor+LOG,1206,21,51776,1242,9,"/** 
+ * Overwrites the specified regions from hbase:meta. Deletes old rows for the given regions and adds new ones. Regions added back have state CLOSED.
+ * @param connection connection we're using
+ * @param regionInfos list of regions to be added to META
+ */
+","/**
+   * Overwrites the specified regions from hbase:meta. Deletes old rows for the given regions and
+   * adds new ones. Regions added back have state CLOSED.
+   * @param connection connection we're using
+   * @param regionInfos list of regions to be added to META
+   */
+  public static void overwriteRegions(Connection connection, List<RegionInfo> regionInfos,
+    int regionReplication) throws IOException {
+    // use master time for delete marker and the Put
+    long now = EnvironmentEdgeManager.currentTime();
+    deleteRegionInfos(connection, regionInfos, now);
+    // Why sleep? This is the easiest way to ensure that the previous deletes does not
+    // eclipse the following puts, that might happen in the same ts from the server.
+    // See HBASE-9906, and HBASE-9879. Once either HBASE-9879, HBASE-8770 is fixed,
+    // or HBASE-9905 is fixed and meta uses seqIds, we do not need the sleep.
+    //
+    // HBASE-13875 uses master timestamp for the mutations. The 20ms sleep is not needed
+    addRegionsToMeta(connection, regionInfos, regionReplication, now + 1);
+    LOG.info(""Overwritten "" + regionInfos.size() + "" regions to Meta"");
+    LOG.debug(""Overwritten regions: {} "", regionInfos);
+  }",False
+73,"deleteMergeQualifiers(Connection,RegionInfo)",Method,,"org.apache.hadoop.hbase.master.assignment.GCMergedRegionsProcedure+executeFromState(MasterProcedureEnv,GCMergedRegionsState) org.apache.hadoop.hbase.master.assignment.GCMultipleMergedRegionsProcedure+executeFromState(MasterProcedureEnv,GCMergedRegionsState) org.apache.hadoop.hbase.TestMetaTableAccessor+testGetMergeRegions()","org.apache.hadoop.hbase.client.Delete+Delete(byte[]) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.Result+rawCells() org.apache.hadoop.hbase.MetaTableAccessor+getRegionResult(Connection,byte[]) org.apache.hadoop.hbase.MetaTableAccessor+getRegionResult(Connection,byte[]) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.Result+rawCells() org.apache.hadoop.hbase.MetaTableAccessor+isMergeQualifierPrefix(Cell) org.apache.hadoop.hbase.MetaTableAccessor+isMergeQualifierPrefix(Cell) org.apache.hadoop.hbase.CellUtil+cloneQualifier(Cell) org.apache.hadoop.hbase.CellUtil+cloneQualifier(Cell) java.util.List+add(E) java.util.List+add(E) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) org.apache.hadoop.hbase.client.Delete+addColumns(byte[],byte[],long) java.util.List+isEmpty() java.util.List+isEmpty() org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,Delete) org.apache.hadoop.hbase.MetaTableAccessor+deleteFromMetaTable(Connection,Delete) org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() org.apache.hadoop.hbase.client.RegionInfo+getRegionNameAsString() java.util.stream.Stream+map(Function) java.util.Collection+stream() java.util.Collection+stream() java.util.stream.Stream+map(Function) java.util.stream.Collectors+joining(CharSequence) java.util.stream.Collectors+joining(CharSequence)",org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+LATEST_TIMESTAMP org.apache.hadoop.hbase.MetaTableAccessor+LOG org.apache.hadoop.hbase.MetaTableAccessor+LOG,1621,37,52986,1263,9,"/** 
+ * Deletes merge qualifiers for the specified merge region.
+ * @param connection connection we're using
+ * @param mergeRegion the merged region
+ */
+","/**
+   * Deletes merge qualifiers for the specified merge region.
+   * @param connection connection we're using
+   * @param mergeRegion the merged region
+   */
+  public static void deleteMergeQualifiers(Connection connection, final RegionInfo mergeRegion)
+    throws IOException {
+    Delete delete = new Delete(mergeRegion.getRegionName());
+    // NOTE: We are doing a new hbase:meta read here.
+    Cell[] cells = getRegionResult(connection, mergeRegion.getRegionName()).rawCells();
+    if (cells == null || cells.length == 0) {
+      return;
+    }
+    List<byte[]> qualifiers = new ArrayList<>();
+    for (Cell cell : cells) {
+      if (!isMergeQualifierPrefix(cell)) {
+        continue;
+      }
+      byte[] qualifier = CellUtil.cloneQualifier(cell);
+      qualifiers.add(qualifier);
+      delete.addColumns(HConstants.CATALOG_FAMILY, qualifier, HConstants.LATEST_TIMESTAMP);
+    }
+
+    // There will be race condition that a GCMultipleMergedRegionsProcedure is scheduled while
+    // the previous GCMultipleMergedRegionsProcedure is still going on, in this case, the second
+    // GCMultipleMergedRegionsProcedure could delete the merged region by accident!
+    if (qualifiers.isEmpty()) {
+      LOG.info(""No merged qualifiers for region "" + mergeRegion.getRegionNameAsString() +
+        "" in meta table, they are cleaned up already, Skip."");
+      return;
+    }
+
+    deleteFromMetaTable(connection, delete);
+    LOG.info(""Deleted merge references in "" + mergeRegion.getRegionNameAsString() +
+      "", deleted qualifiers "" +
+      qualifiers.stream().map(Bytes::toStringBinary).collect(Collectors.joining("", "")));
+  }",True
+74,"addRegionInfo(Put,RegionInfo)",Method,"makePutFromRegionInfo(RegionInfo,long) updateLocation(Connection,RegionInfo,ServerName,long,long)","org.apache.hadoop.hbase.master.assignment.RegionStateStore+updateUserRegionLocation(RegionInfo,State,ServerName,long,long)",org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.RegionInfo+toByteArray(RegionInfo) org.apache.hadoop.hbase.client.RegionInfo+toByteArray(RegionInfo) org.apache.hadoop.hbase.client.RegionReplicaUtil+getRegionInfoForDefaultReplica(RegionInfo) org.apache.hadoop.hbase.client.RegionReplicaUtil+getRegionInfoForDefaultReplica(RegionInfo),org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+REGIONINFO_QUALIFIER,649,11,54611,1296,9,,"public static Put addRegionInfo(final Put p, final RegionInfo hri) throws IOException {
+    p.add(CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY).setRow(p.getRow())
+      .setFamily(HConstants.CATALOG_FAMILY).setQualifier(HConstants.REGIONINFO_QUALIFIER)
+      .setTimestamp(p.getTimestamp()).setType(Type.Put)
+      // Serialize the Default Replica HRI otherwise scan of hbase:meta
+      // shows an info:regioninfo value with encoded name and region
+      // name that differs from that of the hbase;meta row.
+      .setValue(RegionInfo.toByteArray(RegionReplicaUtil.getRegionInfoForDefaultReplica(hri)))
+      .build());
+    return p;
+  }",False
+75,"addLocation(Put,ServerName,long,int)",Method,"mergeRegions(Connection,RegionInfo,Map<RegionInfo,Long>,ServerName,int) updateLocation(Connection,RegionInfo,ServerName,long,long)","org.apache.hadoop.hbase.master.assignment.RegionStateStore+updateUserRegionLocation(RegionInfo,State,ServerName,long,long) org.apache.hadoop.hbase.util.HBaseFsckRepair+fixMetaHoleOnlineAndAddReplicas(Configuration,RegionInfo,Collection<ServerName>,int)",org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerColumn(int) org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.net.Address+toString() org.apache.hadoop.hbase.ServerName+getAddress() org.apache.hadoop.hbase.ServerName+getAddress() org.apache.hadoop.hbase.net.Address+toString() org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getStartCodeColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getStartCodeColumn(int) org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.util.Bytes+toBytes(long) org.apache.hadoop.hbase.util.Bytes+toBytes(long) org.apache.hadoop.hbase.ServerName+getStartcode() org.apache.hadoop.hbase.ServerName+getStartcode() org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getSeqNumColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getSeqNumColumn(int) org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.util.Bytes+toBytes(long) org.apache.hadoop.hbase.util.Bytes+toBytes(long),org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.Cell+Type org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.Cell+Type org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY,1022,15,55264,1308,9,,"public static Put addLocation(Put p, ServerName sn, long openSeqNum, int replicaId)
+    throws IOException {
+    CellBuilder builder = CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY);
+    return p
+      .add(builder.clear().setRow(p.getRow()).setFamily(HConstants.CATALOG_FAMILY)
+        .setQualifier(CatalogFamilyFormat.getServerColumn(replicaId)).setTimestamp(p.getTimestamp())
+        .setType(Cell.Type.Put).setValue(Bytes.toBytes(sn.getAddress().toString())).build())
+      .add(builder.clear().setRow(p.getRow()).setFamily(HConstants.CATALOG_FAMILY)
+        .setQualifier(CatalogFamilyFormat.getStartCodeColumn(replicaId))
+        .setTimestamp(p.getTimestamp()).setType(Cell.Type.Put)
+        .setValue(Bytes.toBytes(sn.getStartcode())).build())
+      .add(builder.clear().setRow(p.getRow()).setFamily(HConstants.CATALOG_FAMILY)
+        .setQualifier(CatalogFamilyFormat.getSeqNumColumn(replicaId)).setTimestamp(p.getTimestamp())
+        .setType(Type.Put).setValue(Bytes.toBytes(openSeqNum)).build());
+  }",False
+76,"writeRegionName(ByteArrayOutputStream,byte[])",Method,getParentsBytes(List<RegionInfo>) getParentsBytes(List<RegionInfo>),,java.io.ByteArrayOutputStream+write(int) java.io.ByteArrayOutputStream+write(int) java.io.ByteArrayOutputStream+write(int) java.io.ByteArrayOutputStream+write(int),org.apache.hadoop.hbase.MetaTableAccessor+ESCAPE_BYTE org.apache.hadoop.hbase.MetaTableAccessor+ESCAPE_BYTE,215,8,56290,1324,10,,"private static void writeRegionName(ByteArrayOutputStream out, byte[] regionName) {
+    for (byte b : regionName) {
+      if (b == ESCAPE_BYTE) {
+        out.write(ESCAPE_BYTE);
+      }
+      out.write(b);
+    }
+  }",True
+77,getParentsBytes(List<RegionInfo>),Method,"addReplicationParent(Put,List<RegionInfo>)","org.apache.hadoop.hbase.replication.regionserver.TestSerialReplicationChecker+addParents(RegionInfo,List<RegionInfo>)","java.io.ByteArrayOutputStream+ByteArrayOutputStream() java.util.List+iterator() java.util.List+iterator() org.apache.hadoop.hbase.MetaTableAccessor+writeRegionName(ByteArrayOutputStream,byte[]) org.apache.hadoop.hbase.MetaTableAccessor+writeRegionName(ByteArrayOutputStream,byte[]) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() java.util.Iterator+next() java.util.Iterator+next() org.apache.hadoop.hbase.client.RegionInfo+getRegionName() java.util.Iterator+hasNext() java.util.Iterator+hasNext() java.io.ByteArrayOutputStream+write(int) java.io.ByteArrayOutputStream+write(int) java.io.ByteArrayOutputStream+write(int) java.io.ByteArrayOutputStream+write(int) org.apache.hadoop.hbase.MetaTableAccessor+writeRegionName(ByteArrayOutputStream,byte[]) org.apache.hadoop.hbase.MetaTableAccessor+writeRegionName(ByteArrayOutputStream,byte[]) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() java.util.Iterator+next() java.util.Iterator+next() org.apache.hadoop.hbase.client.RegionInfo+getRegionName() java.io.ByteArrayOutputStream+toByteArray() java.io.ByteArrayOutputStream+toByteArray()",org.apache.hadoop.hbase.MetaTableAccessor+ESCAPE_BYTE org.apache.hadoop.hbase.MetaTableAccessor+SEPARATED_BYTE,442,12,56509,1334,9,,"@VisibleForTesting
+  public static byte[] getParentsBytes(List<RegionInfo> parents) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    Iterator<RegionInfo> iter = parents.iterator();
+    writeRegionName(bos, iter.next().getRegionName());
+    while (iter.hasNext()) {
+      bos.write(ESCAPE_BYTE);
+      bos.write(SEPARATED_BYTE);
+      writeRegionName(bos, iter.next().getRegionName());
+    }
+    return bos.toByteArray();
+  }",True
+78,parseParentsBytes(byte[]),Method,getReplicationBarrierResult(Result),,java.io.ByteArrayOutputStream+ByteArrayOutputStream() java.util.List+add(E) java.util.List+add(E) java.io.ByteArrayOutputStream+toByteArray() java.io.ByteArrayOutputStream+toByteArray() java.io.ByteArrayOutputStream+reset() java.io.ByteArrayOutputStream+reset() java.io.ByteArrayOutputStream+write(int) java.io.ByteArrayOutputStream+write(int) java.io.ByteArrayOutputStream+size() java.io.ByteArrayOutputStream+size() java.util.List+add(E) java.util.List+add(E) java.io.ByteArrayOutputStream+toByteArray() java.io.ByteArrayOutputStream+toByteArray(),org.apache.hadoop.hbase.MetaTableAccessor+ESCAPE_BYTE org.apache.hadoop.hbase.MetaTableAccessor+SEPARATED_BYTE,578,20,56955,1346,10,,"private static List<byte[]> parseParentsBytes(byte[] bytes) {
+    List<byte[]> parents = new ArrayList<>();
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    for (int i = 0; i < bytes.length; i++) {
+      if (bytes[i] == ESCAPE_BYTE) {
+        i++;
+        if (bytes[i] == SEPARATED_BYTE) {
+          parents.add(bos.toByteArray());
+          bos.reset();
+          continue;
+        }
+        // fall through to append the byte
+      }
+      bos.write(bytes[i]);
+    }
+    if (bos.size() > 0) {
+      parents.add(bos.toByteArray());
+    }
+    return parents;
+  }",True
+79,"addReplicationParent(Put,List<RegionInfo>)",Method,"mergeRegions(Connection,RegionInfo,Map<RegionInfo,Long>,ServerName,int) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int)",,org.apache.hadoop.hbase.MetaTableAccessor+getParentsBytes(List<RegionInfo>) org.apache.hadoop.hbase.MetaTableAccessor+getParentsBytes(List<RegionInfo>) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp(),org.apache.hadoop.hbase.HConstants+REPLICATION_BARRIER_FAMILY org.apache.hadoop.hbase.MetaTableAccessor+REPLICATION_PARENT_QUALIFIER,417,6,57537,1367,10,,"private static void addReplicationParent(Put put, List<RegionInfo> parents) throws IOException {
+    byte[] value = getParentsBytes(parents);
+    put.add(CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY).setRow(put.getRow())
+      .setFamily(HConstants.REPLICATION_BARRIER_FAMILY).setQualifier(REPLICATION_PARENT_QUALIFIER)
+      .setTimestamp(put.getTimestamp()).setType(Type.Put).setValue(value).build());
+  }",True
+80,"makePutForReplicationBarrier(RegionInfo,long,long)",Method,"mergeRegions(Connection,RegionInfo,Map<RegionInfo,Long>,ServerName,int)",,"org.apache.hadoop.hbase.client.Put+Put(byte[],long) org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.client.RegionInfo+getRegionName() org.apache.hadoop.hbase.MetaTableAccessor+addReplicationBarrier(Put,long) org.apache.hadoop.hbase.MetaTableAccessor+addReplicationBarrier(Put,long)",,239,6,57958,1374,9,,"public static Put makePutForReplicationBarrier(RegionInfo regionInfo, long openSeqNum, long ts)
+    throws IOException {
+    Put put = new Put(regionInfo.getRegionName(), ts);
+    addReplicationBarrier(put, openSeqNum);
+    return put;
+  }",True
+81,"addReplicationBarrier(Put,long)",Method,"splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int) makePutForReplicationBarrier(RegionInfo,long,long)","org.apache.hadoop.hbase.master.assignment.RegionStateStore+updateUserRegionLocation(RegionInfo,State,ServerName,long,long)",org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.util.Bytes+toBytes(long) org.apache.hadoop.hbase.util.Bytes+toBytes(long),org.apache.hadoop.hbase.HConstants+REPLICATION_BARRIER_FAMILY org.apache.hadoop.hbase.HConstants+SEQNUM_QUALIFIER,452,9,58201,1384,9,"/** 
+ * See class comment on SerialReplicationChecker
+ */
+","/**
+   * See class comment on SerialReplicationChecker
+   */
+  public static void addReplicationBarrier(Put put, long openSeqNum) throws IOException {
+    put.add(CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY).setRow(put.getRow())
+      .setFamily(HConstants.REPLICATION_BARRIER_FAMILY).setQualifier(HConstants.SEQNUM_QUALIFIER)
+      .setTimestamp(put.getTimestamp()).setType(Type.Put).setValue(Bytes.toBytes(openSeqNum))
+      .build());
+  }",True
+82,"addEmptyLocation(Put,int)",Method,"addRegionsToMeta(Connection,List<RegionInfo>,int,long) mergeRegions(Connection,RegionInfo,Map<RegionInfo,Long>,ServerName,int) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int)",,org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getServerColumn(int) org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getStartCodeColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getStartCodeColumn(int) org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+clear() org.apache.hadoop.hbase.CellBuilder+setRow(byte[]) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.CellBuilder+setFamily(byte[]) org.apache.hadoop.hbase.CellBuilder+setQualifier(byte[]) org.apache.hadoop.hbase.CatalogFamilyFormat+getSeqNumColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getSeqNumColumn(int) org.apache.hadoop.hbase.CellBuilder+setTimestamp(long) org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp(),org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.Cell+Type org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.Cell+Type,852,13,58657,1391,10,,"private static Put addEmptyLocation(Put p, int replicaId) throws IOException {
+    CellBuilder builder = CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY);
+    return p
+      .add(builder.clear().setRow(p.getRow()).setFamily(HConstants.CATALOG_FAMILY)
+        .setQualifier(CatalogFamilyFormat.getServerColumn(replicaId)).setTimestamp(p.getTimestamp())
+        .setType(Type.Put).build())
+      .add(builder.clear().setRow(p.getRow()).setFamily(HConstants.CATALOG_FAMILY)
+        .setQualifier(CatalogFamilyFormat.getStartCodeColumn(replicaId))
+        .setTimestamp(p.getTimestamp()).setType(Cell.Type.Put).build())
+      .add(builder.clear().setRow(p.getRow()).setFamily(HConstants.CATALOG_FAMILY)
+        .setQualifier(CatalogFamilyFormat.getSeqNumColumn(replicaId)).setTimestamp(p.getTimestamp())
+        .setType(Cell.Type.Put).build());
+  }",False
+83,ReplicationBarrierResult,MemberClass,,,"org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+ReplicationBarrierResult(long[],State,List<byte[]>) org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+getBarriers() org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+getParentRegionNames() org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+toString() java.util.Arrays+toString(long[]) java.util.Arrays+toString(long[]) java.util.stream.Stream+map(Function) java.util.Collection+stream() java.util.Collection+stream() java.util.stream.Stream+map(Function) java.util.stream.Collectors+joining(CharSequence) java.util.stream.Collectors+joining(CharSequence)",org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+barriers org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+parentRegionNames org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+barriers org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+parentRegionNames org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+barriers org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+parentRegionNames org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+barriers org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+parentRegionNames,911,31,-1,-1,25,,"public static final class ReplicationBarrierResult {
+    private final long[] barriers;
+    private final RegionState.State state;
+    private final List<byte[]> parentRegionNames;
+
+    ReplicationBarrierResult(long[] barriers, State state, List<byte[]> parentRegionNames) {
+      this.barriers = barriers;
+      this.state = state;
+      this.parentRegionNames = parentRegionNames;
+    }
+
+    public long[] getBarriers() {
+      return barriers;
+    }
+
+    public RegionState.State getState() {
+      return state;
+    }
+
+    public List<byte[]> getParentRegionNames() {
+      return parentRegionNames;
+    }
+
+    @Override
+    public String toString() {
+      return ""ReplicationBarrierResult [barriers="" + Arrays.toString(barriers) + "", state="" +
+        state + "", parentRegionNames="" +
+        parentRegionNames.stream().map(Bytes::toStringBinary).collect(Collectors.joining("", "")) +
+        ""]"";
+    }
+  }",False
+84,getReplicationBarrier(Cell),Method,,,"org.apache.hadoop.hbase.util.Bytes+toLong(byte[],int,int) org.apache.hadoop.hbase.util.Bytes+toLong(byte[],int,int) org.apache.hadoop.hbase.Cell+getValueArray() org.apache.hadoop.hbase.Cell+getValueArray() org.apache.hadoop.hbase.Cell+getValueOffset() org.apache.hadoop.hbase.Cell+getValueOffset() org.apache.hadoop.hbase.Cell+getValueLength() org.apache.hadoop.hbase.Cell+getValueLength()",,139,3,60428,1437,10,,"private static long getReplicationBarrier(Cell c) {
+    return Bytes.toLong(c.getValueArray(), c.getValueOffset(), c.getValueLength());
+  }",True
+85,getReplicationBarriers(Result),Method,"getReplicationBarrierResult(Result) getReplicationBarrier(Connection,byte[])",org.apache.hadoop.hbase.master.cleaner.ReplicationBarrierCleaner+chore() org.apache.hadoop.hbase.util.TestHBaseFsckCleanReplicationBarriers+testCleanReplicationBarrierWithDeletedTable(),"java.util.stream.Stream+mapToLong(ToLongFunction) java.util.Collection+stream() org.apache.hadoop.hbase.client.Result+getColumnCells(byte[],byte[]) org.apache.hadoop.hbase.client.Result+getColumnCells(byte[],byte[]) java.util.Collection+stream() java.util.stream.Stream+mapToLong(ToLongFunction)",org.apache.hadoop.hbase.HConstants+REPLICATION_BARRIER_FAMILY org.apache.hadoop.hbase.HConstants+SEQNUM_QUALIFIER,264,4,60571,1441,9,,"public static long[] getReplicationBarriers(Result result) {
+    return result.getColumnCells(HConstants.REPLICATION_BARRIER_FAMILY, HConstants.SEQNUM_QUALIFIER)
+      .stream().mapToLong(MetaTableAccessor::getReplicationBarrier).sorted().distinct().toArray();
+  }",True
+86,getReplicationBarrierResult(Result),Method,"getReplicationBarrierResult(Connection,TableName,byte[],byte[])",,"org.apache.hadoop.hbase.MetaTableAccessor+getReplicationBarriers(Result) org.apache.hadoop.hbase.MetaTableAccessor+getReplicationBarriers(Result) org.apache.hadoop.hbase.client.Result+getValue(byte[],byte[]) org.apache.hadoop.hbase.client.Result+getValue(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+toString(byte[]) org.apache.hadoop.hbase.util.Bytes+toString(byte[]) org.apache.hadoop.hbase.client.Result+getValue(byte[],byte[]) org.apache.hadoop.hbase.client.Result+getValue(byte[],byte[]) org.apache.hadoop.hbase.MetaTableAccessor+parseParentsBytes(byte[]) org.apache.hadoop.hbase.MetaTableAccessor+parseParentsBytes(byte[]) java.util.Collections+emptyList() java.util.Collections+emptyList() org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+ReplicationBarrierResult(long[],State,List<byte[]>)",org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+STATE_QUALIFIER org.apache.hadoop.hbase.master.RegionState+State org.apache.hadoop.hbase.HConstants+REPLICATION_BARRIER_FAMILY org.apache.hadoop.hbase.MetaTableAccessor+REPLICATION_PARENT_QUALIFIER,695,11,60839,1446,10,,"private static ReplicationBarrierResult getReplicationBarrierResult(Result result) {
+    long[] barriers = getReplicationBarriers(result);
+    byte[] stateBytes = result.getValue(HConstants.CATALOG_FAMILY, HConstants.STATE_QUALIFIER);
+    RegionState.State state =
+      stateBytes != null ? RegionState.State.valueOf(Bytes.toString(stateBytes)) : null;
+    byte[] parentRegionsBytes =
+      result.getValue(HConstants.REPLICATION_BARRIER_FAMILY, REPLICATION_PARENT_QUALIFIER);
+    List<byte[]> parentRegionNames =
+      parentRegionsBytes != null ? parseParentsBytes(parentRegionsBytes) : Collections.emptyList();
+    return new ReplicationBarrierResult(barriers, state, parentRegionNames);
+  }",True
+87,"getReplicationBarrierResult(Connection,TableName,byte[],byte[])",Method,,"org.apache.hadoop.hbase.replication.regionserver.ReplicationThrottler+canPush(Entry,byte[])","org.apache.hadoop.hbase.client.RegionInfo+createRegionName(TableName,byte[],String,boolean) org.apache.hadoop.hbase.client.RegionInfo+createRegionName(TableName,byte[],String,boolean) org.apache.hadoop.hbase.client.RegionInfo+createRegionName(TableName,byte[],String,boolean) org.apache.hadoop.hbase.client.RegionInfo+createRegionName(TableName,byte[],String,boolean) org.apache.hadoop.hbase.client.Scan+setCaching(int) org.apache.hadoop.hbase.client.Scan+setReversed(boolean) org.apache.hadoop.hbase.client.Scan+readAllVersions() org.apache.hadoop.hbase.client.Scan+addFamily(byte[]) org.apache.hadoop.hbase.client.Scan+addColumn(byte[],byte[]) org.apache.hadoop.hbase.client.Scan+withStopRow(byte[]) org.apache.hadoop.hbase.client.Scan+withStartRow(byte[]) org.apache.hadoop.hbase.client.Scan+Scan() org.apache.hadoop.hbase.client.Scan+withStartRow(byte[]) org.apache.hadoop.hbase.client.Scan+withStopRow(byte[]) org.apache.hadoop.hbase.client.Scan+addColumn(byte[],byte[]) org.apache.hadoop.hbase.client.Scan+addFamily(byte[]) org.apache.hadoop.hbase.client.Scan+readAllVersions() org.apache.hadoop.hbase.client.Scan+setReversed(boolean) org.apache.hadoop.hbase.client.Scan+setCaching(int) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.client.Table+getScanner(Scan) org.apache.hadoop.hbase.client.Table+getScanner(Scan) org.apache.hadoop.hbase.client.ResultScanner+next() org.apache.hadoop.hbase.client.ResultScanner+next() org.apache.hadoop.hbase.MetaTableAccessor.ReplicationBarrierResult+ReplicationBarrierResult(long[],State,List<byte[]>) java.util.Collections+emptyList() java.util.Collections+emptyList() org.apache.hadoop.hbase.client.Result+getRow() org.apache.hadoop.hbase.client.Result+getRow() org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+equals(byte[],byte[]) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.util.Bytes+toBytes(String) org.apache.hadoop.hbase.client.RegionInfo+encodeRegionName(byte[]) org.apache.hadoop.hbase.client.RegionInfo+encodeRegionName(byte[]) org.apache.hadoop.hbase.MetaTableAccessor+getReplicationBarrierResult(Result) org.apache.hadoop.hbase.MetaTableAccessor+getReplicationBarrierResult(Result)",org.apache.hadoop.hbase.HConstants+NINES org.apache.hadoop.hbase.HConstants+EMPTY_START_ROW org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY org.apache.hadoop.hbase.HConstants+STATE_QUALIFIER org.apache.hadoop.hbase.HConstants+REPLICATION_BARRIER_FAMILY,1469,27,61538,1458,9,,"public static ReplicationBarrierResult getReplicationBarrierResult(Connection conn,
+    TableName tableName, byte[] row, byte[] encodedRegionName) throws IOException {
+    byte[] metaStartKey = RegionInfo.createRegionName(tableName, row, HConstants.NINES, false);
+    byte[] metaStopKey =
+      RegionInfo.createRegionName(tableName, HConstants.EMPTY_START_ROW, """", false);
+    Scan scan = new Scan().withStartRow(metaStartKey).withStopRow(metaStopKey)
+      .addColumn(HConstants.CATALOG_FAMILY, HConstants.STATE_QUALIFIER)
+      .addFamily(HConstants.REPLICATION_BARRIER_FAMILY).readAllVersions().setReversed(true)
+      .setCaching(10);
+    try (Table table = getMetaHTable(conn); ResultScanner scanner = table.getScanner(scan)) {
+      for (Result result;;) {
+        result = scanner.next();
+        if (result == null) {
+          return new ReplicationBarrierResult(new long[0], null, Collections.emptyList());
+        }
+        byte[] regionName = result.getRow();
+        // TODO: we may look up a region which has already been split or merged so we need to check
+        // whether the encoded name matches. Need to find a way to quit earlier when there is no
+        // record for the given region, for now it will scan to the end of the table.
+        if (!Bytes.equals(encodedRegionName,
+          Bytes.toBytes(RegionInfo.encodeRegionName(regionName)))) {
+          continue;
+        }
+        return getReplicationBarrierResult(result);
+      }
+    }
+  }",True
+88,"getReplicationBarrier(Connection,byte[])",Method,,org.apache.hadoop.hbase.replication.regionserver.ReplicationThrottler+isParentFinished(byte[]) org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testCleanNoPeers() org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testCleanNoPeers() org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testCleanNoPeers() org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testCleanNoPeers() org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testDeleteBarriers() org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testDeleteBarriers() org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testDeleteBarriers() org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testDeleteBarriers() org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testDeleteBarriers() org.apache.hadoop.hbase.master.cleaner.TestReplicationBarrierCleaner+testDeleteRowForDeletedRegion() org.apache.hadoop.hbase.util.TestHBaseFsckCleanReplicationBarriers+testCleanReplicationBarrierWithDeletedTable() org.apache.hadoop.hbase.util.TestHBaseFsckCleanReplicationBarriers+testCleanReplicationBarrierWithExistTable(),"org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.MetaTableAccessor+getMetaHTable(Connection) org.apache.hadoop.hbase.client.Table+get(Get) org.apache.hadoop.hbase.client.Table+get(Get) org.apache.hadoop.hbase.client.Get+readAllVersions() org.apache.hadoop.hbase.client.Get+addColumn(byte[],byte[]) org.apache.hadoop.hbase.client.Get+Get(byte[]) org.apache.hadoop.hbase.client.Get+addColumn(byte[],byte[]) org.apache.hadoop.hbase.client.Get+readAllVersions() org.apache.hadoop.hbase.MetaTableAccessor+getReplicationBarriers(Result) org.apache.hadoop.hbase.MetaTableAccessor+getReplicationBarriers(Result)",org.apache.hadoop.hbase.HConstants+REPLICATION_BARRIER_FAMILY org.apache.hadoop.hbase.HConstants+SEQNUM_QUALIFIER,372,9,63011,1486,9,,"public static long[] getReplicationBarrier(Connection conn, byte[] regionName)
+    throws IOException {
+    try (Table table = getMetaHTable(conn)) {
+      Result result = table.get(new Get(regionName)
+        .addColumn(HConstants.REPLICATION_BARRIER_FAMILY, HConstants.SEQNUM_QUALIFIER)
+        .readAllVersions());
+      return getReplicationBarriers(result);
+    }
+  }",True
+89,"getTableEncodedRegionNameAndLastBarrier(Connection,TableName)",Method,,"org.apache.hadoop.hbase.master.replication.AbstractPeerProcedure+setLastPushedSequenceIdForTable(MasterProcedureEnv,TableName,Map<String,Long>)","org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Visitor) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType)",,843,19,63387,1496,9,,"public static List<Pair<String, Long>> getTableEncodedRegionNameAndLastBarrier(Connection conn,
+    TableName tableName) throws IOException {
+    List<Pair<String, Long>> list = new ArrayList<>();
+    scanMeta(conn,
+      ClientMetaTableAccessor.getTableStartRowForMeta(tableName, QueryType.REPLICATION),
+      ClientMetaTableAccessor.getTableStopRowForMeta(tableName, QueryType.REPLICATION),
+      QueryType.REPLICATION, r -> {
+        byte[] value =
+          r.getValue(HConstants.REPLICATION_BARRIER_FAMILY, HConstants.SEQNUM_QUALIFIER);
+        if (value == null) {
+          return true;
+        }
+        long lastBarrier = Bytes.toLong(value);
+        String encodedRegionName = RegionInfo.encodeRegionName(r.getRow());
+        list.add(Pair.newPair(encodedRegionName, lastBarrier));
+        return true;
+      });
+    return list;
+  }",True
+90,"getTableEncodedRegionNamesForSerialReplication(Connection,TableName)",Method,,,"org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Filter,int,Visitor) org.apache.hadoop.hbase.MetaTableAccessor+scanMeta(Connection,byte[],byte[],QueryType,Filter,int,Visitor) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStartRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.ClientMetaTableAccessor+getTableStopRowForMeta(TableName,QueryType) org.apache.hadoop.hbase.filter.FirstKeyOnlyFilter+FirstKeyOnlyFilter()",java.lang.Integer+MAX_VALUE,567,12,64234,1516,9,,"public static List<String> getTableEncodedRegionNamesForSerialReplication(Connection conn,
+    TableName tableName) throws IOException {
+    List<String> list = new ArrayList<>();
+    scanMeta(conn,
+      ClientMetaTableAccessor.getTableStartRowForMeta(tableName, QueryType.REPLICATION),
+      ClientMetaTableAccessor.getTableStopRowForMeta(tableName, QueryType.REPLICATION),
+      QueryType.REPLICATION, new FirstKeyOnlyFilter(), Integer.MAX_VALUE, r -> {
+        list.add(RegionInfo.encodeRegionName(r.getRow()));
+        return true;
+      });
+    return list;
+  }",True
+91,debugLogMutations(List<? extends Mutation>),Method,"putsToMetaTable(Connection,List<Put>) deleteFromMetaTable(Connection,List<Delete>) multiMutate(Connection,byte[],List<Mutation>)",,org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutation(Mutation) org.apache.hadoop.hbase.MetaTableAccessor+debugLogMutation(Mutation),org.apache.hadoop.hbase.MetaTableAccessor+METALOG,380,10,64805,1529,10,,"private static void debugLogMutations(List<? extends Mutation> mutations) throws IOException {
+    if (!METALOG.isDebugEnabled()) {
+      return;
+    }
+    // Logging each mutation in separate line makes it easier to see diff between them visually
+    // because of common starting indentation.
+    for (Mutation mutation : mutations) {
+      debugLogMutation(mutation);
+    }
+  }",False
+92,debugLogMutation(Mutation),Method,"put(Table,Put) addSplitsToParent(Connection,RegionInfo,RegionInfo,RegionInfo) debugLogMutations(List<? extends Mutation>)",,java.lang.Class+getSimpleName() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getSimpleName() org.apache.hadoop.hbase.client.Operation+toJSON() org.apache.hadoop.hbase.client.Operation+toJSON(),org.apache.hadoop.hbase.MetaTableAccessor+METALOG,143,3,65189,1540,10,,"private static void debugLogMutation(Mutation p) throws IOException {
+    METALOG.debug(""{} {}"", p.getClass().getSimpleName(), p.toJSON());
+  }",False
+93,"addSequenceNum(Put,long,int)",Method,"splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int) splitRegion(Connection,RegionInfo,long,RegionInfo,RegionInfo,ServerName,int)",,org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.client.Put+add(Cell) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.CellBuilderFactory+create(CellBuilderType) org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.client.Mutation+getRow() org.apache.hadoop.hbase.CatalogFamilyFormat+getSeqNumColumn(int) org.apache.hadoop.hbase.CatalogFamilyFormat+getSeqNumColumn(int) org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.client.Mutation+getTimestamp() org.apache.hadoop.hbase.util.Bytes+toBytes(long) org.apache.hadoop.hbase.util.Bytes+toBytes(long),org.apache.hadoop.hbase.HConstants+CATALOG_FAMILY,403,6,65336,1544,10,,"private static Put addSequenceNum(Put p, long openSeqNum, int replicaId) throws IOException {
+    return p.add(CellBuilderFactory.create(CellBuilderType.SHALLOW_COPY).setRow(p.getRow())
+      .setFamily(HConstants.CATALOG_FAMILY)
+      .setQualifier(CatalogFamilyFormat.getSeqNumColumn(replicaId)).setTimestamp(p.getTimestamp())
+      .setType(Type.Put).setValue(Bytes.toBytes(openSeqNum)).build());
+  }",True

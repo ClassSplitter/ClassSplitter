@@ -1,0 +1,746 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,testQuoteTranslation(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,365,10,1823,43,1,,"@Test public void testQuoteTranslation() throws Exception {
+   		String grammar =
+   			""lexer grammar L;\n""+
+   			""QUOTE : '\""' ;\n""; // make sure this compiles
+   		String found = execLexer(""L.g4"", grammar, ""L"", ""\"""");
+   		String expecting =
+   			""[@0,0:0='\""',<1>,1:0]\n"" +
+            ""[@1,1:0='<EOF>',<-1>,1:1]\n"";
+   		assertEquals(expecting, found);
+   	}",False
+2,testRefToRuleDoesNotSetTokenNorEmitAnother(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,534,14,2194,54,1,,"@Test public void testRefToRuleDoesNotSetTokenNorEmitAnother() throws Exception {
+   		String grammar =
+   			""lexer grammar L;\n""+
+   			""A : '-' I ;\n"" +
+   			""I : '0'..'9'+ ;\n""+
+   			""WS : (' '|'\\n') -> skip ;"";
+   		String found = execLexer(""L.g4"", grammar, ""L"", ""34 -21 3"");
+   		String expecting =
+   			""[@0,0:1='34',<2>,1:0]\n"" +
+   			""[@1,3:5='-21',<1>,1:3]\n"" +
+   			""[@2,7:7='3',<2>,1:7]\n"" +
+   			""[@3,8:7='<EOF>',<-1>,1:8]\n""; // EOF has no length so range is 8:7 not 8:8
+   		assertEquals(expecting, found);
+   	}",False
+3,testSlashes(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,504,17,2731,69,1,,"@Test public void testSlashes() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""Backslash : '\\\\';\n"" +
+			""Slash : '/';\n"" +
+			""Vee : '\\\\/';\n"" +
+			""Wedge : '/\\\\';\n""+
+			""WS : [ \\t] -> skip;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""\\ / \\/ /\\"");
+		String expecting =
+			""[@0,0:0='\\',<1>,1:0]\n"" +
+			""[@1,2:2='/',<2>,1:2]\n"" +
+			""[@2,4:5='\\/',<3>,1:4]\n"" +
+			""[@3,7:8='/\\',<4>,1:7]\n"" +
+			""[@4,9:8='<EOF>',<-1>,1:9]\n"";
+		assertEquals(expecting, found);
+	}",False
+4,testParentheses(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,722,24,3238,92,1,"/** 
+ * This is a regression test for antlr/antlr4#224: ""Parentheses without quantifier in lexer rules have unclear effect"". https://github.com/antlr/antlr4/issues/224
+ */
+","/**
+	 * This is a regression test for antlr/antlr4#224: ""Parentheses without
+	 * quantifier in lexer rules have unclear effect"".
+	 * https://github.com/antlr/antlr4/issues/224
+	 */
+	@Test public void testParentheses() {
+		String grammar =
+			""lexer grammar Demo;\n"" +
+			""\n"" +
+			""START_BLOCK: '-.-.-';\n"" +
+			""\n"" +
+			""ID : (LETTER SEPARATOR) (LETTER SEPARATOR)+;\n"" +
+			""fragment LETTER: L_A|L_K;\n"" +
+			""fragment L_A: '.-';\n"" +
+			""fragment L_K: '-.-';\n"" +
+			""\n"" +
+			""SEPARATOR: '!';\n"";
+		String found = execLexer(""Demo.g4"", grammar, ""Demo"", ""-.-.-!"");
+		String expecting =
+			""[@0,0:4='-.-.-',<1>,1:0]\n"" +
+			""[@1,5:5='!',<3>,1:5]\n"" +
+			""[@2,6:5='<EOF>',<-1>,1:6]\n"";
+		assertEquals(expecting, found);
+	}",False
+5,testNonGreedyTermination(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse,383,13,3963,113,1,,"@Test
+	public void testNonGreedyTermination() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""
+			+ ""STRING : '\""' ('\""\""' | .)*? '\""';"";
+
+		String found = execLexer(""L.g4"", grammar, ""L"", ""\""hi\""\""mom\"""");
+		assertEquals(
+			""[@0,0:3='\""hi\""',<1>,1:0]\n"" +
+			""[@1,4:8='\""mom\""',<1>,1:4]\n"" +
+			""[@2,9:8='<EOF>',<-1>,1:9]\n"", found);
+		assertNull(stderrDuringParse);
+	}",False
+6,testNonGreedyTermination2(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse,351,12,4349,127,1,,"@Test
+	public void testNonGreedyTermination2() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""
+			+ ""STRING : '\""' ('\""\""' | .)+? '\""';"";
+
+		String found = execLexer(""L.g4"", grammar, ""L"", ""\""\""\""mom\"""");
+		assertEquals(
+			""[@0,0:6='\""\""\""mom\""',<1>,1:0]\n"" +
+			""[@1,7:6='<EOF>',<-1>,1:7]\n"", found);
+		assertNull(stderrDuringParse);
+	}",False
+7,testGreedyOptional(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse,380,13,4703,140,1,,"@Test
+	public void testGreedyOptional() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""
+			+ ""CMT : '//' .*? '\\n' CMT?;\n""
+			+ ""WS : (' '|'\\t')+;"";
+
+		String found = execLexer(""L.g4"", grammar, ""L"", ""//blah\n//blah\n"");
+		assertEquals(
+			""[@0,0:13='//blah\\n//blah\\n',<1>,1:0]\n"" +
+			""[@1,14:13='<EOF>',<-1>,3:14]\n"", found);
+		assertNull(stderrDuringParse);
+	}",False
+8,testNonGreedyOptional(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse,412,14,5086,154,1,,"@Test
+	public void testNonGreedyOptional() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""
+			+ ""CMT : '//' .*? '\\n' CMT??;\n""
+			+ ""WS : (' '|'\\t')+;"";
+
+		String found = execLexer(""L.g4"", grammar, ""L"", ""//blah\n//blah\n"");
+		assertEquals(
+			""[@0,0:6='//blah\\n',<1>,1:0]\n"" +
+			""[@1,7:13='//blah\\n',<1>,2:0]\n"" +
+			""[@2,14:13='<EOF>',<-1>,3:7]\n"", found);
+		assertNull(stderrDuringParse);
+	}",False
+9,testGreedyClosure(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse,379,13,5501,169,1,,"@Test
+	public void testGreedyClosure() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""
+			+ ""CMT : '//' .*? '\\n' CMT*;\n""
+			+ ""WS : (' '|'\\t')+;"";
+
+		String found = execLexer(""L.g4"", grammar, ""L"", ""//blah\n//blah\n"");
+		assertEquals(
+			""[@0,0:13='//blah\\n//blah\\n',<1>,1:0]\n"" +
+			""[@1,14:13='<EOF>',<-1>,3:14]\n"", found);
+		assertNull(stderrDuringParse);
+	}",False
+10,testNonGreedyClosure(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse,411,14,5883,183,1,,"@Test
+	public void testNonGreedyClosure() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""
+			+ ""CMT : '//' .*? '\\n' CMT*?;\n""
+			+ ""WS : (' '|'\\t')+;"";
+
+		String found = execLexer(""L.g4"", grammar, ""L"", ""//blah\n//blah\n"");
+		assertEquals(
+			""[@0,0:6='//blah\\n',<1>,1:0]\n"" +
+			""[@1,7:13='//blah\\n',<1>,2:0]\n"" +
+			""[@2,14:13='<EOF>',<-1>,3:7]\n"", found);
+		assertNull(stderrDuringParse);
+	}",False
+11,testGreedyPositiveClosure(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse,385,13,6297,198,1,,"@Test
+	public void testGreedyPositiveClosure() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""
+			+ ""CMT : ('//' .*? '\\n')+;\n""
+			+ ""WS : (' '|'\\t')+;"";
+
+		String found = execLexer(""L.g4"", grammar, ""L"", ""//blah\n//blah\n"");
+		assertEquals(
+			""[@0,0:13='//blah\\n//blah\\n',<1>,1:0]\n"" +
+			""[@1,14:13='<EOF>',<-1>,3:14]\n"", found);
+		assertNull(stderrDuringParse);
+	}",False
+12,testNonGreedyPositiveClosure(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse,417,14,6685,212,1,,"@Test
+	public void testNonGreedyPositiveClosure() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""
+			+ ""CMT : ('//' .*? '\\n')+?;\n""
+			+ ""WS : (' '|'\\t')+;"";
+
+		String found = execLexer(""L.g4"", grammar, ""L"", ""//blah\n//blah\n"");
+		assertEquals(
+			""[@0,0:6='//blah\\n',<1>,1:0]\n"" +
+			""[@1,7:13='//blah\\n',<1>,2:0]\n"" +
+			""[@2,14:13='<EOF>',<-1>,3:7]\n"", found);
+		assertNull(stderrDuringParse);
+	}",False
+13,testRecursiveLexerRuleRefWithWildcardStar(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse org.antlr.v4.test.BaseTest+stderrDuringParse,1248,37,7105,226,1,,"@Test public void testRecursiveLexerRuleRefWithWildcardStar() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""CMT : '/*' (CMT | .)*? '*/' ;\n"" +
+			""WS : (' '|'\\n')+ ;\n""
+			/*+ ""ANY : .;""*/;
+
+		String expecting =
+			""[@0,0:8='/* ick */',<1>,1:0]\n"" +
+			""[@1,9:9='\\n',<2>,1:9]\n"" +
+			""[@2,10:34='/* /* */\\n/* /*nested*/ */',<1>,2:0]\n"" +
+			""[@3,35:35='\\n',<2>,3:16]\n"" +
+			""[@4,36:35='<EOF>',<-1>,4:17]\n"";
+
+		// stuff on end of comment matches another rule
+		String found = execLexer(""L.g4"", grammar, ""L"",
+						  ""/* ick */\n"" +
+						  ""/* /* */\n"" +
+						  ""/* /*nested*/ */\n"");
+		assertEquals(expecting, found);
+		assertNull(stderrDuringParse);
+		// stuff on end of comment doesn't match another rule
+		expecting =
+			""[@0,0:8='/* ick */',<1>,1:0]\n"" +
+			""[@1,10:10='\\n',<2>,1:10]\n"" +
+			""[@2,11:36='/* /* */x\\n/* /*nested*/ */',<1>,2:0]\n"" +
+			""[@3,38:38='\\n',<2>,3:17]\n"" +
+			""[@4,39:38='<EOF>',<-1>,4:18]\n"";
+		found = execLexer(""L.g4"", grammar, ""L"",
+						  ""/* ick */x\n"" +
+						  ""/* /* */x\n"" +
+						  ""/* /*nested*/ */x\n"");
+		assertEquals(expecting, found);
+		assertEquals(
+			""line 1:9 token recognition error at: 'x'\n"" +
+			""line 3:16 token recognition error at: 'x'\n"", stderrDuringParse);
+	}",False
+14,testRecursiveLexerRuleRefWithWildcardPlus(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",org.antlr.v4.test.BaseTest+stderrDuringParse org.antlr.v4.test.BaseTest+stderrDuringParse,1248,37,8356,264,1,,"@Test public void testRecursiveLexerRuleRefWithWildcardPlus() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""CMT : '/*' (CMT | .)+? '*/' ;\n"" +
+			""WS : (' '|'\\n')+ ;\n""
+			/*+ ""ANY : .;""*/;
+
+		String expecting =
+			""[@0,0:8='/* ick */',<1>,1:0]\n"" +
+			""[@1,9:9='\\n',<2>,1:9]\n"" +
+			""[@2,10:34='/* /* */\\n/* /*nested*/ */',<1>,2:0]\n"" +
+			""[@3,35:35='\\n',<2>,3:16]\n"" +
+			""[@4,36:35='<EOF>',<-1>,4:17]\n"";
+
+		// stuff on end of comment matches another rule
+		String found = execLexer(""L.g4"", grammar, ""L"",
+						  ""/* ick */\n"" +
+						  ""/* /* */\n"" +
+						  ""/* /*nested*/ */\n"");
+		assertEquals(expecting, found);
+		assertNull(stderrDuringParse);
+		// stuff on end of comment doesn't match another rule
+		expecting =
+			""[@0,0:8='/* ick */',<1>,1:0]\n"" +
+			""[@1,10:10='\\n',<2>,1:10]\n"" +
+			""[@2,11:36='/* /* */x\\n/* /*nested*/ */',<1>,2:0]\n"" +
+			""[@3,38:38='\\n',<2>,3:17]\n"" +
+			""[@4,39:38='<EOF>',<-1>,4:18]\n"";
+		found = execLexer(""L.g4"", grammar, ""L"",
+						  ""/* ick */x\n"" +
+						  ""/* /* */x\n"" +
+						  ""/* /*nested*/ */x\n"");
+		assertEquals(expecting, found);
+		assertEquals(
+			""line 1:9 token recognition error at: 'x'\n"" +
+			""line 3:16 token recognition error at: 'x'\n"", stderrDuringParse);
+	}",False
+15,testActionPlacement(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,660,16,9607,302,1,,"@Test public void testActionPlacement() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : ({System.out.println(\""stuff fail: \"" + getText());} 'a' | {System.out.println(\""stuff0: \"" + getText());} 'a' {System.out.println(\""stuff1: \"" + getText());} 'b' {System.out.println(\""stuff2: \"" + getText());}) {System.out.println(getText());} ;\n""+
+			""WS : (' '|'\\n') -> skip ;\n"" +
+			""J : .;\n"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""ab"");
+		String expecting =
+			""stuff0: \n"" +
+			""stuff1: a\n"" +
+			""stuff2: ab\n"" +
+			""ab\n"" +
+			""[@0,0:1='ab',<1>,1:0]\n"" +
+			""[@1,2:1='<EOF>',<-1>,1:2]\n"";
+		assertEquals(expecting, found);
+	}",False
+16,testGreedyConfigs(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,402,13,10270,319,1,,"@Test public void testGreedyConfigs() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : ('a' | 'ab') {System.out.println(getText());} ;\n""+
+			""WS : (' '|'\\n') -> skip ;\n"" +
+			""J : .;\n"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""ab"");
+		String expecting =
+			""ab\n"" +
+			""[@0,0:1='ab',<1>,1:0]\n"" +
+			""[@1,2:1='<EOF>',<-1>,1:2]\n"";
+		assertEquals(expecting, found);
+	}",False
+17,testNonGreedyConfigs(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,481,15,10675,333,1,,"@Test public void testNonGreedyConfigs() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : .*? ('a' | 'ab') {System.out.println(getText());} ;\n""+
+			""WS : (' '|'\\n') -> skip ;\n"" +
+			""J : . {System.out.println(getText());};\n"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""ab"");
+		String expecting =
+			""a\n"" +
+			""b\n"" +
+			""[@0,0:0='a',<1>,1:0]\n"" +
+			""[@1,1:1='b',<3>,1:1]\n"" +
+			""[@2,2:1='<EOF>',<-1>,1:2]\n"";
+		assertEquals(expecting, found);
+	}",False
+18,testActionExecutedInDFA(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,427,14,11159,349,1,,"@Test public void testActionExecutedInDFA() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : '0'..'9'+ {System.out.println(\""I\"");} ;\n""+
+			""WS : (' '|'\\n') -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""34 34"");
+		String expecting =
+			""I\n"" +
+			""I\n"" +
+			""[@0,0:1='34',<1>,1:0]\n"" +
+			""[@1,3:4='34',<1>,1:3]\n"" +
+			""[@2,5:4='<EOF>',<-1>,1:5]\n"";
+		assertEquals(expecting, found);
+	}",True
+19,testSkipCommand(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,419,14,11589,364,1,,"@Test public void testSkipCommand() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : '0'..'9'+ {System.out.println(\""I\"");} ;\n""+
+			""WS : (' '|'\\n') -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""34 34"");
+		String expecting =
+			""I\n"" +
+			""I\n"" +
+			""[@0,0:1='34',<1>,1:0]\n"" +
+			""[@1,3:4='34',<1>,1:3]\n"" +
+			""[@2,5:4='<EOF>',<-1>,1:5]\n"";
+		assertEquals(expecting, found);
+	}",True
+20,testMoreCommand(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,412,14,12011,379,1,,"@Test public void testMoreCommand() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : '0'..'9'+ {System.out.println(\""I\"");} ;\n""+
+			""WS : '#' -> more ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""34#10"");
+		String expecting =
+			""I\n"" +
+			""I\n"" +
+			""[@0,0:1='34',<1>,1:0]\n"" +
+			""[@1,2:4='#10',<1>,1:2]\n"" +
+			""[@2,5:4='<EOF>',<-1>,1:5]\n"";
+		assertEquals(expecting, found);
+	}",True
+21,testTypeCommand(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,405,13,12426,394,1,,"@Test public void testTypeCommand() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : '0'..'9'+ {System.out.println(\""I\"");} ;\n""+
+			""HASH : '#' -> type(HASH) ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""34#"");
+		String expecting =
+			""I\n"" +
+			""[@0,0:1='34',<1>,1:0]\n"" +
+			""[@1,2:2='#',<2>,1:2]\n"" +
+			""[@2,3:2='<EOF>',<-1>,1:3]\n"";
+		assertEquals(expecting, found);
+	}",True
+22,testCombinedCommand(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,436,14,12834,408,1,,"@Test public void testCombinedCommand() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : '0'..'9'+ {System.out.println(\""I\"");} ;\n""+
+			""HASH : '#' -> type(100), skip, more  ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""34#11"");
+		String expecting =
+			""I\n"" +
+			""I\n"" +
+			""[@0,0:1='34',<1>,1:0]\n"" +
+			""[@1,2:4='#11',<1>,1:2]\n"" +
+			""[@2,5:4='<EOF>',<-1>,1:5]\n"";
+		assertEquals(expecting, found);
+	}",True
+23,testLexerMode(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,511,15,13273,423,1,,"@Test public void testLexerMode() throws Exception {
+		String grammar =
+			""lexer grammar L;\n"" +
+			""STRING_START : '\""' -> pushMode(STRING_MODE), more;\n"" +
+			""WS : (' '|'\\n') -> skip ;\n""+
+			""mode STRING_MODE;\n""+
+			""STRING : '\""' -> popMode;\n""+
+			""ANY : . -> more;\n"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""\""abc\"" \""ab\"""");
+		String expecting =
+			""[@0,0:4='\""abc\""',<2>,1:0]\n"" +
+			""[@1,6:9='\""ab\""',<2>,1:6]\n"" +
+			""[@2,10:9='<EOF>',<-1>,1:10]\n"";
+		assertEquals(expecting, found);
+	}",True
+24,testLexerPushPopModeAction(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,544,15,13787,439,1,,"@Test public void testLexerPushPopModeAction() throws Exception {
+		String grammar =
+			""lexer grammar L;\n"" +
+			""STRING_START : '\""' -> pushMode(STRING_MODE), more ;\n"" +
+			""WS : (' '|'\\n') -> skip ;\n""+
+			""mode STRING_MODE;\n""+
+			""STRING : '\""' -> popMode ;\n""+  // token type 2
+			""ANY : . -> more ;\n"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""\""abc\"" \""ab\"""");
+		String expecting =
+			""[@0,0:4='\""abc\""',<2>,1:0]\n"" +
+			""[@1,6:9='\""ab\""',<2>,1:6]\n"" +
+			""[@2,10:9='<EOF>',<-1>,1:10]\n"";
+		assertEquals(expecting, found);
+	}",True
+25,testLexerModeAction(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,558,15,14334,455,1,,"@Test public void testLexerModeAction() throws Exception {
+		String grammar =
+			""lexer grammar L;\n"" +
+			""STRING_START : '\""' -> mode(STRING_MODE), more ;\n"" +
+			""WS : (' '|'\\n') -> skip ;\n""+
+			""mode STRING_MODE;\n""+
+			""STRING : '\""' -> mode(DEFAULT_MODE) ;\n""+ // ttype 2 since '""' ambiguity
+			""ANY : . -> more ;\n"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""\""abc\"" \""ab\"""");
+		String expecting =
+			""[@0,0:4='\""abc\""',<2>,1:0]\n"" +
+			""[@1,6:9='\""ab\""',<2>,1:6]\n"" +
+			""[@2,10:9='<EOF>',<-1>,1:10]\n"";
+		assertEquals(expecting, found);
+	}",True
+26,testKeywordID(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,581,18,14895,471,1,,"@Test public void testKeywordID() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""KEND : 'end' ;\n"" + // has priority
+			""ID : 'a'..'z'+ ;\n"" +
+			""WS : (' '|'\\n')+ ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""end eend ending a"");
+		String expecting =
+			""[@0,0:2='end',<1>,1:0]\n"" +
+			""[@1,3:3=' ',<3>,1:3]\n"" +
+			""[@2,4:7='eend',<2>,1:4]\n"" +
+			""[@3,8:8=' ',<3>,1:8]\n"" +
+			""[@4,9:14='ending',<2>,1:9]\n"" +
+			""[@5,15:15=' ',<3>,1:15]\n"" +
+			""[@6,16:16='a',<2>,1:16]\n"" +
+			""[@7,17:16='<EOF>',<-1>,1:17]\n"";
+		assertEquals(expecting, found);
+	}",False
+27,testHexVsID(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,969,28,15479,490,1,,"@Test public void testHexVsID() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""HexLiteral : '0' ('x'|'X') HexDigit+ ;\n""+
+			""DecimalLiteral : ('0' | '1'..'9' '0'..'9'*) ;\n"" +
+			""FloatingPointLiteral : ('0x' | '0X') HexDigit* ('.' HexDigit*)? ;\n"" +
+			""DOT : '.' ;\n"" +
+			""ID : 'a'..'z'+ ;\n"" +
+			""fragment HexDigit : ('0'..'9'|'a'..'f'|'A'..'F') ;\n"" +
+			""WS : (' '|'\\n')+ ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""x 0 1 a.b a.l"");
+		String expecting =
+			""[@0,0:0='x',<5>,1:0]\n"" +
+			""[@1,1:1=' ',<6>,1:1]\n"" +
+			""[@2,2:2='0',<2>,1:2]\n"" +
+			""[@3,3:3=' ',<6>,1:3]\n"" +
+			""[@4,4:4='1',<2>,1:4]\n"" +
+			""[@5,5:5=' ',<6>,1:5]\n"" +
+			""[@6,6:6='a',<5>,1:6]\n"" +
+			""[@7,7:7='.',<4>,1:7]\n"" +
+			""[@8,8:8='b',<5>,1:8]\n"" +
+			""[@9,9:9=' ',<6>,1:9]\n"" +
+			""[@10,10:10='a',<5>,1:10]\n"" +
+			""[@11,11:11='.',<4>,1:11]\n"" +
+			""[@12,12:12='l',<5>,1:12]\n"" +
+			""[@13,13:12='<EOF>',<-1>,1:13]\n"";
+		assertEquals(expecting, found);
+	}",False
+28,testEOFByItself(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,320,11,16473,520,1,,"@Test public void testEOFByItself() throws Exception {
+		String grammar =
+			""lexer grammar L;\n"" +
+			""DONE : EOF ;\n"" +
+			""A : 'a';\n"";
+		String found = execLexer(""L.g4"", grammar, ""L"", """");
+		String expecting =
+			""[@0,0:-1='<EOF>',<1>,1:0]\n"" +
+			""[@1,0:-1='<EOF>',<-1>,1:0]\n"";
+		assertEquals(expecting, found);
+	}",False
+29,testEOFSuffixInFirstRule(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,471,17,16796,532,1,,"@Test public void testEOFSuffixInFirstRule() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""A : 'a' EOF ;\n""+
+			""B : 'a';\n""+
+			""C : 'c';\n"";
+		String found = execLexer(""L.g4"", grammar, ""L"", """");
+		String expecting =
+			""[@0,0:-1='<EOF>',<-1>,1:0]\n"";
+		assertEquals(expecting, found);
+
+		found = execLexer(""L.g4"", grammar, ""L"", ""a"");
+		expecting =
+			""[@0,0:0='a',<1>,1:0]\n"" +
+			""[@1,1:0='<EOF>',<-1>,1:1]\n"";
+		assertEquals(expecting, found);
+	}",False
+30,testCharSet(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,421,14,17270,550,1,,"@Test public void testCharSet() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : '0'..'9'+ {System.out.println(\""I\"");} ;\n""+
+			""WS : [ \\n\\u000D] -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""34\r\n 34"");
+		String expecting =
+			""I\n"" +
+			""I\n"" +
+			""[@0,0:1='34',<1>,1:0]\n"" +
+			""[@1,5:6='34',<1>,2:1]\n"" +
+			""[@2,7:6='<EOF>',<-1>,2:3]\n"";
+		assertEquals(expecting, found);
+	}",False
+31,testCharSetPlus(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,426,14,17694,565,1,,"@Test public void testCharSetPlus() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : '0'..'9'+ {System.out.println(\""I\"");} ;\n""+
+			""WS : [ \\n\\u000D]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""34\r\n 34"");
+		String expecting =
+			""I\n"" +
+			""I\n"" +
+			""[@0,0:1='34',<1>,1:0]\n"" +
+			""[@1,5:6='34',<1>,2:1]\n"" +
+			""[@2,7:6='<EOF>',<-1>,2:3]\n"";
+		assertEquals(expecting, found);
+	}",False
+32,testCharSetNot(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,389,12,18123,580,1,,"@Test public void testCharSetNot() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : ~[ab \\n] ~[ \\ncd]* {System.out.println(\""I\"");} ;\n""+
+			""WS : [ \\n\\u000D]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""xaf"");
+		String expecting =
+			""I\n"" +
+			""[@0,0:2='xaf',<1>,1:0]\n"" +
+			""[@1,3:2='<EOF>',<-1>,1:3]\n"";
+		assertEquals(expecting, found);
+	}",False
+33,testCharSetInSet(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,425,14,18515,593,1,,"@Test public void testCharSetInSet() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : (~[ab \\n]|'a') {System.out.println(\""I\"");} ;\n""+
+			""WS : [ \\n\\u000D]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""a x"");
+		String expecting =
+			""I\n"" +
+			""I\n"" +
+			""[@0,0:0='a',<1>,1:0]\n"" +
+			""[@1,2:2='x',<1>,1:2]\n"" +
+			""[@2,3:2='<EOF>',<-1>,1:3]\n"";
+		assertEquals(expecting, found);
+	}",False
+34,testCharSetRange(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,597,19,18943,608,1,,"@Test public void testCharSetRange() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : [0-9]+ {System.out.println(\""I\"");} ;\n""+
+			""ID : [a-zA-Z] [a-zA-Z0-9]* {System.out.println(\""ID\"");} ;\n""+
+			""WS : [ \\n\\u0009\\r]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""34\r 34 a2 abc \n   "");
+		String expecting =
+			""I\n"" +
+			""I\n"" +
+			""ID\n"" +
+			""ID\n"" +
+			""[@0,0:1='34',<1>,1:0]\n"" +
+			""[@1,4:5='34',<1>,1:4]\n"" +
+			""[@2,7:8='a2',<2>,1:7]\n"" +
+			""[@3,10:12='abc',<2>,1:10]\n"" +
+			""[@4,18:17='<EOF>',<-1>,2:3]\n"";
+		assertEquals(expecting, found);
+	}",False
+35,testCharSetWithMissingEndRange(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,392,12,19543,628,1,,"@Test public void testCharSetWithMissingEndRange() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : [0-]+ {System.out.println(\""I\"");} ;\n""+
+			""WS : [ \\n\\u000D]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""00\r\n"");
+		String expecting =
+			""I\n"" +
+			""[@0,0:1='00',<1>,1:0]\n"" +
+			""[@1,4:3='<EOF>',<-1>,2:0]\n"";
+		assertEquals(expecting, found);
+	}",False
+36,testCharSetWithMissingEscapeChar(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,385,12,19938,641,1,,"@Test public void testCharSetWithMissingEscapeChar() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""I : [0-9]+ {System.out.println(\""I\"");} ;\n""+
+			""WS : [ \\u]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""34 "");
+		String expecting =
+			""I\n"" +
+			""[@0,0:1='34',<1>,1:0]\n"" +
+			""[@1,3:2='<EOF>',<-1>,1:3]\n"";
+		assertEquals(expecting, found);
+	}",False
+37,testCharSetWithEscapedChar(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,455,14,20326,654,1,,"@Test public void testCharSetWithEscapedChar() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""DASHBRACK : [\\-\\]]+ {System.out.println(\""DASHBRACK\"");} ;\n""+
+			""WS : [ \\u]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""- ] "");
+		String expecting =
+			""DASHBRACK\n"" +
+			""DASHBRACK\n"" +
+			""[@0,0:0='-',<1>,1:0]\n"" +
+			""[@1,2:2=']',<1>,1:2]\n"" +
+			""[@2,4:3='<EOF>',<-1>,1:4]\n"";
+		assertEquals(expecting, found);
+	}",False
+38,testCharSetWithReversedRange(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,379,12,20784,669,1,,"@Test public void testCharSetWithReversedRange() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""A : [z-a9]+ {System.out.println(\""A\"");} ;\n""+
+			""WS : [ \\u]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""9"");
+		String expecting =
+			""A\n"" +
+			""[@0,0:0='9',<1>,1:0]\n"" +
+			""[@1,1:0='<EOF>',<-1>,1:1]\n"";
+		assertEquals(expecting, found);
+	}",False
+39,testCharSetWithQuote(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,381,12,21166,682,1,,"@Test public void testCharSetWithQuote() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""A : [\""a-z]+ {System.out.println(\""A\"");} ;\n""+
+			""WS : [ \\n\\t]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""b\""a"");
+		String expecting =
+			""A\n"" +
+			""[@0,0:2='b\""a',<1>,1:0]\n"" +
+			""[@1,3:2='<EOF>',<-1>,1:3]\n"";
+		assertEquals(expecting, found);
+	}",False
+40,testCharSetWithQuote2(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,389,12,21550,695,1,,"@Test public void testCharSetWithQuote2() throws Exception {
+		String grammar =
+			""lexer grammar L;\n""+
+			""A : [\""\\\\ab]+ {System.out.println(\""A\"");} ;\n""+
+			""WS : [ \\n\\t]+ -> skip ;"";
+		String found = execLexer(""L.g4"", grammar, ""L"", ""b\""\\a"");
+		String expecting =
+			""A\n"" +
+			""[@0,0:3='b\""\\a',<1>,1:0]\n"" +
+			""[@1,4:3='<EOF>',<-1>,1:4]\n"";
+		assertEquals(expecting, found);
+	}",False
+41,testPositionAdjustingLexer(),Method,,,"org.antlr.v4.test.TestLexerExec+load(String,String) org.antlr.v4.test.TestLexerExec+load(String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,927,29,21942,709,1,,"@Test
+	public void testPositionAdjustingLexer() throws Exception {
+		String grammar = load(""PositionAdjustingLexer.g4"", null);
+		String input =
+			""tokens\n"" +
+			""tokens {\n"" +
+			""notLabel\n"" +
+			""label1 =\n"" +
+			""label2 +=\n"" +
+			""notLabel\n"";
+		String found = execLexer(""PositionAdjustingLexer.g4"", grammar, ""PositionAdjustingLexer"", input);
+
+		final int TOKENS = 4;
+		final int LABEL = 5;
+		final int IDENTIFIER = 6;
+		String expecting =
+			""[@0,0:5='tokens',<"" + IDENTIFIER + "">,1:0]\n"" +
+			""[@1,7:12='tokens',<"" + TOKENS + "">,2:0]\n"" +
+			""[@2,14:14='{',<3>,2:7]\n"" +
+			""[@3,16:23='notLabel',<"" + IDENTIFIER + "">,3:0]\n"" +
+			""[@4,25:30='label1',<"" + LABEL + "">,4:0]\n"" +
+			""[@5,32:32='=',<1>,4:7]\n"" +
+			""[@6,34:39='label2',<"" + LABEL + "">,5:0]\n"" +
+			""[@7,41:42='+=',<2>,5:7]\n"" +
+			""[@8,44:51='notLabel',<"" + IDENTIFIER + "">,6:0]\n"" +
+			""[@9,53:52='<EOF>',<-1>,7:0]\n"";
+
+		assertEquals(expecting, found);
+	}",False
+42,testLargeLexer(),Method,,,"java.lang.StringBuilder+StringBuilder() java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(int) java.lang.StringBuilder+append(String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) java.lang.StringBuilder+toString() java.lang.StringBuilder+toString()",,745,21,22872,744,1,"/** 
+ * This is a regression test for antlr/antlr4#76 ""Serialized ATN strings should be split when longer than 2^16 bytes (class file limitation)"" https://github.com/antlr/antlr4/issues/76
+ */
+","/**
+	 * This is a regression test for antlr/antlr4#76 ""Serialized ATN strings
+	 * should be split when longer than 2^16 bytes (class file limitation)""
+	 * https://github.com/antlr/antlr4/issues/76
+	 */
+	@Test
+	public void testLargeLexer() throws Exception {
+		StringBuilder grammar = new StringBuilder();
+		grammar.append(""lexer grammar L;\n"");
+		grammar.append(""WS : [ \\t\\r\\n]+ -> skip;\n"");
+		for (int i = 0; i < 4000; i++) {
+			grammar.append(""KW"").append(i).append("" : '"").append(""KW"").append(i).append(""';\n"");
+		}
+
+		String input = ""KW400"";
+		String found = execLexer(""L.g4"", grammar.toString(), ""L"", input);
+		String expecting =
+			""[@0,0:4='KW400',<402>,1:0]\n"" +
+			""[@1,5:4='<EOF>',<-1>,1:5]\n"";
+		assertEquals(expecting, found);
+	}",False
+43,testFailingPredicateEvalIsNotCached(),Method,,,"org.antlr.v4.test.BaseTest+execLexer(String,String,String,String) org.antlr.v4.test.BaseTest+execLexer(String,String,String,String)",,1165,36,23620,766,1,"/** 
+ * This is a regression test for antlr/antlr4#398 ""Lexer: literal matches while negated char set fail to match"" https://github.com/antlr/antlr4/issues/398
+ */
+","/**
+	 * This is a regression test for antlr/antlr4#398 ""Lexer: literal matches
+	 * while negated char set fail to match""
+	 * https://github.com/antlr/antlr4/issues/398
+	 */
+	@Test
+	public void testFailingPredicateEvalIsNotCached() {
+		String grammar =
+			""lexer grammar TestLexer;\n"" +
+			""\n"" +
+			""fragment WS: [ \\t]+;\n"" +
+			""fragment EOL: '\\r'? '\\n';\n"" +
+			""\n"" +
+			""LINE: WS? ~[\\r\\n]* EOL { !getText().trim().startsWith(\""Item:\"") }?;\n"" +
+			""ITEM: WS? 'Item:' -> pushMode(ITEM_HEADING_MODE);\n"" +
+			""\n"" +
+			""mode ITEM_HEADING_MODE;\n"" +
+			""\n"" +
+			""NAME: ~[\\r\\n]+;\n"" +
+			""SECTION_HEADING_END: EOL -> popMode;\n"";
+		String input =
+			""A line here.\n"" +
+			""Item: name of item\n"" +
+			""Another line.\n"" +
+			""More line.\n"";
+		String found = execLexer(""TestLexer.g4"", grammar, ""TestLexer"", input);
+		String expecting =
+			""[@0,0:12='A line here.\\n',<1>,1:0]\n"" +
+			""[@1,13:17='Item:',<2>,2:0]\n"" +
+			""[@2,18:30=' name of item',<3>,2:5]\n"" +
+			""[@3,31:31='\\n',<4>,2:18]\n"" +
+			""[@4,32:45='Another line.\\n',<1>,3:0]\n"" +
+			""[@5,46:56='More line.\\n',<1>,4:0]\n"" +
+			""[@6,57:56='<EOF>',<-1>,5:11]\n"";
+		assertEquals(expecting, found);
+	}",True
+44,"load(String,String)",Method,testPositionAdjustingLexer(),,"java.lang.String+replace(char,char) java.lang.Package+getName() java.lang.Class+getPackage() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getPackage() java.lang.Package+getName() java.lang.String+replace(char,char) java.lang.ClassLoader+getResourceAsStream(String) java.lang.Class+getClassLoader() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getClassLoader() java.lang.ClassLoader+getResourceAsStream(String) java.io.InputStreamReader+InputStreamReader(InputStream,String) java.io.InputStreamReader+InputStreamReader(InputStream) java.io.Reader+read(char[]) java.io.Reader+read(char[]) java.lang.String+String(char[],int,int) java.io.InputStreamReader+close() java.io.InputStreamReader+close()",,626,26,24788,797,4,,"protected String load(String fileName, @Nullable String encoding)
+		throws IOException
+	{
+		if ( fileName==null ) {
+			return null;
+		}
+
+		String fullFileName = getClass().getPackage().getName().replace('.', '/') + '/' + fileName;
+		int size = 65000;
+		InputStreamReader isr;
+		InputStream fis = getClass().getClassLoader().getResourceAsStream(fullFileName);
+		if ( encoding!=null ) {
+			isr = new InputStreamReader(fis, encoding);
+		}
+		else {
+			isr = new InputStreamReader(fis);
+		}
+		try {
+			char[] data = new char[size];
+			int n = isr.read(data);
+			return new String(data, 0, n);
+		}
+		finally {
+			isr.close();
+		}
+	}",False

@@ -1,0 +1,1087 @@
+index,name,type,inner invocations,external invocations,calls,visits,length,lines,start location,definition line,modifier,annotation,full text,removed
+1,PluginDefaultGroovyMethods(),Method,,,,,44,2,2838,79,2,,"private PluginDefaultGroovyMethods() {
+    }",False
+2,asBoolean(Optional<?>),Method,,,java.util.Optional+isPresent() java.util.Optional+isPresent(),,474,15,2888,94,9,"/** 
+ * Coerce an  {@code Optional} instance to a {@code boolean} value.<pre class=""groovyTestCase""> assert !Optional.empty().asBoolean() assert Optional.of(1234).asBoolean() </pre>
+ * @param optional the Optional
+ * @return {@code true} if a value is present, otherwise {@code false}
+ * @since 2.5.0
+ */
+","/**
+     * Coerce an {@code Optional} instance to a {@code boolean} value.
+     * <pre class=""groovyTestCase"">
+     * assert !Optional.empty().asBoolean()
+     * assert Optional.of(1234).asBoolean()
+     * </pre>
+     *
+     * @param optional the Optional
+     * @return {@code true} if a value is present, otherwise {@code false}
+     *
+     * @since 2.5.0
+     */
+    public static boolean asBoolean(final Optional<?> optional) {
+        return optional.isPresent();
+    }",False
+3,get(OptionalInt),Method,,,java.util.OptionalInt+getAsInt() java.util.OptionalInt+getAsInt(),,359,12,3368,107,9,"/** 
+ * If a value is present in the  {@code OptionalInt}, returns the value, otherwise throws  {@code NoSuchElementException}. <pre class=""groovyTestCase""> assert OptionalInt.of(1234).get() == 1234 </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalInt}, returns the value,
+     * otherwise throws {@code NoSuchElementException}.
+     * <pre class=""groovyTestCase"">
+     * assert OptionalInt.of(1234).get() == 1234
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static int get(final OptionalInt self) {
+        return self.getAsInt();
+    }",False
+4,get(OptionalLong),Method,,,java.util.OptionalLong+getAsLong() java.util.OptionalLong+getAsLong(),,366,12,3733,120,9,"/** 
+ * If a value is present in the  {@code OptionalLong}, returns the value, otherwise throws  {@code NoSuchElementException}. <pre class=""groovyTestCase""> assert OptionalLong.of(1234L).get() == 1234L </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalLong}, returns the value,
+     * otherwise throws {@code NoSuchElementException}.
+     * <pre class=""groovyTestCase"">
+     * assert OptionalLong.of(1234L).get() == 1234L
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static long get(final OptionalLong self) {
+        return self.getAsLong();
+    }",False
+5,get(OptionalDouble),Method,,,java.util.OptionalDouble+getAsDouble() java.util.OptionalDouble+getAsDouble(),,380,12,4105,133,9,"/** 
+ * If a value is present in the  {@code OptionalDouble}, returns the value, otherwise throws  {@code NoSuchElementException}. <pre class=""groovyTestCase""> assert OptionalDouble.of(Math.PI).get() == Math.PI </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalDouble}, returns the value,
+     * otherwise throws {@code NoSuchElementException}.
+     * <pre class=""groovyTestCase"">
+     * assert OptionalDouble.of(Math.PI).get() == Math.PI
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static double get(final OptionalDouble self) {
+        return self.getAsDouble();
+    }",False
+6,"filter(Optional<?>,Class<T>)",Method,,,java.util.Optional+map(Function) java.util.Optional+filter(Predicate) java.util.Optional+filter(Predicate) java.lang.Class+isInstance(Object) java.util.Optional+map(Function) java.lang.Class+cast(Object),,675,15,4491,149,9,"/** 
+ * Tests given value against specified type and changes generics of result. This is equivalent to: <code>self.filter(it -&gt; it instanceof Type).map(it -&gt; (Type) it)</code> <pre class=""groovyTestCase""> assert !Optional.empty().filter(Number).isPresent() assert !Optional.of('x').filter(Number).isPresent() assert Optional.of(1234).filter(Number).isPresent() assert Optional.of(1234).filter(Number).get().equals(1234) </pre>
+ * @since 3.0.0
+ */
+","/**
+     * Tests given value against specified type and changes generics of result.
+     * This is equivalent to: <code>self.filter(it -&gt; it instanceof Type).map(it -&gt; (Type) it)</code>
+     * <pre class=""groovyTestCase"">
+     * assert !Optional.empty().filter(Number).isPresent()
+     * assert !Optional.of('x').filter(Number).isPresent()
+     * assert Optional.of(1234).filter(Number).isPresent()
+     * assert Optional.of(1234).filter(Number).get().equals(1234)
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Optional<T> filter(final Optional<?> self, final Class<T> type) {
+        return self.filter(type::isInstance).map(type::cast);
+    }",False
+7,"filter(OptionalInt,IntPredicate)",Method,,,java.util.OptionalInt+isPresent() java.util.OptionalInt+isPresent() java.util.function.IntPredicate+test(int) java.util.function.IntPredicate+test(int) java.util.OptionalInt+getAsInt() java.util.OptionalInt+getAsInt() java.util.OptionalInt+empty() java.util.OptionalInt+empty(),,778,19,5172,166,9,"/** 
+ * If a value is present in the  {@code OptionalInt}, tests the value using the given predicate and returns the optional if the test returns true or else empty. <pre class=""groovyTestCase""> assert !OptionalInt.empty().filter(i -&gt; true).isPresent() assert  OptionalInt.of(1234).filter(i -&gt; true).isPresent() assert !OptionalInt.of(1234).filter(i -&gt; false).isPresent() assert  OptionalInt.of(1234).filter(i -&gt; true).getAsInt() == 1234 </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalInt}, tests the value using
+     * the given predicate and returns the optional if the test returns true or
+     * else empty.
+     * <pre class=""groovyTestCase"">
+     * assert !OptionalInt.empty().filter(i -&gt; true).isPresent()
+     * assert  OptionalInt.of(1234).filter(i -&gt; true).isPresent()
+     * assert !OptionalInt.of(1234).filter(i -&gt; false).isPresent()
+     * assert  OptionalInt.of(1234).filter(i -&gt; true).getAsInt() == 1234
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static OptionalInt filter(final OptionalInt self, final IntPredicate test) {
+        if (!self.isPresent() || !test.test(self.getAsInt())) {
+            return OptionalInt.empty();
+        }
+        return self;
+    }",False
+8,"filter(OptionalLong,LongPredicate)",Method,,,java.util.OptionalLong+isPresent() java.util.OptionalLong+isPresent() java.util.function.LongPredicate+test(long) java.util.function.LongPredicate+test(long) java.util.OptionalLong+getAsLong() java.util.OptionalLong+getAsLong() java.util.OptionalLong+empty() java.util.OptionalLong+empty(),,789,19,5956,186,9,"/** 
+ * If a value is present in the  {@code OptionalLong}, tests the value using the given predicate and returns the optional if the test returns true or else empty. <pre class=""groovyTestCase""> assert !OptionalLong.empty().filter(n -&gt; true).isPresent() assert  OptionalLong.of(123L).filter(n -&gt; true).isPresent() assert !OptionalLong.of(123L).filter(n -&gt; false).isPresent() assert  OptionalLong.of(123L).filter(n -&gt; true).getAsLong() == 123L </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalLong}, tests the value using
+     * the given predicate and returns the optional if the test returns true or
+     * else empty.
+     * <pre class=""groovyTestCase"">
+     * assert !OptionalLong.empty().filter(n -&gt; true).isPresent()
+     * assert  OptionalLong.of(123L).filter(n -&gt; true).isPresent()
+     * assert !OptionalLong.of(123L).filter(n -&gt; false).isPresent()
+     * assert  OptionalLong.of(123L).filter(n -&gt; true).getAsLong() == 123L
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static OptionalLong filter(final OptionalLong self, final LongPredicate test) {
+        if (!self.isPresent() || !test.test(self.getAsLong())) {
+            return OptionalLong.empty();
+        }
+        return self;
+    }",False
+9,"filter(OptionalDouble,DoublePredicate)",Method,,,java.util.OptionalDouble+isPresent() java.util.OptionalDouble+isPresent() java.util.function.DoublePredicate+test(double) java.util.function.DoublePredicate+test(double) java.util.OptionalDouble+getAsDouble() java.util.OptionalDouble+getAsDouble() java.util.OptionalDouble+empty() java.util.OptionalDouble+empty(),,828,19,6751,206,9,"/** 
+ * If a value is present in the  {@code OptionalDouble}, tests the value using the given predicate and returns the optional if the test returns true or empty otherwise. <pre class=""groovyTestCase""> assert !OptionalDouble.empty().filter(n -&gt; true).isPresent() assert  OptionalDouble.of(Math.PI).filter(n -&gt; true).isPresent() assert !OptionalDouble.of(Math.PI).filter(n -&gt; false).isPresent() assert  OptionalDouble.of(Math.PI).filter(n -&gt; true).getAsDouble() == Math.PI </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalDouble}, tests the value using
+     * the given predicate and returns the optional if the test returns true or
+     * empty otherwise.
+     * <pre class=""groovyTestCase"">
+     * assert !OptionalDouble.empty().filter(n -&gt; true).isPresent()
+     * assert  OptionalDouble.of(Math.PI).filter(n -&gt; true).isPresent()
+     * assert !OptionalDouble.of(Math.PI).filter(n -&gt; false).isPresent()
+     * assert  OptionalDouble.of(Math.PI).filter(n -&gt; true).getAsDouble() == Math.PI
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static OptionalDouble filter(final OptionalDouble self, final DoublePredicate test) {
+        if (!self.isPresent() || !test.test(self.getAsDouble())) {
+            return OptionalDouble.empty();
+        }
+        return self;
+    }",False
+10,"mapToObj(OptionalInt,IntFunction<? extends T>)",Method,,,java.util.OptionalInt+isPresent() java.util.OptionalInt+isPresent() java.util.Optional+empty() java.util.Optional+empty() java.util.Optional+ofNullable(T) java.util.Optional+ofNullable(T) java.util.function.IntFunction+apply(int) java.util.function.IntFunction+apply(int) java.util.OptionalInt+getAsInt() java.util.OptionalInt+getAsInt(),,833,18,7585,225,9,"/** 
+ * If a value is present in the  {@code OptionalInt}, returns an  {@code Optional}consisting of the result of applying the given function to the value or else empty. <pre class=""groovyTestCase""> assert !OptionalInt.empty().mapToObj(x -&gt; new Object()).isPresent() assert  OptionalInt.of(1234).mapToObj(x -&gt; new Object()).isPresent() assert !OptionalInt.of(1234).mapToObj(x -&gt; null).isPresent() assert  OptionalInt.of(1234).mapToObj(Integer::toString).get() == '1234' </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalInt}, returns an {@code Optional}
+     * consisting of the result of applying the given function to the value or else empty.
+     * <pre class=""groovyTestCase"">
+     * assert !OptionalInt.empty().mapToObj(x -&gt; new Object()).isPresent()
+     * assert  OptionalInt.of(1234).mapToObj(x -&gt; new Object()).isPresent()
+     * assert !OptionalInt.of(1234).mapToObj(x -&gt; null).isPresent()
+     * assert  OptionalInt.of(1234).mapToObj(Integer::toString).get() == '1234'
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Optional<T> mapToObj(final OptionalInt self, final IntFunction<? extends T> mapper) {
+        if (!self.isPresent()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(mapper.apply(self.getAsInt()));
+    }",False
+11,"mapToObj(OptionalLong,LongFunction<? extends T>)",Method,,,java.util.OptionalLong+isPresent() java.util.OptionalLong+isPresent() java.util.Optional+empty() java.util.Optional+empty() java.util.Optional+ofNullable(T) java.util.Optional+ofNullable(T) java.util.function.LongFunction+apply(long) java.util.function.LongFunction+apply(long) java.util.OptionalLong+getAsLong() java.util.OptionalLong+getAsLong(),,839,18,8424,244,9,"/** 
+ * If a value is present in the  {@code OptionalLong}, returns an  {@code Optional}consisting of the result of applying the given function to the value or else empty. <pre class=""groovyTestCase""> assert !OptionalLong.empty().mapToObj(x -&gt; new Object()).isPresent() assert  OptionalLong.of(123L).mapToObj(x -&gt; new Object()).isPresent() assert !OptionalLong.of(123L).mapToObj(x -&gt; null).isPresent() assert  OptionalLong.of(1234L).mapToObj(Long::toString).get() == '1234' </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalLong}, returns an {@code Optional}
+     * consisting of the result of applying the given function to the value or else empty.
+     * <pre class=""groovyTestCase"">
+     * assert !OptionalLong.empty().mapToObj(x -&gt; new Object()).isPresent()
+     * assert  OptionalLong.of(123L).mapToObj(x -&gt; new Object()).isPresent()
+     * assert !OptionalLong.of(123L).mapToObj(x -&gt; null).isPresent()
+     * assert  OptionalLong.of(1234L).mapToObj(Long::toString).get() == '1234'
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Optional<T> mapToObj(final OptionalLong self, final LongFunction<? extends T> mapper) {
+        if (!self.isPresent()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(mapper.apply(self.getAsLong()));
+    }",False
+12,"mapToObj(OptionalDouble,DoubleFunction<? extends T>)",Method,,,java.util.OptionalDouble+isPresent() java.util.OptionalDouble+isPresent() java.util.Optional+empty() java.util.Optional+empty() java.util.Optional+ofNullable(T) java.util.Optional+ofNullable(T) java.util.function.DoubleFunction+apply(double) java.util.function.DoubleFunction+apply(double) java.util.OptionalDouble+getAsDouble() java.util.OptionalDouble+getAsDouble(),,874,18,9269,263,9,"/** 
+ * If a value is present in the  {@code OptionalDouble}, returns an  {@code Optional}consisting of the result of applying the given function to the value or else empty. <pre class=""groovyTestCase""> assert !OptionalDouble.empty().mapToObj(x -&gt; new Object()).isPresent() assert  OptionalDouble.of(Math.PI).mapToObj(x -&gt; new Object()).isPresent() assert !OptionalDouble.of(Math.PI).mapToObj(x -&gt; null).isPresent() assert  OptionalDouble.of(Math.PI).mapToObj(Double::toString).get().startsWith('3.14') </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalDouble}, returns an {@code Optional}
+     * consisting of the result of applying the given function to the value or else empty.
+     * <pre class=""groovyTestCase"">
+     * assert !OptionalDouble.empty().mapToObj(x -&gt; new Object()).isPresent()
+     * assert  OptionalDouble.of(Math.PI).mapToObj(x -&gt; new Object()).isPresent()
+     * assert !OptionalDouble.of(Math.PI).mapToObj(x -&gt; null).isPresent()
+     * assert  OptionalDouble.of(Math.PI).mapToObj(Double::toString).get().startsWith('3.14')
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Optional<T> mapToObj(final OptionalDouble self, final DoubleFunction<? extends T> mapper) {
+        if (!self.isPresent()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(mapper.apply(self.getAsDouble()));
+    }",False
+13,"mapToInt(Optional<T>,ToIntFunction<? super T>)",Method,,,java.util.Optional+orElseGet(Supplier) java.util.Optional+map(Function) java.util.Optional+map(Function) java.util.OptionalInt+of(int) java.util.OptionalInt+of(int) java.util.function.ToIntFunction+applyAsInt(T) java.util.function.ToIntFunction+applyAsInt(T) java.util.Optional+orElseGet(Supplier) java.util.OptionalInt+empty(),,614,13,10149,280,9,"/** 
+ * If a value is present in the  {@code OptionalInt}, returns an  {@code OptionalInt}consisting of the result of applying the given function to the value or else empty. <pre class=""groovyTestCase""> assert !Optional.empty().mapToInt(x -&gt; 42).isPresent() assert  Optional.of('x').mapToInt(x -&gt; 42).getAsInt() == 42 </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalInt}, returns an {@code OptionalInt}
+     * consisting of the result of applying the given function to the value or else empty.
+     * <pre class=""groovyTestCase"">
+     * assert !Optional.empty().mapToInt(x -&gt; 42).isPresent()
+     * assert  Optional.of('x').mapToInt(x -&gt; 42).getAsInt() == 42
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> OptionalInt mapToInt(final Optional<T> self, final ToIntFunction<? super T> mapper) {
+        return self.map(t -> OptionalInt.of(mapper.applyAsInt(t))).orElseGet(OptionalInt::empty);
+    }",False
+14,"mapToLong(Optional<T>,ToLongFunction<? super T>)",Method,,,java.util.Optional+orElseGet(Supplier) java.util.Optional+map(Function) java.util.Optional+map(Function) java.util.OptionalLong+of(long) java.util.OptionalLong+of(long) java.util.function.ToLongFunction+applyAsLong(T) java.util.function.ToLongFunction+applyAsLong(T) java.util.Optional+orElseGet(Supplier) java.util.OptionalLong+empty(),,628,13,10769,294,9,"/** 
+ * If a value is present in the  {@code OptionalLong}, returns an  {@code OptionalLong}consisting of the result of applying the given function to the value or else empty. <pre class=""groovyTestCase""> assert !Optional.empty().mapToLong(x -&gt; 42L).isPresent() assert  Optional.of('x').mapToLong(x -&gt; 42L).getAsLong() == 42L </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalLong}, returns an {@code OptionalLong}
+     * consisting of the result of applying the given function to the value or else empty.
+     * <pre class=""groovyTestCase"">
+     * assert !Optional.empty().mapToLong(x -&gt; 42L).isPresent()
+     * assert  Optional.of('x').mapToLong(x -&gt; 42L).getAsLong() == 42L
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> OptionalLong mapToLong(final Optional<T> self, final ToLongFunction<? super T> mapper) {
+        return self.map(t -> OptionalLong.of(mapper.applyAsLong(t))).orElseGet(OptionalLong::empty);
+    }",False
+15,"mapToDouble(Optional<T>,ToDoubleFunction<? super T>)",Method,,,java.util.Optional+orElseGet(Supplier) java.util.Optional+map(Function) java.util.Optional+map(Function) java.util.OptionalDouble+of(double) java.util.OptionalDouble+of(double) java.util.function.ToDoubleFunction+applyAsDouble(T) java.util.function.ToDoubleFunction+applyAsDouble(T) java.util.Optional+orElseGet(Supplier) java.util.OptionalDouble+empty(),,662,13,11403,308,9,"/** 
+ * If a value is present in the  {@code OptionalDouble}, returns an  {@code OptionalDouble}consisting of the result of applying the given function to the value or else empty. <pre class=""groovyTestCase""> assert !Optional.empty().mapToDouble(x -&gt; Math.PI).isPresent() assert  Optional.of('x').mapToDouble(x -&gt; Math.PI).getAsDouble() == Math.PI </pre>
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@code OptionalDouble}, returns an {@code OptionalDouble}
+     * consisting of the result of applying the given function to the value or else empty.
+     * <pre class=""groovyTestCase"">
+     * assert !Optional.empty().mapToDouble(x -&gt; Math.PI).isPresent()
+     * assert  Optional.of('x').mapToDouble(x -&gt; Math.PI).getAsDouble() == Math.PI
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> OptionalDouble mapToDouble(final Optional<T> self, final ToDoubleFunction<? super T> mapper) {
+        return self.map(t -> OptionalDouble.of(mapper.applyAsDouble(t))).orElseGet(OptionalDouble::empty);
+    }",False
+16,"collect(Optional<S>,Closure<T>)",Method,,,java.util.Objects+requireNonNull(T) java.util.Objects+requireNonNull(T) java.util.Objects+requireNonNull(T) java.util.Objects+requireNonNull(T) java.util.Optional+map(Function) java.util.Optional+map(Function) groovy.lang.Closure+call(Object),,932,19,12071,326,9,"/** 
+ * If the optional contains a value, returns an optional containing the transformed value obtained using the <code>transform</code> closure or otherwise an empty optional. <pre class=""groovyTestCase""> assert Optional.of(""foobar"").collect{ it.size() }.get() == 6 assert !Optional.empty().collect{ it.size() }.isPresent() </pre>
+ * @param self      an Optional
+ * @param transform the closure used to transform the optional value if present
+ * @return an Optional containing the transformed value or empty if the optional is empty or the transform returns null
+ * @since 3.0.0
+ */
+","/**
+     * If the optional contains a value, returns an optional containing the transformed value obtained using the <code>transform</code> closure
+     * or otherwise an empty optional.
+     * <pre class=""groovyTestCase"">
+     * assert Optional.of(""foobar"").collect{ it.size() }.get() == 6
+     * assert !Optional.empty().collect{ it.size() }.isPresent()
+     * </pre>
+     *
+     * @param self      an Optional
+     * @param transform the closure used to transform the optional value if present
+     * @return an Optional containing the transformed value or empty if the optional is empty or the transform returns null
+     *
+     * @since 3.0.0
+     */
+    public static <S,T> Optional<T> collect(final Optional<S> self, @ClosureParams(FirstParam.FirstGenericType.class) final Closure<T> transform) {
+        Objects.requireNonNull(self);
+        Objects.requireNonNull(transform);
+        return self.map(transform::call);
+    }",False
+17,"collect(Future<S>,Closure<T>)",Method,,,"java.util.Objects+requireNonNull(T) java.util.Objects+requireNonNull(T) java.util.Objects+requireNonNull(T) java.util.Objects+requireNonNull(T) org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+TransformedFuture(Future,Closure<E>)",,940,22,13009,349,9,"/** 
+ * Returns a Future asynchronously returning a transformed result. <pre class=""_temp_disabled_groovyTestCase""> import java.util.concurrent. def executor = Executors.newSingleThreadExecutor() Future<String> foobar = executor.submit{ ""foobar"" } Future<Integer> foobarSize = foobar.collect{ it.size() } assert foobarSize.get() == 6 executor.shutdown() </pre>
+ * @param self      a Future
+ * @param transform the closure used to transform the Future value
+ * @return a Future allowing the transformed value to be obtained asynchronously
+ * @since 3.0.0
+ */
+","/**
+     * Returns a Future asynchronously returning a transformed result.
+     * <pre class=""_temp_disabled_groovyTestCase"">
+     * import java.util.concurrent.*
+     * def executor = Executors.newSingleThreadExecutor()
+     * Future<String> foobar = executor.submit{ ""foobar"" }
+     * Future<Integer> foobarSize = foobar.collect{ it.size() }
+     * assert foobarSize.get() == 6
+     * executor.shutdown()
+     * </pre>
+     *
+     * @param self      a Future
+     * @param transform the closure used to transform the Future value
+     * @return a Future allowing the transformed value to be obtained asynchronously
+     *
+     * @since 3.0.0
+     */
+    public static <S,T> Future<T> collect(final Future<S> self, @ClosureParams(FirstParam.FirstGenericType.class) final Closure<T> transform) {
+        Objects.requireNonNull(self);
+        Objects.requireNonNull(transform);
+        return new TransformedFuture<T>(self, transform);
+    }",False
+18,next(Enum),Method,,,"java.lang.Class+getMethods() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getMethods() java.lang.String+equals(Object) java.lang.reflect.Method+getName() java.lang.reflect.Method+getName() java.lang.String+equals(Object) java.lang.reflect.Method+getParameterCount() java.lang.reflect.Method+getParameterCount() org.codehaus.groovy.runtime.InvokerHelper+invokeMethod(Object,String,Object) org.codehaus.groovy.runtime.InvokerHelper+invokeMethod(Object,String,Object) org.codehaus.groovy.runtime.InvokerHelper+invokeStaticMethod(Class,String,Object) org.codehaus.groovy.runtime.InvokerHelper+invokeStaticMethod(Class,String,Object) java.lang.Object+getClass() java.lang.Object+getClass() java.util.List+indexOf(Object) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.util.List+indexOf(Object)",org.codehaus.groovy.runtime.InvokerHelper+EMPTY_ARGS org.codehaus.groovy.runtime.InvokerHelper+EMPTY_ARGS,849,19,13955,364,9,"/** 
+ * Overloads the  {@code ++} operator for enums. It will invoke Groovy'sdefault next behaviour for enums that do not have their own next method.
+ * @param self an Enum
+ * @return the next defined enum from the enum class
+ * @since 1.5.2
+ */
+","/**
+     * Overloads the {@code ++} operator for enums. It will invoke Groovy's
+     * default next behaviour for enums that do not have their own next method.
+     *
+     * @param self an Enum
+     * @return the next defined enum from the enum class
+     *
+     * @since 1.5.2
+     */
+    public static Object next(final Enum self) {
+        for (Method method : self.getClass().getMethods()) {
+            if (method.getName().equals(""next"") && method.getParameterCount() == 0) {
+                return InvokerHelper.invokeMethod(self, ""next"", InvokerHelper.EMPTY_ARGS);
+            }
+        }
+        Object[] values = (Object[]) InvokerHelper.invokeStaticMethod(self.getClass(), ""values"", InvokerHelper.EMPTY_ARGS);
+        int index = Arrays.asList(values).indexOf(self);
+        return values[index < values.length - 1 ? index + 1 : 0];
+    }",False
+19,previous(Enum),Method,,,"java.lang.Class+getMethods() java.lang.Object+getClass() java.lang.Object+getClass() java.lang.Class+getMethods() java.lang.String+equals(Object) java.lang.reflect.Method+getName() java.lang.reflect.Method+getName() java.lang.String+equals(Object) java.lang.reflect.Method+getParameterCount() java.lang.reflect.Method+getParameterCount() org.codehaus.groovy.runtime.InvokerHelper+invokeMethod(Object,String,Object) org.codehaus.groovy.runtime.InvokerHelper+invokeMethod(Object,String,Object) org.codehaus.groovy.runtime.InvokerHelper+invokeStaticMethod(Class,String,Object) org.codehaus.groovy.runtime.InvokerHelper+invokeStaticMethod(Class,String,Object) java.lang.Object+getClass() java.lang.Object+getClass() java.util.List+indexOf(Object) java.util.Arrays+asList(T[]) java.util.Arrays+asList(T[]) java.util.List+indexOf(Object)",org.codehaus.groovy.runtime.InvokerHelper+EMPTY_ARGS org.codehaus.groovy.runtime.InvokerHelper+EMPTY_ARGS,873,19,14810,384,9,"/** 
+ * Overloads the  {@code --} operator for enums. It will invoke Groovy'sdefault previous behaviour for enums that do not have their own previous method.
+ * @param self an Enum
+ * @return the previous defined enum from the enum class
+ * @since 1.5.2
+ */
+","/**
+     * Overloads the {@code --} operator for enums. It will invoke Groovy's
+     * default previous behaviour for enums that do not have their own previous method.
+     *
+     * @param self an Enum
+     * @return the previous defined enum from the enum class
+     *
+     * @since 1.5.2
+     */
+    public static Object previous(final Enum self) {
+        for (Method method : self.getClass().getMethods()) {
+            if (method.getName().equals(""previous"") && method.getParameterCount() == 0) {
+                return InvokerHelper.invokeMethod(self, ""previous"", InvokerHelper.EMPTY_ARGS);
+            }
+        }
+        Object[] values = (Object[]) InvokerHelper.invokeStaticMethod(self.getClass(), ""values"", InvokerHelper.EMPTY_ARGS);
+        int index = Arrays.asList(values).indexOf(self);
+        return values[index > 0 ? index - 1 : values.length - 1];
+    }",False
+20,size(StringBuilder),Method,,,java.lang.StringBuilder+length() java.lang.StringBuilder+length(),,415,14,15689,406,9,"/** 
+ * Provides the standard Groovy <code>size()</code> method for <code>StringBuilder</code>.
+ * @param self a StringBuilder
+ * @return the length of the StringBuilder
+ * @since 1.5.2
+ * @see org.codehaus.groovy.runtime.StringGroovyMethods#size(CharSequence)
+ */
+","/**
+     * Provides the standard Groovy <code>size()</code> method for <code>StringBuilder</code>.
+     *
+     * @param self a StringBuilder
+     * @return the length of the StringBuilder
+     *
+     * @since 1.5.2
+     *
+     * @see org.codehaus.groovy.runtime.StringGroovyMethods#size(CharSequence)
+     */
+    @Deprecated
+    public static int size(final StringBuilder self) {
+        return self.length();
+    }",False
+21,"leftShift(StringBuilder,Object)",Method,,,java.lang.StringBuilder+append(String) java.lang.StringBuilder+append(String) java.lang.Object+toString() java.lang.Object+toString() java.lang.StringBuilder+append(CharSequence) java.lang.StringBuilder+append(CharSequence) java.lang.StringBuilder+append(Object) java.lang.StringBuilder+append(Object),,910,22,16110,420,9,"/** 
+ * Overloads the left shift operator to provide an easy way to append multiple objects as string representations to a StringBuilder.
+ * @param self  a StringBuilder
+ * @param value a value to append
+ * @return the StringBuilder on which this operation was invoked
+ * @since 1.5.2
+ */
+","/**
+     * Overloads the left shift operator to provide an easy way to append multiple
+     * objects as string representations to a StringBuilder.
+     *
+     * @param self  a StringBuilder
+     * @param value a value to append
+     * @return the StringBuilder on which this operation was invoked
+     *
+     * @since 1.5.2
+     */
+    public static StringBuilder leftShift(final StringBuilder self, final Object value) {
+        if (value instanceof GString) {
+            // Force the conversion of the GString to string now, or appending
+            // is going to be extremely expensive, due to calls to GString#charAt,
+            // which is going to re-evaluate the GString for each character!
+            return self.append(value.toString());
+        }
+        if (value instanceof CharSequence) {
+            return self.append((CharSequence)value);
+        }
+        return self.append(value);
+    }",False
+22,"putAt(StringBuilder,IntRange,Object)",Method,,,"org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport+subListBorders(int,Range) org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport+subListBorders(int,Range) java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.StringBuilder+replace(int,int,String) java.lang.StringBuilder+replace(int,int,String) java.lang.Object+toString() java.lang.Object+toString()",org.codehaus.groovy.runtime.RangeInfo+from org.codehaus.groovy.runtime.RangeInfo+to,561,14,17026,443,9,"/** 
+ * Supports the range subscript operator for StringBuilder. Index values are treated as characters within the builder.
+ * @param self  a StringBuilder
+ * @param range a Range
+ * @param value the object that's toString() will be inserted
+ * @since 1.5.2
+ */
+","/**
+     * Supports the range subscript operator for StringBuilder.
+     * Index values are treated as characters within the builder.
+     *
+     * @param self  a StringBuilder
+     * @param range a Range
+     * @param value the object that's toString() will be inserted
+     *
+     * @since 1.5.2
+     */
+    public static void putAt(final StringBuilder self, final IntRange range, final Object value) {
+        RangeInfo info = DefaultGroovyMethodsSupport.subListBorders(self.length(), range);
+        self.replace(info.from, info.to, value.toString());
+    }",False
+23,"putAt(StringBuilder,EmptyRange,Object)",Method,,,"org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport+subListBorders(int,EmptyRange) org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport+subListBorders(int,EmptyRange) java.lang.StringBuilder+length() java.lang.StringBuilder+length() java.lang.StringBuilder+replace(int,int,String) java.lang.StringBuilder+replace(int,int,String) java.lang.Object+toString() java.lang.Object+toString()",org.codehaus.groovy.runtime.RangeInfo+from org.codehaus.groovy.runtime.RangeInfo+to,497,13,17593,457,9,"/** 
+ * Supports the range subscript operator for StringBuilder.
+ * @param self  a StringBuilder
+ * @param range a Range
+ * @param value the object that's toString() will be inserted
+ * @since 1.5.2
+ */
+","/**
+     * Supports the range subscript operator for StringBuilder.
+     *
+     * @param self  a StringBuilder
+     * @param range a Range
+     * @param value the object that's toString() will be inserted
+     *
+     * @since 1.5.2
+     */
+    public static void putAt(final StringBuilder self, final EmptyRange range, final Object value) {
+        RangeInfo info = DefaultGroovyMethodsSupport.subListBorders(self.length(), range);
+        self.replace(info.from, info.to, value.toString());
+    }",False
+24,"plus(StringBuilder,String)",Method,,,,,294,12,18096,471,9,"/** 
+ * Appends a String to this StringBuilder.
+ * @param self  a StringBuilder
+ * @param value a String
+ * @return a String
+ * @since 1.5.2
+ */
+","/**
+     * Appends a String to this StringBuilder.
+     *
+     * @param self  a StringBuilder
+     * @param value a String
+     * @return a String
+     *
+     * @since 1.5.2
+     */
+    public static String plus(final StringBuilder self, final String value) {
+        return self + value;
+    }",False
+25,TransformedFuture,MemberClass,,,"org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+TransformedFuture(Future,Closure<E>) org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+cancel(boolean) java.util.concurrent.Future+cancel(boolean) java.util.concurrent.Future+cancel(boolean) org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+isCancelled() java.util.concurrent.Future+isCancelled() java.util.concurrent.Future+isCancelled() org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+isDone() java.util.concurrent.Future+isDone() java.util.concurrent.Future+isDone() org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+get() groovy.lang.Closure+call(Object) groovy.lang.Closure+call(Object) java.util.concurrent.Future+get() java.util.concurrent.Future+get() org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+get(long,TimeUnit) groovy.lang.Closure+call(Object) groovy.lang.Closure+call(Object) java.util.concurrent.Future+get(long,TimeUnit) java.util.concurrent.Future+get(long,TimeUnit)",org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+delegate org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+transform org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+delegate org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+transform org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+delegate org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+delegate org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+delegate org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+transform org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+delegate org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+transform org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods.TransformedFuture+delegate,1074,34,-1,-1,10,,"private static class TransformedFuture<E> implements Future<E> {
+        private final Future delegate;
+        private final Closure<E> transform;
+
+        private TransformedFuture(final Future delegate, final Closure<E> transform) {
+            this.delegate = delegate;
+            this.transform = transform;
+        }
+
+        @Override
+        public boolean cancel(final boolean mayInterruptIfRunning) {
+            return delegate.cancel(mayInterruptIfRunning);
+        }
+
+        @Override
+        public boolean isCancelled() {
+            return delegate.isCancelled();
+        }
+
+        @Override
+        public boolean isDone() {
+            return delegate.isDone();
+        }
+
+        @Override
+        public E get() throws InterruptedException, ExecutionException {
+            return transform.call(delegate.get());
+        }
+
+        @Override
+        public E get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+            return transform.call(delegate.get(timeout, unit));
+        }
+    }",False
+26,"toArray(Stream<? extends T>,Class<T>)",Method,,,"java.lang.IllegalArgumentException+IllegalArgumentException(String) java.util.stream.Stream+toArray(IntFunction) java.util.stream.Stream+toArray(IntFunction) java.lang.reflect.Array+newInstance(Class,int) java.lang.reflect.Array+newInstance(Class,int)",,1701,37,19476,543,9,"/** 
+ * Returns an array containing the elements of the stream. <pre class=""groovyTestCase""> import static groovy.test.GroovyAssert.shouldFail assert Arrays.equals([].stream().toArray(Object), new Object[0]) assert Arrays.equals([].stream().toArray(String), new String[0]) assert Arrays.equals([].stream().toArray(String[]), new String[0][]) assert Arrays.equals(['x'].stream().toArray(Object), ['x'].toArray()) assert Arrays.equals(['x'].stream().toArray(String), ['x'] as String[]) assert Arrays.deepEquals([['x'] as String[]].stream().toArray(String[]), [['x'] as String[]] as String[][]) assert Arrays.equals(['x'].stream().toArray(CharSequence), ['x'] as CharSequence[]) shouldFail(ArrayStoreException) { ['x'].stream().toArray(Thread) } shouldFail(IllegalArgumentException) { ['x'].stream().toArray((Class) null) } // Stream#toArray(IntFunction) should still be used for closure literal: assert Arrays.equals(['x'].stream().toArray { n -&gt; new String[n] }, ['x'] as String[]) // Stream#toArray(IntFunction) should still be used for method reference: assert Arrays.equals(['x'].stream().toArray(String[]::new), ['x'] as String[]) </pre>
+ * @param self the stream
+ * @param type the array element type
+ * @since 3.0.4
+ */
+","/**
+     * Returns an array containing the elements of the stream.
+     * <pre class=""groovyTestCase"">
+     * import static groovy.test.GroovyAssert.shouldFail
+     *
+     * assert Arrays.equals([].stream().toArray(Object), new Object[0])
+     * assert Arrays.equals([].stream().toArray(String), new String[0])
+     * assert Arrays.equals([].stream().toArray(String[]), new String[0][])
+     * assert Arrays.equals(['x'].stream().toArray(Object), ['x'].toArray())
+     * assert Arrays.equals(['x'].stream().toArray(String), ['x'] as String[])
+     * assert Arrays.deepEquals([['x'] as String[]].stream().toArray(String[]), [['x'] as String[]] as String[][])
+     * assert Arrays.equals(['x'].stream().toArray(CharSequence), ['x'] as CharSequence[])
+     *
+     * shouldFail(ArrayStoreException) {
+     *     ['x'].stream().toArray(Thread)
+     * }
+     *
+     * shouldFail(IllegalArgumentException) {
+     *     ['x'].stream().toArray((Class) null)
+     * }
+     *
+     * // Stream#toArray(IntFunction) should still be used for closure literal:
+     * assert Arrays.equals(['x'].stream().toArray { n -&gt; new String[n] }, ['x'] as String[])
+     *
+     * // Stream#toArray(IntFunction) should still be used for method reference:
+     * assert Arrays.equals(['x'].stream().toArray(String[]::new), ['x'] as String[])
+     * </pre>
+     *
+     * @param self the stream
+     * @param type the array element type
+     *
+     * @since 3.0.4
+     */
+    public static <T> T[] toArray(final Stream<? extends T> self, final Class<T> type) {
+        if (type == null) throw new IllegalArgumentException(""type cannot be null"");
+        return self.toArray(length -> (T[]) Array.newInstance(type, length));
+    }",False
+27,toList(Stream<T>),Method,,,java.util.stream.Stream+collect(Collector) java.util.stream.Stream+collect(Collector) java.util.stream.Collectors+toList() java.util.stream.Collectors+toList(),,342,12,21183,557,9,"/** 
+ * Accumulates the elements of stream into a new List.
+ * @param self the stream
+ * @param < T > the type of element
+ * @return a new {@code java.util.List} instance
+ * @since 2.5.0
+ */
+","/**
+     * Accumulates the elements of stream into a new List.
+     *
+     * @param self the stream
+     * @param <T> the type of element
+     * @return a new {@code java.util.List} instance
+     *
+     * @since 2.5.0
+     */
+    public static <T> List<T> toList(final Stream<T> self) {
+        return self.collect(Collectors.toList());
+    }",True
+28,toSet(Stream<T>),Method,,,java.util.stream.Stream+collect(Collector) java.util.stream.Stream+collect(Collector) java.util.stream.Collectors+toSet() java.util.stream.Collectors+toSet(),,337,12,21531,570,9,"/** 
+ * Accumulates the elements of stream into a new Set.
+ * @param self the stream
+ * @param < T > the type of element
+ * @return a new {@code java.util.Set} instance
+ * @since 2.5.0
+ */
+","/**
+     * Accumulates the elements of stream into a new Set.
+     *
+     * @param self the stream
+     * @param <T> the type of element
+     * @return a new {@code java.util.Set} instance
+     *
+     * @since 2.5.0
+     */
+    public static <T> Set<T> toSet(final Stream<T> self) {
+        return self.collect(Collectors.toSet());
+    }",True
+29,"toList(BaseStream<T,? extends BaseStream>)",Method,,org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation+asCollection(Object),java.util.stream.Stream+collect(Collector) org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods+stream(Iterator<T>) org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods+stream(Iterator<T>) java.util.stream.BaseStream+iterator() java.util.stream.BaseStream+iterator() java.util.stream.Stream+collect(Collector) java.util.stream.Collectors+toList() java.util.stream.Collectors+toList(),,416,12,21874,583,9,"/** 
+ * Accumulates the elements of stream into a new List.
+ * @param self the {@code java.util.stream.BaseStream}
+ * @param < T > the type of element
+ * @return a new {@code java.util.List} instance
+ * @since 2.5.0
+ */
+","/**
+     * Accumulates the elements of stream into a new List.
+     *
+     * @param self the {@code java.util.stream.BaseStream}
+     * @param <T> the type of element
+     * @return a new {@code java.util.List} instance
+     *
+     * @since 2.5.0
+     */
+    public static <T> List<T> toList(final BaseStream<T, ? extends BaseStream> self) {
+        return stream(self.iterator()).collect(Collectors.toList());
+    }",False
+30,"toSet(BaseStream<T,? extends BaseStream>)",Method,,,java.util.stream.Stream+collect(Collector) org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods+stream(Iterator<T>) org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods+stream(Iterator<T>) java.util.stream.BaseStream+iterator() java.util.stream.BaseStream+iterator() java.util.stream.Stream+collect(Collector) java.util.stream.Collectors+toSet() java.util.stream.Collectors+toSet(),,411,12,22296,596,9,"/** 
+ * Accumulates the elements of stream into a new Set.
+ * @param self the {@code java.util.stream.BaseStream}
+ * @param < T > the type of element
+ * @return a new {@code java.util.Set} instance
+ * @since 2.5.0
+ */
+","/**
+     * Accumulates the elements of stream into a new Set.
+     *
+     * @param self the {@code java.util.stream.BaseStream}
+     * @param <T> the type of element
+     * @return a new {@code java.util.Set} instance
+     *
+     * @since 2.5.0
+     */
+    public static <T> Set<T> toSet(final BaseStream<T, ? extends BaseStream> self) {
+        return stream(self.iterator()).collect(Collectors.toSet());
+    }",False
+31,stream(NullObject),Method,,,java.util.stream.Stream+empty() java.util.stream.Stream+empty(),,366,14,22713,611,9,"/** 
+ * Returns an empty sequential  {@link Stream}. <pre class=""groovyTestCase""> def item = null assert item.stream().toList() == [] assert !item.stream().findFirst().isPresent() </pre>
+ * @since 3.0.0
+ */
+","/**
+     * Returns an empty sequential {@link Stream}.
+     *
+     * <pre class=""groovyTestCase"">
+     * def item = null
+     * assert item.stream().toList() == []
+     * assert !item.stream().findFirst().isPresent()
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Stream<T> stream(final NullObject self) {
+        return Stream.empty();
+    }",True
+32,stream(T),Method,,,java.util.stream.Stream+of(T) java.util.stream.Stream+of(T),,390,14,23085,626,9,"/** 
+ * Returns a sequential  {@link Stream} containing a single element.<pre class=""groovyTestCase""> def item = 'string' assert item.stream().toList() == ['string'] assert item.stream().findFirst().isPresent() </pre>
+ * @since 3.0.0
+ */
+","/**
+     * Returns a sequential {@link Stream} containing a single element.
+     *
+     * <pre class=""groovyTestCase"">
+     * def item = 'string'
+     * assert item.stream().toList() == ['string']
+     * assert item.stream().findFirst().isPresent()
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Stream<T> stream(final T self) {
+        return Stream.of(self);
+    }",True
+33,stream(T[]),Method,,,java.util.Arrays+stream(T[]) java.util.Arrays+stream(T[]),,395,13,23481,640,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified array as itssource.
+ * @param < T > The type of the array elements
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 2.5.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified array as its
+     * source.
+     *
+     * @param <T> The type of the array elements
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 2.5.0
+     */
+    public static <T> Stream<T> stream(final T[] self) {
+        return Arrays.stream(self);
+    }",True
+34,stream(int[]),Method,,,java.util.stream.IntStream+boxed() java.util.Arrays+stream(int[]) java.util.Arrays+stream(int[]) java.util.stream.IntStream+boxed(),,358,12,23882,653,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 2.5.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 2.5.0
+     */
+    public static Stream<Integer> stream(final int[] self) {
+        return Arrays.stream(self).boxed();
+    }",True
+35,intStream(int[]),Method,,,java.util.Arrays+stream(int[]) java.util.Arrays+stream(int[]),,350,12,24246,666,9,"/** 
+ * Returns a sequential  {@link IntStream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 3.0.8
+ */
+","/**
+     * Returns a sequential {@link IntStream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 3.0.8
+     */
+    public static IntStream intStream(final int[] self) {
+        return Arrays.stream(self);
+    }",True
+36,stream(long[]),Method,,,java.util.stream.LongStream+boxed() java.util.Arrays+stream(long[]) java.util.Arrays+stream(long[]) java.util.stream.LongStream+boxed(),,356,12,24602,679,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 2.5.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 2.5.0
+     */
+    public static Stream<Long> stream(final long[] self) {
+        return Arrays.stream(self).boxed();
+    }",True
+37,longStream(long[]),Method,,,java.util.Arrays+stream(long[]) java.util.Arrays+stream(long[]),,354,12,24964,692,9,"/** 
+ * Returns a sequential  {@link LongStream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 3.0.8
+ */
+","/**
+     * Returns a sequential {@link LongStream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 3.0.8
+     */
+    public static LongStream longStream(final long[] self) {
+        return Arrays.stream(self);
+    }",True
+38,stream(double[]),Method,,,java.util.stream.DoubleStream+boxed() java.util.Arrays+stream(double[]) java.util.Arrays+stream(double[]) java.util.stream.DoubleStream+boxed(),,360,12,25324,705,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 2.5.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 2.5.0
+     */
+    public static Stream<Double> stream(final double[] self) {
+        return Arrays.stream(self).boxed();
+    }",True
+39,doubleStream(double[]),Method,,,java.util.Arrays+stream(double[]) java.util.Arrays+stream(double[]),,362,12,25690,718,9,"/** 
+ * Returns a sequential  {@link DoubleStream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 3.0.8
+ */
+","/**
+     * Returns a sequential {@link DoubleStream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 3.0.8
+     */
+    public static DoubleStream doubleStream(final double[] self) {
+        return Arrays.stream(self);
+    }",True
+40,stream(char[]),Method,,,"java.util.stream.IntStream+range(int,int) java.util.stream.IntStream+range(int,int)",,388,12,26058,731,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 2.5.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 2.5.0
+     */
+    public static Stream<Character> stream(final char[] self) {
+        return IntStream.range(0, self.length).mapToObj(i -> self[i]);
+    }",True
+41,stream(byte[]),Method,,,"java.util.stream.IntStream+range(int,int) java.util.stream.IntStream+range(int,int)",,383,12,26452,744,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 2.5.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 2.5.0
+     */
+    public static Stream<Byte> stream(final byte[] self) {
+        return IntStream.range(0, self.length).mapToObj(i -> self[i]);
+    }",True
+42,stream(short[]),Method,,,"java.util.stream.IntStream+range(int,int) java.util.stream.IntStream+range(int,int)",,385,12,26841,757,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 2.5.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 2.5.0
+     */
+    public static Stream<Short> stream(final short[] self) {
+        return IntStream.range(0, self.length).mapToObj(i -> self[i]);
+    }",True
+43,stream(boolean[]),Method,,,"java.util.stream.IntStream+range(int,int) java.util.stream.IntStream+range(int,int)",,389,12,27232,770,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 2.5.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 2.5.0
+     */
+    public static Stream<Boolean> stream(final boolean[] self) {
+        return IntStream.range(0, self.length).mapToObj(i -> self[i]);
+    }",True
+44,stream(float[]),Method,,,"java.util.stream.IntStream+range(int,int) java.util.stream.IntStream+range(int,int)",,385,12,27627,783,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified array as itssource.
+ * @param self The array, assumed to be unmodified during use
+ * @return a {@code Stream} for the array
+ * @since 2.5.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified array as its
+     * source.
+     *
+     * @param self The array, assumed to be unmodified during use
+     * @return a {@code Stream} for the array
+     *
+     * @since 2.5.0
+     */
+    public static Stream<Float> stream(final float[] self) {
+        return IntStream.range(0, self.length).mapToObj(i -> self[i]);
+    }",True
+45,stream(Enumeration<T>),Method,,,"org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods+stream(Spliterator<T>) org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods+stream(Spliterator<T>) +(long,int) +forEachRemaining(Consumer<? super T>)",java.lang.Long+MAX_VALUE java.util.Spliterator+ORDERED,1005,28,28018,797,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified element(s) as itssource. <pre class=""groovyTestCase""> def tokens = new StringTokenizer('one two') assert tokens.stream().toList() == ['one', 'two'] </pre>
+ * @since 3.0.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified element(s) as its
+     * source.
+     * <pre class=""groovyTestCase"">
+     * def tokens = new StringTokenizer('one two')
+     * assert tokens.stream().toList() == ['one', 'two']
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Stream<T> stream(final Enumeration<T> self) {
+        return stream(new Spliterators.AbstractSpliterator<T>(Long.MAX_VALUE, Spliterator.ORDERED) {
+            @Override
+            public void forEachRemaining(final Consumer<? super T> action) {
+                while (self.hasMoreElements()) {
+                    action.accept(self.nextElement());
+                }
+            }
+            @Override
+            public boolean tryAdvance(final Consumer<? super T> action) {
+                if (self.hasMoreElements()) {
+                    action.accept(self.nextElement());
+                    return true;
+                }
+                return false;
+            }
+        });
+    }",True
+46,stream(Iterable<T>),Method,,,"java.util.stream.StreamSupport+stream(Spliterator,boolean) java.util.stream.StreamSupport+stream(Spliterator,boolean) java.lang.Iterable+spliterator() java.lang.Iterable+spliterator()",,557,19,29029,832,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified element(s) as itssource. <pre class=""groovyTestCase""> class Items implements Iterable<String> { Iterator<String> iterator() { ['one', 'two'].iterator() } } def items = new Items() assert items.stream().toList() == ['one', 'two'] </pre>
+ * @since 3.0.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified element(s) as its
+     * source.
+     *
+     * <pre class=""groovyTestCase"">
+     * class Items implements Iterable<String> {
+     *   Iterator<String> iterator() {
+     *     ['one', 'two'].iterator()
+     *   }
+     * }
+     * def items = new Items()
+     * assert items.stream().toList() == ['one', 'two']
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Stream<T> stream(final Iterable<T> self) {
+        return StreamSupport.stream(self.spliterator(), false);
+    }",True
+47,stream(Iterator<T>),Method,"toList(BaseStream<T,? extends BaseStream>) toSet(BaseStream<T,? extends BaseStream>)",,"org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods+stream(Spliterator<T>) org.codehaus.groovy.vmplugin.v8.PluginDefaultGroovyMethods+stream(Spliterator<T>) java.util.Spliterators+spliteratorUnknownSize(Iterator,int) java.util.Spliterators+spliteratorUnknownSize(Iterator,int)",java.util.Spliterator+ORDERED,466,14,29592,847,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified element(s) as itssource. <pre class=""groovyTestCase""> [].iterator().stream().toList().isEmpty() ['one', 'two'].iterator().stream().toList() == ['one', 'two'] </pre>
+ * @since 3.0.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified element(s) as its
+     * source.
+     *
+     * <pre class=""groovyTestCase"">
+     * [].iterator().stream().toList().isEmpty()
+     * ['one', 'two'].iterator().stream().toList() == ['one', 'two']
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Stream<T> stream(final Iterator<T> self) {
+        return stream(Spliterators.spliteratorUnknownSize(self, Spliterator.ORDERED));
+    }",True
+48,stream(Spliterator<T>),Method,stream(Enumeration<T>) stream(Iterator<T>),,"java.util.stream.StreamSupport+stream(Spliterator,boolean) java.util.stream.StreamSupport+stream(Spliterator,boolean)",,452,14,30064,862,9,"/** 
+ * Returns a sequential  {@link Stream} with the specified element(s) as itssource. <pre class=""groovyTestCase""> assert [].spliterator().stream().toList().isEmpty() assert ['one', 'two'].spliterator().stream().toList() == ['one', 'two'] </pre>
+ * @since 3.0.0
+ */
+","/**
+     * Returns a sequential {@link Stream} with the specified element(s) as its
+     * source.
+     *
+     * <pre class=""groovyTestCase"">
+     * assert [].spliterator().stream().toList().isEmpty()
+     * assert ['one', 'two'].spliterator().stream().toList() == ['one', 'two']
+     * </pre>
+     *
+     * @since 3.0.0
+     */
+    public static <T> Stream<T> stream(final Spliterator<T> self) {
+        return StreamSupport.stream(self, false);
+    }",True
+49,stream(Optional<T>),Method,,,java.util.Optional+map(Function) java.util.Optional+map(Function),,311,9,30522,872,9,"/** 
+ * If a value is present in the  {@link Optional}, returns a  {@link Stream}with the value as its source or else an empty stream.
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@link Optional}, returns a {@link Stream}
+     * with the value as its source or else an empty stream.
+     *
+     * @since 3.0.0
+     */
+    public static <T> Stream<T> stream(final Optional<T> self) {
+        return self.map(Stream::of).orElseGet(Stream::empty);
+    }",True
+50,stream(OptionalInt),Method,,,java.util.OptionalInt+isPresent() java.util.OptionalInt+isPresent() java.util.stream.IntStream+empty() java.util.stream.IntStream+empty() java.util.stream.IntStream+of(int) java.util.stream.IntStream+of(int) java.util.OptionalInt+getAsInt() java.util.OptionalInt+getAsInt(),,379,12,30839,882,9,"/** 
+ * If a value is present in the  {@link OptionalInt}, returns an  {@link IntStream}with the value as its source or else an empty stream.
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@link OptionalInt}, returns an {@link IntStream}
+     * with the value as its source or else an empty stream.
+     *
+     * @since 3.0.0
+     */
+    public static IntStream stream(final OptionalInt self) {
+        if (!self.isPresent()) {
+            return IntStream.empty();
+        }
+        return IntStream.of(self.getAsInt());
+    }",True
+51,stream(OptionalLong),Method,,,java.util.OptionalLong+isPresent() java.util.OptionalLong+isPresent() java.util.stream.LongStream+empty() java.util.stream.LongStream+empty() java.util.stream.LongStream+of(long) java.util.stream.LongStream+of(long) java.util.OptionalLong+getAsLong() java.util.OptionalLong+getAsLong(),,385,12,31224,895,9,"/** 
+ * If a value is present in the  {@link OptionalLong}, returns a  {@link LongStream}with the value as its source or else an empty stream.
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@link OptionalLong}, returns a {@link LongStream}
+     * with the value as its source or else an empty stream.
+     *
+     * @since 3.0.0
+     */
+    public static LongStream stream(final OptionalLong self) {
+        if (!self.isPresent()) {
+            return LongStream.empty();
+        }
+        return LongStream.of(self.getAsLong());
+    }",True
+52,stream(OptionalDouble),Method,,,java.util.OptionalDouble+isPresent() java.util.OptionalDouble+isPresent() java.util.stream.DoubleStream+empty() java.util.stream.DoubleStream+empty() java.util.stream.DoubleStream+of(double) java.util.stream.DoubleStream+of(double) java.util.OptionalDouble+getAsDouble() java.util.OptionalDouble+getAsDouble(),,399,12,31615,908,9,"/** 
+ * If a value is present in the  {@link OptionalDouble}, returns a  {@link DoubleStream}with the value as its source or else an empty stream.
+ * @since 3.0.0
+ */
+","/**
+     * If a value is present in the {@link OptionalDouble}, returns a {@link DoubleStream}
+     * with the value as its source or else an empty stream.
+     *
+     * @since 3.0.0
+     */
+    public static DoubleStream stream(final OptionalDouble self) {
+        if (!self.isPresent()) {
+            return DoubleStream.empty();
+        }
+        return DoubleStream.of(self.getAsDouble());
+    }",True
+53,"orOptional(Optional<T>,Supplier<? extends Optional<? extends T>>)",Method,,,java.util.Optional+isPresent() java.util.Optional+isPresent() java.util.function.Supplier+get() java.util.function.Supplier+get(),,338,11,32020,920,9,"/** 
+ * Provide similar functionality to JDK9  {@code or} on JDK8.
+ * @since 3.0.6
+ */
+","/**
+     * Provide similar functionality to JDK9 {@code or} on JDK8.
+     *
+     * @since 3.0.6
+     */
+    public static <T> Optional<T> orOptional(Optional<T> self, Supplier<? extends Optional<? extends T>> supplier) {
+        if (self.isPresent()) {
+            return self;
+        }
+        return (Optional<T>) supplier.get();
+    }",False
+54,getPid(Runtime),Method,,,"java.lang.management.RuntimeMXBean+getName() java.lang.management.ManagementFactory+getRuntimeMXBean() java.lang.management.ManagementFactory+getRuntimeMXBean() java.lang.management.RuntimeMXBean+getName() java.lang.String+indexOf(int) java.lang.String+indexOf(int) java.lang.String+substring(int,int) java.lang.String+substring(int,int)",,416,15,32364,934,9,"/** 
+ * Get the pid of the current Java process
+ * @param self
+ * @return the pid
+ * @since 4.0.0
+ */
+","/**
+     * Get the pid of the current Java process
+     *
+     * @param self
+     * @return the pid
+     * @since 4.0.0
+     */
+    public static String getPid(Runtime self) {
+        String name = ManagementFactory.getRuntimeMXBean().getName();
+        int index = name.indexOf('@');
+        if (-1 == index) { // should never happen
+            return name;
+        }
+        return name.substring(0, index);
+    }",False
