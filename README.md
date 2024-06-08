@@ -33,7 +33,7 @@ The refactorings are presented as individual CSV files. Each file represents a c
 | full text            | full content of the entity                                   |
 | removed              | whether the entity is extracted from the origin class in refactoring, mark TRUE for extracted entities, FALSE for kept entities |
 
-and the data structure of the catalogs is as follows:
+and the data structure of the refactoring examples is as follows:
 ![d_refactor_data_example](https://github.com/ClassSplitter/ClassSplitter/assets/146154120/89604c92-ba24-4354-a1ad-9b4c35929c16)
 
 
