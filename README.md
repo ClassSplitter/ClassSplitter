@@ -1,22 +1,30 @@
 # ClassSplitter
 
-This replication package contains dataset and code related to our research paper.
+This replication package contains two datasets as well as implementation of the proposed approach.
 
-For God class refactoring dataset, see `dataset/` directory.
+For God class refactoring datasets, see `dataset/` directory.
 
 For the code used in our experiment and the experiment result, see `Implementation/` directory.
 
+
+
 ## Dataset
 
-The real-world God classes and their refactoring are organized by two CSV-formated catalog: 
+ 
 
-* The `GodClassRefactorDictionary.csv` catalog documents the refactoring examples in `god_class_refactor_example` folder, which were used for evaluation in our experiments.
-* The `GodClassRefactorForPositionStudyDictionary.csv` catalog documents the refactoring examples in `refactor_example_position` folder, which were used to validate the correlation between code position and god class refactoring. 
+The real-world God classes and their solutions are summarized with two CSV documents: 
 
-The catalog files record essential information about the commits where the refactorings take place. This information includes: `project name`, `commit hash`, `parent hash`, `extract type`, `origin class`, `new class`, `commit message`, and `url`. The data structure of the catalogs is as follows:
-![data_catalog](https://github.com/ClassSplitter/ClassSplitter/assets/146154120/861f7013-c8ba-47aa-928a-7cf3727fef00)
+* The `GodClassRefactorDictionary.csv` documents the refactoring examples (presented in folder `god_class_refactor_example`. This dataset has been used for the evaluation in our experiments.
 
-The refactorings are presented as individual CSV files. Each file represents a class before refactoring, with each row in the file recording an entity from the original class. These rows contain the features of the entities, as well as their refactoring information. The file paths are documented in the `data path` column in the catalog. The recorded features of the entities include:
+* The `GodClassRefactorForPositionStudyDictionary.csv` documents the refactoring examples in folder `refactor_example_position`. This dataset has been used by the empirical study in our paper. 
+
+The datasets record essential information about the commits where the refactorings had been applied. This information includes: `project name`, `commit hash`, `parent hash`, `extract type`, `origin class`, `new class`, `commit message`, and `url`. The data structure of the file is as follows:
+
+![data_catalog](https://github.com/ClassSplitter/ClassSplitter/assets/146154120/ab5e4e98-e1b5-4fab-8b64-22715938c6f0)
+
+ 
+
+Under the folders `god_class_refactor_example` and `refactor_example_position`, we present details for each of the discovered refactorings with a single CSV file. Information available in such files includes: 
 
 | tag                  | description                                                  |
 | -------------------- | ------------------------------------------------------------ |
@@ -33,16 +41,20 @@ The refactorings are presented as individual CSV files. Each file represents a c
 | full text            | full content of the entity                                   |
 | removed              | whether the entity is extracted from the origin class in refactoring, mark TRUE for extracted entities, FALSE for kept entities |
 
-and the data structure of the refactoring examples is as follows:
+Here is a screen shot of a CSV file:
+
 ![d_refactor_data_example](https://github.com/ClassSplitter/ClassSplitter/assets/146154120/89604c92-ba24-4354-a1ad-9b4c35929c16)
 
+ 
 
 ## Implementation
 
-the code implementation of the ClassSplitter method can be found in `ClassSplitter/` folder.
+ 
 
-the ranking data of participants for refactoring result can be checked in `human-evaluation.xlsx`.
+The implementation of the ClassSplitter method can be found in folder `ClassSplitter/`.
 
-the raw code for the experiment is in `experienments/` folder.
+The manual ranking results from participants can available in `human-evaluation.xlsx`.
 
-the main experiment results can be checked in `experienments/experienment_result.ipynb`.
+The raw code for the experiment is available in folder `experienments/`.
+
+The results of the experim
