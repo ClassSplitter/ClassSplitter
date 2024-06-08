@@ -4,6 +4,6 @@ the code implementation of the ClassSplitter method can be found in `ClassSplitt
 
 the ranking data of participants for refactoring result can be checked in `human-evaluation.xlsx`.
 
-the raw code for the experiment is in `experienments/` foder.
+the raw code for the experiment is in `experienments/` folder.
 
-the main experienment results can be checked in `experienments/experienment_result.ipynb`.
+the main experiment results can be checked in `experienments/experienment_result.ipynb`.
