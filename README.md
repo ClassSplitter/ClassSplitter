@@ -47,14 +47,12 @@ Here is a screen shot of a CSV file:
 
  
 
-## Implementation
+# Implementation
 
- 
+the code implementation of the ClassSplitter method can be found in `ClassSplitter/` folder.
 
-The implementation of the ClassSplitter method can be found in folder `ClassSplitter/`.
+the ranking data of participants for refactoring result given by ClassSplitter and baselines can be checked in `human-evaluation-approaches.xlsx`, and the ranking data of participants for actual refactoring result  can be checked in `human-evaluation-ground-truth.xlsx`.
 
-The manual ranking results from participants can available in `human-evaluation.xlsx`.
+the raw code for the experiment is in `experienments/` folder.
 
-The raw code for the experiment is available in folder `experienments/`.
-
-The results of the experim
+the main experiment results can be checked in `experienments/experienment_result.ipynb`.
