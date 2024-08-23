@@ -1,4 +1,4 @@
-# experiment
+# Implementation
 
 the code implementation of the ClassSplitter method can be found in `ClassSplitter/` folder.
 
